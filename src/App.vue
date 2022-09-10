@@ -1,4 +1,12 @@
 <script setup>
+// ***********************************************************************
+// *
+// * Itvault
+// * 10.09.2022
+// * https://github.com/trolit/Itvault/
+// *
+// ***********************************************************************
+
 import { RouterLink, RouterView } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue';
 </script>
