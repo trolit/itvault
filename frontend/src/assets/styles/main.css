@@ -1,0 +1,5 @@
+@import "./base.css";
+
+#app {
+  border: 1px solid red;
+}
