@@ -1,7 +1,7 @@
 {
   "files": [],
-  "vueCompilerOptions": {
-    "experimentalDisableTemplateSupport": true
+  "compilerOptions": {
+    "types": ["naive-ui/volar"]
   },
   "references": [
     {
