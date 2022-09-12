@@ -17,6 +17,7 @@ module.exports = {
         "**/__tests__/*.{cy,spec}.{js,ts,jsx,tsx}",
         "cypress/e2e/**.{cy,spec}.{js,ts,jsx,tsx}",
       ],
+
       extends: ["plugin:cypress/recommended"],
     },
   ],
@@ -28,6 +29,7 @@ module.exports = {
         endOfLine: "auto",
       },
     ],
+
     "vue/multi-word-component-names": "off",
   },
 
