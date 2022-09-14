@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { NCard, NSpace } from "naive-ui";
+import CustomHeader from "@/components/Header.vue";
 </script>
 
 <template>
   <main>
-    <n-card>
-      <n-space> Hello </n-space>
-    </n-card>
+    <custom-header />
   </main>
 </template>

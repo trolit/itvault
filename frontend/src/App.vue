@@ -1,8 +1,8 @@
 <template>
   <n-config-provider inline-theme-disabled :theme="theme">
-    <router-view />
+    <n-global-style />
 
-    <n-button type="primary" @click="switchTheme"> Primary </n-button>
+    <router-view />
   </n-config-provider>
 </template>
 
@@ -17,16 +17,12 @@
 
 import { computed } from "vue";
 import { RouterView } from "vue-router";
-import { darkTheme, NButton, NConfigProvider } from "naive-ui";
+import { darkTheme, NConfigProvider, NGlobalStyle } from "naive-ui";
 
 import { DARK_THEME } from "@/assets/constants/themes";
 import { usePreferencesStore } from "@/stores/preferences";
 
 const preferencesStore = usePreferencesStore();
-
-function switchTheme() {
-  preferencesStore.toggleTheme();
-}
 
 const theme = computed(() => {
   return preferencesStore.theme === DARK_THEME ? darkTheme : null;
