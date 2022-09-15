@@ -10,8 +10,8 @@
       <n-menu
         v-model:value="activeKey"
         :collapsed-width="64"
-        :collapsed-icon-size="22"
         :options="menuOptions"
+        :collapsed-icon-size="22"
       />
     </n-layout-sider>
 
@@ -79,5 +79,5 @@ const menuOptions: MenuOption[] = [
   },
 ];
 
-const activeKey = ref<string | null>(null);
+const activeKey = ref<string | null>("introduction");
 </script>
