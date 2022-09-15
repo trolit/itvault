@@ -1,14 +1,11 @@
 .n-page-header-wrapper {
-  width: 100%;
-  height: var(--header-height);
-  border-bottom: 1px solid silver;
+  --bottom-border-height: 1px;
 
   .content {
     display: flex;
-    width: inherit;
-    height: inherit;
     align-items: center;
-    justify-content: space-between;
+    border-bottom: var(--bottom-border-height) solid silver;
+    height: calc(var(--header-height) - var(--bottom-border-height));
 
     .label {
       width: 100%;
