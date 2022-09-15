@@ -1,16 +1,18 @@
 .n-page-header-wrapper {
   width: 100%;
+  height: var(--header-height);
   border-bottom: 1px solid silver;
 
   .content {
     display: flex;
     width: inherit;
+    height: inherit;
     align-items: center;
     justify-content: space-between;
 
     .label {
       width: 100%;
-      font-size: 35px;
+      font-size: 28px;
       display: inherit;
       margin-left: 10px;
       align-items: center;
