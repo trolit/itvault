@@ -19,12 +19,19 @@ import { computed } from "vue";
 import { RouterView } from "vue-router";
 import { darkTheme, NConfigProvider, NGlobalStyle } from "naive-ui";
 
-import { DARK_THEME } from "@/assets/constants/themes";
+import { THEME_DARK } from "@/assets/constants/themes";
 import { usePreferencesStore } from "@/stores/preferences";
+import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
 
 const preferencesStore = usePreferencesStore();
 
-const theme = computed(() => {
-  return preferencesStore.theme === DARK_THEME ? darkTheme : null;
+const theme = computed((): BuiltInGlobalTheme | null => {
+  switch (preferencesStore.theme) {
+    case THEME_DARK:
+      return darkTheme;
+
+    default:
+      return null;
+  }
 });
 </script>

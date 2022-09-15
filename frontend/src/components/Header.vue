@@ -10,37 +10,45 @@
       </div>
 
       <div class="actions">
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <n-button
-              text
-              size="small"
-              type="tertiary"
-              :focusable="false"
-              @click="switchTheme"
-            >
-              <n-icon size="20">
-                <color-switch />
-              </n-icon>
-            </n-button>
-          </template>
-
-          Theme
-        </n-tooltip>
+        <n-popselect
+          :value="theme"
+          :options="options"
+          label-field="value"
+          @update:value="setTheme"
+        >
+          <n-button size="small" type="tertiary" :focusable="false">
+            Theme ({{ theme }})
+          </n-button>
+        </n-popselect>
       </div>
     </div>
   </n-page-header>
 </template>
 
 <script setup lang="ts">
-import { ColorSwitch, Development } from "@vicons/carbon";
-import { NIcon, NPageHeader, NButton, NTooltip } from "naive-ui";
+import { Development } from "@vicons/carbon";
+import { NPopselect, NIcon, NPageHeader, NButton } from "naive-ui";
 
+import { ref, computed } from "vue";
 import { usePreferencesStore } from "@/stores/preferences";
+import { THEME_DARK, THEME_LIGHT } from "@/assets/constants/themes";
 
 const preferencesStore = usePreferencesStore();
 
-function switchTheme() {
-  preferencesStore.toggleTheme();
+const theme = computed<string>((): string => {
+  return preferencesStore.theme;
+});
+
+function setTheme(theme: string): void {
+  preferencesStore.setTheme(theme);
 }
+
+const options = ref([
+  {
+    value: THEME_DARK,
+  },
+  {
+    value: THEME_LIGHT,
+  },
+]);
 </script>
