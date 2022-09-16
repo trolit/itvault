@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import Sidebar from "@/components/Sidebar.vue";
-import CustomHeader from "@/components/Header.vue";
+import PageHeader from "@/components/PageHeader.vue";
 import ContentLayout from "@/components/ContentLayout.vue";
 </script>
 
 <template>
   <main>
-    <custom-header />
+    <page-header />
 
     <content-layout>
       <template #sidebar>
