@@ -1,5 +1,5 @@
 <template>
-  <n-page-header>
+  <n-page-header class="page-header">
     <div class="content">
       <div class="label">
         <n-icon>
