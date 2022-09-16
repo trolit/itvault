@@ -9,6 +9,7 @@
 
 <script setup lang="ts">
 import { NIcon, NMenu } from "naive-ui";
+import { RouterLink } from "vue-router";
 import type { MenuOption } from "naive-ui";
 import { h, ref, type Component } from "vue";
 import { DocumentUnknown as IntroductionIcon } from "@vicons/carbon";
@@ -18,7 +19,17 @@ function renderIcon(icon: Component) {
 }
 
 const introduction: MenuOption = {
-  label: "Introduction",
+  label: () =>
+    h(
+      RouterLink,
+      {
+        to: {
+          name: "introduction",
+          params: {},
+        },
+      },
+      { default: () => "Introduction" }
+    ),
   key: "introduction",
   icon: renderIcon(IntroductionIcon),
 };
