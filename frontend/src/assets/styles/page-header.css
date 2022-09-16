@@ -7,7 +7,7 @@
     border-bottom: var(--bottom-border-height) solid silver;
     height: calc(var(--header-height) - var(--bottom-border-height));
 
-    .label {
+    .brand {
       width: 100%;
       font-size: 28px;
       display: inherit;

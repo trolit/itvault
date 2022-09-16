@@ -1,13 +1,7 @@
 <template>
   <n-page-header class="page-header">
     <div class="content">
-      <div class="label">
-        <n-icon>
-          <development />
-        </n-icon>
-
-        <span>itvault</span>
-      </div>
+      <brand />
 
       <div class="actions">
         <n-popselect
@@ -26,10 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import { Development } from "@vicons/carbon";
-import { NPopselect, NIcon, NPageHeader, NButton } from "naive-ui";
-
 import { ref, computed } from "vue";
+import { NPopselect, NPageHeader, NButton } from "naive-ui";
+
+import Brand from "@/components/common/Brand.vue";
 import { usePreferencesStore } from "@/stores/preferences";
 import { THEME_DARK, THEME_LIGHT } from "@/assets/constants/themes";
 

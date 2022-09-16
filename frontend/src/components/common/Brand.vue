@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="brand">
     <n-icon>
       <brand-icon />
     </n-icon>
