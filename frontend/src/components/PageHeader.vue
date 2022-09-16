@@ -1,7 +1,11 @@
 <template>
   <n-page-header class="page-header">
     <div class="content">
-      <brand />
+      <div class="brand">
+        <router-link to="/">
+          <brand :style="{ '--color': textColor }" />
+        </router-link>
+      </div>
 
       <div class="actions">
         <n-popselect
@@ -21,21 +25,12 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
+import { useThemeVars } from "naive-ui";
 import { NPopselect, NPageHeader, NButton } from "naive-ui";
 
 import Brand from "@/components/common/Brand.vue";
 import { usePreferencesStore } from "@/stores/preferences";
 import { THEME_DARK, THEME_LIGHT } from "@/assets/constants/themes";
-
-const preferencesStore = usePreferencesStore();
-
-const theme = computed<string>((): string => {
-  return preferencesStore.theme;
-});
-
-function setTheme(theme: string): void {
-  preferencesStore.setTheme(theme);
-}
 
 const options = ref([
   {
@@ -45,4 +40,18 @@ const options = ref([
     value: THEME_LIGHT,
   },
 ]);
+
+const preferencesStore = usePreferencesStore();
+
+const theme = computed<string>((): string => {
+  return preferencesStore.theme;
+});
+
+const textColor = computed<string>((): string => {
+  return useThemeVars().value.textColor1;
+});
+
+function setTheme(theme: string): void {
+  preferencesStore.setTheme(theme);
+}
 </script>
