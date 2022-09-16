@@ -1,5 +1,5 @@
 <template>
-  <n-layout class="content-layout" has-sider>
+  <n-layout class="page-body-layout" has-sider>
     <n-layout-sider
       bordered
       show-trigger
@@ -11,7 +11,7 @@
     </n-layout-sider>
 
     <n-layout>
-      <slot name="workspace"> workspace </slot>
+      <slot name="content"> content </slot>
     </n-layout>
   </n-layout>
 </template>

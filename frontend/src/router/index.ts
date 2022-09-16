@@ -13,7 +13,7 @@ const router = createRouter({
         {
           path: "",
           components: {
-            workspace: () => import("@/components/Welcome.vue"),
+            content: () => import("@/components/Welcome.vue"),
           },
         },
       ],
