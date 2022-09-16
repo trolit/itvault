@@ -64,5 +64,5 @@ const menuOptions: MenuOption[] = [
   },
 ];
 
-const activeKey = ref<string | null>("introduction");
+const activeKey = ref<string | null>(null);
 </script>
