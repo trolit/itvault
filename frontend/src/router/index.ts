@@ -11,9 +11,17 @@ const router = createRouter({
       component: Home,
       children: [
         {
+          name: "welcome",
           path: "",
           components: {
             content: () => import("@/components/Welcome.vue"),
+          },
+        },
+        {
+          name: "introduction",
+          path: "introduction",
+          components: {
+            content: () => import("@/components/Introduction.vue"),
           },
         },
       ],
