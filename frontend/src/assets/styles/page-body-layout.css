@@ -1,0 +1,3 @@
+.page-body-layout {
+  height: calc(100vh - var(--header-height));
+}

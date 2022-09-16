@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { DARK_THEME, LIGHT_THEME } from "@/assets/constants/themes";
+import { THEME_DARK } from "@/assets/constants/themes";
 
 interface State {
   theme: string;
@@ -7,12 +7,12 @@ interface State {
 
 export const usePreferencesStore = defineStore("preferences", {
   state: (): State => ({
-    theme: DARK_THEME,
+    theme: THEME_DARK,
   }),
 
   actions: {
-    toggleTheme() {
-      this.theme = this.theme === DARK_THEME ? LIGHT_THEME : DARK_THEME;
+    setTheme(theme: string) {
+      this.theme = theme;
     },
   },
 });

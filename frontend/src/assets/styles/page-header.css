@@ -1,16 +1,15 @@
-.n-page-header-wrapper {
-  width: 100%;
-  border-bottom: 1px solid silver;
+.page-header {
+  --bottom-border-height: 1px;
 
   .content {
     display: flex;
-    width: inherit;
     align-items: center;
-    justify-content: space-between;
+    border-bottom: var(--bottom-border-height) solid silver;
+    height: calc(var(--header-height) - var(--bottom-border-height));
 
     .label {
       width: 100%;
-      font-size: 35px;
+      font-size: 28px;
       display: inherit;
       margin-left: 10px;
       align-items: center;
