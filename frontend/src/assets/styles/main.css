@@ -6,6 +6,10 @@
 main {
   .page-body-layout {
     height: calc(100vh - var(--header-height));
+
+    .n-menu {
+      height: inherit;
+    }
   }
 
   .page-header {
