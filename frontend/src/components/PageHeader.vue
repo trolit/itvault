@@ -2,8 +2,13 @@
   <n-page-header class="page-header">
     <div class="content">
       <div class="brand">
-        <router-link to="/">
-          <brand :style="{ '--color': textColor }" />
+        <router-link
+          to="/"
+          :style="{ color: isBrandHovered ? textColor : 'inherit' }"
+          @mouseenter="isBrandHovered = true"
+          @mouseleave="isBrandHovered = false"
+        >
+          <brand />
         </router-link>
       </div>
 
@@ -32,6 +37,8 @@ import Brand from "@/components/common/Brand.vue";
 import { usePreferencesStore } from "@/stores/preferences";
 import { THEME_DARK, THEME_LIGHT } from "@/assets/constants/themes";
 
+const preferencesStore = usePreferencesStore();
+
 const options = ref([
   {
     value: THEME_DARK,
@@ -41,14 +48,14 @@ const options = ref([
   },
 ]);
 
-const preferencesStore = usePreferencesStore();
+let isBrandHovered = ref<boolean>(false);
 
 const theme = computed<string>((): string => {
   return preferencesStore.theme;
 });
 
 const textColor = computed<string>((): string => {
-  return useThemeVars().value.textColor1;
+  return useThemeVars().value.successColorHover;
 });
 
 function setTheme(theme: string): void {
