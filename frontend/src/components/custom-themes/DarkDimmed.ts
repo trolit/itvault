@@ -19,9 +19,6 @@ export const darkDimmedTheme: GlobalThemeOverrides = {
     siderToggleButtonBorder: "#454A4F",
     siderToggleButtonIconColor: "#B4B6B8",
   },
-  PageHeader: {
-    backColor: "red",
-  },
   Menu: {
     color: "#3C4145",
     dividerColor: "#ADBAC7",
