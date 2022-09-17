@@ -2,7 +2,9 @@
   <n-config-provider inline-theme-disabled :theme="theme">
     <n-global-style />
 
-    <router-view />
+    <n-loading-bar-provider>
+      <router-view />
+    </n-loading-bar-provider>
   </n-config-provider>
 </template>
 
@@ -15,9 +17,14 @@
 // *
 // ***********************************************************************
 
+import {
+  darkTheme,
+  NGlobalStyle,
+  NConfigProvider,
+  NLoadingBarProvider,
+} from "naive-ui";
 import { computed } from "vue";
 import { RouterView } from "vue-router";
-import { darkTheme, NConfigProvider, NGlobalStyle } from "naive-ui";
 
 import { THEME_DARK } from "@/assets/constants/themes";
 import { usePreferencesStore } from "@/stores/preferences";
