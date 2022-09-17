@@ -9,9 +9,9 @@
 
 <script setup lang="ts">
 import { NIcon, NMenu } from "naive-ui";
-import { RouterLink } from "vue-router";
 import type { MenuOption } from "naive-ui";
-import { h, ref, type Component } from "vue";
+import { RouterLink, useRoute, type RouteRecordName } from "vue-router";
+import { h, ref, type Component, watch } from "vue";
 import { DocumentUnknown as IntroductionIcon } from "@vicons/carbon";
 
 function renderIcon(icon: Component) {
@@ -75,5 +75,16 @@ const menuOptions: MenuOption[] = [
   },
 ];
 
-const activeKey = ref<string | null>(null);
+let activeKey = ref<string | null>(null);
+
+const route = useRoute();
+
+watch(
+  (): RouteRecordName | null | undefined => route.name,
+  (name: RouteRecordName | null | undefined): void => {
+    if (name === "welcome") {
+      activeKey.value = null;
+    }
+  }
+);
 </script>
