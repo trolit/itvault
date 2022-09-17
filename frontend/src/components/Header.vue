@@ -1,30 +1,28 @@
 <template>
   <n-page-header class="page-header">
-    <div class="content">
-      <div class="brand">
-        <router-link
-          to="/"
-          :style="{ color: isBrandHovered ? textColor : 'inherit' }"
-          @mouseenter="isBrandHovered = true"
-          @mouseleave="isBrandHovered = false"
-        >
-          <brand />
-        </router-link>
-      </div>
+    <template #title>
+      <router-link
+        to="/"
+        :style="{ color: isBrandHovered ? textColor : 'inherit' }"
+        @mouseenter="isBrandHovered = true"
+        @mouseleave="isBrandHovered = false"
+      >
+        <brand />
+      </router-link>
+    </template>
 
-      <div class="actions">
-        <n-popselect
-          :value="theme"
-          :options="options"
-          label-field="value"
-          @update:value="setTheme"
-        >
-          <n-button size="small" type="tertiary" :focusable="false">
-            Theme ({{ theme }})
-          </n-button>
-        </n-popselect>
-      </div>
-    </div>
+    <template #extra>
+      <n-popselect
+        :value="theme"
+        :options="options"
+        label-field="value"
+        @update:value="setTheme"
+      >
+        <n-button size="small" type="tertiary" :focusable="false">
+          Theme ({{ theme }})
+        </n-button>
+      </n-popselect></template
+    >
   </n-page-header>
 </template>
 
