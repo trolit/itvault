@@ -35,7 +35,11 @@ import { NPopselect, NPageHeader, NButton } from "naive-ui";
 
 import Brand from "@/components/common/Brand.vue";
 import { usePreferencesStore } from "@/stores/preferences";
-import { THEME_DARK, THEME_LIGHT } from "@/assets/constants/themes";
+import {
+  THEME_DARK,
+  THEME_LIGHT,
+  THEME_DARK_DIMMED,
+} from "@/assets/constants/themes";
 
 const preferencesStore = usePreferencesStore();
 
@@ -46,6 +50,9 @@ const options = ref([
   {
     value: THEME_LIGHT,
   },
+  {
+    value: THEME_DARK_DIMMED,
+  },
 ]);
 
 let isBrandHovered = ref<boolean>(false);
@@ -55,7 +62,7 @@ const theme = computed<string>((): string => {
 });
 
 const textColor = computed<string>((): string => {
-  return useThemeVars().value.successColorHover;
+  return useThemeVars().value.primaryColor;
 });
 
 function setTheme(theme: string): void {
