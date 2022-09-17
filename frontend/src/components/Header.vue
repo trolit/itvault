@@ -1,5 +1,5 @@
 <template>
-  <n-page-header class="page-header">
+  <n-page-header>
     <template #title>
       <router-link
         to="/"
