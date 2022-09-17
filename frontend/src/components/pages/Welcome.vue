@@ -1,5 +1,5 @@
 <template>
-  <div class="welcome">
+  <div class="welcome-page page">
     <div class="content">
       <div class="icon">
         <n-icon>
