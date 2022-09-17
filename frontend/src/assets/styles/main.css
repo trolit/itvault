@@ -1,5 +1,6 @@
 @import "./variables.css";
 
 @import "./base.css";
+@import "./welcome.css";
 @import "./page-header.css";
 @import "./page-body-layout.css";
