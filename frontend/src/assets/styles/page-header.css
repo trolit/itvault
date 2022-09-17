@@ -16,6 +16,7 @@
       align-items: center;
 
       a {
+        display: inherit;
         text-decoration: none;
 
         span {
