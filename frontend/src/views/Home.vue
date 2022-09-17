@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import Sidebar from "@/components/Sidebar.vue";
-import PageHeader from "@/components/PageHeader.vue";
-import PageBodyLayout from "@/components/PageBodyLayout.vue";
+import CustomHeader from "@/components/Header.vue";
+import BodyLayout from "@/components/BodyLayout.vue";
 </script>
 
 <template>
   <main>
-    <page-header />
+    <custom-header />
 
-    <page-body-layout>
+    <body-layout>
       <template #sidebar>
         <sidebar />
       </template>
@@ -16,6 +16,6 @@ import PageBodyLayout from "@/components/PageBodyLayout.vue";
       <template #content>
         <router-view name="content" />
       </template>
-    </page-body-layout>
+    </body-layout>
   </main>
 </template>

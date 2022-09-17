@@ -1,0 +1,25 @@
+.page {
+  display: flex;
+  height: inherit;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-page {
+  display: flex;
+  height: inherit;
+  align-items: center;
+  justify-content: center;
+
+  .content {
+    text-align: center;
+
+    .icon {
+      font-size: 85px;
+    }
+
+    .title {
+      font-size: 20px;
+    }
+  }
+}

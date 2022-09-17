@@ -10,7 +10,8 @@
 <script setup lang="ts">
 import { NIcon, NMenu } from "naive-ui";
 import type { MenuOption } from "naive-ui";
-import { h, ref, type Component } from "vue";
+import { RouterLink, useRoute, type RouteRecordName } from "vue-router";
+import { h, ref, type Component, watch } from "vue";
 import { DocumentUnknown as IntroductionIcon } from "@vicons/carbon";
 
 function renderIcon(icon: Component) {
@@ -18,7 +19,17 @@ function renderIcon(icon: Component) {
 }
 
 const introduction: MenuOption = {
-  label: "Introduction",
+  label: () =>
+    h(
+      RouterLink,
+      {
+        to: {
+          name: "introduction",
+          params: {},
+        },
+      },
+      { default: () => "Introduction" }
+    ),
   key: "introduction",
   icon: renderIcon(IntroductionIcon),
 };
@@ -64,5 +75,16 @@ const menuOptions: MenuOption[] = [
   },
 ];
 
-const activeKey = ref<string | null>(null);
+let activeKey = ref<string | null>(null);
+
+const route = useRoute();
+
+watch(
+  (): RouteRecordName | null | undefined => route.name,
+  (name: RouteRecordName | null | undefined): void => {
+    if (name === "welcome") {
+      activeKey.value = null;
+    }
+  }
+);
 </script>
