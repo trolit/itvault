@@ -37,22 +37,6 @@ const introduction: MenuOption = {
 const menuOptions: MenuOption[] = [
   introduction,
   {
-    label: "Pinball 1973",
-    key: "pinball-1973",
-    disabled: true,
-    children: [
-      {
-        label: "Rat",
-        key: "rat",
-      },
-    ],
-  },
-  {
-    label: "A Wild Sheep Chase",
-    key: "a-wild-sheep-chase",
-    disabled: true,
-  },
-  {
     label: "Dance Dance Dance",
     key: "Dance Dance Dance",
     children: [

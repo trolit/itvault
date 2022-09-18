@@ -6,11 +6,14 @@
 main {
   .page-body-layout {
     height: calc(100vh - var(--header-height));
+
+    .n-menu {
+      height: inherit;
+    }
   }
 
   .n-page-header-wrapper {
-    border-bottom: 1px solid silver;
-    height: calc(var(--header-height) - var(--bottom-border-height));
+    height: calc(var(--header-height) - 1px);
 
     .n-page-header {
       display: flex;

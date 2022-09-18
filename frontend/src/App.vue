@@ -1,5 +1,9 @@
 <template>
-  <n-config-provider inline-theme-disabled :theme="theme">
+  <n-config-provider
+    inline-theme-disabled
+    :theme="theme"
+    :theme-overrides="themeOverrides"
+  >
     <n-global-style />
 
     <n-loading-bar-provider>
@@ -22,13 +26,15 @@ import {
   NGlobalStyle,
   NConfigProvider,
   NLoadingBarProvider,
+  type GlobalThemeOverrides,
 } from "naive-ui";
 import { computed } from "vue";
 import { RouterView } from "vue-router";
 
-import { THEME_DARK } from "@/assets/constants/themes";
+import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
 import { usePreferencesStore } from "@/stores/preferences";
 import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
+import { darkDimmedTheme } from "@/components/custom-themes/DarkDimmed";
 
 const preferencesStore = usePreferencesStore();
 
@@ -36,6 +42,16 @@ const theme = computed((): BuiltInGlobalTheme | null => {
   switch (preferencesStore.theme) {
     case THEME_DARK:
       return darkTheme;
+
+    default:
+      return null;
+  }
+});
+
+const themeOverrides = computed((): GlobalThemeOverrides | null => {
+  switch (preferencesStore.theme) {
+    case THEME_DARK_DIMMED:
+      return darkDimmedTheme;
 
     default:
       return null;

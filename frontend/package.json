@@ -11,7 +11,8 @@
     "test:unit:ci": "cypress run --component --quiet --reporter spec",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.cypress-ct.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "git:reset-unpushed-commit": "git reset --soft HEAD~1"
   },
   "dependencies": {
     "pinia": "^2.0.21",
