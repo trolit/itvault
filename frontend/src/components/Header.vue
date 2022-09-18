@@ -1,5 +1,5 @@
 <template>
-  <n-page-header>
+  <n-page-header :style="{ borderBottom }">
     <template #title>
       <router-link
         to="/"
@@ -31,14 +31,15 @@ import { ref, computed } from "vue";
 import { useThemeVars } from "naive-ui";
 import { NPopselect, NPageHeader, NButton } from "naive-ui";
 
-import Brand from "@/components/common/Brand.vue";
-import { usePreferencesStore } from "@/stores/preferences";
 import {
   THEME_DARK,
   THEME_LIGHT,
   THEME_DARK_DIMMED,
 } from "@/assets/constants/themes";
+import Brand from "@/components/common/Brand.vue";
+import { usePreferencesStore } from "@/stores/preferences";
 
+const themeVars = useThemeVars();
 const preferencesStore = usePreferencesStore();
 
 const options = ref([
@@ -60,7 +61,11 @@ const theme = computed<string>((): string => {
 });
 
 const textColor = computed<string>((): string => {
-  return useThemeVars().value.primaryColor;
+  return themeVars.value.primaryColor;
+});
+
+const borderBottom = computed<string>((): string => {
+  return `1px solid ${themeVars.value.borderColor}`;
 });
 
 function setTheme(theme: string): void {

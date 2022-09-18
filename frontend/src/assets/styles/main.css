@@ -13,7 +13,6 @@ main {
   }
 
   .n-page-header-wrapper {
-    border-bottom: 1px solid silver;
     height: calc(var(--header-height) - 1px);
 
     .n-page-header {
