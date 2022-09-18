@@ -9,7 +9,7 @@ export const darkDimmedTheme: GlobalThemeOverrides = {
     primaryColor: "#62666A",
     hoverColor: "#565D63",
     popoverColor: "#3C4145",
-    borderColor: "#3C4145",
+    borderColor: "#62666A",
   },
   Layout: {
     color: "#303437",
