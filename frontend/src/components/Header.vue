@@ -1,6 +1,6 @@
 <template>
   <n-page-header :style="{ borderBottom }">
-    <template #title>
+    <n-element class="left-column">
       <router-link
         to="/"
         :style="{ color: isBrandHovered ? textColor : 'inherit' }"
@@ -9,9 +9,15 @@
       >
         <brand />
       </router-link>
-    </template>
 
-    <template #extra>
+      <div class="action-buttons">
+        <n-button type="primary" dashed size="small" :focusable="false">
+          New workspace
+        </n-button>
+      </div>
+    </n-element>
+
+    <n-element class="right-column">
       <n-popselect
         :value="theme"
         :options="options"
@@ -21,15 +27,15 @@
         <n-button size="small" type="tertiary" :focusable="false">
           Theme ({{ theme }})
         </n-button>
-      </n-popselect></template
-    >
+      </n-popselect>
+    </n-element>
   </n-page-header>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { useThemeVars } from "naive-ui";
-import { NPopselect, NPageHeader, NButton } from "naive-ui";
+import { NPopselect, NPageHeader, NButton, NElement } from "naive-ui";
 
 import {
   THEME_DARK,
