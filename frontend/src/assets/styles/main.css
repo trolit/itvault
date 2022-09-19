@@ -4,8 +4,10 @@
 @import "./pages.css";
 
 main {
+  height: 100%;
+
   .page-body-layout {
-    height: calc(100vh - var(--header-height));
+    height: calc(100% - var(--header-height));
 
     .n-menu {
       height: inherit;
@@ -15,21 +17,12 @@ main {
   .n-page-header-wrapper {
     height: calc(var(--header-height) - 1px);
 
-    .n-page-header {
+    .n-page-header-content {
       display: flex;
-      height: inherit;
 
-      &__extra {
-        height: inherit;
-        display: inherit;
-        margin-right: 30px;
-        align-items: center;
-      }
-
-      &__title {
-        height: inherit;
-        display: inherit;
-        align-items: center;
+      .left-column {
+        width: 80%;
+        margin-left: 10px;
 
         a {
           display: inherit;
@@ -40,13 +33,24 @@ main {
             height: 100%;
             font-size: 28px;
             display: inherit;
-            margin-left: 10px;
             align-items: center;
           }
 
           span {
             margin-left: 5px;
           }
+        }
+      }
+
+      .right-column {
+        width: 20%;
+        display: inherit;
+        margin-right: 10px;
+        align-items: center;
+        justify-content: flex-end;
+
+        .n-button {
+          height: 35px;
         }
       }
     }
