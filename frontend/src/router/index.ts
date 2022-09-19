@@ -24,6 +24,20 @@ const router = createRouter({
             content: () => import("@/components/pages/About.vue"),
           },
         },
+        {
+          name: "guide",
+          path: "guide",
+          components: {
+            content: () => import("@/components/pages/Guide.vue"),
+          },
+        },
+        {
+          name: "updates",
+          path: "updates",
+          components: {
+            content: () => import("@/components/pages/Updates.vue"),
+          },
+        },
       ],
     },
   ],

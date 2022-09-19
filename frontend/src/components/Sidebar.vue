@@ -18,7 +18,6 @@ import {
   UpdateNow as UpdatesIcon,
   Catalog as WorkspaceIcon,
   InformationSquare as AboutIcon,
-  ConditionPoint as HelpSectionIcon,
 } from "@vicons/carbon";
 
 function renderIcon(icon: Component) {
@@ -41,25 +40,42 @@ const about: MenuOption = {
   icon: renderIcon(AboutIcon),
 };
 
+const guide: MenuOption = {
+  label: () =>
+    h(
+      RouterLink,
+      {
+        to: {
+          name: "guide",
+          params: {},
+        },
+      },
+      { default: () => "Guide" }
+    ),
+  key: "guide",
+  icon: renderIcon(HelpIcon),
+};
+
+const updates: MenuOption = {
+  label: () =>
+    h(
+      RouterLink,
+      {
+        to: {
+          name: "updates",
+          params: {},
+        },
+      },
+      { default: () => "Updates" }
+    ),
+  key: "updates",
+  icon: renderIcon(UpdatesIcon),
+};
+
 const menuOptions: MenuOption[] = [
   about,
-  {
-    label: "Guide",
-    key: "guide",
-    children: [
-      {
-        label: "start",
-        key: "",
-        icon: renderIcon(HelpSectionIcon),
-      },
-    ],
-    icon: renderIcon(HelpIcon),
-  },
-  {
-    label: "Updates",
-    key: "updates",
-    icon: renderIcon(UpdatesIcon),
-  },
+  guide,
+  updates,
   {
     key: "divider-1",
     type: "divider",
