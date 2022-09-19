@@ -12,48 +12,96 @@ import { NIcon, NMenu } from "naive-ui";
 import type { MenuOption } from "naive-ui";
 import { RouterLink, useRoute, type RouteRecordName } from "vue-router";
 import { h, ref, type Component, watch } from "vue";
-import { DocumentUnknown as IntroductionIcon } from "@vicons/carbon";
+
+import {
+  Help as HelpIcon,
+  UpdateNow as UpdatesIcon,
+  Catalog as WorkspaceIcon,
+  InformationSquare as AboutIcon,
+} from "@vicons/carbon";
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
 }
 
-const introduction: MenuOption = {
+const about: MenuOption = {
   label: () =>
     h(
       RouterLink,
       {
         to: {
-          name: "introduction",
+          name: "about",
           params: {},
         },
       },
-      { default: () => "Introduction" }
+      { default: () => "About" }
     ),
   key: "introduction",
-  icon: renderIcon(IntroductionIcon),
+  icon: renderIcon(AboutIcon),
+};
+
+const guide: MenuOption = {
+  label: () =>
+    h(
+      RouterLink,
+      {
+        to: {
+          name: "guide",
+          params: {},
+        },
+      },
+      { default: () => "Guide" }
+    ),
+  key: "guide",
+  icon: renderIcon(HelpIcon),
+};
+
+const updates: MenuOption = {
+  label: () =>
+    h(
+      RouterLink,
+      {
+        to: {
+          name: "updates",
+          params: {},
+        },
+      },
+      { default: () => "Updates" }
+    ),
+  key: "updates",
+  icon: renderIcon(UpdatesIcon),
 };
 
 const menuOptions: MenuOption[] = [
-  introduction,
+  about,
+  guide,
+  updates,
   {
-    label: "Dance Dance Dance",
-    key: "Dance Dance Dance",
+    key: "divider-1",
+    type: "divider",
+    props: {
+      style: {
+        height: "0.5px",
+        width: "100%",
+        marginLeft: "0",
+      },
+    },
+  },
+  {
+    label: "Vue 2",
+    key: "vue-2",
+    icon: renderIcon(WorkspaceIcon),
     children: [
       {
         type: "group",
-        label: "People",
-        key: "people",
+        label: "Colors",
+        key: "colors",
         children: [
           {
-            label: "Narrator",
+            label: "[ ] #f1231S",
             key: "narrator",
           },
         ],
-      },
-      {
-        label: "The past increases. The future recedes.",
-        key: "the-past-increases-the-future-recedes",
       },
     ],
   },

@@ -18,10 +18,24 @@ const router = createRouter({
           },
         },
         {
-          name: "introduction",
-          path: "introduction",
+          name: "about",
+          path: "about",
           components: {
-            content: () => import("@/components/pages/Introduction.vue"),
+            content: () => import("@/components/pages/About.vue"),
+          },
+        },
+        {
+          name: "guide",
+          path: "guide",
+          components: {
+            content: () => import("@/components/pages/Guide.vue"),
+          },
+        },
+        {
+          name: "updates",
+          path: "updates",
+          components: {
+            content: () => import("@/components/pages/Updates.vue"),
           },
         },
       ],
