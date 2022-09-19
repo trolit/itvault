@@ -31,10 +31,10 @@ import {
 import { computed } from "vue";
 import { RouterView } from "vue-router";
 
-import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
 import { usePreferencesStore } from "@/stores/preferences";
+import { darkDimmedTheme } from "@/custom-themes/DarkDimmed";
 import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
-import { darkDimmedTheme } from "@/components/custom-themes/DarkDimmed";
+import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
 
 const preferencesStore = usePreferencesStore();
 
