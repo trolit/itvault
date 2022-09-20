@@ -81,7 +81,7 @@ const menuOptions: MenuOption[] = [
     type: "divider",
     props: {
       style: {
-        height: "0.5px",
+        height: "1px",
         width: "100%",
         marginLeft: "0",
       },

@@ -10,6 +10,10 @@ body {
 
     .n-config-provider {
       height: inherit;
+
+      main {
+        height: inherit;
+      }
     }
   }
 }
