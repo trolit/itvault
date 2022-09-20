@@ -13,6 +13,7 @@ export const darkDimmedTheme: GlobalThemeOverrides = {
   },
   Layout: {
     color: "#303437",
+    siderColor: "#3C4145",
     siderBorderColor: "#3C4145",
     siderToggleBarColor: "#454A4F",
     siderToggleButtonColor: "#454A4F",
