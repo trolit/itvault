@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import Sidebar from "@/components/Sidebar.vue";
-import CustomHeader from "@/components/Header.vue";
-import BodyLayout from "@/components/BodyLayout.vue";
-</script>
-
 <template>
   <main>
     <custom-header />
@@ -19,3 +13,9 @@ import BodyLayout from "@/components/BodyLayout.vue";
     </body-layout>
   </main>
 </template>
+
+<script setup lang="ts">
+import Sidebar from "@/components/Sidebar.vue";
+import CustomHeader from "@/components/Header.vue";
+import BodyLayout from "@/components/BodyLayout.vue";
+</script>
