@@ -7,7 +7,9 @@
       collapse-mode="width"
       :collapsed-width="64"
     >
-      <slot name="sidebar"> sidebar </slot>
+      <n-scrollbar>
+        <slot name="sidebar"> sidebar </slot>
+      </n-scrollbar>
     </n-layout-sider>
 
     <n-layout>
@@ -17,5 +19,5 @@
 </template>
 
 <script setup lang="ts">
-import { NLayout, NLayoutSider } from "naive-ui";
+import { NLayout, NLayoutSider, NScrollbar } from "naive-ui";
 </script>

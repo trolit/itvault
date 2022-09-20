@@ -7,8 +7,8 @@ main {
   .page-body-layout {
     height: calc(100% - var(--header-height));
 
-    .n-menu {
-      height: inherit;
+    .n-scrollbar {
+      max-height: inherit;
     }
   }
 
