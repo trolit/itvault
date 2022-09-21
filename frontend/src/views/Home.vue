@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import Sidebar from "@/components/Sidebar.vue";
 import CustomHeader from "@/components/Header.vue";
 import BodyLayout from "@/components/BodyLayout.vue";
+import Sidebar from "@/components/sidebar/Index.vue";
 </script>
