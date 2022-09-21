@@ -9,6 +9,7 @@ main {
 
     .sidebar {
       height: inherit;
+      overflow: hidden;
 
       .bottom-panel {
         height: var(--sidebar-bottom-panel-height);
