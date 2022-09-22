@@ -9,12 +9,6 @@
       >
         <brand />
       </router-link>
-
-      <div class="action-buttons">
-        <n-button type="primary" dashed size="small" :focusable="false">
-          New workspace
-        </n-button>
-      </div>
     </n-element>
 
     <n-element class="right-column">

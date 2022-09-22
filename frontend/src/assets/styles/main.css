@@ -7,8 +7,46 @@ main {
   .page-body-layout {
     height: calc(100% - var(--header-height));
 
-    .n-scrollbar {
-      max-height: inherit;
+    .sidebar {
+      height: inherit;
+      overflow: hidden;
+
+      .bottom-panel {
+        height: var(--sidebar-bottom-panel-height);
+
+        .n-button {
+          width: 100%;
+        }
+      }
+
+      .n-scrollbar {
+        max-height: calc(
+          100vh - var(--header-height) - var(--sidebar-top-panel-height) -
+            var(--sidebar-bottom-panel-height)
+        );
+      }
+
+      .top-panel {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        height: var(--sidebar-top-panel-height);
+
+        .n-grid {
+          margin-top: 8px;
+
+          div {
+            display: flex;
+            justify-content: center;
+          }
+        }
+
+        .n-tag {
+          width: 100%;
+          margin-top: 8px;
+          padding-left: 10px;
+        }
+      }
     }
   }
 

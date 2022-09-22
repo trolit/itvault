@@ -24,4 +24,7 @@ export const darkDimmedTheme: GlobalThemeOverrides = {
     color: "#3C4145",
     dividerColor: "#ADBAC7",
   },
+  Tag: {
+    colorBordered: "#62666A",
+  },
 };
