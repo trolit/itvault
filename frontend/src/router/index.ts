@@ -1,5 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import {
+  ROUTE_ABOUT,
+  ROUTE_GUIDE,
+  ROUTE_UPDATES,
+  ROUTE_WELCOME,
+} from "@/assets/constants/routes";
 import Home from "@/views/Home.vue";
 
 const router = createRouter({
@@ -11,29 +17,29 @@ const router = createRouter({
       component: Home,
       children: [
         {
-          name: "welcome",
+          name: ROUTE_WELCOME,
           path: "",
           components: {
             content: () => import("@/components/pages/Welcome.vue"),
           },
         },
         {
-          name: "about",
-          path: "about",
+          name: ROUTE_ABOUT,
+          path: ROUTE_ABOUT,
           components: {
             content: () => import("@/components/pages/About.vue"),
           },
         },
         {
-          name: "guide",
-          path: "guide",
+          name: ROUTE_GUIDE,
+          path: ROUTE_GUIDE,
           components: {
             content: () => import("@/components/pages/Guide.vue"),
           },
         },
         {
-          name: "updates",
-          path: "updates",
+          name: ROUTE_UPDATES,
+          path: ROUTE_UPDATES,
           components: {
             content: () => import("@/components/pages/Updates.vue"),
           },
