@@ -1,9 +1,12 @@
 <template>
   <n-menu
+    :collapsed="isCollapsed"
     v-model:value="activeKey"
     :collapsed-width="64"
     :options="menuOptions"
     :collapsed-icon-size="22"
+    @expand="toggleCollapse"
+    @collapse="toggleCollapse"
   />
 </template>
 
@@ -13,6 +16,16 @@ import type { MenuOption } from "naive-ui";
 import { h, ref, type Component, watch } from "vue";
 import { Catalog as WorkspaceIcon } from "@vicons/carbon";
 import { useRoute, type RouteRecordName } from "vue-router";
+
+import { usePreferencesStore } from "@/stores/preferences";
+
+const preferencesStore = usePreferencesStore();
+
+const isCollapsed = ref<boolean>(preferencesStore.isSidebarCollapsed);
+
+function toggleCollapse(): void {
+  preferencesStore.toggleSidebar();
+}
 
 function renderIcon(icon: Component) {
   return () => h(NIcon, null, { default: () => h(icon) });
