@@ -23,7 +23,7 @@
       </n-grid-item>
     </n-grid>
 
-    <n-tag>Workspaces</n-tag>
+    <n-tag v-if="!isSidebarCollapsed">Workspaces</n-tag>
   </div>
 </template>
 
@@ -33,30 +33,33 @@ import {
   UpdateNow as UpdatesIcon,
   InformationSquare as AboutIcon,
 } from "@vicons/carbon";
-import { ref } from "vue";
+import { shallowRef } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { NButton, NIcon, NGrid, NGridItem, NTag, NTooltip } from "naive-ui";
+
+import { usePreferencesStore } from "@/stores/preferences";
 
 import {
   ROUTE_ABOUT,
   ROUTE_GUIDE,
   ROUTE_UPDATES,
 } from "@/assets/constants/routes";
+import { computed, ref } from "vue";
 
 const routes = ref([
   {
     name: ROUTE_ABOUT,
-    icon: AboutIcon,
+    icon: shallowRef(AboutIcon),
     tooltip: "Details",
   },
   {
     name: ROUTE_GUIDE,
-    icon: HelpIcon,
+    icon: shallowRef(HelpIcon),
     tooltip: "Guide",
   },
   {
     name: ROUTE_UPDATES,
-    icon: UpdatesIcon,
+    icon: shallowRef(UpdatesIcon),
     tooltip: "Updates",
   },
 ]);
@@ -71,4 +74,10 @@ function changeRoute(name: string): void {
 function isPageActive(name: string): boolean {
   return route.name === name;
 }
+
+const preferencesStore = usePreferencesStore();
+
+const isSidebarCollapsed = computed(() => {
+  return preferencesStore.isSidebarCollapsed;
+});
 </script>
