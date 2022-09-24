@@ -33,17 +33,32 @@ main {
         height: var(--sidebar-top-panel-height);
 
         .n-grid {
-          margin-top: 8px;
+          margin-top: 5px;
 
           div {
             display: flex;
+            align-items: center;
             justify-content: center;
+
+            .n-button {
+              height: fit-content;
+            }
+          }
+
+          &.sidebar-collapsed {
+            margin-top: 0px;
+
+            div {
+              .n-button {
+                margin-top: 5px;
+              }
+            }
           }
         }
 
         .n-tag {
           width: 100%;
-          margin-top: 8px;
+          margin-top: 5px;
           padding-left: 10px;
         }
       }

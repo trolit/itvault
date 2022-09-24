@@ -1,11 +1,14 @@
 <template>
   <div class="top-panel">
-    <n-grid :cols="3">
+    <n-grid
+      :cols="isSidebarCollapsed ? 1 : 3"
+      :class="{ 'sidebar-collapsed': isSidebarCollapsed }"
+    >
       <n-grid-item
         v-for="({ name, icon, tooltip }, index) of routes"
         :key="index"
       >
-        <n-tooltip placement="top-start" trigger="hover">
+        <n-tooltip :show-arrow="false" placement="top-start" trigger="hover">
           <template #trigger>
             <n-button
               text
@@ -23,19 +26,31 @@
       </n-grid-item>
     </n-grid>
 
-    <n-tag>Workspaces</n-tag>
+    <n-divider v-if="isSidebarCollapsed" dashed />
+
+    <n-tag v-else>Workspaces</n-tag>
   </div>
 </template>
 
 <script setup lang="ts">
 import {
+  NTag,
+  NGrid,
+  NIcon,
+  NButton,
+  NDivider,
+  NTooltip,
+  NGridItem,
+} from "naive-ui";
+import {
   Help as HelpIcon,
   UpdateNow as UpdatesIcon,
   InformationSquare as AboutIcon,
 } from "@vicons/carbon";
-import { ref } from "vue";
+import { shallowRef, computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { NButton, NIcon, NGrid, NGridItem, NTag, NTooltip } from "naive-ui";
+
+import { usePreferencesStore } from "@/stores/preferences";
 
 import {
   ROUTE_ABOUT,
@@ -46,17 +61,17 @@ import {
 const routes = ref([
   {
     name: ROUTE_ABOUT,
-    icon: AboutIcon,
+    icon: shallowRef(AboutIcon),
     tooltip: "Details",
   },
   {
     name: ROUTE_GUIDE,
-    icon: HelpIcon,
+    icon: shallowRef(HelpIcon),
     tooltip: "Guide",
   },
   {
     name: ROUTE_UPDATES,
-    icon: UpdatesIcon,
+    icon: shallowRef(UpdatesIcon),
     tooltip: "Updates",
   },
 ]);
@@ -71,4 +86,10 @@ function changeRoute(name: string): void {
 function isPageActive(name: string): boolean {
   return route.name === name;
 }
+
+const preferencesStore = usePreferencesStore();
+
+const isSidebarCollapsed = computed((): boolean => {
+  return preferencesStore.isSidebarCollapsed;
+});
 </script>
