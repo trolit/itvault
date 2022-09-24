@@ -9,6 +9,11 @@
 </template>
 
 <script setup lang="ts">
+import {
+  Help as HelpIcon,
+  UpdateNow as UpdatesIcon,
+  InformationSquare as AboutIcon,
+} from "@vicons/carbon";
 import { NMenu } from "naive-ui";
 import { RouterLink } from "vue-router";
 import { h, ref, type VNode } from "vue";
@@ -16,10 +21,11 @@ import type { MenuOption } from "naive-ui";
 import renderIcon from "@/helpers/renderIcon";
 
 import {
-  Help as HelpIcon,
-  UpdateNow as UpdatesIcon,
-  InformationSquare as AboutIcon,
-} from "@vicons/carbon";
+  ROUTE_ABOUT,
+  ROUTE_GUIDE,
+  ROUTE_UPDATES,
+  ROUTE_WELCOME,
+} from "@/assets/constants/routes";
 
 function renderLabel(name: string, text: string): () => VNode {
   return () =>
@@ -39,7 +45,7 @@ const activeKey = ref<string | null>(null);
 
 const menuOptions: MenuOption[] = [
   {
-    label: renderLabel("welcome", "Home"),
+    label: renderLabel(ROUTE_WELCOME, "Home"),
     key: "home",
   },
   {
@@ -51,18 +57,18 @@ const menuOptions: MenuOption[] = [
     key: "help",
     children: [
       {
-        label: renderLabel("about", "About app"),
-        key: "about",
+        label: renderLabel(ROUTE_ABOUT, "About app"),
+        key: ROUTE_ABOUT,
         icon: renderIcon(AboutIcon),
       },
       {
-        label: renderLabel("guide", "Guide"),
-        key: "guide",
+        label: renderLabel(ROUTE_GUIDE, "Guide"),
+        key: ROUTE_GUIDE,
         icon: renderIcon(HelpIcon),
       },
       {
-        label: renderLabel("updates", "Updates"),
-        key: "updates",
+        label: renderLabel(ROUTE_UPDATES, "Updates"),
+        key: ROUTE_UPDATES,
         icon: renderIcon(UpdatesIcon),
       },
     ],
