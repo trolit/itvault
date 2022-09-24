@@ -7,6 +7,8 @@
     <n-global-style />
 
     <n-loading-bar-provider>
+      <app-header />
+
       <router-view />
     </n-loading-bar-provider>
   </n-config-provider>
@@ -35,6 +37,8 @@ import { usePreferencesStore } from "@/stores/preferences";
 import { darkDimmedTheme } from "@/custom-themes/DarkDimmed";
 import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
 import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
+
+import AppHeader from "@/components/header/Index.vue";
 
 const preferencesStore = usePreferencesStore();
 
