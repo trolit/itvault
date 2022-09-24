@@ -12,7 +12,11 @@ body {
       height: inherit;
 
       main {
-        height: inherit;
+        height: calc(100% - var(--header-height));
+
+        .page {
+          height: 100%;
+        }
       }
     }
   }

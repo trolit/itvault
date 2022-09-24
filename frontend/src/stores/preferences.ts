@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { THEME_DARK_DIMMED } from "@/assets/constants/themes";
+import { THEME_DARK } from "@/assets/constants/themes";
 
 interface State {
   theme: string;
@@ -8,7 +8,7 @@ interface State {
 
 export const usePreferencesStore = defineStore("preferences", {
   state: (): State => ({
-    theme: THEME_DARK_DIMMED,
+    theme: THEME_DARK,
     isSidebarCollapsed: false,
   }),
 
