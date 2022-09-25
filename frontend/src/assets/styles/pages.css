@@ -8,9 +8,6 @@
   .grid {
     display: flex;
 
-    .information {
-    }
-
     .workspaces-wrapper {
       .n-card {
         height: 100%;
@@ -43,8 +40,18 @@
         }
       }
     }
+  }
 
-    .others {
+  .ref-card {
+    .actions {
+      display: flex;
+      justify-content: right;
+
+      .n-button {
+        .n-icon {
+          margin-left: 3px;
+        }
+      }
     }
   }
 }
