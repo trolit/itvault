@@ -14,8 +14,12 @@ body {
       main {
         height: calc(100% - var(--header-height));
 
-        .page {
-          height: 100%;
+        .n-scrollbar {
+          .n-scrollbar-content {
+            display: flex;
+            min-height: 100%;
+            align-items: center;
+          }
         }
       }
     }
