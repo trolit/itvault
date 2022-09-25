@@ -1,19 +1,20 @@
 <template>
   <div class="welcome-page page">
     <n-grid
-      x-gap="32"
-      cols="3"
+      x-gap="16"
+      y-gap="16"
       class="grid"
       item-responsive
       responsive="screen"
+      cols="s:1 m:3 l:3 xl:3 2xl:3"
     >
-      <n-grid-item class="information-card">
+      <n-grid-item class="information">
         <ref-card :icon="FaceActivatedIcon" title="Welcome,">
           <template #description> elo </template>
         </ref-card>
       </n-grid-item>
 
-      <n-grid-item class="workspaces-card">
+      <n-grid-item class="workspaces">
         <ref-card
           :icon="WorkspacesIcon"
           title="Workspaces"
@@ -22,7 +23,7 @@
       </n-grid-item>
 
       <n-grid-item class="others">
-        <n-grid x-gap="20" y-gap="20" cols="1">
+        <n-grid y-gap="20" cols="1">
           <n-grid-item
             v-for="({ title, to, icon, description }, index) of otherCards"
             :key="index"
