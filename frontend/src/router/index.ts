@@ -20,7 +20,7 @@ const router = createRouter({
           name: ROUTE_WELCOME,
           path: "",
           components: {
-            content: () => import("@/components/pages/Welcome.vue"),
+            content: () => import("@/components/pages/welcome/Index.vue"),
           },
         },
         {
