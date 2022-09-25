@@ -14,12 +14,8 @@
         </ref-card>
       </n-grid-item>
 
-      <n-grid-item class="workspaces">
-        <ref-card
-          :icon="WorkspacesIcon"
-          title="Workspaces"
-          description="Elo4"
-        />
+      <n-grid-item class="workspaces-wrapper">
+        <workspaces />
       </n-grid-item>
 
       <n-grid-item class="others">
@@ -45,7 +41,6 @@
 import {
   Help as HelpIcon,
   UpdateNow as UpdatesIcon,
-  DataCenter as WorkspacesIcon,
   InformationSquare as AboutIcon,
 } from "@vicons/carbon";
 import { ref, shallowRef, type Component } from "vue";
@@ -58,6 +53,7 @@ import {
   ROUTE_UPDATES,
 } from "@/assets/constants/routes";
 import RefCard from "./RefCard.vue";
+import Workspaces from "./Workspaces.vue";
 
 interface OtherCard {
   title: string;

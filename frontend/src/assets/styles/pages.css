@@ -8,13 +8,50 @@
   .grid {
     display: flex;
 
-    .information {
-    }
+    .workspaces-wrapper {
+      .n-card {
+        height: 100%;
 
-    .workspaces {
-    }
+        .n-thing {
+          .n-thing-main {
+            .n-thing-main__content {
+              .content {
+                .n-input {
+                  margin-bottom: 10px;
+                }
 
-    .others {
+                .n-data-table {
+                  height: 100%;
+                  min-height: 300px;
+
+                  .n-data-table__pagination {
+                    justify-content: center;
+                  }
+                }
+
+                .actions {
+                  display: flex;
+                  margin-top: 20px;
+                  justify-content: center;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .ref-card {
+    .actions {
+      display: flex;
+      justify-content: right;
+
+      .n-button {
+        .n-icon {
+          margin-left: 3px;
+        }
+      }
     }
   }
 }

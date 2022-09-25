@@ -15,24 +15,22 @@
         </span>
       </template>
 
-      <slot name="description">
-        <div class="description">
+      <div class="content">
+        <slot name="content">
           {{ description }}
-        </div>
-      </slot>
 
-      <slot name="actions">
-        <div class="actions">
-          <router-link :to="to">
-            <n-button type="info" dashed>
-              Open
-              <n-icon :size="15">
-                <arrow-up-right-icon />
-              </n-icon>
-            </n-button>
-          </router-link>
-        </div>
-      </slot>
+          <div class="actions">
+            <router-link :to="to">
+              <n-button type="info" dashed>
+                Open
+                <n-icon :size="15">
+                  <arrow-up-right-icon />
+                </n-icon>
+              </n-button>
+            </router-link>
+          </div>
+        </slot>
+      </div>
     </n-thing>
   </n-card>
 </template>
