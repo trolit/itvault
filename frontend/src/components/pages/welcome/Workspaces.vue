@@ -32,7 +32,7 @@
       </n-data-table>
 
       <div class="actions">
-        <router-link to="welcome">
+        <router-link to="/">
           <n-button type="info" dashed> Open workspace </n-button>
         </router-link>
       </div>
@@ -45,7 +45,7 @@ import {
   Search as SearchIcon,
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
 import type { RowKey } from "naive-ui/es/data-table/src/interface";
 import { NDataTable, NButton, NInput, NIcon, NEmpty } from "naive-ui";
@@ -55,11 +55,10 @@ import RefCard from "./RefCard.vue";
 type RowData = {
   key: number;
   name: string;
-  age: number;
-  address: string;
+  tags: string;
 };
 
-const columns = ref<DataTableColumns<RowData>>([
+const columns: Ref<DataTableColumns<RowData>> = ref<DataTableColumns<RowData>>([
   {
     type: "selection",
     multiple: false,
@@ -74,13 +73,13 @@ const columns = ref<DataTableColumns<RowData>>([
   },
 ]);
 
+const data: Ref<Array<RowData> | undefined> = ref(undefined);
+
+const checkedRowKeys: Ref<Array<RowKey>> = ref([]);
+
 const pagination: PaginationProps = {
   page: 1,
   pageSize: 10,
   size: "small",
 };
-
-const data = ref(undefined);
-
-const checkedRowKeys = ref<Array<RowKey>>([]);
 </script>
