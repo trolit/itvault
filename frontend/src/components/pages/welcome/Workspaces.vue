@@ -46,9 +46,9 @@ import {
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
 import { ref } from "vue";
-import type { DataTableColumns } from "naive-ui";
-import { NDataTable, NButton, NInput, NIcon, NEmpty } from "naive-ui";
+import type { DataTableColumns, PaginationProps } from "naive-ui";
 import type { RowKey } from "naive-ui/es/data-table/src/interface";
+import { NDataTable, NButton, NInput, NIcon, NEmpty } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
 
@@ -74,7 +74,7 @@ const columns = ref<DataTableColumns<RowData>>([
   },
 ]);
 
-const pagination = {
+const pagination: PaginationProps = {
   page: 1,
   pageSize: 10,
   size: "small",
