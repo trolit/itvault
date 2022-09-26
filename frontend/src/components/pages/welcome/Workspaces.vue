@@ -1,6 +1,7 @@
 <template>
   <ref-card :icon="WorkspacesIcon" title="Workspaces">
     <template #content>
+      <!-- @TODO show input only when there are at least 3 pages -->
       <n-input
         clearable
         show-count
@@ -12,6 +13,7 @@
         </template>
       </n-input>
 
+      <!-- @TODO show pagination if there are at least 2 pages -->
       <n-data-table
         v-model:checked-row-keys="checkedRowKeys"
         :data="data"
