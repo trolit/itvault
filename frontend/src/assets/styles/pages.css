@@ -16,23 +16,31 @@
           .n-thing-main {
             .n-thing-main__content {
               .content {
-                .n-input {
-                  margin-bottom: 10px;
+                .actions {
+                  display: flex;
+                  margin-top: 20px;
+                  justify-content: center;
                 }
 
                 .n-data-table {
                   height: 100%;
                   min-height: 300px;
 
+                  .n-data-table-empty {
+                    text-align: center;
+
+                    .n-button {
+                      margin-top: 10px;
+                    }
+                  }
+
                   .n-data-table__pagination {
                     justify-content: center;
                   }
                 }
 
-                .actions {
-                  display: flex;
-                  margin-top: 20px;
-                  justify-content: center;
+                .n-input {
+                  margin-bottom: 10px;
                 }
               }
             }
