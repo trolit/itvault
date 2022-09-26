@@ -52,6 +52,7 @@ const menuOptions: MenuOption[] = [
     label: "Workspace",
     key: "workspace",
   },
+  // @TODO should render "Guide" content in Drawer (right side)
   {
     label: "Help",
     key: "help",
