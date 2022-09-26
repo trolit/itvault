@@ -20,7 +20,13 @@
         :columns="columns"
         :pagination="pagination"
       >
-        <template #empty> T.B.D </template>
+        <template #empty>
+          <n-empty description="No workspaces defined">
+            <template #extra>
+              <n-button type="warning" ghost> Create first workspace </n-button>
+            </template>
+          </n-empty>
+        </template>
       </n-data-table>
 
       <div class="actions">
@@ -39,7 +45,7 @@ import {
 } from "@vicons/carbon";
 import { ref } from "vue";
 import type { DataTableColumns } from "naive-ui";
-import { NDataTable, NButton, NInput, NIcon } from "naive-ui";
+import { NDataTable, NButton, NInput, NIcon, NEmpty } from "naive-ui";
 import type { RowKey } from "naive-ui/es/data-table/src/interface";
 
 import RefCard from "./RefCard.vue";
