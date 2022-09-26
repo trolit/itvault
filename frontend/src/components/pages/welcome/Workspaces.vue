@@ -75,6 +75,7 @@ const columns = ref<DataTableColumns<RowData>>([
 const pagination = {
   page: 1,
   pageSize: 10,
+  size: "small",
 };
 
 const data = ref(undefined);
