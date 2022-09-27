@@ -1,6 +1,7 @@
 <template>
   <ref-card :icon="WorkspacesIcon" title="Workspaces">
     <template #content>
+      <!-- @TODO show input only when there are at least 3 pages -->
       <n-input
         clearable
         show-count
@@ -12,6 +13,7 @@
         </template>
       </n-input>
 
+      <!-- @TODO show pagination if there are at least 2 pages -->
       <n-data-table
         v-model:checked-row-keys="checkedRowKeys"
         :data="data"
@@ -20,11 +22,17 @@
         :columns="columns"
         :pagination="pagination"
       >
-        <template #empty> T.B.D </template>
+        <template #empty>
+          <n-empty description="No workspaces defined">
+            <template #extra>
+              <n-button type="warning" ghost> Create first workspace </n-button>
+            </template>
+          </n-empty>
+        </template>
       </n-data-table>
 
       <div class="actions">
-        <router-link to="welcome">
+        <router-link to="/">
           <n-button type="info" dashed> Open workspace </n-button>
         </router-link>
       </div>
@@ -37,21 +45,20 @@ import {
   Search as SearchIcon,
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
-import { ref } from "vue";
-import type { DataTableColumns } from "naive-ui";
-import { NDataTable, NButton, NInput, NIcon } from "naive-ui";
+import { ref, type Ref } from "vue";
+import type { DataTableColumns, PaginationProps } from "naive-ui";
 import type { RowKey } from "naive-ui/es/data-table/src/interface";
+import { NDataTable, NButton, NInput, NIcon, NEmpty } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
 
 type RowData = {
   key: number;
   name: string;
-  age: number;
-  address: string;
+  tags: string;
 };
 
-const columns = ref<DataTableColumns<RowData>>([
+const columns: Ref<DataTableColumns<RowData>> = ref<DataTableColumns<RowData>>([
   {
     type: "selection",
     multiple: false,
@@ -66,12 +73,13 @@ const columns = ref<DataTableColumns<RowData>>([
   },
 ]);
 
-const pagination = {
+const data: Ref<Array<RowData> | undefined> = ref(undefined);
+
+const checkedRowKeys: Ref<Array<RowKey>> = ref([]);
+
+const pagination: PaginationProps = {
   page: 1,
   pageSize: 10,
+  size: "small",
 };
-
-const data = ref(undefined);
-
-const checkedRowKeys = ref<Array<RowKey>>([]);
 </script>

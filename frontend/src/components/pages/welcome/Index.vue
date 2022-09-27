@@ -10,7 +10,7 @@
     >
       <n-grid-item class="information">
         <ref-card :icon="FaceActivatedIcon" title="Welcome,">
-          <template #description> elo </template>
+          <template #content> elo </template>
         </ref-card>
       </n-grid-item>
 
