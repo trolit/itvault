@@ -2,6 +2,10 @@
   .grid {
     display: flex;
 
+    .other-cards-wrapper {
+      display: inherit;
+    }
+
     .workspaces-wrapper {
       .n-card {
         height: 100%;
