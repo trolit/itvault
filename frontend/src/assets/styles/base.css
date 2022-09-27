@@ -21,7 +21,57 @@ body {
             align-items: center;
           }
         }
+
+        .page {
+          width: 100%;
+          margin: 20px;
+          height: 100%;
+        }
       }
+    }
+  }
+}
+
+.app-header {
+  display: flex;
+  height: calc(var(--header-height) - 1px);
+
+  .n-page-header-content {
+    width: 100%;
+    margin: 0 10px;
+    display: inherit;
+    align-items: center;
+    justify-content: space-between;
+
+    .logo {
+      display: inherit;
+
+      a {
+        display: inherit;
+        width: fit-content;
+        text-decoration: none;
+
+        .brand {
+          width: 100%;
+          height: 100%;
+          font-size: 22px;
+          display: inherit;
+          align-items: center;
+        }
+
+        span {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    .menu {
+      margin-left: 30px;
+      justify-content: center;
+    }
+
+    .actions {
+      justify-content: right;
     }
   }
 }

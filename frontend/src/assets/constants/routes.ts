@@ -1,4 +1,4 @@
-export const ROUTE_ABOUT = "about";
-export const ROUTE_GUIDE = "guide";
-export const ROUTE_UPDATES = "updates";
-export const ROUTE_WELCOME = "welcome";
+export const ROUTE_ABOUT_NAME = "about";
+export const ROUTE_GUIDE_NAME = "guide";
+export const ROUTE_UPDATES_NAME = "updates";
+export const ROUTE_DASHBOARD_NAME = "dashboard";

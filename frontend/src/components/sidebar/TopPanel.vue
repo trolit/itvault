@@ -53,24 +53,24 @@ import { useRouter, useRoute } from "vue-router";
 import { usePreferencesStore } from "@/stores/preferences";
 
 import {
-  ROUTE_ABOUT,
-  ROUTE_GUIDE,
-  ROUTE_UPDATES,
+  ROUTE_ABOUT_NAME,
+  ROUTE_GUIDE_NAME,
+  ROUTE_UPDATES_NAME,
 } from "@/assets/constants/routes";
 
 const routes = ref([
   {
-    name: ROUTE_ABOUT,
+    name: ROUTE_ABOUT_NAME,
     icon: shallowRef(AboutIcon),
     tooltip: "Details",
   },
   {
-    name: ROUTE_GUIDE,
+    name: ROUTE_GUIDE_NAME,
     icon: shallowRef(HelpIcon),
     tooltip: "Guide",
   },
   {
-    name: ROUTE_UPDATES,
+    name: ROUTE_UPDATES_NAME,
     icon: shallowRef(UpdatesIcon),
     tooltip: "Updates",
   },

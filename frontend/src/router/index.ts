@@ -1,50 +1,42 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import {
-  ROUTE_ABOUT,
-  ROUTE_GUIDE,
-  ROUTE_UPDATES,
-  ROUTE_WELCOME,
+  ROUTE_ABOUT_NAME,
+  ROUTE_GUIDE_NAME,
+  ROUTE_UPDATES_NAME,
+  ROUTE_DASHBOARD_NAME,
 } from "@/assets/constants/routes";
-import Home from "@/views/Home.vue";
+import About from "@/views/About.vue";
+import Guide from "@/views/Guide.vue";
+import Updates from "@/views/Updates.vue";
+import Dashboard from "@/views/Dashboard.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      name: "home",
-      component: Home,
-      children: [
-        {
-          name: ROUTE_WELCOME,
-          path: "",
-          components: {
-            content: () => import("@/components/pages/welcome/Index.vue"),
-          },
-        },
-        {
-          name: ROUTE_ABOUT,
-          path: ROUTE_ABOUT,
-          components: {
-            content: () => import("@/components/pages/About.vue"),
-          },
-        },
-        {
-          name: ROUTE_GUIDE,
-          path: ROUTE_GUIDE,
-          components: {
-            content: () => import("@/components/pages/Guide.vue"),
-          },
-        },
-        {
-          name: ROUTE_UPDATES,
-          path: ROUTE_UPDATES,
-          components: {
-            content: () => import("@/components/pages/Updates.vue"),
-          },
-        },
-      ],
+      redirect: ROUTE_DASHBOARD_NAME,
+    },
+    {
+      path: `/${ROUTE_ABOUT_NAME}`,
+      name: ROUTE_ABOUT_NAME,
+      component: About,
+    },
+    {
+      path: `/${ROUTE_GUIDE_NAME}`,
+      name: ROUTE_GUIDE_NAME,
+      component: Guide,
+    },
+    {
+      path: `/${ROUTE_UPDATES_NAME}`,
+      name: ROUTE_UPDATES_NAME,
+      component: Updates,
+    },
+    {
+      path: `/${ROUTE_DASHBOARD_NAME}`,
+      name: ROUTE_DASHBOARD_NAME,
+      component: Dashboard,
     },
   ],
 });

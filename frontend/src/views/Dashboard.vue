@@ -1,5 +1,5 @@
 <template>
-  <div class="welcome-page page">
+  <div class="dashboard-page page">
     <n-grid
       x-gap="16"
       y-gap="16"
@@ -43,17 +43,17 @@ import {
   UpdateNow as UpdatesIcon,
   InformationSquare as AboutIcon,
 } from "@vicons/carbon";
-import { ref, shallowRef, type Component } from "vue";
 import { NGrid, NGridItem } from "naive-ui";
+import { ref, shallowRef, type Component } from "vue";
 import { FaceActivated as FaceActivatedIcon } from "@vicons/carbon";
 
 import {
-  ROUTE_ABOUT,
-  ROUTE_GUIDE,
-  ROUTE_UPDATES,
+  ROUTE_ABOUT_NAME,
+  ROUTE_GUIDE_NAME,
+  ROUTE_UPDATES_NAME,
 } from "@/assets/constants/routes";
-import RefCard from "./RefCard.vue";
-import Workspaces from "./Workspaces.vue";
+import RefCard from "@/components/dashboard/RefCard.vue";
+import Workspaces from "@/components/dashboard/Workspaces.vue";
 
 interface OtherCard {
   title: string;
@@ -65,21 +65,21 @@ interface OtherCard {
 const otherCards = ref<Array<OtherCard>>([
   {
     title: "About",
-    to: ROUTE_ABOUT,
+    to: ROUTE_ABOUT_NAME,
     icon: shallowRef(AboutIcon),
     description: "Learn more about project, it's features and integrations.",
   },
 
   {
     title: "Guide",
-    to: ROUTE_GUIDE,
+    to: ROUTE_GUIDE_NAME,
     icon: shallowRef(HelpIcon),
     description: "This section describes how to use itvault.",
   },
 
   {
     title: "Updates",
-    to: ROUTE_UPDATES,
+    to: ROUTE_UPDATES_NAME,
     icon: shallowRef(UpdatesIcon),
     description: "Complete log of changes made to the project.",
   },
