@@ -1,5 +1,5 @@
 <template>
-  <div class="welcome-page page">
+  <div class="dashboard-page page">
     <n-grid
       x-gap="16"
       y-gap="16"
