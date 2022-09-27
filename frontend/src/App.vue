@@ -9,7 +9,11 @@
     <n-loading-bar-provider>
       <app-header />
 
-      <router-view />
+      <main>
+        <n-scrollbar>
+          <router-view />
+        </n-scrollbar>
+      </main>
     </n-loading-bar-provider>
   </n-config-provider>
 </template>
@@ -25,6 +29,7 @@
 
 import {
   darkTheme,
+  NScrollbar,
   NGlobalStyle,
   NConfigProvider,
   NLoadingBarProvider,
