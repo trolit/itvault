@@ -1,8 +1,8 @@
 <template>
   <div class="dashboard-page page">
     <n-grid
-      x-gap="16"
-      y-gap="16"
+      x-gap="20"
+      y-gap="20"
       class="grid"
       item-responsive
       responsive="screen"
@@ -18,7 +18,7 @@
         <workspaces />
       </n-grid-item>
 
-      <n-grid-item class="others">
+      <n-grid-item class="other-cards-wrapper">
         <n-grid y-gap="20" cols="1">
           <n-grid-item
             v-for="({ title, to, icon, description }, index) of otherCards"
