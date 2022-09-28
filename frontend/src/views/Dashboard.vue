@@ -14,7 +14,7 @@
         </ref-card>
       </n-grid-item>
 
-      <n-grid-item class="workspaces-wrapper">
+      <n-grid-item class="workspaces-card-wrapper">
         <workspaces />
       </n-grid-item>
 
