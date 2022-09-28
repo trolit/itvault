@@ -28,10 +28,10 @@
       </n-data-table>
 
       <div class="actions">
-        <n-button type="warning" ghost> Create workspace </n-button>
+        <n-button ghost type="success" size="small"> New workspace </n-button>
 
         <router-link to="/">
-          <n-button type="info" ghost> Open workspace </n-button>
+          <n-button dashed type="info" size="small"> Open workspace </n-button>
         </router-link>
       </div>
     </template>
