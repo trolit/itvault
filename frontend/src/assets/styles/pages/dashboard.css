@@ -2,14 +2,65 @@
   .grid {
     display: flex;
 
-    .other-cards-wrapper {
+    .other-cards-wrapper,
+    .profile-card-wrapper,
+    .workspaces-card-wrapper {
       display: inherit;
+    }
+
+    .profile-card-wrapper {
+      .n-card {
+        .content {
+          .scrollable-data {
+            display: flex;
+
+            .access,
+            .timeline {
+              flex: 1;
+
+              .n-scrollbar {
+                max-height: 300px;
+              }
+
+              .title {
+                margin-bottom: 10px;
+                font-size: 15px;
+              }
+            }
+
+            .access {
+              .levels {
+                gap: 10px;
+                display: flex;
+                flex-wrap: wrap;
+              }
+            }
+          }
+
+          .statistics {
+            display: flex;
+            text-align: center;
+            justify-content: space-around;
+          }
+        }
+      }
+    }
+
+    .ref-card {
+      .actions {
+        display: flex;
+        justify-content: right;
+
+        .n-button {
+          .n-icon {
+            margin-left: 3px;
+          }
+        }
+      }
     }
 
     .workspaces-card-wrapper {
       .n-card {
-        height: 100%;
-
         .n-thing {
           .n-thing-main {
             .n-thing-main__content {
@@ -35,19 +86,6 @@
               }
             }
           }
-        }
-      }
-    }
-  }
-
-  .ref-card {
-    .actions {
-      display: flex;
-      justify-content: right;
-
-      .n-button {
-        .n-icon {
-          margin-left: 3px;
         }
       }
     }
