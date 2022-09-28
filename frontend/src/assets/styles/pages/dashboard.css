@@ -29,6 +29,8 @@
             }
 
             .access {
+              height: 100%;
+
               .levels {
                 gap: 10px;
                 display: flex;
