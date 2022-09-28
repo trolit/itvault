@@ -23,17 +23,15 @@
         :pagination="pagination"
       >
         <template #empty>
-          <n-empty description="No workspaces defined">
-            <template #extra>
-              <n-button type="warning" ghost> Create first workspace </n-button>
-            </template>
-          </n-empty>
+          <n-empty description="No workspaces found." />
         </template>
       </n-data-table>
 
       <div class="actions">
+        <n-button ghost type="success" size="small"> New workspace </n-button>
+
         <router-link to="/">
-          <n-button type="info" dashed> Open workspace </n-button>
+          <n-button dashed type="info" size="small"> Open workspace </n-button>
         </router-link>
       </div>
     </template>

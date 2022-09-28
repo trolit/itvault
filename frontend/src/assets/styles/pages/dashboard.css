@@ -2,14 +2,67 @@
   .grid {
     display: flex;
 
-    .other-cards-wrapper {
+    .other-cards-wrapper,
+    .profile-card-wrapper,
+    .workspaces-card-wrapper {
       display: inherit;
     }
 
-    .workspaces-wrapper {
+    .profile-card-wrapper {
       .n-card {
-        height: 100%;
+        .content {
+          .scrollable-data {
+            display: flex;
 
+            .access,
+            .timeline {
+              flex: 1;
+
+              .n-scrollbar {
+                max-height: 300px;
+              }
+
+              .title {
+                margin-bottom: 10px;
+                font-size: 15px;
+              }
+            }
+
+            .access {
+              height: 100%;
+
+              .levels {
+                gap: 10px;
+                display: flex;
+                flex-wrap: wrap;
+              }
+            }
+          }
+
+          .statistics {
+            display: flex;
+            text-align: center;
+            justify-content: space-around;
+          }
+        }
+      }
+    }
+
+    .ref-card {
+      .actions {
+        display: flex;
+        justify-content: right;
+
+        .n-button {
+          .n-icon {
+            margin-left: 3px;
+          }
+        }
+      }
+    }
+
+    .workspaces-card-wrapper {
+      .n-card {
         .n-thing {
           .n-thing-main {
             .n-thing-main__content {
@@ -17,20 +70,12 @@
                 .actions {
                   display: flex;
                   margin-top: 20px;
-                  justify-content: center;
+                  justify-content: space-between;
                 }
 
                 .n-data-table {
                   height: 100%;
                   min-height: 300px;
-
-                  .n-data-table-empty {
-                    text-align: center;
-
-                    .n-button {
-                      margin-top: 10px;
-                    }
-                  }
 
                   .n-data-table__pagination {
                     justify-content: center;
@@ -43,19 +88,6 @@
               }
             }
           }
-        }
-      }
-    }
-  }
-
-  .ref-card {
-    .actions {
-      display: flex;
-      justify-content: right;
-
-      .n-button {
-        .n-icon {
-          margin-left: 3px;
         }
       }
     }
