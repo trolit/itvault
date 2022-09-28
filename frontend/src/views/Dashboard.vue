@@ -4,18 +4,15 @@
       x-gap="20"
       y-gap="20"
       class="grid"
-      item-responsive
       responsive="screen"
       cols="s:1 m:3 l:3 xl:3 2xl:3"
     >
-      <n-grid-item class="information">
-        <ref-card :icon="FaceActivatedIcon" title="Welcome,">
-          <template #content> elo </template>
-        </ref-card>
+      <n-grid-item class="profile-card-wrapper">
+        <profile-card />
       </n-grid-item>
 
       <n-grid-item class="workspaces-card-wrapper">
-        <workspaces />
+        <workspaces-card />
       </n-grid-item>
 
       <n-grid-item class="other-cards-wrapper">
@@ -45,7 +42,6 @@ import {
 } from "@vicons/carbon";
 import { NGrid, NGridItem } from "naive-ui";
 import { ref, shallowRef, type Component } from "vue";
-import { FaceActivated as FaceActivatedIcon } from "@vicons/carbon";
 
 import {
   ROUTE_ABOUT_NAME,
@@ -53,7 +49,8 @@ import {
   ROUTE_UPDATES_NAME,
 } from "@/assets/constants/routes";
 import RefCard from "@/components/dashboard/RefCard.vue";
-import Workspaces from "@/components/dashboard/Workspaces.vue";
+import ProfileCard from "@/components/dashboard/Profile.vue";
+import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
 
 interface OtherCard {
   title: string;
