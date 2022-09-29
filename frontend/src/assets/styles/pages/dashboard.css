@@ -130,6 +130,12 @@
                   .n-data-table__pagination {
                     justify-content: center;
                   }
+
+                  .tags-row {
+                    gap: 10px;
+                    display: flex;
+                    flex-wrap: wrap;
+                  }
                 }
 
                 .n-input {

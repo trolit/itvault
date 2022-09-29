@@ -21,6 +21,7 @@
         :multiple="false"
         :columns="columns"
         :pagination="pagination"
+        :row-key="(rowData: RowData) => rowData.id"
       >
         <template #empty>
           <n-empty description="No workspaces found." />
@@ -43,17 +44,17 @@ import {
   Search as SearchIcon,
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
-import { ref, type Ref } from "vue";
+import { h, ref, type Ref } from "vue";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
 import type { RowKey } from "naive-ui/es/data-table/src/interface";
-import { NDataTable, NButton, NInput, NIcon, NEmpty } from "naive-ui";
+import { NDataTable, NButton, NInput, NIcon, NEmpty, NTag } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
 
 type RowData = {
-  key: number;
+  id: number;
   name: string;
-  tags: string;
+  tags: string[];
 };
 
 const columns: Ref<DataTableColumns<RowData>> = ref<DataTableColumns<RowData>>([
@@ -61,19 +62,47 @@ const columns: Ref<DataTableColumns<RowData>> = ref<DataTableColumns<RowData>>([
     type: "selection",
     multiple: false,
   },
+
   {
     title: "Name",
     key: "name",
   },
+
   {
     title: "Tags",
     key: "tags",
+    className: "tags-row",
+    render(row) {
+      const tags = row.tags.map(tagKey => {
+        return h(
+          NTag,
+          {
+            type: "info",
+          },
+          {
+            default: () => tagKey,
+          }
+        );
+      });
+      return tags;
+    },
   },
 ]);
 
-const data: Ref<Array<RowData> | undefined> = ref(undefined);
+const data: Ref<RowData[] | undefined> = ref([
+  {
+    id: 0,
+    name: "test workspace-1",
+    tags: ["test", "workspace", "first-workspace"],
+  },
+  {
+    id: 1,
+    name: "test workspace-2",
+    tags: ["second-workspace"],
+  },
+]);
 
-const checkedRowKeys: Ref<Array<RowKey>> = ref([]);
+const checkedRowKeys: Ref<RowKey[]> = ref([]);
 
 const pagination: PaginationProps = {
   page: 1,
