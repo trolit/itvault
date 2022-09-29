@@ -8,6 +8,65 @@
       display: inherit;
     }
 
+    .ref-card {
+      .n-thing {
+        height: 100%;
+        --header-height: 41.2px;
+
+        .n-thing-main {
+          .n-thing-avatar-header-wrapper {
+            height: var(--header-height);
+            margin-bottom: 5px;
+          }
+
+          .n-thing-main__content {
+            margin: 0;
+            height: calc(100% - var(--header-height));
+          }
+        }
+      }
+
+      .actions {
+        display: flex;
+        justify-content: center;
+
+        .n-button {
+          .n-icon {
+            margin-left: 3px;
+          }
+        }
+      }
+    }
+
+    .other-cards-wrapper {
+      .n-grid {
+        .other-card-wrapper {
+          .n-card {
+            height: 100%;
+
+            .n-thing {
+              .n-thing-main {
+                .n-thing-main__content {
+                  .content {
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+
+                    .description {
+                      height: inherit;
+                      display: inherit;
+                      align-items: center;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
     .profile-card-wrapper {
       .n-card {
         .content {
@@ -48,25 +107,16 @@
       }
     }
 
-    .ref-card {
-      .actions {
-        display: flex;
-        justify-content: right;
-
-        .n-button {
-          .n-icon {
-            margin-left: 3px;
-          }
-        }
-      }
-    }
-
     .workspaces-card-wrapper {
       .n-card {
         .n-thing {
           .n-thing-main {
             .n-thing-main__content {
               .content {
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+
                 .actions {
                   display: flex;
                   margin-top: 20px;
@@ -75,7 +125,7 @@
 
                 .n-data-table {
                   height: 100%;
-                  min-height: 300px;
+                  min-height: 250px;
 
                   .n-data-table__pagination {
                     justify-content: center;
@@ -83,7 +133,7 @@
                 }
 
                 .n-input {
-                  margin-bottom: 10px;
+                  margin-bottom: 20px;
                 }
               }
             }
