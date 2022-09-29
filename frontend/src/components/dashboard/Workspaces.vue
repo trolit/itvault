@@ -29,10 +29,13 @@
       </n-data-table>
 
       <div class="actions">
-        <n-button ghost type="success"> New workspace </n-button>
+        <!-- @TODO only available to accounts with certain rights -->
+        <n-button ghost type="info"> New workspace </n-button>
 
         <router-link to="/">
-          <n-button dashed type="info"> Open workspace </n-button>
+          <n-button dashed type="success" :disabled="!data.length">
+            Open workspace
+          </n-button>
         </router-link>
       </div>
     </template>
@@ -89,7 +92,7 @@ const columns: Ref<DataTableColumns<RowData>> = ref<DataTableColumns<RowData>>([
   },
 ]);
 
-const data: Ref<RowData[] | undefined> = ref([
+const data: Ref<RowData[]> = ref([
   {
     id: 0,
     name: "test workspace-1",
