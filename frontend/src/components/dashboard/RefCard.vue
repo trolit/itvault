@@ -17,7 +17,9 @@
 
       <div class="content">
         <slot name="content">
-          {{ description }}
+          <div class="description">
+            {{ description }}
+          </div>
 
           <div class="actions">
             <router-link :to="to">

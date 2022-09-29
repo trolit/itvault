@@ -19,9 +19,9 @@
 
           <n-scrollbar trigger="none">
             <div class="levels">
-              <n-tag type="success"> vue (2) </n-tag>
+              <n-tag type="success"> vue (w) </n-tag>
 
-              <n-tag type="success"> .NET (0) </n-tag>
+              <n-tag type="success"> .NET (r) </n-tag>
             </div>
           </n-scrollbar>
         </div>
