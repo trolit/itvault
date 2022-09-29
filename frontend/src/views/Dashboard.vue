@@ -16,9 +16,10 @@
       </n-grid-item>
 
       <n-grid-item class="other-cards-wrapper">
-        <n-grid y-gap="20" cols="1">
+        <n-grid x-gap="20" y-gap="20" cols="2">
           <n-grid-item
             v-for="({ title, to, icon, description }, index) of otherCards"
+            class="other-card-wrapper"
             :key="index"
           >
             <ref-card
@@ -37,6 +38,7 @@
 <script setup lang="ts">
 import {
   Help as HelpIcon,
+  Email as EmailIcon,
   UpdateNow as UpdatesIcon,
   InformationSquare as AboutIcon,
 } from "@vicons/carbon";
@@ -71,7 +73,7 @@ const otherCards = ref<Array<OtherCard>>([
     title: "Guide",
     to: ROUTE_GUIDE_NAME,
     icon: shallowRef(HelpIcon),
-    description: "This section describes how to use itvault.",
+    description: "This section describes how to use project.",
   },
 
   {
@@ -79,6 +81,15 @@ const otherCards = ref<Array<OtherCard>>([
     to: ROUTE_UPDATES_NAME,
     icon: shallowRef(UpdatesIcon),
     description: "Complete log of changes made to the project.",
+  },
+
+  // @TODO Create [Contact] view
+  {
+    title: "Contact",
+    to: ROUTE_UPDATES_NAME,
+    icon: shallowRef(EmailIcon),
+    description:
+      "Found issue when using itvault? Send us details and we will investigate issue.",
   },
 ]);
 </script>
