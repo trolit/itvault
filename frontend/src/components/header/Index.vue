@@ -35,8 +35,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useThemeVars } from "naive-ui";
-import { NPopselect, NPageHeader, NButton } from "naive-ui";
+import { NPopselect, NPageHeader, NButton, useThemeVars } from "naive-ui";
 
 import {
   THEME_DARK,
