@@ -1,5 +1,5 @@
 <template>
-  <div class="menu">
+  <div v-if="isInWorkspaceView" class="menu">
     <n-menu
       v-model:value="activeKey"
       mode="horizontal"
@@ -9,22 +9,18 @@
 </template>
 
 <script setup lang="ts">
-import {
-  Help as HelpIcon,
-  UpdateNow as UpdatesIcon,
-  InformationSquare as AboutIcon,
-} from "@vicons/carbon";
 import { NMenu } from "naive-ui";
+import { useRoute } from "vue-router";
 import { RouterLink } from "vue-router";
-import { h, ref, type VNode } from "vue";
 import type { MenuOption } from "naive-ui";
 import renderIcon from "@/helpers/renderIcon";
+import { Help as HelpIcon } from "@vicons/carbon";
+import { h, ref, computed, type VNode } from "vue";
 
 import {
-  ROUTE_ABOUT_NAME,
   ROUTE_GUIDE_NAME,
-  ROUTE_UPDATES_NAME,
   ROUTE_DASHBOARD_NAME,
+  ROUTE_WORKSPACE_NAME,
 } from "@/assets/constants/routes";
 
 function renderLabel(name: string, text: string): () => VNode {
@@ -54,25 +50,13 @@ const menuOptions: MenuOption[] = [
   },
   // @TODO should render "Guide" content in Drawer (right side)
   {
-    label: "Help",
-    key: "help",
-    children: [
-      {
-        label: renderLabel(ROUTE_ABOUT_NAME, "About app"),
-        key: ROUTE_ABOUT_NAME,
-        icon: renderIcon(AboutIcon),
-      },
-      {
-        label: renderLabel(ROUTE_GUIDE_NAME, "Guide"),
-        key: ROUTE_GUIDE_NAME,
-        icon: renderIcon(HelpIcon),
-      },
-      {
-        label: renderLabel(ROUTE_UPDATES_NAME, "Updates"),
-        key: ROUTE_UPDATES_NAME,
-        icon: renderIcon(UpdatesIcon),
-      },
-    ],
+    key: "guide",
+    icon: renderIcon(HelpIcon),
+    label: renderLabel(ROUTE_GUIDE_NAME, "Guide"),
   },
 ];
+
+const route = useRoute();
+
+const isInWorkspaceView = computed(() => route.name === ROUTE_WORKSPACE_NAME);
 </script>
