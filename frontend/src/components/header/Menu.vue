@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isInWorkspaceView" class="menu">
+  <div v-if="isWorkspaceRouteActive" class="menu">
     <n-menu
       v-model:value="activeKey"
       mode="horizontal"
@@ -58,5 +58,7 @@ const menuOptions: MenuOption[] = [
 
 const route = useRoute();
 
-const isInWorkspaceView = computed(() => route.name === ROUTE_WORKSPACE_NAME);
+const isWorkspaceRouteActive = computed(
+  () => route.name === ROUTE_WORKSPACE_NAME
+);
 </script>
