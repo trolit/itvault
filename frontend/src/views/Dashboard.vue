@@ -5,7 +5,7 @@
       y-gap="20"
       class="grid"
       responsive="screen"
-      cols="s:1 m:3 l:3 xl:3 2xl:3"
+      cols="1 s:1 m:3 l:3 xl:3 2xl:3"
     >
       <n-grid-item class="profile-card-wrapper">
         <profile-card />
