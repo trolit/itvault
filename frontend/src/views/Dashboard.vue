@@ -66,14 +66,15 @@ const otherCards = ref<Array<OtherCard>>([
     title: "About",
     to: ROUTE_ABOUT_NAME,
     icon: shallowRef(AboutIcon),
-    description: "Learn more about project, it's features and integrations.",
+    description:
+      "Learn more about project features, integrations, security & privacy.",
   },
 
   {
     title: "Guide",
     to: ROUTE_GUIDE_NAME,
     icon: shallowRef(HelpIcon),
-    description: "This section describes how to use project.",
+    description: "This section describes how to use.",
   },
 
   {
