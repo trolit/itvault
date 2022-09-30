@@ -4,13 +4,6 @@
   justify-content: center;
   --margin-between-elements: 20px;
 
-  .test-icon {
-    width: 100%;
-    opacity: 0.15;
-    position: absolute;
-    transform: translate(0, 0);
-  }
-
   .n-card {
     max-width: 600px;
 
