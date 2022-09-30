@@ -7,6 +7,7 @@ module.exports = {
   extends: [
     "plugin:vue/vue3-essential",
     "eslint:recommended",
+    "plugin:you-dont-need-lodash-underscore/compatible",
     "@vue/eslint-config-typescript",
     "@vue/eslint-config-prettier",
   ],
