@@ -35,16 +35,15 @@ import {
   NLoadingBarProvider,
   type GlobalThemeOverrides,
 } from "naive-ui";
-import { computed } from "vue";
+import { computed, type ComputedRef } from "vue";
 import { RouterView, useRoute } from "vue-router";
-
-import { usePreferencesStore } from "@/stores/preferences";
-import { darkDimmedTheme } from "@/custom-themes/DarkDimmed";
 import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
-import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
 
 import AppHeader from "@/components/header/Index.vue";
-import { ROUTE_LOGIN_NAME } from "./assets/constants/routes";
+import { usePreferencesStore } from "@/stores/preferences";
+import { darkDimmedTheme } from "@/custom-themes/DarkDimmed";
+import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
+import { ROUTE_GUEST_NAME, ROUTE_LOGIN_NAME } from "./assets/constants/routes";
 
 const preferencesStore = usePreferencesStore();
 
@@ -70,5 +69,10 @@ const themeOverrides = computed((): GlobalThemeOverrides | null => {
 
 const route = useRoute();
 
-const withAppHeader = computed(() => route.name !== ROUTE_LOGIN_NAME);
+const withAppHeader: ComputedRef<boolean> = computed(
+  (): boolean =>
+    route &&
+    typeof route.name === "string" &&
+    ![ROUTE_LOGIN_NAME, ROUTE_GUEST_NAME].includes(route.name)
+);
 </script>
