@@ -12,7 +12,11 @@ body {
       height: inherit;
 
       main {
-        height: calc(100% - var(--header-height));
+        height: 100%;
+
+        &.with-app-header {
+          height: calc(100% - var(--header-height));
+        }
 
         .n-scrollbar {
           .n-scrollbar-content {
