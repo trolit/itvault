@@ -2,7 +2,7 @@
   <n-page-header class="app-header" :style="{ borderBottom }">
     <div class="logo">
       <router-link
-        to="/"
+        :to="ROUTE_DASHBOARD_NAME"
         :style="{ color: isBrandHovered ? textColor : 'inherit' }"
         @mouseenter="isBrandHovered = true"
         @mouseleave="isBrandHovered = false"
@@ -45,6 +45,7 @@ import {
 import CustomMenu from "./Menu.vue";
 import Brand from "@/components/common/Brand.vue";
 import { usePreferencesStore } from "@/stores/preferences";
+import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
 const themeVars = useThemeVars();
 const preferencesStore = usePreferencesStore();
