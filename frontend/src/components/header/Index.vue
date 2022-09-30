@@ -1,9 +1,5 @@
 <template>
-  <n-page-header
-    v-if="!isLoginRouteActive"
-    class="app-header"
-    :style="{ borderBottom }"
-  >
+  <n-page-header class="app-header" :style="{ borderBottom }">
     <div class="logo">
       <router-link
         to="/"
@@ -39,7 +35,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { useRoute } from "vue-router";
 import { NPopselect, NPageHeader, NButton, useThemeVars } from "naive-ui";
 
 import {
@@ -50,7 +45,6 @@ import {
 import CustomMenu from "./Menu.vue";
 import Brand from "@/components/common/Brand.vue";
 import { usePreferencesStore } from "@/stores/preferences";
-import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
 
 const themeVars = useThemeVars();
 const preferencesStore = usePreferencesStore();
@@ -84,8 +78,4 @@ const borderBottom = computed<string>((): string => {
 function setTheme(theme: string): void {
   preferencesStore.setTheme(theme);
 }
-
-const route = useRoute();
-
-const isLoginRouteActive = computed(() => route.name === ROUTE_LOGIN_NAME);
 </script>

@@ -7,9 +7,9 @@
     <n-global-style />
 
     <n-loading-bar-provider>
-      <app-header />
+      <app-header v-if="withAppHeader" />
 
-      <main>
+      <main :class="{ 'with-app-header': withAppHeader }">
         <n-scrollbar>
           <router-view />
         </n-scrollbar>
@@ -36,7 +36,7 @@ import {
   type GlobalThemeOverrides,
 } from "naive-ui";
 import { computed } from "vue";
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
 
 import { usePreferencesStore } from "@/stores/preferences";
 import { darkDimmedTheme } from "@/custom-themes/DarkDimmed";
@@ -44,6 +44,7 @@ import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
 import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
 
 import AppHeader from "@/components/header/Index.vue";
+import { ROUTE_LOGIN_NAME } from "./assets/constants/routes";
 
 const preferencesStore = usePreferencesStore();
 
@@ -66,4 +67,8 @@ const themeOverrides = computed((): GlobalThemeOverrides | null => {
       return null;
   }
 });
+
+const route = useRoute();
+
+const withAppHeader = computed(() => route.name !== ROUTE_LOGIN_NAME);
 </script>
