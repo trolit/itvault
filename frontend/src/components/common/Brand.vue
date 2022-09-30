@@ -1,14 +1,19 @@
 <template>
   <div class="brand">
-    <n-icon>
-      <brand-icon />
-    </n-icon>
+    <div class="primary-content">
+      <icon :value="BrandIcon" />
 
-    <span>itvault</span>
+      <span>itvault</span>
+    </div>
+
+    <div class="extra-text">
+      <slot name="extra-text" />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NIcon } from "naive-ui";
 import { Development as BrandIcon } from "@vicons/carbon";
+
+import Icon from "./Icon.vue";
 </script>
