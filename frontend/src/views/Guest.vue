@@ -1,45 +1,132 @@
 <template>
   <div class="guest-page page">
-    <!-- @TODO -->
-    <n-alert title="Oops!" type="info">
-      It seems that you are logged in. Do you wish to be redirected to
-      <router-link :to="ROUTE_DASHBOARD_NAME">
-        <n-button ghost type="tertiary" size="small"> dashboard </n-button>
-      </router-link>
-      page or
-      <router-link :to="ROUTE_DASHBOARD_NAME">
-        <n-button ghost type="tertiary" size="small"> signed out </n-button>
-      </router-link>
-    </n-alert>
+    <n-card>
+      <n-grid
+        x-gap="20"
+        y-gap="20"
+        class="grid"
+        responsive="screen"
+        cols="1 s:1 m:2 l:2 xl:2 2xl:2"
+      >
+        <n-grid-item :span="2">
+          <brand>
+            <template #extra-text> smart source code storage </template>
+          </brand>
+        </n-grid-item>
 
-    <n-grid
-      x-gap="20"
-      y-gap="20"
-      class="grid"
-      responsive="screen"
-      cols="1 s:1 m:2 l:2 xl:2 2xl:2"
-    >
-      <n-grid-item> brand </n-grid-item>
+        <n-grid-item class="top-buttons" :span="2">
+          <router-link :to="ROUTE_LOGIN_NAME">
+            <n-button ghost type="tertiary" :focusable="false">
+              <div class="primary-icon">
+                <icon :value="SignInIcon" />
+              </div>
 
-      <n-grid-item> short desc </n-grid-item>
+              <div class="text">open app</div>
+            </n-button>
+          </router-link>
+        </n-grid-item>
 
-      <n-grid-item :span="2">
-        <icon :value="DotMarkIcon" :size="200" />
+        <n-grid-item class="label" :span="2">
+          About
+          <n-divider />
+        </n-grid-item>
 
-        <icon :value="DotMarkIcon" :size="200" />
+        <n-grid-item :span="2"> T.B.D. </n-grid-item>
 
-        <icon :value="DotMarkIcon" :size="200" />
+        <n-grid-item class="label" :span="2">
+          Features
+          <n-divider />
+        </n-grid-item>
 
-        <icon :value="DotMarkIcon" :size="200" />
-      </n-grid-item>
-    </n-grid>
+        <n-grid-item
+          v-for="({ icon, header, text }, index) of features"
+          :key="index"
+          :span="2"
+          class="feature"
+        >
+          <n-descriptions label-placement="top" :column="4">
+            <n-descriptions-item>
+              <div class="icon-wrapper">
+                <icon :value="icon" />
+              </div>
+            </n-descriptions-item>
+
+            <n-descriptions-item>
+              <div class="text-wrapper">
+                <div class="header">{{ header }}</div>
+
+                <div class="text">
+                  {{ text }}
+                </div>
+              </div>
+            </n-descriptions-item>
+          </n-descriptions>
+        </n-grid-item>
+
+        <n-grid-item class="bottom-buttons" :span="2">
+          <n-button ghost type="tertiary" :focusable="false">
+            <div class="primary-icon">
+              <icon :value="EmailIcon" />
+            </div>
+
+            <div class="text">Request demo</div>
+          </n-button>
+        </n-grid-item>
+      </n-grid>
+    </n-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import { DotMark as DotMarkIcon } from "@vicons/carbon";
-import { NAlert, NButton, NGrid, NGridItem } from "naive-ui";
+import {
+  NCard,
+  NGrid,
+  NButton,
+  NDivider,
+  NGridItem,
+  NDescriptions,
+  NDescriptionsItem,
+} from "naive-ui";
+import {
+  Gui as SignInIcon,
+  Email as EmailIcon,
+  DataVis3 as DataVisIcon,
+  CloudApp as CloudAppIcon,
+  ManageProtection as ManageProtectionIcon,
+  AccessibilityColor as AccessibilityColorIcon,
+} from "@vicons/carbon";
+import { ref, shallowRef, type Ref } from "vue";
 
 import Icon from "@/components/common/Icon.vue";
-import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
+import Brand from "@/components/common/Brand.vue";
+import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
+
+interface Feature {
+  icon: object;
+  header: string;
+  text: string;
+}
+
+const features: Ref<Feature[]> = ref([
+  {
+    icon: shallowRef(CloudAppIcon),
+    header: "Cloud",
+    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+  },
+  {
+    icon: shallowRef(ManageProtectionIcon),
+    header: "Protected",
+    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+  },
+  {
+    icon: shallowRef(DataVisIcon),
+    header: "Expanded privileges",
+    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+  },
+  {
+    icon: shallowRef(AccessibilityColorIcon),
+    header: "Accessible",
+    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+  },
+]);
 </script>
