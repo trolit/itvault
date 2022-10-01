@@ -114,4 +114,8 @@
       }
     }
   }
+
+  .theme-selector {
+    position: absolute;
+  }
 }

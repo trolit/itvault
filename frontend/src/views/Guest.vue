@@ -1,6 +1,14 @@
 <template>
   <div class="guest-page page">
     <n-card>
+      <theme-selector>
+        <template #default>
+          <n-button text :focusable="false" class="theme-selector">
+            <icon :value="RainDropIcon" :size="35" />
+          </n-button>
+        </template>
+      </theme-selector>
+
       <n-grid
         x-gap="20"
         y-gap="20"
@@ -92,6 +100,7 @@ import {
   Email as EmailIcon,
   DataVis3 as DataVisIcon,
   CloudApp as CloudAppIcon,
+  RainDrop as RainDropIcon,
   ManageProtection as ManageProtectionIcon,
   AccessibilityColor as AccessibilityColorIcon,
 } from "@vicons/carbon";
@@ -100,6 +109,7 @@ import { ref, shallowRef, type Ref } from "vue";
 import Icon from "@/components/common/Icon.vue";
 import Brand from "@/components/common/Brand.vue";
 import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
+import ThemeSelector from "@/components/common/ThemeSelector.vue";
 
 interface Feature {
   icon: object;
