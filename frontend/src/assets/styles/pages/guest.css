@@ -1,5 +1,117 @@
 .guest-page {
   .n-grid {
-    border: 1px solid green;
+    --common-margin: 60px;
+
+    .brand {
+      display: flex;
+      position: relative;
+      align-items: center;
+      justify-content: center;
+      margin: var(--common-margin) 0;
+
+      .primary-content {
+        display: flex;
+        font-size: 90px;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+
+        .n-icon {
+          margin: 0 10px;
+          font-size: 90px;
+        }
+      }
+
+      .extra-text {
+        bottom: -10px;
+        font-size: 14px;
+        position: absolute;
+      }
+    }
+
+    .bottom-buttons {
+      gap: 20px;
+      display: flex;
+      justify-content: center;
+
+      .n-button {
+        width: 200px;
+        display: flex;
+        height: 250px;
+        font-size: 20px;
+
+        .n-button__content {
+          display: block;
+
+          .primary-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+
+    .feature {
+      display: flex;
+      margin: 0 10px;
+      justify-content: center;
+
+      .icon-wrapper {
+        width: 150px;
+        display: flex;
+        height: 150px;
+        font-size: 150px;
+        position: relative;
+        align-items: center;
+        border-radius: 100%;
+        justify-content: center;
+        background-color: wheat;
+
+        .n-icon {
+          color: black;
+          font-size: 90px;
+          position: absolute;
+        }
+      }
+
+      .text-wrapper {
+        margin-left: 30px;
+
+        .header {
+          font-size: 25px;
+        }
+      }
+    }
+
+    .label {
+      font-size: 30px;
+      text-align: center;
+    }
+
+    .top-buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: var(--common-margin);
+
+      a {
+        text-decoration: none;
+      }
+
+      .n-button {
+        display: flex;
+        height: 150px;
+        font-size: 20px;
+        min-width: 350px;
+
+        .n-button__content {
+          display: block;
+
+          .primary-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
   }
 }
