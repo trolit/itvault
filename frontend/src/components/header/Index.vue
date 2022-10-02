@@ -1,15 +1,13 @@
 <template>
   <n-page-header class="app-header" :style="{ borderBottom }">
-    <div class="logo">
-      <router-link
-        :to="ROUTE_DASHBOARD_NAME"
-        :style="{ color: isBrandHovered ? textColor : 'inherit' }"
-        @mouseenter="isBrandHovered = true"
-        @mouseleave="isBrandHovered = false"
-      >
-        <brand />
-      </router-link>
-    </div>
+    <router-link
+      :to="ROUTE_DASHBOARD_NAME"
+      :style="{ color: isBrandHovered ? textColor : 'inherit' }"
+      @mouseenter="isBrandHovered = true"
+      @mouseleave="isBrandHovered = false"
+    >
+      <brand />
+    </router-link>
 
     <custom-menu />
 
