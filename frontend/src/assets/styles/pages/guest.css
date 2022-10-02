@@ -3,28 +3,18 @@
     --common-margin: 60px;
 
     .brand {
-      display: flex;
-      position: relative;
-      align-items: center;
-      justify-content: center;
       margin: var(--common-margin) 0;
 
       .primary-content {
-        display: flex;
         font-size: 90px;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
 
         .n-icon {
-          margin: 0 10px;
           font-size: 90px;
         }
       }
 
       .extra-text {
         bottom: -10px;
-        font-size: 14px;
         position: absolute;
       }
     }

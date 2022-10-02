@@ -1,14 +1,12 @@
 <template>
   <div class="login-page page">
     <n-card>
-      <div class="brand-wrapper">
-        <brand>
-          <template #extra-text>
-            Your tool <icon :value="DotMarkIcon" /> Your data
-            <icon :value="DotMarkIcon" /> Our experience
-          </template>
-        </brand>
-      </div>
+      <brand>
+        <template #extra-text>
+          Your tool <icon :value="DotMarkIcon" /> Your data
+          <icon :value="DotMarkIcon" /> Our experience
+        </template>
+      </brand>
 
       <n-divider />
 
