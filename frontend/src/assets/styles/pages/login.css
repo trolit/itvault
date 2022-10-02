@@ -10,31 +10,16 @@
     .n-card__content {
       margin: 20px;
 
-      .brand-wrapper {
-        text-align: center;
+      .brand {
+        font-size: 80px;
 
-        .brand {
-          font-size: 80px;
-          position: relative;
+        .extra-text {
+          display: flex;
+          font-size: 11px;
+          align-items: center;
 
-          .primary-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
-
-          .extra-text {
-            bottom: 0;
-            width: 100%;
-            display: flex;
-            font-size: 12px;
-            position: absolute;
-            align-items: center;
-            justify-content: center;
-
-            .n-icon {
-              margin: 0 10px;
-            }
+          .n-icon {
+            margin: 0 10px;
           }
         }
       }
