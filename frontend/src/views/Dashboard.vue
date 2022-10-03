@@ -18,7 +18,10 @@
       <n-grid-item class="other-cards-wrapper">
         <n-grid x-gap="20" y-gap="20" cols="2">
           <n-grid-item
-            v-for="({ title, to, icon, description }, index) of otherCards"
+            v-for="(
+              { title, to, icon, description, props }, index
+            ) of otherCards"
+            v-bind="props"
             class="other-card-wrapper"
             :key="index"
           >
@@ -40,13 +43,11 @@ import {
   Help as HelpIcon,
   Email as EmailIcon,
   UpdateNow as UpdatesIcon,
-  InformationSquare as AboutIcon,
 } from "@vicons/carbon";
 import { NGrid, NGridItem } from "naive-ui";
-import { ref, shallowRef, type Component } from "vue";
+import { ref, shallowRef, type Component, type Ref } from "vue";
 
 import {
-  ROUTE_ABOUT_NAME,
   ROUTE_GUIDE_NAME,
   ROUTE_UPDATES_NAME,
 } from "@/assets/constants/routes";
@@ -58,23 +59,17 @@ interface OtherCard {
   title: string;
   to: string;
   icon: Component;
+  props?: object;
   description: string;
 }
 
-const otherCards = ref<Array<OtherCard>>([
-  {
-    title: "About",
-    to: ROUTE_ABOUT_NAME,
-    icon: shallowRef(AboutIcon),
-    description:
-      "Learn more about project features, integrations, security & privacy.",
-  },
-
+const otherCards: Ref<OtherCard[]> = ref([
   {
     title: "Guide",
     to: ROUTE_GUIDE_NAME,
     icon: shallowRef(HelpIcon),
-    description: "This section describes how to use.",
+    description:
+      "This section describes available features and how to use them.",
   },
 
   {
@@ -89,8 +84,8 @@ const otherCards = ref<Array<OtherCard>>([
     title: "Contact",
     to: ROUTE_UPDATES_NAME,
     icon: shallowRef(EmailIcon),
-    description:
-      "Found issue when using itvault? Send us details and we will investigate issue.",
+    props: { span: 2 },
+    description: "Need help? Found an issue? Send us an ticket.",
   },
 ]);
 </script>
