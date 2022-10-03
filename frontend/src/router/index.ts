@@ -1,14 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import {
-  ROUTE_ABOUT_NAME,
   ROUTE_GUEST_NAME,
   ROUTE_GUIDE_NAME,
   ROUTE_LOGIN_NAME,
   ROUTE_UPDATES_NAME,
   ROUTE_DASHBOARD_NAME,
 } from "@/assets/constants/routes";
-import About from "@/views/About.vue";
 import Guest from "@/views/Guest.vue";
 import Guide from "@/views/Guide.vue";
 import Login from "@/views/Login.vue";
@@ -27,11 +25,6 @@ const router = createRouter({
       path: `/${ROUTE_LOGIN_NAME}`,
       name: ROUTE_LOGIN_NAME,
       component: Login,
-    },
-    {
-      path: `/${ROUTE_ABOUT_NAME}`,
-      name: ROUTE_ABOUT_NAME,
-      component: About,
     },
     {
       path: `/${ROUTE_GUIDE_NAME}`,
