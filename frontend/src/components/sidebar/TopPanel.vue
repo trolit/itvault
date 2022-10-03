@@ -42,28 +42,18 @@ import {
   NTooltip,
   NGridItem,
 } from "naive-ui";
-import {
-  Help as HelpIcon,
-  UpdateNow as UpdatesIcon,
-  InformationSquare as AboutIcon,
-} from "@vicons/carbon";
+import { Help as HelpIcon, UpdateNow as UpdatesIcon } from "@vicons/carbon";
 import { shallowRef, computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import { usePreferencesStore } from "@/stores/preferences";
 
 import {
-  ROUTE_ABOUT_NAME,
   ROUTE_GUIDE_NAME,
   ROUTE_UPDATES_NAME,
 } from "@/assets/constants/routes";
 
 const routes = ref([
-  {
-    name: ROUTE_ABOUT_NAME,
-    icon: shallowRef(AboutIcon),
-    tooltip: "Details",
-  },
   {
     name: ROUTE_GUIDE_NAME,
     icon: shallowRef(HelpIcon),

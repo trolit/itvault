@@ -51,10 +51,10 @@ body {
       display: inherit;
       width: fit-content;
       text-decoration: none;
+    }
 
-      .brand {
-        font-size: 22px;
-      }
+    .brand {
+      font-size: 22px;
     }
 
     .menu {
