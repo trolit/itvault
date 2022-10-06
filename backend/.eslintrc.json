@@ -26,5 +26,16 @@
     ],
 
     "rules": {
+        "@typescript-eslint/array-type": "warn",
+        "@typescript-eslint/class-literal-property-style": "warn",
+        "@typescript-eslint/consistent-generic-constructors": ["warn", "type-annotation"],
+        "@typescript-eslint/consistent-indexed-object-style": "warn",
+        "@typescript-eslint/consistent-type-definitions": "warn",
+        "@typescript-eslint/no-confusing-non-null-assertion": "warn",
+        "@typescript-eslint/no-dynamic-delete": "warn",
+        "@typescript-eslint/no-extraneous-class": "warn",
+        "@typescript-eslint/no-non-null-asserted-nullish-coalescing": "warn",
+        "@typescript-eslint/prefer-for-of": "warn",
+        "@typescript-eslint/unified-signatures": "warn"
     }
 }
