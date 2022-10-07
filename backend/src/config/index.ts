@@ -23,8 +23,8 @@ export const DATABASE_USER: string = env
   .required()
   .asString();
 
-export const DATABASE_PASSWORD: string = env
-  .get("DATABASE_PASSWORD")
+export const DATABASE_ROOT_PASSWORD: string = env
+  .get("DATABASE_ROOT_PASSWORD")
   .required()
   .asString();
 
