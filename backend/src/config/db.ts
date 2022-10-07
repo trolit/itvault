@@ -6,7 +6,7 @@ import {
   DATABASE_PORT,
   DATABASE_TYPE,
   DATABASE_USER,
-  DATABASE_PASSWORD,
+  DATABASE_ROOT_PASSWORD,
 } from ".";
 
 export const db = new DataSource({
@@ -14,7 +14,7 @@ export const db = new DataSource({
   host: DATABASE_HOST,
   port: DATABASE_PORT,
   username: DATABASE_USER,
-  password: DATABASE_PASSWORD,
+  password: DATABASE_ROOT_PASSWORD,
   database: DATABASE_NAME,
   entities: ["src/entity/*.js"],
   logging: true,
