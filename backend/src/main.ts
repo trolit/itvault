@@ -1,12 +1,22 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 
-import { APP_PORT, NODE_ENV } from "./config/index";
+import { db } from "./config/db";
 import { Environment } from "./enums/Environment";
+import { APP_PORT, NODE_ENV } from "./config/index";
 
 dotenv.config();
 
 const app: Express = express();
+
+// @TMP
+try {
+  db.initialize();
+
+  console.log("Data Source has been initialized!");
+} catch (error) {
+  console.error(error);
+}
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
