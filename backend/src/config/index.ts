@@ -3,14 +3,20 @@ import dotenv from "dotenv";
 
 dotenv.config({});
 
+import { Environment } from "../enums/Environment";
+import { DatabaseType } from "../enums/DatabaseType";
+
 export const APP_PORT: number = env.get("PORT").required().asPortNumber();
 
-export const NODE_ENV: string = env.get("NODE_ENV").required().asString();
+export const NODE_ENV: Environment = env
+  .get("NODE_ENV")
+  .required()
+  .asEnum(Object.values(Environment));
 
-export const DATABASE_TYPE = env
+export const DATABASE_TYPE: DatabaseType = env
   .get("DATABASE_TYPE")
   .required()
-  .asEnum(["mysql"]);
+  .asEnum(Object.values(DatabaseType));
 
 export const DATABASE_USER: string = env
   .get("DATABASE_USER")
