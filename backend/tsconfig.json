@@ -8,5 +8,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "baseUrl": "src",
+    "paths": {
+      "@enums/*": ["enums/*"],
+      "@config/*": ["config/*"],
+      "@interfaces/*": ["interfaces/*"]
+    }
   }
 }
