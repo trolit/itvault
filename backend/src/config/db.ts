@@ -18,5 +18,5 @@ export const db = new DataSource({
   database: DATABASE_NAME,
   entities: ["src/entity/*.js"],
   logging: true,
-  synchronize: true,
+  synchronize: false,
 });
