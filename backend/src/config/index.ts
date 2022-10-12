@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 
 dotenv.config({});
 
-import { Environment } from "../enums/Environment";
-import { DatabaseType } from "../enums/DatabaseType";
+import { Environment } from "@enums/Environment";
+import { DatabaseType } from "@enums/DatabaseType";
 
 export const APP_PORT: number = env.get("PORT").required().asPortNumber();
 
