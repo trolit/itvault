@@ -1,5 +1,6 @@
-import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
+import "module-alias/register";
+import express, { Express, Request, Response } from "express";
 
 import { db } from "./config/db";
 import { Environment } from "./enums/Environment";
