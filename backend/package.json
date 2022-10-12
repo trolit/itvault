@@ -11,6 +11,11 @@
     "start": "node dist/main.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/main.js\""
   },
+  "_moduleAliases": {
+    "@enums": "dist/enums",
+    "@config": "dist/config",
+    "@interfaces": "dist/interfaces"
+  },
   "dependencies": {
     "dotenv": "^16.0.3",
     "env-var": "^7.3.0",
