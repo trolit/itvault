@@ -16,7 +16,8 @@ export const db = new DataSource({
   username: DATABASE_USER,
   password: DATABASE_ROOT_PASSWORD,
   database: DATABASE_NAME,
-  entities: ["src/entity/*.js"],
+  entities: ["src/entities/*.{ts,js}"],
+  migrations: ["src/migrations/*.{ts,js}"],
   logging: true,
   synchronize: false,
 });
