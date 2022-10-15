@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import "module-alias/register";
 import express, { Express, Request, Response } from "express";
 
-import { db } from "./config/db";
+import { dbContext } from "./config/dbContext";
 import { Environment } from "./enums/Environment";
 import { APP_PORT, NODE_ENV } from "./config/index";
 
@@ -12,7 +12,7 @@ const app: Express = express();
 
 // @TMP
 try {
-  db.initialize();
+  dbContext.initialize();
 
   console.log("Data Source has been initialized!");
 } catch (error) {
