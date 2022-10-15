@@ -7,7 +7,7 @@ import {
   DATABASE_TYPE,
   DATABASE_USER,
   DATABASE_ROOT_PASSWORD,
-} from ".";
+} from "@config/index";
 
 export const dbContext = new DataSource({
   type: DATABASE_TYPE,
