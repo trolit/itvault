@@ -1,4 +1,4 @@
 import { User } from "@entities/User";
-import { BaseRepository } from "@repositories/BaseRepository";
+import { Repository } from "@repositories/Repository";
 
-export class UserRepository extends BaseRepository<User> {}
+export class UserRepository extends Repository<User> {}

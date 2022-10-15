@@ -1,6 +1,6 @@
-import { IBaseRepository } from "@interfaces/IBaseRepository";
+import { IRepository } from "@interfaces/IRepository";
 
-export class BaseRepository<T> implements IBaseRepository<T> {
+export class Repository<T> implements IRepository<T> {
   getAll(): Promise<T[]> {
     throw new Error("Method not implemented.");
   }
