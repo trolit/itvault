@@ -16,7 +16,9 @@
     "paths": {
       "@enums/*": ["enums/*"],
       "@config/*": ["config/*"],
-      "@interfaces/*": ["interfaces/*"]
+      "@entities/*": ["entities/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@repositories/*": ["repositories/*"]
     }
   }
 }
