@@ -19,7 +19,8 @@
   "_moduleAliases": {
     "@enums": "dist/enums",
     "@config": "dist/config",
-    "@interfaces": "dist/interfaces"
+    "@interfaces": "dist/interfaces",
+    "@repositories/*": "dist/repositories"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
