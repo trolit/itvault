@@ -1,4 +1,6 @@
-import { server } from "server";
+import "module-alias/register";
+
+import { server } from "./server";
 import { APP_PORT } from "./config";
 
 const startServer = async () => {
