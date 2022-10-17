@@ -17,6 +17,7 @@
       "@enums/*": ["enums/*"],
       "@config/*": ["config/*"],
       "@entities/*": ["entities/*"],
+      "@utilities/*": ["utilities/*"],
       "@interfaces/*": ["interfaces/*"],
       "@repositories/*": ["repositories/*"]
     }
