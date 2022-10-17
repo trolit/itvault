@@ -1,32 +1,16 @@
-import dotenv from "dotenv";
 import "module-alias/register";
-import express, { Express, Request, Response } from "express";
 
-import { dbContext } from "./config/dbContext";
-import { Environment } from "./enums/Environment";
-import { APP_PORT, NODE_ENV } from "./config/index";
+import { server } from "./server";
+import { APP_PORT } from "./config";
 
-dotenv.config();
+const startServer = async () => {
+  const app = await server();
 
-const app: Express = express();
-
-// @TMP
-try {
-  dbContext.initialize();
-
-  console.log("Data Source has been initialized!");
-} catch (error) {
-  console.error(error);
-}
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
-
-app.listen(APP_PORT, () => {
-  if (NODE_ENV === Environment.development) {
+  app.listen(APP_PORT, () => {
     console.log(
       `⚡️[server]: Server is running at https://localhost:${APP_PORT}`
     );
-  }
-});
+  });
+};
+
+startServer();

@@ -9,7 +9,7 @@ import {
   DATABASE_ROOT_PASSWORD,
 } from "@config/index";
 
-export const dbContext = new DataSource({
+export const dataSource = new DataSource({
   type: DATABASE_TYPE,
   host: DATABASE_HOST,
   port: DATABASE_PORT,
