@@ -20,6 +20,6 @@ export class LoginController implements IController {
 
     const users = await this.userRepository.find();
 
-    return response.status(200).send(1);
+    return response.status(200).send();
   }
 }
