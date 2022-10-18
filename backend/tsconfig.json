@@ -16,8 +16,10 @@
     "paths": {
       "@enums/*": ["enums/*"],
       "@config/*": ["config/*"],
+      "@routes/*": ["routes/*"],
       "@entities/*": ["entities/*"],
       "@utilities/*": ["utilities/*"],
+      "@controllers/*": ["controllers/*"],
       "@interfaces/*": ["interfaces/*"],
       "@repositories/*": ["repositories/*"]
     }
