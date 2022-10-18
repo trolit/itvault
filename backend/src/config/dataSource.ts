@@ -1,5 +1,7 @@
 import { DataSource } from "typeorm";
 
+import { User } from "@entities/User";
+
 import {
   DATABASE_HOST,
   DATABASE_NAME,
@@ -16,8 +18,8 @@ export const dataSource = new DataSource({
   username: DATABASE_USER,
   password: DATABASE_ROOT_PASSWORD,
   database: DATABASE_NAME,
-  entities: ["src/entities/*.{ts,js}"],
-  migrations: ["src/migrations/*.{ts,js}"],
+  entities: [User],
+  migrations: ["src/migrations/*.js"],
   logging: true,
   synchronize: false,
 });
