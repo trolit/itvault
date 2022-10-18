@@ -1,4 +1,5 @@
 import "module-alias/register";
+import "reflect-metadata";
 
 import { server } from "./server";
 import { APP_PORT } from "./config";
