@@ -42,3 +42,8 @@ export const DATABASE_PORT: number = env
   .get("DATABASE_PORT")
   .required()
   .asPortNumber();
+
+export const ROUTES_PREFIX: string = env
+  .get("ROUTES_PREFIX")
+  .required()
+  .asString();
