@@ -17,6 +17,7 @@
       "@enums/*": ["enums/*"],
       "@config/*": ["config/*"],
       "@routes/*": ["routes/*"],
+      "@helpers/*": ["helpers/*"],
       "@entities/*": ["entities/*"],
       "@utilities/*": ["utilities/*"],
       "@controllers/*": ["controllers/*"],

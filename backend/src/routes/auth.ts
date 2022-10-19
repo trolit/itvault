@@ -1,14 +1,10 @@
-import { container } from "tsyringe";
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 
 import { LoginController } from "@controllers/Auth/Login";
+import { processRequestWith } from "./processRequestWith";
 
-const instance = container.resolve(LoginController);
+const authRoutes = Router();
 
-const route = Router();
+authRoutes.post("/login", processRequestWith(LoginController));
 
-route.post("/login", (request: Request, response: Response) => {
-  instance.invoke(request, response);
-});
-
-export default route;
+export = authRoutes;
