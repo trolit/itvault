@@ -5,9 +5,9 @@ import { instanceOf } from "@helpers/instanceOf";
 import { IController } from "@interfaces/IController";
 
 export const processRequestWith =
-  <T>(ControllerType: InjectionToken<T>) =>
+  <T>(Controller: InjectionToken<T>) =>
   (...args: [Request, Response]) => {
-    const controller = instanceOf(ControllerType) as IController;
+    const controller = instanceOf(Controller) as IController;
 
     const [request, response] = args;
 
