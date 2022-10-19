@@ -5,6 +5,6 @@ import { processRequestWith } from "./processRequestWith";
 
 const authRoutes = Router();
 
-authRoutes.post("/login", processRequestWith(LoginController));
+authRoutes.post("/v1/login", processRequestWith(LoginController));
 
 export = authRoutes;
