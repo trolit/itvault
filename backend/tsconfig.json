@@ -18,6 +18,7 @@
       "@config/*": ["config/*"],
       "@routes/*": ["routes/*"],
       "@helpers/*": ["helpers/*"],
+      "@seeders/*": ["seeders/*"],
       "@entities/*": ["entities/*"],
       "@utilities/*": ["utilities/*"],
       "@controllers/*": ["controllers/*"],
