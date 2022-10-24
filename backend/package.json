@@ -11,9 +11,10 @@
     "start": "node dist/main.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/main.js\"",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "migration:generate": "npm run typeorm migration:generate -- -d ./src/config/db.ts",
-    "migration:run": "npm run typeorm migration:run -- -d ./src/config/db.ts",
-    "migration:revert": "npm run typeorm migration:revert -- -d ./src/config/db.ts",
+    "typeorm:seed": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/dist/cli/index.js -d ./src/config/dataSource.ts seed",
+    "migration:generate": "npm run typeorm migration:generate -- -d ./src/config/dataSource.ts",
+    "migration:run": "npm run typeorm migration:run -- -d ./src/config/dataSource.ts",
+    "migration:revert": "npm run typeorm migration:revert -- -d ./src/config/dataSource.ts",
     "docker:db": "docker exec -it db bash"
   },
   "_moduleAliases": {
@@ -21,7 +22,9 @@
     "@config": "dist/config",
     "@routes": "dist/routes",
     "@helpers": "dist/helpers",
+    "@seeders": "dist/seeders",
     "@entities": "dist/entities",
+    "@factories": "dist/factories",
     "@utilities": "dist/utilities",
     "@interfaces": "dist/interfaces",
     "@controllers": "dist/controllers",
@@ -41,9 +44,11 @@
     "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "tsyringe": "^4.7.0",
-    "typeorm": "^0.3.10"
+    "typeorm": "^0.3.10",
+    "typeorm-extension": "^2.1.15"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "concurrently": "^7.4.0",
