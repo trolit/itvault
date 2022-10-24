@@ -1,6 +1,9 @@
-import { DataSource } from "typeorm";
+import { SeederOptions } from "typeorm-extension";
+import { DataSource, DataSourceOptions } from "typeorm";
 
 import { User } from "@entities/User";
+import { UserSeeder } from "@seeders/User";
+import { userFactory } from "@factories/User";
 
 import {
   DATABASE_HOST,
@@ -11,7 +14,7 @@ import {
   DATABASE_ROOT_PASSWORD,
 } from "@config/index";
 
-export const dataSource = new DataSource({
+const options: DataSourceOptions & SeederOptions = {
   type: DATABASE_TYPE,
   host: DATABASE_HOST,
   port: DATABASE_PORT,
@@ -22,4 +25,9 @@ export const dataSource = new DataSource({
   migrations: ["src/migrations/*.js"],
   logging: true,
   synchronize: false,
-});
+
+  seeds: [UserSeeder],
+  factories: [userFactory],
+};
+
+export const dataSource = new DataSource(options);
