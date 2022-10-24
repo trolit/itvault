@@ -11,10 +11,10 @@
     "start": "node dist/main.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/main.js\"",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "typeorm:seed": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/dist/cli/index.js seed",
-    "migration:generate": "npm run typeorm migration:generate -- -d ./src/config/db.ts",
-    "migration:run": "npm run typeorm migration:run -- -d ./src/config/db.ts",
-    "migration:revert": "npm run typeorm migration:revert -- -d ./src/config/db.ts",
+    "typeorm:seed": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/dist/cli/index.js -d ./src/config/dataSource.ts seed",
+    "migration:generate": "npm run typeorm migration:generate -- -d ./src/config/dataSource.ts",
+    "migration:run": "npm run typeorm migration:run -- -d ./src/config/dataSource.ts",
+    "migration:revert": "npm run typeorm migration:revert -- -d ./src/config/dataSource.ts",
     "docker:db": "docker exec -it db bash"
   },
   "_moduleAliases": {
@@ -24,6 +24,7 @@
     "@helpers": "dist/helpers",
     "@seeders": "dist/seeders",
     "@entities": "dist/entities",
+    "@factories": "dist/factories",
     "@utilities": "dist/utilities",
     "@interfaces": "dist/interfaces",
     "@controllers": "dist/controllers",
