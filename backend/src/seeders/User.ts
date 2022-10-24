@@ -1,5 +1,5 @@
-import { Seeder, SeederFactoryManager } from "typeorm-extension";
 import { DataSource } from "typeorm";
+import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { User } from "@entities/User";
 
