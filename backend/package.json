@@ -22,7 +22,6 @@
     "@config": "dist/config",
     "@routes": "dist/routes",
     "@helpers": "dist/helpers",
-    "@seeders": "dist/seeders",
     "@entities": "dist/entities",
     "@factories": "dist/factories",
     "@utilities": "dist/utilities",
