@@ -1,6 +1,6 @@
 import express from "express";
 
-import { dataSource } from "@config/dataSource";
+import { dataSource } from "@config/data-source";
 import { setupExpress } from "@utilities/setupExpress";
 
 export const server = async () => {

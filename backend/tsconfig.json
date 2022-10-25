@@ -14,14 +14,15 @@
     "strict": true,
     "baseUrl": "src",
     "paths": {
+      "@config": ["config/"],
       "@enums/*": ["enums/*"],
       "@config/*": ["config/*"],
       "@routes/*": ["routes/*"],
       "@helpers/*": ["helpers/*"],
-      "@seeders/*": ["seeders/*"],
       "@entities/*": ["entities/*"],
       "@factories/*": ["factories/*"],
       "@utilities/*": ["utilities/*"],
+      "@migrations/*": ["migrations/*"],
       "@controllers/*": ["controllers/*"],
       "@interfaces/*": ["interfaces/*"],
       "@repositories/*": ["repositories/*"]

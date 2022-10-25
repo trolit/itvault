@@ -1,18 +1,22 @@
 import { SeederOptions } from "typeorm-extension";
 import { DataSource, DataSourceOptions } from "typeorm";
 
-import { User } from "@entities/User";
-import { UserSeeder } from "@seeders/User";
-import { userFactory } from "@factories/User";
-
 import {
+  NODE_ENV,
   DATABASE_HOST,
   DATABASE_NAME,
   DATABASE_PORT,
   DATABASE_TYPE,
   DATABASE_USER,
   DATABASE_ROOT_PASSWORD,
-} from "@config/index";
+} from "@config";
+import { seeds } from "./seeds";
+import { entities } from "./entities";
+import { factories } from "./factories";
+import { migrations } from "./migrations";
+import { Environment } from "@enums/Environment";
+
+const isProduction = NODE_ENV === Environment.production;
 
 const options: DataSourceOptions & SeederOptions = {
   type: DATABASE_TYPE,
@@ -21,13 +25,13 @@ const options: DataSourceOptions & SeederOptions = {
   username: DATABASE_USER,
   password: DATABASE_ROOT_PASSWORD,
   database: DATABASE_NAME,
-  entities: [User],
-  migrations: ["src/migrations/*.js"],
+  entities,
+  migrations,
   logging: true,
   synchronize: false,
 
-  seeds: [UserSeeder],
-  factories: [userFactory],
+  seeds: isProduction ? [] : seeds,
+  factories: isProduction ? [] : factories,
 };
 
 export const dataSource = new DataSource(options);
