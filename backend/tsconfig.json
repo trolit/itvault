@@ -22,6 +22,7 @@
       "@entities/*": ["entities/*"],
       "@factories/*": ["factories/*"],
       "@utilities/*": ["utilities/*"],
+      "@migrations/*": ["migrations/*"],
       "@controllers/*": ["controllers/*"],
       "@interfaces/*": ["interfaces/*"],
       "@repositories/*": ["repositories/*"]
