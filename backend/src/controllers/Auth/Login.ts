@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { User } from "@entities/User";
-import { dataSource } from "@config/dataSource";
+import { dataSource } from "@config/data-source";
 import { IController } from "@interfaces/IController";
 import { UserRepository } from "@repositories/UserRepository";
 
