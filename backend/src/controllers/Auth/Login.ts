@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
-import { Request, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { LoginDto } from "dtos/Login";
+import { TokenDto } from "dtos/Token";
 import { User } from "@entities/User";
 import { dataSource } from "@config/data-source";
 import { IController } from "@interfaces/IController";
+import { RequestOfType, ResponseOfType } from "@utilities/types";
 import { UserRepository } from "@repositories/UserRepository";
 
 export class LoginController implements IController {
@@ -16,8 +17,8 @@ export class LoginController implements IController {
   }
 
   async invoke(
-    request: Request<unknown, unknown, LoginDto>,
-    response: Response<object, Record<string, object>>
+    request: RequestOfType<LoginDto>,
+    response: ResponseOfType<TokenDto>
   ) {
     const { email, password } = request.body;
 
