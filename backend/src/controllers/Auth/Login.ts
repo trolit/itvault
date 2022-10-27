@@ -19,8 +19,6 @@ export class LoginController implements IController {
     request: Request<unknown, unknown, LoginDto>,
     response: Response<object, Record<string, object>>
   ) {
-    // TODO: create middleware to check if datasource connection is initialized
-
     const { email, password } = request.body;
 
     const user = await this.userRepository.findOneBy({ email });
