@@ -1,4 +1,6 @@
+import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
+import { StatusCodes as HTTP } from "http-status-codes";
 
 import { User } from "@entities/User";
 import { dataSource } from "@config/data-source";
@@ -13,13 +15,21 @@ export class LoginController implements IController {
   }
 
   async invoke(
-    request: Request,
-    response: Response<number, Record<string, number>>
+    request: Request<unknown, unknown, User>,
+    response: Response<string, Record<string, string>>
   ) {
     // TODO: create middleware to check if datasource connection is initialized
 
-    const users = await this.userRepository.find();
+    const { email } = request.body;
 
-    return response.status(200).send();
+    const user = await this.userRepository.findOneBy({ email });
+
+    if (!user) {
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
+
+    const token = jwt.sign({ email }, "<< !! TEMPORARY SECRET !! >>");
+
+    return response.status(HTTP.OK).send(token);
   }
 }
