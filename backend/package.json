@@ -18,6 +18,7 @@
     "docker:db": "docker exec -it db bash"
   },
   "_moduleAliases": {
+    "@dtos": "dist/dtos",
     "@enums": "dist/enums",
     "@config": "dist/config",
     "@routes": "dist/routes",
