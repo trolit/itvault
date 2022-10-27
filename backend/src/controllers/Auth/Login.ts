@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { LoginDto } from "dtos/Login";
 import { User } from "@entities/User";
 import { dataSource } from "@config/data-source";
 import { IController } from "@interfaces/IController";
@@ -15,12 +16,12 @@ export class LoginController implements IController {
   }
 
   async invoke(
-    request: Request<unknown, unknown, User>,
-    response: Response<string, Record<string, string>>
+    request: Request<unknown, unknown, LoginDto>,
+    response: Response<object, Record<string, object>>
   ) {
     // TODO: create middleware to check if datasource connection is initialized
 
-    const { email } = request.body;
+    const { email, password } = request.body;
 
     const user = await this.userRepository.findOneBy({ email });
 
@@ -28,8 +29,17 @@ export class LoginController implements IController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
+    // TODO: verify encrypted password
+    const hasValidPassword = user.password === password;
+
+    if (!hasValidPassword) {
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
+
+    // TODO: company owner will refresh / set secret
+    // TODO: add expiration
     const token = jwt.sign({ email }, "<< !! TEMPORARY SECRET !! >>");
 
-    return response.status(HTTP.OK).send(token);
+    return response.status(HTTP.OK).send({ token });
   }
 }
