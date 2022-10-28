@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { StatusCodes as HTTP } from "http-status-codes";
 
@@ -28,10 +29,9 @@ export class LoginController implements IController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    // TODO: verify encrypted password
-    const hasValidPassword = user.password === password;
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (!hasValidPassword) {
+    if (!isPasswordValid) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
