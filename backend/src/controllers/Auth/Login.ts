@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { StatusCodes as HTTP } from "http-status-codes";
 
@@ -22,22 +23,26 @@ export class LoginController implements IController {
   ) {
     const { email, password } = request.body;
 
-    const user = await this.userRepository.findOneBy({ email });
+    const fixedEmail = email.toLowerCase();
+
+    const user = await this.userRepository.findOneBy({ email: fixedEmail });
 
     if (!user) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    // TODO: verify encrypted password
-    const hasValidPassword = user.password === password;
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (!hasValidPassword) {
+    if (!isPasswordValid) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
     // TODO: company owner will refresh / set secret
     // TODO: add expiration
-    const token = jwt.sign({ email }, "<< !! TEMPORARY SECRET !! >>");
+    const token = jwt.sign(
+      { email: fixedEmail },
+      "<< !! TEMPORARY SECRET !! >>"
+    );
 
     return response.status(HTTP.OK).send({ token });
   }

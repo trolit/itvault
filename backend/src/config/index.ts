@@ -47,3 +47,8 @@ export const ROUTES_PREFIX: string = env
   .get("ROUTES_PREFIX")
   .required()
   .asString();
+
+export const BCRYPT_SALT_ROUNDS: number = env
+  .get("BCRYPT_SALT_ROUNDS")
+  .required()
+  .asInt();
