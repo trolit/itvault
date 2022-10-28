@@ -23,7 +23,9 @@ export class LoginController implements IController {
   ) {
     const { email, password } = request.body;
 
-    const user = await this.userRepository.findOneBy({ email });
+    const fixedEmail = email.toLowerCase();
+
+    const user = await this.userRepository.findOneBy({ email: fixedEmail });
 
     if (!user) {
       return response.status(HTTP.BAD_REQUEST).send();
@@ -37,7 +39,10 @@ export class LoginController implements IController {
 
     // TODO: company owner will refresh / set secret
     // TODO: add expiration
-    const token = jwt.sign({ email }, "<< !! TEMPORARY SECRET !! >>");
+    const token = jwt.sign(
+      { email: fixedEmail },
+      "<< !! TEMPORARY SECRET !! >>"
+    );
 
     return response.status(HTTP.OK).send({ token });
   }
