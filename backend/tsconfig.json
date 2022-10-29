@@ -20,6 +20,7 @@
       "@config/*": ["config/*"],
       "@routes/*": ["routes/*"],
       "@helpers/*": ["helpers/*"],
+      "@schemas/*": ["schemas/*"],
       "@entities/*": ["entities/*"],
       "@factories/*": ["factories/*"],
       "@utilities/*": ["utilities/*"],
