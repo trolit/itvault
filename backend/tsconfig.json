@@ -25,6 +25,7 @@
       "@utilities/*": ["utilities/*"],
       "@interfaces/*": ["interfaces/*"],
       "@migrations/*": ["migrations/*"],
+      "@middlewares/*":["middlewares/*"],
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"]
     }

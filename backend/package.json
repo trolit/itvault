@@ -30,6 +30,7 @@
     "@interfaces": "dist/interfaces",
     "@migrations": "dist/migrations",
     "@controllers": "dist/controllers",
+    "@middlewares": "dist/middlewares",
     "@repositories": "dist/repositories"
   },
   "dependencies": {
