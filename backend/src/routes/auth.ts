@@ -1,15 +1,16 @@
 import { Router } from "express";
 
+import { LoginDto } from "@dtos/Login";
 import { loginSchema } from "@schemas/login";
 import { LoginController } from "@controllers/Auth/Login";
 import { processRequestWith } from "./processRequestWith";
-import { validateRequestWith } from "@middlewares/validateRequestWith";
+import { safeParseRequest } from "@middlewares/safeParseRequest";
 
 const authRoutes = Router();
 
 authRoutes.post(
   "/v1/login",
-  validateRequestWith(loginSchema),
+  safeParseRequest<LoginDto>(loginSchema),
   processRequestWith(LoginController)
 );
 
