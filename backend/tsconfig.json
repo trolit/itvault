@@ -3,6 +3,7 @@
     /* Visit https://aka.ms/tsconfig to read more about this file */
     "target": "es2016", 
     "module": "commonjs",
+    "skipLibCheck": true, // @INFO to get rid of "tpyeorm-extension" TS2344 error
     "rootDir": "src",
     "outDir": "dist",
     "esModuleInterop": true,
