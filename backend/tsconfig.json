@@ -14,17 +14,19 @@
     "strict": true,
     "baseUrl": "src",
     "paths": {
-      "@dtos/*": ["dtos/"],
+      "@dtos/*": ["dtos/*"],
       "@config": ["config/"],
       "@enums/*": ["enums/*"],
       "@config/*": ["config/*"],
       "@routes/*": ["routes/*"],
       "@helpers/*": ["helpers/*"],
+      "@schemas/*": ["schemas/*"],
       "@entities/*": ["entities/*"],
       "@factories/*": ["factories/*"],
       "@utilities/*": ["utilities/*"],
       "@interfaces/*": ["interfaces/*"],
       "@migrations/*": ["migrations/*"],
+      "@middlewares/*":["middlewares/*"],
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"]
     }
