@@ -23,9 +23,6 @@ export class LoginController implements IController {
   ) {
     const { email, password } = request.body;
 
-    console.log("---");
-    console.log(request.body);
-
     const user = await this.userRepository.findOneBy({ email });
 
     if (!user) {
