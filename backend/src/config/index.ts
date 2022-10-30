@@ -52,3 +52,13 @@ export const BCRYPT_SALT_ROUNDS: number = env
   .get("BCRYPT_SALT_ROUNDS")
   .required()
   .asInt();
+
+export const JWT_SECRET_KEY: string = env
+  .get("JWT_SECRET_KEY")
+  .required()
+  .asString();
+
+export const JWT_TOKEN_LIFETIME: string = env
+  .get("JWT_TOKEN_LIFETIME")
+  .required()
+  .asString();

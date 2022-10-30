@@ -7,8 +7,9 @@ import { TokenDto } from "dtos/Token";
 import { User } from "@entities/User";
 import { dataSource } from "@config/data-source";
 import { IController } from "@interfaces/IController";
-import { RequestOfType, ResponseOfType } from "@utilities/types";
+import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME } from "@config";
 import { UserRepository } from "@repositories/UserRepository";
+import { RequestOfType, ResponseOfType } from "@utilities/types";
 
 export class LoginController implements IController {
   private userRepository: UserRepository;
@@ -35,9 +36,9 @@ export class LoginController implements IController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    // TODO: company owner will refresh / set secret
-    // TODO: add expiration
-    const token = jwt.sign({ email }, "<< !! TEMPORARY SECRET !! >>");
+    const token = jwt.sign({ email }, JWT_SECRET_KEY, {
+      expiresIn: JWT_TOKEN_LIFETIME,
+    });
 
     return response.status(HTTP.OK).send({ token });
   }
