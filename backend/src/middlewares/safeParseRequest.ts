@@ -1,10 +1,10 @@
-import { ZodType } from "zod";
+import { ZodSchema } from "zod";
 import { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { RequestOfType } from "@utilities/types";
 
-export const safeParseRequest = <T>(schema: ZodType) => {
+export const safeParseRequest = <T>(schema: ZodSchema) => {
   return async (
     request: RequestOfType<T>,
     response: Response,
