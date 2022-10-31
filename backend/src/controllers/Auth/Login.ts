@@ -6,10 +6,11 @@ import { LoginDto } from "dtos/Login";
 import { TokenDto } from "dtos/Token";
 import { User } from "@entities/User";
 import { dataSource } from "@config/data-source";
+import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
-import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME } from "@config";
 import { UserRepository } from "@repositories/UserRepository";
 import { RequestOfType, ResponseOfType } from "@utilities/types";
+import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME, NODE_ENV } from "@config";
 
 export class LoginController implements IController {
   private userRepository: UserRepository;
@@ -40,6 +41,12 @@ export class LoginController implements IController {
       expiresIn: JWT_TOKEN_LIFETIME,
     });
 
-    return response.status(HTTP.OK).send({ token });
+    return response
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: NODE_ENV === Environment.production,
+      })
+      .status(HTTP.OK)
+      .send();
   }
 }
