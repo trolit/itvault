@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { LoginDto } from "dtos/Login";
-import { TokenDto } from "dtos/Token";
 import { UserDto } from "@dtos/User";
 import { User } from "@entities/User";
 import { dataSource } from "@config/data-source";
