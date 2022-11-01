@@ -17,6 +17,7 @@
     "paths": {
       "@dtos/*": ["dtos/*"],
       "@config": ["config/"],
+      "@routes": ["routes/"],
       "@enums/*": ["enums/*"],
       "@config/*": ["config/*"],
       "@routes/*": ["routes/*"],
