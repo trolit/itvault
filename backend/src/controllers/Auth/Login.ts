@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { LoginDto } from "dtos/Login";
-import { TokenDto } from "dtos/Token";
+import { UserDto } from "@dtos/User";
 import { User } from "@entities/User";
 import { dataSource } from "@config/data-source";
 import { Environment } from "@enums/Environment";
@@ -21,7 +21,7 @@ export class LoginController implements IController {
 
   async invoke(
     request: RequestOfType<LoginDto>,
-    response: ResponseOfType<TokenDto>
+    response: ResponseOfType<UserDto>
   ) {
     const { email, password } = request.body;
 
@@ -47,6 +47,6 @@ export class LoginController implements IController {
         secure: NODE_ENV === Environment.production,
       })
       .status(HTTP.OK)
-      .send();
+      .send({ email });
   }
 }
