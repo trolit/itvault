@@ -8,6 +8,8 @@ import { DatabaseType } from "@enums/DatabaseType";
 
 export const APP_PORT: number = env.get("PORT").required().asPortNumber();
 
+export const APP_URL: string = env.get("APP_URL").required().asString();
+
 export const NODE_ENV: Environment = env
   .get("NODE_ENV")
   .required()
