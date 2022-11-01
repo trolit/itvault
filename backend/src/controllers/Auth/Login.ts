@@ -21,7 +21,7 @@ export class LoginController implements IController {
 
   async invoke(
     request: RequestOfType<LoginDto>,
-    response: ResponseOfType<TokenDto>
+    response: ResponseOfType<UserDto>
   ) {
     const { email, password } = request.body;
 
@@ -47,6 +47,6 @@ export class LoginController implements IController {
         secure: NODE_ENV === Environment.production,
       })
       .status(HTTP.OK)
-      .send();
+      .send({ email });
   }
 }
