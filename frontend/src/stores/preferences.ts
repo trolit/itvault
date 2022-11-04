@@ -1,13 +1,13 @@
 import { defineStore } from "pinia";
 import { THEME_DARK } from "@/assets/constants/themes";
 
-interface State {
+interface IState {
   theme: string;
   isSidebarCollapsed: boolean;
 }
 
 export const usePreferencesStore = defineStore("preferences", {
-  state: (): State => ({
+  state: (): IState => ({
     theme: THEME_DARK,
     isSidebarCollapsed: false,
   }),
