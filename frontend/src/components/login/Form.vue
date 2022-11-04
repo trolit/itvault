@@ -21,7 +21,13 @@
     </n-form-item>
 
     <div class="actions">
-      <n-button text :bordered="false" type="tertiary" @click="login">
+      <n-button
+        text
+        type="tertiary"
+        :bordered="false"
+        :loading="isLoading"
+        @click="login"
+      >
         Sign in
       </n-button>
     </div>
@@ -39,11 +45,21 @@ const authStore = useAuthStore();
 
 const formData: Ref<ILoginForm> = ref({ email: "", password: "" });
 
+let isLoading = ref(false);
+
 async function login() {
+  if (isLoading.value) {
+    return;
+  }
+
+  isLoading.value = true;
+
   try {
     await authStore.login(formData.value);
   } catch (error) {
     console.error(error);
+  } finally {
+    isLoading.value = false;
   }
 }
 </script>
