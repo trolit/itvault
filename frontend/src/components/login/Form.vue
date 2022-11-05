@@ -1,19 +1,19 @@
 <template>
-  <n-form :show-label="false">
-    <n-form-item path="inputValue">
-      <n-input
-        v-model:value="formData.email"
-        type="text"
-        size="large"
-        placeholder="Login"
-      />
+  <n-form :show-label="false" size="large">
+    <n-form-item
+      :feedback="getError(errors.email)"
+      :validation-status="hasError(errors.email)"
+    >
+      <n-input v-model:value="email" type="text" placeholder="Login" />
     </n-form-item>
 
-    <n-form-item path="inputValue">
+    <n-form-item
+      :feedback="getError(errors.password)"
+      :validation-status="hasError(errors.password)"
+    >
       <n-input
-        v-model:value="formData.password"
-        size="large"
-        :maxlength="8"
+        v-model:value="password"
+        :maxlength="100"
         type="password"
         placeholder="Password"
         show-password-on="mousedown"
@@ -26,7 +26,7 @@
         type="tertiary"
         :bordered="false"
         :loading="isLoading"
-        @click="login"
+        @click="onSubmit"
       >
         Sign in
       </n-button>
@@ -35,7 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
+import { ref } from "vue";
+import { object, string } from "yup";
+import { useForm, useField } from "vee-validate";
 import { NInput, NForm, NFormItem, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/stores/auth";
@@ -43,23 +45,42 @@ import type { ILoginForm } from "@/interfaces/ILoginForm";
 
 const authStore = useAuthStore();
 
-const formData: Ref<ILoginForm> = ref({ email: "", password: "" });
+const schema = object({
+  email: string().required().email(),
+  password: string().required(),
+});
 
-let isLoading = ref(false);
+const { errors, handleSubmit, meta } = useForm({
+  validationSchema: schema,
+});
 
-async function login() {
-  if (isLoading.value) {
+let { value: isLoading } = ref(false);
+
+const onSubmit = handleSubmit.withControlled(async values => {
+  if (isLoading) {
     return;
   }
 
-  isLoading.value = true;
+  isLoading = true;
 
   try {
-    await authStore.login(formData.value);
+    await authStore.login(values as ILoginForm);
   } catch (error) {
     console.error(error);
   } finally {
-    isLoading.value = false;
+    isLoading = false;
   }
+});
+
+const { value: email } = useField<string>("email");
+
+const { value: password } = useField<string>("password");
+
+function hasError(value: string | undefined) {
+  return value && meta.value.touched ? "error" : undefined;
+}
+
+function getError(value: string | undefined) {
+  return meta.value.touched ? value : undefined;
 }
 </script>
