@@ -1,15 +1,15 @@
 <template>
   <n-form :show-label="false" size="large">
     <n-form-item
-      :feedback="errors.email"
-      :validation-status="!!errors.email ? 'error' : undefined"
+      :feedback="getError(errors.email)"
+      :validation-status="hasError(errors.email)"
     >
       <n-input v-model:value="email" type="text" placeholder="Login" />
     </n-form-item>
 
     <n-form-item
-      :feedback="errors.password"
-      :validation-status="!!errors.password ? 'error' : undefined"
+      :feedback="getError(errors.password)"
+      :validation-status="hasError(errors.password)"
     >
       <n-input
         v-model:value="password"
@@ -50,7 +50,7 @@ const schema = object({
   password: string().required(),
 });
 
-const { errors, handleSubmit } = useForm({
+const { errors, handleSubmit, meta } = useForm({
   validationSchema: schema,
 });
 
@@ -75,4 +75,12 @@ const onSubmit = handleSubmit.withControlled(async values => {
 const { value: email } = useField<string>("email");
 
 const { value: password } = useField<string>("password");
+
+function hasError(value: string | undefined) {
+  return value && meta.value.touched ? "error" : undefined;
+}
+
+function getError(value: string | undefined) {
+  return meta.value.touched ? value : undefined;
+}
 </script>
