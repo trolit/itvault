@@ -35,8 +35,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { object, string } from "yup";
 import { useForm, useField } from "vee-validate";
+import { object, string, type SchemaOf } from "yup";
 import { NInput, NForm, NFormItem, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/stores/auth";
@@ -44,7 +44,7 @@ import type { ILoginForm } from "@/interfaces/ILoginForm";
 
 const authStore = useAuthStore();
 
-const schema = object({
+const schema: SchemaOf<ILoginForm> = object({
   email: string().required().email(),
   password: string().required(),
 });
@@ -52,6 +52,10 @@ const schema = object({
 const { errors, handleSubmit, meta } = useForm({
   validationSchema: schema,
 });
+
+const { value: email } = useField<string>("email");
+
+const { value: password } = useField<string>("password");
 
 let { value: isLoading } = ref(false);
 
@@ -70,10 +74,6 @@ const onSubmit = handleSubmit.withControlled(async values => {
     isLoading = false;
   }
 });
-
-const { value: email } = useField<string>("email");
-
-const { value: password } = useField<string>("password");
 
 function hasError(value: string | undefined) {
   return value && meta.value.touched ? "error" : undefined;
