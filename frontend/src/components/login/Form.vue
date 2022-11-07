@@ -23,6 +23,7 @@
     <div class="actions">
       <n-button
         secondary
+        size="large"
         type="tertiary"
         :loading="isLoading"
         @click="onSubmit"
