@@ -1,15 +1,15 @@
 <template>
   <n-form :show-label="false" size="large">
     <n-form-item
-      :feedback="getError(errors.email)"
-      :validation-status="hasError(errors.email)"
+      :feedback="getError('email')"
+      :validation-status="hasError('email')"
     >
       <n-input v-model:value="email" type="text" placeholder="Login" />
     </n-form-item>
 
     <n-form-item
-      :feedback="getError(errors.password)"
-      :validation-status="hasError(errors.password)"
+      :feedback="getError('password')"
+      :validation-status="hasError('password')"
     >
       <n-input
         v-model:value="password"
@@ -42,6 +42,7 @@ import { NInput, NForm, NFormItem, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/stores/auth";
 import type { ILoginForm } from "@/interfaces/ILoginForm";
+import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
 
 const authStore = useAuthStore();
 
@@ -53,6 +54,8 @@ const schema: SchemaOf<ILoginForm> = object({
 const { errors, handleSubmit, meta } = useForm({
   validationSchema: schema,
 });
+
+const { getError, hasError } = useVeeValidateHelpers(meta, errors);
 
 const { value: email } = useField<string>("email");
 
@@ -75,12 +78,4 @@ const onSubmit = handleSubmit.withControlled(async values => {
     isLoading = false;
   }
 });
-
-function hasError(value: string | undefined) {
-  return value && meta.value.touched ? "error" : undefined;
-}
-
-function getError(value: string | undefined) {
-  return meta.value.touched ? value : undefined;
-}
 </script>
