@@ -22,9 +22,8 @@
 
     <div class="actions">
       <n-button
-        text
+        secondary
         type="tertiary"
-        :bordered="false"
         :loading="isLoading"
         @click="onSubmit"
       >
