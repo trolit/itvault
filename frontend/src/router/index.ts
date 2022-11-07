@@ -1,4 +1,9 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  type NavigationGuardNext,
+  type RouteLocationNormalized,
+} from "vue-router";
 
 import {
   ROUTE_GUEST_NAME,
@@ -40,8 +45,33 @@ const router = createRouter({
       path: `/${ROUTE_DASHBOARD_NAME}`,
       name: ROUTE_DASHBOARD_NAME,
       component: Dashboard,
+      props: {},
+      meta: {
+        requiresAuth: true,
+      },
     },
   ],
 });
+
+router.beforeEach(
+  (
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+    next: NavigationGuardNext
+  ) => {
+    // @TMP
+    const authenticatedUser = null;
+
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+    if (requiresAuth && !authenticatedUser) {
+      next(ROUTE_LOGIN_NAME);
+
+      return;
+    }
+
+    next();
+  }
+);
 
 export default router;
