@@ -13,8 +13,12 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   actions: {
+    isAuthenticated() {
+      return axios.get("auth/v1/is-authenticated");
+    },
+
     async login(payload: ILoginForm) {
-      const data = await axios.post(`auth/v1/login`, payload);
+      const data = await axios.post("auth/v1/login", payload);
 
       this.profile = data;
     },
