@@ -15,9 +15,6 @@ authRoutes.post(
   processRequestWith(LoginController)
 );
 
-authRoutes.get(
-  "/v1/is-authenticated",
-  processRequestWith(TokenVerificationController)
-);
+authRoutes.get("/v1/status", processRequestWith(TokenVerificationController));
 
 export = authRoutes;
