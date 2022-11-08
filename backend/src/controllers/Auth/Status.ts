@@ -1,3 +1,4 @@
+import { IsNull } from "typeorm";
 import type { Request } from "express";
 import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
@@ -45,7 +46,7 @@ export class StatusController implements IController {
 
     const user = await this._userRepository.findOneBy({
       email: payload.email,
-      deletedAt: undefined,
+      deletedAt: IsNull(),
     });
 
     if (!user) {
