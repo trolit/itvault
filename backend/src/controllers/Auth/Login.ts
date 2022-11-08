@@ -31,9 +31,12 @@ export class LoginController implements IController {
 
     const { email, password } = request.body;
 
-    const user = await this._userRepository.findOneBy({ email });
+    const user = await this._userRepository.findOneBy({
+      email,
+      deletedAt: undefined,
+    });
 
-    if (!user || user.deletedAt) {
+    if (!user) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
