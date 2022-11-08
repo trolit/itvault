@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { IsNull } from "typeorm";
 import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
@@ -33,7 +34,7 @@ export class LoginController implements IController {
 
     const user = await this._userRepository.findOneBy({
       email,
-      deletedAt: undefined,
+      deletedAt: IsNull(),
     });
 
     if (!user) {
