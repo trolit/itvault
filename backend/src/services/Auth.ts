@@ -13,7 +13,7 @@ export class AuthService {
   }
 
   decodeToken(token: string) {
-    return jwt.decode(token);
+    return jwt.decode(token, { complete: true });
   }
 
   isTokenValid(token: string) {
