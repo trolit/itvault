@@ -5,6 +5,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { User } from "@entities/User";
 import { AuthService } from "@services/Auth";
 import { dataSource } from "@config/data-source";
+import { JwtPayloadDto } from "@dtos/JwtPayload";
 import { ResponseOfType } from "@utilities/types";
 import { IController } from "@interfaces/IController";
 import { UserRepository } from "@repositories/UserRepository";
@@ -34,6 +35,22 @@ export class StatusController implements IController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
+    const decodedToken = this.authService.decodeToken(token);
+
+    if (!decodedToken) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    const payload = decodedToken.payload as JwtPayloadDto;
+
+    const user = await this._userRepository.findOneBy({
+      email: payload.email,
+      deletedAt: undefined,
+    });
+
+    if (!user) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
 
     return response.status(HTTP.OK).send();
   }
