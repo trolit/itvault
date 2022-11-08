@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { NODE_ENV } from "@config";
@@ -12,6 +13,7 @@ import { IController } from "@interfaces/IController";
 import { UserRepository } from "@repositories/UserRepository";
 import { RequestOfType, ResponseOfType } from "@utilities/types";
 
+@autoInjectable()
 export class LoginController implements IController {
   private _userRepository: UserRepository;
 
