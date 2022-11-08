@@ -24,6 +24,7 @@
       "@helpers/*": ["helpers/*"],
       "@schemas/*": ["schemas/*"],
       "@entities/*": ["entities/*"],
+      "@services/*": ["services/*"],
       "@factories/*": ["factories/*"],
       "@utilities/*": ["utilities/*"],
       "@interfaces/*": ["interfaces/*"],
