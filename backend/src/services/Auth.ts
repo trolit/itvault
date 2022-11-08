@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import type { SignOptions } from "jsonwebtoken";
+import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { JwtPayloadDto } from "@dtos/JwtPayload";
 import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME } from "@config";
@@ -17,8 +17,21 @@ export class AuthService {
   }
 
   isTokenValid(token: string) {
-    const isValid = jwt.verify(token, JWT_SECRET_KEY);
+    let isTokenValid = false;
 
-    return !!isValid;
+    jwt.verify(
+      token,
+      JWT_SECRET_KEY,
+      {
+        algorithms: ["HS256"],
+      },
+      (error: VerifyErrors | null) => {
+        if (!error) {
+          isTokenValid = true;
+        }
+      }
+    );
+
+    return isTokenValid;
   }
 }
