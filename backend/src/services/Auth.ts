@@ -12,6 +12,10 @@ export class AuthService {
     });
   }
 
+  decodeToken(token: string) {
+    return jwt.decode(token);
+  }
+
   isTokenValid(token: string) {
     const isValid = jwt.verify(token, JWT_SECRET_KEY);
 
