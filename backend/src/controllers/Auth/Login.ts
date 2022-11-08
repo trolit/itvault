@@ -13,10 +13,10 @@ import { RequestOfType, ResponseOfType } from "@utilities/types";
 import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME, NODE_ENV } from "@config";
 
 export class LoginController implements IController {
-  private userRepository: UserRepository;
+  private _userRepository: UserRepository;
 
   constructor() {
-    this.userRepository = dataSource.getRepository(User);
+    this._userRepository = dataSource.getRepository(User);
   }
 
   async invoke(
@@ -25,7 +25,7 @@ export class LoginController implements IController {
   ) {
     const { email, password } = request.body;
 
-    const user = await this.userRepository.findOneBy({ email });
+    const user = await this._userRepository.findOneBy({ email });
 
     if (!user || user.deletedAt) {
       return response.status(HTTP.BAD_REQUEST).send();
