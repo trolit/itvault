@@ -2,13 +2,20 @@ import type { Request } from "express";
 import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { User } from "@entities/User";
 import { AuthService } from "@services/Auth";
+import { dataSource } from "@config/data-source";
 import { ResponseOfType } from "@utilities/types";
 import { IController } from "@interfaces/IController";
+import { UserRepository } from "@repositories/UserRepository";
 
 @autoInjectable()
-export class TokenVerificationController implements IController {
-  constructor(private authService?: AuthService) {}
+export class StatusController implements IController {
+  private _userRepository: UserRepository;
+
+  constructor(private authService?: AuthService) {
+    this._userRepository = dataSource.getRepository(User);
+  }
 
   async invoke(request: Request, response: ResponseOfType<boolean>) {
     if (!this.authService) {
@@ -26,6 +33,7 @@ export class TokenVerificationController implements IController {
     if (!isValid) {
       return response.status(HTTP.FORBIDDEN).send();
     }
+
 
     return response.status(HTTP.OK).send();
   }

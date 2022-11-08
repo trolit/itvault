@@ -4,8 +4,8 @@ import { LoginDto } from "@dtos/Login";
 import { loginSchema } from "@schemas/login";
 import { LoginController } from "@controllers/Auth/Login";
 import { processRequestWith } from "./processRequestWith";
+import { StatusController } from "@controllers/Auth/Status";
 import { safeParseRequest } from "@middlewares/safeParseRequest";
-import { TokenVerificationController } from "@controllers/Auth/TokenVerification";
 
 const authRoutes = Router();
 
@@ -15,6 +15,6 @@ authRoutes.post(
   processRequestWith(LoginController)
 );
 
-authRoutes.get("/v1/status", processRequestWith(TokenVerificationController));
+authRoutes.get("/v1/status", processRequestWith(StatusController));
 
 export = authRoutes;
