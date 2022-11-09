@@ -13,8 +13,8 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   actions: {
-    isAuthenticated() {
-      return axios.get("auth/v1/is-authenticated");
+    status() {
+      return axios.get("auth/v1/status");
     },
 
     async login(payload: ILoginForm) {
