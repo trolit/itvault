@@ -36,13 +36,17 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { useForm, useField } from "vee-validate";
 import { object, string, type SchemaOf } from "yup";
 import { NInput, NForm, NFormItem, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/stores/auth";
 import type { ILoginForm } from "@/interfaces/ILoginForm";
+import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
+
+const router = useRouter();
 
 const authStore = useAuthStore();
 
@@ -61,21 +65,23 @@ const { value: email } = useField<string>("email");
 
 const { value: password } = useField<string>("password");
 
-let { value: isLoading } = ref(false);
+let isLoading = ref(false);
 
 const onSubmit = handleSubmit.withControlled(async values => {
-  if (isLoading) {
+  if (isLoading.value) {
     return;
   }
 
-  isLoading = true;
+  isLoading.value = true;
 
   try {
     await authStore.login(values as ILoginForm);
+
+    router.push({ name: ROUTE_DASHBOARD_NAME });
   } catch (error) {
     console.error(error);
   } finally {
-    isLoading = false;
+    isLoading.value = false;
   }
 });
 </script>
