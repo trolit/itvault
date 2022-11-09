@@ -16,6 +16,7 @@ import Guest from "@/views/Guest.vue";
 import Guide from "@/views/Guide.vue";
 import Login from "@/views/Login.vue";
 import Updates from "@/views/Updates.vue";
+import { useAuthStore } from "@/stores/auth";
 import Dashboard from "@/views/Dashboard.vue";
 
 const router = createRouter({
@@ -54,18 +55,27 @@ const router = createRouter({
 });
 
 router.beforeEach(
-  (
+  async (
     to: RouteLocationNormalized,
     from: RouteLocationNormalized,
     next: NavigationGuardNext
   ) => {
-    // @TMP
-    const authenticatedUser = null;
-
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-    if (requiresAuth && !authenticatedUser) {
-      next(ROUTE_LOGIN_NAME);
+    if (requiresAuth) {
+      const authStore = useAuthStore();
+
+      try {
+        await authStore.status();
+
+        next();
+      } catch (error) {
+        console.error(error);
+
+        // @TODO - pop message
+
+        next(ROUTE_LOGIN_NAME);
+      }
 
       return;
     }
