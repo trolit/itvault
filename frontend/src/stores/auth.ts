@@ -4,17 +4,27 @@ import { defineStore } from "pinia";
 import type { ILoginForm } from "@/interfaces/ILoginForm";
 
 interface IState {
-  profile: object;
+  profile: IProfile;
+}
+
+interface IProfile {
+  email: string;
 }
 
 export const useAuthStore = defineStore("auth", {
   state: (): IState => ({
-    profile: {},
+    profile: {
+      email: "",
+    },
   }),
 
   actions: {
+    status() {
+      return axios.get("auth/v1/status");
+    },
+
     async login(payload: ILoginForm) {
-      const data = await axios.post(`auth/v1/login`, payload);
+      const { data } = await axios.post<IProfile>("auth/v1/login", payload);
 
       this.profile = data;
     },
