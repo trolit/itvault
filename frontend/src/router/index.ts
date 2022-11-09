@@ -27,21 +27,25 @@ const router = createRouter({
       name: ROUTE_GUEST_NAME,
       component: Guest,
     },
+
     {
       path: `/${ROUTE_LOGIN_NAME}`,
       name: ROUTE_LOGIN_NAME,
       component: Login,
     },
+
     {
       path: `/${ROUTE_GUIDE_NAME}`,
       name: ROUTE_GUIDE_NAME,
       component: Guide,
     },
+
     {
       path: `/${ROUTE_UPDATES_NAME}`,
       name: ROUTE_UPDATES_NAME,
       component: Updates,
     },
+
     {
       path: `/${ROUTE_DASHBOARD_NAME}`,
       name: ROUTE_DASHBOARD_NAME,
