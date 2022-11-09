@@ -1,33 +1,43 @@
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { IsNull } from "typeorm";
+import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { NODE_ENV } from "@config";
 import { LoginDto } from "dtos/Login";
 import { UserDto } from "@dtos/User";
 import { User } from "@entities/User";
+import { AuthService } from "@services/Auth";
 import { dataSource } from "@config/data-source";
 import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
 import { UserRepository } from "@repositories/UserRepository";
 import { RequestOfType, ResponseOfType } from "@utilities/types";
-import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME, NODE_ENV } from "@config";
 
+@autoInjectable()
 export class LoginController implements IController {
-  private userRepository: UserRepository;
+  private _userRepository: UserRepository;
 
-  constructor() {
-    this.userRepository = dataSource.getRepository(User);
+  constructor(private authService?: AuthService) {
+    this._userRepository = dataSource.getRepository(User);
   }
 
   async invoke(
     request: RequestOfType<LoginDto>,
     response: ResponseOfType<UserDto>
   ) {
+    if (!this.authService) {
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+    }
+
     const { email, password } = request.body;
 
-    const user = await this.userRepository.findOneBy({ email });
+    const user = await this._userRepository.findOneBy({
+      email,
+      deletedAt: IsNull(),
+    });
 
-    if (!user || user.deletedAt) {
+    if (!user) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
@@ -37,9 +47,7 @@ export class LoginController implements IController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    const token = jwt.sign({ email }, JWT_SECRET_KEY, {
-      expiresIn: JWT_TOKEN_LIFETIME,
-    });
+    const token = this.authService.signToken({ email });
 
     return response
       .cookie("token", token, {
