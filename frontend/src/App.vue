@@ -9,7 +9,7 @@
     <n-loading-bar-provider>
       <app-header v-if="withAppHeader" />
 
-      <n-message-provider>
+      <n-message-provider placement="top-left">
         <main :class="{ 'with-app-header': withAppHeader }">
           <n-scrollbar>
             <router-view />
