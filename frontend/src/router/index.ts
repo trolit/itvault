@@ -76,8 +76,6 @@ router.beforeEach(
       } catch (error) {
         console.error(error);
 
-        // @TODO - pop message
-
         next(ROUTE_LOGIN_NAME);
       }
 
