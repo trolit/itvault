@@ -39,7 +39,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useForm, useField } from "vee-validate";
 import { object, string, type SchemaOf } from "yup";
-import { NInput, NForm, NFormItem, NButton } from "naive-ui";
+import { NInput, NForm, NFormItem, NButton, useMessage } from "naive-ui";
 
 import { useAuthStore } from "@/stores/auth";
 import type { ILoginForm } from "@/interfaces/ILoginForm";
@@ -47,6 +47,8 @@ import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
 
 const router = useRouter();
+
+const message = useMessage();
 
 const authStore = useAuthStore();
 
@@ -80,6 +82,11 @@ const onSubmit = handleSubmit.withControlled(async values => {
     router.push({ name: ROUTE_DASHBOARD_NAME });
   } catch (error) {
     console.error(error);
+
+    // @NOTE consider custom message
+    message.warning(
+      "Provided credentials are invalid or account does not exist."
+    );
   } finally {
     isLoading.value = false;
   }

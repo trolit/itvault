@@ -9,11 +9,13 @@
     <n-loading-bar-provider>
       <app-header v-if="withAppHeader" />
 
-      <main :class="{ 'with-app-header': withAppHeader }">
-        <n-scrollbar>
-          <router-view />
-        </n-scrollbar>
-      </main>
+      <n-message-provider placement="top-left">
+        <main :class="{ 'with-app-header': withAppHeader }">
+          <n-scrollbar>
+            <router-view />
+          </n-scrollbar>
+        </main>
+      </n-message-provider>
     </n-loading-bar-provider>
   </n-config-provider>
 </template>
@@ -32,6 +34,7 @@ import {
   NScrollbar,
   NGlobalStyle,
   NConfigProvider,
+  NMessageProvider,
   NLoadingBarProvider,
   type GlobalThemeOverrides,
 } from "naive-ui";

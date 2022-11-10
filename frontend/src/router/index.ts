@@ -69,20 +69,12 @@ router.beforeEach(
     if (requiresAuth) {
       const authStore = useAuthStore();
 
-      if (!authStore.profile.email) {
-        next(ROUTE_LOGIN_NAME);
-
-        return;
-      }
-
       try {
         await authStore.status();
 
         next();
       } catch (error) {
         console.error(error);
-
-        // @TODO - pop message
 
         next(ROUTE_LOGIN_NAME);
       }
