@@ -19,7 +19,7 @@ export class StatusController implements IController {
     this._userRepository = dataSource.getRepository(User);
   }
 
-  async invoke(request: Request, response: ResponseOfType<boolean>) {
+  async invoke(request: Request, response: ResponseOfType<JwtPayloadDto>) {
     if (!this.authService) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
@@ -53,6 +53,6 @@ export class StatusController implements IController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    return response.status(HTTP.OK).send();
+    return response.status(HTTP.OK).send(payload);
   }
 }
