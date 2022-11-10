@@ -18,10 +18,28 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { NCard, NDivider } from "naive-ui";
 import { DotMark as DotMarkIcon } from "@vicons/carbon";
 
+import { useAuthStore } from "@/stores/auth";
 import Icon from "@/components/common/Icon.vue";
 import Brand from "@/components/common/Brand.vue";
 import LoginForm from "@/components/login/Form.vue";
+import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
+
+onMounted(async () => {
+  const authStore = useAuthStore();
+
+  try {
+    await authStore.status();
+
+    const router = useRouter();
+
+    router.push({ name: ROUTE_DASHBOARD_NAME });
+  } catch (error) {
+    console.error(error);
+  }
+});
 </script>
