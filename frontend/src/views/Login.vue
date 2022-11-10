@@ -29,13 +29,13 @@ import Brand from "@/components/common/Brand.vue";
 import LoginForm from "@/components/login/Form.vue";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
+const router = useRouter();
+
 onMounted(async () => {
   const authStore = useAuthStore();
 
   try {
     await authStore.status();
-
-    const router = useRouter();
 
     router.push({ name: ROUTE_DASHBOARD_NAME });
   } catch (error) {
