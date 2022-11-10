@@ -19,8 +19,10 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   actions: {
-    status() {
-      return axios.get("auth/v1/status");
+    async status() {
+      const { data } = await axios.get<IProfile>("auth/v1/status");
+
+      this.profile = data;
     },
 
     async login(payload: ILoginForm) {
