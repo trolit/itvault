@@ -106,6 +106,13 @@
   }
 
   .theme-selector {
+    left: 0;
+    opacity: 0.5;
     position: absolute;
+    top: 5px;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
