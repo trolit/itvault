@@ -2,14 +2,16 @@ import { Entity, Column, OneToMany } from "typeorm";
 import { Base } from "./Base";
 import { UserToWorkflow } from "./UserToWorkflow";
 
-@Entity("users")
-export class User extends Base {
+@Entity("workflows")
+export class Workflow extends Base {
   @Column()
-  email: string;
+  name: string;
 
-  @Column()
+  @Column({
+    default: "",
+  })
   password: string;
 
-  @OneToMany(() => UserToWorkflow, userToWorkflow => userToWorkflow.user)
+  @OneToMany(() => UserToWorkflow, userToWorkflow => userToWorkflow.workflow)
   userToWorkflows: UserToWorkflow[];
 }

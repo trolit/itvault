@@ -7,17 +7,17 @@ import { WorkflowAccess } from "@enums/WorkflowAccess";
 @Entity("users_workflows")
 export class UserToWorkflow extends Base {
   @Column()
-  public userId: number;
+  userId: number;
 
   @Column()
-  public workflowId: number;
+  workflowId: number;
 
   @Column({ type: "enum", enum: WorkflowAccess, default: WorkflowAccess.read })
-  public access: WorkflowAccess;
+  access: WorkflowAccess;
 
-  @ManyToOne(() => User, user => user.workflows)
-  public user: User;
+  @ManyToOne(() => User, user => user.userToWorkflows)
+  user: User;
 
-  @ManyToOne(() => Workflow, workflow => workflow.users)
-  public workflow: Workflow;
+  @ManyToOne(() => Workflow, workflow => workflow.userToWorkflows)
+  workflow: Workflow;
 }
