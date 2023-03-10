@@ -13,7 +13,7 @@ export class UserToWorkflow extends Base {
   public workflowId: number;
 
   @Column({ type: "enum", enum: WorkflowAccess, default: WorkflowAccess.read })
-  public access: number;
+  public access: WorkflowAccess;
 
   @ManyToOne(() => User, user => user.workflows)
   public user: User;
