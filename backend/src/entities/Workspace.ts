@@ -7,10 +7,10 @@ import { UserToWorkspace } from "./UserToWorkspace";
 @Entity("workspaces")
 export class Workspace extends Base {
   @Column()
-  name: string;
+  name!: string;
 
   @Column({
-    default: "",
+    nullable: true,
   })
   password: string;
 
