@@ -30,14 +30,14 @@ export class UserToWorkflowSeeder implements Seeder {
     await updateWorkflowBridge(
       workflowRepository,
       userToWorkflowRepository,
-      user.id,
+      user,
       TEST_UNLOCKED_WORKFLOW.name
     );
 
     await updateWorkflowBridge(
       workflowRepository,
       userToWorkflowRepository,
-      user.id,
+      user,
       TEST_LOCKED_WORKFLOW.name
     );
   }
@@ -46,7 +46,7 @@ export class UserToWorkflowSeeder implements Seeder {
 async function updateWorkflowBridge(
   workflowRepository: Repository<Workflow>,
   userToWorkflowRepository: Repository<UserToWorkflow>,
-  userId: number,
+  user: User,
   name: string
 ) {
   const workflow = await workflowRepository.findOneBy({
@@ -55,9 +55,9 @@ async function updateWorkflowBridge(
 
   if (workflow) {
     await userToWorkflowRepository.save({
-      userId,
+      user,
+      workflow,
       access: WorkflowAccess.write,
-      workflowId: workflow.id,
     });
   }
 }
