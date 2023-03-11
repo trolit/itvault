@@ -1,11 +1,11 @@
 import { Entity, Column, ManyToOne } from "typeorm";
 import { Base } from "./Base";
 import { User } from "./User";
-import { Workflow } from "./Workflow";
-import { WorkflowAccess } from "@enums/WorkflowAccess";
+import { Workflow } from "./Workspace";
+import { WorkflowAccess } from "@enums/WorkspaceAccess";
 
-@Entity("users_workflows")
-export class UserToWorkflow extends Base {
+@Entity("users_workspaces")
+export class UserToWorkspace extends Base {
   @Column()
   userId: number;
 
