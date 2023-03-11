@@ -3,14 +3,19 @@ import { Entity, Column, OneToMany } from "typeorm";
 import { Base } from "./Base";
 import { UserToWorkspace } from "./UserToWorkspace";
 
-@Entity("users")
-export class User extends Base {
+@Entity("workspaces")
+export class Workspace extends Base {
   @Column()
-  email: string;
+  name: string;
 
-  @Column()
+  @Column({
+    default: "",
+  })
   password: string;
 
-  @OneToMany(() => UserToWorkspace, userToWorkspace => userToWorkspace.user)
+  @OneToMany(
+    () => UserToWorkspace,
+    userToWorkspace => userToWorkspace.workspace
+  )
   userToWorkspace: UserToWorkspace[];
 }

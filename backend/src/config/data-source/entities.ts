@@ -1,5 +1,5 @@
 import { User } from "@entities/User";
-import { Workflow } from "@entities/Workflow";
-import { UserToWorkflow } from "@entities/UserToWorkflow";
+import { Workspace } from "@entities/Workspace";
+import { UserToWorkspace } from "@entities/UserToWorkspace";
 
-export const entities = [User, Workflow, UserToWorkflow];
+export const entities = [User, Workspace, UserToWorkspace];
