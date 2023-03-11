@@ -18,12 +18,12 @@ export class UserSeeder implements Seeder {
       BCRYPT_SALT_ROUNDS
     );
 
-    await repository.insert([
-      {
-        email: TEST_ACCOUNT_EMAIL,
-        password,
-      },
-    ]);
+    const admin = repository.create({
+      email: TEST_ACCOUNT_EMAIL,
+      password,
+    });
+
+    await repository.save(admin);
 
     const userFactory = factoryManager.get(User);
 
