@@ -6,10 +6,10 @@ import { UserToWorkspace } from "./UserToWorkspace";
 @Entity("users")
 export class User extends Base {
   @Column()
-  email: string;
+  email!: string;
 
   @Column()
-  password: string;
+  password!: string;
 
   @OneToMany(() => UserToWorkspace, userToWorkspace => userToWorkspace.user)
   userToWorkspace: UserToWorkspace[];
