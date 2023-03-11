@@ -1,6 +1,8 @@
+import bcrypt from "bcrypt";
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 
+import { BCRYPT_SALT_ROUNDS } from "@config";
 import { Workflow } from "@entities/Workflow";
 import { TEST_LOCKED_WORKFLOW, TEST_UNLOCKED_WORKFLOW } from "./common";
 
@@ -29,11 +31,16 @@ export class WorkflowSeeder implements Seeder {
     });
 
     if (!lockedWorkflow) {
+      const password = await bcrypt.hash(
+        TEST_LOCKED_WORKFLOW.password,
+        BCRYPT_SALT_ROUNDS
+      );
+
       await repository.insert([
         {
           name: TEST_LOCKED_WORKFLOW_NAME,
 
-          password: TEST_LOCKED_WORKFLOW.password,
+          password,
         },
       ]);
     }
