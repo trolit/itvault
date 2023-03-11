@@ -11,7 +11,7 @@ export class UserToWorkspace extends Base {
   userId: number;
 
   @Column()
-  workflowId: number;
+  workspaceId: number;
 
   @Column({
     type: "enum",

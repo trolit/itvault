@@ -49,14 +49,14 @@ async function updateUserToWorkspaceBridge(
   user: User,
   name: string
 ) {
-  const workflow = await workspaceRepository.findOneBy({
+  const workspace = await workspaceRepository.findOneBy({
     name,
   });
 
-  if (workflow) {
+  if (workspace) {
     await userToWorkspaceRepository.save({
       user,
-      workflow,
+      workspace,
       access: WorkspaceAccess.write,
     });
   }
