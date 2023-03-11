@@ -6,10 +6,15 @@ import { Workspace } from "./Workspace";
 @Entity("blueprints")
 export class Blueprint extends Base {
   @Column()
-  name: string;
+  name!: string;
+
+  @Column({
+    nullable: true,
+  })
+  description: string;
 
   @Column()
-  color: string;
+  color!: string;
 
   @ManyToOne(() => Workspace, workspace => workspace.blueprints)
   workspace: Workspace;
