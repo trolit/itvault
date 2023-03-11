@@ -1,5 +1,5 @@
 import { UserSeeder } from "./User";
-import { WorkflowSeeder } from "./Workspace";
-import { UserToWorkflowSeeder } from "./UserToWorkspace";
+import { WorkspaceSeeder } from "./Workspace";
+import { UserToWorkspaceSeeder } from "./UserToWorkspace";
 
-export const seeds = [UserSeeder, WorkflowSeeder, UserToWorkflowSeeder];
+export const seeds = [UserSeeder, WorkspaceSeeder, UserToWorkspaceSeeder];
