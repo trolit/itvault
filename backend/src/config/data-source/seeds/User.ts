@@ -10,7 +10,7 @@ export class UserSeeder implements Seeder {
   public async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager
-  ): Promise<void> {
+  ) {
     const repository = dataSource.getRepository(User);
 
     const password = await bcrypt.hash(

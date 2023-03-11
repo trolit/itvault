@@ -12,7 +12,7 @@ import { WorkspaceAccess } from "@enums/WorkspaceAccess";
 import { UserToWorkspace } from "@entities/UserToWorkspace";
 
 export class UserToWorkspaceSeeder implements Seeder {
-  public async run(dataSource: DataSource): Promise<void> {
+  public async run(dataSource: DataSource) {
     const userRepository = dataSource.getRepository(User);
 
     const workspaceRepository = dataSource.getRepository(Workspace);
