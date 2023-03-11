@@ -20,7 +20,7 @@ export class UserToWorkspace extends Base {
   })
   access: WorkspaceAccess;
 
-  @ManyToOne(() => User, user => user.userToWorkflows)
+  @ManyToOne(() => User, user => user.userToWorkspace)
   user: User;
 
   @ManyToOne(() => Workspace, workspace => workspace.userToWorkspace)
