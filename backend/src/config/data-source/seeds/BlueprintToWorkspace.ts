@@ -1,5 +1,5 @@
-import { DataSource, Repository } from "typeorm";
 import { Seeder } from "typeorm-extension";
+import { DataSource, Repository } from "typeorm";
 
 import {
   TEST_COMMON_BLUEPRINT,
