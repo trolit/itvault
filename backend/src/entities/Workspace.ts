@@ -1,8 +1,8 @@
 import { Entity, Column, OneToMany } from "typeorm";
 
 import { Base } from "./Base";
-import { Blueprint } from "./Blueprint";
 import { UserToWorkspace } from "./UserToWorkspace";
+import { BlueprintToWorkspace } from "./BlueprintToWorkspace";
 
 @Entity("workspaces")
 export class Workspace extends Base {
@@ -20,6 +20,9 @@ export class Workspace extends Base {
   )
   userToWorkspace: UserToWorkspace[];
 
-  @OneToMany(() => Blueprint, blueprint => blueprint.workspace)
-  blueprints: Blueprint[];
+  @OneToMany(
+    () => BlueprintToWorkspace,
+    blueprintToWorkspace => blueprintToWorkspace.workspace
+  )
+  blueprintToWorkspace: BlueprintToWorkspace[];
 }

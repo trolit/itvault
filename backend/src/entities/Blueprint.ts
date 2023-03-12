@@ -1,7 +1,7 @@
-import { Entity, Column, ManyToOne } from "typeorm";
+import { Entity, Column, OneToMany } from "typeorm";
 
 import { Base } from "./Base";
-import { Workspace } from "./Workspace";
+import { BlueprintToWorkspace } from "./BlueprintToWorkspace";
 
 @Entity("blueprints")
 export class Blueprint extends Base {
@@ -16,6 +16,9 @@ export class Blueprint extends Base {
   @Column()
   color!: string;
 
-  @ManyToOne(() => Workspace, workspace => workspace.blueprints)
-  workspace: Workspace;
+  @OneToMany(
+    () => BlueprintToWorkspace,
+    blueprintToWorkspace => blueprintToWorkspace.blueprint
+  )
+  blueprintToWorkspace: BlueprintToWorkspace[];
 }
