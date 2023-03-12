@@ -8,17 +8,17 @@ import { WorkspaceAccess } from "@enums/WorkspaceAccess";
 @Entity("users_workspaces")
 export class UserToWorkspace extends Base {
   @Column()
-  userId: number;
+  userId!: number;
 
   @Column()
-  workspaceId: number;
+  workspaceId!: number;
 
   @Column({
     type: "enum",
     enum: WorkspaceAccess,
     default: WorkspaceAccess.read,
   })
-  access: WorkspaceAccess;
+  access!: WorkspaceAccess;
 
   @ManyToOne(() => User, user => user.userToWorkspace)
   user: User;

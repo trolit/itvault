@@ -10,3 +10,8 @@ export const TEST_LOCKED_WORKSPACE = {
   name: "locked test 0010",
   password: TEST_ACCOUNT_PASSWORD,
 };
+
+export const TEST_COMMON_BLUEPRINT = {
+  name: "Common",
+  color: "#C6CED1",
+};

@@ -2,14 +2,15 @@ import { Entity, Column, OneToMany } from "typeorm";
 
 import { Base } from "./Base";
 import { UserToWorkspace } from "./UserToWorkspace";
+import { BlueprintToWorkspace } from "./BlueprintToWorkspace";
 
 @Entity("workspaces")
 export class Workspace extends Base {
   @Column()
-  name: string;
+  name!: string;
 
   @Column({
-    default: "",
+    nullable: true,
   })
   password: string;
 
@@ -18,4 +19,10 @@ export class Workspace extends Base {
     userToWorkspace => userToWorkspace.workspace
   )
   userToWorkspace: UserToWorkspace[];
+
+  @OneToMany(
+    () => BlueprintToWorkspace,
+    blueprintToWorkspace => blueprintToWorkspace.workspace
+  )
+  blueprintToWorkspace: BlueprintToWorkspace[];
 }
