@@ -52,7 +52,7 @@ export class LoginController implements IController {
     return response
       .cookie("token", token, {
         httpOnly: true,
-        secure: NODE_ENV === Environment.production,
+        secure: NODE_ENV === Environment.Production,
       })
       .status(HTTP.OK)
       .send({ email });
