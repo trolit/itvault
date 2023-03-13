@@ -1,4 +1,4 @@
 export enum WorkspaceAccess {
-  read = 1,
-  write = 2,
+  Read = 1,
+  Write = 2,
 }

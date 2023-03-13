@@ -1,3 +1,3 @@
 export enum DatabaseType {
-  mysql = "mysql",
+  Mysql = "mysql",
 }

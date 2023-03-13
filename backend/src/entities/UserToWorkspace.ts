@@ -16,7 +16,7 @@ export class UserToWorkspace extends Base {
   @Column({
     type: "enum",
     enum: WorkspaceAccess,
-    default: WorkspaceAccess.read,
+    default: WorkspaceAccess.Read,
   })
   access!: WorkspaceAccess;
 

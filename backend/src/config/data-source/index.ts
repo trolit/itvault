@@ -16,7 +16,7 @@ import { factories } from "./factories";
 import { migrations } from "./migrations";
 import { Environment } from "@enums/Environment";
 
-const isProduction = NODE_ENV === Environment.production;
+const isProduction = NODE_ENV === Environment.Production;
 
 const options: DataSourceOptions & SeederOptions = {
   type: DATABASE_TYPE,
