@@ -57,7 +57,7 @@ async function updateUserToWorkspaceBridge(
     await userToWorkspaceRepository.save({
       user,
       workspace,
-      access: WorkspaceAccess.write,
+      access: WorkspaceAccess.Write,
     });
   }
 }
