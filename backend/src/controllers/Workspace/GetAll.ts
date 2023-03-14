@@ -1,0 +1,42 @@
+import { autoInjectable } from "tsyringe";
+import { StatusCodes as HTTP } from "http-status-codes";
+
+import { Workspace } from "@entities/Workspace";
+import { dataSource } from "@config/data-source";
+import { PaginatedResult } from "@utilities/Result";
+import { IController } from "@interfaces/IController";
+import { RequestWithQuery, ResponseOfType } from "@utilities/types";
+import { WorkspaceRepository } from "@repositories/WorkspaceRepository";
+
+interface QueryParams {
+  take?: number;
+
+  skip?: number;
+}
+
+@autoInjectable()
+export class GetAllController implements IController {
+  private _workspaceRepository: WorkspaceRepository;
+
+  constructor() {
+    this._workspaceRepository = dataSource.getRepository(Workspace);
+  }
+
+  async invoke(
+    request: RequestWithQuery<QueryParams>,
+    response: ResponseOfType<PaginatedResult<Workspace>>
+  ) {
+    if (!this._workspaceRepository) {
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+    }
+
+    const { take, skip } = request.query;
+
+    const [result, total] = await this._workspaceRepository.findAndCount({
+      take,
+      skip,
+    });
+
+    return response.status(HTTP.OK).send({ result, total });
+  }
+}
