@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, AfterLoad } from "typeorm";
+import { Entity, Column, OneToMany } from "typeorm";
 
 import { Base } from "./Base";
 import { UserToWorkspace } from "./UserToWorkspace";
@@ -26,11 +26,4 @@ export class Workspace extends Base {
     blueprintToWorkspace => blueprintToWorkspace.workspace
   )
   blueprintToWorkspace: BlueprintToWorkspace[];
-
-  isProtected: boolean;
-
-  @AfterLoad()
-  updateCounters() {
-    this.isProtected = !!this.password;
-  }
 }
