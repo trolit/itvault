@@ -1,4 +1,5 @@
 import { IsNull } from "typeorm";
+import { Request } from "express";
 import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
@@ -10,7 +11,6 @@ import { IController } from "@interfaces/IController";
 import { EntityMapperService } from "@services/EntityMapper";
 import { RequestWithQuery, ResponseOfType } from "@utilities/types";
 import { WorkspaceRepository } from "@repositories/WorkspaceRepository";
-
 interface QueryParams {
   take?: number;
 
@@ -26,10 +26,14 @@ export class GetAllController implements IController {
   }
 
   async invoke(
-    request: RequestWithQuery<QueryParams>,
+    request: Request<unknown, unknown, unknown, QueryParams>,
     response: ResponseOfType<PaginatedResult<WorkspaceDto>>
   ) {
-    if (!this._workspaceRepository || !this._entityMapperService) {
+    if (
+      !this._workspaceRepository ||
+      !this._entityMapperService ||
+      !request.userId
+    ) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
@@ -38,10 +42,13 @@ export class GetAllController implements IController {
     const [result, total] = await this._workspaceRepository.findAndCount({
       take,
       skip,
+      order: {
+        name: "asc",
+      },
       where: {
         deletedAt: IsNull(),
         userToWorkspace: {
-          userId: 1,
+          userId: request.userId,
         },
       },
       relations: {
