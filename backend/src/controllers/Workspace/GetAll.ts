@@ -30,9 +30,9 @@ export class GetAllController implements IController {
     response: ResponseOfType<PaginatedResult<WorkspaceDto>>
   ) {
     if (
+      !request.userId ||
       !this._workspaceRepository ||
-      !this._entityMapperService ||
-      !request.userId
+      !this._entityMapperService
     ) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
