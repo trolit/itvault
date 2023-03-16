@@ -1,10 +1,13 @@
+import { IsNull } from "typeorm";
 import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Workspace } from "@entities/Workspace";
 import { dataSource } from "@config/data-source";
+import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utilities/Result";
 import { IController } from "@interfaces/IController";
+import { EntityMapperService } from "@services/EntityMapper";
 import { RequestWithQuery, ResponseOfType } from "@utilities/types";
 import { WorkspaceRepository } from "@repositories/WorkspaceRepository";
 
@@ -18,15 +21,15 @@ interface QueryParams {
 export class GetAllController implements IController {
   private _workspaceRepository: WorkspaceRepository;
 
-  constructor() {
+  constructor(private _entityMapperService?: EntityMapperService) {
     this._workspaceRepository = dataSource.getRepository(Workspace);
   }
 
   async invoke(
     request: RequestWithQuery<QueryParams>,
-    response: ResponseOfType<PaginatedResult<Workspace>>
+    response: ResponseOfType<PaginatedResult<WorkspaceDto>>
   ) {
-    if (!this._workspaceRepository) {
+    if (!this._workspaceRepository || !this._entityMapperService) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
@@ -35,8 +38,23 @@ export class GetAllController implements IController {
     const [result, total] = await this._workspaceRepository.findAndCount({
       take,
       skip,
+      where: {
+        deletedAt: IsNull(),
+        userToWorkspace: {
+          userId: 1,
+        },
+      },
+      relations: {
+        userToWorkspace: true,
+      },
     });
 
-    return response.status(HTTP.OK).send({ result, total });
+    const mappedResult = this._entityMapperService.mapToDto(
+      result,
+      WorkspaceDto,
+      (from: Workspace) => ({ isProtected: !!from.password })
+    );
+
+    return response.status(HTTP.OK).send({ result: mappedResult, total });
   }
 }
