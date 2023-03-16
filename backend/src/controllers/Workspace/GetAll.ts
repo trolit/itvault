@@ -1,5 +1,4 @@
 import { IsNull } from "typeorm";
-import { Request } from "express";
 import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
@@ -11,6 +10,7 @@ import { IController } from "@interfaces/IController";
 import { EntityMapperService } from "@services/EntityMapper";
 import { RequestWithQuery, ResponseOfType } from "@utilities/types";
 import { WorkspaceRepository } from "@repositories/WorkspaceRepository";
+
 interface QueryParams {
   take?: number;
 
@@ -26,7 +26,7 @@ export class GetAllController implements IController {
   }
 
   async invoke(
-    request: Request<unknown, unknown, unknown, QueryParams>,
+    request: RequestWithQuery<QueryParams>,
     response: ResponseOfType<PaginatedResult<WorkspaceDto>>
   ) {
     if (
