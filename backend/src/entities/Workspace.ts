@@ -11,7 +11,6 @@ export class Workspace extends Base {
 
   @Column({
     nullable: true,
-    select: false,
   })
   password: string;
 
