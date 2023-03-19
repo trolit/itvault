@@ -2,8 +2,10 @@ import bcrypt from "bcrypt";
 import { DataSource } from "typeorm";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
+import { Role } from "@entities/Role";
 import { User } from "@entities/User";
 import { BCRYPT_SALT_ROUNDS } from "@config";
+import { HEAD_ADMIN_ROLE_NAME, MEMBER_ROLE } from "@config/roles";
 import { TEST_ACCOUNT_EMAIL, TEST_ACCOUNT_PASSWORD } from "./common";
 
 export class UserSeeder implements Seeder {
@@ -11,20 +13,35 @@ export class UserSeeder implements Seeder {
     dataSource: DataSource,
     factoryManager: SeederFactoryManager
   ) {
-    const repository = dataSource.getRepository(User);
+    const userRepository = dataSource.getRepository(User);
+
+    const roleRepository = dataSource.getRepository(Role);
+
+    const headAdminRole = await roleRepository.findOneBy({
+      name: HEAD_ADMIN_ROLE_NAME,
+    });
 
     const password = await bcrypt.hash(
       TEST_ACCOUNT_PASSWORD,
       BCRYPT_SALT_ROUNDS
     );
 
-    await repository.save({
-      email: TEST_ACCOUNT_EMAIL,
-      password,
+    if (headAdminRole) {
+      await userRepository.save({
+        email: TEST_ACCOUNT_EMAIL,
+        password,
+        role: headAdminRole,
+      });
+    }
+
+    const memberRole = await roleRepository.findOneBy({
+      name: MEMBER_ROLE.name,
     });
 
-    const userFactory = factoryManager.get(User);
+    if (memberRole) {
+      const userFactory = factoryManager.get(User);
 
-    await userFactory.saveMany(5, { password });
+      await userFactory.saveMany(5, { password, role: memberRole });
+    }
   }
 }
