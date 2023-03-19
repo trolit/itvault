@@ -1,5 +1,5 @@
 export enum Permission {
-  SaveRole = 0,
-  RemoveRole = 1,
+  CreateRole = 0,
+  UpdateRole = 1,
   AccessAllWorkflows = 2,
 }
