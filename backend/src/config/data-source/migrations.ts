@@ -6,6 +6,7 @@ import { InitRoleAndPermissionStructure1679236763287 } from "@migrations/1679236
 import { AddRoleReferenceToUser1679251676652 } from "@migrations/1679251676652-AddRoleReferenceToUser";
 import { ExpandPermissionToRoleWithEnabled1679252477776 } from "@migrations/1679252477776-ExpandPermissionToRoleWithEnabled";
 import { MarkPermissionNamePropertyAsUnique1679260617325 } from "@migrations/1679260617325-MarkPermissionNamePropertyAsUnique";
+import { SetDefaultOfEnabledPropertyInPermissionToRole1679260845721 } from "@migrations/1679260845721-SetDefaultOfEnabledPropertyInPermissionToRole";
 
 export const migrations = [
   InitUsersTable1665695149133,
@@ -16,4 +17,5 @@ export const migrations = [
   AddRoleReferenceToUser1679251676652,
   ExpandPermissionToRoleWithEnabled1679252477776,
   MarkPermissionNamePropertyAsUnique1679260617325,
+  SetDefaultOfEnabledPropertyInPermissionToRole1679260845721,
 ];
