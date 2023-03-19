@@ -1,7 +1,17 @@
-export const HEAD_ADMIN_ROLE = "Head Admin";
+import { IRole } from "@interfaces/IRole";
 
-export const ADMIN_ROLE = "Admin";
+export const HEAD_ADMIN_ROLE_NAME = "Head Admin";
 
-export const MEMBER_ROLE = "Member";
+export const ADMIN_ROLE: IRole = {
+  name: "Head Admin",
 
-export const ALL_ROLES = [HEAD_ADMIN_ROLE, ADMIN_ROLE, MEMBER_ROLE];
+  permissions: [],
+};
+
+export const MEMBER_ROLE: IRole = {
+  name: "Member",
+
+  permissions: [],
+};
+
+export const ALL_EDITABLE_ROLES = [ADMIN_ROLE, MEMBER_ROLE];
