@@ -12,7 +12,9 @@ export class User extends Base {
   @Column()
   password!: string;
 
-  @ManyToOne(() => Role, role => role.users)
+  @ManyToOne(() => Role, role => role.users, {
+    nullable: false,
+  })
   role!: Role;
 
   @OneToMany(() => UserToWorkspace, userToWorkspace => userToWorkspace.user)
