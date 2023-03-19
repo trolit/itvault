@@ -8,9 +8,23 @@ import { PermissionToRole } from "@entities/PermissionToRole";
 
 export class PermissionToRoleSeeder implements Seeder {
   public async run(dataSource: DataSource) {
+    const roleRepository = dataSource.getRepository(Role);
+
+    const role = await roleRepository.findOneBy({ name: HEAD_ADMIN_ROLE_NAME });
+
+    if (!role) {
+      return;
+    }
+
     const permissionToRoleRepository =
       dataSource.getRepository(PermissionToRole);
 
-    const roleRepository = dataSource.getRepository(Role);
+    ALL_PERMISSIONS.map(async permission => {
+      await permissionToRoleRepository.save({
+        enabled: true,
+        roleId: role.id,
+        permissionId: permission.id,
+      });
+    });
   }
 }
