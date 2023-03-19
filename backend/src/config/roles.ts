@@ -3,7 +3,7 @@ import { IRole } from "@interfaces/IRole";
 export const HEAD_ADMIN_ROLE_NAME = "Head Admin";
 
 export const ADMIN_ROLE: IRole = {
-  name: "Head Admin",
+  name: "Admin",
 
   permissions: [],
 };
