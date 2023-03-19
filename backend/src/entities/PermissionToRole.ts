@@ -14,6 +14,9 @@ export class PermissionToRole {
   @Column()
   roleId!: number;
 
+  @Column({ type: "boolean" })
+  enabled!: boolean;
+
   @ManyToOne(() => Permission, permission => permission.permissionToRole)
   permission: Permission;
 
