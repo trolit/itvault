@@ -4,6 +4,7 @@ import { MarkWorkspacesTablePasswordColumnAsNullable1678578647291 } from "@migra
 import { InitBlueprintsTable1678582183597 } from "@migrations/1678582183597-InitBlueprintsTable";
 import { InitRoleAndPermissionStructure1679236763287 } from "@migrations/1679236763287-InitRoleAndPermissionStructure";
 import { AddRoleReferenceToUser1679251676652 } from "@migrations/1679251676652-AddRoleReferenceToUser";
+import { ExpandPermissionToRoleWithEnabled1679252477776 } from "@migrations/1679252477776-ExpandPermissionToRoleWithEnabled";
 
 export const migrations = [
   InitUsersTable1665695149133,
@@ -12,4 +13,5 @@ export const migrations = [
   InitBlueprintsTable1678582183597,
   InitRoleAndPermissionStructure1679236763287,
   AddRoleReferenceToUser1679251676652,
+  ExpandPermissionToRoleWithEnabled1679252477776,
 ];
