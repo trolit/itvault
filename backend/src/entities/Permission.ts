@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+
+import { PermissionToRole } from "./PermissionToRole";
 
 @Entity("permissions")
 export class Permission {
@@ -7,4 +9,10 @@ export class Permission {
 
   @Column()
   name!: string;
+
+  @OneToMany(
+    () => PermissionToRole,
+    permissionToRole => permissionToRole.permission
+  )
+  permissionToRole: PermissionToRole[];
 }
