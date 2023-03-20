@@ -5,8 +5,8 @@ import { Seeder, SeederFactoryManager } from "typeorm-extension";
 import { Role } from "@entities/Role";
 import { User } from "@entities/User";
 import { BCRYPT_SALT_ROUNDS } from "@config";
-import { HEAD_ADMIN_ROLE_NAME, MEMBER_ROLE } from "@config/roles";
 import { TEST_ACCOUNT_EMAIL, TEST_ACCOUNT_PASSWORD } from "./common";
+import { HEAD_ADMIN_ROLE_NAME, MEMBER_ROLE } from "@config/default-roles";
 
 export class UserSeeder implements Seeder {
   public async run(

@@ -2,8 +2,8 @@ import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 
 import { Role } from "@entities/Role";
-import { HEAD_ADMIN_ROLE_NAME } from "@config/roles";
 import { ALL_PERMISSIONS } from "@config/permissions";
+import { HEAD_ADMIN_ROLE_NAME } from "@config/default-roles";
 import { PermissionToRole } from "@entities/PermissionToRole";
 
 export class PermissionToRoleSeeder implements Seeder {
