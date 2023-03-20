@@ -1,17 +1,17 @@
-import { IPermission } from "@interfaces/IPermission";
 import { Permission } from "@enums/Permission";
+import { IPermission } from "@interfaces/IPermission";
 
-export const CREATE_ROLE_PERMISSION: IPermission = {
+const CREATE_ROLE_PERMISSION: IPermission = {
   id: Permission.CreateRole,
   name: "Create role",
 };
 
-export const UPDATE_ROLE_PERMISSION: IPermission = {
+const UPDATE_ROLE_PERMISSION: IPermission = {
   id: Permission.UpdateRole,
   name: "Update role",
 };
 
-export const VIEW_ALL_WORKFLOWS_PERMISSION: IPermission = {
+const VIEW_ALL_WORKFLOWS_PERMISSION: IPermission = {
   id: Permission.ViewAllWorkflows,
   name: "View all workflows",
 };
