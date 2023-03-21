@@ -3,7 +3,6 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Request, NextFunction, Response } from "express";
 
 import { AuthService } from "@services/Auth";
-import { JwtPayloadDto } from "@dtos/JwtPayload";
 
 export const validateToken = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {
@@ -15,21 +14,17 @@ export const validateToken = (() => {
 
     const authService = container.resolve(AuthService);
 
-    const isValid = authService.isTokenValid(token);
+    const result = authService.verifyToken(token);
 
-    if (!isValid) {
+    if (result.error) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const decodedToken = authService.decodeToken(token);
-
-    if (!decodedToken) {
+    if (!result.content) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    const payload = decodedToken.payload as JwtPayloadDto;
-
-    request.userId = payload.id;
+    request.userId = result.content.id;
 
     next();
   };
