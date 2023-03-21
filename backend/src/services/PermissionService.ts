@@ -4,15 +4,15 @@ import { PermissionToRole } from "@entities/PermissionToRole";
 import { PermissionToRoleRepository } from "@repositories/PermissionToRoleRepository";
 
 export class PermissionService {
-  _permissionToRoleRepository: PermissionToRoleRepository;
+  private permissionToRoleRepository: PermissionToRoleRepository;
 
   constructor() {
-    this._permissionToRoleRepository =
+    this.permissionToRoleRepository =
       dataSource.getRepository(PermissionToRole);
   }
 
   async hasPermission(roleId: number, permissionId: Permission) {
-    const result = await this._permissionToRoleRepository.findOneBy({
+    const result = await this.permissionToRoleRepository.findOneBy({
       permissionId,
       roleId,
     });
