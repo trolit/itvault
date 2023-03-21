@@ -12,12 +12,12 @@ export class AuthService {
     });
   }
 
-  decodeToken(token: string) {
-    return jwt.decode(token, { complete: true });
-  }
+  verifyToken(token: string) {
+    const result: {
+      content?: JwtPayloadDto;
 
-  isTokenValid(token: string) {
-    let isTokenValid = false;
+      error?: VerifyErrors;
+    } = {};
 
     jwt.verify(
       token,
@@ -25,13 +25,15 @@ export class AuthService {
       {
         algorithms: ["HS256"],
       },
-      (error: VerifyErrors | null) => {
+      (error: VerifyErrors | null, decodedContent: unknown) => {
         if (!error) {
-          isTokenValid = true;
+          result.content = <JwtPayloadDto>decodedContent;
+        } else {
+          result.error = error;
         }
       }
     );
 
-    return isTokenValid;
+    return result;
   }
 }
