@@ -20,11 +20,7 @@ export const validateToken = (() => {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    if (!result.content) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
-    }
-
-    request.userId = result.content.id;
+    request.userId = result.payload.id;
 
     next();
   };
