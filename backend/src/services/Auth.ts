@@ -13,11 +13,8 @@ export class AuthService {
   }
 
   verifyToken(token: string) {
-    const result: {
-      content?: JwtPayloadDto;
-
-      error?: VerifyErrors;
-    } = {};
+    let verificationError: VerifyErrors | null = null;
+    let payload: JwtPayloadDto = { id: -1, email: "" };
 
     jwt.verify(
       token,
@@ -27,13 +24,21 @@ export class AuthService {
       },
       (error: VerifyErrors | null, decodedContent: unknown) => {
         if (!error) {
-          result.content = <JwtPayloadDto>decodedContent;
+          payload = <JwtPayloadDto>decodedContent;
         } else {
-          result.error = error;
+          verificationError = error;
         }
       }
     );
 
-    return result;
+    if (verificationError) {
+      return {
+        error: verificationError,
+      };
+    }
+
+    return {
+      payload,
+    };
   }
 }
