@@ -4,7 +4,7 @@ import { Request, NextFunction, Response } from "express";
 import { Permission } from "@enums/Permission";
 import { PermissionService } from "@services/PermissionService";
 
-export const requirePermission = async (permission: Permission) => {
+export const requirePermission = (permission: Permission) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const permissionService = new PermissionService();
 
