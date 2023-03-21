@@ -6,7 +6,6 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { User } from "@entities/User";
 import { AuthService } from "@services/Auth";
 import { dataSource } from "@config/data-source";
-import { JwtPayloadDto } from "@dtos/JwtPayload";
 import { ResponseOfType } from "@utilities/types";
 import { IController } from "@interfaces/IController";
 import { UserRepository } from "@repositories/UserRepository";
@@ -19,7 +18,7 @@ export class StatusController implements IController {
     this._userRepository = dataSource.getRepository(User);
   }
 
-  async invoke(request: Request, response: ResponseOfType<JwtPayloadDto>) {
+  async invoke(request: Request, response: ResponseOfType<{ email: string }>) {
     if (!this.authService) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
@@ -30,22 +29,20 @@ export class StatusController implements IController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const isValid = this.authService.isTokenValid(token);
+    const result = this.authService.verifyToken(token);
 
-    if (!isValid) {
+    if (result.error) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const decodedToken = this.authService.decodeToken(token);
-
-    if (!decodedToken) {
-      return response.status(HTTP.FORBIDDEN).send();
+    if (!result.content) {
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    const payload = decodedToken.payload as JwtPayloadDto;
+    const { email } = result.content;
 
     const user = await this._userRepository.findOneBy({
-      email: payload.email,
+      email,
       deletedAt: IsNull(),
     });
 
@@ -53,6 +50,6 @@ export class StatusController implements IController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    return response.status(HTTP.OK).send(payload);
+    return response.status(HTTP.OK).send({ email });
   }
 }
