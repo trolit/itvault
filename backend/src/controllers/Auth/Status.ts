@@ -3,24 +3,24 @@ import type { Request } from "express";
 import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { UserDto } from "@dtos/User";
 import { User } from "@entities/User";
 import { AuthService } from "@services/Auth";
 import { dataSource } from "@config/data-source";
-import { JwtPayloadDto } from "@dtos/JwtPayload";
 import { ResponseOfType } from "@utilities/types";
 import { IController } from "@interfaces/IController";
 import { UserRepository } from "@repositories/UserRepository";
 
 @autoInjectable()
 export class StatusController implements IController {
-  private _userRepository: UserRepository;
+  private userRepository: UserRepository;
 
-  constructor(private authService?: AuthService) {
-    this._userRepository = dataSource.getRepository(User);
+  constructor(private _authService?: AuthService) {
+    this.userRepository = dataSource.getRepository(User);
   }
 
-  async invoke(request: Request, response: ResponseOfType<JwtPayloadDto>) {
-    if (!this.authService) {
+  async invoke(request: Request, response: ResponseOfType<UserDto>) {
+    if (!this._authService) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
@@ -30,22 +30,18 @@ export class StatusController implements IController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const isValid = this.authService.isTokenValid(token);
+    const result = this._authService.verifyToken(token);
 
-    if (!isValid) {
+    if (result.error) {
+      response.clearCookie("token");
+
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const decodedToken = this.authService.decodeToken(token);
+    const { email } = result.payload;
 
-    if (!decodedToken) {
-      return response.status(HTTP.FORBIDDEN).send();
-    }
-
-    const payload = decodedToken.payload as JwtPayloadDto;
-
-    const user = await this._userRepository.findOneBy({
-      email: payload.email,
+    const user = await this.userRepository.findOneBy({
+      email,
       deletedAt: IsNull(),
     });
 
@@ -53,6 +49,6 @@ export class StatusController implements IController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    return response.status(HTTP.OK).send(payload);
+    return response.status(HTTP.OK).send({ email });
   }
 }

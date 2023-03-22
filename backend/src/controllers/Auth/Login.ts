@@ -47,7 +47,7 @@ export class LoginController implements IController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    const token = this.authService.signToken({ email });
+    const token = this.authService.signToken({ email, id: user.id });
 
     return response
       .cookie("token", token, {
