@@ -10,6 +10,7 @@ import { dataSource } from "@config/data-source";
 import { ResponseOfType } from "@utilities/types";
 import { IController } from "@interfaces/IController";
 import { UserRepository } from "@repositories/UserRepository";
+import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 
 @autoInjectable()
 export class StatusController implements IController {
@@ -33,7 +34,7 @@ export class StatusController implements IController {
     const result = this._authService.verifyToken(token);
 
     if (result.error) {
-      response.clearCookie("token");
+      response.clearCookie(JWT_TOKEN_COOKIE_KEY);
 
       return response.status(HTTP.FORBIDDEN).send();
     }
