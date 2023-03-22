@@ -64,3 +64,8 @@ export const JWT_TOKEN_LIFETIME: string = env
   .get("JWT_TOKEN_LIFETIME")
   .required()
   .asString();
+
+export const JWT_TOKEN_COOKIE_KEY: string = env
+  .get("JWT_TOKEN_COOKIE_KEY")
+  .required()
+  .asString();
