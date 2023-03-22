@@ -33,6 +33,8 @@ export class StatusController implements IController {
     const result = this._authService.verifyToken(token);
 
     if (result.error) {
+      response.clearCookie("token");
+
       return response.status(HTTP.FORBIDDEN).send();
     }
 
@@ -44,8 +46,6 @@ export class StatusController implements IController {
     });
 
     if (!user) {
-      response.clearCookie("token");
-
       return response.status(HTTP.FORBIDDEN).send();
     }
 
