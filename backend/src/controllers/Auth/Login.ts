@@ -3,7 +3,6 @@ import { IsNull } from "typeorm";
 import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { NODE_ENV } from "@config";
 import { LoginDto } from "dtos/Login";
 import { UserDto } from "@dtos/User";
 import { User } from "@entities/User";
@@ -11,6 +10,7 @@ import { AuthService } from "@services/Auth";
 import { dataSource } from "@config/data-source";
 import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
+import { NODE_ENV, JWT_TOKEN_COOKIE_KEY } from "@config";
 import { UserRepository } from "@repositories/UserRepository";
 import { RequestOfType, ResponseOfType } from "@utilities/types";
 
@@ -50,7 +50,7 @@ export class LoginController implements IController {
     const token = this.authService.signToken({ email, id: user.id });
 
     return response
-      .cookie("token", token, {
+      .cookie(JWT_TOKEN_COOKIE_KEY, token, {
         httpOnly: true,
         secure: NODE_ENV === Environment.Production,
       })
