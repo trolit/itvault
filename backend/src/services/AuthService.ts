@@ -2,9 +2,10 @@ import jwt from "jsonwebtoken";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { JwtPayload } from "@utilities/JwtPayload";
+import { IAuthService } from "@interfaces/IAuthService";
 import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME } from "@config";
 
-export class AuthService {
+export class AuthService implements IAuthService {
   signToken(payload: JwtPayload, options: SignOptions = {}) {
     return jwt.sign(payload, JWT_SECRET_KEY, {
       ...options,

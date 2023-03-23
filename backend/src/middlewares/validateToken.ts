@@ -2,7 +2,7 @@ import { container } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Request, NextFunction, Response } from "express";
 
-import { AuthService } from "@services/Auth";
+import { AuthService } from "@services/AuthService";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 
 export const validateToken = (() => {
