@@ -8,22 +8,20 @@ export const setupDependencyInjection = () => {
   registerDependenciesFromRequestedLocation("services");
 };
 
-function registerDependenciesFromRequestedLocation(requestedLocation: string) {
+function registerDependenciesFromRequestedLocation(directory: string) {
   const dependencyInterfacePath = path.join("src", "interfaces");
 
-  fs.readdir(`src/${requestedLocation}`, (error, files) => {
+  fs.readdir(`src/${directory}`, (error, files) => {
     files.forEach(async file => {
       const [dependencyFilename] = file.split(".");
 
       const interfaceName = `I${dependencyFilename}`;
 
-      console.log(path.join(dependencyInterfacePath, `${interfaceName}.ts`));
-
       if (
         fs.existsSync(path.join(dependencyInterfacePath, `${interfaceName}.ts`))
       ) {
         const dependency = await import(
-          `@${requestedLocation}/${dependencyFilename}.js`
+          `@${directory}/${dependencyFilename}.js`
         );
 
         container.register(interfaceName, dependency);
