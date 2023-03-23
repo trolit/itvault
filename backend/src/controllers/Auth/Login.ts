@@ -1,41 +1,34 @@
 import bcrypt from "bcrypt";
 import { IsNull } from "typeorm";
-import { autoInjectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { LoginDto } from "dtos/Login";
 import { UserDto } from "@dtos/User";
 import { User } from "@entities/User";
-import { AuthService } from "@services/Auth";
+import { LoginDto } from "@dtos/Login";
 import { dataSource } from "@config/data-source";
 import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
+import { IAuthService } from "@interfaces/IAuthService";
 import { NODE_ENV, JWT_TOKEN_COOKIE_KEY } from "@config";
 import { UserRepository } from "@repositories/UserRepository";
 import { RequestOfType, ResponseOfType } from "@utilities/types";
+import { IUserRepository } from "@interfaces/IUserRepository";
 
-@autoInjectable()
+@injectable()
 export class LoginController implements IController {
-  private _userRepository: UserRepository;
-
-  constructor(private authService?: AuthService) {
-    this._userRepository = dataSource.getRepository(User);
-  }
+  constructor(
+    @inject("IUserRepository") private userRepository: IUserRepository,
+    @inject("IAuthService") private authService: IAuthService
+  ) {}
 
   async invoke(
     request: RequestOfType<LoginDto>,
     response: ResponseOfType<UserDto>
   ) {
-    if (!this.authService) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
-    }
-
     const { email, password } = request.body;
 
-    const user = await this._userRepository.findOneBy({
-      email,
-      deletedAt: IsNull(),
-    });
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       return response.status(HTTP.BAD_REQUEST).send();
