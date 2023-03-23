@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
 
-export const setupSyringe = () => {
+export const setupDependencyInjection = () => {
   registerDependenciesFromRequestedLocation("repositories");
 
   registerDependenciesFromRequestedLocation("services");
