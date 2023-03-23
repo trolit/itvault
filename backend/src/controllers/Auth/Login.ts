@@ -1,19 +1,15 @@
 import bcrypt from "bcrypt";
-import { IsNull } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { UserDto } from "@dtos/User";
-import { User } from "@entities/User";
 import { LoginDto } from "@dtos/Login";
-import { dataSource } from "@config/data-source";
 import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/IAuthService";
 import { NODE_ENV, JWT_TOKEN_COOKIE_KEY } from "@config";
-import { UserRepository } from "@repositories/UserRepository";
-import { RequestOfType, ResponseOfType } from "@utilities/types";
 import { IUserRepository } from "@interfaces/IUserRepository";
+import { RequestOfType, ResponseOfType } from "@utilities/types";
 
 @injectable()
 export class LoginController implements IController {
