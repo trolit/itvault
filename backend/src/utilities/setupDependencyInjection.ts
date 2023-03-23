@@ -3,12 +3,12 @@ import path from "path";
 import { container } from "tsyringe";
 
 export const setupDependencyInjection = () => {
-  registerDependenciesFromRequestedLocation("repositories");
+  registerDependenciesFromLocation("repositories");
 
-  registerDependenciesFromRequestedLocation("services");
+  registerDependenciesFromLocation("services");
 };
 
-function registerDependenciesFromRequestedLocation(directory: string) {
+function registerDependenciesFromLocation(directory: string) {
   const dependencyInterfacePath = path.join("src", "interfaces");
 
   fs.readdir(`src/${directory}`, (error, files) => {
