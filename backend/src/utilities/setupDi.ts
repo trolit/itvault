@@ -1,22 +1,37 @@
+import fs from "fs";
+import path from "path";
 import { container } from "tsyringe";
 
-import { AuthService } from "@services/AuthService";
-import { UserRepository } from "@repositories/UserRepository";
-import { EntityMapperService } from "@services/EntityMapperService";
-import { WorkspaceRepository } from "@repositories/WorkspaceRepository";
-
 export const setupDi = () => {
-  /* repositories */
-  /* ------------ */
+  registerDependenciesFromRequestedLocation("repositories", ["BaseRepository"]);
 
-  container.register("IUserRepository", UserRepository);
-
-  container.register("IWorkspaceRepository", WorkspaceRepository);
-
-  /* services */
-  /* ------------ */
-
-  container.register("IAuthService", AuthService);
-
-  container.register("IEntityMapperService", EntityMapperService);
+  registerDependenciesFromRequestedLocation("services");
 };
+
+function registerDependenciesFromRequestedLocation(
+  directory: string,
+  filenamesToExclude: string[] = []
+) {
+  const dependencyInterfacePath = path.join("src", "interfaces");
+
+  fs.readdir(`src/${directory}`, (error, files) => {
+    files.forEach(async file => {
+      const [dependencyFilename] = file.split(".");
+
+      const interfaceName = `I${dependencyFilename}`;
+
+      if (
+        !filenamesToExclude.includes(dependencyFilename) &&
+        fs.existsSync(path.join(dependencyInterfacePath, `${interfaceName}.ts`))
+      ) {
+        const dependency = await import(`@${directory}/${dependencyFilename}`);
+
+        container.register(interfaceName, dependency[dependencyFilename]);
+
+        console.log(`➕ Added ${dependencyFilename} to DI container`);
+      } else {
+        console.log(`⚠️⚠️⚠️  Failed to register --> ${dependencyFilename} <--`);
+      }
+    });
+  });
+}
