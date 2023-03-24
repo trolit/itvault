@@ -1,6 +1,7 @@
 import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utilities/Result";
@@ -18,9 +19,9 @@ interface QueryParams {
 @autoInjectable()
 export class GetAllController implements IController {
   constructor(
-    @inject("IWorkspaceRepository")
+    @inject(Di.WorkspaceRepository)
     private workspaceRepository: IWorkspaceRepository,
-    @inject("IEntityMapperService")
+    @inject(Di.EntityMapperService)
     private entityMapperService: IEntityMapperService
   ) {}
 
