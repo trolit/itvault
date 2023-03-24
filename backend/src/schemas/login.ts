@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LoginDto } from "dtos/Login";
+import { LoginDto } from "@dtos/LoginDto";
 import { schemaForType } from "@helpers/schemaForType";
 
 export const loginSchema = schemaForType<LoginDto>()(

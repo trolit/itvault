@@ -2,9 +2,9 @@ import { IsNull } from "typeorm";
 import { autoInjectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { WorkspaceDto } from "@dtos/Workspace";
 import { Workspace } from "@entities/Workspace";
 import { dataSource } from "@config/data-source";
+import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utilities/Result";
 import { IController } from "@interfaces/IController";
 import { EntityMapperService } from "@services/EntityMapper";
