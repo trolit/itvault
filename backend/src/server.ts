@@ -1,8 +1,8 @@
 import express from "express";
 
+import { setupDi } from "@utilities/setupDi";
 import { dataSource } from "@config/data-source";
 import { setupExpress } from "@utilities/setupExpress";
-import { setupDependencyInjection } from "@utilities/setupDependencyInjection";
 
 export const server = async () => {
   const app = express();
@@ -17,7 +17,7 @@ export const server = async () => {
     process.exit(1);
   }
 
-  setupDependencyInjection();
+  setupDi();
 
   setupExpress(app);
 
