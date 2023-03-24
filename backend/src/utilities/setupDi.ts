@@ -14,24 +14,27 @@ function registerDependenciesFromRequestedLocation(
 ) {
   const dependencyInterfacePath = path.join("src", "interfaces");
 
-  fs.readdir(`src/${directory}`, (error, files) => {
-    files.forEach(async file => {
+  fs.readdir(`src/${directory}`, async (error, files) => {
+    for (const file of files) {
       const [dependencyFilename] = file.split(".");
+
+      if (filenamesToExclude.includes(dependencyFilename)) {
+        continue;
+      }
 
       const interfaceName = `I${dependencyFilename}`;
 
       if (
-        !filenamesToExclude.includes(dependencyFilename) &&
         fs.existsSync(path.join(dependencyInterfacePath, `${interfaceName}.ts`))
       ) {
         const dependency = await import(`@${directory}/${dependencyFilename}`);
 
         container.register(interfaceName, dependency[dependencyFilename]);
 
-        console.log(`➕ Added ${dependencyFilename} to DI container`);
+        console.log(`⭐ ${dependencyFilename} was registered in DI container`);
       } else {
-        console.log(`⚠️⚠️⚠️  Failed to register --> ${dependencyFilename} <--`);
+        console.log(`❗❗❗ Failed to register ${dependencyFilename}`);
       }
-    });
+    }
   });
 }
