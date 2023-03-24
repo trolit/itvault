@@ -10,11 +10,11 @@ export class UserRepository
   extends BaseRepository<User>
   implements IUserRepository
 {
+  protected database: Repository<User>;
+
   constructor() {
     super(User);
   }
-
-  protected database: Repository<User>;
 
   findByEmail(email: string): Promise<User | null> {
     return this.database.findOneBy({ email, deletedAt: IsNull() });
