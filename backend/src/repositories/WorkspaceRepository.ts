@@ -1,5 +1,5 @@
-import { IsNull, Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { IsNull, Repository } from "typeorm";
 
 import { Workspace } from "@entities/Workspace";
 import { dataSource } from "@config/data-source";
