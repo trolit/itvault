@@ -3,12 +3,12 @@ import path from "path";
 import { container } from "tsyringe";
 
 export const setupDi = () => {
-  registerDependenciesFromRequestedLocation("repositories", ["BaseRepository"]);
+  registerDependenciesFrom("repositories", ["BaseRepository"]);
 
-  registerDependenciesFromRequestedLocation("services");
+  registerDependenciesFrom("services");
 };
 
-function registerDependenciesFromRequestedLocation(
+function registerDependenciesFrom(
   directory: string,
   filenamesToExclude: string[] = []
 ) {
