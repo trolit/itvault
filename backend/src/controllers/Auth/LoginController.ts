@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
@@ -14,8 +15,8 @@ import { RequestOfType, ResponseOfType } from "@utilities/types";
 @injectable()
 export class LoginController implements IController {
   constructor(
-    @inject("IUserRepository") private userRepository: IUserRepository,
-    @inject("IAuthService") private authService: IAuthService
+    @inject(Di.UserRepository) private userRepository: IUserRepository,
+    @inject(Di.AuthService) private authService: IAuthService
   ) {}
 
   async invoke(
