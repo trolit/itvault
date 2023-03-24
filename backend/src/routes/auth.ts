@@ -2,10 +2,10 @@ import { Router } from "express";
 
 import { LoginDto } from "@dtos/Login";
 import { loginSchema } from "@schemas/login";
-import { LoginController } from "@controllers/Auth/Login";
 import { processRequestWith } from "./processRequestWith";
-import { StatusController } from "@controllers/Auth/Status";
 import { safeParseRequest } from "@middlewares/safeParseRequest";
+import { LoginController } from "@controllers/Auth/LoginController";
+import { StatusController } from "@controllers/Auth/StatusController";
 
 const authRoutes = Router();
 
