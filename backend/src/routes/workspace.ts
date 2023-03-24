@@ -1,10 +1,11 @@
 import { Router } from "express";
 
 import { processRequestWith } from "./processRequestWith";
-import { GetAllController } from "@controllers/Workspace/GetAll";
+import { validateToken } from "@middlewares/validateToken";
+import { GetAllController } from "@controllers/Workspace/GetAllController";
 
 const workspaceRoutes = Router();
 
-workspaceRoutes.get("/v1", processRequestWith(GetAllController));
+workspaceRoutes.get("/v1", validateToken, processRequestWith(GetAllController));
 
 export = workspaceRoutes;

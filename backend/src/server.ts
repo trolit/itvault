@@ -1,5 +1,6 @@
 import express from "express";
 
+import { setupDi } from "@utilities/setupDi";
 import { dataSource } from "@config/data-source";
 import { setupExpress } from "@utilities/setupExpress";
 
@@ -15,6 +16,8 @@ export const server = async () => {
 
     process.exit(1);
   }
+
+  setupDi();
 
   setupExpress(app);
 
