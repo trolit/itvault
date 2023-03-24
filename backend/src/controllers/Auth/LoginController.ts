@@ -2,8 +2,8 @@ import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { UserDto } from "@dtos/User";
-import { LoginDto } from "@dtos/Login";
+import { UserDto } from "@dtos/UserDto";
+import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/IAuthService";
