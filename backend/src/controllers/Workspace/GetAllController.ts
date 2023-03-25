@@ -1,15 +1,14 @@
-import { IsNull } from "typeorm";
-import { autoInjectable } from "tsyringe";
+import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { WorkspaceDto } from "@dtos/Workspace";
+import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
-import { dataSource } from "@config/data-source";
+import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utilities/Result";
 import { IController } from "@interfaces/IController";
-import { EntityMapperService } from "@services/EntityMapper";
 import { RequestWithQuery, ResponseOfType } from "@utilities/types";
-import { WorkspaceRepository } from "@repositories/WorkspaceRepository";
+import { IWorkspaceRepository } from "@interfaces/IWorkspaceRepository";
+import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
 interface QueryParams {
   take?: number;
@@ -19,44 +18,24 @@ interface QueryParams {
 
 @autoInjectable()
 export class GetAllController implements IController {
-  private _workspaceRepository: WorkspaceRepository;
-
-  constructor(private _entityMapperService?: EntityMapperService) {
-    this._workspaceRepository = dataSource.getRepository(Workspace);
-  }
+  constructor(
+    @inject(Di.WorkspaceRepository)
+    private workspaceRepository: IWorkspaceRepository,
+    @inject(Di.EntityMapperService)
+    private entityMapperService: IEntityMapperService
+  ) {}
 
   async invoke(
     request: RequestWithQuery<QueryParams>,
     response: ResponseOfType<PaginatedResult<WorkspaceDto>>
   ) {
-    if (
-      !request.userId ||
-      !this._workspaceRepository ||
-      !this._entityMapperService
-    ) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
-    }
-
     const { take, skip } = request.query;
 
-    const [result, total] = await this._workspaceRepository.findAndCount({
-      take,
-      skip,
-      order: {
-        name: "asc",
-      },
-      where: {
-        deletedAt: IsNull(),
-        userToWorkspace: {
-          userId: request.userId,
-        },
-      },
-      relations: {
-        userToWorkspace: true,
-      },
-    });
+    // @TODO - handle take/skip
+    // @TODO - handle userId
+    const [result, total] = await this.workspaceRepository.getAll(5, 0);
 
-    const mappedResult = this._entityMapperService.mapToDto(
+    const mappedResult = this.entityMapperService.mapToDto(
       result,
       WorkspaceDto,
       (from: Workspace) => ({ isProtected: !!from.password })
