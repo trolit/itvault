@@ -8,7 +8,7 @@ declare global {
     export interface Request {
       userId?: number;
 
-      permissions: { [key in Permission]?: boolean };
+      permissions?: { [key in Permission]?: boolean };
     }
   }
 }
