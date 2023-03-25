@@ -69,3 +69,13 @@ export const JWT_TOKEN_COOKIE_KEY: string = env
   .get("JWT_TOKEN_COOKIE_KEY")
   .required()
   .asString();
+
+export const REDIS_CONTAINER_PORT: number = env
+  .get("REDIS_CONTAINER_PORT")
+  .required()
+  .asInt();
+
+export const REDIS_PASSWORD: string = env
+  .get("REDIS_PASSWORD")
+  .required()
+  .asString();
