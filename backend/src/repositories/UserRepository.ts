@@ -24,7 +24,9 @@ export class UserRepository
       },
       relations: {
         role: {
-          permissionToRole: true,
+          permissionToRole: {
+            permission: true,
+          },
         },
       },
     });
