@@ -1,8 +1,13 @@
 import fs from "fs";
 import path from "path";
 import { container } from "tsyringe";
+import Redis from "ioredis/built/Redis";
 
-export const setupDi = () => {
+import { Di } from "@enums/Di";
+
+export const setupDi = (redis: Redis) => {
+  container.register(Di.Redis, { useValue: redis });
+
   registerDependenciesFrom("repositories", ["BaseRepository"]);
 
   registerDependenciesFrom("services");

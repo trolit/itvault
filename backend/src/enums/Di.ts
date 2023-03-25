@@ -1,4 +1,5 @@
 export enum Di {
+  Redis = "Redis",
   AuthService = "IAuthService",
   RoleService = "IRoleService",
   UserRepository = "IUserRepository",

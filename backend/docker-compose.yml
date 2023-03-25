@@ -13,5 +13,17 @@ services:
     volumes:
       - db:/var/lib/mysql
 
+  redis:
+    image: bitnami/redis
+    container_name: "${REDIS_CONTAINER_NAME}"
+    restart: unless-stopped
+    ports:
+      - ${REDIS_PORT}:${REDIS_CONTAINER_PORT}
+    volumes:
+      - redis:/var/lib/redis
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+
 volumes:
   db:
+  redis:
