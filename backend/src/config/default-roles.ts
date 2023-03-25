@@ -1,14 +1,14 @@
-import { IRole } from "@interfaces/IRole";
+import { IRoleDefinition } from "@interfaces/IRoleDefinition";
 
 export const HEAD_ADMIN_ROLE_NAME = "Head Admin";
 
-export const ADMIN_ROLE: IRole = {
+export const ADMIN_ROLE: IRoleDefinition = {
   name: "Admin",
 
   permissions: [],
 };
 
-export const MEMBER_ROLE: IRole = {
+export const MEMBER_ROLE: IRoleDefinition = {
   name: "Member",
 
   permissions: [],

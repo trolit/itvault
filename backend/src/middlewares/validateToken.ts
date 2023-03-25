@@ -2,6 +2,7 @@ import { container } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Request, NextFunction, Response } from "express";
 
+import { Di } from "@enums/Di";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IAuthService } from "@interfaces/IAuthService";
 
@@ -13,7 +14,7 @@ export const validateToken = (() => {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const authService = container.resolve<IAuthService>("IAuthService");
+    const authService = container.resolve<IAuthService>(Di.AuthService);
 
     const result = authService.verifyToken(token);
 
