@@ -2,6 +2,7 @@ import express from "express";
 
 import { setupDi } from "@utilities/setupDi";
 import { dataSource } from "@config/data-source";
+import { setupRedis } from "@utilities/setupRedis";
 import { setupExpress } from "@utilities/setupExpress";
 
 export const server = async () => {
@@ -17,7 +18,9 @@ export const server = async () => {
     process.exit(1);
   }
 
-  setupDi();
+  const redis = await setupRedis();
+
+  setupDi(redis);
 
   setupExpress(app);
 
