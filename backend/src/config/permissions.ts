@@ -11,6 +11,7 @@ const UPDATE_ROLE_PERMISSION: IPermission = {
   name: "Update role",
 };
 
+/** @NOTE if 'false' - authenticated user receives only workflows to which is assigned  */
 const VIEW_ALL_WORKFLOWS_PERMISSION: IPermission = {
   id: Permission.ViewAllWorkflows,
   name: "View all workflows",
