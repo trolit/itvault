@@ -17,6 +17,18 @@ export class UserRepository
   }
 
   findByEmail(email: string): Promise<User | null> {
-    return this.database.findOneBy({ email, deletedAt: IsNull() });
+    return this.database.findOne({
+      where: {
+        email,
+        deletedAt: IsNull(),
+      },
+      relations: {
+        role: {
+          permissionToRole: {
+            permission: true,
+          },
+        },
+      },
+    });
   }
 }

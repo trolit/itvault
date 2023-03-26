@@ -1,10 +1,8 @@
-import type { Request } from "express";
 import { inject, injectable } from "tsyringe";
+import type { Request, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { UserDto } from "@dtos/UserDto";
-import { ResponseOfType } from "@utilities/types";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/IAuthService";
@@ -17,7 +15,7 @@ export class StatusController implements IController {
     @inject(Di.AuthService) private authService: IAuthService
   ) {}
 
-  async invoke(request: Request, response: ResponseOfType<UserDto>) {
+  async invoke(request: Request, response: Response) {
     const { token } = request.cookies;
 
     if (!token) {
@@ -40,6 +38,6 @@ export class StatusController implements IController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    return response.status(HTTP.OK).send({ email });
+    return response.status(HTTP.OK).send();
   }
 }
