@@ -9,6 +9,7 @@ import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/IAuthService";
 import { NODE_ENV, JWT_TOKEN_COOKIE_KEY } from "@config";
+import { IRedisService } from "@interfaces/IRedisService";
 import { IUserRepository } from "@interfaces/IUserRepository";
 import { RequestOfType, ResponseOfType } from "@utilities/types";
 import { IEntityMapperService } from "@interfaces/IEntityMapperService";
@@ -19,7 +20,8 @@ export class LoginController implements IController {
     @inject(Di.UserRepository) private userRepository: IUserRepository,
     @inject(Di.AuthService) private authService: IAuthService,
     @inject(Di.EntityMapperService)
-    private entityMapperService: IEntityMapperService
+    private entityMapperService: IEntityMapperService,
+    @inject(Di.RedisService) private redisService: IRedisService
   ) {}
 
   async invoke(
@@ -54,6 +56,18 @@ export class LoginController implements IController {
         })),
       })
     );
+
+    try {
+      await this.redisService.setKey(
+        user.id.toString(),
+        JSON.stringify(mappedUser)
+      );
+    } catch (error) {
+      // @TODO log error
+      console.error(error);
+
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+    }
 
     return response
       .cookie(JWT_TOKEN_COOKIE_KEY, token, {
