@@ -1,8 +1,10 @@
+import { Redis } from "ioredis";
+import { inject, injectable } from "tsyringe";
+
 import { Di } from "@enums/Di";
 import { IRedisService } from "@interfaces/IRedisService";
-import { Redis } from "ioredis";
-import { inject } from "tsyringe";
 
+@injectable()
 export class RedisService implements IRedisService {
   constructor(
     @inject(Di.Redis)
