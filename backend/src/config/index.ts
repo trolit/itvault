@@ -60,10 +60,8 @@ export const JWT_SECRET_KEY: string = env
   .required()
   .asString();
 
-export const JWT_TOKEN_LIFETIME: string = env
-  .get("JWT_TOKEN_LIFETIME")
-  .required()
-  .asString();
+export const JWT_TOKEN_LIFETIME_IN_SECONDS: number =
+  env.get("JWT_TOKEN_LIFETIME_IN_HOURS").required().asFloat() * 60 * 60;
 
 export const JWT_TOKEN_COOKIE_KEY: string = env
   .get("JWT_TOKEN_COOKIE_KEY")

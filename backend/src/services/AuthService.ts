@@ -3,13 +3,13 @@ import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { JwtPayload } from "@utilities/JwtPayload";
 import { IAuthService } from "@interfaces/IAuthService";
-import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME } from "@config";
+import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config";
 
 export class AuthService implements IAuthService {
   signToken(payload: JwtPayload, options: SignOptions = {}) {
     return jwt.sign(payload, JWT_SECRET_KEY, {
       ...options,
-      expiresIn: JWT_TOKEN_LIFETIME,
+      expiresIn: JWT_TOKEN_LIFETIME_IN_SECONDS,
     });
   }
 
