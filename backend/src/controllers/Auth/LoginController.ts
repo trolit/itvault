@@ -44,7 +44,7 @@ export class LoginController implements IController {
 
     const token = this.authService.signToken({ email, id: user.id });
 
-    const mappedUser = this.entityMapperService.mapOneToDto(
+    const mappedUserData = this.entityMapperService.mapOneToDto(
       user,
       UserDto,
       ({ role: { id, name, permissionToRole } }) => ({
@@ -60,7 +60,7 @@ export class LoginController implements IController {
     try {
       await this.redisService.setKey(
         user.id.toString(),
-        JSON.stringify(mappedUser)
+        JSON.stringify(mappedUserData)
       );
     } catch (error) {
       // @TODO log error
@@ -75,6 +75,6 @@ export class LoginController implements IController {
         secure: NODE_ENV === Environment.Production,
       })
       .status(HTTP.OK)
-      .send(mappedUser);
+      .send(mappedUserData);
   }
 }
