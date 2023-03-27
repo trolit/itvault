@@ -2,10 +2,12 @@ import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
+import { Permission } from "@enums/Permission";
 import { Workspace } from "@entities/Workspace";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utilities/Result";
 import { IController } from "@interfaces/IController";
+import { IPermissionService } from "@interfaces/IPermissionService";
 import { RequestWithQuery, ResponseOfType } from "@utilities/types";
 import { IWorkspaceRepository } from "@interfaces/IWorkspaceRepository";
 import { IEntityMapperService } from "@interfaces/IEntityMapperService";
@@ -22,18 +24,32 @@ export class GetAllController implements IController {
     @inject(Di.WorkspaceRepository)
     private workspaceRepository: IWorkspaceRepository,
     @inject(Di.EntityMapperService)
-    private entityMapperService: IEntityMapperService
+    private entityMapperService: IEntityMapperService,
+    @inject(Di.PermissionService) private permissionService: IPermissionService
   ) {}
 
   async invoke(
     request: RequestWithQuery<QueryParams>,
     response: ResponseOfType<PaginatedResult<WorkspaceDto>>
   ) {
+    if (!request.userId) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
     const { take, skip } = request.query;
 
+    const isPermittedToSeeAllWorkflows =
+      await this.permissionService.hasPermission(
+        request.userId,
+        Permission.ViewAllWorkflows
+      );
+
     // @TODO - handle take/skip
-    // @TODO - handle userId
-    const [result, total] = await this.workspaceRepository.getAll(5, 0);
+    const [result, total] = await this.workspaceRepository.getAll(
+      5,
+      0,
+      isPermittedToSeeAllWorkflows ? undefined : request.userId
+    );
 
     const mappedResult = this.entityMapperService.mapToDto(
       result,
