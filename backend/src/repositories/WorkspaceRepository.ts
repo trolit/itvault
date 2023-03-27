@@ -28,9 +28,9 @@ export class WorkspaceRepository
             userToWorkspace: {
               userId,
             },
-            relations: {
-              userToWorkspace: true,
-            },
+          },
+          relations: {
+            userToWorkspace: true,
           },
         }
       : {};
