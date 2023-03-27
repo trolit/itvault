@@ -1,5 +1,3 @@
-import { Permission } from "@entities/Permission";
-
 export class UserDto {
   email = "";
 
@@ -7,5 +5,5 @@ export class UserDto {
 
   roleName: string;
 
-  permissions: Permission[];
+  permissions: { id: number; name: string; enabled: boolean }[];
 }
