@@ -32,15 +32,13 @@ export class GetAllController implements IController {
     request: RequestWithQuery<QueryParams>,
     response: ResponseOfType<PaginatedResult<WorkspaceDto>>
   ) {
-    if (!request.userId) {
-      return response.status(HTTP.FORBIDDEN).send();
-    }
+    const { userId } = request;
 
     const { take, skip } = request.query;
 
     const isPermittedToSeeAllWorkflows =
       await this.permissionService.hasPermission(
-        request.userId,
+        userId,
         Permission.ViewAllWorkflows
       );
 
@@ -48,7 +46,7 @@ export class GetAllController implements IController {
     const [result, total] = await this.workspaceRepository.getAll(
       5,
       0,
-      isPermittedToSeeAllWorkflows ? undefined : request.userId
+      isPermittedToSeeAllWorkflows ? undefined : userId
     );
 
     const mappedResult = this.entityMapperService.mapToDto(
