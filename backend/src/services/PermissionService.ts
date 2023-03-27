@@ -1,4 +1,4 @@
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
@@ -6,6 +6,7 @@ import { Permission } from "@enums/Permission";
 import { IRedisService } from "@interfaces/IRedisService";
 import { IPermissionService } from "@interfaces/IPermissionService";
 
+@injectable()
 export class PermissionService implements IPermissionService {
   constructor(
     @inject(Di.RedisService)
