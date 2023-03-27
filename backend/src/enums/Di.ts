@@ -3,6 +3,7 @@ export enum Di {
   AuthService = "IAuthService",
   RedisService = "IRedisService",
   UserRepository = "IUserRepository",
+  PermissionService = "IPermissionService",
   EntityMapperService = "IEntityMapperService",
   WorkspaceRepository = "IWorkspaceRepository",
   PermissionToRoleRepository = "IPermissionToRoleRepository",
