@@ -21,7 +21,7 @@ interface IQueryParams {
 @autoInjectable()
 export class GetAllController
   implements
-    IController<IQueryParams, undefined, PaginatedResult<WorkspaceDto>>
+    IController<undefined, IQueryParams, PaginatedResult<WorkspaceDto>>
 {
   constructor(
     @inject(Di.WorkspaceRepository)

@@ -16,7 +16,7 @@ import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
 @injectable()
 export class LoginController
-  implements IController<unknown, LoginDto, UserDto>
+  implements IController<LoginDto, undefined, UserDto>
 {
   constructor(
     @inject(Di.UserRepository) private userRepository: IUserRepository,
