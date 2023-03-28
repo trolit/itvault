@@ -6,7 +6,7 @@ import { Di } from "@enums/Di";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IAuthService } from "@interfaces/IAuthService";
 
-export const validateToken = (() => {
+export const requireToken = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
 
