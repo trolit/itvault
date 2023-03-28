@@ -1,24 +1,38 @@
 import { ZodSchema } from "zod";
-import { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { NextFunction, Request, Response } from "express";
 
-import { RequestOfType } from "@utilities/types";
+import { ParseableRequestContent } from "@utilities/types";
 
-export const safeParseRequest = <T>(schema: ZodSchema) => {
-  return async (
-    request: RequestOfType<T>,
-    response: Response,
-    next: NextFunction
-  ) => {
-    const result = await schema.safeParseAsync(request.body);
+export const safeParseRequest = (toParse: ParseableRequestContent) => {
+  return async (request: Request, response: Response, next: NextFunction) => {
+    for (const key in toParse) {
+      const castedKey = <keyof ParseableRequestContent>key;
 
-    if (!result.success) {
-      return response.status(HTTP.BAD_REQUEST).send(result.error.format());
+      const schema = toParse[castedKey]?.withSchema;
+
+      if (!schema) {
+        return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+      }
+
+      const result = await parseElement(request, castedKey, schema);
+
+      if (!result.success) {
+        return response.status(HTTP.BAD_REQUEST).send(result.error.format());
+      }
+
+      // overwrite body with sanitized result
+      request[castedKey] = result.data;
     }
-
-    // overwrite body with sanitized result
-    request.body = result.data;
 
     next();
   };
 };
+
+function parseElement(
+  request: Request,
+  key: keyof ParseableRequestContent,
+  schema: ZodSchema
+) {
+  return schema.safeParseAsync(request[key]);
+}

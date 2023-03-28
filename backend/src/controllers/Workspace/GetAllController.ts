@@ -7,19 +7,22 @@ import { Workspace } from "@entities/Workspace";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utilities/Result";
 import { IController } from "@interfaces/IController";
+import { CustomRequest, CustomResponse } from "@utilities/types";
 import { IPermissionService } from "@interfaces/IPermissionService";
-import { RequestWithQuery, ResponseOfType } from "@utilities/types";
 import { IWorkspaceRepository } from "@interfaces/IWorkspaceRepository";
 import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
-interface QueryParams {
-  take?: number;
+interface IQueryParams {
+  skip: number;
 
-  skip?: number;
+  take: number;
 }
 
 @autoInjectable()
-export class GetAllController implements IController {
+export class GetAllController
+  implements
+    IController<undefined, IQueryParams, PaginatedResult<WorkspaceDto>>
+{
   constructor(
     @inject(Di.WorkspaceRepository)
     private workspaceRepository: IWorkspaceRepository,
@@ -27,14 +30,14 @@ export class GetAllController implements IController {
     private entityMapperService: IEntityMapperService,
     @inject(Di.PermissionService) private permissionService: IPermissionService
   ) {}
-
   async invoke(
-    request: RequestWithQuery<QueryParams>,
-    response: ResponseOfType<PaginatedResult<WorkspaceDto>>
+    request: CustomRequest<undefined, IQueryParams>,
+    response: CustomResponse<PaginatedResult<WorkspaceDto>>
   ) {
-    const { userId } = request;
-
-    const { take, skip } = request.query;
+    const {
+      userId,
+      query: { skip, take },
+    } = request;
 
     const isPermittedToSeeAllWorkflows =
       await this.permissionService.hasPermission(
@@ -42,10 +45,9 @@ export class GetAllController implements IController {
         Permission.ViewAllWorkflows
       );
 
-    // @TODO - handle take/skip
     const [result, total] = await this.workspaceRepository.getAll(
-      5,
-      0,
+      take,
+      skip,
       isPermittedToSeeAllWorkflows ? undefined : userId
     );
 

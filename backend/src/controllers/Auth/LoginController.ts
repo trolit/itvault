@@ -11,11 +11,13 @@ import { IAuthService } from "@interfaces/IAuthService";
 import { NODE_ENV, JWT_TOKEN_COOKIE_KEY } from "@config";
 import { IRedisService } from "@interfaces/IRedisService";
 import { IUserRepository } from "@interfaces/IUserRepository";
-import { RequestOfType, ResponseOfType } from "@utilities/types";
+import { CustomRequest, CustomResponse } from "@utilities/types";
 import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
 @injectable()
-export class LoginController implements IController {
+export class LoginController
+  implements IController<LoginDto, undefined, UserDto>
+{
   constructor(
     @inject(Di.UserRepository) private userRepository: IUserRepository,
     @inject(Di.AuthService) private authService: IAuthService,
@@ -25,8 +27,8 @@ export class LoginController implements IController {
   ) {}
 
   async invoke(
-    request: RequestOfType<LoginDto>,
-    response: ResponseOfType<UserDto>
+    request: CustomRequest<LoginDto>,
+    response: CustomResponse<UserDto>
   ) {
     const { email, password } = request.body;
 
