@@ -10,7 +10,7 @@ const authRoutes = Router();
 
 authRoutes.post(
   "/v1/login",
-  safeParseRequest(loginSchema),
+  safeParseRequest({ body: { withSchema: loginSchema } }),
   processRequestWith(LoginController)
 );
 
