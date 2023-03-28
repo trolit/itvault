@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import { CustomRequest, CustomResponse } from "@utilities/types";
 
 export interface IController<Q = void, B = void, R = void> {
   invoke(
-    request: Request<unknown, unknown, B, Q>,
-    response: Response<R, Record<string, R>>
-  ): Promise<Response>;
+    request: CustomRequest<B, Q>,
+    response: CustomResponse<R>
+  ): Promise<CustomResponse<R>>;
 }
