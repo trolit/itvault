@@ -3,7 +3,7 @@ import { schemaForType } from "@helpers/schemaForType";
 
 export const paginationSchema = schemaForType<{ take: number; skip: number }>()(
   z.object({
-    take: z.number().positive().gte(0),
-    skip: z.number().positive().gte(0),
+    take: z.coerce.number().gte(0).max(9999),
+    skip: z.coerce.number().gte(0).max(9999),
   })
 );
