@@ -7,5 +7,5 @@ export class UserDto {
 
   permissions: { id: number; name: string; enabled: boolean }[];
 
-  isActive: boolean;
+  isActive = true;
 }
