@@ -32,7 +32,7 @@ export const requireAuthentication = ((
       next();
     }
 
-    const isAccountActive = await requireActiveAccount(request.userId);
+    const isAccountActive = await verifyAccountStatus(request.userId);
 
     if (!isAccountActive) {
       return response.status(HTTP.FORBIDDEN).send();
@@ -42,7 +42,7 @@ export const requireAuthentication = ((
   };
 })();
 
-async function requireActiveAccount(userId: number) {
+async function verifyAccountStatus(userId: number) {
   const redisService = container.resolve<IRedisService>(Di.RedisService);
 
   const userDetails = await redisService.getKey(userId.toString());
