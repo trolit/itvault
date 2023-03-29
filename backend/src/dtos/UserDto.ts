@@ -6,4 +6,6 @@ export class UserDto {
   roleName: string;
 
   permissions: { id: number; name: string; enabled: boolean }[];
+
+  isActive: boolean;
 }
