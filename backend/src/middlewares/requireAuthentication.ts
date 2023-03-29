@@ -8,7 +8,9 @@ import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IAuthService } from "@interfaces/IAuthService";
 import { IRedisService } from "@interfaces/IRedisService";
 
-export const requireToken = ((options = { isActive: true }) => {
+export const requireAuthentication = ((
+  options = { withActiveAccount: true }
+) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
 
@@ -26,13 +28,13 @@ export const requireToken = ((options = { isActive: true }) => {
 
     request.userId = result.payload.id;
 
-    if (!options.isActive) {
+    if (!options.withActiveAccount) {
       next();
     }
 
-    const res = await requireActiveAccount(request.userId);
+    const isAccountActive = await requireActiveAccount(request.userId);
 
-    if (!res) {
+    if (!isAccountActive) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
