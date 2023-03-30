@@ -38,6 +38,9 @@ export class UserRepository
       order: {
         email: "asc",
       },
+      relations: {
+        role: true,
+      },
     });
   }
 }
