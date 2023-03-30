@@ -30,4 +30,14 @@ export class UserRepository
       },
     });
   }
+
+  getAll(take: number, skip: number): Promise<[User[], number]> {
+    return this.database.findAndCount({
+      take,
+      skip,
+      order: {
+        email: "asc",
+      },
+    });
+  }
 }
