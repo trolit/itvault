@@ -1,5 +1,5 @@
+import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
-import { IsNull, Repository } from "typeorm";
 
 import { User } from "@entities/User";
 import { BaseRepository } from "./BaseRepository";
@@ -20,7 +20,6 @@ export class UserRepository
     return this.database.findOne({
       where: {
         email,
-        deletedAt: IsNull(),
       },
       relations: {
         role: {

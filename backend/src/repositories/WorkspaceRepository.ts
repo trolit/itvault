@@ -1,5 +1,5 @@
+import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
-import { IsNull, Repository } from "typeorm";
 
 import { Workspace } from "@entities/Workspace";
 import { BaseRepository } from "./BaseRepository";
@@ -24,7 +24,6 @@ export class WorkspaceRepository
     const userIdQuery = userId
       ? {
           where: {
-            deletedAt: IsNull(),
             userToWorkspace: {
               userId,
             },
