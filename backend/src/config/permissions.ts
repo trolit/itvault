@@ -18,7 +18,7 @@ const VIEW_ALL_WORKFLOWS_PERMISSION: IPermission = {
 };
 
 const VIEW_ALL_USERS_PERMISSION: IPermission = {
-  id: Permission.ViewAllWorkflows,
+  id: Permission.ViewAllUsers,
   name: "View all users",
 };
 
