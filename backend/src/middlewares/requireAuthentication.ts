@@ -8,6 +8,7 @@ import { Permission } from "@enums/Permission";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IAuthService } from "@interfaces/IAuthService";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 interface IOptions {
   withActiveAccount: boolean;
@@ -15,7 +16,6 @@ interface IOptions {
 }
 
 export const requireAuthentication = ((
-  options = { withActiveAccount: true }
   options: IOptions = {
     withActiveAccount: true,
   }
@@ -41,9 +41,12 @@ export const requireAuthentication = ((
       next();
     }
 
-    const isAccountActive = await verifyAccountStatus(request.userId);
+    const isValid = await verifyOptionsRelatedToDataStore(
+      request.userId.toString(),
+      options
+    );
 
-    if (!isAccountActive) {
+    if (!isValid) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
@@ -51,12 +54,15 @@ export const requireAuthentication = ((
   };
 })();
 
-async function verifyAccountStatus(userId: number) {
+async function verifyOptionsRelatedToDataStore(
+  userId: string,
+  options: IOptions
+) {
   const dataStoreService = container.resolve<IDataStoreService>(
     Di.DataStoreService
   );
 
-  const userDetails = await dataStoreService.getKey(userId.toString());
+  const userDetails = await dataStoreService.getKey(userId);
 
   if (!userDetails) {
     return false;
@@ -64,5 +70,16 @@ async function verifyAccountStatus(userId: number) {
 
   const parsedUserDetails = userDetails.asParsed<UserDto>();
 
-  return parsedUserDetails.isActive;
+  if (options.withActiveAccount && !parsedUserDetails.isActive) {
+    return false;
+  }
+
+  if (
+    options.withPermission &&
+    isPermissionEnabled(options.withPermission, parsedUserDetails.permissions)
+  ) {
+    return false;
+  }
+
+  return true;
 }
