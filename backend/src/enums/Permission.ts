@@ -3,4 +3,6 @@ export enum Permission {
   UpdateRole,
   ViewAllWorkflows,
   ViewAllUsers,
+  DeactivateUserAccount,
+  ChangeUserRole,
 }
