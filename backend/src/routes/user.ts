@@ -1,5 +1,7 @@
 import { Router } from "express";
 
+import { Di } from "@enums/Di";
+import { User } from "@entities/User";
 import { deleteSchema } from "@schemas/delete";
 import { Permission } from "@enums/Permission";
 import { paginationSchema } from "@schemas/pagination";
@@ -26,7 +28,9 @@ userRoutes.delete(
   requireAuthenticationWithOptions({
     withActiveAccount: true,
   }),
-  safeParseRequest({ params: { withSchema: deleteSchema } }),
+  safeParseRequest({
+    params: { withSchema: deleteSchema<User>(Di.UserRepository) },
+  }),
   processRequestWith(SoftDeleteController)
 );
 
