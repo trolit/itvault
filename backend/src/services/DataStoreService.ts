@@ -12,7 +12,11 @@ export class DataStoreService implements IDataStoreService {
     private _redis: Redis
   ) {}
 
-  setKey<T>(key: string, value: T): Promise<string | null> {
+  setKey<T>(key: string | number, value: T): Promise<string | null> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
+
     const valueAsString = JSON.stringify(value);
 
     return this._redis.set(

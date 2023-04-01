@@ -1,5 +1,5 @@
 export interface IDataStoreService {
-  setKey<T>(key: string, value: T): Promise<string | null>;
+  setKey<T>(key: string | number, value: T): Promise<string | null>;
 
   getKey(
     key: string
