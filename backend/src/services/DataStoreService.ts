@@ -27,9 +27,7 @@ export class DataStoreService implements IDataStoreService {
     );
   }
 
-  async getKey(
-    key: string | number
-  ): Promise<{ asString: () => string; asParsed: <T>() => T } | null> {
+  async getKey<T>(key: string | number): Promise<T | null> {
     if (typeof key !== "string") {
       key = key.toString();
     }
@@ -40,13 +38,27 @@ export class DataStoreService implements IDataStoreService {
       return null;
     }
 
-    return {
-      asString: () => value,
-      asParsed: <T>() => {
-        const parsedValue = <T>JSON.parse(value);
+    return <T>JSON.parse(value);
+  }
 
-        return parsedValue;
-      },
-    };
+  async updateKeyIfPossible<T>(
+    key: string | number,
+    callback: (value: T) => void
+  ): Promise<string | null> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
+
+    const element = await this.getKey<T>(key);
+
+    if (!element) {
+      return null;
+    }
+
+    callback(element);
+
+    const result = await this.setKey<T>(key, element);
+
+    return result;
   }
 }

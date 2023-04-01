@@ -1,7 +1,10 @@
 export interface IDataStoreService {
   setKey<T>(key: string | number, value: T): Promise<string | null>;
 
-  getKey(
-    key: string | number
-  ): Promise<{ asString: () => string; asParsed: <T>() => T } | null>;
+  getKey<T>(key: string | number): Promise<T | null>;
+
+  updateKey<T>(
+    key: string | number,
+    callback: (value: T) => void
+  ): Promise<string | null>;
 }
