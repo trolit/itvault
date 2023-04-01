@@ -10,49 +10,69 @@ import { IAuthService } from "@interfaces/IAuthService";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
+export const requireAuthentication = (() => {
+  return async (request: Request, response: Response, next: NextFunction) => {
+    const userId = handleTokenFromRequest(request);
+
+    if (!userId) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    next();
+  };
+})();
+
 interface IOptions {
   withActiveAccount: boolean;
   withPermission?: Permission;
 }
 
-export const requireAuthentication = (
+export const requireAuthenticationWithOptions = (
   options: IOptions = {
     withActiveAccount: true,
   }
 ) => {
   return async (request: Request, response: Response, next: NextFunction) => {
-    const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
+    const userId = handleTokenFromRequest(request);
 
-    if (!token) {
+    if (!userId) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const authService = container.resolve<IAuthService>(Di.AuthService);
-
-    const result = authService.verifyToken(token);
-
-    if (result.error) {
-      return response.status(HTTP.FORBIDDEN).send();
-    }
-
-    request.userId = result.payload.id;
-
-    if (!options.withActiveAccount) {
-      next();
-    }
-
-    const isValid = await verifyOptionsRelatedToDataStore(
-      request.userId.toString(),
+    const areOptionsRequirementsValid = await verifyOptionsRelatedToDataStore(
+      userId.toString(),
       options
     );
 
-    if (!isValid) {
+    if (!areOptionsRequirementsValid) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
     next();
   };
 };
+
+function handleTokenFromRequest(request: Request) {
+  const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
+
+  if (!token) {
+    return null;
+  }
+
+  const authService = container.resolve<IAuthService>(Di.AuthService);
+
+  const result = authService.verifyToken(token);
+
+  if (result.error) {
+    return null;
+  }
+
+  const userId = result.payload.id;
+
+  request.userId = userId;
+
+  return userId;
+}
 
 async function verifyOptionsRelatedToDataStore(
   userId: string,
