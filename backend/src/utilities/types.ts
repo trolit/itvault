@@ -11,4 +11,5 @@ export type CustomResponse<T> = Response<T, Record<string, T>>;
 export type ParseableRequestContent = Partial<{
   body: { withSchema: ZodSchema };
   query: { withSchema: ZodSchema };
+  params: { withSchema: ZodSchema };
 }>;
