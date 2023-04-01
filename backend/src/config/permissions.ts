@@ -22,9 +22,21 @@ const VIEW_ALL_USERS_PERMISSION: IPermission = {
   name: "View all users",
 };
 
+const DEACTIVATE_USER_ACCOUNT_PERMISSION: IPermission = {
+  id: Permission.DeactivateUserAccount,
+  name: "Deactivate user account",
+};
+
+const CHANGE_USER_ROLE_PERMISSION: IPermission = {
+  id: Permission.ChangeUserRole,
+  name: "Change user role",
+};
+
 export const ALL_PERMISSIONS = [
   CREATE_ROLE_PERMISSION,
   UPDATE_ROLE_PERMISSION,
-  VIEW_ALL_WORKFLOWS_PERMISSION,
   VIEW_ALL_USERS_PERMISSION,
+  CHANGE_USER_ROLE_PERMISSION,
+  VIEW_ALL_WORKFLOWS_PERMISSION,
+  DEACTIVATE_USER_ACCOUNT_PERMISSION,
 ];
