@@ -4,6 +4,7 @@ import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { Permission } from "@enums/Permission";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { IPermissionService } from "@interfaces/IPermissionService";
 
 @injectable()
@@ -25,8 +26,6 @@ export class PermissionService implements IPermissionService {
 
     const { permissions } = userDetails.asParsed<UserDto>();
 
-    const result = permissions.find(({ id }) => id === permission);
-
-    return !!result && result.enabled;
+    return isPermissionEnabled(permission, permissions);
   }
 }
