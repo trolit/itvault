@@ -1,10 +1,12 @@
 import { Router } from "express";
 
+import { deleteSchema } from "@schemas/delete";
 import { Permission } from "@enums/Permission";
 import { paginationSchema } from "@schemas/pagination";
 import { processRequestWith } from "./processRequestWith";
 import { safeParseRequest } from "@middlewares/safeParseRequest";
 import { GetAllController } from "@controllers/User/GetAllController";
+import { SoftDeleteController } from "@controllers/User/SoftDeleteController";
 import { requireAuthenticationWithOptions } from "@middlewares/requireAuthentication";
 
 const userRoutes = Router();
@@ -17,6 +19,16 @@ userRoutes.get(
   }),
   safeParseRequest({ query: { withSchema: paginationSchema } }),
   processRequestWith(GetAllController)
+);
+
+userRoutes.delete(
+  "/v1",
+  requireAuthenticationWithOptions({
+    withActiveAccount: true,
+    withPermission: Permission.DeactivateUserAccount,
+  }),
+  safeParseRequest({ query: { withSchema: deleteSchema } }),
+  processRequestWith(SoftDeleteController)
 );
 
 export = userRoutes;
