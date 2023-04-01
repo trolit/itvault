@@ -12,8 +12,15 @@ export class DataStoreService implements IDataStoreService {
     private _redis: Redis
   ) {}
 
-  setKey(key: string, value: string): Promise<string | null> {
-    return this._redis.set(key, value, "EX", JWT_TOKEN_LIFETIME_IN_SECONDS);
+  setKey<T>(key: string, value: T): Promise<string | null> {
+    const valueAsString = JSON.stringify(value);
+
+    return this._redis.set(
+      key,
+      valueAsString,
+      "EX",
+      JWT_TOKEN_LIFETIME_IN_SECONDS
+    );
   }
 
   async getKey(
