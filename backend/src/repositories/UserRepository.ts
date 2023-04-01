@@ -16,18 +16,27 @@ export class UserRepository
     super(User);
   }
 
-  findByEmail(email: string): Promise<User | null> {
+  findByEmail(
+    email: string,
+    options?: { includePermissions: boolean }
+  ): Promise<User | null> {
+    const permissionsRelation = options?.includePermissions
+      ? {
+          relations: {
+            role: {
+              permissionToRole: {
+                permission: true,
+              },
+            },
+          },
+        }
+      : {};
+
     return this.database.findOne({
       where: {
         email,
       },
-      relations: {
-        role: {
-          permissionToRole: {
-            permission: true,
-          },
-        },
-      },
+      ...permissionsRelation,
     });
   }
 
