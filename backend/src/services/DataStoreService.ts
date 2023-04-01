@@ -28,8 +28,12 @@ export class DataStoreService implements IDataStoreService {
   }
 
   async getKey(
-    key: string
+    key: string | number
   ): Promise<{ asString: () => string; asParsed: <T>() => T } | null> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
+
     const value = await this._redis.get(key);
 
     if (!value) {
