@@ -6,9 +6,9 @@ import { IController } from "@interfaces/IController";
 import { CustomRequest } from "@utilities/types";
 
 export const processRequestWith =
-  <T, B, Q>(Controller: InjectionToken<T>) =>
-  (...args: [CustomRequest<B, Q>, Response]) => {
-    const controller = instanceOf(Controller) as IController<B, Q, void>;
+  <T, P, B, Q>(Controller: InjectionToken<T>) =>
+  (...args: [CustomRequest<P, B, Q>, Response]) => {
+    const controller = instanceOf(Controller) as IController<P, B, Q, void>;
 
     const [request, response] = args;
 

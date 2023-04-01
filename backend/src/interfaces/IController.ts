@@ -1,8 +1,8 @@
 import { CustomRequest, CustomResponse } from "@utilities/types";
 
-export interface IController<B = void, Q = void, R = void> {
+export interface IController<P = void, B = void, Q = void, R = void> {
   invoke(
-    request: CustomRequest<B, Q>,
+    request: CustomRequest<P, B, Q>,
     response: CustomResponse<R>
   ): Promise<CustomResponse<R>>;
 }
