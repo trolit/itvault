@@ -27,6 +27,8 @@ export class SoftDeleteController implements IController<IParams> {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
+    // @TODO REDIS!
+
     return response.status(HTTP.NO_CONTENT).send();
   }
 }

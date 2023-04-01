@@ -16,7 +16,7 @@ import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
 @injectable()
 export class LoginController
-  implements IController<LoginDto, undefined, UserDto>
+  implements IController<undefined, LoginDto, undefined, UserDto>
 {
   constructor(
     @inject(Di.UserRepository)
@@ -30,7 +30,7 @@ export class LoginController
   ) {}
 
   async invoke(
-    request: CustomRequest<LoginDto>,
+    request: CustomRequest<undefined, LoginDto>,
     response: CustomResponse<UserDto>
   ) {
     const { email, password } = request.body;
