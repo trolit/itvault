@@ -26,7 +26,7 @@ userRoutes.delete(
   requireAuthenticationWithOptions({
     withActiveAccount: true,
   }),
-  safeParseRequest({ query: { withSchema: deleteSchema } }),
+  safeParseRequest({ params: { withSchema: deleteSchema } }),
   processRequestWith(SoftDeleteController)
 );
 
