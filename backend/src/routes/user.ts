@@ -22,10 +22,9 @@ userRoutes.get(
 );
 
 userRoutes.delete(
-  "/v1",
+  "/v1/:id",
   requireAuthenticationWithOptions({
     withActiveAccount: true,
-    withPermission: Permission.DeactivateUserAccount,
   }),
   safeParseRequest({ query: { withSchema: deleteSchema } }),
   processRequestWith(SoftDeleteController)
