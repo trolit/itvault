@@ -1,3 +1,5 @@
+import { PermissionDto } from "./PermissionDto";
+
 export class UserDto {
   email = "";
 
@@ -5,7 +7,7 @@ export class UserDto {
 
   roleName: string;
 
-  permissions: { id: number; name: string; enabled: boolean }[];
+  permissions: PermissionDto[];
 
   isActive = true;
 }

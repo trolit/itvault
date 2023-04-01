@@ -4,37 +4,17 @@ import { Request, NextFunction, Response } from "express";
 
 import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
+import { Permission } from "@enums/Permission";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IAuthService } from "@interfaces/IAuthService";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
-export const requireAuthentication = ((
-  options = { withActiveAccount: true }
-) => {
+export const requireAuthentication = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {
-    const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
+    const userId = handleTokenFromRequest(request);
 
-    if (!token) {
-      return response.status(HTTP.FORBIDDEN).send();
-    }
-
-    const authService = container.resolve<IAuthService>(Di.AuthService);
-
-    const result = authService.verifyToken(token);
-
-    if (result.error) {
-      return response.status(HTTP.FORBIDDEN).send();
-    }
-
-    request.userId = result.payload.id;
-
-    if (!options.withActiveAccount) {
-      next();
-    }
-
-    const isAccountActive = await verifyAccountStatus(request.userId);
-
-    if (!isAccountActive) {
+    if (!userId) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
@@ -42,12 +22,67 @@ export const requireAuthentication = ((
   };
 })();
 
-async function verifyAccountStatus(userId: number) {
+interface IOptions {
+  withActiveAccount: boolean;
+  withPermission?: Permission;
+}
+
+export const requireAuthenticationWithOptions = (
+  options: IOptions = {
+    withActiveAccount: true,
+  }
+) => {
+  return async (request: Request, response: Response, next: NextFunction) => {
+    const userId = handleTokenFromRequest(request);
+
+    if (!userId) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    const areOptionsRequirementsValid = await verifyOptionsRelatedToDataStore(
+      userId.toString(),
+      options
+    );
+
+    if (!areOptionsRequirementsValid) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    next();
+  };
+};
+
+function handleTokenFromRequest(request: Request) {
+  const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
+
+  if (!token) {
+    return null;
+  }
+
+  const authService = container.resolve<IAuthService>(Di.AuthService);
+
+  const result = authService.verifyToken(token);
+
+  if (result.error) {
+    return null;
+  }
+
+  const userId = result.payload.id;
+
+  request.userId = userId;
+
+  return userId;
+}
+
+async function verifyOptionsRelatedToDataStore(
+  userId: string,
+  options: IOptions
+) {
   const dataStoreService = container.resolve<IDataStoreService>(
     Di.DataStoreService
   );
 
-  const userDetails = await dataStoreService.getKey(userId.toString());
+  const userDetails = await dataStoreService.getKey(userId);
 
   if (!userDetails) {
     return false;
@@ -55,5 +90,16 @@ async function verifyAccountStatus(userId: number) {
 
   const parsedUserDetails = userDetails.asParsed<UserDto>();
 
-  return parsedUserDetails.isActive;
+  if (options.withActiveAccount && !parsedUserDetails.isActive) {
+    return false;
+  }
+
+  if (
+    options.withPermission &&
+    !isPermissionEnabled(options.withPermission, parsedUserDetails.permissions)
+  ) {
+    return false;
+  }
+
+  return true;
 }
