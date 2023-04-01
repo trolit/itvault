@@ -7,28 +7,25 @@ import { CustomRequest } from "@utilities/types";
 import { IController } from "@interfaces/IController";
 import { IUserRepository } from "@interfaces/IUserRepository";
 
-interface IQueryParams {
+interface IParams {
   id: number;
 }
 
 @injectable()
-export class SoftDeleteController
-  implements IController<undefined, IQueryParams, undefined>
-{
+export class SoftDeleteController implements IController<IParams> {
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository
   ) {}
 
-  async invoke(
-    request: CustomRequest<undefined, IQueryParams>,
-    response: Response
-  ) {
-    const {
-      query: { id },
-    } = request;
+  async invoke(request: CustomRequest<IParams>, response: Response) {
+    const { id } = request.params;
 
-    console.log(id);
+    const result = await this._userRepository.softDeleteById(id);
+
+    if (!result || !result.affected) {
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+    }
 
     return response.status(HTTP.NO_CONTENT).send();
   }
