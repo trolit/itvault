@@ -7,8 +7,8 @@ export const user = setSeederFactory(User, () => {
   const user = new User();
 
   user.email = faker.internet.email(
-    faker.name.firstName(),
-    faker.name.lastName(),
+    faker.name.firstName().toLowerCase(),
+    faker.name.lastName().toLowerCase(),
     "itvault.dev"
   );
 

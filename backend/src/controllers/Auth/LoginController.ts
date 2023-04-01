@@ -19,11 +19,14 @@ export class LoginController
   implements IController<LoginDto, undefined, UserDto>
 {
   constructor(
-    @inject(Di.UserRepository) private userRepository: IUserRepository,
-    @inject(Di.AuthService) private authService: IAuthService,
+    @inject(Di.UserRepository)
+    private _userRepository: IUserRepository,
+    @inject(Di.AuthService)
+    private _authService: IAuthService,
     @inject(Di.EntityMapperService)
-    private entityMapperService: IEntityMapperService,
-    @inject(Di.RedisService) private redisService: IRedisService
+    private _entityMapperService: IEntityMapperService,
+    @inject(Di.RedisService)
+    private _redisService: IRedisService
   ) {}
 
   async invoke(
@@ -32,7 +35,9 @@ export class LoginController
   ) {
     const { email, password } = request.body;
 
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this._userRepository.findByEmail(email, {
+      includePermissions: true,
+    });
 
     if (!user) {
       return response.status(HTTP.BAD_REQUEST).send();
@@ -44,9 +49,9 @@ export class LoginController
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    const token = this.authService.signToken({ email, id: user.id });
+    const token = this._authService.signToken({ email, id: user.id });
 
-    const mappedUserData = this.entityMapperService.mapOneToDto(
+    const mappedUserData = this._entityMapperService.mapOneToDto(
       user,
       UserDto,
       ({ role: { id, name, permissionToRole } }) => ({
@@ -60,7 +65,7 @@ export class LoginController
     );
 
     try {
-      await this.redisService.setKey(
+      await this._redisService.setKey(
         user.id.toString(),
         JSON.stringify(mappedUserData)
       );

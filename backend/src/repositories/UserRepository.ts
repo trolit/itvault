@@ -1,5 +1,5 @@
+import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
-import { IsNull, Repository } from "typeorm";
 
 import { User } from "@entities/User";
 import { BaseRepository } from "./BaseRepository";
@@ -16,18 +16,39 @@ export class UserRepository
     super(User);
   }
 
-  findByEmail(email: string): Promise<User | null> {
+  findByEmail(
+    email: string,
+    options?: { includePermissions: boolean }
+  ): Promise<User | null> {
+    const permissionsRelation = options?.includePermissions
+      ? {
+          relations: {
+            role: {
+              permissionToRole: {
+                permission: true,
+              },
+            },
+          },
+        }
+      : {};
+
     return this.database.findOne({
       where: {
         email,
-        deletedAt: IsNull(),
+      },
+      ...permissionsRelation,
+    });
+  }
+
+  getAll(take: number, skip: number): Promise<[User[], number]> {
+    return this.database.findAndCount({
+      take,
+      skip,
+      order: {
+        email: "asc",
       },
       relations: {
-        role: {
-          permissionToRole: {
-            permission: true,
-          },
-        },
+        role: true,
       },
     });
   }

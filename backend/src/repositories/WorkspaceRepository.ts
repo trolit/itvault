@@ -1,5 +1,5 @@
+import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
-import { IsNull, Repository } from "typeorm";
 
 import { Workspace } from "@entities/Workspace";
 import { BaseRepository } from "./BaseRepository";
@@ -20,11 +20,10 @@ export class WorkspaceRepository
     take: number,
     skip: number,
     userId?: number
-  ): Promise<[result: Workspace[], total: number]> {
+  ): Promise<[Workspace[], number]> {
     const userIdQuery = userId
       ? {
           where: {
-            deletedAt: IsNull(),
             userToWorkspace: {
               userId,
             },
