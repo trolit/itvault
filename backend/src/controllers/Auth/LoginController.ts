@@ -35,7 +35,9 @@ export class LoginController
   ) {
     const { email, password } = request.body;
 
-    const user = await this._userRepository.findByEmail(email);
+    const user = await this._userRepository.findByEmail(email, {
+      includePermissions: true,
+    });
 
     if (!user) {
       return response.status(HTTP.BAD_REQUEST).send();
