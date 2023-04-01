@@ -6,7 +6,7 @@ import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IAuthService } from "@interfaces/IAuthService";
-import { IRedisService } from "@interfaces/IRedisService";
+import { IDataStoreService } from "@interfaces/IDataStoreService";
 
 export const requireAuthentication = ((
   options = { withActiveAccount: true }
@@ -43,9 +43,11 @@ export const requireAuthentication = ((
 })();
 
 async function verifyAccountStatus(userId: number) {
-  const redisService = container.resolve<IRedisService>(Di.RedisService);
+  const dataStoreService = container.resolve<IDataStoreService>(
+    Di.DataStoreService
+  );
 
-  const userDetails = await redisService.getKey(userId.toString());
+  const userDetails = await dataStoreService.getKey(userId.toString());
 
   if (!userDetails) {
     return false;

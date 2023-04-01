@@ -9,9 +9,9 @@ import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/IAuthService";
 import { NODE_ENV, JWT_TOKEN_COOKIE_KEY } from "@config";
-import { IRedisService } from "@interfaces/IRedisService";
 import { IUserRepository } from "@interfaces/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utilities/types";
+import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
 @injectable()
@@ -25,8 +25,8 @@ export class LoginController
     private _authService: IAuthService,
     @inject(Di.EntityMapperService)
     private _entityMapperService: IEntityMapperService,
-    @inject(Di.RedisService)
-    private _redisService: IRedisService
+    @inject(Di.DataStoreService)
+    private _dataStoreService: IDataStoreService
   ) {}
 
   async invoke(
@@ -65,7 +65,7 @@ export class LoginController
     );
 
     try {
-      await this._redisService.setKey(
+      await this._dataStoreService.setKey(
         user.id.toString(),
         JSON.stringify(mappedUserData)
       );
