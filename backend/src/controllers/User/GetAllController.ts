@@ -20,9 +20,10 @@ export class GetAllController
   implements IController<undefined, IQueryParams, PaginatedResult<UserDto>>
 {
   constructor(
-    @inject(Di.UserRepository) private userRepository: IUserRepository,
+    @inject(Di.UserRepository)
+    private _userRepository: IUserRepository,
     @inject(Di.EntityMapperService)
-    private entityMapperService: IEntityMapperService
+    private _entityMapperService: IEntityMapperService
   ) {}
 
   async invoke(
@@ -33,9 +34,9 @@ export class GetAllController
       query: { skip, take },
     } = request;
 
-    const [result, total] = await this.userRepository.getAll(take, skip);
+    const [result, total] = await this._userRepository.getAll(take, skip);
 
-    const mappedResult = this.entityMapperService.mapToDto(
+    const mappedResult = this._entityMapperService.mapToDto(
       result,
       UserDto,
       ({ role: { id, name } }) => ({

@@ -25,11 +25,13 @@ export class GetAllController
 {
   constructor(
     @inject(Di.WorkspaceRepository)
-    private workspaceRepository: IWorkspaceRepository,
+    private _workspaceRepository: IWorkspaceRepository,
     @inject(Di.EntityMapperService)
-    private entityMapperService: IEntityMapperService,
-    @inject(Di.PermissionService) private permissionService: IPermissionService
+    private _entityMapperService: IEntityMapperService,
+    @inject(Di.PermissionService)
+    private _permissionService: IPermissionService
   ) {}
+
   async invoke(
     request: CustomRequest<undefined, IQueryParams>,
     response: CustomResponse<PaginatedResult<WorkspaceDto>>
@@ -40,18 +42,18 @@ export class GetAllController
     } = request;
 
     const isPermittedToSeeAllWorkflows =
-      await this.permissionService.hasPermission(
+      await this._permissionService.hasPermission(
         userId,
         Permission.ViewAllWorkflows
       );
 
-    const [result, total] = await this.workspaceRepository.getAll(
+    const [result, total] = await this._workspaceRepository.getAll(
       take,
       skip,
       isPermittedToSeeAllWorkflows ? undefined : userId
     );
 
-    const mappedResult = this.entityMapperService.mapToDto(
+    const mappedResult = this._entityMapperService.mapToDto(
       result,
       WorkspaceDto,
       (from: Workspace) => ({ isProtected: !!from.password })

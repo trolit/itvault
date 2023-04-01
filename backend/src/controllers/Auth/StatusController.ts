@@ -12,8 +12,10 @@ import { CustomRequest } from "@utilities/types";
 @injectable()
 export class StatusController implements IController {
   constructor(
-    @inject(Di.UserRepository) private userRepository: IUserRepository,
-    @inject(Di.AuthService) private authService: IAuthService
+    @inject(Di.UserRepository)
+    private _userRepository: IUserRepository,
+    @inject(Di.AuthService)
+    private _authService: IAuthService
   ) {}
 
   async invoke(request: CustomRequest, response: Response) {
@@ -23,7 +25,7 @@ export class StatusController implements IController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const result = this.authService.verifyToken(token);
+    const result = this._authService.verifyToken(token);
 
     if (result.error) {
       response.clearCookie(JWT_TOKEN_COOKIE_KEY);
@@ -33,7 +35,7 @@ export class StatusController implements IController {
 
     const { email } = result.payload;
 
-    const user = await this.userRepository.findByEmail(email);
+    const user = await this._userRepository.findByEmail(email);
 
     if (!user) {
       return response.status(HTTP.FORBIDDEN).send();
