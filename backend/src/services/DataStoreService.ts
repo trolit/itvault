@@ -2,11 +2,11 @@ import { Redis } from "ioredis";
 import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
-import { IRedisService } from "@interfaces/IRedisService";
+import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config/index";
 
 @injectable()
-export class RedisService implements IRedisService {
+export class DataStoreService implements IDataStoreService {
   constructor(
     @inject(Di.Redis)
     private redis: Redis
