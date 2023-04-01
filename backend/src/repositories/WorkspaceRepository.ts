@@ -20,7 +20,7 @@ export class WorkspaceRepository
     take: number,
     skip: number,
     userId?: number
-  ): Promise<[result: Workspace[], total: number]> {
+  ): Promise<[Workspace[], number]> {
     const userIdQuery = userId
       ? {
           where: {
