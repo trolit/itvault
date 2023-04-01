@@ -15,7 +15,7 @@ interface IOptions {
   withPermission?: Permission;
 }
 
-export const requireAuthentication = ((
+export const requireAuthentication = (
   options: IOptions = {
     withActiveAccount: true,
   }
@@ -52,7 +52,7 @@ export const requireAuthentication = ((
 
     next();
   };
-})();
+};
 
 async function verifyOptionsRelatedToDataStore(
   userId: string,
@@ -76,7 +76,7 @@ async function verifyOptionsRelatedToDataStore(
 
   if (
     options.withPermission &&
-    isPermissionEnabled(options.withPermission, parsedUserDetails.permissions)
+    !isPermissionEnabled(options.withPermission, parsedUserDetails.permissions)
   ) {
     return false;
   }
