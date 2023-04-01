@@ -1,4 +1,4 @@
-export interface IRedisService {
+export interface IDataStoreService {
   setKey(key: string, value: string): Promise<string | null>;
 
   getKey(
