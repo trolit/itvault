@@ -9,17 +9,17 @@ import { JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config/index";
 export class DataStoreService implements IDataStoreService {
   constructor(
     @inject(Di.Redis)
-    private redis: Redis
+    private _redis: Redis
   ) {}
 
   setKey(key: string, value: string): Promise<string | null> {
-    return this.redis.set(key, value, "EX", JWT_TOKEN_LIFETIME_IN_SECONDS);
+    return this._redis.set(key, value, "EX", JWT_TOKEN_LIFETIME_IN_SECONDS);
   }
 
   async getKey(
     key: string
   ): Promise<{ asString: () => string; asParsed: <T>() => T } | null> {
-    const value = await this.redis.get(key);
+    const value = await this._redis.get(key);
 
     if (!value) {
       return null;
