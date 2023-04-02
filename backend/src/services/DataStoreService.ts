@@ -2,8 +2,9 @@ import { Redis } from "ioredis";
 import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
-import { IDataStoreService } from "@interfaces/IDataStoreService";
+import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config/index";
+import { IDataStoreService } from "@interfaces/IDataStoreService";
 
 @injectable()
 export class DataStoreService implements IDataStoreService {
@@ -12,26 +13,79 @@ export class DataStoreService implements IDataStoreService {
     private _redis: Redis
   ) {}
 
-  setKey(key: string, value: string): Promise<string | null> {
-    return this._redis.set(key, value, "EX", JWT_TOKEN_LIFETIME_IN_SECONDS);
+  setKey<T>(
+    key: string | number,
+    keyType: DataStoreKeyType,
+    value: T
+  ): Promise<string | null> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
+
+    const valueAsString = JSON.stringify(value);
+
+    const dataKey = this.composeDataKey(key, keyType);
+
+    return this._redis.set(
+      dataKey,
+      valueAsString,
+      "EX",
+      JWT_TOKEN_LIFETIME_IN_SECONDS
+    );
   }
 
-  async getKey(
-    key: string
-  ): Promise<{ asString: () => string; asParsed: <T>() => T } | null> {
-    const value = await this._redis.get(key);
+  async getKey<T>(
+    key: string | number,
+    keyType: DataStoreKeyType
+  ): Promise<T | null> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
+
+    const dataKey = this.composeDataKey(key, keyType);
+
+    const value = await this._redis.get(dataKey);
 
     if (!value) {
       return null;
     }
 
-    return {
-      asString: () => value,
-      asParsed: <T>() => {
-        const parsedValue = <T>JSON.parse(value);
+    return <T>JSON.parse(value);
+  }
 
-        return parsedValue;
-      },
-    };
+  async updateKey<T>(
+    key: string | number,
+    keyType: DataStoreKeyType,
+    callback: (state: T) => void
+  ): Promise<string | null> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
+
+    const element = await this.getKey<T>(key, keyType);
+
+    if (!element) {
+      return null;
+    }
+
+    callback(element);
+
+    const result = await this.setKey<T>(key, keyType, element);
+
+    return result;
+  }
+
+  deleteKey(key: string | number, keyType: DataStoreKeyType): Promise<number> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
+
+    const dataKey = this.composeDataKey(key, keyType);
+
+    return this._redis.del(dataKey);
+  }
+
+  private composeDataKey(key: string, keyType: DataStoreKeyType) {
+    return `data-store-${keyType}-${key}`;
   }
 }

@@ -7,10 +7,15 @@ import { UserDto } from "@dtos/UserDto";
 import { Permission } from "@enums/Permission";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IAuthService } from "@interfaces/IAuthService";
+import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
-export const requireAuthentication = (() => {
+interface IOptions {
+  withPermission: Permission;
+}
+
+export const requireAuthentication = (options?: IOptions) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const userId = handleTokenFromRequest(request);
 
@@ -18,25 +23,8 @@ export const requireAuthentication = (() => {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    next();
-  };
-})();
-
-interface IOptions {
-  withActiveAccount: boolean;
-  withPermission?: Permission;
-}
-
-export const requireAuthenticationWithOptions = (
-  options: IOptions = {
-    withActiveAccount: true,
-  }
-) => {
-  return async (request: Request, response: Response, next: NextFunction) => {
-    const userId = handleTokenFromRequest(request);
-
-    if (!userId) {
-      return response.status(HTTP.FORBIDDEN).send();
+    if (!options) {
+      return next();
     }
 
     const areOptionsRequirementsValid = await verifyOptionsRelatedToDataStore(
@@ -82,21 +70,18 @@ async function verifyOptionsRelatedToDataStore(
     Di.DataStoreService
   );
 
-  const userDetails = await dataStoreService.getKey(userId);
+  const userDetails = await dataStoreService.getKey<UserDto>(
+    userId,
+    DataStoreKeyType.AuthenticatedUser
+  );
 
   if (!userDetails) {
     return false;
   }
 
-  const parsedUserDetails = userDetails.asParsed<UserDto>();
-
-  if (options.withActiveAccount && !parsedUserDetails.isActive) {
-    return false;
-  }
-
   if (
     options.withPermission &&
-    !isPermissionEnabled(options.withPermission, parsedUserDetails.permissions)
+    !isPermissionEnabled(options.withPermission, userDetails.permissions)
   ) {
     return false;
   }

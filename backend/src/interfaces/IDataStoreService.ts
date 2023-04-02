@@ -1,7 +1,19 @@
-export interface IDataStoreService {
-  setKey(key: string, value: string): Promise<string | null>;
+import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 
-  getKey(
-    key: string
-  ): Promise<{ asString: () => string; asParsed: <T>() => T } | null>;
+export interface IDataStoreService {
+  setKey<T>(
+    key: string | number,
+    keyType: DataStoreKeyType,
+    value: T
+  ): Promise<string | null>;
+
+  getKey<T>(key: string | number, keyType: DataStoreKeyType): Promise<T | null>;
+
+  updateKey<T>(
+    key: string | number,
+    keyType: DataStoreKeyType,
+    callback: (value: T) => void
+  ): Promise<string | null>;
+
+  deleteKey(key: string | number, keyType: DataStoreKeyType): Promise<number>;
 }

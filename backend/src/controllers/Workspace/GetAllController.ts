@@ -12,7 +12,7 @@ import { IPermissionService } from "@interfaces/IPermissionService";
 import { IWorkspaceRepository } from "@interfaces/IWorkspaceRepository";
 import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
-interface IQueryParams {
+interface IQuery {
   skip: number;
 
   take: number;
@@ -21,7 +21,7 @@ interface IQueryParams {
 @autoInjectable()
 export class GetAllController
   implements
-    IController<undefined, IQueryParams, PaginatedResult<WorkspaceDto>>
+    IController<undefined, undefined, IQuery, PaginatedResult<WorkspaceDto>>
 {
   constructor(
     @inject(Di.WorkspaceRepository)
@@ -33,7 +33,7 @@ export class GetAllController
   ) {}
 
   async invoke(
-    request: CustomRequest<undefined, IQueryParams>,
+    request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<PaginatedResult<WorkspaceDto>>
   ) {
     const {

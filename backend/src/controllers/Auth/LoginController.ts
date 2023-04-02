@@ -9,6 +9,7 @@ import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/IAuthService";
 import { NODE_ENV, JWT_TOKEN_COOKIE_KEY } from "@config";
+import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IUserRepository } from "@interfaces/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utilities/types";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
@@ -16,7 +17,7 @@ import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
 @injectable()
 export class LoginController
-  implements IController<LoginDto, undefined, UserDto>
+  implements IController<undefined, LoginDto, undefined, UserDto>
 {
   constructor(
     @inject(Di.UserRepository)
@@ -30,7 +31,7 @@ export class LoginController
   ) {}
 
   async invoke(
-    request: CustomRequest<LoginDto>,
+    request: CustomRequest<undefined, LoginDto>,
     response: CustomResponse<UserDto>
   ) {
     const { email, password } = request.body;
@@ -65,9 +66,10 @@ export class LoginController
     );
 
     try {
-      await this._dataStoreService.setKey(
-        user.id.toString(),
-        JSON.stringify(mappedUserData)
+      await this._dataStoreService.setKey<UserDto>(
+        user.id,
+        DataStoreKeyType.AuthenticatedUser,
+        mappedUserData
       );
     } catch (error) {
       // @TODO log error

@@ -9,7 +9,7 @@ import { IUserRepository } from "@interfaces/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utilities/types";
 import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
-interface IQueryParams {
+interface IQuery {
   skip: number;
 
   take: number;
@@ -17,7 +17,8 @@ interface IQueryParams {
 
 @injectable()
 export class GetAllController
-  implements IController<undefined, IQueryParams, PaginatedResult<UserDto>>
+  implements
+    IController<undefined, undefined, IQuery, PaginatedResult<UserDto>>
 {
   constructor(
     @inject(Di.UserRepository)
@@ -27,7 +28,7 @@ export class GetAllController
   ) {}
 
   async invoke(
-    request: CustomRequest<undefined, IQueryParams>,
+    request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<PaginatedResult<UserDto>>
   ) {
     const {
@@ -39,9 +40,10 @@ export class GetAllController
     const mappedResult = this._entityMapperService.mapToDto(
       result,
       UserDto,
-      ({ role: { id, name } }) => ({
+      ({ role: { id, name }, deletedAt }) => ({
         roleId: id,
         roleName: name,
+        isActive: deletedAt === null,
       })
     );
 
