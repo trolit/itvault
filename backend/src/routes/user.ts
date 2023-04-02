@@ -16,7 +16,6 @@ const userRoutes = Router();
 userRoutes.get(
   "/v1",
   requireAuthentication({
-    withActiveAccount: true,
     withPermission: Permission.ViewAllUsers,
   }),
   safeParseRequest({ query: { withSchema: paginationSchema } }),
@@ -26,7 +25,6 @@ userRoutes.get(
 userRoutes.delete(
   "/v1/:id",
   requireAuthentication({
-    withActiveAccount: true,
     withPermission: Permission.DeactivateUserAccount,
   }),
   safeParseRequest({
