@@ -18,13 +18,13 @@ export class PermissionService implements IPermissionService {
     userId: number,
     permission: Permission
   ): Promise<boolean> {
-    const userDetails = await this._dataStoreService.getKey(userId.toString());
+    const userDetails = await this._dataStoreService.getKey<UserDto>(userId);
 
     if (!userDetails) {
       return false;
     }
 
-    const { permissions } = userDetails.asParsed<UserDto>();
+    const { permissions } = userDetails;
 
     return isPermissionEnabled(permission, permissions);
   }
