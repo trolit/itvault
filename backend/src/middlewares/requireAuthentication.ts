@@ -12,20 +12,19 @@ import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 interface IOptions {
-  withActiveAccount: boolean;
-  withPermission?: Permission;
+  withPermission: Permission;
 }
 
-export const requireAuthentication = (
-  options: IOptions = {
-    withActiveAccount: true,
-  }
-) => {
+export const requireAuthentication = (options?: IOptions) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const userId = handleTokenFromRequest(request);
 
     if (!userId) {
       return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    if (!options) {
+      return next();
     }
 
     const areOptionsRequirementsValid = await verifyOptionsRelatedToDataStore(
@@ -77,10 +76,6 @@ async function verifyOptionsRelatedToDataStore(
   );
 
   if (!userDetails) {
-    return false;
-  }
-
-  if (options.withActiveAccount && !userDetails.isActive) {
     return false;
   }
 
