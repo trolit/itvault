@@ -82,21 +82,19 @@ async function verifyOptionsRelatedToDataStore(
     Di.DataStoreService
   );
 
-  const userDetails = await dataStoreService.getKey(userId);
+  const userDetails = await dataStoreService.getKey<UserDto>(userId);
 
   if (!userDetails) {
     return false;
   }
 
-  const parsedUserDetails = userDetails.asParsed<UserDto>();
-
-  if (options.withActiveAccount && !parsedUserDetails.isActive) {
+  if (options.withActiveAccount && !userDetails.isActive) {
     return false;
   }
 
   if (
     options.withPermission &&
-    !isPermissionEnabled(options.withPermission, parsedUserDetails.permissions)
+    !isPermissionEnabled(options.withPermission, userDetails.permissions)
   ) {
     return false;
   }
