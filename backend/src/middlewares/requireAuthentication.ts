@@ -7,6 +7,7 @@ import { UserDto } from "@dtos/UserDto";
 import { Permission } from "@enums/Permission";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IAuthService } from "@interfaces/IAuthService";
+import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
@@ -82,7 +83,10 @@ async function verifyOptionsRelatedToDataStore(
     Di.DataStoreService
   );
 
-  const userDetails = await dataStoreService.getKey<UserDto>(userId);
+  const userDetails = await dataStoreService.getKey<UserDto>(
+    userId,
+    DataStoreKeyType.AuthenticatedUser
+  );
 
   if (!userDetails) {
     return false;
