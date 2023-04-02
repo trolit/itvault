@@ -43,7 +43,7 @@ export class DataStoreService implements IDataStoreService {
 
   async updateKeyIfPossible<T>(
     key: string | number,
-    callback: (value: T) => void
+    callback: (state: T) => void
   ): Promise<string | null> {
     if (typeof key !== "string") {
       key = key.toString();
