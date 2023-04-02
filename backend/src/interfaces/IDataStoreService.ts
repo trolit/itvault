@@ -14,4 +14,6 @@ export interface IDataStoreService {
     keyType: DataStoreKeyType,
     callback: (value: T) => void
   ): Promise<string | null>;
+
+  deleteKey(key: string | number, keyType: DataStoreKeyType): Promise<number>;
 }

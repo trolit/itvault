@@ -75,6 +75,16 @@ export class DataStoreService implements IDataStoreService {
     return result;
   }
 
+  deleteKey(key: string | number, keyType: DataStoreKeyType): Promise<number> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
+
+    const dataKey = this.composeDataKey(key, keyType);
+
+    return this._redis.del(dataKey);
+  }
+
   private composeDataKey(key: string, keyType: DataStoreKeyType) {
     return `data-store-${keyType}-${key}`;
   }
