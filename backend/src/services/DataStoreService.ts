@@ -2,8 +2,9 @@ import { Redis } from "ioredis";
 import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
-import { IDataStoreService } from "@interfaces/IDataStoreService";
+import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config/index";
+import { IDataStoreService } from "@interfaces/IDataStoreService";
 
 @injectable()
 export class DataStoreService implements IDataStoreService {
@@ -12,27 +13,38 @@ export class DataStoreService implements IDataStoreService {
     private _redis: Redis
   ) {}
 
-  setKey<T>(key: string | number, value: T): Promise<string | null> {
+  setKey<T>(
+    key: string | number,
+    keyType: DataStoreKeyType,
+    value: T
+  ): Promise<string | null> {
     if (typeof key !== "string") {
       key = key.toString();
     }
 
     const valueAsString = JSON.stringify(value);
 
+    const dataKey = this.composeDataKey(key, keyType);
+
     return this._redis.set(
-      `data-store-${key}`,
+      dataKey,
       valueAsString,
       "EX",
       JWT_TOKEN_LIFETIME_IN_SECONDS
     );
   }
 
-  async getKey<T>(key: string | number): Promise<T | null> {
+  async getKey<T>(
+    key: string | number,
+    keyType: DataStoreKeyType
+  ): Promise<T | null> {
     if (typeof key !== "string") {
       key = key.toString();
     }
 
-    const value = await this._redis.get(`data-store-${key}`);
+    const dataKey = this.composeDataKey(key, keyType);
+
+    const value = await this._redis.get(dataKey);
 
     if (!value) {
       return null;
@@ -43,13 +55,14 @@ export class DataStoreService implements IDataStoreService {
 
   async updateKey<T>(
     key: string | number,
+    keyType: DataStoreKeyType,
     callback: (state: T) => void
   ): Promise<string | null> {
     if (typeof key !== "string") {
       key = key.toString();
     }
 
-    const element = await this.getKey<T>(key);
+    const element = await this.getKey<T>(key, keyType);
 
     if (!element) {
       return null;
@@ -57,8 +70,12 @@ export class DataStoreService implements IDataStoreService {
 
     callback(element);
 
-    const result = await this.setKey<T>(key, element);
+    const result = await this.setKey<T>(key, keyType, element);
 
     return result;
+  }
+
+  private composeDataKey(key: string, keyType: DataStoreKeyType) {
+    return `data-store-${keyType}-${key}`;
   }
 }
