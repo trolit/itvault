@@ -11,24 +11,12 @@ import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
-export const requireAuthentication = (() => {
-  return async (request: Request, response: Response, next: NextFunction) => {
-    const userId = handleTokenFromRequest(request);
-
-    if (!userId) {
-      return response.status(HTTP.FORBIDDEN).send();
-    }
-
-    next();
-  };
-})();
-
 interface IOptions {
   withActiveAccount: boolean;
   withPermission?: Permission;
 }
 
-export const requireAuthenticationWithOptions = (
+export const requireAuthentication = (
   options: IOptions = {
     withActiveAccount: true,
   }

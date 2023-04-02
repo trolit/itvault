@@ -10,7 +10,7 @@ const workspaceRoutes = Router();
 
 workspaceRoutes.get(
   "/v1",
-  requireAuthentication,
+  requireAuthentication({ withActiveAccount: true }),
   safeParseRequest({ query: { withSchema: paginationSchema } }),
   processRequestWith(GetAllController)
 );

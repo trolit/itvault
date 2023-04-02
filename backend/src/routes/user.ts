@@ -8,14 +8,14 @@ import { paginationSchema } from "@schemas/pagination";
 import { processRequestWith } from "./processRequestWith";
 import { safeParseRequest } from "@middlewares/safeParseRequest";
 import { GetAllController } from "@controllers/User/GetAllController";
+import { requireAuthentication } from "@middlewares/requireAuthentication";
 import { SoftDeleteController } from "@controllers/User/SoftDeleteController";
-import { requireAuthenticationWithOptions } from "@middlewares/requireAuthentication";
 
 const userRoutes = Router();
 
 userRoutes.get(
   "/v1",
-  requireAuthenticationWithOptions({
+  requireAuthentication({
     withActiveAccount: true,
     withPermission: Permission.ViewAllUsers,
   }),
@@ -25,8 +25,9 @@ userRoutes.get(
 
 userRoutes.delete(
   "/v1/:id",
-  requireAuthenticationWithOptions({
+  requireAuthentication({
     withActiveAccount: true,
+    withPermission: Permission.DeactivateUserAccount,
   }),
   safeParseRequest({
     params: { withSchema: deleteSchema<User>(Di.UserRepository) },
