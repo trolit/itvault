@@ -20,7 +20,7 @@ export class DataStoreService implements IDataStoreService {
     const valueAsString = JSON.stringify(value);
 
     return this._redis.set(
-      key,
+      `data-store-${key}`,
       valueAsString,
       "EX",
       JWT_TOKEN_LIFETIME_IN_SECONDS
@@ -32,7 +32,7 @@ export class DataStoreService implements IDataStoreService {
       key = key.toString();
     }
 
-    const value = await this._redis.get(key);
+    const value = await this._redis.get(`data-store-${key}`);
 
     if (!value) {
       return null;
