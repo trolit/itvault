@@ -50,6 +50,7 @@ export class UserRepository
       relations: {
         role: true,
       },
+      withDeleted: true,
     });
   }
 }
