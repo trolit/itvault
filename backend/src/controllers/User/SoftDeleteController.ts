@@ -6,6 +6,7 @@ import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { CustomRequest } from "@utilities/types";
 import { IController } from "@interfaces/IController";
+import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IUserRepository } from "@interfaces/IUserRepository";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
 
@@ -31,9 +32,13 @@ export class SoftDeleteController implements IController<IParams> {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    await this._dataStoreService.updateKey<UserDto>(id, state => {
-      state.isActive = false;
-    });
+    await this._dataStoreService.updateKey<UserDto>(
+      id,
+      DataStoreKeyType.AuthenticatedUser,
+      state => {
+        state.isActive = false;
+      }
+    );
 
     return response.status(HTTP.NO_CONTENT).send();
   }
