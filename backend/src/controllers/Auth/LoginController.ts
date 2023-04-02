@@ -65,10 +65,7 @@ export class LoginController
     );
 
     try {
-      await this._dataStoreService.setKey(
-        user.id.toString(),
-        JSON.stringify(mappedUserData)
-      );
+      await this._dataStoreService.setKey<UserDto>(user.id, mappedUserData);
     } catch (error) {
       // @TODO log error
       console.error(error);
