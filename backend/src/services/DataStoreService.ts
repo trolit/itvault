@@ -41,7 +41,7 @@ export class DataStoreService implements IDataStoreService {
     return <T>JSON.parse(value);
   }
 
-  async updateKeyIfPossible<T>(
+  async updateKey<T>(
     key: string | number,
     callback: (state: T) => void
   ): Promise<string | null> {
