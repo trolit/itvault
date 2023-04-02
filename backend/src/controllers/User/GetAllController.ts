@@ -40,9 +40,10 @@ export class GetAllController
     const mappedResult = this._entityMapperService.mapToDto(
       result,
       UserDto,
-      ({ role: { id, name } }) => ({
+      ({ role: { id, name }, deletedAt }) => ({
         roleId: id,
         roleName: name,
+        isActive: deletedAt === null,
       })
     );
 
