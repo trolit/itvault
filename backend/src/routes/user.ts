@@ -10,6 +10,7 @@ import { safeParseRequest } from "@middlewares/safeParseRequest";
 import { GetAllController } from "@controllers/User/GetAllController";
 import { requireAuthentication } from "@middlewares/requireAuthentication";
 import { SoftDeleteController } from "@controllers/User/SoftDeleteController";
+import { UpdateManyController } from "@controllers/User/UpdateManyController";
 
 const userRoutes = Router();
 
@@ -32,5 +33,7 @@ userRoutes.delete(
   }),
   processRequestWith(SoftDeleteController)
 );
+
+userRoutes.patch("/v1", processRequestWith(UpdateManyController));
 
 export = userRoutes;
