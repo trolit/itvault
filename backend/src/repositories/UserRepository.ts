@@ -55,7 +55,7 @@ export class UserRepository
     });
   }
 
-  async updateMany(
+  updateMany(
     entitiesToUpdate: UpdateUserDto[]
   ): Promise<{ fails: UpdateUserDto[] }> {
     return this.database.manager.transaction(
