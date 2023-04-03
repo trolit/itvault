@@ -1,9 +1,10 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { EntityManager, Repository } from "typeorm";
 
 import { User } from "@entities/User";
 import { BaseRepository } from "./BaseRepository";
 import { IUserRepository } from "@interfaces/IUserRepository";
+import { UpdateUserDto } from "@dtos/UpdateUserDto";
 
 @injectable()
 export class UserRepository
@@ -52,5 +53,29 @@ export class UserRepository
       },
       withDeleted: true,
     });
+  }
+
+  async updateMany(
+    entitiesToUpdate: UpdateUserDto[]
+  ): Promise<{ fails: UpdateUserDto[] }> {
+    return this.database.manager.transaction(
+      async (entityManager: EntityManager) => {
+        const fails: UpdateUserDto[] = [];
+
+        for (const entityToUpdate of entitiesToUpdate) {
+          const { id, data } = entityToUpdate;
+
+          const updateResult = await entityManager.update(User, { id }, data);
+
+          if (updateResult.affected) {
+            continue;
+          }
+
+          fails.push(entityToUpdate);
+        }
+
+        return { fails };
+      }
+    );
   }
 }
