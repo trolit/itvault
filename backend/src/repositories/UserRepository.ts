@@ -1,10 +1,11 @@
 import { injectable } from "tsyringe";
 import { EntityManager, Repository } from "typeorm";
 
+import { Role } from "@entities/Role";
 import { User } from "@entities/User";
 import { BaseRepository } from "./BaseRepository";
-import { IUserRepository } from "@interfaces/IUserRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
+import { IUserRepository } from "@interfaces/IUserRepository";
 
 @injectable()
 export class UserRepository
@@ -63,9 +64,30 @@ export class UserRepository
         const fails: UpdateUserDto[] = [];
 
         for (const entityToUpdate of entitiesToUpdate) {
-          const { id, data } = entityToUpdate;
+          const {
+            id,
+            data: { deletedAt, roleId },
+          } = entityToUpdate;
 
-          const updateResult = await entityManager.update(User, { id }, data);
+          const partialEntity: Partial<User> = {};
+
+          if (deletedAt) {
+            partialEntity.deletedAt = deletedAt;
+          }
+
+          if (roleId) {
+            const role = await entityManager.findOneBy(Role, { id: roleId });
+
+            if (role) {
+              partialEntity.role = role;
+            }
+          }
+
+          const updateResult = await entityManager.update(
+            User,
+            { id },
+            partialEntity
+          );
 
           if (updateResult.affected) {
             continue;
