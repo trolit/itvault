@@ -12,7 +12,9 @@ import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 interface IOptions {
-  withPermission: Permission;
+  withPermission?: Permission;
+
+  withOneOfPermissions?: Permission[];
 }
 
 export const requireAuthentication = (options?: IOptions) => {
@@ -82,6 +84,15 @@ async function verifyOptionsRelatedToDataStore(
   if (
     options.withPermission &&
     !isPermissionEnabled(options.withPermission, userDetails.permissions)
+  ) {
+    return false;
+  }
+
+  if (
+    options.withOneOfPermissions &&
+    options.withOneOfPermissions.every(
+      permission => !isPermissionEnabled(permission, userDetails.permissions)
+    )
   ) {
     return false;
   }
