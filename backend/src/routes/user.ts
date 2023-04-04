@@ -11,6 +11,7 @@ import { GetAllController } from "@controllers/User/GetAllController";
 import { requireAuthentication } from "@middlewares/requireAuthentication";
 import { SoftDeleteController } from "@controllers/User/SoftDeleteController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
+import { UPDATE_USER_PERMISSIONS } from "@config/permissions";
 
 const userRoutes = Router();
 
@@ -34,6 +35,12 @@ userRoutes.delete(
   processRequestWith(SoftDeleteController)
 );
 
-userRoutes.patch("/v1", processRequestWith(UpdateManyController));
+userRoutes.patch(
+  "/v1",
+  requireAuthentication({
+    withOneOfPermissions: UPDATE_USER_PERMISSIONS,
+  }),
+  processRequestWith(UpdateManyController)
+);
 
 export = userRoutes;
