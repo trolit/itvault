@@ -15,6 +15,7 @@ interface IRequestBody {
 export class UpdateManyController
   implements IController<undefined, IRequestBody, undefined, UpdateUserDto[]>
 {
+  // @TODO schema
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository
