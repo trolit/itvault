@@ -7,10 +7,13 @@ import { IController } from "@interfaces/IController";
 import { IUserRepository } from "@interfaces/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utilities/types";
 
+interface IRequestBody {
+  value: UpdateUserDto[];
+}
+
 @injectable()
 export class UpdateManyController
-  implements
-    IController<undefined, UpdateUserDto[], undefined, UpdateUserDto[]>
+  implements IController<undefined, IRequestBody, undefined, UpdateUserDto[]>
 {
   constructor(
     @inject(Di.UserRepository)
@@ -18,12 +21,12 @@ export class UpdateManyController
   ) {}
 
   async invoke(
-    request: CustomRequest<undefined, UpdateUserDto[]>,
+    request: CustomRequest<undefined, IRequestBody>,
     response: CustomResponse<UpdateUserDto[]>
   ) {
-    const result = await this._userRepository.updateMany(request.body);
+    const result = await this._userRepository.updateMany(request.body.value);
 
-    if (!result.fails.length) {
+    if (result.fails.length) {
       return response.status(HTTP.BAD_REQUEST).send(result.fails);
     }
 
