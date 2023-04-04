@@ -1,8 +1,10 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { EntityManager, Repository } from "typeorm";
 
+import { Role } from "@entities/Role";
 import { User } from "@entities/User";
 import { BaseRepository } from "./BaseRepository";
+import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IUserRepository } from "@interfaces/IUserRepository";
 
 @injectable()
@@ -52,5 +54,50 @@ export class UserRepository
       },
       withDeleted: true,
     });
+  }
+
+  updateMany(
+    entitiesToUpdate: UpdateUserDto[]
+  ): Promise<{ fails: UpdateUserDto[] }> {
+    return this.database.manager.transaction(
+      async (entityManager: EntityManager) => {
+        const fails: UpdateUserDto[] = [];
+
+        for (const entityToUpdate of entitiesToUpdate) {
+          const {
+            id,
+            data: { deletedAt, roleId },
+          } = entityToUpdate;
+
+          const partialEntity: Partial<User> = {};
+
+          if (deletedAt) {
+            partialEntity.deletedAt = deletedAt;
+          }
+
+          if (roleId) {
+            const role = await entityManager.findOneBy(Role, { id: roleId });
+
+            if (role) {
+              partialEntity.role = role;
+            }
+          }
+
+          const updateResult = await entityManager.update(
+            User,
+            { id },
+            partialEntity
+          );
+
+          if (updateResult.affected) {
+            continue;
+          }
+
+          fails.push(entityToUpdate);
+        }
+
+        return { fails };
+      }
+    );
   }
 }
