@@ -96,7 +96,7 @@ export class UserRepository
           }
 
           fails.push({
-            identifier: id,
+            key: id,
           });
         }
 
