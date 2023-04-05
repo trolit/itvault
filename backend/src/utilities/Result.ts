@@ -7,13 +7,13 @@ export class PaginatedResult<T> {
 }
 
 export class Result<T> {
-  public value: T;
+  public value?: T;
 
   public errors: IError[];
 
   public success: boolean;
 
-  constructor(value: T, errors: IError[]) {
+  constructor(errors: IError[], value?: T) {
     this.value = value;
 
     this.errors = errors;
@@ -22,10 +22,10 @@ export class Result<T> {
   }
 
   public static success<T>(value: T): Result<T> {
-    return new Result<T>(value, []);
+    return new Result<T>([], value);
   }
 
   public static failure<T>(errors: IError[]): Result<T> {
-    return new Result<T>(null, errors);
+    return new Result<T>(errors, undefined);
   }
 }
