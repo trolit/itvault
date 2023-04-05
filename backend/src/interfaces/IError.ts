@@ -1,5 +1,5 @@
 export interface IError {
   identifier: number | string;
 
-  message: string;
+  messages?: string[];
 }
