@@ -6,6 +6,8 @@ import { User } from "@entities/User";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IUserRepository } from "@interfaces/IUserRepository";
+import { Result } from "@utilities/Result";
+import { IError } from "@interfaces/IError";
 
 @injectable()
 export class UserRepository
@@ -56,12 +58,12 @@ export class UserRepository
     });
   }
 
-  updateMany(
+  async updateMany(
     entitiesToUpdate: UpdateUserDto[]
-  ): Promise<{ fails: UpdateUserDto[] }> {
-    return this.database.manager.transaction(
+  ): Promise<Result<UpdateUserDto[]>> {
+    const transactionResult = await this.database.manager.transaction(
       async (entityManager: EntityManager) => {
-        const fails: UpdateUserDto[] = [];
+        const fails: IError[] = [];
 
         for (const entityToUpdate of entitiesToUpdate) {
           const {
@@ -93,11 +95,17 @@ export class UserRepository
             continue;
           }
 
-          fails.push(entityToUpdate);
+          fails.push({
+            key: id,
+          });
         }
 
         return { fails };
       }
     );
+
+    return transactionResult.fails.length
+      ? Result.failure(transactionResult.fails)
+      : Result.success([]);
   }
 }

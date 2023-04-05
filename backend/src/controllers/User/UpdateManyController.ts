@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
+import { Result } from "@utilities/Result";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
 import { IUserRepository } from "@interfaces/IUserRepository";
@@ -13,7 +14,8 @@ interface IRequestBody {
 
 @injectable()
 export class UpdateManyController
-  implements IController<undefined, IRequestBody, undefined, UpdateUserDto[]>
+  implements
+    IController<undefined, IRequestBody, undefined, Result<UpdateUserDto[]>>
 {
   // @TODO schema
   constructor(
@@ -23,14 +25,14 @@ export class UpdateManyController
 
   async invoke(
     request: CustomRequest<undefined, IRequestBody>,
-    response: CustomResponse<UpdateUserDto[]>
+    response: CustomResponse<Result<UpdateUserDto[]>>
   ) {
     const { value } = request.body;
 
     const result = await this._userRepository.updateMany(value);
 
-    if (result.fails.length) {
-      return response.status(HTTP.BAD_REQUEST).send(result.fails);
+    if (!result.success) {
+      return response.status(HTTP.BAD_REQUEST).send(result);
     }
 
     // @TODO redis

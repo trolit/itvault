@@ -1,21 +1,31 @@
+import { IError } from "@interfaces/IError";
+
 export class PaginatedResult<T> {
   result: T[];
 
   total: number;
 }
 
-interface IError {
-  identifier: number | string;
-
-  message: string;
-}
-
 export class Result<T> {
-  result: T;
+  public value?: T;
 
-  static errors: IError[] = [];
+  public errors: IError[];
 
-  static addError(identifier: number | string, message: string) {
-    this.errors.push({ identifier, message });
+  public success: boolean;
+
+  constructor(errors: IError[], value?: T) {
+    this.value = value;
+
+    this.errors = errors;
+
+    this.success = errors.length === 0;
+  }
+
+  public static success<T>(value: T): Result<T> {
+    return new Result<T>([], value);
+  }
+
+  public static failure<T>(errors: IError[]): Result<T> {
+    return new Result<T>(errors, undefined);
   }
 }

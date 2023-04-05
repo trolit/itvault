@@ -38,6 +38,7 @@ userRoutes.delete(
 userRoutes.patch(
   "/v1",
   requireAuthentication({
+    withPermission: Permission.ViewAllUsers,
     withOneOfPermissions: UPDATE_USER_PERMISSIONS,
   }),
   processRequestWith(UpdateManyController)
