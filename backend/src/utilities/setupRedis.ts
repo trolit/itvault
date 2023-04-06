@@ -8,7 +8,7 @@ import { IRoleRepository } from "@interfaces/IRoleRepository";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 import { REDIS_CONTAINER_PORT, REDIS_PASSWORD } from "@config/index";
 
-export const setupRedis = async () => {
+export const setupRedis = () => {
   const instance = new Redis({
     port: REDIS_CONTAINER_PORT,
     password: REDIS_PASSWORD,
@@ -43,8 +43,6 @@ export const setupRedis = async () => {
       mutli.exec(error => {
         if (error) {
           console.log(error);
-
-          process.exit();
         }
       });
     },
