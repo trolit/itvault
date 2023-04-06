@@ -3,5 +3,5 @@ export class DataStoreUser {
 
   roleId: number;
 
-  isActive = true;
+  isActive: boolean;
 }
