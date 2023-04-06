@@ -5,14 +5,21 @@ import { container, DependencyContainer } from "tsyringe";
 
 import { Di } from "@enums/Di";
 
-export const setupDi = (redis: Redis): DependencyContainer => {
+export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
 
   registerDependenciesFrom("repositories", ["BaseRepository"]);
 
   registerDependenciesFrom("services");
 
-  return container;
+  return new Promise(resolve =>
+    setInterval(() => {
+      // @NOTE wait for dependencies that must be available instantly
+      if (container.isRegistered(Di.RoleRepository)) {
+        resolve(container);
+      }
+    }, 1000)
+  );
 };
 
 function registerDependenciesFrom(
