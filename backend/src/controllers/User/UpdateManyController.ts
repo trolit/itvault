@@ -17,7 +17,6 @@ export class UpdateManyController
   implements
     IController<undefined, IRequestBody, undefined, Result<UpdateUserDto[]>>
 {
-  // @TODO schema
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository
