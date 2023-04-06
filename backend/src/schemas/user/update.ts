@@ -13,10 +13,8 @@ const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
   })
 );
 
-export const updateUsersSchema = () => {
-  return schemaForType<{ value: UpdateUserDto[] }>()(
-    z.object({
-      value: z.array(updateUserDtoSchema),
-    })
-  );
-};
+export const updateUsersSchema = schemaForType<{ value: UpdateUserDto[] }>()(
+  z.object({
+    value: z.array(updateUserDtoSchema),
+  })
+);
