@@ -1,16 +1,25 @@
 import fs from "fs";
 import path from "path";
-import { container } from "tsyringe";
 import Redis from "ioredis/built/Redis";
+import { container, DependencyContainer } from "tsyringe";
 
 import { Di } from "@enums/Di";
 
-export const setupDi = (redis: Redis) => {
+export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
 
   registerDependenciesFrom("repositories", ["BaseRepository"]);
 
   registerDependenciesFrom("services");
+
+  return new Promise(resolve =>
+    setInterval(() => {
+      // @NOTE wait for dependencies that must be available instantly
+      if (container.isRegistered(Di.RoleRepository)) {
+        resolve(container);
+      }
+    }, 1000)
+  );
 };
 
 function registerDependenciesFrom(

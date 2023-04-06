@@ -5,6 +5,7 @@ import { Di } from "@enums/Di";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config/index";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
+import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
 @injectable()
 export class DataStoreService implements IDataStoreService {
@@ -24,7 +25,7 @@ export class DataStoreService implements IDataStoreService {
 
     const valueAsString = JSON.stringify(value);
 
-    const dataKey = this.composeDataKey(key, keyType);
+    const dataKey = composeDataStoreKey(key, keyType);
 
     return this._redis.set(
       dataKey,
@@ -42,7 +43,7 @@ export class DataStoreService implements IDataStoreService {
       key = key.toString();
     }
 
-    const dataKey = this.composeDataKey(key, keyType);
+    const dataKey = composeDataStoreKey(key, keyType);
 
     const value = await this._redis.get(dataKey);
 
@@ -80,12 +81,8 @@ export class DataStoreService implements IDataStoreService {
       key = key.toString();
     }
 
-    const dataKey = this.composeDataKey(key, keyType);
+    const dataKey = composeDataStoreKey(key, keyType);
 
     return this._redis.del(dataKey);
-  }
-
-  private composeDataKey(key: string, keyType: DataStoreKeyType) {
-    return `data-store-${keyType}-${key}`;
   }
 }

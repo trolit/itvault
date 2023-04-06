@@ -14,13 +14,13 @@ export const server = async () => {
     console.info("DataSource initialized.");
   } catch (error) {
     console.error(error);
-
-    process.exit(1);
   }
 
-  const redis = await setupRedis();
+  const redis = setupRedis();
 
-  setupDi(redis);
+  const container = await setupDi(redis.instance);
+
+  redis.initializeRoleKeys(container);
 
   setupExpress(app);
 
