@@ -12,6 +12,7 @@ import { requireAuthentication } from "@middlewares/requireAuthentication";
 import { SoftDeleteController } from "@controllers/User/SoftDeleteController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
 import { UPDATE_USER_PERMISSIONS } from "@config/permissions";
+import { updateUsersSchema } from "@schemas/user/update";
 
 const userRoutes = Router();
 
@@ -40,6 +41,9 @@ userRoutes.patch(
   requireAuthentication({
     withPermission: Permission.ViewAllUsers,
     withOneOfPermissions: UPDATE_USER_PERMISSIONS,
+  }),
+  safeParseRequest({
+    body: { withSchema: updateUsersSchema },
   }),
   processRequestWith(UpdateManyController)
 );
