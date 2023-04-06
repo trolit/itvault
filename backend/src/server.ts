@@ -20,7 +20,9 @@ export const server = async () => {
 
   const redis = await setupRedis();
 
-  setupDi(redis);
+  const container = setupDi(redis.instance);
+
+  redis.initializeRoleKeys(container);
 
   setupExpress(app);
 
