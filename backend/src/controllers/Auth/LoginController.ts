@@ -2,13 +2,17 @@ import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import {
+  NODE_ENV,
+  JWT_TOKEN_COOKIE_KEY,
+  JWT_TOKEN_LIFETIME_IN_SECONDS,
+} from "@config";
 import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/IAuthService";
-import { NODE_ENV, JWT_TOKEN_COOKIE_KEY } from "@config";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IUserRepository } from "@interfaces/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utilities/types";
@@ -73,6 +77,11 @@ export class LoginController
           id: user.id,
           roleId: user.role.id,
           isActive: user.deletedAt === null,
+        },
+        {
+          withTTL: {
+            seconds: JWT_TOKEN_LIFETIME_IN_SECONDS,
+          },
         }
       );
     } catch (error) {
