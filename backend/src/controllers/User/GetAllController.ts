@@ -5,9 +5,9 @@ import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
-import { IUserRepository } from "@interfaces/IUserRepository";
+import { IUserRepository } from "@interfaces/repository/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utils/types";
-import { IEntityMapperService } from "@interfaces/IEntityMapperService";
+import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
 
 interface IQuery {
   skip: number;

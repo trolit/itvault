@@ -12,12 +12,12 @@ import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
-import { IAuthService } from "@interfaces/IAuthService";
+import { IAuthService } from "@interfaces/service/IAuthService";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
-import { IUserRepository } from "@interfaces/IUserRepository";
+import { IUserRepository } from "@interfaces/repository/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utils/types";
-import { IDataStoreService } from "@interfaces/IDataStoreService";
-import { IEntityMapperService } from "@interfaces/IEntityMapperService";
+import { IDataStoreService } from "@interfaces/service/IDataStoreService";
+import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
 
 @injectable()
 export class LoginController

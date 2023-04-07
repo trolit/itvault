@@ -4,9 +4,9 @@ import { DependencyContainer } from "tsyringe";
 import { Di } from "@enums/Di";
 import { DataStoreRole } from "./DataStoreRole";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
-import { IRoleRepository } from "@interfaces/IRoleRepository";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 import { REDIS_CONTAINER_PORT, REDIS_PASSWORD } from "@config/index";
+import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
 export const setupRedis = () => {
   const instance = new Redis({

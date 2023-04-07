@@ -5,7 +5,7 @@ import { Di } from "@enums/Di";
 import { Result } from "@utils/Result";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
-import { IUserRepository } from "@interfaces/IUserRepository";
+import { IUserRepository } from "@interfaces/repository/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utils/types";
 
 interface IRequestBody {

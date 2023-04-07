@@ -6,10 +6,10 @@ import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { Permission } from "@enums/Permission";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
-import { IAuthService } from "@interfaces/IAuthService";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
-import { IDataStoreService } from "@interfaces/IDataStoreService";
+import { IAuthService } from "@interfaces/service/IAuthService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
+import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 interface IOptions {
   withPermission?: Permission;

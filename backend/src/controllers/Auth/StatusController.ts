@@ -6,8 +6,8 @@ import { Di } from "@enums/Di";
 import { CustomRequest } from "@utils/types";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { IController } from "@interfaces/IController";
-import { IAuthService } from "@interfaces/IAuthService";
-import { IUserRepository } from "@interfaces/IUserRepository";
+import { IAuthService } from "@interfaces/service/IAuthService";
+import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
 @injectable()
 export class StatusController implements IController {

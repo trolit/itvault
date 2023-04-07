@@ -3,7 +3,7 @@ import { injectable } from "tsyringe";
 
 import { BaseRepository } from "./BaseRepository";
 import { PermissionToRole } from "@entities/PermissionToRole";
-import { IPermissionToRoleRepository } from "@interfaces/IPermissionToRoleRepository";
+import { IPermissionToRoleRepository } from "@interfaces/repository/IPermissionToRoleRepository";
 
 @injectable()
 export class PermissionToRoleRepository

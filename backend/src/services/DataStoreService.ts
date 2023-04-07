@@ -3,8 +3,8 @@ import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
-import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
+import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 @injectable()
 export class DataStoreService implements IDataStoreService {

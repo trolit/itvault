@@ -6,8 +6,8 @@ import { Di } from "@enums/Di";
 import { CustomRequest } from "@utils/types";
 import { IController } from "@interfaces/IController";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
-import { IUserRepository } from "@interfaces/IUserRepository";
-import { IDataStoreService } from "@interfaces/IDataStoreService";
+import { IUserRepository } from "@interfaces/repository/IUserRepository";
+import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 interface IParams {
   id: number;

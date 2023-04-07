@@ -2,7 +2,7 @@ import { container } from "tsyringe";
 import Zod, { RefinementCtx, ZodIssueCode } from "zod";
 
 import { Di } from "@enums/Di";
-import { IBaseRepository } from "@interfaces/IBaseRepository";
+import { IBaseRepository } from "@interfaces/repository/IBaseRepository";
 
 export const existsSuperRefine = <T>(repository: Di) => {
   return async (value: number, context: RefinementCtx) => {
