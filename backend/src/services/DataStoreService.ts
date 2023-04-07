@@ -2,6 +2,7 @@ import { Redis } from "ioredis";
 import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
+import { DataStoreRole } from "@utilities/DataStoreRole";
 import { DataStoreUser } from "@utilities/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config/index";
@@ -27,6 +28,30 @@ export class DataStoreService implements IDataStoreService {
       "EX",
       JWT_TOKEN_LIFETIME_IN_SECONDS
     );
+  }
+
+  async getUserData(
+    userId: number
+  ): Promise<[DataStoreUser, DataStoreRole] | null> {
+    const user = await this.getKey<DataStoreUser>(
+      userId,
+      DataStoreKeyType.AuthenticatedUser
+    );
+
+    if (!user) {
+      return null;
+    }
+
+    const role = await this.getKey<DataStoreRole>(
+      user.roleId,
+      DataStoreKeyType.Role
+    );
+
+    if (!role) {
+      return null;
+    }
+
+    return [user, role];
   }
 
   setKey<T>(
