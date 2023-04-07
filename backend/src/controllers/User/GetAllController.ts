@@ -3,10 +3,10 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
-import { PaginatedResult } from "@utilities/Result";
+import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
 import { IUserRepository } from "@interfaces/IUserRepository";
-import { CustomRequest, CustomResponse } from "@utilities/types";
+import { CustomRequest, CustomResponse } from "@utils/types";
 import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 
 interface IQuery {

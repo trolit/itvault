@@ -3,7 +3,7 @@ import { InjectionToken } from "tsyringe";
 
 import { instanceOf } from "@helpers/instanceOf";
 import { IController } from "@interfaces/IController";
-import { CustomRequest } from "@utilities/types";
+import { CustomRequest } from "@utils/types";
 
 export const processRequestWith =
   <T, P, B, Q>(Controller: InjectionToken<T>) =>

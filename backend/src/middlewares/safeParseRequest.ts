@@ -2,7 +2,7 @@ import { ZodSchema } from "zod";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { NextFunction, Request, Response } from "express";
 
-import { ParseableRequestContent } from "@utilities/types";
+import { ParseableRequestContent } from "@utils/types";
 
 export const safeParseRequest = (toParse: ParseableRequestContent) => {
   return async (request: Request, response: Response, next: NextFunction) => {

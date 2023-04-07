@@ -15,7 +15,7 @@ import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/IAuthService";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IUserRepository } from "@interfaces/IUserRepository";
-import { CustomRequest, CustomResponse } from "@utilities/types";
+import { CustomRequest, CustomResponse } from "@utils/types";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { IEntityMapperService } from "@interfaces/IEntityMapperService";
 

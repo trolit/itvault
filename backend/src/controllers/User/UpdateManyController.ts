@@ -2,11 +2,11 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { Result } from "@utilities/Result";
+import { Result } from "@utils/Result";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
 import { IUserRepository } from "@interfaces/IUserRepository";
-import { CustomRequest, CustomResponse } from "@utilities/types";
+import { CustomRequest, CustomResponse } from "@utils/types";
 
 interface IRequestBody {
   value: UpdateUserDto[];

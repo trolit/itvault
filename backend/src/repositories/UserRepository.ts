@@ -6,7 +6,7 @@ import { User } from "@entities/User";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IUserRepository } from "@interfaces/IUserRepository";
-import { Result } from "@utilities/Result";
+import { Result } from "@utils/Result";
 import { IError } from "@interfaces/IError";
 
 @injectable()

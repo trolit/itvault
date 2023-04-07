@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { CustomRequest } from "@utilities/types";
+import { CustomRequest } from "@utils/types";
 import { IController } from "@interfaces/IController";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IUserRepository } from "@interfaces/IUserRepository";

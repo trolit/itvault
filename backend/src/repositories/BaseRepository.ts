@@ -1,6 +1,6 @@
 import { FindOptionsWhere, Repository, UpdateResult } from "typeorm";
 
-import { Type } from "@utilities/types";
+import { Type } from "@utils/types";
 import { dataSource } from "@config/data-source";
 import { IBaseRepository } from "@interfaces/IBaseRepository";
 

@@ -23,6 +23,7 @@
   "_moduleAliases": {
     "@dtos": "dist/dtos",
     "@enums": "dist/enums",
+    "@utils": "dist/utils",
     "@config": "dist/config",
     "@routes": "dist/routes",
     "@helpers": "dist/helpers",
@@ -30,7 +31,6 @@
     "@entities": "dist/entities",
     "@services": "dist/services",
     "@factories": "dist/factories",
-    "@utilities": "dist/utilities",
     "@interfaces": "dist/interfaces",
     "@migrations": "dist/migrations",
     "@controllers": "dist/controllers",
