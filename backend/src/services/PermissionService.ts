@@ -1,9 +1,7 @@
 import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
-import { UserDto } from "@dtos/UserDto";
 import { Permission } from "@enums/Permission";
-import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { IPermissionService } from "@interfaces/IPermissionService";
@@ -19,17 +17,14 @@ export class PermissionService implements IPermissionService {
     userId: number,
     permission: Permission
   ): Promise<boolean> {
-    const userDetails = await this._dataStoreService.getKey<UserDto>(
-      userId,
-      DataStoreKeyType.AuthenticatedUser
-    );
+    const data = await this._dataStoreService.getUserData(userId);
 
-    if (!userDetails) {
+    if (!data) {
       return false;
     }
 
-    const { permissions } = userDetails;
+    const [, role] = data;
 
-    return isPermissionEnabled(permission, permissions);
+    return isPermissionEnabled(permission, role.permissions);
   }
 }
