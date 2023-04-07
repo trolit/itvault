@@ -31,10 +31,7 @@ export class SoftDeleteController implements IController<IParams> {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    await this._dataStoreService.deleteKey(
-      id,
-      DataStoreKeyType.AuthenticatedUser
-    );
+    await this._dataStoreService.delete(id, DataStoreKeyType.AuthenticatedUser);
 
     return response.status(HTTP.NO_CONTENT).send();
   }
