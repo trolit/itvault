@@ -1,7 +1,7 @@
 import { User } from "@entities/User";
 import { IBaseRepository } from "./IBaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
-import { Result } from "@utilities/Result";
+import { Result } from "@utils/Result";
 
 export interface IUserRepository extends IBaseRepository<User> {
   findByEmail(

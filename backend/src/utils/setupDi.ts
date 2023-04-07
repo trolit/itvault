@@ -8,9 +8,21 @@ import { Di } from "@enums/Di";
 export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
 
-  registerDependenciesFrom("repositories", ["BaseRepository"]);
+  registerDependencies({
+    sourceFiles: {
+      dirname: "repositories",
+      excludedFilenames: ["BaseRepository"],
+    },
+    interfacesDirname: "repository",
+  });
 
-  registerDependenciesFrom("services");
+  registerDependencies({
+    sourceFiles: {
+      dirname: "services",
+      excludedFilenames: [],
+    },
+    interfacesDirname: "service",
+  });
 
   return new Promise(resolve =>
     setInterval(() => {
@@ -22,17 +34,26 @@ export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   );
 };
 
-function registerDependenciesFrom(
-  directory: string,
-  filenamesToExclude: string[] = []
-) {
-  const dependencyInterfacePath = path.join("src", "interfaces");
+function registerDependencies(config: {
+  sourceFiles: { dirname: string; excludedFilenames: string[] };
+  interfacesDirname: string;
+}) {
+  const {
+    sourceFiles: { dirname, excludedFilenames },
+    interfacesDirname,
+  } = config;
 
-  fs.readdir(`src/${directory}`, async (error, files) => {
+  const dependencyInterfacePath = path.join(
+    "src",
+    "interfaces",
+    interfacesDirname
+  );
+
+  fs.readdir(`src/${dirname}`, async (error, files) => {
     for (const file of files) {
       const [dependencyFilename] = file.split(".");
 
-      if (filenamesToExclude.includes(dependencyFilename)) {
+      if (excludedFilenames.includes(dependencyFilename)) {
         continue;
       }
 
@@ -41,7 +62,7 @@ function registerDependenciesFrom(
       if (
         fs.existsSync(path.join(dependencyInterfacePath, `${interfaceName}.ts`))
       ) {
-        const dependency = await import(`@${directory}/${dependencyFilename}`);
+        const dependency = await import(`@${dirname}/${dependencyFilename}`);
 
         container.register(interfaceName, dependency[dependencyFilename]);
 

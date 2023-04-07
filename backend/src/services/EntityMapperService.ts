@@ -1,6 +1,6 @@
 import { Base } from "@entities/Base";
-import { Type } from "@utilities/types";
-import { IEntityMapperService } from "@interfaces/IEntityMapperService";
+import { Type } from "@utils/types";
+import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
 
 export class EntityMapperService implements IEntityMapperService {
   mapOneToDto<T extends Base, Y extends Partial<T>>(

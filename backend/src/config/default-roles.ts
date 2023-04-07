@@ -1,4 +1,4 @@
-import { IRoleDefinition } from "@interfaces/IRoleDefinition";
+import { IRoleDefinition } from "@interfaces/config/IRoleDefinition";
 
 export const HEAD_ADMIN_ROLE_NAME = "Head Admin";
 

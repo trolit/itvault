@@ -3,7 +3,7 @@ import { injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { JWT_TOKEN_COOKIE_KEY } from "@config";
-import { CustomRequest } from "@utilities/types";
+import { CustomRequest } from "@utils/types";
 import { IController } from "@interfaces/IController";
 
 @injectable()

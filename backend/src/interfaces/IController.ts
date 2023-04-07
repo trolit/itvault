@@ -1,4 +1,4 @@
-import { CustomRequest, CustomResponse } from "@utilities/types";
+import { CustomRequest, CustomResponse } from "@utils/types";
 
 export interface IController<P = void, B = void, Q = void, R = void> {
   invoke(

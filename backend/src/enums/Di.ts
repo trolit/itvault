@@ -7,5 +7,4 @@ export enum Di {
   PermissionService = "IPermissionService",
   EntityMapperService = "IEntityMapperService",
   WorkspaceRepository = "IWorkspaceRepository",
-  PermissionToRoleRepository = "IPermissionToRoleRepository",
 }

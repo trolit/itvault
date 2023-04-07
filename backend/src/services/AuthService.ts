@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
-import { JwtPayload } from "@utilities/JwtPayload";
-import { IAuthService } from "@interfaces/IAuthService";
+import { JwtPayload } from "@utils/JwtPayload";
+import { IAuthService } from "@interfaces/service/IAuthService";
 import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config";
 
 export class AuthService implements IAuthService {

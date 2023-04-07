@@ -5,12 +5,12 @@ import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { Workspace } from "@entities/Workspace";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
-import { PaginatedResult } from "@utilities/Result";
+import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
-import { CustomRequest, CustomResponse } from "@utilities/types";
-import { IPermissionService } from "@interfaces/IPermissionService";
-import { IWorkspaceRepository } from "@interfaces/IWorkspaceRepository";
-import { IEntityMapperService } from "@interfaces/IEntityMapperService";
+import { CustomRequest, CustomResponse } from "@utils/types";
+import { IPermissionService } from "@interfaces/service/IPermissionService";
+import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
+import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
 
 interface IQuery {
   skip: number;

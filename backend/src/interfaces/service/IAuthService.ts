@@ -1,6 +1,6 @@
 import { SignOptions, VerifyErrors } from "jsonwebtoken";
 
-import { JwtPayload } from "@utilities/JwtPayload";
+import { JwtPayload } from "@utils/JwtPayload";
 
 type IVerifyTokenResult =
   | {

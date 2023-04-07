@@ -3,9 +3,8 @@ import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
-import { JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config/index";
-import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
+import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 @injectable()
 export class DataStoreService implements IDataStoreService {
@@ -33,7 +32,7 @@ export class DataStoreService implements IDataStoreService {
         dataStoreKey,
         valueAsString,
         "EX",
-        JWT_TOKEN_LIFETIME_IN_SECONDS
+        options.withTTL.seconds
       );
     }
 

@@ -3,7 +3,7 @@ import { injectable } from "tsyringe";
 
 import { Workspace } from "@entities/Workspace";
 import { BaseRepository } from "./BaseRepository";
-import { IWorkspaceRepository } from "@interfaces/IWorkspaceRepository";
+import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
 
 @injectable()
 export class WorkspaceRepository

@@ -3,11 +3,11 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { CustomRequest } from "@utilities/types";
+import { CustomRequest } from "@utils/types";
 import { IController } from "@interfaces/IController";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
-import { IUserRepository } from "@interfaces/IUserRepository";
-import { IDataStoreService } from "@interfaces/IDataStoreService";
+import { IUserRepository } from "@interfaces/repository/IUserRepository";
+import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 interface IParams {
   id: number;
@@ -31,10 +31,7 @@ export class SoftDeleteController implements IController<IParams> {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    await this._dataStoreService.deleteKey(
-      id,
-      DataStoreKeyType.AuthenticatedUser
-    );
+    await this._dataStoreService.delete(id, DataStoreKeyType.AuthenticatedUser);
 
     return response.status(HTTP.NO_CONTENT).send();
   }

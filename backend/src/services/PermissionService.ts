@@ -2,12 +2,12 @@ import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { DataStoreRole } from "@utilities/DataStoreRole";
-import { DataStoreUser } from "@utilities/DataStoreUser";
+import { DataStoreRole } from "@utils/DataStoreRole";
+import { DataStoreUser } from "@utils/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
-import { IDataStoreService } from "@interfaces/IDataStoreService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
-import { IPermissionService } from "@interfaces/IPermissionService";
+import { IDataStoreService } from "@interfaces/service/IDataStoreService";
+import { IPermissionService } from "@interfaces/service/IPermissionService";
 
 @injectable()
 export class PermissionService implements IPermissionService {
