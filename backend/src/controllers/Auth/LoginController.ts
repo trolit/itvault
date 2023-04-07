@@ -9,6 +9,7 @@ import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/IAuthService";
 import { NODE_ENV, JWT_TOKEN_COOKIE_KEY } from "@config";
+import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IUserRepository } from "@interfaces/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utilities/types";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
@@ -65,11 +66,15 @@ export class LoginController
     );
 
     try {
-      await this._dataStoreService.setUser(user.id, {
-        id: user.id,
-        roleId: user.role.id,
-        isActive: true,
-      });
+      await this._dataStoreService.set(
+        user.id,
+        DataStoreKeyType.AuthenticatedUser,
+        {
+          id: user.id,
+          roleId: user.role.id,
+          isActive: user.deletedAt === null,
+        }
+      );
     } catch (error) {
       // @TODO log error
       console.error(error);
