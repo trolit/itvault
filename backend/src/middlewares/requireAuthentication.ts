@@ -72,7 +72,7 @@ async function verifyOptionsRelatedToDataStore(
     Di.DataStoreService
   );
 
-  const userDetails = await dataStoreService.getKey<UserDto>(
+  const userDetails = await dataStoreService.get<UserDto>(
     userId,
     DataStoreKeyType.AuthenticatedUser
   );

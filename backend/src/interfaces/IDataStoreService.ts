@@ -1,19 +1,14 @@
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 
 export interface IDataStoreService {
-  setKey<T>(
+  set<T>(
     key: string | number,
     keyType: DataStoreKeyType,
-    value: T
+    value: T,
+    options?: { withTTL: { seconds: number } }
   ): Promise<string | null>;
 
-  getKey<T>(key: string | number, keyType: DataStoreKeyType): Promise<T | null>;
+  get<T>(key: string | number, keyType: DataStoreKeyType): Promise<T | null>;
 
-  updateKey<T>(
-    key: string | number,
-    keyType: DataStoreKeyType,
-    callback: (value: T) => void
-  ): Promise<string | null>;
-
-  deleteKey(key: string | number, keyType: DataStoreKeyType): Promise<number>;
+  delete(key: string | number, keyType: DataStoreKeyType): Promise<number>;
 }

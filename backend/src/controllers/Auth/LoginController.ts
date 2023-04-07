@@ -66,10 +66,14 @@ export class LoginController
     );
 
     try {
-      await this._dataStoreService.setKey<UserDto>(
+      await this._dataStoreService.set(
         user.id,
         DataStoreKeyType.AuthenticatedUser,
-        mappedUserData
+        {
+          id: user.id,
+          roleId: user.role.id,
+          isActive: user.deletedAt === null,
+        }
       );
     } catch (error) {
       // @TODO log error

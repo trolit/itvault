@@ -14,10 +14,11 @@ export class DataStoreService implements IDataStoreService {
     private _redis: Redis
   ) {}
 
-  setKey<T>(
+  set<T>(
     key: string | number,
     keyType: DataStoreKeyType,
-    value: T
+    value: T,
+    options?: { withTTL: { seconds: number } }
   ): Promise<string | null> {
     if (typeof key !== "string") {
       key = key.toString();
@@ -25,17 +26,21 @@ export class DataStoreService implements IDataStoreService {
 
     const valueAsString = JSON.stringify(value);
 
-    const dataKey = composeDataStoreKey(key, keyType);
+    const dataStoreKey = composeDataStoreKey(key, keyType);
 
-    return this._redis.set(
-      dataKey,
-      valueAsString,
-      "EX",
-      JWT_TOKEN_LIFETIME_IN_SECONDS
-    );
+    if (options?.withTTL) {
+      return this._redis.set(
+        dataStoreKey,
+        valueAsString,
+        "EX",
+        JWT_TOKEN_LIFETIME_IN_SECONDS
+      );
+    }
+
+    return this._redis.set(dataStoreKey, valueAsString);
   }
 
-  async getKey<T>(
+  async get<T>(
     key: string | number,
     keyType: DataStoreKeyType
   ): Promise<T | null> {
@@ -54,29 +59,7 @@ export class DataStoreService implements IDataStoreService {
     return <T>JSON.parse(value);
   }
 
-  async updateKey<T>(
-    key: string | number,
-    keyType: DataStoreKeyType,
-    callback: (state: T) => void
-  ): Promise<string | null> {
-    if (typeof key !== "string") {
-      key = key.toString();
-    }
-
-    const element = await this.getKey<T>(key, keyType);
-
-    if (!element) {
-      return null;
-    }
-
-    callback(element);
-
-    const result = await this.setKey<T>(key, keyType, element);
-
-    return result;
-  }
-
-  deleteKey(key: string | number, keyType: DataStoreKeyType): Promise<number> {
+  delete(key: string | number, keyType: DataStoreKeyType): Promise<number> {
     if (typeof key !== "string") {
       key = key.toString();
     }
