@@ -99,28 +99,6 @@ export class DataStoreService implements IDataStoreService {
     return <T>JSON.parse(value);
   }
 
-  async updateKey<T>(
-    key: string | number,
-    keyType: DataStoreKeyType,
-    callback: (state: T) => void
-  ): Promise<string | null> {
-    if (typeof key !== "string") {
-      key = key.toString();
-    }
-
-    const element = await this.getKey<T>(key, keyType);
-
-    if (!element) {
-      return null;
-    }
-
-    callback(element);
-
-    const result = await this.setKey<T>(key, keyType, element);
-
-    return result;
-  }
-
   deleteKey(key: string | number, keyType: DataStoreKeyType): Promise<number> {
     if (typeof key !== "string") {
       key = key.toString();
