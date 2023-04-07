@@ -2,6 +2,7 @@ import { Redis } from "ioredis";
 import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
+import { DataStoreUser } from "@utilities/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config/index";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
@@ -13,6 +14,20 @@ export class DataStoreService implements IDataStoreService {
     @inject(Di.Redis)
     private _redis: Redis
   ) {}
+
+  setUser(userId: number, value: DataStoreUser): Promise<string | null> {
+    const key = composeDataStoreKey(
+      userId.toString(),
+      DataStoreKeyType.AuthenticatedUser
+    );
+
+    return this._redis.set(
+      key,
+      JSON.stringify(value),
+      "EX",
+      JWT_TOKEN_LIFETIME_IN_SECONDS
+    );
+  }
 
   setKey<T>(
     key: string | number,
