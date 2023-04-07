@@ -2,8 +2,6 @@ import { Redis } from "ioredis";
 import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
-import { DataStoreRole } from "@utilities/DataStoreRole";
-import { DataStoreUser } from "@utilities/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config/index";
 import { IDataStoreService } from "@interfaces/IDataStoreService";
@@ -16,42 +14,49 @@ export class DataStoreService implements IDataStoreService {
     private _redis: Redis
   ) {}
 
-  setUser(userId: number, value: DataStoreUser): Promise<string | null> {
-    const key = composeDataStoreKey(
-      userId.toString(),
-      DataStoreKeyType.AuthenticatedUser
-    );
+  set<T>(
+    key: string | number,
+    keyType: DataStoreKeyType,
+    value: T,
+    options?: { withTTL: { seconds: number } }
+  ): Promise<string | null> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
 
-    return this._redis.set(
-      key,
-      JSON.stringify(value),
-      "EX",
-      JWT_TOKEN_LIFETIME_IN_SECONDS
-    );
+    const valueAsString = JSON.stringify(value);
+
+    const dataStoreKey = composeDataStoreKey(key, keyType);
+
+    if (options?.withTTL) {
+      return this._redis.set(
+        dataStoreKey,
+        valueAsString,
+        "EX",
+        JWT_TOKEN_LIFETIME_IN_SECONDS
+      );
+    }
+
+    return this._redis.set(dataStoreKey, valueAsString);
   }
 
-  async getUserData(
-    userId: number
-  ): Promise<[DataStoreUser, DataStoreRole] | null> {
-    const user = await this.getKey<DataStoreUser>(
-      userId,
-      DataStoreKeyType.AuthenticatedUser
-    );
+  async get<T>(
+    key: string | number,
+    keyType: DataStoreKeyType
+  ): Promise<T | null> {
+    if (typeof key !== "string") {
+      key = key.toString();
+    }
 
-    if (!user) {
+    const dataKey = composeDataStoreKey(key, keyType);
+
+    const value = await this._redis.get(dataKey);
+
+    if (!value) {
       return null;
     }
 
-    const role = await this.getKey<DataStoreRole>(
-      user.roleId,
-      DataStoreKeyType.Role
-    );
-
-    if (!role) {
-      return null;
-    }
-
-    return [user, role];
+    return <T>JSON.parse(value);
   }
 
   setKey<T>(

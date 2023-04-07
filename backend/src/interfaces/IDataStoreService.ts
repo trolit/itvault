@@ -1,11 +1,14 @@
-import { DataStoreRole } from "@utilities/DataStoreRole";
-import { DataStoreUser } from "@utilities/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 
 export interface IDataStoreService {
-  setUser(userId: number, value: DataStoreUser): Promise<string | null>;
+  set<T>(
+    key: string | number,
+    keyType: DataStoreKeyType,
+    value: T,
+    options?: { withTTL: { seconds: number } }
+  ): Promise<string | null>;
 
-  getUserData(userId: number): Promise<[DataStoreUser, DataStoreRole] | null>;
+  get<T>(key: string | number, keyType: DataStoreKeyType): Promise<T | null>;
 
   setKey<T>(
     key: string | number,
