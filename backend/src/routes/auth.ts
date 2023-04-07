@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { loginSchema } from "@schemas/login";
+import { loginSchema } from "@schemas/auth/login";
 import { processRequestWith } from "./processRequestWith";
 import { safeParseRequest } from "@middlewares/safeParseRequest";
 import { LoginController } from "@controllers/Auth/LoginController";
