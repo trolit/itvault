@@ -1,5 +1,5 @@
 import { Permission } from "@enums/Permission";
-import { IPermissionDefinition } from "@interfaces/IPermissionDefinition";
+import { IPermissionDefinition } from "@interfaces/config/IPermissionDefinition";
 
 const CREATE_ROLE_PERMISSION: IPermissionDefinition = {
   id: Permission.CreateRole,
