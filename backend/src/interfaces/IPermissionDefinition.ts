@@ -1,6 +1,6 @@
 import { Permission } from "@enums/Permission";
 
-export interface IPermission {
+export interface IPermissionDefinition {
   id: Permission;
 
   name: string;

@@ -1,38 +1,38 @@
 import { Permission } from "@enums/Permission";
-import { IPermission } from "@interfaces/IPermission";
+import { IPermissionDefinition } from "@interfaces/IPermissionDefinition";
 
-const CREATE_ROLE_PERMISSION: IPermission = {
+const CREATE_ROLE_PERMISSION: IPermissionDefinition = {
   id: Permission.CreateRole,
   name: "Create role",
 };
 
-const UPDATE_ROLE_PERMISSION: IPermission = {
+const UPDATE_ROLE_PERMISSION: IPermissionDefinition = {
   id: Permission.UpdateRole,
   name: "Update role",
 };
 
 /** @NOTE if 'false' - authenticated user receives only workflows to which is assigned  */
-const VIEW_ALL_WORKFLOWS_PERMISSION: IPermission = {
+const VIEW_ALL_WORKFLOWS_PERMISSION: IPermissionDefinition = {
   id: Permission.ViewAllWorkflows,
   name: "View all workflows",
 };
 
-const VIEW_ALL_USERS_PERMISSION: IPermission = {
+const VIEW_ALL_USERS_PERMISSION: IPermissionDefinition = {
   id: Permission.ViewAllUsers,
   name: "View all users",
 };
 
-const DEACTIVATE_USER_ACCOUNT_PERMISSION: IPermission = {
+const DEACTIVATE_USER_ACCOUNT_PERMISSION: IPermissionDefinition = {
   id: Permission.DeactivateUserAccount,
   name: "Deactivate user account",
 };
 
-const CHANGE_USER_ROLE_PERMISSION: IPermission = {
+const CHANGE_USER_ROLE_PERMISSION: IPermissionDefinition = {
   id: Permission.ChangeUserRole,
   name: "Change user role",
 };
 
-const RESTORE_USER_ACCOUNT_PERMISSION: IPermission = {
+const RESTORE_USER_ACCOUNT_PERMISSION: IPermissionDefinition = {
   id: Permission.RestoreUserAccount,
   name: "Restore user account",
 };
