@@ -1,30 +1,28 @@
 import { Redis } from "ioredis";
-import { DependencyContainer } from "tsyringe";
 
 import { Di } from "@enums/Di";
 import { DataStoreRole } from "./DataStoreRole";
+import { instanceOf } from "@helpers/instanceOf";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 import { REDIS_CONTAINER_PORT, REDIS_PASSWORD } from "@config/index";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
 export const setupRedis = () => {
-  const instance = new Redis({
+  const redis = new Redis({
     port: REDIS_CONTAINER_PORT,
     password: REDIS_PASSWORD,
   });
 
   return {
-    instance,
+    instance: redis,
 
-    initializeRoleKeys: async (container: DependencyContainer) => {
-      const roleRepository = container.resolve<IRoleRepository>(
-        Di.RoleRepository
-      );
+    initializeRoleKeys: async () => {
+      const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
 
       const roles = await roleRepository.getAll();
 
-      const mutli = instance.multi();
+      const mutli = redis.multi();
 
       for (const { id, permissionToRole } of roles) {
         const key = composeDataStoreKey(id.toString(), DataStoreKeyType.Role);
