@@ -30,7 +30,7 @@ export class User extends Base {
   userToWorkspace: UserToWorkspace[];
 
   @BeforeInsert()
-  async updateDates(event: InsertEvent<User>) {
+  async hashPassword(event: InsertEvent<User>) {
     this.password = await bcrypt.hash(
       event.entity.password,
       BCRYPT_SALT_ROUNDS
