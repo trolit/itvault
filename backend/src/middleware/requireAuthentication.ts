@@ -1,10 +1,10 @@
-import { container } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Request, NextFunction, Response } from "express";
 
 import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { Permission } from "@enums/Permission";
+import { instanceOf } from "@helpers/instanceOf";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IAuthService } from "@interfaces/service/IAuthService";
@@ -49,7 +49,7 @@ function handleTokenFromRequest(request: Request) {
     return null;
   }
 
-  const authService = container.resolve<IAuthService>(Di.AuthService);
+  const authService = instanceOf<IAuthService>(Di.AuthService);
 
   const result = authService.verifyToken(token);
 
@@ -68,9 +68,7 @@ async function verifyOptionsRelatedToDataStore(
   userId: string,
   options: IOptions
 ) {
-  const dataStoreService = container.resolve<IDataStoreService>(
-    Di.DataStoreService
-  );
+  const dataStoreService = instanceOf<IDataStoreService>(Di.DataStoreService);
 
   const userDetails = await dataStoreService.get<UserDto>(
     userId,
