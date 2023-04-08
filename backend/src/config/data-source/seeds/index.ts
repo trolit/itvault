@@ -8,12 +8,14 @@ import { PermissionToRoleSeeder } from "./PermissionToRole";
 import { BlueprintToWorkspaceSeeder } from "./BlueprintToWorkspace";
 
 export const seeds = [
-  PermissionSeeder,
   RoleSeeder,
+  PermissionSeeder,
   PermissionToRoleSeeder,
+
   UserSeeder,
   WorkspaceSeeder,
   UserToWorkspaceSeeder,
+
   BlueprintSeeder,
   BlueprintToWorkspaceSeeder,
 ];

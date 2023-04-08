@@ -7,7 +7,7 @@ import { Permission } from "@enums/Permission";
 import { paginationSchema } from "@schemas/pagination";
 import { updateUsersSchema } from "@schemas/user/update";
 import { processRequestWith } from "./processRequestWith";
-import { UPDATE_USER_PERMISSIONS } from "@config/permissions";
+import { ALL_USER_PERMISSION_IDS } from "@config/permissions";
 import { safeParseRequest } from "middleware/safeParseRequest";
 import { GetAllController } from "@controllers/User/GetAllController";
 import { requireAuthentication } from "middleware/requireAuthentication";
@@ -40,7 +40,7 @@ userRoutes.patch(
   "/v1",
   requireAuthentication({
     withPermission: Permission.ViewAllUsers,
-    withOneOfPermissions: UPDATE_USER_PERMISSIONS,
+    withOneOfPermissions: ALL_USER_PERMISSION_IDS,
   }),
   safeParseRequest({
     body: { withSchema: updateUsersSchema },
