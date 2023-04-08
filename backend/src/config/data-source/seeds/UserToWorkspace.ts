@@ -2,12 +2,13 @@ import { Seeder } from "typeorm-extension";
 import { DataSource, Repository } from "typeorm";
 
 import {
-  TEST_ACCOUNT_EMAIL,
+  TEST_ACCOUNTS,
   TEST_LOCKED_WORKSPACE,
   TEST_UNLOCKED_WORKSPACE,
 } from "./common";
 import { User } from "@entities/User";
 import { Workspace } from "@entities/Workspace";
+import { HEAD_ADMIN_ROLE } from "@config/default-roles";
 import { WorkspaceAccess } from "@enums/WorkspaceAccess";
 import { UserToWorkspace } from "@entities/UserToWorkspace";
 
@@ -19,8 +20,16 @@ export class UserToWorkspaceSeeder implements Seeder {
 
     const userToWorkspaceRepository = dataSource.getRepository(UserToWorkspace);
 
+    const headAdmin = TEST_ACCOUNTS.find(
+      ({ roleName }) => HEAD_ADMIN_ROLE.name === roleName
+    );
+
+    if (!headAdmin) {
+      return;
+    }
+
     const user = await userRepository.findOneBy({
-      email: TEST_ACCOUNT_EMAIL,
+      email: headAdmin.email,
     });
 
     if (!user) {
