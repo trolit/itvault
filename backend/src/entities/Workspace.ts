@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { Entity, Column, OneToMany, BeforeInsert, InsertEvent } from "typeorm";
+import { Entity, Column, OneToMany, BeforeInsert } from "typeorm";
 
 import { Base } from "./Base";
 import { BCRYPT_SALT_ROUNDS } from "@config/index";
@@ -29,11 +29,9 @@ export class Workspace extends Base {
   blueprintToWorkspace: BlueprintToWorkspace[];
 
   @BeforeInsert()
-  async hashPasswordIfProvided(event: InsertEvent<Workspace>) {
-    const { password } = event.entity;
-
-    if (password) {
-      this.password = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
+  async hashPasswordIfProvided() {
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, BCRYPT_SALT_ROUNDS);
     }
   }
 }

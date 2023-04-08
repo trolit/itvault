@@ -1,12 +1,5 @@
-import {
-  Entity,
-  Column,
-  OneToMany,
-  ManyToOne,
-  BeforeInsert,
-  InsertEvent,
-} from "typeorm";
 import bcrypt from "bcrypt";
+import { Entity, Column, OneToMany, ManyToOne, BeforeInsert } from "typeorm";
 
 import { Base } from "./Base";
 import { Role } from "./Role";
@@ -30,10 +23,7 @@ export class User extends Base {
   userToWorkspace: UserToWorkspace[];
 
   @BeforeInsert()
-  async hashPassword(event: InsertEvent<User>) {
-    this.password = await bcrypt.hash(
-      event.entity.password,
-      BCRYPT_SALT_ROUNDS
-    );
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, BCRYPT_SALT_ROUNDS);
   }
 }
