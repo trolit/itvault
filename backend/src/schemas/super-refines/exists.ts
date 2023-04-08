@@ -1,7 +1,7 @@
-import { container } from "tsyringe";
 import Zod, { RefinementCtx, ZodIssueCode } from "zod";
 
 import { Di } from "@enums/Di";
+import { instanceOf } from "@helpers/instanceOf";
 import { IBaseRepository } from "@interfaces/repository/IBaseRepository";
 
 export const existsSuperRefine = <T>(repository: Di) => {
@@ -15,9 +15,7 @@ export const existsSuperRefine = <T>(repository: Di) => {
       return Zod.NEVER;
     }
 
-    const repositoryInstance: IBaseRepository<T> = <IBaseRepository<T>>(
-      container.resolve<T>(repository)
-    );
+    const repositoryInstance = instanceOf<IBaseRepository<T>>(repository);
 
     const result = await repositoryInstance.findById(value);
 

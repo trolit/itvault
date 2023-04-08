@@ -18,9 +18,9 @@ export const server = async () => {
 
   const redis = setupRedis();
 
-  const container = await setupDi(redis.instance);
+  await setupDi(redis.instance);
 
-  redis.initializeRoleKeys(container);
+  redis.initializeRoleKeys();
 
   setupExpress(app);
 
