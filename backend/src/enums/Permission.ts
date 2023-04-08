@@ -1,9 +1,14 @@
 export enum Permission {
-  CreateRole = 1,
+  ViewAllRoles = 1,
+  CreateRole,
   UpdateRole,
+
   ViewAllWorkflows,
+  CreateWorkflow,
+  UpdateWorkflow,
+
   ViewAllUsers,
-  DeactivateUserAccount,
-  RestoreUserAccount,
   ChangeUserRole,
+  RestoreUserAccount,
+  DeactivateUserAccount,
 }
