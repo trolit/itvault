@@ -41,7 +41,13 @@ export class UserSeeder implements Seeder {
     if (memberRole) {
       const userFactory = factoryManager.get(User);
 
-      await userFactory.saveMany(5, { password, role: memberRole });
+      await userFactory.saveMany(3, { password, role: memberRole });
+
+      await userFactory.saveMany(3, {
+        password,
+        role: memberRole,
+        deletedAt: new Date(),
+      });
     }
   }
 }
