@@ -7,7 +7,6 @@ const { name, permissions } = HEAD_ADMIN_ROLE;
 
 const HEAD_ADMIN_ROLE_TEST_ACCOUNT = {
   email: generateEmailByRoleName(name),
-  password: PASSWORD,
   permissions,
   roleName: name,
 };
@@ -15,7 +14,6 @@ const HEAD_ADMIN_ROLE_TEST_ACCOUNT = {
 export const TEST_ACCOUNTS = [HEAD_ADMIN_ROLE_TEST_ACCOUNT].concat(
   ALL_EDITABLE_ROLES.map(({ name, permissions }) => ({
     email: generateEmailByRoleName(name),
-    password: PASSWORD,
     permissions,
     roleName: name,
   }))
