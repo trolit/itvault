@@ -1,6 +1,11 @@
+import { ALL_PERMISSIONS } from "./permissions";
 import { IRoleDefinition } from "@interfaces/config/IRoleDefinition";
 
-export const HEAD_ADMIN_ROLE_NAME = "Head Admin";
+export const HEAD_ADMIN_ROLE: IRoleDefinition = {
+  name: "Head Admin",
+
+  permissions: ALL_PERMISSIONS.map(({ id }) => id),
+};
 
 export const MAINTAINER_ROLE: IRoleDefinition = {
   name: "Maintainer",
