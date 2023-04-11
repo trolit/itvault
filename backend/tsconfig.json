@@ -28,8 +28,8 @@
       "@services/*": ["services/*"],
       "@factories/*": ["factories/*"],
       "@interfaces/*": ["interfaces/*"],
+      "@middleware/*": ["middleware/*"],
       "@migrations/*": ["migrations/*"],
-      "@middlewares/*": ["middlewares/*"],
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"]
     }

@@ -31,10 +31,10 @@
     "@entities": "dist/entities",
     "@services": "dist/services",
     "@factories": "dist/factories",
+    "@middleware": "dist/middleware",
     "@interfaces": "dist/interfaces",
     "@migrations": "dist/migrations",
     "@controllers": "dist/controllers",
-    "@middlewares": "dist/middlewares",
     "@repositories": "dist/repositories"
   },
   "dependencies": {
