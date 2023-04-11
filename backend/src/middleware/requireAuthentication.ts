@@ -2,14 +2,12 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Request, NextFunction, Response } from "express";
 
 import { Di } from "@enums/Di";
-import { UserDto } from "@dtos/UserDto";
 import { Permission } from "@enums/Permission";
 import { instanceOf } from "@helpers/instanceOf";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
-import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IAuthService } from "@interfaces/service/IAuthService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
-import { IDataStoreService } from "@interfaces/service/IDataStoreService";
+import { IPermissionService } from "@interfaces/service/IPermissionService";
 
 interface IOptions {
   withPermission?: Permission;
@@ -29,12 +27,9 @@ export const requireAuthentication = (options?: IOptions) => {
       return next();
     }
 
-    const areOptionsRequirementsValid = await verifyOptionsRelatedToDataStore(
-      userId.toString(),
-      options
-    );
+    const arePermissionsValid = await verifyUserPermissions(userId, options);
 
-    if (!areOptionsRequirementsValid) {
+    if (!arePermissionsValid) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
@@ -64,24 +59,20 @@ function handleTokenFromRequest(request: Request) {
   return userId;
 }
 
-async function verifyOptionsRelatedToDataStore(
-  userId: string,
-  options: IOptions
-) {
-  const dataStoreService = instanceOf<IDataStoreService>(Di.DataStoreService);
-
-  const userDetails = await dataStoreService.get<UserDto>(
-    userId,
-    DataStoreKeyType.AuthenticatedUser
+async function verifyUserPermissions(userId: number, options: IOptions) {
+  const permissionService = instanceOf<IPermissionService>(
+    Di.PermissionService
   );
 
-  if (!userDetails) {
+  const userPermissions = await permissionService.getUserPermissions(userId);
+
+  if (!userPermissions) {
     return false;
   }
 
   if (
     options.withPermission &&
-    !isPermissionEnabled(options.withPermission, userDetails.permissions)
+    !isPermissionEnabled(options.withPermission, userPermissions)
   ) {
     return false;
   }
@@ -89,7 +80,7 @@ async function verifyOptionsRelatedToDataStore(
   if (
     options.withOneOfPermissions &&
     options.withOneOfPermissions.every(
-      permission => !isPermissionEnabled(permission, userDetails.permissions)
+      permission => !isPermissionEnabled(permission, userPermissions)
     )
   ) {
     return false;
