@@ -9,7 +9,7 @@ declare global {
       // @NOTE - available only after validateToken middleware
       userId: number;
 
-      permissions?: { [key in Permission]?: boolean };
+      permissions: { [key in Permission]?: boolean };
     }
   }
 }
