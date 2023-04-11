@@ -3,8 +3,8 @@ import { Entity, Column, OneToMany, ManyToOne, BeforeInsert } from "typeorm";
 
 import { Base } from "./Base";
 import { Role } from "./Role";
-import { UserToWorkspace } from "./UserToWorkspace";
 import { BCRYPT_SALT_ROUNDS } from "@config/index";
+import { UserToWorkspace } from "./UserToWorkspace";
 
 @Entity("users")
 export class User extends Base {
