@@ -2,10 +2,10 @@ import { inject, injectable } from "tsyringe";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { DataStorePermission, DataStoreRole } from "@utils/DataStoreRole";
 import { DataStoreUser } from "@utils/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
+import { DataStorePermission, DataStoreRole } from "@utils/DataStoreRole";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 import { IPermissionService } from "@interfaces/service/IPermissionService";
 
