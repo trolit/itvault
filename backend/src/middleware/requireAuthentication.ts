@@ -5,9 +5,9 @@ import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { instanceOf } from "@helpers/instanceOf";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
+import { DataStorePermission } from "@utils/DataStoreRole";
 import { IAuthService } from "@interfaces/service/IAuthService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
-import { IPermissionService } from "@interfaces/service/IPermissionService";
 
 interface IOptions {
   withPermission?: Permission;
@@ -17,17 +17,39 @@ interface IOptions {
 
 export const requireAuthentication = (options?: IOptions) => {
   return async (request: Request, response: Response, next: NextFunction) => {
-    const userId = handleTokenFromRequest(request);
+    const authService = instanceOf<IAuthService>(Di.AuthService);
+
+    const userId = handleTokenFromRequest(request, authService);
 
     if (!userId) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
+    const userData = await authService.getUserData(userId);
+
+    if (!userData) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    const [account, role] = userData;
+
+    if (!account.isActive) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    const permissions: Partial<{ [key in Permission]: boolean }> = {};
+
+    role.permissions.map(({ id, enabled }) => {
+      permissions[id as Permission] = enabled;
+    });
+
+    request.permissions = permissions;
+
     if (!options) {
       return next();
     }
 
-    const arePermissionsValid = await verifyUserPermissions(userId, options);
+    const arePermissionsValid = validatePermissions(options, role.permissions);
 
     if (!arePermissionsValid) {
       return response.status(HTTP.FORBIDDEN).send();
@@ -37,14 +59,12 @@ export const requireAuthentication = (options?: IOptions) => {
   };
 };
 
-function handleTokenFromRequest(request: Request) {
+function handleTokenFromRequest(request: Request, authService: IAuthService) {
   const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
 
   if (!token) {
     return null;
   }
-
-  const authService = instanceOf<IAuthService>(Di.AuthService);
 
   const result = authService.verifyToken(token);
 
@@ -59,20 +79,13 @@ function handleTokenFromRequest(request: Request) {
   return userId;
 }
 
-async function verifyUserPermissions(userId: number, options: IOptions) {
-  const permissionService = instanceOf<IPermissionService>(
-    Di.PermissionService
-  );
-
-  const userPermissions = await permissionService.getUserPermissions(userId);
-
-  if (!userPermissions) {
-    return false;
-  }
-
+function validatePermissions(
+  options: IOptions,
+  permissions: DataStorePermission[]
+) {
   if (
     options.withPermission &&
-    !isPermissionEnabled(options.withPermission, userPermissions)
+    !isPermissionEnabled(options.withPermission, permissions)
   ) {
     return false;
   }
@@ -80,7 +93,7 @@ async function verifyUserPermissions(userId: number, options: IOptions) {
   if (
     options.withOneOfPermissions &&
     options.withOneOfPermissions.every(
-      permission => !isPermissionEnabled(permission, userPermissions)
+      permission => !isPermissionEnabled(permission, permissions)
     )
   ) {
     return false;
