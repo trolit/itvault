@@ -37,13 +37,13 @@ export const requireAuthentication = (options?: IOptions) => {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const permissions: Partial<{ [key in Permission]: boolean }> = {};
+    const requestPermissions: Partial<{ [key in Permission]: boolean }> = {};
 
     role.permissions.map(({ id, enabled }) => {
-      permissions[id as Permission] = enabled;
+      requestPermissions[id as Permission] = enabled;
     });
 
-    request.permissions = permissions;
+    request.permissions = requestPermissions;
 
     if (!options) {
       return next();
