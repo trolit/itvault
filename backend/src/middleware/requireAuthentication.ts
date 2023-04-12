@@ -44,7 +44,10 @@ export const requireAuthentication = (options?: IOptions) => {
       return next();
     }
 
-    const arePermissionsValid = validatePermissions(options, role.permissions);
+    const arePermissionsValid = validatePermissionsFromOptions(
+      options,
+      role.permissions
+    );
 
     if (!arePermissionsValid) {
       return response.status(HTTP.FORBIDDEN).send();
@@ -93,7 +96,7 @@ function setupRequestPermissions(
   request.permissions = requestPermissions;
 }
 
-function validatePermissions(
+function validatePermissionsFromOptions(
   options: IOptions,
   permissions: DataStorePermission[]
 ) {
