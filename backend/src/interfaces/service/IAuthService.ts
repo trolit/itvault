@@ -1,6 +1,8 @@
 import { SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { JwtPayload } from "@utils/JwtPayload";
+import { DataStoreUser } from "@utils/DataStoreUser";
+import { DataStoreRole } from "@utils/DataStoreRole";
 
 type IVerifyTokenResult =
   | {
@@ -13,4 +15,6 @@ export interface IAuthService {
   signToken(payload: JwtPayload, options?: SignOptions): string;
 
   verifyToken(token: string): IVerifyTokenResult;
+
+  getUserData(userId: number): Promise<[DataStoreUser, DataStoreRole] | null>;
 }

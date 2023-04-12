@@ -1,11 +1,23 @@
 import jwt from "jsonwebtoken";
+import { inject, injectable } from "tsyringe";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
+import { Di } from "@enums/Di";
 import { JwtPayload } from "@utils/JwtPayload";
+import { DataStoreRole } from "@utils/DataStoreRole";
+import { DataStoreUser } from "@utils/DataStoreUser";
+import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IAuthService } from "@interfaces/service/IAuthService";
 import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config";
+import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
+@injectable()
 export class AuthService implements IAuthService {
+  constructor(
+    @inject(Di.DataStoreService)
+    private _dataStoreService: IDataStoreService
+  ) {}
+
   signToken(payload: JwtPayload, options: SignOptions = {}) {
     return jwt.sign(payload, JWT_SECRET_KEY, {
       ...options,
@@ -41,5 +53,29 @@ export class AuthService implements IAuthService {
     return {
       payload,
     };
+  }
+
+  async getUserData(
+    userId: number
+  ): Promise<[DataStoreUser, DataStoreRole] | null> {
+    const userData = await this._dataStoreService.get<DataStoreUser>(
+      userId,
+      DataStoreKeyType.AuthenticatedUser
+    );
+
+    if (!userData) {
+      return null;
+    }
+
+    const roleData = await this._dataStoreService.get<DataStoreRole>(
+      userData.roleId,
+      DataStoreKeyType.Role
+    );
+
+    if (!roleData) {
+      return null;
+    }
+
+    return [userData, roleData];
   }
 }
