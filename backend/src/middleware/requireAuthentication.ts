@@ -5,6 +5,7 @@ import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { instanceOf } from "@helpers/instanceOf";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
+import { ALL_PERMISSIONS } from "@config/permissions";
 import { DataStorePermission } from "@utils/DataStoreRole";
 import { IAuthService } from "@interfaces/service/IAuthService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
@@ -39,8 +40,14 @@ export const requireAuthentication = (options?: IOptions) => {
 
     const requestPermissions: Partial<{ [key in Permission]: boolean }> = {};
 
-    role.permissions.map(({ id, enabled }) => {
-      requestPermissions[id as Permission] = enabled;
+    ALL_PERMISSIONS.map(permissionDefinition => {
+      const rolePermission = role.permissions.find(
+        ({ id }) => id === permissionDefinition.id
+      );
+
+      requestPermissions[permissionDefinition.id] = rolePermission
+        ? rolePermission.enabled
+        : false;
     });
 
     request.permissions = requestPermissions;
