@@ -8,9 +8,8 @@ import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@utils/types";
-import { IPermissionService } from "@interfaces/service/IPermissionService";
-import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
 import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
+import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
 
 interface IQuery {
   skip: number;
@@ -27,9 +26,7 @@ export class GetAllController
     @inject(Di.WorkspaceRepository)
     private _workspaceRepository: IWorkspaceRepository,
     @inject(Di.EntityMapperService)
-    private _entityMapperService: IEntityMapperService,
-    @inject(Di.PermissionService)
-    private _permissionService: IPermissionService
+    private _entityMapperService: IEntityMapperService
   ) {}
 
   async invoke(
@@ -41,16 +38,10 @@ export class GetAllController
       query: { skip, take },
     } = request;
 
-    const isPermittedToSeeAllWorkflows =
-      await this._permissionService.hasPermission(
-        userId,
-        Permission.ViewAllWorkflows
-      );
-
     const [result, total] = await this._workspaceRepository.getAll(
       take,
       skip,
-      isPermittedToSeeAllWorkflows ? undefined : userId
+      request.permissions[Permission.ViewAllWorkflows] ? undefined : userId
     );
 
     const mappedResult = this._entityMapperService.mapToDto(
