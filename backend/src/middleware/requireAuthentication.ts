@@ -20,7 +20,7 @@ export const requireAuthentication = (options?: IOptions) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const authService = instanceOf<IAuthService>(Di.AuthService);
 
-    const userId = handleTokenFromRequest(request, authService);
+    const userId = validateToken(request, authService);
 
     if (!userId) {
       return response.status(HTTP.FORBIDDEN).send();
@@ -38,19 +38,7 @@ export const requireAuthentication = (options?: IOptions) => {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const requestPermissions: Partial<{ [key in Permission]: boolean }> = {};
-
-    ALL_PERMISSIONS.map(permissionDefinition => {
-      const rolePermission = role.permissions.find(
-        ({ id }) => id === permissionDefinition.id
-      );
-
-      requestPermissions[permissionDefinition.id] = rolePermission
-        ? rolePermission.enabled
-        : false;
-    });
-
-    request.permissions = requestPermissions;
+    setupRequestPermissions(request, role.permissions);
 
     if (!options) {
       return next();
@@ -66,7 +54,7 @@ export const requireAuthentication = (options?: IOptions) => {
   };
 };
 
-function handleTokenFromRequest(request: Request, authService: IAuthService) {
+function validateToken(request: Request, authService: IAuthService) {
   const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
 
   if (!token) {
@@ -84,6 +72,25 @@ function handleTokenFromRequest(request: Request, authService: IAuthService) {
   request.userId = userId;
 
   return userId;
+}
+
+function setupRequestPermissions(
+  request: Request,
+  rolePermissions: DataStorePermission[]
+) {
+  const requestPermissions: Partial<{ [key in Permission]: boolean }> = {};
+
+  ALL_PERMISSIONS.map(permissionDefinition => {
+    const rolePermission = rolePermissions.find(
+      ({ id }) => id === permissionDefinition.id
+    );
+
+    requestPermissions[permissionDefinition.id] = rolePermission
+      ? rolePermission.enabled
+      : false;
+  });
+
+  request.permissions = requestPermissions;
 }
 
 function validatePermissions(
