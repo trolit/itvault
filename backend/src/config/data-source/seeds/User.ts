@@ -11,9 +11,9 @@ export class UserSeeder implements Seeder {
     dataSource: DataSource,
     factoryManager: SeederFactoryManager
   ) {
-    const userRepository = dataSource.getRepository(User);
-
     const roleRepository = dataSource.getRepository(Role);
+
+    const userFactory = factoryManager.get(User);
 
     for (const { email, roleName } of TEST_ACCOUNTS) {
       const role = await roleRepository.findOneBy({ name: roleName });
@@ -22,15 +22,9 @@ export class UserSeeder implements Seeder {
         continue;
       }
 
-      await userRepository.save({
-        email,
-        password: PASSWORD,
-        role,
-      });
+      await userFactory.save({ email, password: PASSWORD, role });
 
       if (role.name === MEMBER_ROLE.name) {
-        const userFactory = factoryManager.get(User);
-
         await userFactory.saveMany(4, {
           role,
           deletedAt: new Date(),

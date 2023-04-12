@@ -8,9 +8,9 @@ import { paginationSchema } from "@schemas/pagination";
 import { updateUsersSchema } from "@schemas/user/update";
 import { processRequestWith } from "./processRequestWith";
 import { ALL_USER_PERMISSION_IDS } from "@config/permissions";
-import { safeParseRequest } from "middleware/safeParseRequest";
+import { safeParseRequest } from "@middleware/safeParseRequest";
 import { GetAllController } from "@controllers/User/GetAllController";
-import { requireAuthentication } from "middleware/requireAuthentication";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 import { SoftDeleteController } from "@controllers/User/SoftDeleteController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
 

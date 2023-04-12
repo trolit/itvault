@@ -2,14 +2,13 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Request, NextFunction, Response } from "express";
 
 import { Di } from "@enums/Di";
-import { UserDto } from "@dtos/UserDto";
 import { Permission } from "@enums/Permission";
 import { instanceOf } from "@helpers/instanceOf";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
-import { DataStoreKeyType } from "@enums/DataStoreKeyType";
+import { ALL_PERMISSIONS } from "@config/permissions";
+import { DataStorePermission } from "@utils/DataStoreRole";
 import { IAuthService } from "@interfaces/service/IAuthService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
-import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 interface IOptions {
   withPermission?: Permission;
@@ -19,22 +18,38 @@ interface IOptions {
 
 export const requireAuthentication = (options?: IOptions) => {
   return async (request: Request, response: Response, next: NextFunction) => {
-    const userId = handleTokenFromRequest(request);
+    const authService = instanceOf<IAuthService>(Di.AuthService);
+
+    const userId = validateToken(request, authService);
 
     if (!userId) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
+    const userData = await authService.getUserData(userId);
+
+    if (!userData) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    const [account, role] = userData;
+
+    if (!account.isActive) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    setupRequestPermissions(request, role.permissions);
+
     if (!options) {
       return next();
     }
 
-    const areOptionsRequirementsValid = await verifyOptionsRelatedToDataStore(
-      userId.toString(),
-      options
+    const arePermissionsValid = validatePermissionsFromOptions(
+      options,
+      role.permissions
     );
 
-    if (!areOptionsRequirementsValid) {
+    if (!arePermissionsValid) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
@@ -42,14 +57,12 @@ export const requireAuthentication = (options?: IOptions) => {
   };
 };
 
-function handleTokenFromRequest(request: Request) {
+function validateToken(request: Request, authService: IAuthService) {
   const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
 
   if (!token) {
     return null;
   }
-
-  const authService = instanceOf<IAuthService>(Di.AuthService);
 
   const result = authService.verifyToken(token);
 
@@ -64,24 +77,32 @@ function handleTokenFromRequest(request: Request) {
   return userId;
 }
 
-async function verifyOptionsRelatedToDataStore(
-  userId: string,
-  options: IOptions
+function setupRequestPermissions(
+  request: Request,
+  rolePermissions: DataStorePermission[]
 ) {
-  const dataStoreService = instanceOf<IDataStoreService>(Di.DataStoreService);
+  const requestPermissions: Partial<{ [key in Permission]: boolean }> = {};
 
-  const userDetails = await dataStoreService.get<UserDto>(
-    userId,
-    DataStoreKeyType.AuthenticatedUser
-  );
+  ALL_PERMISSIONS.map(permissionDefinition => {
+    const rolePermission = rolePermissions.find(
+      ({ id }) => id === permissionDefinition.id
+    );
 
-  if (!userDetails) {
-    return false;
-  }
+    requestPermissions[permissionDefinition.id] = rolePermission
+      ? rolePermission.enabled
+      : false;
+  });
 
+  request.permissions = requestPermissions;
+}
+
+function validatePermissionsFromOptions(
+  options: IOptions,
+  permissions: DataStorePermission[]
+) {
   if (
     options.withPermission &&
-    !isPermissionEnabled(options.withPermission, userDetails.permissions)
+    !isPermissionEnabled(options.withPermission, permissions)
   ) {
     return false;
   }
@@ -89,7 +110,7 @@ async function verifyOptionsRelatedToDataStore(
   if (
     options.withOneOfPermissions &&
     options.withOneOfPermissions.every(
-      permission => !isPermissionEnabled(permission, userDetails.permissions)
+      permission => !isPermissionEnabled(permission, permissions)
     )
   ) {
     return false;

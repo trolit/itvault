@@ -1,5 +1,5 @@
 import { DataSource } from "typeorm";
-import { Seeder } from "typeorm-extension";
+import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import {
   PASSWORD,
@@ -9,17 +9,19 @@ import {
 import { Workspace } from "@entities/Workspace";
 
 export class WorkspaceSeeder implements Seeder {
-  public async run(dataSource: DataSource) {
-    const repository = dataSource.getRepository(Workspace);
+  public async run(
+    dataSource: DataSource,
+    factoryManager: SeederFactoryManager
+  ) {
+    const workspaceFactory = factoryManager.get(Workspace);
 
-    await repository.save([
-      {
-        name: TEST_UNLOCKED_WORKSPACE.name,
-      },
-      {
-        name: TEST_LOCKED_WORKSPACE.name,
-        password: PASSWORD,
-      },
-    ]);
+    await workspaceFactory.save({
+      name: TEST_UNLOCKED_WORKSPACE.name,
+    });
+
+    await workspaceFactory.save({
+      name: TEST_LOCKED_WORKSPACE.name,
+      password: PASSWORD,
+    });
   }
 }
