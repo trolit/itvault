@@ -26,9 +26,12 @@ export class UpdateManyController
     request: CustomRequest<undefined, IRequestBody>,
     response: CustomResponse<Result<UpdateUserDto[]>>
   ) {
-    const { value } = request.body;
+    const {
+      permissions,
+      body: { value },
+    } = request;
 
-    const result = await this._userRepository.updateMany(value);
+    const result = await this._userRepository.updateMany(value, permissions);
 
     if (!result.success) {
       return response.status(HTTP.BAD_REQUEST).send(result);

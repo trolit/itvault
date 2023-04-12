@@ -1,7 +1,8 @@
 import { User } from "@entities/User";
+import { Result } from "@utils/Result";
+import { RequestPermissions } from "@utils/types";
 import { IBaseRepository } from "./IBaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
-import { Result } from "@utils/Result";
 
 export interface IUserRepository extends IBaseRepository<User> {
   findByEmail(
@@ -12,6 +13,7 @@ export interface IUserRepository extends IBaseRepository<User> {
   getAll(take: number, skip: number): Promise<[User[], number]>;
 
   updateMany(
-    entitiesToUpdate: UpdateUserDto[]
+    entitiesToUpdate: UpdateUserDto[],
+    permissions: RequestPermissions
   ): Promise<Result<UpdateUserDto[]>>;
 }
