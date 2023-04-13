@@ -1,5 +1,5 @@
 export class UpdateUserDto {
   id: number;
 
-  data: { roleId: number; deletedAt?: null };
+  data: { roleId?: number; isActive?: boolean };
 }

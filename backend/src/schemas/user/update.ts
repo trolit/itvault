@@ -7,14 +7,14 @@ const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
   z.object({
     id: z.number().positive(),
     data: z.object({
-      roleId: z.number().positive(),
-      deletedAt: z.optional(z.null()),
+      roleId: z.optional(z.number().positive()),
+      isActive: z.optional(z.boolean()),
     }),
   })
 );
 
 export const updateUsersSchema = schemaForType<{ value: UpdateUserDto[] }>()(
   z.object({
-    value: z.array(updateUserDtoSchema),
+    value: z.array(updateUserDtoSchema).nonempty(),
   })
 );
