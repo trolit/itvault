@@ -2,7 +2,7 @@ import { ZodSchema } from "zod";
 import { Request, Response } from "express";
 
 import { Permission } from "@enums/Permission";
-import { ISuperSchemaCommonParams } from "@interfaces/ISuperSchemaParams";
+import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
 
 // @NOTE https://stackoverflow.com/questions/39622778/what-is-new-in-typescript
 export type Type<T> = new (...args: unknown[]) => T;
@@ -26,6 +26,6 @@ export type RequestParseContext<T> = Partial<{
 export type RequestPermissions = { [key in Permission]?: boolean };
 
 export type SuperSchemaRunner<T = void> = (
-  commonParams: ISuperSchemaCommonParams,
+  commonParams: ISuperSchemaParams,
   data?: T
 ) => ZodSchema | null;
