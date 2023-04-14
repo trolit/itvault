@@ -4,11 +4,8 @@ import { Permission } from "@enums/Permission";
 import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { schemaForType } from "@helpers/schemaForType";
-import { ISuperSchemaCommonParams } from "@interfaces/ISuperSchemaParams";
 
-const updateUsersSchemaRunner: SuperSchemaRunner = (
-  commonParams: ISuperSchemaCommonParams
-) => {
+const updateUsersSchemaRunner: SuperSchemaRunner = commonParams => {
   const {
     request: { permissions },
   } = commonParams;
