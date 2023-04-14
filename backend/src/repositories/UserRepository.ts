@@ -5,9 +5,7 @@ import { Role } from "@entities/Role";
 import { User } from "@entities/User";
 import { Result } from "@utils/Result";
 import { IError } from "@interfaces/IError";
-import { Permission } from "@enums/Permission";
 import { BaseRepository } from "./BaseRepository";
-import { RequestPermissions } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
