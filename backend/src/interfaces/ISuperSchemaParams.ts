@@ -1,5 +1,5 @@
 import { Request } from "express";
 
-export interface ISuperSchemaCommonParams {
+export interface ISuperSchemaParams {
   request: Request;
 }
