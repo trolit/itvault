@@ -5,8 +5,8 @@ import { Di } from "@enums/Di";
 import { Result } from "@utils/Result";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
-import { IUserRepository } from "@interfaces/repository/IUserRepository";
 import { CustomRequest, CustomResponse } from "@utils/types";
+import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
 interface IRequestBody {
   value: UpdateUserDto[];
@@ -27,11 +27,10 @@ export class UpdateManyController
     response: CustomResponse<Result<UpdateUserDto[]>>
   ) {
     const {
-      permissions,
       body: { value },
     } = request;
 
-    const result = await this._userRepository.updateMany(value, permissions);
+    const result = await this._userRepository.updateMany(value);
 
     if (!result.success) {
       return response.status(HTTP.BAD_REQUEST).send(result);
