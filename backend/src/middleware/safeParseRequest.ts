@@ -24,9 +24,7 @@ export const safeParseRequest = <T>(context: RequestParseContext<T>) => {
         return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
       }
 
-      const result = await schema.safeParseAsync(
-        parseableProperties[propertyName]
-      );
+      const result = await schema.safeParseAsync(request[propertyName]);
 
       if (!result.success) {
         return response.status(HTTP.BAD_REQUEST).send(result.error.format());
