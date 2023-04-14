@@ -61,18 +61,8 @@ export class UserRepository
   }
 
   async updateMany(
-    entitiesToUpdate: UpdateUserDto[],
-    permissions: RequestPermissions
+    entitiesToUpdate: UpdateUserDto[]
   ): Promise<Result<UpdateUserDto[]>> {
-    const errors = verifyEntitiesToUpdateAgainstPermissions(
-      entitiesToUpdate,
-      permissions
-    );
-
-    if (errors.length) {
-      return Result.failure(errors);
-    }
-
     const transactionResult = await this.database.manager.transaction(
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];
@@ -139,37 +129,4 @@ export class UserRepository
       ? Result.failure(transactionResult.errors)
       : Result.success([]);
   }
-}
-
-// @TODO move it to UserService or expand schema validation
-function verifyEntitiesToUpdateAgainstPermissions(
-  entitiesToUpdate: UpdateUserDto[],
-  permissions: RequestPermissions
-): IError[] {
-  const errors: IError[] = [];
-
-  for (const { id, data } of entitiesToUpdate) {
-    const messages: string[] = [];
-
-    if (data.isActive && !permissions[Permission.RestoreUserAccount]) {
-      messages.push("Missing permission to restore account.");
-    }
-
-    if (!data.isActive && !permissions[Permission.DeactivateUserAccount]) {
-      messages.push("Missing permission to deactivate account.");
-    }
-
-    if (data.roleId && !permissions[Permission.ChangeUserRole]) {
-      messages.push("Missing permission to change account's role.");
-    }
-
-    if (messages.length) {
-      errors.push({
-        key: id,
-        messages,
-      });
-    }
-  }
-
-  return errors;
 }
