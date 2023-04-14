@@ -24,6 +24,7 @@ userRoutes.get(
   processRequestWith(GetAllController)
 );
 
+// @DEPRECATED (delete is handled through `patch` deletedAt)
 userRoutes.delete(
   "/v1/:id",
   requireAuthentication({
