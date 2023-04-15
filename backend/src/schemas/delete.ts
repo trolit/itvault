@@ -1,11 +1,19 @@
 import { z } from "zod";
 
 import { Di } from "@enums/Di";
+import { SuperSchemaRunner } from "@utils/types";
 import { schemaForType } from "@helpers/schemaForType";
-import { existsSuperRefine } from "./super-refines/exists";
+import { existsSuperRefine } from "./common/existsSuperRefine";
 
-export const deleteSchema = <T>(repository: Di) => {
-  const isRecordAvailable = existsSuperRefine<T>(repository);
+const deleteSchemaRunner: SuperSchemaRunner<{ repository: Di }> = (
+  commonParams,
+  data
+) => {
+  if (!data?.repository) {
+    return null;
+  }
+
+  const isRecordAvailable = existsSuperRefine(data.repository);
 
   return schemaForType<{ id: number }>()(
     z.object({
@@ -13,3 +21,7 @@ export const deleteSchema = <T>(repository: Di) => {
     })
   );
 };
+
+export const deleteSchema = (() => {
+  return deleteSchemaRunner;
+})();

@@ -1,11 +1,16 @@
-import { PermissionDto } from "@dtos/PermissionDto";
 import { Permission } from "@enums/Permission";
+import { RequestPermissions } from "@utils/types";
+import { PermissionDto } from "@dtos/PermissionDto";
 
 export const isPermissionEnabled = (
   permission: Permission,
-  userPermissions: PermissionDto[]
+  source: PermissionDto[] | RequestPermissions
 ): boolean => {
-  const result = userPermissions.find(({ id }) => id === permission);
+  if (Array.isArray(source)) {
+    const result = source.find(({ id }) => id === permission);
 
-  return !!result && result.enabled;
+    return !!result && result.enabled;
+  }
+
+  return !!source[permission];
 };

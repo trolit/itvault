@@ -1,4 +1,4 @@
-import { Permission } from "@enums/Permission";
+import { RequestPermissions } from "@utils/types";
 
 // to make the file a module and avoid the TypeScript error
 export {};
@@ -9,7 +9,8 @@ declare global {
       // @NOTE - available only after validateToken middleware
       userId: number;
 
-      permissions: { [key in Permission]?: boolean };
+      // @NOTE - available only after validateToken middleware
+      permissions: RequestPermissions;
     }
   }
 }

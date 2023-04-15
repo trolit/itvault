@@ -1,14 +1,13 @@
 import { Router } from "express";
 
 import { Di } from "@enums/Di";
-import { User } from "@entities/User";
 import { deleteSchema } from "@schemas/delete";
 import { Permission } from "@enums/Permission";
 import { paginationSchema } from "@schemas/pagination";
-import { updateUsersSchema } from "@schemas/user/update";
 import { processRequestWith } from "./processRequestWith";
 import { ALL_USER_PERMISSION_IDS } from "@config/permissions";
 import { safeParseRequest } from "@middleware/safeParseRequest";
+import { updateManyUsersSchema } from "@schemas/user/updateMany";
 import { GetAllController } from "@controllers/User/GetAllController";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import { SoftDeleteController } from "@controllers/User/SoftDeleteController";
@@ -25,13 +24,15 @@ userRoutes.get(
   processRequestWith(GetAllController)
 );
 
+// @DEPRECATED (delete is handled through `patch` deletedAt)
 userRoutes.delete(
   "/v1/:id",
   requireAuthentication({
     withPermission: Permission.DeactivateUserAccount,
   }),
   safeParseRequest({
-    params: { withSchema: deleteSchema<User>(Di.UserRepository) },
+    params: { withSchema: deleteSchema },
+    data: { repository: Di.UserRepository },
   }),
   processRequestWith(SoftDeleteController)
 );
@@ -43,7 +44,7 @@ userRoutes.patch(
     withOneOfPermissions: ALL_USER_PERMISSION_IDS,
   }),
   safeParseRequest({
-    body: { withSchema: updateUsersSchema },
+    body: { withSchema: updateManyUsersSchema },
   }),
   processRequestWith(UpdateManyController)
 );
