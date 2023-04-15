@@ -18,7 +18,7 @@ export const safeParseRequest = <T>(context: RequestParseContext<T>) => {
         return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
       }
 
-      const schema = superSchemaRunner({ request }, context.data);
+      const schema = await superSchemaRunner({ request }, context.data);
 
       if (!schema) {
         return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
