@@ -5,9 +5,10 @@ import { SuperSchemaRunner } from "@utils/types";
 import { schemaForType } from "@helpers/schemaForType";
 import { existsSuperRefine } from "./common/existsSuperRefine";
 
-const deleteSchemaRunner: SuperSchemaRunner<{
-  repository: Di;
-}> = (commonParams, data) => {
+const deleteSchemaRunner: SuperSchemaRunner<{ repository: Di }> = (
+  commonParams,
+  data
+) => {
   if (!data?.repository) {
     return null;
   }
