@@ -4,6 +4,7 @@ import { Permission } from "@enums/Permission";
 import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { schemaForType } from "@helpers/schemaForType";
+import { HEAD_ADMIN_ROLE, HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 const updateManyUsersSchemaRunner: SuperSchemaRunner = commonParams => {
   const {
@@ -18,7 +19,7 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = commonParams => {
           z
             .number()
             .positive()
-            .superRefine((value: number, context: RefinementCtx) => {
+            .superRefine(async (roleId: number, context: RefinementCtx) => {
               if (!permissions[Permission.ChangeUserRole]) {
                 context.addIssue({
                   code: ZodIssueCode.custom,
@@ -27,28 +28,39 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = commonParams => {
 
                 return Zod.NEVER;
               }
+
+              if (roleId === HEAD_ADMIN_ROLE_ID) {
+                context.addIssue({
+                  code: ZodIssueCode.custom,
+                  message: `${HEAD_ADMIN_ROLE.name} cannot be assigned to users.`,
+                });
+
+                return Zod.NEVER;
+              }
             })
         ),
         isActive: z.optional(
-          z.boolean().superRefine((value: boolean, context: RefinementCtx) => {
-            if (value && !permissions[Permission.RestoreUserAccount]) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "Missing permission to restore account.",
-              });
+          z
+            .boolean()
+            .superRefine((isActive: boolean, context: RefinementCtx) => {
+              if (isActive && !permissions[Permission.RestoreUserAccount]) {
+                context.addIssue({
+                  code: ZodIssueCode.custom,
+                  message: "Missing permission to restore account.",
+                });
 
-              return Zod.NEVER;
-            }
+                return Zod.NEVER;
+              }
 
-            if (!value && !permissions[Permission.DeactivateUserAccount]) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "Missing permission to deactivate account.",
-              });
+              if (!isActive && !permissions[Permission.DeactivateUserAccount]) {
+                context.addIssue({
+                  code: ZodIssueCode.custom,
+                  message: "Missing permission to deactivate account.",
+                });
 
-              return Zod.NEVER;
-            }
-          })
+                return Zod.NEVER;
+              }
+            })
         ),
       }),
     })
