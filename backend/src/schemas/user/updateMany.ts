@@ -5,7 +5,7 @@ import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { schemaForType } from "@helpers/schemaForType";
 
-const updateUsersSchemaRunner: SuperSchemaRunner = commonParams => {
+const updateManyUsersSchemaRunner: SuperSchemaRunner = commonParams => {
   const {
     request: { permissions },
   } = commonParams;
@@ -61,6 +61,6 @@ const updateUsersSchemaRunner: SuperSchemaRunner = commonParams => {
   );
 };
 
-export const updateUsersSchema = (() => {
-  return updateUsersSchemaRunner;
+export const updateManyUsersSchema = (() => {
+  return updateManyUsersSchemaRunner;
 })();
