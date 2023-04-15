@@ -32,7 +32,7 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = commonParams => {
               if (roleId === HEAD_ADMIN_ROLE_ID) {
                 context.addIssue({
                   code: ZodIssueCode.custom,
-                  message: `${HEAD_ADMIN_ROLE.name} cannot be assigned to users.`,
+                  message: `${HEAD_ADMIN_ROLE.name} role is unique and cannot be assigned to users.`,
                 });
 
                 return Zod.NEVER;
