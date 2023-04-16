@@ -25,4 +25,8 @@ export class RoleRepository
       },
     });
   }
+
+  findByName(name: string): Promise<Role | null> {
+    return this.database.findOneBy({ name });
+  }
 }

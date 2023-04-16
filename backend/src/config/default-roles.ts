@@ -7,6 +7,10 @@ export const HEAD_ADMIN_ROLE: IRoleDefinition = {
   permissions: ALL_PERMISSIONS.map(({ id }) => id),
 };
 
+export const HEAD_ADMIN_ROLE_ID = 1;
+
+// ----------------------------------------------------------------------
+
 export const MAINTAINER_ROLE: IRoleDefinition = {
   name: "Maintainer",
 

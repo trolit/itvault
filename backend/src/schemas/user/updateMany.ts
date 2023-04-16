@@ -1,15 +1,11 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
-import { Permission } from "@enums/Permission";
 import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { schemaForType } from "@helpers/schemaForType";
+import { HEAD_ADMIN_ROLE, HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
-const updateManyUsersSchemaRunner: SuperSchemaRunner = commonParams => {
-  const {
-    request: { permissions },
-  } = commonParams;
-
+const updateManyUsersSchemaRunner: SuperSchemaRunner = () => {
   const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
     z.object({
       id: z.number().positive(),
@@ -18,38 +14,18 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = commonParams => {
           z
             .number()
             .positive()
-            .superRefine((value: number, context: RefinementCtx) => {
-              if (!permissions[Permission.ChangeUserRole]) {
+            .superRefine((roleId: number, context: RefinementCtx) => {
+              if (roleId === HEAD_ADMIN_ROLE_ID) {
                 context.addIssue({
                   code: ZodIssueCode.custom,
-                  message: "Missing permission to change account's role.",
+                  message: `${HEAD_ADMIN_ROLE.name} role is not assignable.`,
                 });
 
                 return Zod.NEVER;
               }
             })
         ),
-        isActive: z.optional(
-          z.boolean().superRefine((value: boolean, context: RefinementCtx) => {
-            if (value && !permissions[Permission.RestoreUserAccount]) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "Missing permission to restore account.",
-              });
-
-              return Zod.NEVER;
-            }
-
-            if (!value && !permissions[Permission.DeactivateUserAccount]) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "Missing permission to deactivate account.",
-              });
-
-              return Zod.NEVER;
-            }
-          })
-        ),
+        isActive: z.optional(z.boolean()),
       }),
     })
   );

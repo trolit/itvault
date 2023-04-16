@@ -28,4 +28,4 @@ export type RequestPermissions = { [key in Permission]?: boolean };
 export type SuperSchemaRunner<T = void> = (
   commonParams: ISuperSchemaParams,
   data?: T
-) => ZodSchema | null;
+) => (ZodSchema | null) | Promise<ZodSchema | null>;
