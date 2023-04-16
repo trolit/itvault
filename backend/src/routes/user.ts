@@ -12,6 +12,8 @@ import { GetAllController } from "@controllers/User/GetAllController";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import { SoftDeleteController } from "@controllers/User/SoftDeleteController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
+import { requirePermissions } from "@middleware/requirePermissions";
+import { UpdateUserDto } from "@dtos/UpdateUserDto";
 
 const userRoutes = Router();
 
@@ -39,10 +41,8 @@ userRoutes.delete(
 
 userRoutes.patch(
   "/v1",
-  requireAuthentication({
-    withPermission: Permission.ViewAllUsers,
-    withOneOfPermissions: ALL_USER_PERMISSION_IDS,
-  }),
+  requireAuthentication(),
+  requirePermissions(UpdateManyController.permissionsHandler),
   safeParseRequest({
     body: { withSchema: updateManyUsersSchema },
   }),

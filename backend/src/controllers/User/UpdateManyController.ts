@@ -1,11 +1,14 @@
+import { Request } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Result } from "@utils/Result";
+import { Permission } from "@enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@utils/types";
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
 interface IRequestBody {
@@ -39,5 +42,28 @@ export class UpdateManyController
     // @TODO redis
 
     return response.status(HTTP.NO_CONTENT).send();
+  }
+
+  static permissionsHandler(request: Request): boolean {
+    const { permissions, body } = request;
+
+    if (!isPermissionEnabled(Permission.ViewAllUsers, permissions)) {
+      return false;
+    }
+
+    const castedBody = <IRequestBody>body;
+
+    return castedBody.value.some(
+      ({ data }) =>
+        (data.isActive &&
+          !isPermissionEnabled(Permission.RestoreUserAccount, permissions)) ||
+        (!data.isActive &&
+          !isPermissionEnabled(
+            Permission.DeactivateUserAccount,
+            permissions
+          )) ||
+        (data.roleId &&
+          !isPermissionEnabled(Permission.ChangeUserRole, permissions))
+    );
   }
 }
