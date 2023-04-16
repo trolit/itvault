@@ -5,23 +5,20 @@ import { deleteSchema } from "@schemas/delete";
 import { Permission } from "@enums/Permission";
 import { paginationSchema } from "@schemas/pagination";
 import { processRequestWith } from "./processRequestWith";
-import { ALL_USER_PERMISSION_IDS } from "@config/permissions";
 import { safeParseRequest } from "@middleware/safeParseRequest";
 import { updateManyUsersSchema } from "@schemas/user/updateMany";
+import { requirePermissions } from "@middleware/requirePermissions";
 import { GetAllController } from "@controllers/User/GetAllController";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import { SoftDeleteController } from "@controllers/User/SoftDeleteController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
-import { requirePermissions } from "@middleware/requirePermissions";
-import { UpdateUserDto } from "@dtos/UpdateUserDto";
 
 const userRoutes = Router();
 
 userRoutes.get(
   "/v1",
-  requireAuthentication({
-    withPermission: Permission.ViewAllUsers,
-  }),
+  requireAuthentication,
+  requirePermissions([Permission.ViewAllUsers]),
   safeParseRequest({ query: { withSchema: paginationSchema } }),
   processRequestWith(GetAllController)
 );
@@ -29,9 +26,8 @@ userRoutes.get(
 // @DEPRECATED (delete is handled through `patch` deletedAt)
 userRoutes.delete(
   "/v1/:id",
-  requireAuthentication({
-    withPermission: Permission.DeactivateUserAccount,
-  }),
+  requireAuthentication,
+  requirePermissions([Permission.DeactivateUserAccount]),
   safeParseRequest({
     params: { withSchema: deleteSchema },
     data: { repository: Di.UserRepository },
@@ -41,7 +37,7 @@ userRoutes.delete(
 
 userRoutes.patch(
   "/v1",
-  requireAuthentication(),
+  requireAuthentication,
   requirePermissions(UpdateManyController.permissionsHandler),
   safeParseRequest({
     body: { withSchema: updateManyUsersSchema },
