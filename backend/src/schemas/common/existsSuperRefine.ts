@@ -5,8 +5,8 @@ import { instanceOf } from "@helpers/instanceOf";
 import { IBaseRepository } from "@interfaces/repository/IBaseRepository";
 
 export const existsSuperRefine = <T>(repository: Di) => {
-  return async (value: number, context: RefinementCtx) => {
-    if (value <= 0) {
+  return async (id: number, context: RefinementCtx) => {
+    if (id <= 0) {
       context.addIssue({
         code: ZodIssueCode.custom,
         message: "Must be greater than 0.",
@@ -17,7 +17,7 @@ export const existsSuperRefine = <T>(repository: Di) => {
 
     const repositoryInstance = instanceOf<IBaseRepository<T>>(repository);
 
-    const result = await repositoryInstance.findById(value);
+    const result = await repositoryInstance.findById(id);
 
     if (!result) {
       context.addIssue({
