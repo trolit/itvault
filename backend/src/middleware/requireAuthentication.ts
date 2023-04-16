@@ -8,15 +8,8 @@ import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { DataStorePermission } from "@utils/DataStoreRole";
 import { IAuthService } from "@interfaces/service/IAuthService";
-import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
-interface IOptions {
-  withPermission?: Permission;
-
-  withOneOfPermissions?: Permission[];
-}
-
-export const requireAuthentication = (options?: IOptions) => {
+export const requireAuthentication = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const authService = instanceOf<IAuthService>(Di.AuthService);
 
@@ -38,24 +31,11 @@ export const requireAuthentication = (options?: IOptions) => {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    setupRequestPermissions(request, role.permissions);
-
-    if (!options) {
-      return next();
-    }
-
-    const arePermissionsValid = validatePermissionsFromOptions(
-      options,
-      role.permissions
-    );
-
-    if (!arePermissionsValid) {
-      return response.status(HTTP.FORBIDDEN).send();
-    }
+    assignPermissionsToRequest(request, role.permissions);
 
     next();
   };
-};
+})();
 
 function validateToken(request: Request, authService: IAuthService) {
   const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
@@ -77,7 +57,7 @@ function validateToken(request: Request, authService: IAuthService) {
   return userId;
 }
 
-function setupRequestPermissions(
+function assignPermissionsToRequest(
   request: Request,
   rolePermissions: DataStorePermission[]
 ) {
@@ -94,27 +74,4 @@ function setupRequestPermissions(
   });
 
   request.permissions = requestPermissions;
-}
-
-function validatePermissionsFromOptions(
-  options: IOptions,
-  permissions: DataStorePermission[]
-) {
-  if (
-    options.withPermission &&
-    !isPermissionEnabled(options.withPermission, permissions)
-  ) {
-    return false;
-  }
-
-  if (
-    options.withOneOfPermissions &&
-    options.withOneOfPermissions.every(
-      permission => !isPermissionEnabled(permission, permissions)
-    )
-  ) {
-    return false;
-  }
-
-  return true;
 }
