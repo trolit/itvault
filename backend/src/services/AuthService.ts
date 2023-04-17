@@ -55,7 +55,7 @@ export class AuthService implements IAuthService {
     };
   }
 
-  async getUserData(
+  async findLoggedUserData(
     userId: number
   ): Promise<[DataStoreUser, DataStoreRole] | null> {
     const userData = await this._dataStoreService.get<DataStoreUser>(
