@@ -19,17 +19,13 @@ export const requireAuthentication = (() => {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const userData = await authService.getUserData(userId);
+    const userData = await authService.findLoggedUserData(userId);
 
     if (!userData) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const [account, role] = userData;
-
-    if (!account.isActive) {
-      return response.status(HTTP.FORBIDDEN).send();
-    }
+    const [, role] = userData;
 
     assignPermissionsToRequest(request, role.permissions);
 

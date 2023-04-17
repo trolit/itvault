@@ -16,5 +16,7 @@ export interface IAuthService {
 
   verifyToken(token: string): IVerifyTokenResult;
 
-  getUserData(userId: number): Promise<[DataStoreUser, DataStoreRole] | null>;
+  findLoggedUserData(
+    userId: number
+  ): Promise<[DataStoreUser, DataStoreRole] | null>;
 }
