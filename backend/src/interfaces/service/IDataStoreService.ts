@@ -10,6 +10,8 @@ export interface IDataStoreService {
 
   get<T>(key: string | number, keyType: DataStoreKeyType): Promise<T | null>;
 
+  ttl(key: string | number, keyType: DataStoreKeyType): Promise<number>;
+
   delete(
     key: string | number | string[],
     keyType: DataStoreKeyType
