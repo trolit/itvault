@@ -18,6 +18,6 @@ export interface IDataStoreService {
   update<T>(
     key: string | number,
     keyType: DataStoreKeyType,
-    callback: (value: T) => void
+    callback: (updatedValue: T) => T
   ): Promise<string | null>;
 }

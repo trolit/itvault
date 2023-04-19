@@ -61,7 +61,7 @@ export class DataStoreService implements IDataStoreService {
   async update<T>(
     key: string | number,
     keyType: DataStoreKeyType,
-    callback: (value: T) => void
+    callback: (updatedValue: T) => T
   ): Promise<string | null> {
     if (typeof key !== "string") {
       key = key.toString();
@@ -73,9 +73,9 @@ export class DataStoreService implements IDataStoreService {
       return null;
     }
 
-    callback(value);
+    const updatedValue = callback(value);
 
-    return this.set<T>(key, keyType, value);
+    return this.set<T>(key, keyType, updatedValue);
   }
 
   delete(
