@@ -89,7 +89,9 @@ export class UserRepository
             data: { isActive, roleId },
           } = entityToUpdate;
 
-          const partialEntity: Partial<User> = {};
+          const partialEntity: Partial<User> = new User();
+
+          partialEntity.id = id;
 
           if (isActive !== undefined) {
             partialEntity.deletedAt = isActive ? null : new Date();
