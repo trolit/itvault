@@ -3,7 +3,7 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { schemaForType } from "@helpers/schemaForType";
-import { HEAD_ADMIN_ROLE, HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
+import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 const updateManyUsersSchemaRunner: SuperSchemaRunner = () => {
   const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
@@ -18,7 +18,7 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = () => {
               if (roleId === HEAD_ADMIN_ROLE_ID) {
                 context.addIssue({
                   code: ZodIssueCode.custom,
-                  message: `${HEAD_ADMIN_ROLE.name} role is not assignable.`,
+                  message: "This role is not assignable.",
                 });
 
                 return Zod.NEVER;
