@@ -39,8 +39,6 @@ export class UpdateManyController
       return response.status(HTTP.BAD_REQUEST).send(result);
     }
 
-    // @TODO redis
-
     return response.status(HTTP.NO_CONTENT).send();
   }
 
