@@ -42,7 +42,7 @@ export class User extends Base {
   @AfterUpdate()
   async onUpdate() {
     if (this.id && (this.deletedAt !== null || this.role)) {
-      // @NOTE move to UserService
+      // @NOTE handle through UserService
       const dataStoreService = instanceOf<IDataStoreService>(
         Di.DataStoreService
       );
