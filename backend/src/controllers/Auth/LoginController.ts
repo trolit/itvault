@@ -76,7 +76,6 @@ export class LoginController
         {
           id: user.id,
           roleId: user.role.id,
-          isActive: user.deletedAt === null,
         },
         {
           withTTL: {

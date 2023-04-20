@@ -38,7 +38,7 @@ userRoutes.delete(
 userRoutes.patch(
   "/v1",
   requireAuthentication,
-  requirePermissions(UpdateManyController.permissionsHandler),
+  requirePermissions(UpdateManyController.hasMissingPermissions),
   safeParseRequest({
     body: { withSchema: updateManyUsersSchema },
   }),

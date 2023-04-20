@@ -39,12 +39,10 @@ export class UpdateManyController
       return response.status(HTTP.BAD_REQUEST).send(result);
     }
 
-    // @TODO redis
-
     return response.status(HTTP.NO_CONTENT).send();
   }
 
-  static permissionsHandler(request: Request): boolean {
+  static hasMissingPermissions(request: Request): boolean {
     const { permissions, body } = request;
 
     if (!isPermissionEnabled(Permission.ViewAllUsers, permissions)) {
@@ -53,17 +51,26 @@ export class UpdateManyController
 
     const castedBody = <IRequestBody>body;
 
+    const isAllowedToRestoreUserAccount = isPermissionEnabled(
+      Permission.RestoreUserAccount,
+      permissions
+    );
+
+    const isAllowedToDeactivateUserAccount = isPermissionEnabled(
+      Permission.DeactivateUserAccount,
+      permissions
+    );
+
+    const isAllowedToChangeUserRole = isPermissionEnabled(
+      Permission.ChangeUserRole,
+      permissions
+    );
+
     return castedBody.value.some(
       ({ data }) =>
-        (data.isActive &&
-          !isPermissionEnabled(Permission.RestoreUserAccount, permissions)) ||
-        (!data.isActive &&
-          !isPermissionEnabled(
-            Permission.DeactivateUserAccount,
-            permissions
-          )) ||
-        (data.roleId &&
-          !isPermissionEnabled(Permission.ChangeUserRole, permissions))
+        (data.isActive && !isAllowedToRestoreUserAccount) ||
+        (!data.isActive && !isAllowedToDeactivateUserAccount) ||
+        (data.roleId && !isAllowedToChangeUserRole)
     );
   }
 }

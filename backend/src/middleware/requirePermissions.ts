@@ -24,6 +24,10 @@ export const requirePermissions = (
       return next();
     }
 
-    return context(request) ? next() : response.status(HTTP.FORBIDDEN).send();
+    const hasMissingPermissions = context(request);
+
+    return hasMissingPermissions
+      ? response.status(HTTP.FORBIDDEN).send()
+      : next();
   };
 };

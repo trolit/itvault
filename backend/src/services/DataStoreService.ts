@@ -13,16 +13,12 @@ export class DataStoreService implements IDataStoreService {
     private _redis: Redis
   ) {}
 
-  set<T>(
+  async set<T>(
     key: string | number,
     keyType: DataStoreKeyType,
     value: T,
     options?: { withTTL: { seconds: number } }
   ): Promise<string | null> {
-    if (typeof key !== "string") {
-      key = key.toString();
-    }
-
     const valueAsString = JSON.stringify(value);
 
     const dataStoreKey = composeDataStoreKey(key, keyType);
@@ -43,10 +39,6 @@ export class DataStoreService implements IDataStoreService {
     key: string | number,
     keyType: DataStoreKeyType
   ): Promise<T | null> {
-    if (typeof key !== "string") {
-      key = key.toString();
-    }
-
     const dataKey = composeDataStoreKey(key, keyType);
 
     const value = await this._redis.get(dataKey);
@@ -58,13 +50,38 @@ export class DataStoreService implements IDataStoreService {
     return <T>JSON.parse(value);
   }
 
-  delete(key: string | number, keyType: DataStoreKeyType): Promise<number> {
-    if (typeof key !== "string") {
-      key = key.toString();
-    }
-
+  ttl(key: string | number, keyType: DataStoreKeyType): Promise<number> {
     const dataKey = composeDataStoreKey(key, keyType);
 
-    return this._redis.del(dataKey);
+    return this._redis.ttl(dataKey);
+  }
+
+  async update<T>(
+    key: string | number,
+    keyType: DataStoreKeyType,
+    callback: (updatedValue: T) => T
+  ): Promise<string | null> {
+    const value = await this.get<T>(key, keyType);
+
+    if (!value) {
+      return null;
+    }
+
+    const updatedValue = callback(value);
+
+    return this.set<T>(key, keyType, updatedValue);
+  }
+
+  delete(
+    key: string | number | string[],
+    keyType: DataStoreKeyType
+  ): Promise<number> {
+    if (Array.isArray(key)) {
+      const dataKeys = key.map(key => composeDataStoreKey(key, keyType));
+
+      return this._redis.del(dataKeys);
+    }
+
+    return this._redis.del(composeDataStoreKey(key, keyType));
   }
 }
