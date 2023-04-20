@@ -1,6 +1,13 @@
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 
 export interface IDataStoreService {
+  defineHashSet<T extends Record<string, string>>(
+    key: string | number,
+    keyType: DataStoreKeyType,
+    value: T,
+    options?: { withTTL: { seconds: number } }
+  ): Promise<[error: Error | null, result: unknown][] | null>;
+
   set<T>(
     key: string | number,
     keyType: DataStoreKeyType,
