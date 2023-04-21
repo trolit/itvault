@@ -12,7 +12,7 @@ export class LogoutController implements IController {
     const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
 
     if (!token) {
-      return response.status(HTTP.BAD_REQUEST).send();
+      return response.status(HTTP.UNAUTHORIZED).send();
     }
 
     response.clearCookie(JWT_TOKEN_COOKIE_KEY);
