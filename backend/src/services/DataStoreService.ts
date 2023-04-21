@@ -14,16 +14,19 @@ export class DataStoreService implements IDataStoreService {
   ) {}
 
   async defineHashSet<T extends Record<string, string>>(
+  createHashsetFromValue<T extends Record<keyof T, string>>(
     key: string | number,
     keyType: DataStoreKeyType,
     value: T,
     options?: { withTTL: { seconds: number } }
   ): Promise<[error: Error | null, result: unknown][] | null> {
     const pipeline = this._redis.pipeline();
+
     const dataStoreKey = composeDataStoreKey(key, keyType);
 
     for (const [objectKey, text] of Object.entries(value)) {
       pipeline.hset(dataStoreKey, objectKey, text);
+      pipeline.hset(dataStoreKey, objectKey, <string>text);
     }
 
     if (options?.withTTL) {

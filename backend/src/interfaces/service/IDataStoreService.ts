@@ -1,7 +1,7 @@
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 
 export interface IDataStoreService {
-  defineHashSet<T extends Record<string, string>>(
+  createHashsetFromValue<T extends Record<keyof T, string>>(
     key: string | number,
     keyType: DataStoreKeyType,
     value: T,
