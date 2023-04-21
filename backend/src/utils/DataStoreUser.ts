@@ -1,5 +1,5 @@
 export class DataStoreUser {
-  id: number;
+  id: string;
 
-  roleId: number;
+  roleId: string;
 }

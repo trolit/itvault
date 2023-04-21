@@ -11,6 +11,7 @@ import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
+import { DataStoreUser } from "@utils/DataStoreUser";
 import { IController } from "@interfaces/IController";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { CustomRequest, CustomResponse } from "@utils/types";
@@ -70,18 +71,10 @@ export class LoginController
     );
 
     try {
-      await this._dataStoreService.set(
-        user.id,
-        DataStoreKeyType.AuthenticatedUser,
-        {
-          id: user.id,
-          roleId: user.role.id,
-        },
-        {
-          withTTL: {
-            seconds: JWT_TOKEN_LIFETIME_IN_SECONDS,
-          },
-        }
+      await this._dataStoreService.createHashFromValue<DataStoreUser>(
+        [user.id, DataStoreKeyType.AuthenticatedUser],
+        { id: user.id.toString(), roleId: user.role.id.toString() },
+        { withTTL: { seconds: JWT_TOKEN_LIFETIME_IN_SECONDS } }
       );
     } catch (error) {
       // @TODO log error
