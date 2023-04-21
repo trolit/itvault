@@ -13,8 +13,7 @@ export class DataStoreService implements IDataStoreService {
     private _redis: Redis
   ) {}
 
-  async defineHashSet<T extends Record<string, string>>(
-  createHashsetFromValue<T extends Record<keyof T, string>>(
+  createHashFromValue<T extends Record<keyof T, string>>(
     key: string | number,
     keyType: DataStoreKeyType,
     value: T,
@@ -25,7 +24,6 @@ export class DataStoreService implements IDataStoreService {
     const dataStoreKey = composeDataStoreKey(key, keyType);
 
     for (const [objectKey, text] of Object.entries(value)) {
-      pipeline.hset(dataStoreKey, objectKey, text);
       pipeline.hset(dataStoreKey, objectKey, <string>text);
     }
 
@@ -34,6 +32,15 @@ export class DataStoreService implements IDataStoreService {
     }
 
     return pipeline.exec();
+  }
+
+  getFieldFromHash<T>(
+    id: [string | number, DataStoreKeyType],
+    field: keyof T
+  ): Promise<string | null> {
+    const [key, type] = id;
+
+    return this._redis.hget(composeDataStoreKey(key, type), <string>field);
   }
 
   async set<T>(
