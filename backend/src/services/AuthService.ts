@@ -81,27 +81,25 @@ export class AuthService implements IAuthService {
     };
   }
 
-  async findLoggedUserData(
-    userId: number
-  ): Promise<[DataStoreUser, DataStoreRole] | null> {
-    const userData = await this._dataStoreService.get<DataStoreUser>(
-      userId,
-      DataStoreKeyType.AuthenticatedUser
+  async getSignedUserRole(userId: number): Promise<DataStoreRole | null> {
+    const roleId = await this._dataStoreService.getFieldFromHash<DataStoreUser>(
+      [userId, DataStoreKeyType.AuthenticatedUser],
+      "roleId"
     );
 
-    if (!userData) {
+    if (!roleId) {
       return null;
     }
 
-    const roleData = await this._dataStoreService.get<DataStoreRole>(
-      userData.roleId,
+    const role = await this._dataStoreService.get<DataStoreRole>(
+      parseInt(roleId),
       DataStoreKeyType.Role
     );
 
-    if (!roleData) {
+    if (!role) {
       return null;
     }
 
-    return [userData, roleData];
+    return role;
   }
 }
