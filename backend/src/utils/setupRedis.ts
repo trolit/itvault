@@ -12,6 +12,7 @@ export const setupRedis = () => {
   const redis = new Redis({
     port: REDIS_CONTAINER_PORT,
     password: REDIS_PASSWORD,
+    enableAutoPipelining: true,
   });
 
   return {

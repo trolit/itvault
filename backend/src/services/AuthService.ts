@@ -1,14 +1,19 @@
 import jwt from "jsonwebtoken";
+import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
+import {
+  JWT_SECRET_KEY,
+  JWT_TOKEN_COOKIE_KEY,
+  JWT_TOKEN_LIFETIME_IN_SECONDS,
+} from "@config";
 import { Di } from "@enums/Di";
 import { JwtPayload } from "@utils/JwtPayload";
 import { DataStoreRole } from "@utils/DataStoreRole";
 import { DataStoreUser } from "@utils/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IAuthService } from "@interfaces/service/IAuthService";
-import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 @injectable()
@@ -18,11 +23,32 @@ export class AuthService implements IAuthService {
     private _dataStoreService: IDataStoreService
   ) {}
 
-  signToken(payload: JwtPayload, options: SignOptions = {}) {
+  signIn(payload: JwtPayload, options: SignOptions = {}) {
     return jwt.sign(payload, JWT_SECRET_KEY, {
       ...options,
       expiresIn: JWT_TOKEN_LIFETIME_IN_SECONDS,
     });
+  }
+
+  async signOut(token: string, response: Response): Promise<number> {
+    const decodedToken = <JwtPayload>jwt.decode(token);
+
+    if (!decodedToken.id) {
+      return -1;
+    }
+
+    const result = await this._dataStoreService.delete(
+      decodedToken.id,
+      DataStoreKeyType.AuthenticatedUser
+    );
+
+    if (result) {
+      response.clearCookie(JWT_TOKEN_COOKIE_KEY);
+
+      return result;
+    }
+
+    return -1;
   }
 
   verifyToken(token: string) {
@@ -55,27 +81,25 @@ export class AuthService implements IAuthService {
     };
   }
 
-  async findLoggedUserData(
-    userId: number
-  ): Promise<[DataStoreUser, DataStoreRole] | null> {
-    const userData = await this._dataStoreService.get<DataStoreUser>(
-      userId,
-      DataStoreKeyType.AuthenticatedUser
+  async getSignedUserRole(userId: number): Promise<DataStoreRole | null> {
+    const roleId = await this._dataStoreService.getFieldFromHash<DataStoreUser>(
+      [userId, DataStoreKeyType.AuthenticatedUser],
+      "roleId"
     );
 
-    if (!userData) {
+    if (!roleId) {
       return null;
     }
 
-    const roleData = await this._dataStoreService.get<DataStoreRole>(
-      userData.roleId,
+    const role = await this._dataStoreService.get<DataStoreRole>(
+      parseInt(roleId),
       DataStoreKeyType.Role
     );
 
-    if (!roleData) {
+    if (!role) {
       return null;
     }
 
-    return [userData, roleData];
+    return role;
   }
 }

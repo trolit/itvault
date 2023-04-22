@@ -13,6 +13,37 @@ export class DataStoreService implements IDataStoreService {
     private _redis: Redis
   ) {}
 
+  createHashFromValue<T extends Record<keyof T, string>>(
+    id: [string | number, DataStoreKeyType],
+    value: T,
+    options?: { withTTL: { seconds: number } }
+  ): Promise<[error: Error | null, result: unknown][] | null> {
+    const pipeline = this._redis.pipeline();
+
+    const [key, type] = id;
+
+    const dataStoreKey = composeDataStoreKey(key, type);
+
+    for (const [objectKey, text] of Object.entries(value)) {
+      pipeline.hset(dataStoreKey, objectKey, <string>text);
+    }
+
+    if (options?.withTTL) {
+      pipeline.expire(dataStoreKey, options.withTTL.seconds);
+    }
+
+    return pipeline.exec();
+  }
+
+  getFieldFromHash<T>(
+    id: [string | number, DataStoreKeyType],
+    field: keyof T
+  ): Promise<string | null> {
+    const [key, type] = id;
+
+    return this._redis.hget(composeDataStoreKey(key, type), <string>field);
+  }
+
   async set<T>(
     key: string | number,
     keyType: DataStoreKeyType,
