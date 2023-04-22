@@ -1,20 +1,20 @@
 import jwt from "jsonwebtoken";
+import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
+import {
+  JWT_SECRET_KEY,
+  JWT_TOKEN_COOKIE_KEY,
+  JWT_TOKEN_LIFETIME_IN_SECONDS,
+} from "@config";
 import { Di } from "@enums/Di";
 import { JwtPayload } from "@utils/JwtPayload";
 import { DataStoreRole } from "@utils/DataStoreRole";
 import { DataStoreUser } from "@utils/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IAuthService } from "@interfaces/service/IAuthService";
-import {
-  JWT_SECRET_KEY,
-  JWT_TOKEN_COOKIE_KEY,
-  JWT_TOKEN_LIFETIME_IN_SECONDS,
-} from "@config";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";
-import { Response } from "express";
 
 @injectable()
 export class AuthService implements IAuthService {
