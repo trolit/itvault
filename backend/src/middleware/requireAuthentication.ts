@@ -13,7 +13,7 @@ export const requireAuthentication = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const authService = instanceOf<IAuthService>(Di.AuthService);
 
-    const userId = validateToken(request, authService);
+    const userId = checkToken(request, authService);
 
     if (!userId) {
       return response.status(HTTP.FORBIDDEN).send();
@@ -33,7 +33,7 @@ export const requireAuthentication = (() => {
   };
 })();
 
-function validateToken(request: Request, authService: IAuthService) {
+function checkToken(request: Request, authService: IAuthService) {
   const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
 
   if (!token) {
