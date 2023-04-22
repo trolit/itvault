@@ -26,7 +26,7 @@ export const setupRedis = () => {
       const mutli = redis.multi();
 
       for (const { id, permissionToRole } of roles) {
-        const key = composeDataStoreKey(id.toString(), DataStoreKeyType.Role);
+        const key = composeDataStoreKey([id, DataStoreKeyType.Role]);
 
         const value: DataStoreRole = {
           id,
