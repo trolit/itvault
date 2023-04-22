@@ -13,19 +13,17 @@ export const requireAuthentication = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const authService = instanceOf<IAuthService>(Di.AuthService);
 
-    const userId = checkToken(request, authService);
+    const userId = processTokenFromRequest(request, authService);
 
     if (!userId) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const userData = await authService.findLoggedUserData(userId);
+    const role = await authService.getSignedUserRole(userId);
 
-    if (!userData) {
+    if (!role) {
       return response.status(HTTP.FORBIDDEN).send();
     }
-
-    const [, role] = userData;
 
     assignPermissionsToRequest(request, role.permissions);
 
@@ -33,7 +31,7 @@ export const requireAuthentication = (() => {
   };
 })();
 
-function checkToken(request: Request, authService: IAuthService) {
+function processTokenFromRequest(request: Request, authService: IAuthService) {
   const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
 
   if (!token) {
