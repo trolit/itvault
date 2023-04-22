@@ -55,7 +55,7 @@ export class LoginController
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    const token = this._authService.signToken({ email, id: user.id });
+    const token = this._authService.signIn({ email, id: user.id });
 
     const mappedUserData = this._entityMapperService.mapOneToDto(
       user,

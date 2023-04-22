@@ -13,11 +13,11 @@ type IVerifyTokenResult =
   | { payload: JwtPayload; error?: undefined };
 
 export interface IAuthService {
-  signToken(payload: JwtPayload, options?: SignOptions): string;
-
-  verifyToken(token: string): IVerifyTokenResult;
+  signIn(payload: JwtPayload, options?: SignOptions): string;
 
   signOut(token: string, response: Response): Promise<number>;
+
+  verifyToken(token: string): IVerifyTokenResult;
 
   findLoggedUserData(
     userId: number
