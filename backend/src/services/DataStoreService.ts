@@ -14,15 +14,13 @@ export class DataStoreService implements IDataStoreService {
   ) {}
 
   createHashFromValue<T extends Record<keyof T, string>>(
-    id: [string | number, DataStoreKeyType],
+    key: [string | number, DataStoreKeyType],
     value: T,
     options?: { withTTL: { seconds: number } }
   ): Promise<[error: Error | null, result: unknown][] | null> {
     const pipeline = this._redis.pipeline();
 
-    const [key, type] = id;
-
-    const dataStoreKey = composeDataStoreKey(key, type);
+    const dataStoreKey = composeDataStoreKey(key);
 
     for (const [objectKey, text] of Object.entries(value)) {
       pipeline.hset(dataStoreKey, objectKey, <string>text);
@@ -36,23 +34,20 @@ export class DataStoreService implements IDataStoreService {
   }
 
   getFieldFromHash<T>(
-    id: [string | number, DataStoreKeyType],
+    key: [string | number, DataStoreKeyType],
     field: keyof T
   ): Promise<string | null> {
-    const [key, type] = id;
-
-    return this._redis.hget(composeDataStoreKey(key, type), <string>field);
+    return this._redis.hget(composeDataStoreKey(key), <string>field);
   }
 
   async set<T>(
-    key: string | number,
-    keyType: DataStoreKeyType,
+    key: [string | number, DataStoreKeyType],
     value: T,
     options?: { withTTL: { seconds: number } }
   ): Promise<string | null> {
     const valueAsString = JSON.stringify(value);
 
-    const dataStoreKey = composeDataStoreKey(key, keyType);
+    const dataStoreKey = composeDataStoreKey(key);
 
     if (options?.withTTL) {
       return this._redis.set(
@@ -66,11 +61,8 @@ export class DataStoreService implements IDataStoreService {
     return this._redis.set(dataStoreKey, valueAsString);
   }
 
-  async get<T>(
-    key: string | number,
-    keyType: DataStoreKeyType
-  ): Promise<T | null> {
-    const dataKey = composeDataStoreKey(key, keyType);
+  async get<T>(key: [string | number, DataStoreKeyType]): Promise<T | null> {
+    const dataKey = composeDataStoreKey(key);
 
     const value = await this._redis.get(dataKey);
 
@@ -81,18 +73,21 @@ export class DataStoreService implements IDataStoreService {
     return <T>JSON.parse(value);
   }
 
-  ttl(key: string | number, keyType: DataStoreKeyType): Promise<number> {
-    const dataKey = composeDataStoreKey(key, keyType);
+  ttl(key: [string | number, DataStoreKeyType]): Promise<number> {
+    const dataKey = composeDataStoreKey(key);
 
     return this._redis.ttl(dataKey);
   }
 
+  delete(key: [string | number, DataStoreKeyType]): Promise<number> {
+    return this._redis.del(composeDataStoreKey(key));
+  }
+
   async update<T>(
-    key: string | number,
-    keyType: DataStoreKeyType,
+    key: [string | number, DataStoreKeyType],
     callback: (updatedValue: T) => T
   ): Promise<string | null> {
-    const value = await this.get<T>(key, keyType);
+    const value = await this.get<T>(key);
 
     if (!value) {
       return null;
@@ -100,19 +95,6 @@ export class DataStoreService implements IDataStoreService {
 
     const updatedValue = callback(value);
 
-    return this.set<T>(key, keyType, updatedValue);
-  }
-
-  delete(
-    key: string | number | string[],
-    keyType: DataStoreKeyType
-  ): Promise<number> {
-    if (Array.isArray(key)) {
-      const dataKeys = key.map(key => composeDataStoreKey(key, keyType));
-
-      return this._redis.del(dataKeys);
-    }
-
-    return this._redis.del(composeDataStoreKey(key, keyType));
+    return this.set<T>(key, updatedValue);
   }
 }
