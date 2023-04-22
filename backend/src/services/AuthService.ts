@@ -55,6 +55,10 @@ export class AuthService implements IAuthService {
     };
   }
 
+  decodeToken(token: string): JwtPayload {
+    return <JwtPayload>jwt.decode(token);
+  }
+
   async findLoggedUserData(
     userId: number
   ): Promise<[DataStoreUser, DataStoreRole] | null> {

@@ -16,6 +16,8 @@ export interface IAuthService {
 
   verifyToken(token: string): IVerifyTokenResult;
 
+  decodeToken(token: string): JwtPayload;
+
   findLoggedUserData(
     userId: number
   ): Promise<[DataStoreUser, DataStoreRole] | null>;
