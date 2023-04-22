@@ -26,7 +26,7 @@ export const setupRedis = () => {
       const mutli = redis.multi();
 
       for (const { id, permissionToRole } of roles) {
-        const key = composeDataStoreKey([id, DataStoreKeyType.Role]);
+        const dataStoreKey = composeDataStoreKey([id, DataStoreKeyType.Role]);
 
         const value: DataStoreRole = {
           id,
@@ -36,7 +36,7 @@ export const setupRedis = () => {
           })),
         };
 
-        mutli.set(key, JSON.stringify(value));
+        mutli.set(dataStoreKey, JSON.stringify(value));
       }
 
       mutli.exec(error => {
