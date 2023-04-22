@@ -1,12 +1,12 @@
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 
 export const composeDataStoreKey = (
-  key: string | number,
-  keyType: DataStoreKeyType
+  key: [identifier: string | number, keyType: DataStoreKeyType]
 ) => {
-  if (typeof key !== "string") {
-    key = key.toString();
-  }
+  const [identifier, keyType] = key;
 
-  return `data-store-${keyType}-${key}`;
+  const value =
+    typeof identifier !== "string" ? identifier.toString() : identifier;
+
+  return `${keyType}-${value}`;
 };
