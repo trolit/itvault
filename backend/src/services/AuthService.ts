@@ -8,8 +8,13 @@ import { DataStoreRole } from "@utils/DataStoreRole";
 import { DataStoreUser } from "@utils/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IAuthService } from "@interfaces/service/IAuthService";
-import { JWT_SECRET_KEY, JWT_TOKEN_LIFETIME_IN_SECONDS } from "@config";
+import {
+  JWT_SECRET_KEY,
+  JWT_TOKEN_COOKIE_KEY,
+  JWT_TOKEN_LIFETIME_IN_SECONDS,
+} from "@config";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";
+import { Response } from "express";
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -55,8 +60,25 @@ export class AuthService implements IAuthService {
     };
   }
 
-  decodeToken(token: string): JwtPayload {
-    return <JwtPayload>jwt.decode(token);
+  async signOut(token: string, response: Response): Promise<number> {
+    const decodedToken = <JwtPayload>jwt.decode(token);
+
+    if (!decodedToken.id) {
+      return -1;
+    }
+
+    const result = await this._dataStoreService.delete(
+      decodedToken.id,
+      DataStoreKeyType.AuthenticatedUser
+    );
+
+    if (result) {
+      response.clearCookie(JWT_TOKEN_COOKIE_KEY);
+
+      return result;
+    }
+
+    return -1;
   }
 
   async findLoggedUserData(

@@ -1,3 +1,4 @@
+import { Response } from "express";
 import { SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { JwtPayload } from "@utils/JwtPayload";
@@ -16,7 +17,7 @@ export interface IAuthService {
 
   verifyToken(token: string): IVerifyTokenResult;
 
-  decodeToken(token: string): JwtPayload;
+  signOut(token: string, response: Response): Promise<number>;
 
   findLoggedUserData(
     userId: number
