@@ -1,8 +1,8 @@
 import { Response } from "express";
 import { InjectionToken } from "tsyringe";
 
+import { instanceOf } from "./instanceOf";
 import { CustomRequest } from "@utils/types";
-import { instanceOf } from "@helpers/instanceOf";
 import { IController } from "@interfaces/IController";
 
 // T-dependency, P-params, B-body, Q-query
