@@ -65,6 +65,7 @@ export class UserRepository
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];
 
+        // @TODO should be unique!
         const uniqueRoleIds = entitiesToUpdate
           .filter(({ data }) => !!data.roleId)
           .map(({ data }) => data.roleId);
@@ -83,6 +84,18 @@ export class UserRepository
 
         const roles = await Promise.all(promises);
 
+        // @TODO
+        if (roles.some(role => !role)) {
+          errors.push({
+            key: 1,
+            messages: ["xd"],
+          });
+
+          return { errors };
+        }
+
+        const rolesLength = roles.length;
+
         for (const entityToUpdate of entitiesToUpdate) {
           const {
             id,
@@ -97,8 +110,8 @@ export class UserRepository
             partialEntity.deletedAt = isActive ? null : new Date();
           }
 
-          if (roleId) {
-            const role = roles.find(role => role.id === roleId);
+          if (rolesLength && roleId) {
+            const role = roles.find(role => role && role.id === roleId);
 
             partialEntity.role = role;
           }
