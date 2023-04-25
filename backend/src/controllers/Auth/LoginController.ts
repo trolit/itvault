@@ -71,7 +71,7 @@ export class LoginController
     );
 
     try {
-      await this._dataStoreService.createHashFromValue<DataStoreUser>(
+      await this._dataStoreService.createHash<DataStoreUser>(
         [user.id, DataStoreKeyType.AuthenticatedUser],
         { id: user.id.toString(), roleId: user.role.id.toString() },
         { withTTL: { seconds: JWT_TOKEN_LIFETIME_IN_SECONDS } }
