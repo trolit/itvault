@@ -33,7 +33,7 @@ export class DataStoreService implements IDataStoreService {
     return pipeline.exec();
   }
 
-  getFieldFromHash<T>(
+  getHashField<T>(
     key: [string | number, DataStoreKeyType],
     field: keyof T
   ): Promise<string | null> {

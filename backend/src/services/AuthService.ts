@@ -82,7 +82,7 @@ export class AuthService implements IAuthService {
   }
 
   async getSignedUserRole(userId: number): Promise<DataStoreRole | null> {
-    const roleId = await this._dataStoreService.getFieldFromHash<DataStoreUser>(
+    const roleId = await this._dataStoreService.getHashField<DataStoreUser>(
       [userId, DataStoreKeyType.AuthenticatedUser],
       "roleId"
     );

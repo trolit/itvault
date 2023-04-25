@@ -7,7 +7,7 @@ export interface IDataStoreService {
     options?: { withTTL: { seconds: number } }
   ): Promise<[error: Error | null, result: unknown][] | null>;
 
-  getFieldFromHash<T>(
+  getHashField<T>(
     key: [string | number, DataStoreKeyType],
     field: keyof T
   ): Promise<string | null>;
