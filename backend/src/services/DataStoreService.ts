@@ -49,15 +49,7 @@ export class DataStoreService implements IDataStoreService {
   }
 
   async deleteHash(key: [string | number, DataStoreKeyType]): Promise<number> {
-    const dataStoreKey = composeDataStoreKey(key);
-
-    const keys = await this._redis.hkeys(dataStoreKey);
-
-    if (!keys.length) {
-      return 0;
-    }
-
-    return this._redis.hdel(dataStoreKey, ...keys);
+    return this._redis.hdel2(composeDataStoreKey(key));
   }
 
   async set<T>(
