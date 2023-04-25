@@ -13,6 +13,23 @@ export const setupRedis = () => {
     port: REDIS_CONTAINER_PORT,
     password: REDIS_PASSWORD,
     enableAutoPipelining: true,
+    scripts: {
+      hfupdate: {
+        numberOfKeys: 1,
+        lua: `
+        if redis.call("HEXISTS", KEYS[1], ARGV[1]) == 1 then
+          local result = redis.call("HSET", KEYS[1], ARGV[1], ARGV[2])
+
+          if result ~= nil then
+            return tonumber(1)
+          else
+            return tonumber(0)
+          end
+        else
+          return tonumber(0)
+        end`,
+      },
+    },
   });
 
   return {
