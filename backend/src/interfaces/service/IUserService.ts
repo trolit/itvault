@@ -1,7 +1,7 @@
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 
 export interface IUserService {
-  reflectUpdateManyRequestInDataStore(
+  reflectUpdateManyInDataStore(
     entitiesToUpdate: UpdateUserDto[]
   ): Promise<void>;
 }

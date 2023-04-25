@@ -14,7 +14,7 @@ export class UserService implements IUserService {
     private _dataStoreService: IDataStoreService
   ) {}
 
-  async reflectUpdateManyRequestInDataStore(
+  async reflectUpdateManyInDataStore(
     entitiesToUpdate: UpdateUserDto[]
   ): Promise<void> {
     for (const entityToUpdate of entitiesToUpdate) {
