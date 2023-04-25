@@ -37,10 +37,10 @@ export class AuthService implements IAuthService {
       return -1;
     }
 
-    const result = await this._dataStoreService.delete(
+    const result = await this._dataStoreService.delete([
       decodedToken.id,
-      DataStoreKeyType.AuthenticatedUser
-    );
+      DataStoreKeyType.AuthenticatedUser,
+    ]);
 
     if (result) {
       response.clearCookie(JWT_TOKEN_COOKIE_KEY);
@@ -91,10 +91,10 @@ export class AuthService implements IAuthService {
       return null;
     }
 
-    const role = await this._dataStoreService.get<DataStoreRole>(
-      parseInt(roleId),
-      DataStoreKeyType.Role
-    );
+    const role = await this._dataStoreService.get<DataStoreRole>([
+      roleId,
+      DataStoreKeyType.Role,
+    ]);
 
     if (!role) {
       return null;

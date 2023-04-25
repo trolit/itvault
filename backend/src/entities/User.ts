@@ -47,33 +47,32 @@ export class User extends Base {
         Di.DataStoreService
       );
 
-      const authenticatedUser = await dataStoreService.get<DataStoreUser>(
+      const authenticatedUser = await dataStoreService.get<DataStoreUser>([
         this.id,
-        DataStoreKeyType.AuthenticatedUser
-      );
+        DataStoreKeyType.AuthenticatedUser,
+      ]);
 
       if (!authenticatedUser) {
         return;
       }
 
       if (this.deletedAt) {
-        await dataStoreService.delete(
+        await dataStoreService.delete([
           this.id,
-          DataStoreKeyType.AuthenticatedUser
-        );
+          DataStoreKeyType.AuthenticatedUser,
+        ]);
 
         return;
       }
 
       if (this.role) {
-        const ttl = await dataStoreService.ttl(
-          this.id,
-          DataStoreKeyType.AuthenticatedUser
-        );
-
-        await dataStoreService.set(
+        const ttl = await dataStoreService.ttl([
           this.id,
           DataStoreKeyType.AuthenticatedUser,
+        ]);
+
+        await dataStoreService.set(
+          [this.id, DataStoreKeyType.AuthenticatedUser],
           { ...authenticatedUser, roleId: this.role.id },
           { withTTL: { seconds: Math.abs(ttl) } }
         );
