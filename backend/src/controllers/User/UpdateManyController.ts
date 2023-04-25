@@ -8,6 +8,7 @@ import { Permission } from "@enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@utils/types";
+import { IUserService } from "@interfaces/service/IUserService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
@@ -22,7 +23,9 @@ export class UpdateManyController
 {
   constructor(
     @inject(Di.UserRepository)
-    private _userRepository: IUserRepository
+    private _userRepository: IUserRepository,
+    @inject(Di.UserService)
+    private _userService: IUserService
   ) {}
 
   async invoke(
@@ -38,6 +41,8 @@ export class UpdateManyController
     if (!result.success) {
       return response.status(HTTP.BAD_REQUEST).send(result);
     }
+
+    this._userService.reflectUpdateManyInDataStore(value);
 
     return response.status(HTTP.NO_CONTENT).send();
   }
