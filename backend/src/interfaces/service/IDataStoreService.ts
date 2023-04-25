@@ -12,6 +12,12 @@ export interface IDataStoreService {
     field: keyof T
   ): Promise<string | null>;
 
+  updateFieldValueInHash<T>(
+    key: [string | number, DataStoreKeyType],
+    field: keyof T,
+    value: string
+  ): Promise<number>;
+
   deleteHash(key: [string | number, DataStoreKeyType]): Promise<number>;
 
   set<T>(

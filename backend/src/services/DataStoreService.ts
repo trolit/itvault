@@ -40,6 +40,25 @@ export class DataStoreService implements IDataStoreService {
     return this._redis.hget(composeDataStoreKey(key), <string>field);
   }
 
+  async updateFieldValueInHash<T>(
+    key: [string | number, DataStoreKeyType],
+    field: keyof T,
+    value: string
+  ): Promise<number> {
+    const dataStoreKey = composeDataStoreKey(key);
+
+    const isHashFieldAvailable = await this._redis.hexists(
+      dataStoreKey,
+      <string>field
+    );
+
+    if (!isHashFieldAvailable) {
+      return 0;
+    }
+
+    return this._redis.hset(dataStoreKey, <string>field, value);
+  }
+
   async deleteHash(key: [string | number, DataStoreKeyType]): Promise<number> {
     const dataStoreKey = composeDataStoreKey(key);
 
