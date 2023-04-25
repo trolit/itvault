@@ -65,9 +65,13 @@ export class UserRepository
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];
 
-        const uniqueRoleIds = entitiesToUpdate
-          .filter(({ data }) => !!data.roleId)
-          .map(({ data }) => data.roleId);
+        const uniqueRoleIds = [
+          ...new Set(
+            entitiesToUpdate
+              .filter(({ data }) => !!data.roleId)
+              .map(({ data }) => data.roleId)
+          ),
+        ];
 
         const promises: Promise<Role>[] = uniqueRoleIds.map(roleId => {
           return new Promise((resolve, reject) => {
@@ -83,6 +87,27 @@ export class UserRepository
 
         const roles = await Promise.all(promises);
 
+        if (roles.some(role => !role)) {
+          roles.map((role, index) => {
+            if (!role) {
+              const roleId = uniqueRoleIds[index];
+
+              entitiesToUpdate.map(({ id, data }) => {
+                if (data?.roleId && data.roleId === roleId) {
+                  errors.push({
+                    key: id,
+                    messages: ["Requested role is not available"],
+                  });
+                }
+              });
+            }
+          });
+
+          return { errors };
+        }
+
+        const rolesLength = roles.length;
+
         for (const entityToUpdate of entitiesToUpdate) {
           const {
             id,
@@ -97,8 +122,8 @@ export class UserRepository
             partialEntity.deletedAt = isActive ? null : new Date();
           }
 
-          if (roleId) {
-            const role = roles.find(role => role.id === roleId);
+          if (rolesLength && roleId) {
+            const role = roles.find(role => role && role.id === roleId);
 
             partialEntity.role = role;
           }

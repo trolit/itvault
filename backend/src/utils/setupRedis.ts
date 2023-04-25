@@ -13,6 +13,38 @@ export const setupRedis = () => {
     port: REDIS_CONTAINER_PORT,
     password: REDIS_PASSWORD,
     enableAutoPipelining: true,
+    scripts: {
+      hfupdate: {
+        numberOfKeys: 1,
+        lua: `
+        if redis.call("HEXISTS", KEYS[1], ARGV[1]) == 1 then
+          local result = redis.call("HSET", KEYS[1], ARGV[1], ARGV[2])
+
+          if result ~= nil then
+            return tonumber(1)
+          else
+            return tonumber(0)
+          end
+        else
+          return tonumber(0)
+        end`,
+      },
+
+      hdel2: {
+        numberOfKeys: 1,
+        lua: `
+        local keys = redis.call("HKEYS", KEYS[1])
+
+        if table.getn(keys) == 0 then
+          return tonumber(0)
+        end
+
+        local result = redis.call("HDEL", KEYS[1], unpack(keys))
+
+        return tonumber(result)
+        `,
+      },
+    },
   });
 
   return {

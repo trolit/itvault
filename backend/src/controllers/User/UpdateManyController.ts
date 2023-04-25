@@ -8,6 +8,7 @@ import { Permission } from "@enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@utils/types";
+import { IUserService } from "@interfaces/service/IUserService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
@@ -22,7 +23,9 @@ export class UpdateManyController
 {
   constructor(
     @inject(Di.UserRepository)
-    private _userRepository: IUserRepository
+    private _userRepository: IUserRepository,
+    @inject(Di.UserService)
+    private _userService: IUserService
   ) {}
 
   async invoke(
@@ -39,10 +42,12 @@ export class UpdateManyController
       return response.status(HTTP.BAD_REQUEST).send(result);
     }
 
+    this._userService.reflectUpdateManyInDataStore(value);
+
     return response.status(HTTP.NO_CONTENT).send();
   }
 
-  static hasMissingPermissions(request: Request): boolean {
+  static isMissingPermissions(request: Request): boolean {
     const { permissions, body } = request;
 
     if (!isPermissionEnabled(Permission.ViewAllUsers, permissions)) {
@@ -66,10 +71,19 @@ export class UpdateManyController
       permissions
     );
 
+    const isActivePropertyCheck = (isActive?: boolean) => {
+      if (isActive === undefined) {
+        return false;
+      }
+
+      return isActive
+        ? !isAllowedToRestoreUserAccount
+        : !isAllowedToDeactivateUserAccount;
+    };
+
     return castedBody.value.some(
       ({ data }) =>
-        (data.isActive && !isAllowedToRestoreUserAccount) ||
-        (!data.isActive && !isAllowedToDeactivateUserAccount) ||
+        isActivePropertyCheck(data.isActive) ||
         (data.roleId && !isAllowedToChangeUserRole)
     );
   }
