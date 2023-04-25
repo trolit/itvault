@@ -35,6 +35,10 @@ export const setupRedis = () => {
         lua: `
         local keys = redis.call("HKEYS", KEYS[1])
 
+        if table.getn(keys) == 0 then
+          return tonumber(0)
+        end
+
         local result = redis.call("HDEL", KEYS[1], unpack(keys))
 
         return tonumber(result)
