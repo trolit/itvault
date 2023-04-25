@@ -53,7 +53,7 @@ export const setupRedis = () => {
     initializeRoleKeys: async () => {
       const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
 
-      const roles = await roleRepository.getAll();
+      const roles = await roleRepository.getAll({ includePermissions: true });
 
       const mutli = redis.multi();
 
