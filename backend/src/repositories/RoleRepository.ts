@@ -1,5 +1,10 @@
+import {
+  In,
+  Repository,
+  FindOptionsWhere,
+  FindOptionsRelations,
+} from "typeorm";
 import { injectable } from "tsyringe";
-import { FindOptionsRelations, FindOptionsWhere, Repository } from "typeorm";
 
 import { Role } from "@entities/Role";
 import { BaseRepository } from "./BaseRepository";
@@ -17,10 +22,16 @@ export class RoleRepository
   }
 
   getAll(options?: {
-    includePermissions: boolean;
-    where?: FindOptionsWhere<Role>;
+    includePermissions?: boolean;
+    filters?: {
+      ids: number[];
+    };
   }): Promise<Role[]> {
-    const where: FindOptionsWhere<Role> | undefined = options?.where;
+    const where: FindOptionsWhere<Role> = {};
+
+    if (options?.filters?.ids) {
+      where.id = In(options.filters.ids);
+    }
 
     const relations: FindOptionsRelations<Role> | undefined =
       options?.includePermissions
