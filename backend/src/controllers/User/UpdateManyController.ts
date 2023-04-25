@@ -47,7 +47,7 @@ export class UpdateManyController
     return response.status(HTTP.NO_CONTENT).send();
   }
 
-  static hasMissingPermissions(request: Request): boolean {
+  static isMissingPermissions(request: Request): boolean {
     const { permissions, body } = request;
 
     if (!isPermissionEnabled(Permission.ViewAllUsers, permissions)) {
@@ -71,10 +71,19 @@ export class UpdateManyController
       permissions
     );
 
+    const isActivePropertyCheck = (isActive?: boolean) => {
+      if (isActive === undefined) {
+        return false;
+      }
+
+      return isActive
+        ? !isAllowedToRestoreUserAccount
+        : !isAllowedToDeactivateUserAccount;
+    };
+
     return castedBody.value.some(
       ({ data }) =>
-        (data.isActive && !isAllowedToRestoreUserAccount) ||
-        (!data.isActive && !isAllowedToDeactivateUserAccount) ||
+        isActivePropertyCheck(data.isActive) ||
         (data.roleId && !isAllowedToChangeUserRole)
     );
   }

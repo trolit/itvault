@@ -23,7 +23,7 @@ userRoutes.get(
 userRoutes.patch(
   "/v1",
   requireAuthentication,
-  requirePermissions(UpdateManyController.hasMissingPermissions),
+  requirePermissions(UpdateManyController.isMissingPermissions),
   safeParseRequest({
     body: { withSchema: updateManyUsersSchema },
   }),

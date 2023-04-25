@@ -24,9 +24,9 @@ export const requirePermissions = (
       return next();
     }
 
-    const hasMissingPermissions = context(request);
+    const isMissingPermissions = context(request);
 
-    return hasMissingPermissions
+    return isMissingPermissions
       ? response.status(HTTP.FORBIDDEN).send()
       : next();
   };
