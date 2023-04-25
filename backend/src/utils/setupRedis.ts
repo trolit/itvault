@@ -29,6 +29,17 @@ export const setupRedis = () => {
           return tonumber(0)
         end`,
       },
+
+      hdel2: {
+        numberOfKeys: 1,
+        lua: `
+        local keys = redis.call("HKEYS", KEYS[1])
+
+        local result = redis.call("HDEL", KEYS[1], unpack(keys))
+
+        return tonumber(result)
+        `,
+      },
     },
   });
 
