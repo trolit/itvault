@@ -12,6 +12,8 @@ export interface IDataStoreService {
     field: keyof T
   ): Promise<string | null>;
 
+  deleteHash(key: [string | number, DataStoreKeyType]): Promise<number>;
+
   set<T>(
     key: [string | number, DataStoreKeyType],
     value: T,
