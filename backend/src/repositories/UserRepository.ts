@@ -1,3 +1,4 @@
+import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
 import { EntityManager, Repository } from "typeorm";
 
@@ -65,13 +66,11 @@ export class UserRepository
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];
 
-        const uniqueRoleIds = [
-          ...new Set(
-            entitiesToUpdate
-              .filter(({ data }) => !!data.roleId)
-              .map(({ data }) => data.roleId)
-          ),
-        ];
+        const roleIds = entitiesToUpdate
+          .filter(({ data }) => !!data.roleId)
+          .map(({ data }) => data.roleId);
+
+        const uniqueRoleIds = uniq(roleIds);
 
         const promises: Promise<Role>[] = uniqueRoleIds.map(roleId => {
           return new Promise((resolve, reject) => {
