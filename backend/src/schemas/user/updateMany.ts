@@ -38,7 +38,7 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = async (
           if (id === userId) {
             context.addIssue({
               code: ZodIssueCode.custom,
-              message: "Can't change own data.",
+              message: "Can't change personal account.",
             });
 
             return Zod.NEVER;
