@@ -23,7 +23,7 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = async (
 
   const { value } = castedBody;
 
-  let requestedRoles: Role[];
+  let requestedRoles: Role[] = [];
 
   if (isArray(value) && value.some(element => !!element.data.roleId)) {
     requestedRoles = await fetchRequestedRoles(value);
