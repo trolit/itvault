@@ -4,7 +4,7 @@ export interface IRoleRepository {
   getAll(options?: {
     includePermissions?: boolean;
     filters?: {
-      ids: number[];
+      ids?: number[];
     };
   }): Promise<Role[]>;
 

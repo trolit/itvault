@@ -24,7 +24,7 @@ export class RoleRepository
   getAll(options?: {
     includePermissions?: boolean;
     filters?: {
-      ids: number[];
+      ids?: number[];
     };
   }): Promise<Role[]> {
     const where: FindOptionsWhere<Role> = {};
