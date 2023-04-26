@@ -1,17 +1,33 @@
+import uniq from "lodash/uniq";
+import isArray from "lodash/isArray";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
+import { Di } from "@enums/Di";
+import { Role } from "@entities/Role";
+import { instanceOf } from "@helpers/instanceOf";
 import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { schemaForType } from "@helpers/schemaForType";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
+import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
-const updateManyUsersSchemaRunner: SuperSchemaRunner = (
+const updateManyUsersSchemaRunner: SuperSchemaRunner = async (
   commonParams: ISuperSchemaParams
 ) => {
   const {
-    request: { userId },
+    request: { userId, body },
   } = commonParams;
+
+  const castedBody = <{ value: UpdateUserDto[] }>body;
+
+  const { value } = castedBody;
+
+  let requestedRoles: Role[];
+
+  if (isArray(value) && value.some(element => !!element.data.roleId)) {
+    requestedRoles = await fetchRequestedRoles(value);
+  }
 
   const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
     z.object({
@@ -42,6 +58,17 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = (
 
                 return Zod.NEVER;
               }
+
+              const role = requestedRoles.find(role => role.id === roleId);
+
+              if (!role) {
+                context.addIssue({
+                  code: ZodIssueCode.custom,
+                  message: "Role is not available.",
+                });
+
+                return Zod.NEVER;
+              }
             })
         ),
         isActive: z.optional(z.boolean()),
@@ -59,3 +86,25 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = (
 export const updateManyUsersSchema = (() => {
   return updateManyUsersSchemaRunner;
 })();
+
+async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
+  const roleIds: number[] = [];
+
+  for (const element of value) {
+    if (element.data.roleId) {
+      roleIds.push(element.data.roleId);
+    }
+  }
+
+  if (roleIds.length) {
+    const uniqueRoleIds = uniq<number>(roleIds);
+
+    const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
+
+    return roleRepository.getAll({
+      filters: { ids: uniqueRoleIds },
+    });
+  }
+
+  return [];
+}
