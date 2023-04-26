@@ -1,4 +1,9 @@
-import { Repository } from "typeorm";
+import {
+  In,
+  Repository,
+  FindOptionsWhere,
+  FindOptionsRelations,
+} from "typeorm";
 import { injectable } from "tsyringe";
 
 import { Role } from "@entities/Role";
@@ -16,13 +21,30 @@ export class RoleRepository
     super(Role);
   }
 
-  getAll(): Promise<Role[]> {
+  getAll(options?: {
+    includePermissions?: boolean;
+    filters?: {
+      ids?: number[];
+    };
+  }): Promise<Role[]> {
+    const where: FindOptionsWhere<Role> = {};
+
+    if (options?.filters?.ids) {
+      where.id = In(options.filters.ids);
+    }
+
+    const relations: FindOptionsRelations<Role> | undefined =
+      options?.includePermissions
+        ? {
+            permissionToRole: {
+              permission: true,
+            },
+          }
+        : undefined;
+
     return this.database.find({
-      relations: {
-        permissionToRole: {
-          permission: true,
-        },
-      },
+      where,
+      relations,
     });
   }
 
