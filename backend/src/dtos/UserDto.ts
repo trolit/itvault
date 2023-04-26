@@ -10,6 +10,4 @@ export class UserDto {
   roleName: string;
 
   permissions: PermissionDto[];
-
-  isActive = true;
 }
