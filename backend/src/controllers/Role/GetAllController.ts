@@ -5,6 +5,7 @@ import { Di } from "@enums/Di";
 import { RoleDto } from "@dtos/RoleDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
+import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { CustomRequest, CustomResponse } from "@utils/types";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
@@ -34,6 +35,7 @@ export class GetAllController
 
     const [result, total] = await this._roleRepository.getAll({
       pagination: { skip, take },
+      filters: { ids: { excluding: [HEAD_ADMIN_ROLE_ID] } },
     });
 
     return response.status(HTTP.OK).send({ result, total });
