@@ -26,6 +26,10 @@ export class RoleRepository
     filters?: {
       ids?: number[];
     };
+    pagination?: {
+      take: number;
+      skip: number;
+    };
   }): Promise<[Role[], number]> {
     const where: FindOptionsWhere<Role> = {};
 
@@ -42,7 +46,12 @@ export class RoleRepository
           }
         : undefined;
 
+    const pagination = options?.pagination
+      ? { take: options.pagination.take, skip: options.pagination.skip }
+      : {};
+
     return this.database.findAndCount({
+      ...pagination,
       where,
       relations,
     });
