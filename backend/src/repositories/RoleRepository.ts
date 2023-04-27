@@ -2,6 +2,7 @@ import {
   In,
   Not,
   Repository,
+  EntityManager,
   FindOptionsWhere,
   FindOptionsRelations,
 } from "typeorm";
@@ -9,11 +10,12 @@ import isArray from "lodash/isArray";
 import { injectable } from "tsyringe";
 
 import { Role } from "@entities/Role";
-import { BaseRepository } from "./BaseRepository";
-import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
-import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
 import { Result } from "@utils/Result";
 import { IError } from "@interfaces/IError";
+import { BaseRepository } from "./BaseRepository";
+import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
+import { PermissionToRole } from "@entities/PermissionToRole";
+import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
 @injectable()
 export class RoleRepository
@@ -79,20 +81,43 @@ export class RoleRepository
     return this.database.findOneBy({ name });
   }
 
-  async update(
-    id: number,
-    payload: UpdateRoleDto
-  ): Promise<Result<UpdateRoleDto>> {
+  async update(id: number, payload: UpdateRoleDto): Promise<Result<Role>> {
     const transactionResult = await this.database.manager.transaction(
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];
 
-        return { errors };
+        const role = new Role();
+
+        const permissions: PermissionToRole[] = payload.permissions.map(
+          ({ id, enabled }) => {
+            const permission: PermissionToRole = new PermissionToRole();
+
+            permission.id = id;
+            permission.roleId = id;
+            permission.enabled = enabled;
+
+            return permission;
+          }
+        );
+
+        role.id = id;
+        role.name = payload.name;
+        role.permissionToRole = permissions;
+
+        const updatedRole = await entityManager.save(role);
+
+        if (!updatedRole) {
+          errors.push({ key: id, messages: ["Failed to update role."] });
+
+          return { errors };
+        }
+
+        return { errors, updatedRole };
       }
     );
 
-    return transactionResult.errors.length
-      ? Result.failure(transactionResult.errors)
-      : Result.success();
+    const { errors, updatedRole } = transactionResult;
+
+    return errors.length ? Result.failure(errors) : Result.success(updatedRole);
   }
 }
