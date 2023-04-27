@@ -101,9 +101,11 @@ async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
 
     const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
 
-    return roleRepository.getAll({
+    const [roles] = await roleRepository.getAll({
       filters: { ids: uniqueRoleIds },
     });
+
+    return roles;
   }
 
   return [];

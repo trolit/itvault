@@ -4,9 +4,13 @@ export interface IRoleRepository {
   getAll(options?: {
     includePermissions?: boolean;
     filters?: {
-      ids?: number[];
+      ids?: number[] | { excluding: number[] };
     };
-  }): Promise<Role[]>;
+    pagination?: {
+      take: number;
+      skip: number;
+    };
+  }): Promise<[Role[], number]>;
 
   findByName(name: string): Promise<Role | null>;
 }

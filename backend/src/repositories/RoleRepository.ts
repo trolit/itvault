@@ -1,9 +1,11 @@
 import {
   In,
+  Not,
   Repository,
   FindOptionsWhere,
   FindOptionsRelations,
 } from "typeorm";
+import isArray from "lodash/isArray";
 import { injectable } from "tsyringe";
 
 import { Role } from "@entities/Role";
@@ -24,14 +26,25 @@ export class RoleRepository
   getAll(options?: {
     includePermissions?: boolean;
     filters?: {
-      ids?: number[];
+      ids?: number[] | { excluding: number[] };
     };
-  }): Promise<Role[]> {
+    pagination?: {
+      take: number;
+      skip: number;
+    };
+  }): Promise<[Role[], number]> {
     const where: FindOptionsWhere<Role> = {};
 
-    if (options?.filters?.ids) {
-      where.id = In(options.filters.ids);
-    }
+    // @NOTE id filter handler
+    (() => {
+      const ids = options?.filters?.ids;
+
+      if (!ids) {
+        return;
+      }
+
+      where.id = isArray(ids) ? In(ids) : Not(ids.excluding);
+    })();
 
     const relations: FindOptionsRelations<Role> | undefined =
       options?.includePermissions
@@ -42,7 +55,18 @@ export class RoleRepository
           }
         : undefined;
 
-    return this.database.find({
+    const pagination = (() => {
+      if (options?.pagination) {
+        const { take, skip } = options.pagination;
+
+        return { take, skip };
+      }
+
+      return {};
+    })();
+
+    return this.database.findAndCount({
+      ...pagination,
       where,
       relations,
     });
