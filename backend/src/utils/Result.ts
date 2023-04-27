@@ -21,7 +21,7 @@ export class Result<T> {
     this.success = errors.length === 0;
   }
 
-  public static success<T>(value: T): Result<T> {
+  public static success<T>(value?: T): Result<T> {
     return new Result<T>([], value);
   }
 
