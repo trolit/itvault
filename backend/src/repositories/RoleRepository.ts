@@ -26,7 +26,7 @@ export class RoleRepository
     filters?: {
       ids?: number[];
     };
-  }): Promise<Role[]> {
+  }): Promise<[Role[], number]> {
     const where: FindOptionsWhere<Role> = {};
 
     if (options?.filters?.ids) {
@@ -42,7 +42,7 @@ export class RoleRepository
           }
         : undefined;
 
-    return this.database.find({
+    return this.database.findAndCount({
       where,
       relations,
     });

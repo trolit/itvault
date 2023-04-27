@@ -6,7 +6,7 @@ export interface IRoleRepository {
     filters?: {
       ids?: number[];
     };
-  }): Promise<Role[]>;
+  }): Promise<[Role[], number]>;
 
   findByName(name: string): Promise<Role | null>;
 }
