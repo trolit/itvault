@@ -11,6 +11,9 @@ import { injectable } from "tsyringe";
 import { Role } from "@entities/Role";
 import { BaseRepository } from "./BaseRepository";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
+import { Result } from "@utils/Result";
+import { IError } from "@interfaces/IError";
 
 @injectable()
 export class RoleRepository
@@ -74,5 +77,22 @@ export class RoleRepository
 
   findByName(name: string): Promise<Role | null> {
     return this.database.findOneBy({ name });
+  }
+
+  async update(
+    id: number,
+    payload: UpdateRoleDto
+  ): Promise<Result<UpdateRoleDto>> {
+    const transactionResult = await this.database.manager.transaction(
+      async (entityManager: EntityManager) => {
+        const errors: IError[] = [];
+
+        return { errors };
+      }
+    );
+
+    return transactionResult.errors.length
+      ? Result.failure(transactionResult.errors)
+      : Result.success();
   }
 }

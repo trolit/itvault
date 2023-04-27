@@ -1,4 +1,6 @@
 import { Role } from "@entities/Role";
+import { Result } from "@utils/Result";
+import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
 
 export interface IRoleRepository {
   getAll(options?: {
@@ -13,4 +15,6 @@ export interface IRoleRepository {
   }): Promise<[Role[], number]>;
 
   findByName(name: string): Promise<Role | null>;
+
+  update(id: number, payload: UpdateRoleDto): Promise<Result<UpdateRoleDto>>;
 }
