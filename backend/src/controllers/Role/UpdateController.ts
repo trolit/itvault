@@ -25,8 +25,12 @@ export class GetAllController implements IController<IParams, UpdateRoleDto> {
   ) {
     const { id } = request.params;
 
-    // @TODO
+    const result = await this._roleRepository.update(id, request.body);
 
-    return response.status(HTTP.OK).send();
+    if (!result.success) {
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
+
+    return response.status(HTTP.NO_CONTENT).send();
   }
 }
