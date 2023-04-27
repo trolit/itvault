@@ -20,7 +20,7 @@ export class GetAllController
     IController<undefined, undefined, IQuery, PaginatedResult<RoleDto>>
 {
   constructor(
-    @inject(Di.UserRepository)
+    @inject(Di.RoleRepository)
     private _roleRepository: IRoleRepository
   ) {}
 
@@ -33,7 +33,7 @@ export class GetAllController
     } = request;
 
     const [result, total] = await this._roleRepository.getAll({
-      pagination: { take, skip },
+      pagination: { skip, take },
     });
 
     return response.status(HTTP.OK).send({ result, total });
