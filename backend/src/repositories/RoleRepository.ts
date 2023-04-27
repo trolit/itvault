@@ -46,9 +46,15 @@ export class RoleRepository
           }
         : undefined;
 
-    const pagination = options?.pagination
-      ? { take: options.pagination.take, skip: options.pagination.skip }
-      : {};
+    const pagination = (() => {
+      if (options?.pagination) {
+        const { take, skip } = options.pagination;
+
+        return { take, skip };
+      }
+
+      return {};
+    })();
 
     return this.database.findAndCount({
       ...pagination,
