@@ -13,7 +13,7 @@ interface IParams {
 }
 
 @injectable()
-export class GetAllController implements IController<IParams, UpdateRoleDto> {
+export class UpdateController implements IController<IParams, UpdateRoleDto> {
   constructor(
     @inject(Di.RoleRepository)
     private _roleRepository: IRoleRepository
