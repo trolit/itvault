@@ -7,6 +7,7 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { GetAllController } from "@controllers/Role/GetAllController";
 import { UpdateController } from "@controllers/Role/UpdateController";
+import { updateRoleParamsSchema } from "@schemas/role/updateRoleParams";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 
 const roleRoutes = Router();
@@ -23,6 +24,7 @@ roleRoutes.put(
   "/v1/:id",
   requireAuthentication,
   requirePermissions([Permission.ViewAllRoles, Permission.UpdateRole]),
+  safeParseRequest({ params: { withSchema: updateRoleParamsSchema } }),
   processRequestWith(UpdateController)
 );
 
