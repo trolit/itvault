@@ -92,9 +92,9 @@ export class RoleRepository
           ({ id, enabled }) => {
             const permission: PermissionToRole = new PermissionToRole();
 
-            permission.id = id;
             permission.roleId = roleId;
             permission.enabled = enabled;
+            permission.permissionId = id;
 
             return permission;
           }
