@@ -14,6 +14,10 @@ export class Role {
   @OneToMany(() => User, user => user.role)
   users: User[];
 
-  @OneToMany(() => PermissionToRole, permissionToRole => permissionToRole.role)
+  @OneToMany(
+    () => PermissionToRole,
+    permissionToRole => permissionToRole.role,
+    { cascade: true }
+  )
   permissionToRole: PermissionToRole[];
 }
