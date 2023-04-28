@@ -72,6 +72,7 @@ export class UserRepository
 
         const uniqueRoleIds = uniq(roleIds);
 
+        // @SUGGESTION - single query (?)
         const promises: Promise<Role>[] = uniqueRoleIds.map(roleId => {
           return new Promise((resolve, reject) => {
             const role = entityManager.findOneBy(Role, { id: roleId });
