@@ -16,5 +16,5 @@ export interface IRoleRepository {
 
   findByName(name: string): Promise<Role | null>;
 
-  update(id: number, payload: UpdateRoleDto): Promise<Result<Role>>;
+  update(roleId: number, payload: UpdateRoleDto): Promise<Result<Role>>;
 }

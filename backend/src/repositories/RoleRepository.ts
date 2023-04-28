@@ -81,7 +81,7 @@ export class RoleRepository
     return this.database.findOneBy({ name });
   }
 
-  async update(id: number, payload: UpdateRoleDto): Promise<Result<Role>> {
+  async update(roleId: number, payload: UpdateRoleDto): Promise<Result<Role>> {
     const transactionResult = await this.database.manager.transaction(
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];
@@ -93,21 +93,21 @@ export class RoleRepository
             const permission: PermissionToRole = new PermissionToRole();
 
             permission.id = id;
-            permission.roleId = id;
+            permission.roleId = roleId;
             permission.enabled = enabled;
 
             return permission;
           }
         );
 
-        role.id = id;
+        role.id = roleId;
         role.name = payload.name;
         role.permissionToRole = permissions;
 
         const updatedRole = await entityManager.save(role);
 
         if (!updatedRole) {
-          errors.push({ key: id, messages: ["Failed to update role."] });
+          errors.push({ key: roleId, messages: ["Failed to update role."] });
 
           return { errors };
         }
