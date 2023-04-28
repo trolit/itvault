@@ -1,6 +1,6 @@
 import { PermissionDto } from "./PermissionDto";
 
-type UpdatePermissionDto = Omit<PermissionDto, "name">;
+export type UpdatePermissionDto = Omit<PermissionDto, "name">;
 
 export class UpdateRoleDto {
   name: string;
