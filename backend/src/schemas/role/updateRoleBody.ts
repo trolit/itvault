@@ -1,9 +1,9 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { SuperSchemaRunner } from "@utils/types";
+import { ALL_PERMISSIONS } from "@config/permissions";
 import { schemaForType } from "@helpers/schemaForType";
 import { UpdatePermissionDto, UpdateRoleDto } from "@dtos/UpdateRoleDto";
-import { ALL_PERMISSIONS } from "@config/permissions";
 
 const updateRoleBodySchemaRunner: SuperSchemaRunner = () => {
   const permissionSchema = schemaForType<UpdatePermissionDto>()(
@@ -30,7 +30,7 @@ const updateRoleBodySchemaRunner: SuperSchemaRunner = () => {
             for (const { id, name } of missingPermissions) {
               context.addIssue({
                 code: ZodIssueCode.custom,
-                message: `Missing permission ${name} (${id}).`,
+                message: `Permission '${name}' (${id}) must be provided in request.`,
               });
             }
 
