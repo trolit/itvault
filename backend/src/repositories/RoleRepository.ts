@@ -14,7 +14,6 @@ import { Result } from "@utils/Result";
 import { IError } from "@interfaces/IError";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
-import { PermissionToRole } from "@entities/PermissionToRole";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
 @injectable()
@@ -86,31 +85,30 @@ export class RoleRepository
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];
 
-        const role = new Role();
+        const role = await entityManager.findOne(Role, {
+          where: { id: roleId },
+          relations: { permissionToRole: true },
+        });
 
-        const permissions: PermissionToRole[] = payload.permissions.map(
-          ({ id, enabled }) => {
-            const permission: PermissionToRole = new PermissionToRole();
-
-            permission.roleId = roleId;
-            permission.enabled = enabled;
-            permission.permissionId = id;
-
-            return permission;
-          }
-        );
-
-        role.id = roleId;
-        role.name = payload.name;
-        role.permissionToRole = permissions;
-
-        const updatedRole = await entityManager.save(role);
-
-        if (!updatedRole) {
-          errors.push({ key: roleId, messages: ["Failed to update role."] });
+        if (!role) {
+          errors.push({ key: roleId, messages: ["Role is not available."] });
 
           return { errors };
         }
+
+        role.permissionToRole.map(permission => {
+          const updatedPermission = payload.permissions.find(
+            element => element.id === permission.id
+          );
+
+          if (updatedPermission) {
+            permission.enabled = updatedPermission.enabled;
+          }
+        });
+
+        role.name = payload.name;
+
+        const updatedRole = await entityManager.save(role);
 
         return { errors, updatedRole };
       }
