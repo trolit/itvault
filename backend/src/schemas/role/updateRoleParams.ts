@@ -6,7 +6,7 @@ import { schemaForType } from "@helpers/schemaForType";
 const updateRoleParamsSchemaRunner: SuperSchemaRunner = () => {
   return schemaForType<{ id: number }>()(
     z.object({
-      id: z.coerce.number(),
+      id: z.coerce.number().gte(0),
     })
   );
 };
