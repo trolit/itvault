@@ -1,8 +1,8 @@
 import { Router } from "express";
 
 import { Permission } from "@enums/Permission";
-import { getAllSchema } from "@schemas/role/getAll";
-import { updateSchema } from "@schemas/role/update";
+import { getAllSchema } from "@schemas/role/getAllSchema";
+import { updateSchema } from "@schemas/role/updateSchema";
 import { safeParseRequest } from "@middleware/safeParseRequest";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";

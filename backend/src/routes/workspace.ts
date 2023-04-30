@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { getAllSchema } from "@schemas/workspace/getAll";
+import { getAllSchema } from "@schemas/workspace/getAllSchema";
 import { safeParseRequest } from "@middleware/safeParseRequest";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
