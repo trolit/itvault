@@ -20,7 +20,7 @@ const updateManyUsersSuperSchemaRunner: SuperSchemaRunner = async (
   } = commonParams;
 
   return {
-    body: async () => {
+    body: async (): Promise<ZodSchema> => {
       const castedBody = <{ value: UpdateUserDto[] }>body;
 
       const { value } = castedBody;
