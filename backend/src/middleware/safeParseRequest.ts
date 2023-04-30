@@ -4,20 +4,20 @@ import { NextFunction, Request, Response } from "express";
 import { SuperSchemaRunner } from "@utils/types";
 import { ISuperSchemaProperties } from "@interfaces/ISuperSchemaProperties";
 
-export const safeParseRequest = (superSchemaRunner: SuperSchemaRunner) => {
+export const safeParseRequest = (useSuperSchema: SuperSchemaRunner) => {
   return async (request: Request, response: Response, next: NextFunction) => {
-    const superSchema = await superSchemaRunner({ request });
+    const superSchema = await useSuperSchema({ request });
 
     for (const key in superSchema) {
       const propertyName = <keyof ISuperSchemaProperties>key;
 
-      const schemaProvider = superSchema[propertyName];
+      const useSchemaProvider = superSchema[propertyName];
 
-      if (!schemaProvider) {
+      if (!useSchemaProvider) {
         continue;
       }
 
-      const schema = await schemaProvider();
+      const schema = await useSchemaProvider();
 
       if (!schema) {
         return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
