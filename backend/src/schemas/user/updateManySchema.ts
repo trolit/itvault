@@ -1,6 +1,6 @@
 import uniq from "lodash/uniq";
 import isArray from "lodash/isArray";
-import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
+import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
@@ -12,23 +12,62 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
-const updateManyUsersSchemaRunner: SuperSchemaRunner = async (
+const updateManyUsersSuperSchemaRunner: SuperSchemaRunner = async (
   commonParams: ISuperSchemaParams
 ) => {
   const {
     request: { userId, body },
   } = commonParams;
 
-  const castedBody = <{ value: UpdateUserDto[] }>body;
+  return {
+    body: async (): Promise<ZodSchema> => {
+      const castedBody = <{ value: UpdateUserDto[] }>body;
 
-  const { value } = castedBody;
+      const { value } = castedBody;
 
-  let requestedRoles: Role[] = [];
+      let roles: Role[] = [];
 
-  if (isArray(value) && value.some(element => !!element.data.roleId)) {
-    requestedRoles = await fetchRequestedRoles(value);
+      if (isArray(value) && value.some(element => !!element.data.roleId)) {
+        roles = await fetchRequestedRoles(value);
+      }
+
+      return getBodySchema(userId, roles);
+    },
+  };
+};
+
+export const updateManySchema = (() => {
+  return updateManyUsersSuperSchemaRunner;
+})();
+
+async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
+  const roleIds: number[] = [];
+
+  for (const element of value) {
+    if (element.data.roleId) {
+      roleIds.push(element.data.roleId);
+    }
   }
 
+  if (roleIds.length) {
+    const uniqueRoleIds = uniq<number>(roleIds);
+
+    const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
+
+    const [roles] = await roleRepository.getAll({
+      filters: { ids: uniqueRoleIds },
+    });
+
+    return roles;
+  }
+
+  return [];
+}
+
+async function getBodySchema(
+  userId: number,
+  roles: Role[]
+): Promise<ZodSchema> {
   const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
     z.object({
       id: z
@@ -59,7 +98,7 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = async (
                 return Zod.NEVER;
               }
 
-              const role = requestedRoles.find(role => role.id === roleId);
+              const role = roles.find(role => role.id === roleId);
 
               if (!role) {
                 context.addIssue({
@@ -81,32 +120,4 @@ const updateManyUsersSchemaRunner: SuperSchemaRunner = async (
       value: z.array(updateUserDtoSchema).nonempty(),
     })
   );
-};
-
-export const updateManyUsersSchema = (() => {
-  return updateManyUsersSchemaRunner;
-})();
-
-async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
-  const roleIds: number[] = [];
-
-  for (const element of value) {
-    if (element.data.roleId) {
-      roleIds.push(element.data.roleId);
-    }
-  }
-
-  if (roleIds.length) {
-    const uniqueRoleIds = uniq<number>(roleIds);
-
-    const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
-
-    const [roles] = await roleRepository.getAll({
-      filters: { ids: uniqueRoleIds },
-    });
-
-    return roles;
-  }
-
-  return [];
 }
