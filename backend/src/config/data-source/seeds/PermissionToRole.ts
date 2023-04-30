@@ -3,6 +3,7 @@ import { Seeder } from "typeorm-extension";
 
 import { Role } from "@entities/Role";
 import { TEST_ACCOUNTS } from "./common";
+import { ALL_PERMISSIONS } from "@config/permissions";
 import { PermissionToRole } from "@entities/PermissionToRole";
 
 export class PermissionToRoleSeeder implements Seeder {
@@ -19,11 +20,15 @@ export class PermissionToRoleSeeder implements Seeder {
         continue;
       }
 
-      permissions.map(async permissionId => {
+      ALL_PERMISSIONS.map(async permission => {
+        const isPermissionEnabled = permissions.some(
+          permissionId => permissionId === permission.id
+        );
+
         await permissionToRoleRepository.save({
-          enabled: true,
           roleId: role.id,
-          permissionId,
+          permissionId: permission.id,
+          enabled: isPermissionEnabled,
         });
       });
     }
