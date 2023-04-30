@@ -115,11 +115,9 @@ async function getBodySchema(
     })
   );
 
-  return new Promise(() =>
-    schemaForType<{ value: UpdateUserDto[] }>()(
-      z.object({
-        value: z.array(updateUserDtoSchema).nonempty(),
-      })
-    )
+  return schemaForType<{ value: UpdateUserDto[] }>()(
+    z.object({
+      value: z.array(updateUserDtoSchema).nonempty(),
+    })
   );
 }
