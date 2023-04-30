@@ -5,12 +5,64 @@ import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { instanceOf } from "@helpers/instanceOf";
+import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { schemaForType } from "@helpers/schemaForType";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-import { SuperSchemaRunner } from "@utils/types";
 import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+
+const updateManyUsersSuperSchemaRunner: SuperSchemaRunner = async (
+  commonParams: ISuperSchemaParams
+) => {
+  const {
+    request: { userId, body },
+  } = commonParams;
+
+  return {
+    body: async () => {
+      const castedBody = <{ value: UpdateUserDto[] }>body;
+
+      const { value } = castedBody;
+
+      let roles: Role[] = [];
+
+      if (isArray(value) && value.some(element => !!element.data.roleId)) {
+        roles = await fetchRequestedRoles(value);
+      }
+
+      return getBodySchema(userId, roles);
+    },
+  };
+};
+
+export const updateManySchema = (() => {
+  return updateManyUsersSuperSchemaRunner;
+})();
+
+async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
+  const roleIds: number[] = [];
+
+  for (const element of value) {
+    if (element.data.roleId) {
+      roleIds.push(element.data.roleId);
+    }
+  }
+
+  if (roleIds.length) {
+    const uniqueRoleIds = uniq<number>(roleIds);
+
+    const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
+
+    const [roles] = await roleRepository.getAll({
+      filters: { ids: uniqueRoleIds },
+    });
+
+    return roles;
+  }
+
+  return [];
+}
 
 async function getBodySchema(
   userId: number,
@@ -70,56 +122,4 @@ async function getBodySchema(
       })
     )
   );
-}
-
-const updateManyUsersSuperSchemaRunner: SuperSchemaRunner = async (
-  commonParams: ISuperSchemaParams
-) => {
-  const {
-    request: { userId, body },
-  } = commonParams;
-
-  return {
-    body: async () => {
-      const castedBody = <{ value: UpdateUserDto[] }>body;
-
-      const { value } = castedBody;
-
-      let requestedRoles: Role[] = [];
-
-      if (isArray(value) && value.some(element => !!element.data.roleId)) {
-        requestedRoles = await fetchRequestedRoles(value);
-      }
-
-      return getBodySchema(userId, requestedRoles);
-    },
-  };
-};
-
-export const updateManySchema = (() => {
-  return updateManyUsersSuperSchemaRunner;
-})();
-
-async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
-  const roleIds: number[] = [];
-
-  for (const element of value) {
-    if (element.data.roleId) {
-      roleIds.push(element.data.roleId);
-    }
-  }
-
-  if (roleIds.length) {
-    const uniqueRoleIds = uniq<number>(roleIds);
-
-    const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
-
-    const [roles] = await roleRepository.getAll({
-      filters: { ids: uniqueRoleIds },
-    });
-
-    return roles;
-  }
-
-  return [];
 }
