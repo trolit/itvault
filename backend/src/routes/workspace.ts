@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { paginationSchema } from "@schemas/pagination";
+import { getAllSchema } from "@schemas/workspace/getAll";
 import { safeParseRequest } from "@middleware/safeParseRequest";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
@@ -11,7 +11,7 @@ const workspaceRoutes = Router();
 workspaceRoutes.get(
   "/v1",
   requireAuthentication,
-  safeParseRequest({ query: { withSchema: paginationSchema } }),
+  safeParseRequest(getAllSchema),
   processRequestWith(GetAllController)
 );
 
