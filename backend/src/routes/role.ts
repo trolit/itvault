@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { Permission } from "@enums/Permission";
+import { getAllSchema } from "@schemas/role/getAll";
 import { updateSchema } from "@schemas/role/update";
 import { safeParseRequest } from "@middleware/safeParseRequest";
 import { processRequestWith } from "@helpers/processRequestWith";
@@ -15,7 +16,7 @@ roleRoutes.get(
   "/v1",
   requireAuthentication,
   requirePermissions([Permission.ViewAllRoles]),
-  safeParseRequest({ query: { withSchema: paginationSchema } }),
+  safeParseRequest(getAllSchema),
   processRequestWith(GetAllController)
 );
 
