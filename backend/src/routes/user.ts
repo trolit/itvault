@@ -1,10 +1,10 @@
 import { Router } from "express";
 
 import { Permission } from "@enums/Permission";
-import { paginationSchema } from "@schemas/pagination";
+import { getAllSchema } from "@schemas/user/getAll";
+import { updateManySchema } from "@schemas/user/updateMany";
 import { safeParseRequest } from "@middleware/safeParseRequest";
 import { processRequestWith } from "@helpers/processRequestWith";
-import { updateManyUsersSchema } from "@schemas/user/updateMany";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { GetAllController } from "@controllers/User/GetAllController";
 import { requireAuthentication } from "@middleware/requireAuthentication";
@@ -16,7 +16,7 @@ userRoutes.get(
   "/v1",
   requireAuthentication,
   requirePermissions([Permission.ViewAllUsers]),
-  safeParseRequest({ query: { withSchema: paginationSchema } }),
+  safeParseRequest(getAllSchema),
   processRequestWith(GetAllController)
 );
 
@@ -24,7 +24,7 @@ userRoutes.patch(
   "/v1",
   requireAuthentication,
   requirePermissions(UpdateManyController.isMissingPermissions),
-  safeParseRequest(updateManyUsersSchema),
+  safeParseRequest(updateManySchema),
   processRequestWith(UpdateManyController)
 );
 
