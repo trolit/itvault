@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { loginSchema } from "@schemas/auth/login";
+import { loginSchema } from "@schemas/auth/loginSchema";
 import { safeParseRequest } from "@middleware/safeParseRequest";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { LoginController } from "@controllers/Auth/LoginController";
@@ -11,7 +11,7 @@ const authRoutes = Router();
 
 authRoutes.post(
   "/v1/login",
-  safeParseRequest({ body: { withSchema: loginSchema } }),
+  safeParseRequest(loginSchema),
   processRequestWith(LoginController)
 );
 

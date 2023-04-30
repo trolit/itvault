@@ -1,11 +1,31 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
-import { SuperSchemaRunner } from "@utils/types";
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { schemaForType } from "@helpers/schemaForType";
+import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
+import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
 import { UpdatePermissionDto, UpdateRoleDto } from "@dtos/UpdateRoleDto";
 
-const updateRoleBodySchemaRunner: SuperSchemaRunner = () => {
+const paramsSchemaProvider: SchemaProvider = () =>
+  schemaForType<{ id: number }>()(
+    z.object({
+      id: z.coerce
+        .number()
+        .gte(0)
+        .superRefine((id, context: RefinementCtx) => {
+          if (id === HEAD_ADMIN_ROLE_ID) {
+            context.addIssue({
+              code: ZodIssueCode.custom,
+              message: "This role is not editable.",
+            });
+
+            return Zod.NEVER;
+          }
+        }),
+    })
+  );
+
+const bodySchemaProvider: SchemaProvider = () => {
   const permissionSchema = schemaForType<UpdatePermissionDto>()(
     z.object({
       id: z.number().positive(),
@@ -41,6 +61,13 @@ const updateRoleBodySchemaRunner: SuperSchemaRunner = () => {
   );
 };
 
-export const updateRoleBodySchema = (() => {
-  return updateRoleBodySchemaRunner;
+const updateRoleSuperSchemaRunner: SuperSchemaRunner = async () => {
+  return {
+    params: paramsSchemaProvider,
+    body: bodySchemaProvider,
+  };
+};
+
+export const updateSchema = (() => {
+  return updateRoleSuperSchemaRunner;
 })();
