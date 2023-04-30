@@ -87,7 +87,7 @@ const updateManyUsersSuperSchemaRunner: SuperSchemaRunner = async (
   };
 };
 
-export const updateManyUsersSchema = (() => {
+export const updateManySchema = (() => {
   return updateManyUsersSuperSchemaRunner;
 })();
 
