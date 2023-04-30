@@ -1,24 +1,23 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import { NextFunction, Request, Response } from "express";
 
-import { RequestParseContext } from "@utils/types";
+import { SuperSchemaRunner } from "@utils/types";
+import { ISuperSchemaProperties } from "@interfaces/ISuperSchemaProperties";
 
-export const safeParseRequest = <T>(context: RequestParseContext<T>) => {
+export const safeParseRequest = (superSchemaRunner: SuperSchemaRunner) => {
   return async (request: Request, response: Response, next: NextFunction) => {
-    for (const key in context) {
-      type ParseableProperties = Omit<RequestParseContext<T>, "data">;
+    const superSchema = await superSchemaRunner({ request });
 
-      const propertyName = <keyof ParseableProperties>key;
+    for (const key in superSchema) {
+      const propertyName = <keyof ISuperSchemaProperties>key;
 
-      const parseableProperties: ParseableProperties = context;
+      const schemaProvider = superSchema[propertyName];
 
-      const superSchemaRunner = parseableProperties[propertyName]?.withSchema;
-
-      if (!superSchemaRunner) {
-        return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+      if (!schemaProvider) {
+        continue;
       }
 
-      const schema = await superSchemaRunner({ request }, context.data);
+      const schema = await schemaProvider();
 
       if (!schema) {
         return response.status(HTTP.INTERNAL_SERVER_ERROR).send();

@@ -12,79 +12,83 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
-const updateManyUsersSchemaRunner: SuperSchemaRunner = async (
+const updateManyUsersSuperSchemaRunner: SuperSchemaRunner = async (
   commonParams: ISuperSchemaParams
 ) => {
   const {
     request: { userId, body },
   } = commonParams;
 
-  const castedBody = <{ value: UpdateUserDto[] }>body;
+  return {
+    body: async () => {
+      const castedBody = <{ value: UpdateUserDto[] }>body;
 
-  const { value } = castedBody;
+      const { value } = castedBody;
 
-  let requestedRoles: Role[] = [];
+      let requestedRoles: Role[] = [];
 
-  if (isArray(value) && value.some(element => !!element.data.roleId)) {
-    requestedRoles = await fetchRequestedRoles(value);
-  }
+      if (isArray(value) && value.some(element => !!element.data.roleId)) {
+        requestedRoles = await fetchRequestedRoles(value);
+      }
 
-  const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
-    z.object({
-      id: z
-        .number()
-        .positive()
-        .superRefine((id: number, context: RefinementCtx) => {
-          if (id === userId) {
-            context.addIssue({
-              code: ZodIssueCode.custom,
-              message: "Can't change personal account.",
-            });
-
-            return Zod.NEVER;
-          }
-        }),
-      data: z.object({
-        roleId: z.optional(
-          z
+      const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
+        z.object({
+          id: z
             .number()
             .positive()
-            .superRefine((roleId: number, context: RefinementCtx) => {
-              if (roleId === HEAD_ADMIN_ROLE_ID) {
+            .superRefine((id: number, context: RefinementCtx) => {
+              if (id === userId) {
                 context.addIssue({
                   code: ZodIssueCode.custom,
-                  message: "This role is not assignable.",
+                  message: "Can't change personal account.",
                 });
 
                 return Zod.NEVER;
               }
+            }),
+          data: z.object({
+            roleId: z.optional(
+              z
+                .number()
+                .positive()
+                .superRefine((roleId: number, context: RefinementCtx) => {
+                  if (roleId === HEAD_ADMIN_ROLE_ID) {
+                    context.addIssue({
+                      code: ZodIssueCode.custom,
+                      message: "This role is not assignable.",
+                    });
 
-              const role = requestedRoles.find(role => role.id === roleId);
+                    return Zod.NEVER;
+                  }
 
-              if (!role) {
-                context.addIssue({
-                  code: ZodIssueCode.custom,
-                  message: "Role is not available.",
-                });
+                  const role = requestedRoles.find(role => role.id === roleId);
 
-                return Zod.NEVER;
-              }
-            })
-        ),
-        isActive: z.optional(z.boolean()),
-      }),
-    })
-  );
+                  if (!role) {
+                    context.addIssue({
+                      code: ZodIssueCode.custom,
+                      message: "Role is not available.",
+                    });
 
-  return schemaForType<{ value: UpdateUserDto[] }>()(
-    z.object({
-      value: z.array(updateUserDtoSchema).nonempty(),
-    })
-  );
+                    return Zod.NEVER;
+                  }
+                })
+            ),
+            isActive: z.optional(z.boolean()),
+          }),
+        })
+      );
+
+      return schemaForType<{ value: UpdateUserDto[] }>()(
+        z.object({
+          value: z.array(updateUserDtoSchema).nonempty(),
+        })
+      );
+    },
+  };
 };
 
 export const updateManyUsersSchema = (() => {
-  return updateManyUsersSchemaRunner;
+  return updateManyUsersSuperSchemaRunner;
 })();
 
 async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {

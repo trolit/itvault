@@ -19,8 +19,8 @@ export type CustomResponse<T> = Response<T, Record<string, T>>;
 
 export type RequestPermissions = { [key in Permission]?: boolean };
 
-type SuperSchemaRunner = () => (ZodSchema | null) | Promise<ZodSchema | null>;
+type SchemaProvider = () => (ZodSchema | null) | Promise<ZodSchema | null>;
 
-export type SuperSchema = (
+export type SuperSchemaRunner = (
   commonParams: ISuperSchemaParams
-) => Promise<Partial<Record<keyof ISuperSchemaProperties, SuperSchemaRunner>>>;
+) => Promise<Partial<Record<keyof ISuperSchemaProperties, SchemaProvider>>>;

@@ -24,9 +24,7 @@ userRoutes.patch(
   "/v1",
   requireAuthentication,
   requirePermissions(UpdateManyController.isMissingPermissions),
-  safeParseRequest({
-    body: { withSchema: updateManyUsersSchema },
-  }),
+  safeParseRequest(updateManyUsersSchema),
   processRequestWith(UpdateManyController)
 );
 
