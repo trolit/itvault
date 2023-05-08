@@ -8,7 +8,9 @@ import { BlueprintToWorkspace } from "./BlueprintToWorkspace";
 
 @Entity("workspaces")
 export class Workspace extends Base {
-  @Column()
+  @Column({
+    unique: true,
+  })
   name!: string;
 
   @Column({
