@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import blueprintRoutes from "./blueprint";
 import { getAllSchema } from "@schemas/workspace/getAllSchema";
 import { safeParseRequest } from "@middleware/safeParseRequest";
 import { processRequestWith } from "@helpers/processRequestWith";
@@ -14,5 +15,7 @@ workspaceRoutes.get(
   safeParseRequest(getAllSchema),
   processRequestWith(GetAllController)
 );
+
+workspaceRoutes.use("/:id", blueprintRoutes);
 
 export = workspaceRoutes;
