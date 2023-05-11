@@ -1,6 +1,7 @@
 import { Workspace } from "@entities/Workspace";
+import { IBaseRepository } from "./IBaseRepository";
 
-export interface IWorkspaceRepository {
+export interface IWorkspaceRepository extends IBaseRepository<Workspace> {
   getAll(
     take: number,
     skip: number,
