@@ -16,6 +16,6 @@ workspaceRoutes.get(
   processRequestWith(GetAllController)
 );
 
-workspaceRoutes.use("/:id", blueprintRoutes);
+workspaceRoutes.use("/:id/blueprints", blueprintRoutes);
 
 export = workspaceRoutes;
