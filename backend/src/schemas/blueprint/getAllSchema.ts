@@ -4,8 +4,8 @@ import { Di } from "@enums/Di";
 import { instanceOf } from "@helpers/instanceOf";
 import { schemaForType } from "@helpers/schemaForType";
 import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
-import { paginationSchemaProvider } from "@schemas/common/paginationSchemaProvider";
 import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
+import { paginationSchemaProvider } from "@schemas/common/paginationSchemaProvider";
 
 const paramsSchemaProvider: SchemaProvider = () => {
   return schemaForType<{ id: number }>()(
