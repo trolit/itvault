@@ -12,18 +12,19 @@ import { requireAuthentication } from "@middleware/requireAuthentication";
 
 const roleRoutes = Router();
 
+roleRoutes.use(requireAuthentication);
+
+roleRoutes.use(requirePermissions([Permission.ViewAllRoles]));
+
 roleRoutes.get(
   "/v1",
-  requireAuthentication,
-  requirePermissions([Permission.ViewAllRoles]),
   safeParseRequest(getAllSchema),
   processRequestWith(GetAllController)
 );
 
 roleRoutes.put(
   "/v1/:id",
-  requireAuthentication,
-  requirePermissions([Permission.ViewAllRoles, Permission.UpdateRole]),
+  requirePermissions([Permission.UpdateRole]),
   safeParseRequest(updateSchema),
   processRequestWith(UpdateController)
 );
