@@ -12,9 +12,10 @@ import { UpdateManyController } from "@controllers/User/UpdateManyController";
 
 const userRoutes = Router();
 
+userRoutes.use(requireAuthentication);
+
 userRoutes.get(
   "/v1",
-  requireAuthentication,
   requirePermissions([Permission.ViewAllUsers]),
   safeParseRequest(getAllSchema),
   processRequestWith(GetAllController)
@@ -22,7 +23,6 @@ userRoutes.get(
 
 userRoutes.patch(
   "/v1",
-  requireAuthentication,
   requirePermissions(UpdateManyController.isMissingPermissions),
   safeParseRequest(updateManySchema),
   processRequestWith(UpdateManyController)

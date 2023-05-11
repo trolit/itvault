@@ -1,18 +1,18 @@
 import { Router } from "express";
 
-import { getAllSchema } from "@schemas/workspace/getAllSchema";
+import { getAllSchema } from "@schemas/blueprint/getAllSchema";
 import { safeParseRequest } from "@middleware/safeParseRequest";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
-import { GetAllController } from "@controllers/Workspace/GetAllController";
+import { GetAllController } from "@controllers/Blueprint/GetAllController";
 
-const workspaceRoutes = Router();
+const blueprintRoutes = Router({ mergeParams: true });
 
-workspaceRoutes.get(
+blueprintRoutes.get(
   "/v1",
   requireAuthentication,
   safeParseRequest(getAllSchema),
   processRequestWith(GetAllController)
 );
 
-export = workspaceRoutes;
+export = blueprintRoutes;
