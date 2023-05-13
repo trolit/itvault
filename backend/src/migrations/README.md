@@ -1,49 +1,49 @@
 # Suggestions
 
-### Create table
+### Initialize entity
 
 ```
-Init<entity-name>Table;
+Create<table-name>Table;
 ```
 
-e.g. `InitUsersTable`
+e.g. `CreateUsersTable`
 
 <br/>
 
-### Update table /\*more than 1 change\*/
+### Update entity (>1 change)
 
 ```
-Update<entity-name>Table
+Update<table-name>Table
 ```
 
 e.g. `UpdateUsersTable`
 
 <br/>
 
-### Add attribute to table
+### Update entity's property (1 change)
 
 ```
-Expand<entity-name>TableWith<attribute-name>Attribute
+Update<property-name>PropertyIn<entity-name>Entity
 ```
 
-e.g. `ExpandUsersTableWithPasswordAttribute`
+e.g. `UpdatePasswordPropertyInUserEntity`
 
 <br/>
 
-### Update table's attribute
+### Expand entity with new property
 
 ```
-Update<attribute-name>AttributeOf<entity-name>Table
+Expand<entity-name>EntityWith<property-name>Property
 ```
 
-e.g. `UpdatePasswordAttributeOfUsersTable`
+e.g. `ExpandUserEntityWithPasswordProperty`
 
 <br/>
 
-### Remove table's attribute
+### Remove property from entity
 
 ```
-Remove<attribute-name>AttributeFrom<entity-name>Table
+Remove<property-name>PropertyFrom<entity-name>Entity
 ```
 
-e.g. `RemovePasswordAttributeFromUsersTable`
+e.g. `RemovePasswordPropertyFromUserEntity`
