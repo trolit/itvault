@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class InitRoleAndPermissionStructure1679236763287 implements MigrationInterface {
-    name = 'InitRoleAndPermissionStructure1679236763287'
+export class InitRoleAndPermissionRelatedTables1679236763287 implements MigrationInterface {
+    name = 'InitRoleAndPermissionRelatedTables1679236763287'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE \`permissions\` (\`id\` int NOT NULL AUTO_INCREMENT, \`name\` varchar(255) NOT NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
