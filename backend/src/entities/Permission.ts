@@ -1,9 +1,10 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 
 import { PermissionToRole } from "./PermissionToRole";
+import { IPermissionDefinition } from "@interfaces/config/IPermissionDefinition";
 
 @Entity("permissions")
-export class Permission {
+export class Permission implements IPermissionDefinition {
   @PrimaryGeneratedColumn()
   id: number;
 
