@@ -1,7 +1,7 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { Di } from "@enums/Di";
-import { instanceOf } from "@helpers/instanceOf";
+import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@helpers/schemaForType";
 import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
 import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
@@ -14,7 +14,7 @@ const paramsSchemaProvider: SchemaProvider = () => {
         .number()
         .gte(0)
         .superRefine(async (id, context: RefinementCtx) => {
-          const workspaceRepository = instanceOf<IWorkspaceRepository>(
+          const workspaceRepository = getInstanceOf<IWorkspaceRepository>(
             Di.WorkspaceRepository
           );
 

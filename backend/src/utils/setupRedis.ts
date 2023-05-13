@@ -2,7 +2,7 @@ import { Redis } from "ioredis";
 
 import { Di } from "@enums/Di";
 import { DataStoreRole } from "./DataStoreRole";
-import { instanceOf } from "@helpers/instanceOf";
+import { getInstanceOf } from "@helpers/getInstanceOf";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 import { REDIS_CONTAINER_PORT, REDIS_PASSWORD } from "@config/index";
@@ -51,7 +51,7 @@ export const setupRedis = () => {
     instance: redis,
 
     initializeRoleKeys: async () => {
-      const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
+      const roleRepository = getInstanceOf<IRoleRepository>(Di.RoleRepository);
 
       const [roles] = await roleRepository.getAll({ includePermissions: true });
 
