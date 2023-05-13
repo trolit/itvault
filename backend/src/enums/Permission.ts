@@ -3,9 +3,9 @@ export enum Permission {
   CreateRole,
   UpdateRole,
 
-  ViewAllWorkflows,
-  CreateWorkflow,
-  UpdateWorkflow,
+  ViewAllWorkspaces,
+  CreateWorkspace,
+  UpdateWorkspace,
 
   ViewAllUsers,
   ChangeUserRole,
