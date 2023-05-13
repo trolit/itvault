@@ -38,11 +38,14 @@ export class GetAllController
       query: { skip, take },
     } = request;
 
-    const [result, total] = await this._workspaceRepository.getAll(
-      take,
-      skip,
-      request.permissions[Permission.ViewAllWorkflows] ? undefined : userId
-    );
+    const [result, total] = await this._workspaceRepository.getAll({
+      pagination: { skip, take },
+      filters: {
+        userId: request.permissions[Permission.ViewAllWorkflows]
+          ? undefined
+          : userId,
+      },
+    });
 
     const mappedResult = this._entityMapperService.mapToDto(
       result,
