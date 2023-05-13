@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class AddRoleReferenceToUser1679251676652 implements MigrationInterface {
-    name = 'AddRoleReferenceToUser1679251676652'
+export class ExpandUserEntityWithRoleIdAttribute1679251676652 implements MigrationInterface {
+    name = 'ExpandUserEntityWithRoleIdAttribute1679251676652'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE \`users\` ADD \`roleId\` int NOT NULL`);
