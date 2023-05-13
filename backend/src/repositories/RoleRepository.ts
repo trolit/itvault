@@ -14,6 +14,7 @@ import { Result } from "@utils/Result";
 import { IError } from "@interfaces/IError";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
+import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
 @injectable()
@@ -32,10 +33,7 @@ export class RoleRepository
     filters?: {
       ids?: number[] | { excluding: number[] };
     };
-    pagination?: {
-      take: number;
-      skip: number;
-    };
+    pagination?: IPaginationOptions;
   }): Promise<[Role[], number]> {
     const where: FindOptionsWhere<Role> = {};
 

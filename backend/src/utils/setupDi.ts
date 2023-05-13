@@ -66,7 +66,7 @@ function registerDependencies(config: {
 
         container.register(interfaceName, dependency[dependencyFilename]);
 
-        console.log(`⭐ ${dependencyFilename} was registered in DI container`);
+        console.log(`⭐ ${dependencyFilename} registered in DI container`);
       } else {
         console.log(`❗❗❗ Failed to register ${dependencyFilename}`);
       }

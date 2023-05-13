@@ -35,7 +35,9 @@ export class GetAllController
       query: { skip, take },
     } = request;
 
-    const [result, total] = await this._userRepository.getAll(take, skip);
+    const [result, total] = await this._userRepository.getAll({
+      pagination: { take, skip },
+    });
 
     const mappedResult = this._entityMapperService.mapToDto(
       result,

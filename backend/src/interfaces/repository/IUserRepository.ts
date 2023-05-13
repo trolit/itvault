@@ -2,6 +2,7 @@ import { User } from "@entities/User";
 import { Result } from "@utils/Result";
 import { IBaseRepository } from "./IBaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
+import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export interface IUserRepository extends IBaseRepository<User> {
   findByEmail(
@@ -9,7 +10,9 @@ export interface IUserRepository extends IBaseRepository<User> {
     options?: { includePermissions: boolean }
   ): Promise<User | null>;
 
-  getAll(take: number, skip: number): Promise<[User[], number]>;
+  getAll(options: {
+    pagination: IPaginationOptions;
+  }): Promise<[User[], number]>;
 
   updateMany(
     entitiesToUpdate: UpdateUserDto[]
