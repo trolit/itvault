@@ -8,6 +8,7 @@ import { Result } from "@utils/Result";
 import { IError } from "@interfaces/IError";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
+import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
 @injectable()
@@ -45,10 +46,11 @@ export class UserRepository
     });
   }
 
-  getAll(take: number, skip: number): Promise<[User[], number]> {
+  getAll(options: {
+    pagination: IPaginationOptions;
+  }): Promise<[User[], number]> {
     return this.database.findAndCount({
-      take,
-      skip,
+      ...options.pagination,
       order: {
         email: "asc",
       },
