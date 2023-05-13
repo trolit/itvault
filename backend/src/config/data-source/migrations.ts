@@ -1,6 +1,6 @@
 import { InitUsersTable1665695149133 } from "@migrations/1665695149133-InitUsersTable";
 import { InitWorkspacesTable1678565252340 } from "@migrations/1678565252340-InitWorkspacesTable";
-import { MarkWorkspacesTablePasswordColumnAsNullable1678578647291 } from "@migrations/1678578515028-MarkWorkspacesTablePasswordColumnAsNullable";
+import { UpdatePasswordAttributeOfWorkspacesTable1678578515028 } from "@migrations/1678578515028-UpdatePasswordAttributeOfWorkspacesTable";
 import { InitBlueprintsTable1678582183597 } from "@migrations/1678582183597-InitBlueprintsTable";
 import { InitRoleAndPermissionStructure1679236763287 } from "@migrations/1679236763287-InitRoleAndPermissionStructure";
 import { AddRoleReferenceToUser1679251676652 } from "@migrations/1679251676652-AddRoleReferenceToUser";
@@ -13,7 +13,7 @@ import { MarkNameAsUniqueInWorkspaceEntity1683571095013 } from "@migrations/1683
 export const migrations = [
   InitUsersTable1665695149133,
   InitWorkspacesTable1678565252340,
-  MarkWorkspacesTablePasswordColumnAsNullable1678578647291,
+  UpdatePasswordAttributeOfWorkspacesTable1678578515028,
   InitBlueprintsTable1678582183597,
   InitRoleAndPermissionStructure1679236763287,
   AddRoleReferenceToUser1679251676652,
