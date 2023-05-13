@@ -8,6 +8,7 @@ import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@utils/types";
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
 import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
 
@@ -33,15 +34,12 @@ export class GetAllController
     request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<PaginatedResult<WorkspaceDto>>
   ) {
-    const {
-      userId,
-      query: { skip, take },
-    } = request;
+    const { userId, permissions, query } = request;
 
     const [result, total] = await this._workspaceRepository.getAll({
-      pagination: { skip, take },
+      pagination: query,
       filters: {
-        userId: request.permissions[Permission.ViewAllWorkflows]
+        userId: isPermissionEnabled(Permission.ViewAllWorkspaces, permissions)
           ? undefined
           : userId,
       },
