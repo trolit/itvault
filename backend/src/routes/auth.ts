@@ -1,17 +1,17 @@
 import { Router } from "express";
 
 import { loginSchema } from "@schemas/auth/loginSchema";
-import { safeParseRequest } from "@middleware/safeParseRequest";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { LoginController } from "@controllers/Auth/LoginController";
-import { StatusController } from "@controllers/Auth/StatusController";
 import { LogoutController } from "@controllers/Auth/LogoutController";
+import { StatusController } from "@controllers/Auth/StatusController";
+import { validateRequestWith } from "@middleware/validateRequestWith";
 
 const authRoutes = Router();
 
 authRoutes.post(
   "/v1/login",
-  safeParseRequest(loginSchema),
+  validateRequestWith(loginSchema),
   processRequestWith(LoginController)
 );
 
