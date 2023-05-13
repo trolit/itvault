@@ -4,7 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import { SuperSchemaRunner } from "@utils/types";
 import { ISuperSchemaProperties } from "@interfaces/ISuperSchemaProperties";
 
-export const validateRequest = (useSuperSchema: SuperSchemaRunner) => {
+export const validateRequestWith = (useSuperSchema: SuperSchemaRunner) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const superSchema = await useSuperSchema({ request });
 
