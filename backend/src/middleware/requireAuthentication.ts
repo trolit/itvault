@@ -3,15 +3,15 @@ import { Request, NextFunction, Response } from "express";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { instanceOf } from "@helpers/instanceOf";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { ALL_PERMISSIONS } from "@config/permissions";
+import { getInstanceOf } from "@helpers/getInstanceOf";
 import { DataStorePermission } from "@utils/DataStoreRole";
 import { IAuthService } from "@interfaces/service/IAuthService";
 
 export const requireAuthentication = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {
-    const authService = instanceOf<IAuthService>(Di.AuthService);
+    const authService = getInstanceOf<IAuthService>(Di.AuthService);
 
     const userId = processTokenFromRequest(request, authService);
 

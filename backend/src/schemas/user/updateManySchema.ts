@@ -4,9 +4,9 @@ import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
-import { instanceOf } from "@helpers/instanceOf";
 import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
+import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@helpers/schemaForType";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
@@ -52,7 +52,7 @@ async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
   if (roleIds.length) {
     const uniqueRoleIds = uniq<number>(roleIds);
 
-    const roleRepository = instanceOf<IRoleRepository>(Di.RoleRepository);
+    const roleRepository = getInstanceOf<IRoleRepository>(Di.RoleRepository);
 
     const [roles] = await roleRepository.getAll({
       filters: { ids: uniqueRoleIds },
