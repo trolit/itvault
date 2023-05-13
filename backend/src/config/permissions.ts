@@ -27,29 +27,28 @@ export const ALL_ROLE_PERMISSION_IDS = [
 ];
 
 // ****************************************************
-// @NOTE WORKFLOW PERMISSIONS
+// @NOTE WORKSPACE PERMISSIONS
 // ****************************************************
 
-/** @NOTE if 'false' - authenticated user receives only workflows to which is assigned  */
-const VIEW_ALL_WORKFLOWS_PERMISSION: IPermissionDefinition = {
-  id: Permission.ViewAllWorkflows,
-  name: "View all workflows",
+const VIEW_ALL_WORKSPACES_PERMISSION: IPermissionDefinition = {
+  id: Permission.ViewAllWorkspaces,
+  name: "View all workspaces",
 };
 
-const CREATE_WORKFLOW_PERMISSION: IPermissionDefinition = {
-  id: Permission.CreateWorkflow,
-  name: "Create workflow",
+const CREATE_WORKSPACE_PERMISSION: IPermissionDefinition = {
+  id: Permission.CreateWorkspace,
+  name: "Create workspace",
 };
 
-const UPDATE_WORKFLOW_PERMISSION: IPermissionDefinition = {
-  id: Permission.UpdateWorkflow,
-  name: "Update workflow",
+const UPDATE_WORKSPACE_PERMISSION: IPermissionDefinition = {
+  id: Permission.UpdateWorkspace,
+  name: "Update workspace",
 };
 
 export const ALL_WORKFLOW_PERMISSION_IDS = [
-  VIEW_ALL_WORKFLOWS_PERMISSION.id,
-  CREATE_WORKFLOW_PERMISSION.id,
-  UPDATE_WORKFLOW_PERMISSION.id,
+  VIEW_ALL_WORKSPACES_PERMISSION.id,
+  CREATE_WORKSPACE_PERMISSION.id,
+  UPDATE_WORKSPACE_PERMISSION.id,
 ];
 
 // ****************************************************
@@ -87,9 +86,9 @@ export const ALL_PERMISSIONS = [
   CREATE_ROLE_PERMISSION,
   UPDATE_ROLE_PERMISSION,
 
-  VIEW_ALL_WORKFLOWS_PERMISSION,
-  CREATE_WORKFLOW_PERMISSION,
-  UPDATE_WORKFLOW_PERMISSION,
+  VIEW_ALL_WORKSPACES_PERMISSION,
+  CREATE_WORKSPACE_PERMISSION,
+  UPDATE_WORKSPACE_PERMISSION,
 
   VIEW_ALL_USERS_PERMISSION,
   DEACTIVATE_USER_ACCOUNT_PERMISSION,
