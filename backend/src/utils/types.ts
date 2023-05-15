@@ -23,6 +23,10 @@ export type SchemaProvider = () =>
   | (ZodSchema | null)
   | Promise<ZodSchema | null>;
 
+type SuperSchemaRunnerResult = Partial<
+  Record<keyof ISuperSchemaProperties, SchemaProvider>
+>;
+
 export type SuperSchemaRunner = (
   commonParams: ISuperSchemaParams
-) => Promise<Partial<Record<keyof ISuperSchemaProperties, SchemaProvider>>>;
+) => SuperSchemaRunnerResult | Promise<SuperSchemaRunnerResult>;
