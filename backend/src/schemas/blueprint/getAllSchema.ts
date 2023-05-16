@@ -2,7 +2,7 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { schemaForType } from "@helpers/schemaForType";
+import { schemaForType } from "@schemas/common/schemaForType";
 import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
 import { paginationSchema } from "@schemas/common/paginationSchema";
 import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";

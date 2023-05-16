@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { LoginDto } from "@dtos/LoginDto";
-import { schemaForType } from "@helpers/schemaForType";
+import { schemaForType } from "@schemas/common/schemaForType";
 import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
 
 const bodySchemaProvider: SchemaProvider = () =>

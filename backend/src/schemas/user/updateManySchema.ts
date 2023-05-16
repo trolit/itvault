@@ -7,8 +7,8 @@ import { Role } from "@entities/Role";
 import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { schemaForType } from "@helpers/schemaForType";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
+import { schemaForType } from "@schemas/common/schemaForType";
 import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
