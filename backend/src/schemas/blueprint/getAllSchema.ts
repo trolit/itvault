@@ -4,7 +4,7 @@ import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { paginationSchema } from "@schemas/common/paginationSchema";
-import { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
+import type { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
 import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
 
 export const getAllSchema: SuperSchemaRunner = () => {

@@ -2,14 +2,14 @@ import isArray from "lodash/isArray";
 import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 
 import { Di } from "@enums/Di";
-import { Role } from "@entities/Role";
-import { UpdateUserDto } from "@dtos/UpdateUserDto";
+import type { Role } from "@entities/Role";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import type { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
-import { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
+import type { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
 
 export const updateManySchema: SuperSchemaRunner = (
   commonParams: ISuperSchemaParams

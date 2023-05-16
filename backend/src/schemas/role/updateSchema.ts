@@ -3,8 +3,8 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { UpdatePermissionDto, UpdateRoleDto } from "@dtos/UpdateRoleDto";
-import { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
+import type { UpdatePermissionDto, UpdateRoleDto } from "@dtos/UpdateRoleDto";
+import type { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
 
 export const updateSchema: SuperSchemaRunner = () => {
   return {
