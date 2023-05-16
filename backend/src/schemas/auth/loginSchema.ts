@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { LoginDto } from "@dtos/LoginDto";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
+import { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
 
 export const loginSchema: SuperSchemaRunner = () => {
   return {

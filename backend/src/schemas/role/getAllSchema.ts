@@ -1,5 +1,5 @@
-import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
 import { paginationSchema } from "@schemas/common/paginationSchema";
+import { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
 
 export const getAllSchema: SuperSchemaRunner = () => {
   return {

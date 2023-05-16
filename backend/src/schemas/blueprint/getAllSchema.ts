@@ -3,8 +3,8 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
 import { paginationSchema } from "@schemas/common/paginationSchema";
+import { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
 import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
 
 export const getAllSchema: SuperSchemaRunner = () => {

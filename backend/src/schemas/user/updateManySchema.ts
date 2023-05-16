@@ -7,9 +7,9 @@ import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
 import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+import { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
 
 export const updateManySchema: SuperSchemaRunner = (
   commonParams: ISuperSchemaParams
