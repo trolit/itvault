@@ -1,9 +1,9 @@
 import { SuperSchemaRunner } from "@utils/types";
-import { paginationSchemaProvider } from "@schemas/common/paginationSchemaProvider";
+import { paginationSchema } from "@schemas/common/paginationSchema";
 
 const getAllWorkspacesSuperSchemaRunner: SuperSchemaRunner = async () => {
   return {
-    query: paginationSchemaProvider,
+    query: () => paginationSchema,
   };
 };
 

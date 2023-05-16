@@ -4,8 +4,8 @@ import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@helpers/schemaForType";
 import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
+import { paginationSchema } from "@schemas/common/paginationSchema";
 import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
-import { paginationSchemaProvider } from "@schemas/common/paginationSchemaProvider";
 
 const paramsSchemaProvider: SchemaProvider = () => {
   return schemaForType<{ id: number }>()(
@@ -36,7 +36,7 @@ const paramsSchemaProvider: SchemaProvider = () => {
 const getAllBlueprintsSuperSchemaRunner: SuperSchemaRunner = async () => {
   return {
     params: paramsSchemaProvider,
-    query: paginationSchemaProvider,
+    query: () => paginationSchema,
   };
 };
 
