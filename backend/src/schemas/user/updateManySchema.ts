@@ -1,18 +1,17 @@
-import uniq from "lodash/uniq";
 import isArray from "lodash/isArray";
 import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
-import { SuperSchemaRunner } from "@utils/types";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { schemaForType } from "@schemas/common/schemaForType";
+import { SchemaProvider, SuperSchemaRunner } from "@utils/types";
 import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
-const updateManyUsersSuperSchemaRunner: SuperSchemaRunner = async (
+export const updateManySchema: SuperSchemaRunner = (
   commonParams: ISuperSchemaParams
 ) => {
   const {
@@ -20,38 +19,94 @@ const updateManyUsersSuperSchemaRunner: SuperSchemaRunner = async (
   } = commonParams;
 
   return {
-    body: async (): Promise<ZodSchema> => {
-      const castedBody = <{ value: UpdateUserDto[] }>body;
-
-      const { value } = castedBody;
-
-      let roles: Role[] = [];
-
-      if (isArray(value) && value.some(element => !!element.data.roleId)) {
-        roles = await fetchRequestedRoles(value);
-      }
-
-      return getBodySchema(userId, roles);
-    },
+    body: useBodySchema(userId, body),
   };
 };
 
-export const updateManySchema = (() => {
-  return updateManyUsersSuperSchemaRunner;
-})();
+function useBodySchema(
+  userId: number,
+  body: { value: UpdateUserDto[] }
+): SchemaProvider {
+  const createBodySchema = async (): Promise<ZodSchema> => {
+    const { value } = body;
 
-async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
-  const roleIds: number[] = [];
+    const roles: Role[] =
+      isArray(value) && value.some(element => !!element.data.roleId)
+        ? await getRolesFromValue(value)
+        : [];
 
-  for (const element of value) {
-    if (element.data.roleId) {
-      roleIds.push(element.data.roleId);
-    }
-  }
+    const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
+      z.object({
+        id: z
+          .number()
+          .positive()
+          .superRefine((id: number, context: RefinementCtx) => {
+            if (id === userId) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message: "Can't change personal account.",
+              });
 
-  if (roleIds.length) {
-    const uniqueRoleIds = uniq<number>(roleIds);
+              return Zod.NEVER;
+            }
+          }),
+        data: z.object({
+          roleId: z.optional(
+            z
+              .number()
+              .positive()
+              .superRefine((roleId: number, context: RefinementCtx) => {
+                if (roleId === HEAD_ADMIN_ROLE_ID) {
+                  context.addIssue({
+                    code: ZodIssueCode.custom,
+                    message: "This role is not assignable.",
+                  });
 
+                  return Zod.NEVER;
+                }
+
+                const role = roles.find(role => role.id === roleId);
+
+                if (!role) {
+                  context.addIssue({
+                    code: ZodIssueCode.custom,
+                    message: "Role is not available.",
+                  });
+
+                  return Zod.NEVER;
+                }
+              })
+          ),
+          isActive: z.optional(z.boolean()),
+        }),
+      })
+    );
+
+    return schemaForType<{ value: UpdateUserDto[] }>()(
+      z.object({
+        value: z.array(updateUserDtoSchema).nonempty(),
+      })
+    );
+  };
+
+  return createBodySchema;
+}
+
+async function getRolesFromValue(value: UpdateUserDto[]): Promise<Role[]> {
+  const uniqueRoleIds: number[] = value.reduce(
+    (accumulator: number[], element) => {
+      const roleId = element.data.roleId;
+
+      if (roleId && !accumulator.includes(roleId)) {
+        accumulator.push(roleId);
+      }
+
+      return accumulator;
+    },
+    []
+  );
+
+  if (uniqueRoleIds.length) {
     const roleRepository = getInstanceOf<IRoleRepository>(Di.RoleRepository);
 
     const [roles] = await roleRepository.getAll({
@@ -62,62 +117,4 @@ async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
   }
 
   return [];
-}
-
-async function getBodySchema(
-  userId: number,
-  roles: Role[]
-): Promise<ZodSchema> {
-  const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
-    z.object({
-      id: z
-        .number()
-        .positive()
-        .superRefine((id: number, context: RefinementCtx) => {
-          if (id === userId) {
-            context.addIssue({
-              code: ZodIssueCode.custom,
-              message: "Can't change personal account.",
-            });
-
-            return Zod.NEVER;
-          }
-        }),
-      data: z.object({
-        roleId: z.optional(
-          z
-            .number()
-            .positive()
-            .superRefine((roleId: number, context: RefinementCtx) => {
-              if (roleId === HEAD_ADMIN_ROLE_ID) {
-                context.addIssue({
-                  code: ZodIssueCode.custom,
-                  message: "This role is not assignable.",
-                });
-
-                return Zod.NEVER;
-              }
-
-              const role = roles.find(role => role.id === roleId);
-
-              if (!role) {
-                context.addIssue({
-                  code: ZodIssueCode.custom,
-                  message: "Role is not available.",
-                });
-
-                return Zod.NEVER;
-              }
-            })
-        ),
-        isActive: z.optional(z.boolean()),
-      }),
-    })
-  );
-
-  return schemaForType<{ value: UpdateUserDto[] }>()(
-    z.object({
-      value: z.array(updateUserDtoSchema).nonempty(),
-    })
-  );
 }
