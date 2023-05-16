@@ -1,7 +1,7 @@
 import { StatusCodes as HTTP } from "http-status-codes";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
-import { SuperSchemaRunner } from "@utils/types";
+import type { SuperSchemaRunner } from "@schemas/common/types";
 import { ISuperSchemaProperties } from "@interfaces/ISuperSchemaProperties";
 
 export const validateRequestWith = (useSuperSchema: SuperSchemaRunner) => {
