@@ -4,15 +4,16 @@ import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { paginationSchema } from "@schemas/common/paginationSchema";
-import type { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
+import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
 
-export const getAllSchema: SuperSchemaRunner = () => {
+export const getAllSchema: SuperSchemaRunner = defineSuperSchemaRunner(() => {
   return {
     params: useParamsSchema(),
     query: useQuerySchema(),
   };
-};
+});
 
 function useParamsSchema(): SchemaProvider {
   return () =>

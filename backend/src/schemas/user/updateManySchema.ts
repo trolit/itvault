@@ -2,26 +2,30 @@ import isArray from "lodash/isArray";
 import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 
 import { Di } from "@enums/Di";
+import {
+  SchemaProvider,
+  SuperCommonParam,
+  SuperSchemaRunner,
+} from "@custom-types/super-schema";
 import type { Role } from "@entities/Role";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import type { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
-import type { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
+import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const updateManySchema: SuperSchemaRunner = (
-  commonParams: ISuperSchemaParams
-) => {
-  const {
-    request: { userId, body },
-  } = commonParams;
+export const updateManySchema: SuperSchemaRunner = defineSuperSchemaRunner(
+  (common: SuperCommonParam) => {
+    const {
+      request: { userId, body },
+    } = common;
 
-  return {
-    body: useBodySchema(userId, body),
-  };
-};
+    return {
+      body: useBodySchema(userId, body),
+    };
+  }
+);
 
 function useBodySchema(
   userId: number,

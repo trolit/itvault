@@ -2,13 +2,14 @@ import { z } from "zod";
 
 import type { LoginDto } from "@dtos/LoginDto";
 import { schemaForType } from "@schemas/common/schemaForType";
-import type { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
+import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const loginSchema: SuperSchemaRunner = () => {
+export const loginSchema: SuperSchemaRunner = defineSuperSchemaRunner(() => {
   return {
     body: useBodySchema(),
   };
-};
+});
 
 function useBodySchema(): SchemaProvider {
   return () =>

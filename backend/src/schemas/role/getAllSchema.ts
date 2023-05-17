@@ -1,11 +1,12 @@
 import { paginationSchema } from "@schemas/common/paginationSchema";
-import type { SuperSchemaRunner, SchemaProvider } from "@schemas/common/types";
+import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const getAllSchema: SuperSchemaRunner = () => {
+export const getAllSchema: SuperSchemaRunner = defineSuperSchemaRunner(() => {
   return {
     query: useQuerySchema(),
   };
-};
+});
 
 function useQuerySchema(): SchemaProvider {
   return () => paginationSchema;
