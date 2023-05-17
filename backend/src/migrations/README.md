@@ -1,4 +1,10 @@
-# Suggestions
+# How to generate migration
+
+```bash
+npm run migration:generate .\src\migrations\<migration-name>
+```
+
+# Naming suggestions
 
 ### Initialize entity
 

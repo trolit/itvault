@@ -1,15 +1,16 @@
 import { StatusCodes as HTTP } from "http-status-codes";
-import { NextFunction, Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 
-import { SuperSchemaRunner } from "@utils/types";
-import { ISuperSchemaProperties } from "@interfaces/ISuperSchemaProperties";
+import { SuperKeys, SuperSchemaRunner } from "@custom-types/super-schema";
 
-export const validateRequestWith = (useSuperSchema: SuperSchemaRunner) => {
+export const validateRequestWith = (
+  useSuperSchemaRunner: SuperSchemaRunner
+) => {
   return async (request: Request, response: Response, next: NextFunction) => {
-    const superSchema = await useSuperSchema({ request });
+    const superSchema = await useSuperSchemaRunner({ request });
 
     for (const key in superSchema) {
-      const propertyName = <keyof ISuperSchemaProperties>key;
+      const propertyName = <keyof SuperKeys>key;
 
       const useSchemaProvider = superSchema[propertyName];
 

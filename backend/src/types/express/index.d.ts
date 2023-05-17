@@ -6,10 +6,10 @@ export {};
 declare global {
   namespace Express {
     export interface Request {
-      // @NOTE - available only after validateToken middleware
+      // @NOTE --- available only after `requirePermissions` middleware
       userId: number;
 
-      // @NOTE - available only after validateToken middleware
+      // @NOTE --- available only after `requirePermissions` middleware
       permissions: RequestPermissions;
     }
   }

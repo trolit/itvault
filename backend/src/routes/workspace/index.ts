@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import blueprintRoutes from "./blueprint";
-import { getAllSchema } from "@schemas/workspace/getAllSchema";
+import { getAllSchema } from "@schemas/Workspace/getAllSchema";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";

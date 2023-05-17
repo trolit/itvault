@@ -1,57 +1,116 @@
-import uniq from "lodash/uniq";
 import isArray from "lodash/isArray";
 import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 
 import { Di } from "@enums/Di";
-import { Role } from "@entities/Role";
-import { SuperSchemaRunner } from "@utils/types";
-import { UpdateUserDto } from "@dtos/UpdateUserDto";
+import {
+  SchemaProvider,
+  SuperCommonParam,
+  SuperSchemaRunner,
+} from "@custom-types/super-schema";
+import type { Role } from "@entities/Role";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { schemaForType } from "@helpers/schemaForType";
+import type { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-import { ISuperSchemaParams } from "@interfaces/ISuperSchemaParams";
+import { schemaForType } from "@schemas/common/schemaForType";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const updateManyUsersSuperSchemaRunner: SuperSchemaRunner = async (
-  commonParams: ISuperSchemaParams
-) => {
-  const {
-    request: { userId, body },
-  } = commonParams;
+export const updateManySchema: SuperSchemaRunner = defineSuperSchemaRunner(
+  (common: SuperCommonParam) => {
+    const {
+      request: { userId, body },
+    } = common;
 
-  return {
-    body: async (): Promise<ZodSchema> => {
-      const castedBody = <{ value: UpdateUserDto[] }>body;
+    return {
+      body: useBodySchema(userId, body),
+    };
+  }
+);
 
-      const { value } = castedBody;
+function useBodySchema(
+  userId: number,
+  body: { value: UpdateUserDto[] }
+): SchemaProvider {
+  const createBodySchema = async (): Promise<ZodSchema> => {
+    const { value } = body;
 
-      let roles: Role[] = [];
+    const roles: Role[] =
+      isArray(value) && value.some(element => !!element.data.roleId)
+        ? await getRolesFromValue(value)
+        : [];
 
-      if (isArray(value) && value.some(element => !!element.data.roleId)) {
-        roles = await fetchRequestedRoles(value);
+    const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
+      z.object({
+        id: z
+          .number()
+          .positive()
+          .superRefine((id: number, context: RefinementCtx) => {
+            if (id === userId) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message: "Can't change personal account.",
+              });
+
+              return Zod.NEVER;
+            }
+          }),
+        data: z.object({
+          roleId: z.optional(
+            z
+              .number()
+              .positive()
+              .superRefine((roleId: number, context: RefinementCtx) => {
+                if (roleId === HEAD_ADMIN_ROLE_ID) {
+                  context.addIssue({
+                    code: ZodIssueCode.custom,
+                    message: "This role is not assignable.",
+                  });
+
+                  return Zod.NEVER;
+                }
+
+                const role = roles.find(role => role.id === roleId);
+
+                if (!role) {
+                  context.addIssue({
+                    code: ZodIssueCode.custom,
+                    message: "Role is not available.",
+                  });
+
+                  return Zod.NEVER;
+                }
+              })
+          ),
+          isActive: z.optional(z.boolean()),
+        }),
+      })
+    );
+
+    return schemaForType<{ value: UpdateUserDto[] }>()(
+      z.object({
+        value: z.array(updateUserDtoSchema).nonempty(),
+      })
+    );
+  };
+
+  return createBodySchema;
+}
+
+async function getRolesFromValue(value: UpdateUserDto[]): Promise<Role[]> {
+  const uniqueRoleIds: number[] = value.reduce(
+    (accumulator: number[], element) => {
+      const roleId = element.data.roleId;
+
+      if (roleId && !accumulator.includes(roleId)) {
+        accumulator.push(roleId);
       }
 
-      return getBodySchema(userId, roles);
+      return accumulator;
     },
-  };
-};
+    []
+  );
 
-export const updateManySchema = (() => {
-  return updateManyUsersSuperSchemaRunner;
-})();
-
-async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
-  const roleIds: number[] = [];
-
-  for (const element of value) {
-    if (element.data.roleId) {
-      roleIds.push(element.data.roleId);
-    }
-  }
-
-  if (roleIds.length) {
-    const uniqueRoleIds = uniq<number>(roleIds);
-
+  if (uniqueRoleIds.length) {
     const roleRepository = getInstanceOf<IRoleRepository>(Di.RoleRepository);
 
     const [roles] = await roleRepository.getAll({
@@ -62,62 +121,4 @@ async function fetchRequestedRoles(value: UpdateUserDto[]): Promise<Role[]> {
   }
 
   return [];
-}
-
-async function getBodySchema(
-  userId: number,
-  roles: Role[]
-): Promise<ZodSchema> {
-  const updateUserDtoSchema = schemaForType<UpdateUserDto>()(
-    z.object({
-      id: z
-        .number()
-        .positive()
-        .superRefine((id: number, context: RefinementCtx) => {
-          if (id === userId) {
-            context.addIssue({
-              code: ZodIssueCode.custom,
-              message: "Can't change personal account.",
-            });
-
-            return Zod.NEVER;
-          }
-        }),
-      data: z.object({
-        roleId: z.optional(
-          z
-            .number()
-            .positive()
-            .superRefine((roleId: number, context: RefinementCtx) => {
-              if (roleId === HEAD_ADMIN_ROLE_ID) {
-                context.addIssue({
-                  code: ZodIssueCode.custom,
-                  message: "This role is not assignable.",
-                });
-
-                return Zod.NEVER;
-              }
-
-              const role = roles.find(role => role.id === roleId);
-
-              if (!role) {
-                context.addIssue({
-                  code: ZodIssueCode.custom,
-                  message: "Role is not available.",
-                });
-
-                return Zod.NEVER;
-              }
-            })
-        ),
-        isActive: z.optional(z.boolean()),
-      }),
-    })
-  );
-
-  return schemaForType<{ value: UpdateUserDto[] }>()(
-    z.object({
-      value: z.array(updateUserDtoSchema).nonempty(),
-    })
-  );
 }

@@ -1,25 +1,26 @@
 import { z } from "zod";
 
-import { LoginDto } from "@dtos/LoginDto";
-import { SuperSchemaRunner } from "@utils/types";
-import { schemaForType } from "@helpers/schemaForType";
+import type { LoginDto } from "@dtos/LoginDto";
+import { schemaForType } from "@schemas/common/schemaForType";
+import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const loginSuperSchemaRunner: SuperSchemaRunner = async () => {
+export const loginSchema: SuperSchemaRunner = defineSuperSchemaRunner(() => {
   return {
-    body: () =>
-      schemaForType<LoginDto>()(
-        z.object({
-          email: z
-            .string()
-            .email()
-            .max(254) // @INFO https://www.rfc-editor.org/rfc/rfc5321#section-4.5.3
-            .transform(value => value.toLowerCase()),
-          password: z.string().max(100),
-        })
-      ),
+    body: useBodySchema(),
   };
-};
+});
 
-export const loginSchema = (() => {
-  return loginSuperSchemaRunner;
-})();
+function useBodySchema(): SchemaProvider {
+  return () =>
+    schemaForType<LoginDto>()(
+      z.object({
+        email: z
+          .string()
+          .email()
+          .max(254) // @INFO https://www.rfc-editor.org/rfc/rfc5321#section-4.5.3
+          .transform(value => value.toLowerCase()),
+        password: z.string().max(100),
+      })
+    );
+}

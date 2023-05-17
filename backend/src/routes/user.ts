@@ -1,9 +1,9 @@
 import { Router } from "express";
 
 import { Permission } from "@enums/Permission";
-import { getAllSchema } from "@schemas/user/getAllSchema";
+import { getAllSchema } from "@schemas/User/getAllSchema";
 import { processRequestWith } from "@helpers/processRequestWith";
-import { updateManySchema } from "@schemas/user/updateManySchema";
+import { updateManySchema } from "@schemas/User/updateManySchema";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { GetAllController } from "@controllers/User/GetAllController";
 import { validateRequestWith } from "@middleware/validateRequestWith";
