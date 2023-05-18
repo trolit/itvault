@@ -10,10 +10,9 @@ import {
 } from "@config";
 import { Di } from "@enums/Di";
 import { JwtPayload } from "@utils/JwtPayload";
-import { DataStoreRole } from "@utils/DataStoreRole";
-import { DataStoreUser } from "@utils/DataStoreUser";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IAuthService } from "@interfaces/service/IAuthService";
+import { DataStoreRole, DataStoreUser } from "@custom-types/data-store";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 @injectable()

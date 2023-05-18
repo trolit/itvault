@@ -6,7 +6,7 @@ import { Permission } from "@enums/Permission";
 import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { DataStorePermission } from "@utils/DataStoreRole";
+import { DataStorePermission } from "@custom-types/data-store";
 import { IAuthService } from "@interfaces/service/IAuthService";
 
 export const requireAuthentication = (() => {

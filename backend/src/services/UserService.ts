@@ -2,7 +2,7 @@ import { Di } from "@enums/Di";
 import { inject, injectable } from "tsyringe";
 
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
-import { DataStoreUser } from "@utils/DataStoreUser";
+import { DataStoreUser } from "@custom-types/data-store";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IUserService } from "@interfaces/service/IUserService";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";

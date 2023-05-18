@@ -1,8 +1,8 @@
 import { Redis } from "ioredis";
 
 import { Di } from "@enums/Di";
-import { DataStoreRole } from "./DataStoreRole";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { DataStoreRole } from "@custom-types/data-store";
 import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 import { REDIS_CONTAINER_PORT, REDIS_PASSWORD } from "@config/index";
