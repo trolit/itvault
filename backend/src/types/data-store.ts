@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-
 declare module "@custom-types/data-store" {
   export type DataStorePermission = {
     id: number;
