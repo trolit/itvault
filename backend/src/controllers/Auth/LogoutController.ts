@@ -3,8 +3,8 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { CustomRequest } from "@utils/types";
 import { JWT_TOKEN_COOKIE_KEY } from "@config";
+import { CustomRequest } from "@custom-types/express";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/service/IAuthService";
 

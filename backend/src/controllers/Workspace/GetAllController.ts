@@ -7,8 +7,8 @@ import { Workspace } from "@entities/Workspace";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
-import { CustomRequest, CustomResponse } from "@utils/types";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
+import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
 import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
 
