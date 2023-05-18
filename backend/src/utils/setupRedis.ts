@@ -2,11 +2,10 @@ import { Redis } from "ioredis";
 
 import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { DataStoreRole } from "@custom-types/data-store";
-import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 import { REDIS_CONTAINER_PORT, REDIS_PASSWORD } from "@config/index";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+import { DataStoreKeyType, DataStoreRole } from "@custom-types/data-store";
 
 export const setupRedis = () => {
   const redis = new Redis({

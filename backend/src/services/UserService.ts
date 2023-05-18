@@ -1,9 +1,12 @@
 import { Di } from "@enums/Di";
 import { inject, injectable } from "tsyringe";
 
+import {
+  DataStoreKey,
+  DataStoreUser,
+  DataStoreKeyType,
+} from "@custom-types/data-store";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
-import { DataStoreUser } from "@custom-types/data-store";
-import { DataStoreKeyType } from "@enums/DataStoreKeyType";
 import { IUserService } from "@interfaces/service/IUserService";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
@@ -20,10 +23,7 @@ export class UserService implements IUserService {
     for (const entityToUpdate of entitiesToUpdate) {
       const { id, data } = entityToUpdate;
 
-      const key: [string | number, DataStoreKeyType] = [
-        id,
-        DataStoreKeyType.AuthenticatedUser,
-      ];
+      const key: DataStoreKey = [id, DataStoreKeyType.AuthenticatedUser];
 
       if (data.isActive !== undefined && !data.isActive) {
         this._dataStoreService.deleteHash(key);

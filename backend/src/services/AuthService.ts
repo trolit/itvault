@@ -9,9 +9,12 @@ import {
   JWT_TOKEN_LIFETIME_IN_SECONDS,
 } from "@config";
 import { Di } from "@enums/Di";
-import { DataStoreKeyType } from "@enums/DataStoreKeyType";
+import {
+  DataStoreRole,
+  DataStoreUser,
+  DataStoreKeyType,
+} from "@custom-types/data-store";
 import { IAuthService } from "@interfaces/service/IAuthService";
-import { DataStoreRole, DataStoreUser } from "@custom-types/data-store";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 @injectable()
