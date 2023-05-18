@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
@@ -9,10 +9,11 @@ import {
   JWT_TOKEN_LIFETIME_IN_SECONDS,
 } from "@config";
 import { Di } from "@enums/Di";
-import { JwtPayload } from "@utils/JwtPayload";
-import { DataStoreRole } from "@utils/DataStoreRole";
-import { DataStoreUser } from "@utils/DataStoreUser";
-import { DataStoreKeyType } from "@enums/DataStoreKeyType";
+import {
+  DataStoreRole,
+  DataStoreUser,
+  DataStoreKeyType,
+} from "@custom-types/data-store";
 import { IAuthService } from "@interfaces/service/IAuthService";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 

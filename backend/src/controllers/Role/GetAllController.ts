@@ -6,7 +6,7 @@ import { RoleDto } from "@dtos/RoleDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-import { CustomRequest, CustomResponse } from "@utils/types";
+import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
 interface IQuery {

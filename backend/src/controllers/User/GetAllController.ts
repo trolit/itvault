@@ -5,8 +5,8 @@ import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
+import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
-import { CustomRequest, CustomResponse } from "@utils/types";
 import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
 
 interface IQuery {

@@ -1,8 +1,6 @@
-import { DataStoreKeyType } from "@enums/DataStoreKeyType";
+import { DataStoreKey } from "@custom-types/data-store";
 
-export const composeDataStoreKey = (
-  key: [identifier: string | number, keyType: DataStoreKeyType]
-) => {
+export const composeDataStoreKey = (key: DataStoreKey) => {
   const [identifier, keyType] = key;
 
   const value =

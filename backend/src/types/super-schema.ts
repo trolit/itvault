@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-definitions */
-
 declare module "@custom-types/super-schema" {
   import { Request } from "express";
   import type { ZodSchema } from "zod";

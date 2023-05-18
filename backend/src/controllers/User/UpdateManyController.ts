@@ -7,9 +7,9 @@ import { Result } from "@utils/Result";
 import { Permission } from "@enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
-import { CustomRequest, CustomResponse } from "@utils/types";
 import { IUserService } from "@interfaces/service/IUserService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
+import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
 interface IRequestBody {

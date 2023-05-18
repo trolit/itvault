@@ -1,5 +1,5 @@
+import { Type } from "@common-types";
 import { Base } from "@entities/Base";
-import { Type } from "@utils/types";
 import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
 
 export class EntityMapperService implements IEntityMapperService {

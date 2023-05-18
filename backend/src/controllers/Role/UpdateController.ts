@@ -3,8 +3,8 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { CustomRequest } from "@utils/types";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
+import { CustomRequest } from "@custom-types/express";
 import { IController } from "@interfaces/IController";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 

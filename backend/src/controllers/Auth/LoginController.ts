@@ -11,13 +11,12 @@ import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
-import { DataStoreUser } from "@utils/DataStoreUser";
 import { IController } from "@interfaces/IController";
-import { DataStoreKeyType } from "@enums/DataStoreKeyType";
-import { CustomRequest, CustomResponse } from "@utils/types";
 import { IAuthService } from "@interfaces/service/IAuthService";
+import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
 import { IDataStoreService } from "@interfaces/service/IDataStoreService";
+import { DataStoreKeyType, DataStoreUser } from "@custom-types/data-store";
 import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
 
 @injectable()
