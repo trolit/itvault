@@ -5,6 +5,7 @@ dotenv.config({});
 
 import { Environment } from "@enums/Environment";
 import { DatabaseType } from "@enums/DatabaseType";
+import path from "path";
 
 export const APP_PORT: number = env.get("PORT").required().asPortNumber();
 
@@ -77,3 +78,13 @@ export const REDIS_PASSWORD: string = env
   .get("REDIS_PASSWORD")
   .required()
   .asString();
+
+const FILES_LOCAL_STORAGE_PATH_VALUE = env
+  .get("FILES_LOCAL_STORAGE_PATH")
+  .required()
+  .asString();
+
+export const FILES_LOCAL_STORAGE_PATH: string = path.join(
+  __dirname,
+  FILES_LOCAL_STORAGE_PATH_VALUE
+);
