@@ -31,12 +31,14 @@
     "@schemas": "dist/schemas",
     "@entities": "dist/entities",
     "@services": "dist/services",
+    "@custom-types": "dist/types",
     "@factories": "dist/factories",
     "@middleware": "dist/middleware",
     "@interfaces": "dist/interfaces",
     "@migrations": "dist/migrations",
     "@controllers": "dist/controllers",
-    "@repositories": "dist/repositories"
+    "@repositories": "dist/repositories",
+    "@common-types": "dist/types/common"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
