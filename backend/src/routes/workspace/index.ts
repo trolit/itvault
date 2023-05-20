@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import fileRoutes from "./file";
 import blueprintRoutes from "./blueprint";
 import { getAllSchema } from "@schemas/Workspace/getAllSchema";
 import { processRequestWith } from "@helpers/processRequestWith";
@@ -17,5 +18,7 @@ workspaceRoutes.get(
 );
 
 workspaceRoutes.use("/:id/blueprints", blueprintRoutes);
+
+workspaceRoutes.use("/:id/files", fileRoutes);
 
 export = workspaceRoutes;
