@@ -25,7 +25,7 @@ export const setupDi = (
   registerDependencies({
     sourceFiles: {
       dirname: "services",
-      excludedFilenames: [],
+      excludedFilenames: ["BaseFileService"],
     },
     interfacesDirname: "service",
   });
