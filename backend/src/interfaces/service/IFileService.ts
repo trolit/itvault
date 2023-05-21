@@ -1,5 +1,5 @@
 import { Request } from "express";
 
-export interface IBaseFileService {
+export interface IFileService {
   upload(request: Request): Promise<void>;
 }
