@@ -5,6 +5,7 @@ import Formidable from "formidable/Formidable";
 import { container, DependencyContainer } from "tsyringe";
 
 import { Di } from "@enums/Di";
+import { LocalFileService } from "@services/LocalFileService";
 
 export const setupDi = (
   redis: Redis,
@@ -25,10 +26,13 @@ export const setupDi = (
   registerDependencies({
     sourceFiles: {
       dirname: "services",
-      excludedFilenames: ["BaseFileService"],
+      excludedFilenames: ["LocalFileService"],
     },
     interfacesDirname: "service",
   });
+
+  // @TODO adjust after adding another way to store uploaded files!!
+  container.register(Di.FileService, LocalFileService);
 
   return new Promise(resolve =>
     setInterval(() => {
