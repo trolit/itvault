@@ -1,8 +1,8 @@
 import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
-import { requireAuthentication } from "@middleware/requireAuthentication";
 import { StoreController } from "@controllers/File/StoreController";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 
 const fileRoutes = Router({ mergeParams: true });
 
