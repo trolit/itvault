@@ -85,11 +85,11 @@ export const FILES_STORAGE_MODE: FileStorageMode = env
   .required()
   .asEnum(Object.values(FileStorageMode));
 
-export const FILES_LOCAL_STORAGE_PATH: string = env
-  .get("FILES_LOCAL_STORAGE_PATH")
+export const FILES_LOCAL_STORAGE_BASE_PATH: string = env
+  .get("FILES_LOCAL_STORAGE_BASE_PATH")
   .required()
   .asString();
 
 if (FILES_STORAGE_MODE === FileStorageMode.Local) {
-  fs.ensureDirSync(FILES_LOCAL_STORAGE_PATH);
+  fs.ensureDirSync(FILES_LOCAL_STORAGE_BASE_PATH);
 }

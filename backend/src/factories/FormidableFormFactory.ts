@@ -1,13 +1,16 @@
+import path from "path";
 import formidable from "formidable";
 
-import { FILES_LOCAL_STORAGE_PATH } from "@config";
+import { FILES_LOCAL_STORAGE_BASE_PATH } from "@config";
 
 export class FormidableFormFactory {
-  create() {
+  create(destination?: string) {
     const form = formidable({
       multiples: true,
       keepExtensions: true,
-      uploadDir: FILES_LOCAL_STORAGE_PATH,
+      uploadDir: destination
+        ? path.join(FILES_LOCAL_STORAGE_BASE_PATH, destination)
+        : FILES_LOCAL_STORAGE_BASE_PATH,
     });
 
     return form;
