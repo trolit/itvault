@@ -14,7 +14,7 @@ function useParamsSchema(): SchemaProvider {
   return () =>
     schemaForType<{ id: number }>()(
       z.object({
-        id: z.coerce.number().gte(0),
+        id: z.coerce.number().gt(0),
       })
     );
 }
