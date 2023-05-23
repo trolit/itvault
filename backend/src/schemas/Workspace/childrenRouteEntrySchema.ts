@@ -20,8 +20,12 @@ function useParamsSchema(): SchemaProvider {
       z.object({
         id: z.coerce
           .number()
-          .gte(0)
+          .gt(0)
           .superRefine(async (id, context: RefinementCtx) => {
+            if (id <= 0) {
+              return Zod.NEVER;
+            }
+
             const workspaceRepository = getInstanceOf<IWorkspaceRepository>(
               Di.WorkspaceRepository
             );
