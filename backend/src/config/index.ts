@@ -1,11 +1,12 @@
 import env from "env-var";
+import fs from "fs-extra";
 import dotenv from "dotenv";
 
 dotenv.config({});
 
 import { Environment } from "@enums/Environment";
 import { DatabaseType } from "@enums/DatabaseType";
-import path from "path";
+import { FileStorageMode } from "@enums/FileStorageMode";
 
 export const APP_PORT: number = env.get("PORT").required().asPortNumber();
 
@@ -79,12 +80,16 @@ export const REDIS_PASSWORD: string = env
   .required()
   .asString();
 
-const FILES_LOCAL_STORAGE_PATH_VALUE = env
-  .get("FILES_LOCAL_STORAGE_PATH")
+export const FILES_STORAGE_MODE: FileStorageMode = env
+  .get("FILES_STORAGE_MODE")
+  .required()
+  .asEnum(Object.values(FileStorageMode));
+
+export const FILES_LOCAL_STORAGE_BASE_PATH: string = env
+  .get("FILES_LOCAL_STORAGE_BASE_PATH")
   .required()
   .asString();
 
-export const FILES_LOCAL_STORAGE_PATH: string = path.join(
-  __dirname,
-  FILES_LOCAL_STORAGE_PATH_VALUE
-);
+if (FILES_STORAGE_MODE === FileStorageMode.Local) {
+  fs.ensureDirSync(FILES_LOCAL_STORAGE_BASE_PATH);
+}
