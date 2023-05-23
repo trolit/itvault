@@ -26,8 +26,12 @@ export class StoreController
     request: CustomRequest<IParams>,
     response: CustomResponse<PaginatedResult<Blueprint>>
   ) {
+    const {
+      params: { id },
+    } = request;
+
     try {
-      await this._fileService.upload(request);
+      await this._fileService.upload(request, `/workspace-${id}`);
     } catch (error) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
