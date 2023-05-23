@@ -1,19 +1,12 @@
 import fs from "fs";
 import path from "path";
 import Redis from "ioredis/built/Redis";
-import Formidable from "formidable/Formidable";
 import { container, DependencyContainer } from "tsyringe";
 
 import { Di } from "@enums/Di";
-import { LocalFileService } from "@services/LocalFileService";
 
-export const setupDi = (
-  redis: Redis,
-  formidable: Formidable
-): Promise<DependencyContainer> => {
+export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
-
-  container.register(Di.Formidable, { useValue: formidable });
 
   registerDependencies({
     sourceFiles: {
@@ -30,9 +23,6 @@ export const setupDi = (
     },
     interfacesDirname: "service",
   });
-
-  // @TODO adjust after adding another way to store uploaded files!!
-  container.register(Di.FileService, LocalFileService);
 
   return new Promise(resolve =>
     setInterval(() => {
