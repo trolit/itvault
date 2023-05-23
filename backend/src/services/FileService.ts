@@ -1,21 +1,26 @@
 import { Files } from "formidable";
 import { inject, injectable } from "tsyringe";
-import Formidable from "formidable/Formidable";
 
 import { Di } from "@enums/Di";
 import { CustomRequest } from "@custom-types/express";
 import { IFileService } from "@interfaces/service/IFileService";
+import { FormidableFormFactory } from "@factories/FormidableFormFactory";
 
 @injectable()
-export class LocalFileService implements IFileService {
+export class FileService implements IFileService {
   constructor(
-    @inject(Di.Formidable)
-    private _formidable: Formidable
+    @inject(Di.FormidableFormFactory)
+    private _formidableFormFactory: FormidableFormFactory
   ) {}
 
-  upload<P, B, Q>(request: CustomRequest<P, B, Q>): Promise<Files> {
+  async upload<P, B, Q>(
+    request: CustomRequest<P, B, Q>,
+    destination?: string
+  ): Promise<Files> {
+    const form = await this._formidableFormFactory.create(destination);
+
     return new Promise((resolve, reject) => {
-      this._formidable.parse(request, async (error, fields, files) => {
+      form.parse(request, async (error, fields, files) => {
         if (error) {
           reject(error);
 
