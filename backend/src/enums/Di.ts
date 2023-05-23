@@ -1,11 +1,15 @@
 export enum Di {
   Redis = "Redis",
+
   AuthService = "IAuthService",
   UserService = "IUserService",
+  DataStoreService = "IDataStoreService",
+  EntityMapperService = "IEntityMapperService",
+
   RoleRepository = "IRoleRepository",
   UserRepository = "IUserRepository",
-  DataStoreService = "IDataStoreService",
   BlueprintRepository = "IBlueprintRepository",
-  EntityMapperService = "IEntityMapperService",
   WorkspaceRepository = "IWorkspaceRepository",
+
+  FormidableFormFactory = "IFormidableFormFactory",
 }

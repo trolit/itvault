@@ -1,5 +1,5 @@
 declare module "@custom-types/data-store" {
-  export enum DataStoreKeyType {
+  export const enum DataStoreKeyType {
     AuthenticatedUser = "authenticated-user",
     Role = "role",
   }

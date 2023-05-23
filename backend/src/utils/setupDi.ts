@@ -24,6 +24,14 @@ export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
     interfacesDirname: "service",
   });
 
+  registerDependencies({
+    sourceFiles: {
+      dirname: "factories",
+      excludedFilenames: [],
+    },
+    interfacesDirname: "factory",
+  });
+
   return new Promise(resolve =>
     setInterval(() => {
       // @NOTE wait for dependencies that must be available instantly
