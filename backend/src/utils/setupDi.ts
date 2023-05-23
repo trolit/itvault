@@ -19,7 +19,7 @@ export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   registerDependencies({
     sourceFiles: {
       dirname: "services",
-      excludedFilenames: ["LocalFileService"],
+      excludedFilenames: [],
     },
     interfacesDirname: "service",
   });
