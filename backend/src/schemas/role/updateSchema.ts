@@ -18,7 +18,7 @@ function useBodySchema(): SchemaProvider {
   return () => {
     const permissionSchema = schemaForType<UpdatePermissionDto>()(
       z.object({
-        id: z.number().positive(),
+        id: z.number().gt(0),
         enabled: z.boolean(),
       })
     );

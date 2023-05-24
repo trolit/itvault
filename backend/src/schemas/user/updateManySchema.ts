@@ -43,7 +43,7 @@ function useBodySchema(
       z.object({
         id: z
           .number()
-          .positive()
+          .gt(0)
           .superRefine((id: number, context: RefinementCtx) => {
             if (id === userId) {
               context.addIssue({
@@ -58,7 +58,7 @@ function useBodySchema(
           roleId: z.optional(
             z
               .number()
-              .positive()
+              .gt(0)
               .superRefine((roleId: number, context: RefinementCtx) => {
                 if (roleId === HEAD_ADMIN_ROLE_ID) {
                   context.addIssue({

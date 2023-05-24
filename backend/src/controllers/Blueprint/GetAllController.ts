@@ -9,7 +9,7 @@ import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IBlueprintRepository } from "@interfaces/repository/IBlueprintRepository";
 
 interface IParams {
-  id: number;
+  workspaceId: number;
 }
 
 interface IQuery {
@@ -33,12 +33,12 @@ export class GetAllController
     response: CustomResponse<PaginatedResult<Blueprint>>
   ) {
     const {
-      params: { id },
+      params: { workspaceId },
       query: { skip, take },
     } = request;
 
     const [result, total] =
-      await this._blueprintRepository.findAllByWorkspaceId(id, {
+      await this._blueprintRepository.findAllByWorkspaceId(workspaceId, {
         pagination: { skip, take },
       });
 

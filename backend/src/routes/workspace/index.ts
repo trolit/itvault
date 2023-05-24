@@ -1,11 +1,13 @@
 import { Router } from "express";
 
+import fileRoutes from "./file";
 import blueprintRoutes from "./blueprint";
 import { getAllSchema } from "@schemas/Workspace/getAllSchema";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
+import { childrenRouteEntrySchema } from "@schemas/Workspace/childrenRouteEntrySchema";
 
 const workspaceRoutes = Router();
 
@@ -16,6 +18,16 @@ workspaceRoutes.get(
   processRequestWith(GetAllController)
 );
 
-workspaceRoutes.use("/:id/blueprints", blueprintRoutes);
+workspaceRoutes.use(
+  "/:workspaceId/blueprints",
+  [validateRequestWith(childrenRouteEntrySchema)],
+  blueprintRoutes
+);
+
+workspaceRoutes.use(
+  "/:workspaceId/files",
+  [validateRequestWith(childrenRouteEntrySchema)],
+  fileRoutes
+);
 
 export = workspaceRoutes;
