@@ -16,9 +16,9 @@ export const childrenRouteEntrySchema: SuperSchemaRunner =
 
 function useParamsSchema(): SchemaProvider {
   return () =>
-    schemaForType<{ id: number }>()(
+    schemaForType<{ workspaceId: number }>()(
       z.object({
-        id: z.coerce
+        workspaceId: z.coerce
           .number()
           .gt(0)
           .superRefine(async (id, context: RefinementCtx) => {

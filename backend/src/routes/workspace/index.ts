@@ -19,13 +19,13 @@ workspaceRoutes.get(
 );
 
 workspaceRoutes.use(
-  "/:id/blueprints",
+  "/:workspaceId/blueprints",
   [validateRequestWith(childrenRouteEntrySchema)],
   blueprintRoutes
 );
 
 workspaceRoutes.use(
-  "/:id/files",
+  "/:workspaceId/files",
   [validateRequestWith(childrenRouteEntrySchema)],
   fileRoutes
 );

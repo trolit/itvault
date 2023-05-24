@@ -6,17 +6,6 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 export const storeSchema: SuperSchemaRunner = defineSuperSchemaRunner(() => {
   return {
-    params: useParamsSchema(),
-
     // @TODO body schema validation
   };
 });
-
-function useParamsSchema(): SchemaProvider {
-  return () =>
-    schemaForType<{ id: number }>()(
-      z.object({
-        id: z.coerce.number().gt(0),
-      })
-    );
-}

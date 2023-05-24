@@ -10,7 +10,6 @@ const fileRoutes = Router({ mergeParams: true });
 
 fileRoutes.post(
   "/v1",
-  requireAuthentication,
   validateRequestWith(storeSchema),
   processRequestWith(StoreController)
 );

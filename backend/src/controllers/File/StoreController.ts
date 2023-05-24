@@ -9,7 +9,7 @@ import { IFileService } from "@interfaces/service/IFileService";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
 
 interface IParams {
-  id: number;
+  workspaceId: number;
 }
 
 @injectable()
@@ -28,11 +28,11 @@ export class StoreController
     response: CustomResponse<PaginatedResult<Blueprint>>
   ) {
     const {
-      params: { id },
+      params: { workspaceId },
     } = request;
 
     try {
-      await this._fileService.upload(request, `/workspace-${id}`);
+      await this._fileService.upload(request, `/workspace-${workspaceId}`);
     } catch (error) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
