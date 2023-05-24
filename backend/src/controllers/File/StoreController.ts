@@ -22,6 +22,7 @@ export class StoreController
     private _fileService: IFileService
   ) {}
 
+  // @TODO return structure of uploaded files
   async invoke(
     request: CustomRequest<IParams>,
     response: CustomResponse<PaginatedResult<Blueprint>>
