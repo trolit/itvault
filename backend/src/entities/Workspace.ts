@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { Entity, Column, OneToMany, BeforeInsert } from "typeorm";
 
 import { Base } from "./Base";
+import { File } from "./File";
 import { BCRYPT_SALT_ROUNDS } from "@config/index";
 import { UserToWorkspace } from "./UserToWorkspace";
 import { BlueprintToWorkspace } from "./BlueprintToWorkspace";
@@ -29,6 +30,9 @@ export class Workspace extends Base {
     blueprintToWorkspace => blueprintToWorkspace.workspace
   )
   blueprintToWorkspace: BlueprintToWorkspace[];
+
+  @OneToMany(() => File, file => file.workspace, { cascade: true })
+  files: File[];
 
   @BeforeInsert()
   async hashPasswordIfProvided() {
