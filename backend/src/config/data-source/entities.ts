@@ -1,3 +1,4 @@
+import { File } from "@entities/File";
 import { Role } from "@entities/Role";
 import { User } from "@entities/User";
 import { Blueprint } from "@entities/Blueprint";
@@ -16,4 +17,5 @@ export const entities = [
   UserToWorkspace,
   Blueprint,
   BlueprintToWorkspace,
+  File,
 ];

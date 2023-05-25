@@ -9,6 +9,7 @@ import { UpdateNamePropertyInPermissionEntity1679260617325 } from "@migrations/1
 import { UpdateEnabledPropertyInPermissionToRoleEntity1679260845721 } from "@migrations/1679260845721-UpdateEnabledPropertyInPermissionToRoleEntity";
 import { UpdateNamePropertyInRoleEntity1679261578188 } from "@migrations/1679261578188-UpdateNamePropertyInRoleEntity";
 import { UpdateNamePropertyInWorkspaceEntity1683571095013 } from "@migrations/1683571095013-UpdateNamePropertyInWorkspaceEntity";
+import { CreateFilesTable1685023186515 } from "@migrations/1685023186515-CreateFilesTable";
 
 export const migrations = [
   CreateUsersTable1665695149133,
@@ -22,4 +23,5 @@ export const migrations = [
   UpdateEnabledPropertyInPermissionToRoleEntity1679260845721,
   UpdateNamePropertyInRoleEntity1679261578188,
   UpdateNamePropertyInWorkspaceEntity1683571095013,
+  CreateFilesTable1685023186515,
 ];
