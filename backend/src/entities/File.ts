@@ -1,9 +1,12 @@
 import {
   Column,
   Entity,
+  ManyToOne,
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
+
+import { Workspace } from "./Workspace";
 
 @Entity("files")
 export class File {
@@ -19,7 +22,8 @@ export class File {
   @CreateDateColumn()
   createdAt: Date;
 
-  // @TODO workspaceId
+  @ManyToOne(() => Workspace, workspace => workspace.files)
+  workspace: Workspace;
 
   // @TODO variants
 }
