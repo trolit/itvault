@@ -2,10 +2,12 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
+import { Variant } from "./Variant";
 import { Workspace } from "./Workspace";
 
 @Entity("files")
@@ -25,5 +27,6 @@ export class File {
   @ManyToOne(() => Workspace, workspace => workspace.files)
   workspace: Workspace;
 
-  // @TODO variants
+  @OneToMany(() => Variant, variant => variant.file, { cascade: true })
+  variants: Variant[];
 }

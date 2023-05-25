@@ -1,10 +1,13 @@
 import {
   Column,
   Entity,
+  ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
+
+import { File } from "./File";
 
 @Entity("variants")
 export class Variant {
@@ -23,5 +26,6 @@ export class Variant {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // @TODO files
+  @ManyToOne(() => File, file => file.variants)
+  file: File;
 }

@@ -12,6 +12,7 @@ import { UpdateNamePropertyInWorkspaceEntity1683571095013 } from "@migrations/16
 import { CreateFilesTable1685023186515 } from "@migrations/1685023186515-CreateFilesTable";
 import { CreateVariantsTable1685024333420 } from "@migrations/1685024333420-CreateVariantsTable";
 import { SetOneToManyRelationBetweenWorkspaceAndFile1685030356268 } from "@migrations/1685030356268-SetOneToManyRelationBetweenWorkspaceAndFile";
+import { SetOneToManyRelationBetweenFileAndVariant1685030994778 } from "@migrations/1685030994778-SetOneToManyRelationBetweenFileAndVariant";
 
 export const migrations = [
   CreateUsersTable1665695149133,
@@ -28,4 +29,5 @@ export const migrations = [
   CreateFilesTable1685023186515,
   CreateVariantsTable1685024333420,
   SetOneToManyRelationBetweenWorkspaceAndFile1685030356268,
+  SetOneToManyRelationBetweenFileAndVariant1685030994778,
 ];
