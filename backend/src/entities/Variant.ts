@@ -15,6 +15,9 @@ export class Variant {
   id: number;
 
   @Column()
+  name: string;
+
+  @Column()
   filename: string;
 
   @Column()
