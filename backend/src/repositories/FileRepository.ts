@@ -4,6 +4,7 @@ import { QueryRunner, Repository } from "typeorm";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
+import { Workspace } from "@entities/Workspace";
 import { BaseRepository } from "./BaseRepository";
 import { IFileRepository } from "@interfaces/repository/IFileRepository";
 
@@ -18,14 +19,23 @@ export class FileRepository
     super(File);
   }
 
-  async store(files: formidable.Files): Promise<File[] | null> {
+  async store(
+    workspaceId: number,
+    files: formidable.Files
+  ): Promise<File[] | null> {
     const transaction = await this.useTransaction();
 
     let filesToAdd: File[] | null = [];
 
     try {
+      const workspace: Workspace = await transaction.manager.findOneByOrFail(
+        Workspace,
+        { id: workspaceId }
+      );
+
       for (const [key, value] of Object.entries(files)) {
         const values = this.setupFilesToAdd(
+          workspace,
           transaction,
           key,
           Array.isArray(value) ? value : [value]
@@ -49,6 +59,7 @@ export class FileRepository
   }
 
   private setupFilesToAdd(
+    workspace: Workspace,
     transaction: QueryRunner,
     key: string,
     files: formidable.File[]
@@ -66,6 +77,7 @@ export class FileRepository
         originalFilename: file.originalFilename || "",
         relativePath: key,
         variants: [variant],
+        workspace,
       });
 
       result.push(fileEntity);
