@@ -2,8 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { PaginatedResult } from "@utils/Result";
-import { Blueprint } from "@entities/Blueprint";
+import { File } from "@entities/File";
 import { IController } from "@interfaces/IController";
 import { IFileService } from "@interfaces/service/IFileService";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
@@ -14,29 +13,30 @@ interface IParams {
 
 @injectable()
 export class StoreController
-  implements
-    IController<IParams, undefined, undefined, PaginatedResult<Blueprint>>
+  implements IController<IParams, undefined, undefined, File[]>
 {
   constructor(
     @inject(Di.FileService)
     private _fileService: IFileService
   ) {}
 
-  // @TODO return structure of uploaded files
   async invoke(
     request: CustomRequest<IParams>,
-    response: CustomResponse<PaginatedResult<Blueprint>>
+    response: CustomResponse<File[]>
   ) {
     const {
       params: { workspaceId },
     } = request;
 
-    try {
-      await this._fileService.upload(request, `/workspace-${workspaceId}`);
-    } catch (error) {
+    const result = await this._fileService.upload(
+      request,
+      `/workspace-${workspaceId}`
+    );
+
+    if (!result) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    return response.status(HTTP.NO_CONTENT).send();
+    return response.status(HTTP.NO_CONTENT).send(result);
   }
 }
