@@ -17,6 +17,7 @@ export class FileService implements IFileService {
   ) {}
 
   async upload<P, B, Q>(
+    workspaceId: number,
     request: CustomRequest<P, B, Q>,
     destination?: string
   ): Promise<File[] | null> {
@@ -30,7 +31,7 @@ export class FileService implements IFileService {
           return;
         }
 
-        const result = await this._fileRepository.store(files);
+        const result = await this._fileRepository.store(workspaceId, files);
 
         return resolve(result);
       });
