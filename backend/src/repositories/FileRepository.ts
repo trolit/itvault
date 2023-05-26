@@ -1,6 +1,6 @@
 import formidable from "formidable";
 import { injectable } from "tsyringe";
-import { Repository } from "typeorm";
+import { QueryRunner, Repository } from "typeorm";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
@@ -18,32 +18,57 @@ export class FileRepository
     super(File);
   }
 
-  async store(
-    file: formidable.File,
-    relativePath: string
-  ): Promise<File | null> {
+  async store(files: formidable.Files): Promise<File[] | null> {
     const transaction = await this.useTransaction();
 
-    let result: File | null = null;
+    let filesToAdd: File[] | null = [];
 
     try {
+      for (const [key, value] of Object.entries(files)) {
+        const values = this.setupFilesToAdd(
+          transaction,
+          key,
+          Array.isArray(value) ? value : [value]
+        );
+
+        filesToAdd.push(...values);
+      }
+
+      await transaction.manager.save(File, filesToAdd);
+
+      await transaction.commitTransaction();
+    } catch (error) {
+      await transaction.rollbackTransaction();
+
+      filesToAdd = null;
+    } finally {
+      await transaction.release();
+    }
+
+    return filesToAdd;
+  }
+
+  private setupFilesToAdd(
+    transaction: QueryRunner,
+    key: string,
+    files: formidable.File[]
+  ): File[] {
+    const result: File[] = [];
+
+    for (const file of files) {
       const variant = transaction.manager.create(Variant, {
         filename: file.newFilename,
         size: file.size,
         name: "v1",
       });
 
-      result = await transaction.manager.save(File, {
+      const fileEntity = transaction.manager.create(File, {
         originalFilename: file.originalFilename || "",
-        relativePath: relativePath,
+        relativePath: key,
         variants: [variant],
       });
 
-      await transaction.commitTransaction();
-    } catch (error) {
-      await transaction.rollbackTransaction();
-    } finally {
-      await transaction.release();
+      result.push(fileEntity);
     }
 
     return result;
