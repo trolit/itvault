@@ -38,6 +38,6 @@ export class StoreController
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    return response.status(HTTP.NO_CONTENT).send(result);
+    return response.status(HTTP.OK).send(result);
   }
 }
