@@ -1,4 +1,9 @@
-import { FindOptionsWhere, Repository, UpdateResult } from "typeorm";
+import {
+  Repository,
+  QueryRunner,
+  UpdateResult,
+  FindOptionsWhere,
+} from "typeorm";
 
 import { Type } from "@common-types";
 import { dataSource } from "@config/data-source";
@@ -9,8 +14,20 @@ export class BaseRepository<T extends { id: number }>
 {
   protected database: Repository<T>;
 
+  protected useTransaction: () => Promise<QueryRunner>;
+
   constructor(entity: Type<T>) {
     this.database = dataSource.getRepository(entity);
+
+    this.useTransaction = async () => {
+      const queryRunner = dataSource.createQueryRunner();
+
+      await queryRunner.connect();
+
+      await queryRunner.startTransaction();
+
+      return queryRunner;
+    };
   }
 
   findById(id: number): Promise<T | null> {

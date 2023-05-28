@@ -9,6 +9,7 @@ export enum Di {
 
   RoleRepository = "IRoleRepository",
   UserRepository = "IUserRepository",
+  FileRepository = "IFileRepository",
   BlueprintRepository = "IBlueprintRepository",
   WorkspaceRepository = "IWorkspaceRepository",
 
