@@ -21,7 +21,7 @@ export class FileService implements IFileService {
     request: CustomRequest<P, B, Q>,
     destination?: string
   ): Promise<File[] | null> {
-    const form = await this._formidableFormFactory.create(destination);
+    const form = await this._formidableFormFactory.create({ destination });
 
     return new Promise((resolve, reject) => {
       form.parse(request, async (error, fields, files) => {
