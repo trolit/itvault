@@ -7,10 +7,7 @@ import { FILES_LOCAL_STORAGE_BASE_PATH } from "@config";
 import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFactory";
 
 export class FormidableFormFactory implements IFormidableFormFactory {
-  async create(options: {
-    destination?: string;
-    filter?: (part: formidable.Part) => boolean;
-  }): Promise<IncomingForm> {
+  async create(options: { destination?: string }): Promise<IncomingForm> {
     const uploadDir = path.join(
       FILES_LOCAL_STORAGE_BASE_PATH,
       options.destination || ""
@@ -20,8 +17,28 @@ export class FormidableFormFactory implements IFormidableFormFactory {
       await fs.ensureDir(uploadDir);
     }
 
+    const regex = new RegExp(/^[a-zA-Z0-9/._-]+$/);
+
+    const filter = ({ name, originalFilename, mimetype }: formidable.Part) => {
+      const withoutDoubleExtension =
+        !!originalFilename && originalFilename.split(".").length === 2;
+
+      const withValidNamePattern = !!name && regex.test(name);
+
+      const isNotImage = !!mimetype && !mimetype.includes("image");
+
+      const isNameWithoutDoubleSlash = !!name && !name.includes("//");
+
+      return (
+        isNotImage &&
+        withValidNamePattern &&
+        withoutDoubleExtension &&
+        isNameWithoutDoubleSlash
+      );
+    };
+
     const form = formidable({
-      filter: options.filter,
+      filter,
       multiples: true,
       keepExtensions: true,
       uploadDir,
