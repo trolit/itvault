@@ -20,7 +20,7 @@ export class FileService implements IFileService {
     workspaceId: number,
     request: CustomRequest<P, B, Q>,
     destination?: string
-  ): Promise<File[] | null> {
+  ): Promise<File[]> {
     const form = await this._formidableFormFactory.create({
       destination,
     });

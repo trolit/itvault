@@ -19,13 +19,10 @@ export class FileRepository
     super(File);
   }
 
-  async store(
-    workspaceId: number,
-    files: formidable.Files
-  ): Promise<File[] | null> {
+  async store(workspaceId: number, files: formidable.Files): Promise<File[]> {
     const transaction = await this.useTransaction();
 
-    let filesToAdd: File[] | null = [];
+    let filesToAdd: File[] = [];
 
     try {
       const workspace: Workspace = await transaction.manager.findOneByOrFail(
@@ -50,7 +47,7 @@ export class FileRepository
     } catch (error) {
       await transaction.rollbackTransaction();
 
-      filesToAdd = null;
+      filesToAdd = [];
     } finally {
       await transaction.release();
     }
