@@ -20,8 +20,10 @@ export class FileService implements IFileService {
     workspaceId: number,
     request: CustomRequest<P, B, Q>,
     destination?: string
-  ): Promise<File[] | null> {
-    const form = await this._formidableFormFactory.create(destination);
+  ): Promise<File[]> {
+    const form = await this._formidableFormFactory.create({
+      destination,
+    });
 
     return new Promise((resolve, reject) => {
       form.parse(request, async (error, fields, files) => {
@@ -29,6 +31,10 @@ export class FileService implements IFileService {
           reject(error);
 
           return;
+        }
+
+        if (!files.length) {
+          return resolve([]);
         }
 
         const result = await this._fileRepository.store(workspaceId, files);
