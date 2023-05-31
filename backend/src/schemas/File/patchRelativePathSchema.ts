@@ -34,11 +34,21 @@ function useBodySchema(): SchemaProvider {
               return Zod.NEVER;
             }
 
-            if (value.includes(".") && !value.startsWith(".")) {
+            if (value.split(".").length !== 2) {
               context.addIssue({
                 code: ZodIssueCode.custom,
                 message:
-                  "Root indicator (dot) can only appear at the beginning of relative path.",
+                  "Relative path should only contain one root indicator (dot).",
+              });
+
+              return Zod.NEVER;
+            }
+
+            if (value.includes("/") && !value.startsWith(".")) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message:
+                  "Relative path should start with root indicator (dot).",
               });
 
               return Zod.NEVER;
