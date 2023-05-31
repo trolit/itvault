@@ -1,4 +1,4 @@
-import { baseSchema } from "@schemas/Workspace/baseSchema";
+import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
@@ -11,5 +11,5 @@ export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 );
 
 function useParamsSchema(): SchemaProvider {
-  return () => baseSchema.params;
+  return () => baseSchemas.params;
 }

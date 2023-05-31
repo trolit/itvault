@@ -2,7 +2,7 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { baseSchema } from "@schemas/Workspace/baseSchema";
+import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { IFileRepository } from "@interfaces/repository/IFileRepository";
 import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
@@ -60,7 +60,7 @@ function useBodySchema(): SchemaProvider {
 
 function useParamsSchema(): SchemaProvider {
   return () =>
-    baseSchema.params.merge(
+    baseSchemas.params.merge(
       schemaForType<{ fileId: number }>()(
         z.object({
           fileId: z.coerce
