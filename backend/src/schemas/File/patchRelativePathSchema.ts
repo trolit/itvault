@@ -11,9 +11,42 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 export const patchRelativePathSchema: SuperSchemaRunner =
   defineSuperSchemaRunner(() => {
     return {
+      body: useBodySchema(),
       params: useParamsSchema(),
     };
   });
+
+function useBodySchema(): SchemaProvider {
+  return () =>
+    schemaForType<{ relativePath: string }>()(
+      z.object({
+        relativePath: z
+          .string()
+          .trim()
+          .regex(/^[a-zA-Z0-9/._-]+$/)
+          .superRefine((value, context: RefinementCtx) => {
+            if (value.includes("//")) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message: "Double slash is forbidden.",
+              });
+
+              return Zod.NEVER;
+            }
+
+            if (value.includes(".") && !value.startsWith(".")) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message:
+                  "Root indicator (dot) can only appear at the beginning of relative path.",
+              });
+
+              return Zod.NEVER;
+            }
+          }),
+      })
+    );
+}
 
 function useParamsSchema(): SchemaProvider {
   return () =>
