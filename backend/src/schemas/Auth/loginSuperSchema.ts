@@ -5,11 +5,13 @@ import { schemaForType } from "@schemas/common/schemaForType";
 import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const loginSchema: SuperSchemaRunner = defineSuperSchemaRunner(() => {
-  return {
-    body: useBodySchema(),
-  };
-});
+export const loginSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
+  () => {
+    return {
+      body: useBodySchema(),
+    };
+  }
+);
 
 function useBodySchema(): SchemaProvider {
   return () =>

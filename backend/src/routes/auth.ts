@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { loginSchema } from "@schemas/Auth/loginSchema";
 import { processRequestWith } from "@helpers/processRequestWith";
+import { loginSuperSchema } from "@schemas/Auth/loginSuperSchema";
 import { LoginController } from "@controllers/Auth/LoginController";
 import { LogoutController } from "@controllers/Auth/LogoutController";
 import { StatusController } from "@controllers/Auth/StatusController";
@@ -11,7 +11,7 @@ const authRoutes = Router();
 
 authRoutes.post(
   "/v1/login",
-  validateRequestWith(loginSchema),
+  validateRequestWith(loginSuperSchema),
   processRequestWith(LoginController)
 );
 
