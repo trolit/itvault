@@ -7,7 +7,6 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
-import { childrenRouteEntrySchema } from "@schemas/Workspace/childrenRouteEntrySchema";
 
 const workspaceRoutes = Router();
 
@@ -18,16 +17,10 @@ workspaceRoutes.get(
   processRequestWith(GetAllController)
 );
 
-workspaceRoutes.use(
-  "/:workspaceId/blueprints",
-  [validateRequestWith(childrenRouteEntrySchema)],
-  blueprintRoutes
-);
+// @TODO validate workspaceId in blueprint requests
+workspaceRoutes.use("/:workspaceId/blueprints", blueprintRoutes);
 
-workspaceRoutes.use(
-  "/:workspaceId/files",
-  [validateRequestWith(childrenRouteEntrySchema)],
-  fileRoutes
-);
+// @TODO validate workspaceId in file requests
+workspaceRoutes.use("/:workspaceId/files", fileRoutes);
 
 export = workspaceRoutes;
