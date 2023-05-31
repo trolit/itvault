@@ -15,7 +15,7 @@ import { schemaForType } from "@schemas/common/schemaForType";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const updateManySchema: SuperSchemaRunner = defineSuperSchemaRunner(
+export const updateManySuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   (common: SuperCommonParam) => {
     const {
       request: { userId, body },

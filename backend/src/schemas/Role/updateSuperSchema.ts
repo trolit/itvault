@@ -7,12 +7,14 @@ import type { UpdatePermissionDto, UpdateRoleDto } from "@dtos/UpdateRoleDto";
 import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const updateSchema: SuperSchemaRunner = defineSuperSchemaRunner(() => {
-  return {
-    body: useBodySchema(),
-    params: useParamsSchema(),
-  };
-});
+export const updateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
+  () => {
+    return {
+      body: useBodySchema(),
+      params: useParamsSchema(),
+    };
+  }
+);
 
 function useBodySchema(): SchemaProvider {
   return () => {
