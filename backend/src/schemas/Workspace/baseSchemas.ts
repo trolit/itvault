@@ -35,6 +35,6 @@ const paramsSchema = schemaForType<{
   })
 );
 
-export const baseSchema = {
+export const baseSchemas = {
   params: paramsSchema,
 };
