@@ -1,9 +1,12 @@
-import { z } from "zod";
+import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
+import { Di } from "@enums/Di";
+import { getInstanceOf } from "@helpers/getInstanceOf";
+import { baseSchema } from "@schemas/Workspace/baseSchema";
 import { schemaForType } from "@schemas/common/schemaForType";
+import { IFileRepository } from "@interfaces/repository/IFileRepository";
 import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
-import { baseSchema } from "@schemas/Workspace/baseSchema";
 
 export const patchRelativePathSchema: SuperSchemaRunner =
   defineSuperSchemaRunner(() => {
@@ -17,7 +20,29 @@ function useParamsSchema(): SchemaProvider {
     baseSchema.params.merge(
       schemaForType<{ fileId: number }>()(
         z.object({
-          fileId: z.coerce.number().gt(0),
+          fileId: z.coerce
+            .number()
+            .gt(0)
+            .superRefine(async (id, context: RefinementCtx) => {
+              if (id <= 0) {
+                return Zod.NEVER;
+              }
+
+              const fileRepository = getInstanceOf<IFileRepository>(
+                Di.FileRepository
+              );
+
+              const file = await fileRepository.findById(id);
+
+              if (!file) {
+                context.addIssue({
+                  code: ZodIssueCode.custom,
+                  message: "File is not available.",
+                });
+
+                return Zod.NEVER;
+              }
+            }),
         })
       )
     );
