@@ -1,6 +1,5 @@
 import { Router } from "express";
 
-import { storeSchema } from "@schemas/File/storeSchema";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { StoreController } from "@controllers/File/StoreController";
 import { validateRequestWith } from "@middleware/validateRequestWith";
@@ -9,11 +8,7 @@ import { PatchRelativePathController } from "@controllers/File/PatchRelativePath
 
 const fileRoutes = Router({ mergeParams: true });
 
-fileRoutes.post(
-  "/v1",
-  validateRequestWith(storeSchema),
-  processRequestWith(StoreController)
-);
+fileRoutes.post("/v1", processRequestWith(StoreController));
 
 fileRoutes.patch(
   ":fileId/v1/relative-path",
