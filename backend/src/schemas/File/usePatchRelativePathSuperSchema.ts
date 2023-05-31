@@ -8,7 +8,7 @@ import { IFileRepository } from "@interfaces/repository/IFileRepository";
 import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const patchRelativePathSchema: SuperSchemaRunner =
+export const usePatchRelativePathSuperSchema: SuperSchemaRunner =
   defineSuperSchemaRunner(() => {
     return {
       body: useBodySchema(),

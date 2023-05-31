@@ -30,7 +30,7 @@ Each super schema object property (params, body, query) expects [SchemaProvider]
 ## ...template
 
 ```js
-export const mySchema: SuperSchemaRunner = defineSuperSchemaRunner((common: SuperCommonParam) => {
+export const mySuperSchema: SuperSchemaRunner = defineSuperSchemaRunner((common: SuperCommonParam) => {
   return {
     body: useBodySchema(),
     params: ...,
