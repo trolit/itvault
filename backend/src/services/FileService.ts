@@ -33,7 +33,7 @@ export class FileService implements IFileService {
           return;
         }
 
-        if (!files.length) {
+        if (!Object.keys(files).length) {
           return resolve([]);
         }
 

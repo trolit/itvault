@@ -1,6 +1,6 @@
 import formidable from "formidable";
 import { injectable } from "tsyringe";
-import { QueryRunner, Repository } from "typeorm";
+import { QueryRunner, Repository, UpdateResult } from "typeorm";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
@@ -53,6 +53,22 @@ export class FileRepository
     }
 
     return filesToAdd;
+  }
+
+  async updateRelativePath(
+    workspaceId: number,
+    fileId: number,
+    relativePath: string
+  ): Promise<UpdateResult> {
+    return this.database.update(
+      {
+        id: fileId,
+        workspace: {
+          id: workspaceId,
+        },
+      },
+      { relativePath }
+    );
   }
 
   private setupFilesToAdd(
