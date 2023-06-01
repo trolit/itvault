@@ -2,10 +2,10 @@ import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { StoreController } from "@controllers/File/StoreController";
+import { GetAllController } from "@controllers/File/GetAllController";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { useStoreSuperSchema } from "@schemas/File/useStoreSuperSchema";
 import { requireAuthentication } from "@middleware/requireAuthentication";
-import { GetAllRootController } from "@controllers/File/GetAllRootController";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
@@ -23,6 +23,6 @@ fileRoutes.patch(
   processRequestWith(PatchRelativePathController)
 );
 
-fileRoutes.get("/v1/root", processRequestWith(GetAllRootController));
+fileRoutes.get("/v1", processRequestWith(GetAllController));
 
 export = fileRoutes;
