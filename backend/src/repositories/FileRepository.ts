@@ -71,6 +71,20 @@ export class FileRepository
     );
   }
 
+  getAllWorkspaceFilesByRelativePath(
+    workspaceId: number,
+    relativePath: string
+  ): Promise<File[]> {
+    return this.database.find({
+      where: {
+        relativePath,
+        workspace: {
+          id: workspaceId,
+        },
+      },
+    });
+  }
+
   private setupFilesToAdd(
     workspace: Workspace,
     transaction: QueryRunner,
