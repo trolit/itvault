@@ -11,9 +11,13 @@ interface IParams {
   workspaceId: number;
 }
 
+interface IQuery {
+  relativePath: string | undefined;
+}
+
 @injectable()
-export class GetAllRootController
-  implements IController<IParams, undefined, undefined, File[]>
+export class GetAllController
+  implements IController<IParams, undefined, IQuery, File[]>
 {
   constructor(
     @inject(Di.FileRepository)
@@ -21,18 +25,18 @@ export class GetAllRootController
   ) {}
 
   async invoke(
-    request: CustomRequest<IParams>,
+    request: CustomRequest<IParams, undefined, IQuery>,
     response: CustomResponse<File[]>
   ) {
     const {
       params: { workspaceId },
+      query: { relativePath },
     } = request;
 
-    const result =
-      await this._fileRepository.getAllWorkspaceFilesByRelativePath(
-        workspaceId,
-        "."
-      );
+    const result = await this._fileRepository.getAllByRelativePath(
+      workspaceId,
+      relativePath || "."
+    );
 
     return response.status(HTTP.OK).send(result);
   }
