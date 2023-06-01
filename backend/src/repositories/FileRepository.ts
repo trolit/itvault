@@ -71,7 +71,7 @@ export class FileRepository
     );
   }
 
-  getAllWorkspaceFilesByRelativePath(
+  getAllByRelativePath(
     workspaceId: number,
     relativePath: string
   ): Promise<File[]> {
