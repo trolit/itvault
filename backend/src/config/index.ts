@@ -24,47 +24,45 @@ const FILES_LOCAL_STORAGE_BASE_PATH: string = envString(
   "FILES_LOCAL_STORAGE_BASE_PATH"
 );
 
-export = {
-  app: {
-    port: envPort("PORT"),
-    url: envString("APP_URL"),
-    env: <Environment>envEnum("NODE_ENV", Environment),
-    routesPrefix: envString("ROUTES_PREFIX"),
-  },
+export const APP = {
+  PORT: envPort("PORT"),
+  URL: envString("APP_URL"),
+  ENV: <Environment>envEnum("NODE_ENV", Environment),
+  ROUTES_PREFIX: envString("ROUTES_PREFIX"),
+};
 
-  database: {
-    name: envString("DATABASE_NAME"),
-    type: <DatabaseType>envEnum("DATABASE_TYPE", DatabaseType),
-    root: {
-      username: envString("DATABASE_USER"),
-      password: envString("DATABASE_ROOT_PASSWORD"),
-    },
-    host: envString("DATABASE_HOST"),
-    port: envPort("DATABASE_PORT"),
+export const DATABASE = {
+  NAME: envString("DATABASE_NAME"),
+  TYPE: <DatabaseType>envEnum("DATABASE_TYPE", DatabaseType),
+  ROOT: {
+    USERNAME: envString("DATABASE_USER"),
+    PASSWORD: envString("DATABASE_ROOT_PASSWORD"),
   },
+  HOST: envString("DATABASE_HOST"),
+  PORT: envPort("DATABASE_PORT"),
+};
 
-  bcrypt: {
-    saltRounds: envInt("BCRYPT_SALT_ROUNDS"),
-  },
+export const BCRYPT = {
+  SALT_ROUNDS: envInt("BCRYPT_SALT_ROUNDS"),
+};
 
-  jwt: {
-    secret: envString("JWT_SECRET_KEY"),
-    cookieKey: envString("JWT_TOKEN_COOKIE_KEY"),
-    tokenLifetimeInSeconds: envFloat("JWT_TOKEN_LIFETIME_IN_HOURS") * 60 * 60,
-  },
+export const JWT = {
+  SECRET_KEY: envString("JWT_SECRET_KEY"),
+  COOKIE_KEY: envString("JWT_TOKEN_COOKIE_KEY"),
+  TOKEN_LIFETIME_IN_SECONDS: envFloat("JWT_TOKEN_LIFETIME_IN_HOURS") * 60 * 60,
+};
 
-  redis: {
-    port: envInt("REDIS_CONTAINER_PORT"),
-    password: envString("REDIS_PASSWORD"),
-  },
+export const REDIS = {
+  PORT: envInt("REDIS_CONTAINER_PORT"),
+  PASSWORD: envString("REDIS_PASSWORD"),
+};
 
-  files: {
-    root: ".",
-    storage: {
-      mode: FILES_STORAGE_MODE,
-      local: {
-        basePath: FILES_LOCAL_STORAGE_BASE_PATH,
-      },
+export const FILES = {
+  ROOT: ".",
+  STORAGE: {
+    MODE: FILES_STORAGE_MODE,
+    LOCAL: {
+      BASE_PATH: FILES_LOCAL_STORAGE_BASE_PATH,
     },
   },
 };
