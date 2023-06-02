@@ -5,7 +5,8 @@ import { StoreController } from "@controllers/File/StoreController";
 import { GetAllController } from "@controllers/File/GetAllController";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { useStoreSuperSchema } from "@schemas/File/useStoreSuperSchema";
-import { requireAuthentication } from "@middleware/requireAuthentication";
+import { requireAuthentication } from "@middleware/requireAuthentication"; // @TODO (use)
+import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
@@ -23,6 +24,10 @@ fileRoutes.patch(
   processRequestWith(PatchRelativePathController)
 );
 
-fileRoutes.get("/v1", processRequestWith(GetAllController));
+fileRoutes.get(
+  "/v1",
+  validateRequestWith(useGetAllSuperSchema),
+  processRequestWith(GetAllController)
+);
 
 export = fileRoutes;
