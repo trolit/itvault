@@ -1,6 +1,6 @@
 import formidable from "formidable";
 import { injectable } from "tsyringe";
-import { QueryRunner, Repository, UpdateResult } from "typeorm";
+import { QueryRunner, Repository, UpdateResult, Like, Not } from "typeorm";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
@@ -69,6 +69,20 @@ export class FileRepository
       },
       { relativePath }
     );
+  }
+
+  getAllByRelativePath(
+    workspaceId: number,
+    relativePath: string
+  ): Promise<File[]> {
+    return this.database.find({
+      where: {
+        relativePath: relativePath === "." ? Not(Like("./%/%")) : relativePath,
+        workspace: {
+          id: workspaceId,
+        },
+      },
+    });
   }
 
   private setupFilesToAdd(

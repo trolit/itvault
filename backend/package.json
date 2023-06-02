@@ -15,6 +15,7 @@
     "db:seed": "npm run typeorm:extension -- -d ./src/config/data-source/index.ts seed",
     "db:drop": "npm run typeorm:extension -- -d ./src/config/data-source/index.ts db:drop",
     "db:create": "npm run typeorm:extension -- -d ./src/config/data-source/index.ts db:create",
+    "db:recreate:dev": "npm run db:drop && npm run db:create && npm run db:seed",
     "migration:generate": "npm run typeorm migration:generate -- -d ./src/config/data-source/index.ts",
     "migration:run": "npm run typeorm migration:run -- -d ./src/config/data-source/index.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d ./src/config/data-source/index.ts",

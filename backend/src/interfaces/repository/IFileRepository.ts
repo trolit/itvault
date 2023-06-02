@@ -12,4 +12,9 @@ export interface IFileRepository extends IBaseRepository<File> {
     fileId: number,
     relativePath: string
   ): Promise<UpdateResult>;
+
+  getAllByRelativePath(
+    workspaceId: number,
+    relativePath: string
+  ): Promise<File[]>;
 }
