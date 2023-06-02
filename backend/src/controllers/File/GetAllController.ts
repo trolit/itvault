@@ -12,7 +12,7 @@ interface IParams {
 }
 
 interface IQuery {
-  relativePath: string | undefined;
+  relativePath: string;
 }
 
 @injectable()
@@ -35,7 +35,7 @@ export class GetAllController
 
     const result = await this._fileRepository.getAllByRelativePath(
       workspaceId,
-      relativePath || "."
+      relativePath
     );
 
     return response.status(HTTP.OK).send(result);
