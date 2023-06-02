@@ -77,7 +77,7 @@ export class FileRepository
   ): Promise<File[]> {
     return this.database.find({
       where: {
-        relativePath: relativePath === "." ? Not(Like("./%/")) : relativePath,
+        relativePath: relativePath === "." ? Not(Like("./%/%")) : relativePath,
         workspace: {
           id: workspaceId,
         },
