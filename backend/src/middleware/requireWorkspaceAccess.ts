@@ -5,6 +5,7 @@ import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { CustomRequest } from "@custom-types/express";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
 interface IParams {
@@ -28,7 +29,9 @@ export const requireWorkspaceAccess = (() => {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    if (request.permissions[Permission.ViewAllWorkspaces]) {
+    if (
+      isPermissionEnabled(Permission.ViewAllWorkspaces, request.permissions)
+    ) {
       return next();
     }
 
