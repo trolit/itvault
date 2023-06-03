@@ -2,6 +2,7 @@ import formidable from "formidable";
 import { injectable } from "tsyringe";
 import { QueryRunner, Repository, UpdateResult, Like, Not } from "typeorm";
 
+import { FILES } from "@config";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { Workspace } from "@entities/Workspace";
@@ -77,7 +78,10 @@ export class FileRepository
   ): Promise<File[]> {
     return this.database.find({
       where: {
-        relativePath: relativePath === "." ? Not(Like("./%/%")) : relativePath,
+        relativePath:
+          relativePath === FILES.ROOT
+            ? Not(Like(`${FILES.ROOT}/%/%`))
+            : relativePath,
         workspace: {
           id: workspaceId,
         },

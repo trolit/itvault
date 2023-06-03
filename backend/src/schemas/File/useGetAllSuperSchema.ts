@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { FILES } from "@config";
 import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
@@ -22,7 +23,7 @@ function useQuerySchema(): SchemaProvider {
   return () =>
     schemaForType<{ relativePath?: string }>()(
       z.object({
-        relativePath: z.string().default("."),
+        relativePath: z.string().default(FILES.ROOT),
       })
     );
 }

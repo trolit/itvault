@@ -1,16 +1,16 @@
 import { Redis } from "ioredis";
 
 import { Di } from "@enums/Di";
+import { REDIS } from "@config";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
-import { REDIS_CONTAINER_PORT, REDIS_PASSWORD } from "@config/index";
 import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 import { DataStoreKeyType, DataStoreRole } from "@custom-types/data-store";
 
 export const setupRedis = () => {
   const redis = new Redis({
-    port: REDIS_CONTAINER_PORT,
-    password: REDIS_PASSWORD,
+    port: REDIS.PORT,
+    password: REDIS.PASSWORD,
     enableAutoPipelining: true,
     scripts: {
       hfupdate: {

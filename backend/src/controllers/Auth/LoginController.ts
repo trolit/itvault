@@ -2,12 +2,8 @@ import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import {
-  NODE_ENV,
-  JWT_TOKEN_COOKIE_KEY,
-  JWT_TOKEN_LIFETIME_IN_SECONDS,
-} from "@config";
 import { Di } from "@enums/Di";
+import { APP, JWT } from "@config";
 import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
@@ -73,7 +69,7 @@ export class LoginController
       await this._dataStoreService.createHash<DataStoreUser>(
         [user.id, DataStoreKeyType.AuthenticatedUser],
         { id: user.id.toString(), roleId: user.role.id.toString() },
-        { withTTL: { seconds: JWT_TOKEN_LIFETIME_IN_SECONDS } }
+        { withTTL: { seconds: JWT.TOKEN_LIFETIME_IN_SECONDS } }
       );
     } catch (error) {
       // @TODO log error
@@ -83,9 +79,9 @@ export class LoginController
     }
 
     return response
-      .cookie(JWT_TOKEN_COOKIE_KEY, token, {
+      .cookie(JWT.COOKIE_KEY, token, {
         httpOnly: true,
-        secure: NODE_ENV === Environment.Production,
+        secure: APP.ENV === Environment.Production,
       })
       .status(HTTP.OK)
       .send(mappedUserData);

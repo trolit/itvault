@@ -1,9 +1,9 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
+import { JWT } from "@config";
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { DataStorePermission } from "@custom-types/data-store";
@@ -32,7 +32,7 @@ export const requireAuthentication = (() => {
 })();
 
 function processTokenFromRequest(request: Request, authService: IAuthService) {
-  const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
+  const token = request.cookies[JWT.COOKIE_KEY];
 
   if (!token) {
     return null;

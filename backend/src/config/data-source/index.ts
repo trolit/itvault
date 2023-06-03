@@ -1,30 +1,24 @@
 import { SeederOptions } from "typeorm-extension";
 import { DataSource, DataSourceOptions } from "typeorm";
 
-import {
-  NODE_ENV,
-  DATABASE_HOST,
-  DATABASE_NAME,
-  DATABASE_PORT,
-  DATABASE_TYPE,
-  DATABASE_USER,
-  DATABASE_ROOT_PASSWORD,
-} from "@config";
 import { seeds } from "./seeds";
 import { entities } from "./entities";
+import { APP, DATABASE } from "@config";
 import { factories } from "./factories";
 import { migrations } from "./migrations";
 import { Environment } from "@enums/Environment";
 
-const isProduction = NODE_ENV === Environment.Production;
+const isProduction = APP.ENV === Environment.Production;
+
+const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
 
 const options: DataSourceOptions & SeederOptions = {
-  type: DATABASE_TYPE,
-  host: DATABASE_HOST,
-  port: DATABASE_PORT,
-  username: DATABASE_USER,
-  password: DATABASE_ROOT_PASSWORD,
-  database: DATABASE_NAME,
+  type: TYPE,
+  host: HOST,
+  port: PORT,
+  username: ROOT.USERNAME,
+  password: ROOT.PASSWORD,
+  database: NAME,
   entities,
   migrations,
   logging: true,

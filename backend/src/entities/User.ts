@@ -3,7 +3,7 @@ import { Entity, Column, ManyToOne, OneToMany, BeforeInsert } from "typeorm";
 
 import { Base } from "./Base";
 import { Role } from "./Role";
-import { BCRYPT_SALT_ROUNDS } from "@config/index";
+import { BCRYPT } from "@config";
 import { UserToWorkspace } from "./UserToWorkspace";
 
 @Entity("users")
@@ -24,6 +24,6 @@ export class User extends Base {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await bcrypt.hash(this.password, BCRYPT_SALT_ROUNDS);
+    this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
   }
 }

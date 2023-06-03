@@ -8,87 +8,64 @@ import { Environment } from "@enums/Environment";
 import { DatabaseType } from "@enums/DatabaseType";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
-export const APP_PORT: number = env.get("PORT").required().asPortNumber();
+const envString = (name: string) => env.get(name).required().asString();
+const envPort = (name: string) => env.get(name).required().asPortNumber();
+const envInt = (name: string) => env.get(name).required().asInt();
+const envEnum = <T extends object>(name: string, type: T) =>
+  env.get(name).required().asEnum(Object.values(type));
+const envFloat = (name: string) => env.get(name).required().asFloat();
 
-export const APP_URL: string = env.get("APP_URL").required().asString();
+const FILES_STORAGE_MODE: FileStorageMode = envEnum(
+  "FILES_STORAGE_MODE",
+  FileStorageMode
+);
 
-export const NODE_ENV: Environment = env
-  .get("NODE_ENV")
-  .required()
-  .asEnum(Object.values(Environment));
+const FILES_LOCAL_STORAGE_BASE_PATH: string = envString(
+  "FILES_LOCAL_STORAGE_BASE_PATH"
+);
 
-export const DATABASE_TYPE: DatabaseType = env
-  .get("DATABASE_TYPE")
-  .required()
-  .asEnum(Object.values(DatabaseType));
+export const APP = {
+  PORT: envPort("PORT"),
+  URL: envString("APP_URL"),
+  ENV: <Environment>envEnum("NODE_ENV", Environment),
+  ROUTES_PREFIX: envString("ROUTES_PREFIX"),
+};
 
-export const DATABASE_USER: string = env
-  .get("DATABASE_USER")
-  .required()
-  .asString();
+export const DATABASE = {
+  NAME: envString("DATABASE_NAME"),
+  TYPE: <DatabaseType>envEnum("DATABASE_TYPE", DatabaseType),
+  ROOT: {
+    USERNAME: envString("DATABASE_USER"),
+    PASSWORD: envString("DATABASE_ROOT_PASSWORD"),
+  },
+  HOST: envString("DATABASE_HOST"),
+  PORT: envPort("DATABASE_PORT"),
+};
 
-export const DATABASE_ROOT_PASSWORD: string = env
-  .get("DATABASE_ROOT_PASSWORD")
-  .required()
-  .asString();
+export const BCRYPT = {
+  SALT_ROUNDS: envInt("BCRYPT_SALT_ROUNDS"),
+};
 
-export const DATABASE_NAME: string = env
-  .get("DATABASE_NAME")
-  .required()
-  .asString();
+export const JWT = {
+  SECRET_KEY: envString("JWT_SECRET_KEY"),
+  COOKIE_KEY: envString("JWT_TOKEN_COOKIE_KEY"),
+  TOKEN_LIFETIME_IN_SECONDS: envFloat("JWT_TOKEN_LIFETIME_IN_HOURS") * 60 * 60,
+};
 
-export const DATABASE_HOST: string = env
-  .get("DATABASE_HOST")
-  .required()
-  .asString();
+export const REDIS = {
+  PORT: envInt("REDIS_CONTAINER_PORT"),
+  PASSWORD: envString("REDIS_PASSWORD"),
+};
 
-export const DATABASE_PORT: number = env
-  .get("DATABASE_PORT")
-  .required()
-  .asPortNumber();
-
-export const ROUTES_PREFIX: string = env
-  .get("ROUTES_PREFIX")
-  .required()
-  .asString();
-
-export const BCRYPT_SALT_ROUNDS: number = env
-  .get("BCRYPT_SALT_ROUNDS")
-  .required()
-  .asInt();
-
-export const JWT_SECRET_KEY: string = env
-  .get("JWT_SECRET_KEY")
-  .required()
-  .asString();
-
-export const JWT_TOKEN_LIFETIME_IN_SECONDS: number =
-  env.get("JWT_TOKEN_LIFETIME_IN_HOURS").required().asFloat() * 60 * 60;
-
-export const JWT_TOKEN_COOKIE_KEY: string = env
-  .get("JWT_TOKEN_COOKIE_KEY")
-  .required()
-  .asString();
-
-export const REDIS_CONTAINER_PORT: number = env
-  .get("REDIS_CONTAINER_PORT")
-  .required()
-  .asInt();
-
-export const REDIS_PASSWORD: string = env
-  .get("REDIS_PASSWORD")
-  .required()
-  .asString();
-
-export const FILES_STORAGE_MODE: FileStorageMode = env
-  .get("FILES_STORAGE_MODE")
-  .required()
-  .asEnum(Object.values(FileStorageMode));
-
-export const FILES_LOCAL_STORAGE_BASE_PATH: string = env
-  .get("FILES_LOCAL_STORAGE_BASE_PATH")
-  .required()
-  .asString();
+export const FILES = {
+  ROOT: ".",
+  STORAGE: {
+    MODE: FILES_STORAGE_MODE,
+    LOCAL: {
+      BASE_PATH: FILES_LOCAL_STORAGE_BASE_PATH,
+    },
+  },
+};
 
 if (FILES_STORAGE_MODE === FileStorageMode.Local) {
   fs.ensureDirSync(FILES_LOCAL_STORAGE_BASE_PATH);
