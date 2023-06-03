@@ -2,6 +2,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import type { NextFunction, Response } from "express";
 
 import { Di } from "@enums/Di";
+import { Permission } from "@enums/Permission";
 import { CustomRequest } from "@custom-types/express";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
@@ -25,6 +26,10 @@ export const requireWorkspaceAccess = (() => {
 
     if (!userId || !workspaceId) {
       return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    if (request.permissions[Permission.ViewAllWorkspaces]) {
+      return next();
     }
 
     const isPermittedToAccessWorkspace =
