@@ -14,9 +14,10 @@ import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativeP
 
 const fileRoutes = Router({ mergeParams: true });
 
+fileRoutes.use(requireAuthentication);
+
 fileRoutes.post(
   "/v1",
-  requireAuthentication,
   requirePermissions([Permission.UploadFiles]),
   validateRequestWith(useStoreSuperSchema),
   processRequestWith(StoreController)
@@ -24,7 +25,6 @@ fileRoutes.post(
 
 fileRoutes.patch(
   "/:fileId/v1/relative-path",
-  requireAuthentication,
   requirePermissions([Permission.UpdateFileRelativePath]),
   validateRequestWith(usePatchRelativePathSuperSchema),
   processRequestWith(PatchRelativePathController)
