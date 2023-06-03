@@ -20,12 +20,6 @@ const UPDATE_ROLE_PERMISSION: IPermissionDefinition = {
   name: "Update role",
 };
 
-export const ALL_ROLE_PERMISSION_IDS = [
-  VIEW_ALL_ROLES_PERMISSION.id,
-  CREATE_ROLE_PERMISSION.id,
-  UPDATE_ROLE_PERMISSION.id,
-];
-
 // ****************************************************
 // @NOTE WORKSPACE PERMISSIONS
 // ****************************************************
@@ -44,12 +38,6 @@ const UPDATE_WORKSPACE_PERMISSION: IPermissionDefinition = {
   id: Permission.UpdateWorkspace,
   name: "Update workspace",
 };
-
-export const ALL_WORKSPACE_PERMISSION_IDS = [
-  VIEW_ALL_WORKSPACES_PERMISSION.id,
-  CREATE_WORKSPACE_PERMISSION.id,
-  UPDATE_WORKSPACE_PERMISSION.id,
-];
 
 // ****************************************************
 // @NOTE USER PERMISSIONS
@@ -75,11 +63,29 @@ const RESTORE_USER_ACCOUNT_PERMISSION: IPermissionDefinition = {
   name: "Restore user account",
 };
 
-export const ALL_USER_PERMISSION_IDS: Permission[] = [
-  CHANGE_USER_ROLE_PERMISSION.id,
-  RESTORE_USER_ACCOUNT_PERMISSION.id,
-  DEACTIVATE_USER_ACCOUNT_PERMISSION.id,
-];
+// ****************************************************
+// @NOTE FILE PERMISSIONS
+// ****************************************************
+
+const UPLOAD_FILES_PERMISSION: IPermissionDefinition = {
+  id: Permission.UploadFiles,
+  name: "Upload files",
+};
+
+const REMOVE_FILE_PERMISSION: IPermissionDefinition = {
+  id: Permission.RemoveFile,
+  name: "Remove file",
+};
+
+const UPDATE_FILENAME_PERMISSION: IPermissionDefinition = {
+  id: Permission.UpdateFilename,
+  name: "Update filename",
+};
+
+const UPDATE_FILE_RELATIVE_PATH: IPermissionDefinition = {
+  id: Permission.UpdateFileRelativePath,
+  name: "Update file relative path",
+};
 
 export const ALL_PERMISSIONS = [
   VIEW_ALL_ROLES_PERMISSION,
@@ -94,4 +100,9 @@ export const ALL_PERMISSIONS = [
   DEACTIVATE_USER_ACCOUNT_PERMISSION,
   CHANGE_USER_ROLE_PERMISSION,
   RESTORE_USER_ACCOUNT_PERMISSION,
+
+  UPLOAD_FILES_PERMISSION,
+  REMOVE_FILE_PERMISSION,
+  UPDATE_FILENAME_PERMISSION,
+  UPDATE_FILE_RELATIVE_PATH,
 ];

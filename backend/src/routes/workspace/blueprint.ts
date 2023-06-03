@@ -8,9 +8,10 @@ import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 
 const blueprintRoutes = Router({ mergeParams: true });
 
+blueprintRoutes.use(requireAuthentication);
+
 blueprintRoutes.get(
   "/v1",
-  requireAuthentication,
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
