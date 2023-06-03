@@ -3,7 +3,6 @@ import { Entity, Column, ManyToOne } from "typeorm";
 import { Base } from "./Base";
 import { User } from "./User";
 import { Workspace } from "./Workspace";
-import { WorkspaceAccess } from "@enums/WorkspaceAccess";
 
 @Entity("users_workspaces")
 export class UserToWorkspace extends Base {
@@ -12,13 +11,6 @@ export class UserToWorkspace extends Base {
 
   @Column()
   workspaceId!: number;
-
-  @Column({
-    type: "enum",
-    enum: WorkspaceAccess,
-    default: WorkspaceAccess.Read,
-  })
-  access!: WorkspaceAccess;
 
   @ManyToOne(() => User, user => user.userToWorkspace)
   user: User;
