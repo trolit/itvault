@@ -2,8 +2,8 @@ import type { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { JWT } from "@config";
 import { Di } from "@enums/Di";
-import { JWT_TOKEN_COOKIE_KEY } from "@config/index";
 import { CustomRequest } from "@custom-types/express";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/service/IAuthService";
@@ -28,7 +28,7 @@ export class StatusController implements IController {
     const result = this._authService.verifyToken(token);
 
     if (result.error) {
-      response.clearCookie(JWT_TOKEN_COOKIE_KEY);
+      response.clearCookie(JWT.COOKIE_KEY);
 
       return response.status(HTTP.FORBIDDEN).send();
     }
