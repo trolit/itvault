@@ -11,4 +11,9 @@ export enum Permission {
   ChangeUserRole,
   RestoreUserAccount,
   DeactivateUserAccount,
+
+  UploadFiles,
+  RemoveFile,
+  UpdateFilename,
+  UpdateFileRelativePath,
 }
