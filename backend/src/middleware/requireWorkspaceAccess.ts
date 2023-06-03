@@ -23,6 +23,10 @@ export const requireWorkspaceAccess = (() => {
       params: { workspaceId },
     } = request;
 
+    if (!userId || !workspaceId) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
     const isPermittedToAccessWorkspace =
       await userRepository.isPermittedToAccessWorkspace(userId, workspaceId);
 
