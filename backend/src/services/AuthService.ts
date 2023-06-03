@@ -3,11 +3,7 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
-import {
-  JWT_SECRET_KEY,
-  JWT_TOKEN_COOKIE_KEY,
-  JWT_TOKEN_LIFETIME_IN_SECONDS,
-} from "@config";
+import { JWT } from "@config";
 import { Di } from "@enums/Di";
 import {
   DataStoreRole,
@@ -25,9 +21,9 @@ export class AuthService implements IAuthService {
   ) {}
 
   signIn(payload: JwtPayload, options: SignOptions = {}) {
-    return jwt.sign(payload, JWT_SECRET_KEY, {
+    return jwt.sign(payload, JWT.SECRET_KEY, {
       ...options,
-      expiresIn: JWT_TOKEN_LIFETIME_IN_SECONDS,
+      expiresIn: JWT.TOKEN_LIFETIME_IN_SECONDS,
     });
   }
 
@@ -44,7 +40,7 @@ export class AuthService implements IAuthService {
     ]);
 
     if (result) {
-      response.clearCookie(JWT_TOKEN_COOKIE_KEY);
+      response.clearCookie(JWT.COOKIE_KEY);
 
       return result;
     }
@@ -58,7 +54,7 @@ export class AuthService implements IAuthService {
 
     jwt.verify(
       token,
-      JWT_SECRET_KEY,
+      JWT.SECRET_KEY,
       {
         algorithms: ["HS256"],
       },

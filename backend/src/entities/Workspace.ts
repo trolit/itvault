@@ -3,7 +3,7 @@ import { Entity, Column, OneToMany, BeforeInsert } from "typeorm";
 
 import { Base } from "./Base";
 import { File } from "./File";
-import { BCRYPT_SALT_ROUNDS } from "@config/index";
+import { BCRYPT } from "@config";
 import { UserToWorkspace } from "./UserToWorkspace";
 import { BlueprintToWorkspace } from "./BlueprintToWorkspace";
 
@@ -37,7 +37,7 @@ export class Workspace extends Base {
   @BeforeInsert()
   async hashPasswordIfProvided() {
     if (this.password) {
-      this.password = await bcrypt.hash(this.password, BCRYPT_SALT_ROUNDS);
+      this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
     }
   }
 }

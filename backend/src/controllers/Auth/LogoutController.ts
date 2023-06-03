@@ -2,8 +2,8 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { JWT } from "@config";
 import { Di } from "@enums/Di";
-import { JWT_TOKEN_COOKIE_KEY } from "@config";
 import { CustomRequest } from "@custom-types/express";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/service/IAuthService";
@@ -16,7 +16,7 @@ export class LogoutController implements IController {
   ) {}
 
   async invoke(request: CustomRequest, response: Response) {
-    const token = request.cookies[JWT_TOKEN_COOKIE_KEY];
+    const token = request.cookies[JWT.COOKIE_KEY];
 
     if (!token) {
       return response.status(HTTP.UNAUTHORIZED).send();

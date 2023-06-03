@@ -4,13 +4,13 @@ import cookieParser from "cookie-parser";
 import express, { Application } from "express";
 
 import routes from "@routes";
-import { ROUTES_PREFIX, APP_URL } from "@config";
+import { APP } from "@config";
 
 export const setupExpress = (app: Application) => {
   app.use(
     cors({
       credentials: true,
-      origin: APP_URL,
+      origin: APP.URL,
     })
   );
 
@@ -20,5 +20,5 @@ export const setupExpress = (app: Application) => {
 
   app.use(cookieParser());
 
-  app.use(ROUTES_PREFIX, routes);
+  app.use(APP.ROUTES_PREFIX, routes);
 };
