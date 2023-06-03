@@ -23,7 +23,9 @@ const relativePaths = [
 export const file = setSeederFactory(File, () => {
   const file = new File();
 
-  const filename = faker.system.commonFileName();
+  const filename = faker.system.commonFileName(
+    sample(["txt", "js", "ts", "md", "html", "tsx"])
+  );
 
   file.originalFilename = filename;
 
