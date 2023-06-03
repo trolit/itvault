@@ -17,10 +17,8 @@ workspaceRoutes.get(
   processRequestWith(GetAllController)
 );
 
-// @TODO validate workspaceId in blueprint requests
 workspaceRoutes.use("/:workspaceId/blueprints", blueprintRoutes);
 
-// @TODO validate workspaceId in file requests
 workspaceRoutes.use("/:workspaceId/files", fileRoutes);
 
 export = workspaceRoutes;

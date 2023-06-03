@@ -17,4 +17,9 @@ export interface IUserRepository extends IBaseRepository<User> {
   updateMany(
     entitiesToUpdate: UpdateUserDto[]
   ): Promise<Result<UpdateUserDto[]>>;
+
+  isPermittedToAccessWorkspace(
+    userId: number,
+    workspaceId: number
+  ): Promise<boolean>;
 }

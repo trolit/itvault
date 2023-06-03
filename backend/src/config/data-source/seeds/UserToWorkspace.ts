@@ -9,7 +9,6 @@ import {
 import { User } from "@entities/User";
 import { Workspace } from "@entities/Workspace";
 import { HEAD_ADMIN_ROLE } from "@config/default-roles";
-import { WorkspaceAccess } from "@enums/WorkspaceAccess";
 import { UserToWorkspace } from "@entities/UserToWorkspace";
 
 export class UserToWorkspaceSeeder implements Seeder {
@@ -66,7 +65,6 @@ async function updateUserToWorkspaceBridge(
     await userToWorkspaceRepository.save({
       user,
       workspace,
-      access: WorkspaceAccess.Write,
     });
   }
 }

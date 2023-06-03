@@ -9,12 +9,14 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { useStoreSuperSchema } from "@schemas/File/useStoreSuperSchema";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
 const fileRoutes = Router({ mergeParams: true });
 
 fileRoutes.use(requireAuthentication);
+fileRoutes.use(requireWorkspaceAccess);
 
 fileRoutes.post(
   "/v1",

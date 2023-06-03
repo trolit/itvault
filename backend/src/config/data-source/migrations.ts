@@ -14,6 +14,7 @@ import { CreateVariantsTable1685024333420 } from "@migrations/1685024333420-Crea
 import { SetOneToManyRelationBetweenWorkspaceAndFile1685030356268 } from "@migrations/1685030356268-SetOneToManyRelationBetweenWorkspaceAndFile";
 import { SetOneToManyRelationBetweenFileAndVariant1685030994778 } from "@migrations/1685030994778-SetOneToManyRelationBetweenFileAndVariant";
 import { ExpandVariantEntityWithNameProperty1685044578245 } from "@migrations/1685044578245-ExpandVariantEntityWithNameProperty";
+import { RemoveAccessPropertyFromUserToWorkspaceEntity1685798752314 } from "@migrations/1685798752314-RemoveAccessPropertyFromUserToWorkspaceEntity";
 
 export const migrations = [
   CreateUsersTable1665695149133,
@@ -32,4 +33,5 @@ export const migrations = [
   SetOneToManyRelationBetweenWorkspaceAndFile1685030356268,
   SetOneToManyRelationBetweenFileAndVariant1685030994778,
   ExpandVariantEntityWithNameProperty1685044578245,
+  RemoveAccessPropertyFromUserToWorkspaceEntity1685798752314,
 ];
