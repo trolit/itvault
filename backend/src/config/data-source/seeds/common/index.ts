@@ -1,4 +1,4 @@
-import { ALL_EDITABLE_ROLES, HEAD_ADMIN_ROLE } from "@config/default-roles";
+import { HEAD_ADMIN_ROLE, ALL_EDITABLE_ROLES } from "@config/default-roles";
 
 export const DOMAIN = "itvault.dev";
 export const PASSWORD = "1234";
@@ -28,6 +28,7 @@ export const TEST_LOCKED_WORKSPACE = {
   password: PASSWORD,
 };
 
+// @TODO this should be in workspace hooks
 export const TEST_COMMON_BLUEPRINT = {
   name: "Common",
   color: "#C6CED1",
