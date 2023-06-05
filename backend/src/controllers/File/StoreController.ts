@@ -32,7 +32,7 @@ export class StoreController
       const result = await this._fileService.upload(
         workspaceId,
         request,
-        `/workspace-${workspaceId}`
+        `workspace-${workspaceId}`
       );
 
       return response.status(HTTP.OK).send(result);
