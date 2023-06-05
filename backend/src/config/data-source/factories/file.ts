@@ -24,7 +24,7 @@ export const file = setSeederFactory(File, () => {
   const file = new File();
 
   const filename = faker.system.commonFileName(
-    sample(["txt", "js", "ts", "md", "html", "tsx"])
+    sample(["txt", "js", "md", "html"])
   );
 
   file.originalFilename = filename;
