@@ -24,7 +24,7 @@ export class FileSeeder implements Seeder {
 
     const fileFactory = factoryManager.get(File);
 
-    await fileFactory.saveMany(8, {
+    await fileFactory.saveMany(5, {
       workspace,
     });
   }
