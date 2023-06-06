@@ -21,7 +21,7 @@ export class Variant {
   filename: string;
 
   @Column()
-  size: number;
+  size: number; // @NOTE in bytes
 
   @CreateDateColumn()
   createdAt: Date;

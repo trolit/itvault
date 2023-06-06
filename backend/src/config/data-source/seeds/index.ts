@@ -1,6 +1,7 @@
 import { FileSeeder } from "./File";
 import { RoleSeeder } from "./Role";
 import { UserSeeder } from "./User";
+import { VariantSeeder } from "./Variant";
 import { BlueprintSeeder } from "./Blueprint";
 import { WorkspaceSeeder } from "./Workspace";
 import { PermissionSeeder } from "./Permission";
@@ -21,4 +22,5 @@ export const seeds = [
   BlueprintToWorkspaceSeeder,
 
   FileSeeder,
+  VariantSeeder,
 ];
