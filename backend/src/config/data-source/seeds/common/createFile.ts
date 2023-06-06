@@ -29,7 +29,7 @@ export async function createFile(
 }
 
 function getFileContent(extension: string) {
-  const value = random(3, 7);
+  const value = random(3, 15);
 
   const rawContent = [];
 
