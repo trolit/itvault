@@ -2,12 +2,14 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { File } from "./File";
+import { Palette } from "./Palette";
 
 @Entity("variants")
 export class Variant {
@@ -31,4 +33,7 @@ export class Variant {
 
   @ManyToOne(() => File, file => file.variants)
   file: File;
+
+  @OneToMany(() => Palette, palette => palette.variant, { cascade: true })
+  palettes: Palette[];
 }
