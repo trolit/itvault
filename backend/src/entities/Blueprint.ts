@@ -16,9 +16,4 @@ export class Blueprint extends Base {
   @Column()
   color!: string;
 
-  @OneToMany(
-    () => BlueprintToWorkspace,
-    blueprintToWorkspace => blueprintToWorkspace.blueprint
-  )
-  blueprintToWorkspace: BlueprintToWorkspace[];
 }

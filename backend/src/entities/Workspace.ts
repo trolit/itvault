@@ -25,12 +25,6 @@ export class Workspace extends Base {
   )
   userToWorkspace: UserToWorkspace[];
 
-  @OneToMany(
-    () => BlueprintToWorkspace,
-    blueprintToWorkspace => blueprintToWorkspace.workspace
-  )
-  blueprintToWorkspace: BlueprintToWorkspace[];
-
   @OneToMany(() => File, file => file.workspace, { cascade: true })
   files: File[];
 
