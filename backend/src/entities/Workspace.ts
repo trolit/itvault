@@ -4,8 +4,8 @@ import { Entity, Column, OneToMany, BeforeInsert } from "typeorm";
 import { Base } from "./Base";
 import { File } from "./File";
 import { BCRYPT } from "@config";
+import { Blueprint } from "./Blueprint";
 import { UserToWorkspace } from "./UserToWorkspace";
-import { BlueprintToWorkspace } from "./BlueprintToWorkspace";
 
 @Entity("workspaces")
 export class Workspace extends Base {
@@ -25,14 +25,13 @@ export class Workspace extends Base {
   )
   userToWorkspace: UserToWorkspace[];
 
-  @OneToMany(
-    () => BlueprintToWorkspace,
-    blueprintToWorkspace => blueprintToWorkspace.workspace
-  )
-  blueprintToWorkspace: BlueprintToWorkspace[];
-
   @OneToMany(() => File, file => file.workspace, { cascade: true })
   files: File[];
+
+  @OneToMany(() => Blueprint, blueprint => blueprint.workspace, {
+    cascade: true,
+  })
+  blueprints: Blueprint[];
 
   @BeforeInsert()
   async hashPasswordIfProvided() {

@@ -28,8 +28,8 @@ export class BlueprintRepository
     return this.database.findAndCount({
       ...pagination,
       where: {
-        blueprintToWorkspace: {
-          workspaceId: id,
+        workspace: {
+          id,
         },
       },
     });

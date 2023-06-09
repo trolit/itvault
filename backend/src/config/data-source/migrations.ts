@@ -16,6 +16,7 @@ import { SetOneToManyRelationBetweenFileAndVariant1685030994778 } from "@migrati
 import { ExpandVariantEntityWithNameProperty1685044578245 } from "@migrations/1685044578245-ExpandVariantEntityWithNameProperty";
 import { RemoveAccessPropertyFromUserToWorkspaceEntity1685798752314 } from "@migrations/1685798752314-RemoveAccessPropertyFromUserToWorkspaceEntity";
 import { CreatePalettesTable1686234793370 } from "@migrations/1686234793370-CreatePalettesTable";
+import { ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany1686304172406 } from "@migrations/1686304172406-ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany";
 
 export const migrations = [
   CreateUsersTable1665695149133,
@@ -36,4 +37,5 @@ export const migrations = [
   ExpandVariantEntityWithNameProperty1685044578245,
   RemoveAccessPropertyFromUserToWorkspaceEntity1685798752314,
   CreatePalettesTable1686234793370,
+  ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany1686304172406,
 ];

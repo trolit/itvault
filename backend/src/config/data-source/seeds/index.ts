@@ -7,7 +7,6 @@ import { WorkspaceSeeder } from "./Workspace";
 import { PermissionSeeder } from "./Permission";
 import { UserToWorkspaceSeeder } from "./UserToWorkspace";
 import { PermissionToRoleSeeder } from "./PermissionToRole";
-import { BlueprintToWorkspaceSeeder } from "./BlueprintToWorkspace";
 
 export const seeds = [
   RoleSeeder,
@@ -19,7 +18,6 @@ export const seeds = [
   UserToWorkspaceSeeder,
 
   BlueprintSeeder,
-  BlueprintToWorkspaceSeeder,
 
   FileSeeder,
   VariantSeeder,
