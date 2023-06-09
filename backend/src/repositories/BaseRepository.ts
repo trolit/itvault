@@ -37,4 +37,8 @@ export class BaseRepository<T extends { id: number }>
   softDeleteById(id: number): Promise<UpdateResult> {
     return this.database.softDelete({ id } as FindOptionsWhere<T>);
   }
+
+  createEntityInstance(): T {
+    return this.database.create();
+  }
 }
