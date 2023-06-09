@@ -1,9 +1,9 @@
-import { UpdateResult } from "typeorm";
+import { DeepPartial, UpdateResult } from "typeorm";
 
 export interface IBaseRepository<T> {
   findById(id: number): Promise<T | null>;
 
   softDeleteById(id: number): Promise<UpdateResult>;
 
-  createEntityInstance(): T;
+  createEntityInstance(properties?: DeepPartial<T>): T;
 }
