@@ -28,12 +28,6 @@ export const TEST_LOCKED_WORKSPACE = {
   password: PASSWORD,
 };
 
-// @TODO this should be in workspace hooks
-export const TEST_COMMON_BLUEPRINT = {
-  name: "Common",
-  color: "#C6CED1",
-};
-
 function generateEmailByRoleName(name: string) {
   return `${name.toLowerCase().replace(/ /g, ".")}@${DOMAIN}`;
 }

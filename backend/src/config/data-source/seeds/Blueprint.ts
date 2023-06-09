@@ -1,19 +1,32 @@
 import { DataSource } from "typeorm";
+import { faker } from "@faker-js/faker";
 import { Seeder } from "typeorm-extension";
 
 import { Blueprint } from "@entities/Blueprint";
-import { TEST_COMMON_BLUEPRINT } from "./common";
+import { Workspace } from "@entities/Workspace";
+import { TEST_UNLOCKED_WORKSPACE } from "./common";
 
 export class BlueprintSeeder implements Seeder {
   public async run(dataSource: DataSource) {
-    const repository = dataSource.getRepository(Blueprint);
+    const workspaceRepository = dataSource.getRepository(Workspace);
 
-    const { name, color } = TEST_COMMON_BLUEPRINT;
-
-    await repository.save({
-      name,
-      color,
-      description: "Common blueprint. This blueprint cannot be removed.",
+    const workspace = await workspaceRepository.findOneBy({
+      name: TEST_UNLOCKED_WORKSPACE.name,
     });
+
+    if (!workspace) {
+      return;
+    }
+
+    const blueprintRepository = dataSource.getRepository(Blueprint);
+
+    for (let index = 0; index < 3; index++) {
+      await blueprintRepository.save({
+        name: `Blueprint ${index + 1}`,
+        color: faker.color.rgb({ format: "hex", casing: "upper" }),
+        description: `Seed blueprint ${index + 1}`,
+        workspace,
+      });
+    }
   }
 }
