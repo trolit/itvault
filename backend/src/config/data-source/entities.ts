@@ -8,7 +8,6 @@ import { Workspace } from "@entities/Workspace";
 import { Permission } from "@entities/Permission";
 import { UserToWorkspace } from "@entities/UserToWorkspace";
 import { PermissionToRole } from "@entities/PermissionToRole";
-import { BlueprintToWorkspace } from "@entities/BlueprintToWorkspace";
 
 export const entities = [
   Permission,
@@ -18,7 +17,6 @@ export const entities = [
   Workspace,
   UserToWorkspace,
   Blueprint,
-  BlueprintToWorkspace,
   File,
   Variant,
   Palette,
