@@ -3,6 +3,7 @@ import {
   QueryRunner,
   UpdateResult,
   FindOptionsWhere,
+  DeepPartial,
 } from "typeorm";
 
 import { Type } from "@common-types";
@@ -36,5 +37,13 @@ export class BaseRepository<T extends { id: number }>
 
   softDeleteById(id: number): Promise<UpdateResult> {
     return this.database.softDelete({ id } as FindOptionsWhere<T>);
+  }
+
+  createEntityInstance(properties?: DeepPartial<T>): T {
+    if (!properties) {
+      return this.database.create();
+    }
+
+    return this.database.create(properties);
   }
 }
