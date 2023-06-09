@@ -1,6 +1,7 @@
-import { Entity, Column, ManyToOne } from "typeorm";
+import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 
 import { Base } from "./Base";
+import { Palette } from "./Palette";
 import { Workspace } from "./Workspace";
 
 @Entity("blueprints")
@@ -18,4 +19,9 @@ export class Blueprint extends Base {
 
   @ManyToOne(() => Workspace, workspace => workspace.blueprints)
   workspace: Workspace;
+
+  @OneToMany(() => Palette, palette => palette.blueprint, {
+    cascade: true,
+  })
+  palettes: Palette[];
 }
