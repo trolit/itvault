@@ -10,7 +10,7 @@ export class Palette {
   id: number;
 
   @Column({ type: "json" })
-  value: Record<number, string[]>;
+  value: Record<number, string[] | string>;
 
   @ManyToOne(() => Variant, variant => variant.palettes)
   variant: Variant;
