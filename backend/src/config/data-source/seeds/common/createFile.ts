@@ -3,18 +3,11 @@ import fs from "fs-extra";
 import random from "lodash/random";
 import { faker } from "@faker-js/faker";
 
-import { FILES } from "@config";
-
 export async function createFile(
-  workspaceId: number,
   filename: string,
-  extension: string
+  extension: string,
+  uploadDir: string
 ) {
-  const uploadDir = path.join(
-    FILES.STORAGE.LOCAL.BASE_PATH,
-    `workspace-${workspaceId}`
-  );
-
   await fs.ensureDir(uploadDir);
 
   const fileDir = path.join(uploadDir, filename);

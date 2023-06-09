@@ -1,7 +1,10 @@
+import path from "path";
+import fs from "fs-extra";
 import crypto from "crypto";
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 
+import { FILES } from "@config";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { Workspace } from "@entities/Workspace";
@@ -19,6 +22,13 @@ export class VariantSeeder implements Seeder {
     if (!workspace) {
       return;
     }
+
+    const uploadDir = path.join(
+      FILES.STORAGE.LOCAL.BASE_PATH,
+      `workspace-${workspace.id}`
+    );
+
+    await fs.emptyDir(uploadDir);
 
     const fileRepository = dataSource.getRepository(File);
 
@@ -44,7 +54,7 @@ export class VariantSeeder implements Seeder {
 
       const variantFilename = UUID.concat(".", extension);
 
-      const size = await createFile(workspace.id, variantFilename, extension);
+      const size = await createFile(variantFilename, extension, uploadDir);
 
       const variant = variantRepository.create({
         name: "v1",
