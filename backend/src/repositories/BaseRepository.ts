@@ -10,7 +10,7 @@ import { Type } from "@common-types";
 import { dataSource } from "@config/data-source";
 import { IBaseRepository } from "@interfaces/repository/IBaseRepository";
 
-export class BaseRepository<T extends { id: number }>
+export class BaseRepository<T extends { id: number | string }>
   implements IBaseRepository<T>
 {
   protected database: Repository<T>;
@@ -31,11 +31,11 @@ export class BaseRepository<T extends { id: number }>
     };
   }
 
-  findById(id: number): Promise<T | null> {
+  findById(id: number | string): Promise<T | null> {
     return this.database.findOneBy({ id } as FindOptionsWhere<T>);
   }
 
-  softDeleteById(id: number): Promise<UpdateResult> {
+  softDeleteById(id: number | string): Promise<UpdateResult> {
     return this.database.softDelete({ id } as FindOptionsWhere<T>);
   }
 
