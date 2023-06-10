@@ -1,18 +1,18 @@
 import { Router } from "express";
 
-import authRoutes from "./auth";
-import roleRoutes from "./role";
-import userRoutes from "./user";
-import workspaceRoutes from "./workspace";
+import authRouter from "./auth";
+import rolesRouter from "./roles";
+import usersRouter from "./users";
+import workspacesRouter from "./workspaces";
 
 const router = Router();
 
-router.use("/auth", authRoutes);
+router.use("/auth", authRouter);
 
-router.use("/roles", roleRoutes);
+router.use("/roles", rolesRouter);
 
-router.use("/users", userRoutes);
+router.use("/users", usersRouter);
 
-router.use("/workspaces", workspaceRoutes);
+router.use("/workspaces", workspacesRouter);
 
 export = router;

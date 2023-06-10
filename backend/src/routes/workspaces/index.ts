@@ -1,28 +1,28 @@
 import { Router } from "express";
 
-import fileRoutes from "./file";
-import variantRoutes from "./variant";
-import blueprintRoutes from "./blueprint";
+import filesRouter from "./files";
+import variantsRouter from "./variants";
+import blueprintsRouter from "./blueprints";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
 
-const workspaceRoutes = Router();
+const workspacesRouter = Router();
 
-workspaceRoutes.use(requireAuthentication);
+workspacesRouter.use(requireAuthentication);
 
-workspaceRoutes.get(
+workspacesRouter.get(
   "/v1",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
-workspaceRoutes.use("/:workspaceId/blueprints", blueprintRoutes);
+workspacesRouter.use("/:workspaceId/files", filesRouter);
 
-workspaceRoutes.use("/:workspaceId/files", fileRoutes);
+workspacesRouter.use("/:workspaceId/variants", variantsRouter);
 
-workspaceRoutes.use("/:workspaceId/variants", variantRoutes);
+workspacesRouter.use("/:workspaceId/blueprints", blueprintsRouter);
 
-export = workspaceRoutes;
+export = workspacesRouter;

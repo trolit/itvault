@@ -6,14 +6,14 @@ import { GetAllController } from "@controllers/Blueprint/GetAllController";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 
-const blueprintRoutes = Router({ mergeParams: true });
+const blueprintsRouter = Router({ mergeParams: true });
 
-blueprintRoutes.use(requireWorkspaceAccess);
+blueprintsRouter.use(requireWorkspaceAccess);
 
-blueprintRoutes.get(
+blueprintsRouter.get(
   "/v1",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
-export = blueprintRoutes;
+export = blueprintsRouter;
