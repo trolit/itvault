@@ -89,6 +89,17 @@ export class FileRepository
     });
   }
 
+  getOne(workspaceId: number, fileId: number): Promise<File | null> {
+    return this.database.findOne({
+      where: {
+        id: fileId,
+        workspace: {
+          id: workspaceId,
+        },
+      },
+    });
+  }
+
   private setupFilesToAdd(
     workspace: Workspace,
     transaction: QueryRunner,
