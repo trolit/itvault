@@ -11,9 +11,10 @@ import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
 
 const workspaceRoutes = Router();
 
+workspaceRoutes.use(requireAuthentication);
+
 workspaceRoutes.get(
   "/v1",
-  requireAuthentication,
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );

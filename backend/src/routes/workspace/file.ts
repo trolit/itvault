@@ -7,7 +7,6 @@ import { StoreController } from "@controllers/File/StoreController";
 import { GetAllController } from "@controllers/File/GetAllController";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { useStoreSuperSchema } from "@schemas/File/useStoreSuperSchema";
-import { requireAuthentication } from "@middleware/requireAuthentication";
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
@@ -15,7 +14,6 @@ import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativeP
 
 const fileRoutes = Router({ mergeParams: true });
 
-fileRoutes.use(requireAuthentication);
 fileRoutes.use(requireWorkspaceAccess);
 
 fileRoutes.post(
