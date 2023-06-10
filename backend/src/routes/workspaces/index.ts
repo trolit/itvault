@@ -19,10 +19,10 @@ workspacesRouter.get(
   processRequestWith(GetAllController)
 );
 
-workspacesRouter.use("/:workspaceId/blueprints", blueprintsRouter);
-
 workspacesRouter.use("/:workspaceId/files", filesRouter);
 
 workspacesRouter.use("/:workspaceId/variants", variantsRouter);
+
+workspacesRouter.use("/:workspaceId/blueprints", blueprintsRouter);
 
 export = workspacesRouter;

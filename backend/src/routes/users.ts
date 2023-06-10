@@ -10,22 +10,22 @@ import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
 
-const usersRoute = Router();
+const usersRouter = Router();
 
-usersRoute.use(requireAuthentication);
+usersRouter.use(requireAuthentication);
 
-usersRoute.get(
+usersRouter.get(
   "/v1",
   requirePermissions([Permission.ViewAllUsers]),
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
-usersRoute.patch(
+usersRouter.patch(
   "/v1",
   requirePermissions(UpdateManyController.isMissingPermissions),
   validateRequestWith(useUpdateManySuperSchema),
   processRequestWith(UpdateManyController)
 );
 
-export = usersRoute;
+export = usersRouter;
