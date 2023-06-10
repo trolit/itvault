@@ -10,23 +10,23 @@ import { requireAuthentication } from "@middleware/requireAuthentication";
 import { useGetAllSuperSchema } from "@schemas/Role/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Role/useUpdateSuperSchema";
 
-const roleRoutes = Router();
+const rolesRoute = Router();
 
-roleRoutes.use(requireAuthentication);
+rolesRoute.use(requireAuthentication);
 
-roleRoutes.use(requirePermissions([Permission.ViewAllRoles]));
+rolesRoute.use(requirePermissions([Permission.ViewAllRoles]));
 
-roleRoutes.get(
+rolesRoute.get(
   "/v1",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
-roleRoutes.put(
+rolesRoute.put(
   "/v1/:id",
   requirePermissions([Permission.UpdateRole]),
   validateRequestWith(useUpdateSuperSchema),
   processRequestWith(UpdateController)
 );
 
-export = roleRoutes;
+export = rolesRoute;
