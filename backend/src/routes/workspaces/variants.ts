@@ -4,13 +4,13 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { GetContentController } from "@controllers/Variant/GetContentController";
 
-const variantRoutes = Router({ mergeParams: true });
+const variantsRouter = Router({ mergeParams: true });
 
-variantRoutes.use(requireWorkspaceAccess);
+variantsRouter.use(requireWorkspaceAccess);
 
-variantRoutes.get(
+variantsRouter.get(
   "/:variantId/v1/content",
   processRequestWith(GetContentController)
 );
 
-export = variantRoutes;
+export = variantsRouter;

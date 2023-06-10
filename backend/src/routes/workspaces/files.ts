@@ -12,28 +12,28 @@ import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
-const fileRoutes = Router({ mergeParams: true });
+const filesRouter = Router({ mergeParams: true });
 
-fileRoutes.use(requireWorkspaceAccess);
+filesRouter.use(requireWorkspaceAccess);
 
-fileRoutes.post(
+filesRouter.post(
   "/v1",
   requirePermissions([Permission.UploadFiles]),
   validateRequestWith(useStoreSuperSchema),
   processRequestWith(StoreController)
 );
 
-fileRoutes.patch(
+filesRouter.patch(
   "/:fileId/v1/relative-path",
   requirePermissions([Permission.UpdateFileRelativePath]),
   validateRequestWith(usePatchRelativePathSuperSchema),
   processRequestWith(PatchRelativePathController)
 );
 
-fileRoutes.get(
+filesRouter.get(
   "/v1",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
-export = fileRoutes;
+export = filesRouter;
