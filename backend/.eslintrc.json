@@ -37,6 +37,7 @@
     "@typescript-eslint/no-extraneous-class": "warn",
     "@typescript-eslint/no-non-null-asserted-nullish-coalescing": "warn",
     "@typescript-eslint/prefer-for-of": "warn",
-    "@typescript-eslint/unified-signatures": "warn"
+    "@typescript-eslint/unified-signatures": "warn",
+    "@typescript-eslint/no-empty-interface": "off"
   }
 }
