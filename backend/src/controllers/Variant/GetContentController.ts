@@ -16,7 +16,7 @@ interface IParams {
 }
 
 @injectable()
-export class GetByIdController
+export class GetContentController
   implements IController<IParams, undefined, undefined, string>
 {
   constructor(
