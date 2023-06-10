@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import fileRoutes from "./file";
+import variantRoutes from "./variant";
 import blueprintRoutes from "./blueprint";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
@@ -20,5 +21,7 @@ workspaceRoutes.get(
 workspaceRoutes.use("/:workspaceId/blueprints", blueprintRoutes);
 
 workspaceRoutes.use("/:workspaceId/files", fileRoutes);
+
+workspaceRoutes.use("/:workspaceId/variants", variantRoutes);
 
 export = workspaceRoutes;
