@@ -1,5 +1,4 @@
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
-import { DeepPartial, FindOptionsWhere, UpdateResult } from "typeorm";
+import { DeepPartial, FindManyOptions, UpdateResult } from "typeorm";
 
 export interface IBaseRepository<T> {
   findById(id: number | string): Promise<T | null>;
@@ -8,8 +7,5 @@ export interface IBaseRepository<T> {
 
   createEntityInstance(properties?: DeepPartial<T>): T;
 
-  getAll(
-    where: FindOptionsWhere<T>,
-    options?: { pagination?: IPaginationOptions }
-  ): Promise<[T[], number]>;
+  getAll(options: FindManyOptions<T>): Promise<[T[], number]>;
 }
