@@ -1,13 +1,14 @@
 import {
   Repository,
+  DeepPartial,
   QueryRunner,
   UpdateResult,
   FindOptionsWhere,
-  DeepPartial,
 } from "typeorm";
 
 import { Type } from "@common-types";
 import { dataSource } from "@config/data-source";
+import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IBaseRepository } from "@interfaces/repository/IBaseRepository";
 
 export class BaseRepository<T extends { id: number | string }>
@@ -45,5 +46,16 @@ export class BaseRepository<T extends { id: number | string }>
     }
 
     return this.database.create(properties);
+  }
+
+  getAll(
+    where: FindOptionsWhere<T>,
+    options?: { pagination?: IPaginationOptions }
+  ): Promise<[T[], number]> {
+    const paginationOptions = options?.pagination
+      ? { skip: options.pagination.skip, take: options.pagination.take }
+      : undefined;
+
+    return this.database.findAndCount({ where, ...paginationOptions });
   }
 }
