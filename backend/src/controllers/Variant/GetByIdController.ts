@@ -5,6 +5,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { FILES } from "@config";
+import { VariantDto } from "@dtos/VariantDto";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
@@ -16,8 +17,8 @@ interface IParams {
 }
 
 @injectable()
-export class GetContentController
-  implements IController<IParams, undefined, undefined, string>
+export class GetByIdController
+  implements IController<IParams, undefined, undefined, VariantDto>
 {
   constructor(
     @inject(Di.VariantRepository)
@@ -26,7 +27,7 @@ export class GetContentController
 
   async invoke(
     request: CustomRequest<IParams>,
-    response: CustomResponse<string>
+    response: CustomResponse<VariantDto>
   ) {
     const {
       params: { workspaceId, variantId },
@@ -48,6 +49,9 @@ export class GetContentController
       )
     );
 
-    return response.status(HTTP.OK).send(file.toString());
+    return response.status(HTTP.OK).send({
+      entry: variant,
+      content: file.toString(),
+    });
   }
 }
