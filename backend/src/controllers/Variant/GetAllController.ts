@@ -35,10 +35,12 @@ export class GetAllController
     } = request;
 
     const [result, total] = await this._variantRepository.getAll({
-      file: {
-        id: fileId,
-        workspace: {
-          id: workspaceId,
+      where: {
+        file: {
+          id: fileId,
+          workspace: {
+            id: workspaceId,
+          },
         },
       },
     });
