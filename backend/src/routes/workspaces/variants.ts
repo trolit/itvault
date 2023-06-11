@@ -8,9 +8,6 @@ const variantsRouter = Router({ mergeParams: true });
 
 variantsRouter.use(requireWorkspaceAccess);
 
-variantsRouter.get(
-  "/:variantId/v1/content",
-  processRequestWith(GetByIdController)
-);
+variantsRouter.get("/:variantId/v1", processRequestWith(GetByIdController));
 
 export = variantsRouter;
