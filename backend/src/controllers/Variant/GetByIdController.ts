@@ -1,13 +1,11 @@
-import path from "path";
-import fs from "fs-extra";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { FILES } from "@config";
 import { VariantDto } from "@dtos/VariantDto";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
+import { IVariantService } from "@interfaces/service/IVariantService";
 import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
 
 interface IParams {
@@ -22,7 +20,9 @@ export class GetByIdController
 {
   constructor(
     @inject(Di.VariantRepository)
-    private _variantRepository: IVariantRepository
+    private _variantRepository: IVariantRepository,
+    @inject(Di.VariantService)
+    private _variantService: IVariantService
   ) {}
 
   async invoke(
@@ -39,19 +39,14 @@ export class GetByIdController
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    const { filename } = variant;
-
-    const file = await fs.readFile(
-      path.join(
-        FILES.STORAGE.LOCAL.BASE_PATH,
-        `workspace-${workspaceId}`,
-        filename
-      )
+    const content = await this._variantService.getContent(
+      variant,
+      `workspace-${workspaceId}`
     );
 
     return response.status(HTTP.OK).send({
       entry: variant,
-      content: file.toString(),
+      content,
     });
   }
 }

@@ -1,5 +1,5 @@
 import { Variant } from "@entities/Variant";
 
 export interface IVariantService {
-  getContent(variant: Variant, path: string): Promise<string>;
+  getContent(variant: Variant, directory: string): Promise<string>;
 }
