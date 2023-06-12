@@ -37,10 +37,15 @@ export class GetAllController
       query: { skip, take },
     } = request;
 
-    const [result, total] =
-      await this._blueprintRepository.findAllByWorkspaceId(workspaceId, {
-        pagination: { skip, take },
-      });
+    const [result, total] = await this._blueprintRepository.getAll({
+      skip,
+      take,
+      where: {
+        workspace: {
+          id: workspaceId,
+        },
+      },
+    });
 
     return response.status(HTTP.OK).send({ result, total });
   }
