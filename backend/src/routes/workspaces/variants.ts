@@ -1,16 +1,22 @@
 import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { validateRequestWith } from "@middleware/validateRequestWith";
+import { GetAllController } from "@controllers/Variant/GetAllController";
 import { GetByIdController } from "@controllers/Variant/GetByIdController";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 
 const variantsRouter = Router({ mergeParams: true });
 
 variantsRouter.use(requireWorkspaceAccess);
 
 variantsRouter.get(
-  "/:variantId/v1/content",
-  processRequestWith(GetByIdController)
+  "/v1",
+  validateRequestWith(useGetAllSuperSchema),
+  processRequestWith(GetAllController)
 );
+
+variantsRouter.get("/:variantId/v1", processRequestWith(GetByIdController));
 
 export = variantsRouter;

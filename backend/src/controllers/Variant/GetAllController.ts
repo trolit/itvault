@@ -2,47 +2,45 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
+import { Variant } from "@entities/Variant";
 import { PaginatedResult } from "@utils/Result";
-import { Blueprint } from "@entities/Blueprint";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IBlueprintRepository } from "@interfaces/repository/IBlueprintRepository";
+import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
 
 interface IParams {
   workspaceId: number;
 }
 
 interface IQuery {
-  skip: number;
-
-  take: number;
+  fileId: number;
 }
 
 @injectable()
 export class GetAllController
-  implements
-    IController<IParams, undefined, IQuery, PaginatedResult<Blueprint>>
+  implements IController<IParams, undefined, IQuery, PaginatedResult<Variant>>
 {
   constructor(
-    @inject(Di.BlueprintRepository)
-    private _blueprintRepository: IBlueprintRepository
+    @inject(Di.VariantRepository)
+    private _variantRepository: IVariantRepository
   ) {}
 
   async invoke(
     request: CustomRequest<IParams, undefined, IQuery>,
-    response: CustomResponse<PaginatedResult<Blueprint>>
+    response: CustomResponse<PaginatedResult<Variant>>
   ) {
     const {
+      query: { fileId },
       params: { workspaceId },
-      query: { skip, take },
     } = request;
 
-    const [result, total] = await this._blueprintRepository.getAll({
-      skip,
-      take,
+    const [result, total] = await this._variantRepository.getAll({
       where: {
-        workspace: {
-          id: workspaceId,
+        file: {
+          id: fileId,
+          workspace: {
+            id: workspaceId,
+          },
         },
       },
     });

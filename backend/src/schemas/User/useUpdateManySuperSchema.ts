@@ -1,3 +1,4 @@
+import { In } from "typeorm";
 import isArray from "lodash/isArray";
 import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 
@@ -113,7 +114,9 @@ async function getRolesFromValue(value: UpdateUserDto[]): Promise<Role[]> {
     const roleRepository = getInstanceOf<IRoleRepository>(Di.RoleRepository);
 
     const [roles] = await roleRepository.getAll({
-      filters: { ids: uniqueRoleIds },
+      where: {
+        id: In(uniqueRoleIds),
+      },
     });
 
     return roles;

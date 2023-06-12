@@ -76,12 +76,14 @@ export class FileRepository
     workspaceId: number,
     relativePath: string
   ): Promise<File[]> {
+    const relativePathQuery =
+      relativePath === FILES.ROOT
+        ? Not(Like(`${FILES.ROOT}/%/%`))
+        : relativePath;
+
     return this.database.find({
       where: {
-        relativePath:
-          relativePath === FILES.ROOT
-            ? Not(Like(`${FILES.ROOT}/%/%`))
-            : relativePath,
+        relativePath: relativePathQuery,
         workspace: {
           id: workspaceId,
         },

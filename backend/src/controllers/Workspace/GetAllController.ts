@@ -34,14 +34,27 @@ export class GetAllController
     request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<PaginatedResult<WorkspaceDto>>
   ) {
-    const { userId, permissions, query } = request;
+    const {
+      userId,
+      permissions,
+      query: { skip, take },
+    } = request;
 
     const [result, total] = await this._workspaceRepository.getAll({
-      pagination: query,
-      filters: {
-        userId: isPermissionEnabled(Permission.ViewAllWorkspaces, permissions)
-          ? undefined
-          : userId,
+      skip,
+      take,
+      order: {
+        name: "asc",
+      },
+      where: {
+        userToWorkspace: {
+          userId: isPermissionEnabled(Permission.ViewAllWorkspaces, permissions)
+            ? undefined
+            : userId,
+        },
+      },
+      relations: {
+        userToWorkspace: true,
       },
     });
 

@@ -36,7 +36,15 @@ export class GetAllController
     } = request;
 
     const [result, total] = await this._userRepository.getAll({
-      pagination: { take, skip },
+      skip,
+      take,
+      order: {
+        email: "asc",
+      },
+      relations: {
+        role: true,
+      },
+      withDeleted: true,
     });
 
     const mappedResult = this._entityMapperService.mapToDto(

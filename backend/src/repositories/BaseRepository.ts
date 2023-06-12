@@ -1,9 +1,10 @@
 import {
   Repository,
+  DeepPartial,
   QueryRunner,
   UpdateResult,
   FindOptionsWhere,
-  DeepPartial,
+  FindManyOptions,
 } from "typeorm";
 
 import { Type } from "@common-types";
@@ -45,5 +46,9 @@ export class BaseRepository<T extends { id: number | string }>
     }
 
     return this.database.create(properties);
+  }
+
+  getAll(options: FindManyOptions<T>): Promise<[T[], number]> {
+    return this.database.findAndCount(options);
   }
 }

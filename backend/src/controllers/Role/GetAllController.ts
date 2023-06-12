@@ -1,3 +1,4 @@
+import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
@@ -34,8 +35,11 @@ export class GetAllController
     } = request;
 
     const [result, total] = await this._roleRepository.getAll({
-      pagination: { skip, take },
-      filters: { ids: { excluding: [HEAD_ADMIN_ROLE_ID] } },
+      skip,
+      take,
+      where: {
+        id: Not(HEAD_ADMIN_ROLE_ID),
+      },
     });
 
     return response.status(HTTP.OK).send({ result, total });
