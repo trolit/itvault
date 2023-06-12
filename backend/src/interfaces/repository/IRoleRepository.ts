@@ -1,17 +1,9 @@
 import { Role } from "@entities/Role";
 import { Result } from "@utils/Result";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+import { IBaseRepository } from "./IBaseRepository";
 
-export interface IRoleRepository {
-  getAll(options?: {
-    includePermissions?: boolean;
-    filters?: {
-      ids?: number[] | { excluding: number[] };
-    };
-    pagination?: IPaginationOptions;
-  }): Promise<[Role[], number]>;
-
+export interface IRoleRepository extends IBaseRepository<Role> {
   findByName(name: string): Promise<Role | null>;
 
   update(roleId: number, payload: UpdateRoleDto): Promise<Result<Role>>;
