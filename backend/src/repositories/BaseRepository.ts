@@ -56,4 +56,8 @@ export class BaseRepository<T extends { id: number | string }>
   getOne(options: FindOneOptions<T>): Promise<T | null> {
     return this.database.findOne(options);
   }
+
+  save(entity: DeepPartial<T>): Promise<T> {
+    return this.database.save(entity);
+  }
 }

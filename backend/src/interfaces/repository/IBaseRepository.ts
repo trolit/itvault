@@ -15,4 +15,6 @@ export interface IBaseRepository<T> {
   getAll(options: FindManyOptions<T>): Promise<[T[], number]>;
 
   getOne(options: FindOneOptions<T>): Promise<T | null>;
+
+  save(entity: DeepPartial<T>): Promise<T>;
 }
