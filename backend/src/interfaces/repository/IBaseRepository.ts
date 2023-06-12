@@ -1,4 +1,9 @@
-import { DeepPartial, FindManyOptions, UpdateResult } from "typeorm";
+import {
+  DeepPartial,
+  UpdateResult,
+  FindOneOptions,
+  FindManyOptions,
+} from "typeorm";
 
 export interface IBaseRepository<T> {
   findById(id: number | string): Promise<T | null>;
@@ -8,4 +13,6 @@ export interface IBaseRepository<T> {
   createEntityInstance(properties?: DeepPartial<T>): T;
 
   getAll(options: FindManyOptions<T>): Promise<[T[], number]>;
+
+  getOne(options: FindOneOptions<T>): Promise<T | null>;
 }

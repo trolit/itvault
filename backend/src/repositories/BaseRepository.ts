@@ -3,8 +3,9 @@ import {
   DeepPartial,
   QueryRunner,
   UpdateResult,
-  FindOptionsWhere,
+  FindOneOptions,
   FindManyOptions,
+  FindOptionsWhere,
 } from "typeorm";
 
 import { Type } from "@common-types";
@@ -50,5 +51,9 @@ export class BaseRepository<T extends { id: number | string }>
 
   getAll(options: FindManyOptions<T>): Promise<[T[], number]> {
     return this.database.findAndCount(options);
+  }
+
+  getOne(options: FindOneOptions<T>): Promise<T | null> {
+    return this.database.findOne(options);
   }
 }
