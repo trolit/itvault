@@ -11,6 +11,7 @@ export enum Di {
   RoleRepository = "IRoleRepository",
   UserRepository = "IUserRepository",
   FileRepository = "IFileRepository",
+  PaletteRepository = "IPaletteRepository",
   VariantRepository = "IVariantRepository",
   BlueprintRepository = "IBlueprintRepository",
   WorkspaceRepository = "IWorkspaceRepository",
