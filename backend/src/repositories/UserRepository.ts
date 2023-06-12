@@ -8,7 +8,6 @@ import { Result } from "@utils/Result";
 import { IError } from "@interfaces/IError";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IUserRepository } from "@interfaces/repository/IUserRepository";
 
 @injectable()
@@ -43,21 +42,6 @@ export class UserRepository
         email,
       },
       ...permissionsRelation,
-    });
-  }
-
-  getAll(options: {
-    pagination: IPaginationOptions;
-  }): Promise<[User[], number]> {
-    return this.database.findAndCount({
-      ...options.pagination,
-      order: {
-        email: "asc",
-      },
-      relations: {
-        role: true,
-      },
-      withDeleted: true,
     });
   }
 
