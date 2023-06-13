@@ -89,24 +89,24 @@ export class PaletteSeeder implements Seeder {
 
     const value: Record<number, string[]> = {};
 
-    const splitContentLength = splitContent.length;
+    const availableRows = splitContent.length - 1;
 
     for (let index = 0; index < iterations; index++) {
-      const rowNumber = random(splitContentLength);
+      const row = random(availableRows);
 
-      const line = splitContent[rowNumber];
+      const line = splitContent[row];
 
       const endIndex = random(0, line.length - 1);
 
       const part = `0-${endIndex}`;
 
-      if (value[rowNumber]) {
-        value[rowNumber].push(part);
+      if (value[row]) {
+        value[row].push(part);
 
         continue;
       }
 
-      value[rowNumber] = [part];
+      value[row] = [part];
     }
 
     return value;
