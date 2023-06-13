@@ -1,6 +1,6 @@
 import formidable from "formidable";
 import { injectable } from "tsyringe";
-import { QueryRunner, Repository, UpdateResult, Like, Not } from "typeorm";
+import { QueryRunner, Repository, Like, Not } from "typeorm";
 
 import { FILES } from "@config";
 import { File } from "@entities/File";
@@ -20,7 +20,10 @@ export class FileRepository
     super(File);
   }
 
-  async store(workspaceId: number, files: formidable.Files): Promise<File[]> {
+  async saveMany(
+    workspaceId: number,
+    files: formidable.Files
+  ): Promise<File[]> {
     const transaction = await this.useTransaction();
 
     let filesToAdd: File[] = [];
@@ -54,22 +57,6 @@ export class FileRepository
     }
 
     return filesToAdd;
-  }
-
-  async updateRelativePath(
-    workspaceId: number,
-    fileId: number,
-    relativePath: string
-  ): Promise<UpdateResult> {
-    return this.database.update(
-      {
-        id: fileId,
-        workspace: {
-          id: workspaceId,
-        },
-      },
-      { relativePath }
-    );
   }
 
   getAllByRelativePath(

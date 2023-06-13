@@ -7,6 +7,7 @@ import {
   FindManyOptions,
   FindOptionsWhere,
 } from "typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 import { Type } from "@common-types";
 import { dataSource } from "@config/data-source";
@@ -59,5 +60,12 @@ export class BaseRepository<T extends { id: number | string }>
 
   saveEntity(entity: DeepPartial<T>): Promise<T> {
     return this.database.save(entity);
+  }
+
+  updateEntity(
+    options: FindOptionsWhere<T>,
+    partialEntity: QueryDeepPartialEntity<T>
+  ): Promise<UpdateResult> {
+    return this.database.update(options, partialEntity);
   }
 }

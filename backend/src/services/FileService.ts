@@ -37,7 +37,7 @@ export class FileService implements IFileService {
           return resolve([]);
         }
 
-        const result = await this._fileRepository.store(workspaceId, files);
+        const result = await this._fileRepository.saveMany(workspaceId, files);
 
         return resolve(result);
       });

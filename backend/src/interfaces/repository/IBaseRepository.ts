@@ -3,7 +3,9 @@ import {
   UpdateResult,
   FindOneOptions,
   FindManyOptions,
+  FindOptionsWhere,
 } from "typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 export interface IBaseRepository<T> {
   softDeleteById(id: number | string): Promise<UpdateResult>;
@@ -17,4 +19,9 @@ export interface IBaseRepository<T> {
   getById(id: number | string): Promise<T | null>;
 
   saveEntity(entity: DeepPartial<T>): Promise<T>;
+
+  updateEntity(
+    options: FindOptionsWhere<T>,
+    partialEntity: QueryDeepPartialEntity<T>
+  ): Promise<UpdateResult>;
 }

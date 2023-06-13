@@ -28,14 +28,15 @@ export class PatchRelativePathController
 
   async invoke(request: CustomRequest<IParams, IBody>, response: Response) {
     const {
-      params: { workspaceId, fileId },
+      params: { fileId },
       body: { relativePath },
     } = request;
 
-    const result = await this._fileRepository.updateRelativePath(
-      workspaceId,
-      fileId,
-      relativePath
+    const result = await this._fileRepository.updateEntity(
+      {
+        id: fileId,
+      },
+      { relativePath }
     );
 
     if (!result.affected) {
