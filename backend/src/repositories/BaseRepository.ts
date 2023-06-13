@@ -34,14 +34,6 @@ export class BaseRepository<T extends { id: number | string }>
     };
   }
 
-  getById(id: number | string): Promise<T | null> {
-    return this.database.findOneBy({ id } as FindOptionsWhere<T>);
-  }
-
-  softDeleteById(id: number | string): Promise<UpdateResult> {
-    return this.database.softDelete({ id } as FindOptionsWhere<T>);
-  }
-
   createEntity(properties?: DeepPartial<T>): T {
     if (!properties) {
       return this.database.create();
@@ -58,11 +50,19 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.findOne(options);
   }
 
-  saveEntity(entity: DeepPartial<T>): Promise<T> {
+  getById(id: number | string): Promise<T | null> {
+    return this.database.findOneBy({ id } as FindOptionsWhere<T>);
+  }
+
+  softDeleteById(id: number | string): Promise<UpdateResult> {
+    return this.database.softDelete({ id } as FindOptionsWhere<T>);
+  }
+
+  primitiveSave(entity: DeepPartial<T>): Promise<T> {
     return this.database.save(entity);
   }
 
-  updateEntity(
+  primitiveUpdate(
     options: FindOptionsWhere<T>,
     partialEntity: QueryDeepPartialEntity<T>
   ): Promise<UpdateResult> {

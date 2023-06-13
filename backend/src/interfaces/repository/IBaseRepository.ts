@@ -8,8 +8,6 @@ import {
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 export interface IBaseRepository<T> {
-  softDeleteById(id: number | string): Promise<UpdateResult>;
-
   createEntity(properties?: DeepPartial<T>): T;
 
   getAll(options: FindManyOptions<T>): Promise<[T[], number]>;
@@ -18,9 +16,11 @@ export interface IBaseRepository<T> {
 
   getById(id: number | string): Promise<T | null>;
 
-  saveEntity(entity: DeepPartial<T>): Promise<T>;
+  softDeleteById(id: number | string): Promise<UpdateResult>;
 
-  updateEntity(
+  primitiveSave(entity: DeepPartial<T>): Promise<T>;
+
+  primitiveUpdate(
     options: FindOptionsWhere<T>,
     partialEntity: QueryDeepPartialEntity<T>
   ): Promise<UpdateResult>;

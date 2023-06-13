@@ -32,7 +32,7 @@ export class PatchRelativePathController
       body: { relativePath },
     } = request;
 
-    const result = await this._fileRepository.updateEntity(
+    const result = await this._fileRepository.primitiveUpdate(
       {
         id: fileId,
       },
