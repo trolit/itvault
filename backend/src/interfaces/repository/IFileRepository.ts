@@ -17,6 +17,4 @@ export interface IFileRepository extends IBaseRepository<File> {
     workspaceId: number,
     relativePath: string
   ): Promise<File[]>;
-
-  getOne(workspaceId: number, fileId: number): Promise<File | null>;
 }

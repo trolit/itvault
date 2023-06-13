@@ -10,7 +10,7 @@ export class Palette {
   id: number;
 
   @Column({ type: "json" })
-  value: Record<number, string[] | string>;
+  value: Record<number, string[]>;
 
   @ManyToOne(() => Blueprint, blueprint => blueprint.palettes)
   blueprint: Blueprint;
