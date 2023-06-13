@@ -16,5 +16,5 @@ export interface IBaseRepository<T> {
 
   getById(id: number | string): Promise<T | null>;
 
-  save(entity: DeepPartial<T>): Promise<T>;
+  saveEntity(entity: DeepPartial<T>): Promise<T>;
 }
