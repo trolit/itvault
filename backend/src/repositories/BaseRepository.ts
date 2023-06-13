@@ -33,7 +33,7 @@ export class BaseRepository<T extends { id: number | string }>
     };
   }
 
-  findById(id: number | string): Promise<T | null> {
+  getById(id: number | string): Promise<T | null> {
     return this.database.findOneBy({ id } as FindOptionsWhere<T>);
   }
 
