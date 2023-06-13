@@ -38,6 +38,9 @@ export class GetAllController
           id: variantId,
         },
       },
+      relations: {
+        blueprint: true,
+      },
     });
 
     return response.status(HTTP.OK).send(result);
