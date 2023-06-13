@@ -33,7 +33,7 @@ export class GetByIdController
       params: { workspaceId, variantId },
     } = request;
 
-    const variant = await this._variantRepository.findById(variantId);
+    const variant = await this._variantRepository.getById(variantId);
 
     if (!variant) {
       return response.status(HTTP.NOT_FOUND).send();

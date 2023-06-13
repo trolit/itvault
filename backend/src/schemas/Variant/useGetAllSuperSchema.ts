@@ -31,7 +31,7 @@ function useQuerySchema(): SchemaProvider {
               Di.FileRepository
             );
 
-            const file = await fileRepository.findById(value);
+            const file = await fileRepository.getById(value);
 
             if (!file) {
               context.addIssue({

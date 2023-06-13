@@ -31,7 +31,7 @@ function useQuerySchema(): SchemaProvider {
               Di.VariantRepository
             );
 
-            const variant = await variantRepository.findById(value);
+            const variant = await variantRepository.getById(value);
 
             if (!variant) {
               context.addIssue({
