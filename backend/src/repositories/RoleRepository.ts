@@ -19,7 +19,7 @@ export class RoleRepository
     super(Role);
   }
 
-  async update(roleId: number, payload: UpdateRoleDto): Promise<Result<Role>> {
+  async save(roleId: number, payload: UpdateRoleDto): Promise<Result<Role>> {
     const transactionResult = await this.database.manager.transaction(
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];
