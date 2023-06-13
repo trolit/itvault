@@ -4,14 +4,14 @@ import { Di } from "@enums/Di";
 import { File } from "@entities/File";
 import { CustomRequest } from "@custom-types/express";
 import { IFileService } from "@interfaces/service/IFileService";
-import { FormidableFormFactory } from "@factories/FormidableFormFactory";
 import { IFileRepository } from "@interfaces/repository/IFileRepository";
+import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFactory";
 
 @injectable()
 export class FileService implements IFileService {
   constructor(
     @inject(Di.FormidableFormFactory)
-    private _formidableFormFactory: FormidableFormFactory,
+    private _formidableFormFactory: IFormidableFormFactory,
     @inject(Di.FileRepository)
     private _fileRepository: IFileRepository
   ) {}
