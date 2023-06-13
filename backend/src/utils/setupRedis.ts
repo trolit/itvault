@@ -53,7 +53,7 @@ export const setupRedis = () => {
       const roleRepository = getInstanceOf<IRoleRepository>(Di.RoleRepository);
 
       const [roles] = await roleRepository.getAll({
-        where: {
+        relations: {
           permissionToRole: {
             permission: true,
           },
