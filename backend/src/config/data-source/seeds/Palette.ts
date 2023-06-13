@@ -75,20 +75,40 @@ export class PaletteSeeder implements Seeder {
 
         const splitContent = content.split("\n");
 
-        const rowNumber = random(splitContent.length);
-
-        const line = splitContent[rowNumber];
-
-        const columnMax = random(line.length);
-
         await paletteRepository.save({
-          value: {
-            [rowNumber]: [`0-${columnMax}`],
-          },
+          value: this.generateValue(splitContent),
           variant,
           blueprint,
         });
       }
     }
+  }
+
+  private generateValue(splitContent: string[]) {
+    const iterations = random(1, 3);
+
+    const value: Record<number, string[]> = {};
+
+    const splitContentLength = splitContent.length;
+
+    for (let index = 0; index < iterations; index++) {
+      const rowNumber = random(splitContentLength);
+
+      const line = splitContent[rowNumber];
+
+      const endIndex = random(0, line.length - 1);
+
+      const part = `0-${endIndex}`;
+
+      if (value[rowNumber]) {
+        value[rowNumber].push(part);
+
+        continue;
+      }
+
+      value[rowNumber] = [part];
+    }
+
+    return value;
   }
 }
