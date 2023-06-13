@@ -8,7 +8,7 @@ import {
 export interface IBaseRepository<T> {
   softDeleteById(id: number | string): Promise<UpdateResult>;
 
-  createEntityInstance(properties?: DeepPartial<T>): T;
+  createEntity(properties?: DeepPartial<T>): T;
 
   getAll(options: FindManyOptions<T>): Promise<[T[], number]>;
 

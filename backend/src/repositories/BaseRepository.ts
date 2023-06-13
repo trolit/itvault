@@ -41,7 +41,7 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.softDelete({ id } as FindOptionsWhere<T>);
   }
 
-  createEntityInstance(properties?: DeepPartial<T>): T {
+  createEntity(properties?: DeepPartial<T>): T {
     if (!properties) {
       return this.database.create();
     }
