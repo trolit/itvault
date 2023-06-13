@@ -11,8 +11,8 @@ export class User extends Base {
   @Column()
   email!: string;
 
-  @Column()
-  password!: string;
+  @Column({ select: false })
+  password: string;
 
   @ManyToOne(() => Role, role => role.users, {
     nullable: false,

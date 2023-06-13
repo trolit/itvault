@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import filesRouter from "./files";
+import palettesRouter from "./palettes";
 import variantsRouter from "./variants";
 import blueprintsRouter from "./blueprints";
 import { processRequestWith } from "@helpers/processRequestWith";
@@ -24,5 +25,7 @@ workspacesRouter.use("/:workspaceId/files", filesRouter);
 workspacesRouter.use("/:workspaceId/variants", variantsRouter);
 
 workspacesRouter.use("/:workspaceId/blueprints", blueprintsRouter);
+
+workspacesRouter.use("/:workspaceId/palettes", palettesRouter);
 
 export = workspacesRouter;
