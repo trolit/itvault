@@ -21,7 +21,7 @@ const paramsSchema = schemaForType<{
           Di.WorkspaceRepository
         );
 
-        const workspace = await workspaceRepository.findById(id);
+        const workspace = await workspaceRepository.getById(id);
 
         if (!workspace) {
           context.addIssue({

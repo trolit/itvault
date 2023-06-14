@@ -35,8 +35,14 @@ export const requireWorkspaceAccess = (() => {
       return next();
     }
 
-    const isPermittedToAccessWorkspace =
-      await userRepository.isPermittedToAccessWorkspace(userId, workspaceId);
+    const isPermittedToAccessWorkspace = await userRepository.getOne({
+      where: {
+        userToWorkspace: {
+          userId,
+          workspaceId,
+        },
+      },
+    });
 
     if (!isPermittedToAccessWorkspace) {
       return response.status(HTTP.FORBIDDEN).send();

@@ -75,7 +75,7 @@ function useParamsSchema(): SchemaProvider {
                 Di.FileRepository
               );
 
-              const file = await fileRepository.findById(id);
+              const file = await fileRepository.getById(id);
 
               if (!file) {
                 context.addIssue({

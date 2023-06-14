@@ -7,6 +7,7 @@ import {
   FindManyOptions,
   FindOptionsWhere,
 } from "typeorm";
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
 import { Type } from "@common-types";
 import { dataSource } from "@config/data-source";
@@ -33,15 +34,7 @@ export class BaseRepository<T extends { id: number | string }>
     };
   }
 
-  findById(id: number | string): Promise<T | null> {
-    return this.database.findOneBy({ id } as FindOptionsWhere<T>);
-  }
-
-  softDeleteById(id: number | string): Promise<UpdateResult> {
-    return this.database.softDelete({ id } as FindOptionsWhere<T>);
-  }
-
-  createEntityInstance(properties?: DeepPartial<T>): T {
+  createEntity(properties?: DeepPartial<T>): T {
     if (!properties) {
       return this.database.create();
     }
@@ -57,7 +50,22 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.findOne(options);
   }
 
-  save(entity: DeepPartial<T>): Promise<T> {
+  getById(id: number | string): Promise<T | null> {
+    return this.database.findOneBy({ id } as FindOptionsWhere<T>);
+  }
+
+  softDeleteById(id: number | string): Promise<UpdateResult> {
+    return this.database.softDelete({ id } as FindOptionsWhere<T>);
+  }
+
+  primitiveSave(entity: DeepPartial<T>): Promise<T> {
     return this.database.save(entity);
+  }
+
+  primitiveUpdate(
+    options: FindOptionsWhere<T>,
+    partialEntity: QueryDeepPartialEntity<T>
+  ): Promise<UpdateResult> {
+    return this.database.update(options, partialEntity);
   }
 }

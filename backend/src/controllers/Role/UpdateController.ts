@@ -25,7 +25,7 @@ export class UpdateController implements IController<IParams, UpdateRoleDto> {
   ) {
     const { id } = request.params;
 
-    const result = await this._roleRepository.update(id, request.body);
+    const result = await this._roleRepository.save(id, request.body);
 
     if (!result.success) {
       return response.status(HTTP.BAD_REQUEST).send();

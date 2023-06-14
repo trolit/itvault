@@ -19,11 +19,7 @@ export class RoleRepository
     super(Role);
   }
 
-  findByName(name: string): Promise<Role | null> {
-    return this.database.findOneBy({ name });
-  }
-
-  async update(roleId: number, payload: UpdateRoleDto): Promise<Result<Role>> {
+  async save(roleId: number, payload: UpdateRoleDto): Promise<Result<Role>> {
     const transactionResult = await this.database.manager.transaction(
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];

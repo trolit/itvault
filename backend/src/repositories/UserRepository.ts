@@ -141,20 +141,4 @@ export class UserRepository
       ? Result.failure(transactionResult.errors)
       : Result.success([]);
   }
-
-  async isPermittedToAccessWorkspace(
-    userId: number,
-    workspaceId: number
-  ): Promise<boolean> {
-    const user = await this.database.findOne({
-      where: {
-        userToWorkspace: {
-          userId,
-          workspaceId,
-        },
-      },
-    });
-
-    return !!user;
-  }
 }
