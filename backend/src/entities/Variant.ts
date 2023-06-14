@@ -14,7 +14,7 @@ import { Palette } from "./Palette";
 @Entity("variants")
 export class Variant {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @Column()
   name: string;
