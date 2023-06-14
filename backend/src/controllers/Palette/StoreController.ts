@@ -8,12 +8,16 @@ import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IPaletteRepository } from "@interfaces/repository/IPaletteRepository";
 
 interface IParams {
+  workspaceId: number;
+}
+
+interface IQuery {
   variantId: number;
 }
 
 @injectable()
-export class GetAllController
-  implements IController<IParams, undefined, undefined, Palette[]>
+export class StoreController
+  implements IController<IParams, undefined, IQuery, Palette[]>
 {
   constructor(
     @inject(Di.PaletteRepository)
@@ -21,11 +25,11 @@ export class GetAllController
   ) {}
 
   async invoke(
-    request: CustomRequest<IParams>,
+    request: CustomRequest<IParams, undefined, IQuery>,
     response: CustomResponse<Palette[]>
   ) {
     const {
-      params: { variantId },
+      query: { variantId },
     } = request;
 
     const [result] = await this._paletteRepository.getAll({

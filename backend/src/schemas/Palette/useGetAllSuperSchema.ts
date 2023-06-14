@@ -10,12 +10,12 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
     return {
-      query: useQuerySchema(),
+      params: useParamsSchema(),
     };
   }
 );
 
-function useQuerySchema(): SchemaProvider {
+function useParamsSchema(): SchemaProvider {
   return () =>
     schemaForType<{ variantId: string }>()(
       z.object({
