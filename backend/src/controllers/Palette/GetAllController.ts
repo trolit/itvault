@@ -8,7 +8,7 @@ import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IPaletteRepository } from "@interfaces/repository/IPaletteRepository";
 
 interface IParams {
-  variantId: number;
+  variantId: string;
 }
 
 @injectable()
