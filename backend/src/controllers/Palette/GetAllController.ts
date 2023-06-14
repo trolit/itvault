@@ -33,6 +33,11 @@ export class GetAllController
     } = request;
 
     const [result] = await this._paletteRepository.getAll({
+      select: {
+        blueprint: {
+          id: true,
+        },
+      },
       where: {
         variant: {
           id: variantId,
