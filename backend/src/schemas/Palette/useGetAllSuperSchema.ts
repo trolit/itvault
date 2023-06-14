@@ -17,16 +17,11 @@ export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 
 function useQuerySchema(): SchemaProvider {
   return () =>
-    schemaForType<{ variantId: number }>()(
+    schemaForType<{ variantId: string }>()(
       z.object({
         variantId: z
-          .number()
-          .gt(0)
-          .superRefine(async (value: number, context: RefinementCtx) => {
-            if (value <= 0) {
-              return Zod.NEVER;
-            }
-
+          .string()
+          .superRefine(async (value: string, context: RefinementCtx) => {
             const variantRepository = getInstanceOf<IVariantRepository>(
               Di.VariantRepository
             );
