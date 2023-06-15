@@ -27,7 +27,7 @@ function useParamsSchema(): SchemaProvider {
 function useBodySchema(): SchemaProvider {
   const paletteSchema = schemaForType<StorePaletteDto>()(
     z.object({
-      value: z.record(z.number().gte(0), z.array(z.string())),
+      value: z.record(z.coerce.number().gte(0), z.array(z.string())),
       blueprintId: z.number(),
     })
   );
@@ -44,6 +44,7 @@ function useBodySchema(): SchemaProvider {
               context.addIssue({
                 code: ZodIssueCode.custom,
                 message: "Blueprints must be unique in each palette value.",
+                fatal: true,
               });
 
               return Zod.NEVER;
