@@ -26,6 +26,8 @@ export class PaletteRepository
     let palettes: Palette[] | null = null;
 
     try {
+      await transaction.manager.delete(Palette, { variant: { id: variantId } });
+
       palettes = await transaction.manager.save(
         Palette,
         palettesToAdd.map(({ value, blueprintId }) => ({
