@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import palettesRouter from "./palettes";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { GetAllController } from "@controllers/Variant/GetAllController";
@@ -18,5 +19,7 @@ variantsRouter.get(
 );
 
 variantsRouter.get("/:variantId/v1", processRequestWith(GetByIdController));
+
+variantsRouter.use("/:variantId/palettes", palettesRouter);
 
 export = variantsRouter;
