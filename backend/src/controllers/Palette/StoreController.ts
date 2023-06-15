@@ -40,6 +40,6 @@ export class StoreController
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    return response.status(HTTP.OK).send(result);
+    return response.status(HTTP.NO_CONTENT).send();
   }
 }
