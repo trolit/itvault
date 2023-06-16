@@ -5,7 +5,6 @@ import { QueryRunner, Repository, Like, Not } from "typeorm";
 import { FILES } from "@config";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
-import { Workspace } from "@entities/Workspace";
 import { BaseRepository } from "./BaseRepository";
 import { IFileRepository } from "@interfaces/repository/IFileRepository";
 
@@ -20,43 +19,38 @@ export class FileRepository
     super(File);
   }
 
-  async saveMany(
+  async save(
     workspaceId: number,
-    files: formidable.Files
-  ): Promise<File[]> {
+    filesToAdd: formidable.Files
+  ): Promise<File[] | null> {
     const transaction = await this.useTransaction();
 
-    let filesToAdd: File[] = [];
+    let files: File[] | null = null;
 
     try {
-      const workspace: Workspace = await transaction.manager.findOneByOrFail(
-        Workspace,
-        { id: workspaceId }
-      );
+      const entities = [];
 
-      for (const [key, value] of Object.entries(files)) {
-        const values = this.setupFilesToAdd(
-          workspace,
+      for (const [key, value] of Object.entries(filesToAdd)) {
+        const values = this.setupFileEntities(
+          workspaceId,
           transaction,
           key,
           Array.isArray(value) ? value : [value]
         );
 
-        filesToAdd.push(...values);
+        entities.push(...values);
       }
 
-      await transaction.manager.save(File, filesToAdd);
+      files = await transaction.manager.save(File, entities);
 
       await transaction.commitTransaction();
     } catch (error) {
       await transaction.rollbackTransaction();
-
-      filesToAdd = [];
     } finally {
       await transaction.release();
     }
 
-    return filesToAdd;
+    return files;
   }
 
   getAllByRelativePath(
@@ -78,8 +72,46 @@ export class FileRepository
     });
   }
 
-  private setupFilesToAdd(
-    workspace: Workspace,
+  private createFileInstance(
+    transaction: QueryRunner,
+    properties: {
+      size: number;
+      filename: string;
+      variantName: string;
+      workspaceId: number;
+      relativePath: string;
+      originalFilename: string | null;
+    }
+  ) {
+    const {
+      size,
+      filename,
+      variantName,
+      workspaceId,
+      relativePath,
+      originalFilename,
+    } = properties;
+
+    const variant = transaction.manager.create(Variant, {
+      size,
+      filename,
+      name: variantName,
+    });
+
+    const file = transaction.manager.create(File, {
+      originalFilename: originalFilename || "",
+      relativePath,
+      variants: [variant],
+      workspace: {
+        id: workspaceId,
+      },
+    });
+
+    return file;
+  }
+
+  private setupFileEntities(
+    workspaceId: number,
     transaction: QueryRunner,
     key: string,
     files: formidable.File[]
@@ -87,20 +119,16 @@ export class FileRepository
     const result: File[] = [];
 
     for (const file of files) {
-      const variant = transaction.manager.create(Variant, {
-        filename: file.newFilename,
-        size: file.size,
-        name: "v1",
-      });
-
-      const fileEntity = transaction.manager.create(File, {
-        originalFilename: file.originalFilename || "",
-        relativePath: key,
-        variants: [variant],
-        workspace,
-      });
-
-      result.push(fileEntity);
+      result.push(
+        this.createFileInstance(transaction, {
+          size: file.size,
+          filename: file.newFilename,
+          variantName: "v1",
+          workspaceId: workspaceId,
+          relativePath: key,
+          originalFilename: file.originalFilename,
+        })
+      );
     }
 
     return result;
