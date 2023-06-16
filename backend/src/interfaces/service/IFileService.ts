@@ -6,5 +6,5 @@ export interface IFileService {
     workspaceId: number,
     request: CustomRequest<P, B, Q>,
     destination?: string
-  ): Promise<File[]>;
+  ): Promise<File[] | null>;
 }

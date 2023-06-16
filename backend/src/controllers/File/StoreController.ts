@@ -28,16 +28,16 @@ export class StoreController
       params: { workspaceId },
     } = request;
 
-    try {
-      const result = await this._fileService.upload(
-        workspaceId,
-        request,
-        `workspace-${workspaceId}`
-      );
+    const result = await this._fileService.upload(
+      workspaceId,
+      request,
+      `workspace-${workspaceId}`
+    );
 
-      return response.status(HTTP.OK).send(result);
-    } catch (error) {
+    if (!result) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
+
+    return response.status(HTTP.OK).send(result);
   }
 }
