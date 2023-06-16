@@ -28,20 +28,17 @@ export class FileRepository
     let files: File[] | null = null;
 
     try {
-      const entities = [];
+      const temporaryFilesContainer = [];
 
       for (const [key, value] of Object.entries(filesToAdd)) {
-        const values = this.setupFileEntities(
-          workspaceId,
-          transaction,
-          key,
-          Array.isArray(value) ? value : [value]
-        );
+        const valueAsArray = Array.isArray(value) ? value : [value];
 
-        entities.push(...values);
+        temporaryFilesContainer.push(
+          ...this.getFilesFromValue(valueAsArray, workspaceId, transaction, key)
+        );
       }
 
-      files = await transaction.manager.save(File, entities);
+      files = await transaction.manager.save(File, temporaryFilesContainer);
 
       await transaction.commitTransaction();
     } catch (error) {
@@ -110,15 +107,15 @@ export class FileRepository
     return file;
   }
 
-  private setupFileEntities(
+  private getFilesFromValue(
+    value: formidable.File[],
     workspaceId: number,
     transaction: QueryRunner,
-    key: string,
-    files: formidable.File[]
+    key: string
   ): File[] {
     const result: File[] = [];
 
-    for (const file of files) {
+    for (const file of value) {
       result.push(
         this.createFileInstance(transaction, {
           size: file.size,
