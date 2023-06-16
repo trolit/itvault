@@ -14,6 +14,7 @@ export class Workspace extends Base {
   })
   name!: string;
 
+  // @DEPRECATED (remove it as we will do Workspace Log + confirmation instead :thinking:)
   @Column({
     nullable: true,
   })
