@@ -34,7 +34,7 @@ export class FileService implements IFileService {
         }
 
         if (!Object.keys(files).length) {
-          return resolve([]);
+          return resolve(null);
         }
 
         const result = await this._fileRepository.save(workspaceId, files);
