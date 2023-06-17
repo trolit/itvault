@@ -24,7 +24,7 @@ export class VariantSeeder implements Seeder {
     }
 
     const uploadDir = path.join(
-      FILES.STORAGE.LOCAL.BASE_PATH,
+      FILES.STORAGE.LOCAL.BASE_UPLOADS_PATH,
       `workspace-${workspace.id}`
     );
 

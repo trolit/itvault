@@ -20,8 +20,8 @@ const FILES_STORAGE_MODE: FileStorageMode = envEnum(
   FileStorageMode
 );
 
-const FILES_LOCAL_STORAGE_BASE_PATH: string = envString(
-  "FILES_LOCAL_STORAGE_BASE_PATH"
+const FILES_LOCAL_STORAGE_BASE_UPLOADS_PATH: string = envString(
+  "FILES_LOCAL_STORAGE_BASE_UPLOADS_PATH"
 );
 
 export const APP = {
@@ -62,11 +62,11 @@ export const FILES = {
   STORAGE: {
     MODE: FILES_STORAGE_MODE,
     LOCAL: {
-      BASE_PATH: FILES_LOCAL_STORAGE_BASE_PATH,
+      BASE_UPLOADS_PATH: FILES_LOCAL_STORAGE_BASE_UPLOADS_PATH,
     },
   },
 };
 
 if (FILES_STORAGE_MODE === FileStorageMode.Local) {
-  fs.ensureDirSync(FILES_LOCAL_STORAGE_BASE_PATH);
+  fs.ensureDirSync(FILES_LOCAL_STORAGE_BASE_UPLOADS_PATH);
 }
