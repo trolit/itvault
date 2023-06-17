@@ -15,15 +15,6 @@ const envEnum = <T extends object>(name: string, type: T) =>
   env.get(name).required().asEnum(Object.values(type));
 const envFloat = (name: string) => env.get(name).required().asFloat();
 
-const FILES_STORAGE_MODE: FileStorageMode = envEnum(
-  "FILES_STORAGE_MODE",
-  FileStorageMode
-);
-
-const FILES_LOCAL_STORAGE_BASE_PATH: string = envString(
-  "FILES_LOCAL_STORAGE_BASE_PATH"
-);
-
 export const APP = {
   PORT: envPort("PORT"),
   URL: envString("APP_URL"),
@@ -57,16 +48,26 @@ export const REDIS = {
   PASSWORD: envString("REDIS_PASSWORD"),
 };
 
+const FILES_STORAGE_MODE: FileStorageMode = envEnum(
+  "FILES_STORAGE_MODE",
+  FileStorageMode
+);
+const FILES_BASE_UPLOADS_PATH: string = envString("FILES_BASE_UPLOADS_PATH");
+const FILES_BASE_DOWNLOADS_PATH: string = envString(
+  "FILES_BASE_DOWNLOADS_PATH"
+);
+
 export const FILES = {
   ROOT: ".",
   STORAGE: {
     MODE: FILES_STORAGE_MODE,
-    LOCAL: {
-      BASE_PATH: FILES_LOCAL_STORAGE_BASE_PATH,
-    },
+    BASE_UPLOADS_PATH: FILES_BASE_UPLOADS_PATH,
+    BASE_DOWNLOADS_PATH: FILES_BASE_DOWNLOADS_PATH,
   },
 };
 
 if (FILES_STORAGE_MODE === FileStorageMode.Local) {
-  fs.ensureDirSync(FILES_LOCAL_STORAGE_BASE_PATH);
+  fs.ensureDirSync(FILES_BASE_UPLOADS_PATH);
+
+  fs.ensureDirSync(FILES_BASE_DOWNLOADS_PATH);
 }
