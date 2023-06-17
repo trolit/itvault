@@ -4,6 +4,7 @@ import { Entity, Column, OneToMany, BeforeInsert } from "typeorm";
 import { Base } from "./Base";
 import { File } from "./File";
 import { BCRYPT } from "@config";
+import { Bundle } from "./Bundle";
 import { Blueprint } from "./Blueprint";
 import { UserToWorkspace } from "./UserToWorkspace";
 
@@ -28,6 +29,9 @@ export class Workspace extends Base {
 
   @OneToMany(() => File, file => file.workspace, { cascade: true })
   files: File[];
+
+  @OneToMany(() => Bundle, bundle => bundle.workspace, { cascade: true })
+  bundles: Bundle[];
 
   @OneToMany(() => Blueprint, blueprint => blueprint.workspace, {
     cascade: true,
