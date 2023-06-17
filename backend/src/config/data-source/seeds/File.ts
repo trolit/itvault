@@ -2,8 +2,8 @@ import { DataSource } from "typeorm";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { File } from "@entities/File";
+import { TEST_WORKSPACE_1 } from "./common";
 import { Workspace } from "@entities/Workspace";
-import { TEST_UNLOCKED_WORKSPACE } from "./common";
 
 export class FileSeeder implements Seeder {
   public async run(
@@ -14,7 +14,7 @@ export class FileSeeder implements Seeder {
 
     const workspace = await workspaceRepository.findOne({
       where: {
-        name: TEST_UNLOCKED_WORKSPACE.name,
+        name: TEST_WORKSPACE_1.name,
       },
     });
 

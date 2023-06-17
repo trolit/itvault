@@ -8,17 +8,17 @@ import { FILES } from "@config";
 import { DataSource } from "typeorm";
 import { File } from "@entities/File";
 import { Palette } from "@entities/Palette";
+import { TEST_WORKSPACE_1 } from "./common";
 import { Variant } from "@entities/Variant";
 import { Blueprint } from "@entities/Blueprint";
 import { Workspace } from "@entities/Workspace";
-import { TEST_UNLOCKED_WORKSPACE } from "./common";
 
 export class PaletteSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const workspaceRepository = dataSource.getRepository(Workspace);
 
     const workspace = await workspaceRepository.findOneBy({
-      name: TEST_UNLOCKED_WORKSPACE.name,
+      name: TEST_WORKSPACE_1.name,
     });
 
     if (!workspace) {
