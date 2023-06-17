@@ -1,9 +1,7 @@
-import bcrypt from "bcrypt";
-import { Entity, Column, OneToMany, BeforeInsert } from "typeorm";
+import { Entity, Column, OneToMany } from "typeorm";
 
 import { Base } from "./Base";
 import { File } from "./File";
-import { BCRYPT } from "@config";
 import { Bundle } from "./Bundle";
 import { Blueprint } from "./Blueprint";
 import { UserToWorkspace } from "./UserToWorkspace";
@@ -14,12 +12,6 @@ export class Workspace extends Base {
     unique: true,
   })
   name!: string;
-
-  // @DEPRECATED (remove it as we will do Workspace Log + confirmation instead :thinking:)
-  @Column({
-    nullable: true,
-  })
-  password: string;
 
   @OneToMany(
     () => UserToWorkspace,
@@ -37,11 +29,4 @@ export class Workspace extends Base {
     cascade: true,
   })
   blueprints: Blueprint[];
-
-  @BeforeInsert()
-  async hashPasswordIfProvided() {
-    if (this.password) {
-      this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
-    }
-  }
 }
