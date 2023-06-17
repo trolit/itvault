@@ -3,6 +3,4 @@ export class WorkspaceDto {
   id = 0;
 
   name = "";
-
-  isProtected: boolean;
 }

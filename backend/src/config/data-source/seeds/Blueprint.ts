@@ -2,16 +2,16 @@ import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
 import { Seeder } from "typeorm-extension";
 
+import { TEST_WORKSPACE_1 } from "./common";
 import { Blueprint } from "@entities/Blueprint";
 import { Workspace } from "@entities/Workspace";
-import { TEST_UNLOCKED_WORKSPACE } from "./common";
 
 export class BlueprintSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const workspaceRepository = dataSource.getRepository(Workspace);
 
     const workspace = await workspaceRepository.findOneBy({
-      name: TEST_UNLOCKED_WORKSPACE.name,
+      name: TEST_WORKSPACE_1.name,
     });
 
     if (!workspace) {

@@ -3,7 +3,6 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { Workspace } from "@entities/Workspace";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
@@ -60,8 +59,7 @@ export class GetAllController
 
     const mappedResult = this._entityMapperService.mapToDto(
       result,
-      WorkspaceDto,
-      (from: Workspace) => ({ isProtected: !!from.password })
+      WorkspaceDto
     );
 
     return response.status(HTTP.OK).send({ result: mappedResult, total });

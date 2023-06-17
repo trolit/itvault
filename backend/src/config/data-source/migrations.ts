@@ -17,6 +17,7 @@ import { ExpandVariantEntityWithNameProperty1685044578245 } from "@migrations/16
 import { RemoveAccessPropertyFromUserToWorkspaceEntity1685798752314 } from "@migrations/1685798752314-RemoveAccessPropertyFromUserToWorkspaceEntity";
 import { CreatePalettesTable1686234793370 } from "@migrations/1686234793370-CreatePalettesTable";
 import { ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany1686304172406 } from "@migrations/1686304172406-ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany";
+import { RemovePasswordPropertyFromWorkspaceEntity1687018579892 } from "@migrations/1687018579892-RemovePasswordPropertyFromWorkspaceEntity";
 
 export const migrations = [
   CreateUsersTable1665695149133,
@@ -38,4 +39,5 @@ export const migrations = [
   RemoveAccessPropertyFromUserToWorkspaceEntity1685798752314,
   CreatePalettesTable1686234793370,
   ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany1686304172406,
+  RemovePasswordPropertyFromWorkspaceEntity1687018579892,
 ];

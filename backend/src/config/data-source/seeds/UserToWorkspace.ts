@@ -1,15 +1,11 @@
 import { Seeder } from "typeorm-extension";
 import { DataSource, Repository } from "typeorm";
 
-import {
-  TEST_ACCOUNTS,
-  TEST_LOCKED_WORKSPACE,
-  TEST_UNLOCKED_WORKSPACE,
-} from "./common";
 import { User } from "@entities/User";
 import { Workspace } from "@entities/Workspace";
 import { HEAD_ADMIN_ROLE } from "@config/default-roles";
 import { UserToWorkspace } from "@entities/UserToWorkspace";
+import { TEST_ACCOUNTS, TEST_WORKSPACE_2, TEST_WORKSPACE_1 } from "./common";
 
 export class UserToWorkspaceSeeder implements Seeder {
   public async run(dataSource: DataSource) {
@@ -39,14 +35,14 @@ export class UserToWorkspaceSeeder implements Seeder {
       workspaceRepository,
       userToWorkspaceRepository,
       user,
-      TEST_UNLOCKED_WORKSPACE.name
+      TEST_WORKSPACE_1.name
     );
 
     await updateUserToWorkspaceBridge(
       workspaceRepository,
       userToWorkspaceRepository,
       user,
-      TEST_LOCKED_WORKSPACE.name
+      TEST_WORKSPACE_2.name
     );
   }
 }
