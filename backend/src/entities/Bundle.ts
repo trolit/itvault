@@ -23,6 +23,9 @@ export class Bundle {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Column()
+  size: number; // @NOTE in bytes
+
   @ManyToOne(() => Workspace, workspace => workspace.bundles)
   workspace: Workspace;
 
