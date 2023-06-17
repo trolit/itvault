@@ -9,7 +9,7 @@ import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFacto
 export class FormidableFormFactory implements IFormidableFormFactory {
   async create(options: { destination?: string }): Promise<IncomingForm> {
     const uploadDir = path.join(
-      FILES.STORAGE.LOCAL.BASE_UPLOADS_PATH,
+      FILES.STORAGE.BASE_UPLOADS_PATH,
       options.destination || ""
     );
 
