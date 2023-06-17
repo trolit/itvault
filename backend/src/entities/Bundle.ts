@@ -1,12 +1,16 @@
 import {
   Column,
   Entity,
+  JoinTable,
   ManyToOne,
+  ManyToMany,
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { User } from "./User";
+import { Variant } from "./Variant";
+import { Blueprint } from "./Blueprint";
 import { Workspace } from "./Workspace";
 
 @Entity("bundles")
@@ -31,4 +35,12 @@ export class Bundle {
 
   @ManyToOne(() => User, user => user.bundles)
   createdBy: User;
+
+  @ManyToMany(() => Blueprint, { cascade: true })
+  @JoinTable({ name: "bundles_blueprints" })
+  blueprints: Blueprint[];
+
+  @ManyToMany(() => Variant, { cascade: true })
+  @JoinTable({ name: "bundles_variants" })
+  variants: Variant[];
 }
