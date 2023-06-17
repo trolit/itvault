@@ -28,7 +28,7 @@ export class Bundle {
   @CreateDateColumn()
   createdAt: Date;
 
-  @Column({ enum: BundleExpire })
+  @Column({ type: "enum", enum: BundleExpire })
   expire: BundleExpire;
 
   @CreateDateColumn({ nullable: true })
