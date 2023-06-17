@@ -18,6 +18,7 @@ import { RemoveAccessPropertyFromUserToWorkspaceEntity1685798752314 } from "@mig
 import { CreatePalettesTable1686234793370 } from "@migrations/1686234793370-CreatePalettesTable";
 import { ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany1686304172406 } from "@migrations/1686304172406-ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany";
 import { RemovePasswordPropertyFromWorkspaceEntity1687018579892 } from "@migrations/1687018579892-RemovePasswordPropertyFromWorkspaceEntity";
+import { CreateBundlesTable1687029050338 } from "@migrations/1687029050338-CreateBundlesTable";
 
 export const migrations = [
   CreateUsersTable1665695149133,
@@ -40,4 +41,5 @@ export const migrations = [
   CreatePalettesTable1686234793370,
   ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany1686304172406,
   RemovePasswordPropertyFromWorkspaceEntity1687018579892,
+  CreateBundlesTable1687029050338,
 ];
