@@ -12,6 +12,7 @@ import { User } from "./User";
 import { Variant } from "./Variant";
 import { Blueprint } from "./Blueprint";
 import { Workspace } from "./Workspace";
+import { BundleExpire } from "@enums/BundleExpire";
 
 @Entity("bundles")
 export class Bundle {
@@ -26,6 +27,12 @@ export class Bundle {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @Column({ enum: BundleExpire })
+  expire: BundleExpire;
+
+  @CreateDateColumn({ nullable: true })
+  expiresAt: Date | null;
 
   @Column()
   size: number; // @NOTE in bytes
