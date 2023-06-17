@@ -7,7 +7,10 @@ import { FILES } from "@config";
 import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFactory";
 
 export class FormidableFormFactory implements IFormidableFormFactory {
-  async create(options: { destination?: string }): Promise<IncomingForm> {
+  async create(options: {
+    destination?: string;
+    multiples: boolean;
+  }): Promise<IncomingForm> {
     const uploadDir = path.join(
       FILES.STORAGE.BASE_UPLOADS_PATH,
       options.destination || ""
@@ -39,7 +42,7 @@ export class FormidableFormFactory implements IFormidableFormFactory {
 
     const form = formidable({
       filter,
-      multiples: true,
+      multiples: options.multiples,
       keepExtensions: true,
       uploadDir,
     });

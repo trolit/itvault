@@ -19,10 +19,11 @@ export class FileService implements IFileService {
   async upload<P, B, Q>(
     workspaceId: number,
     request: CustomRequest<P, B, Q>,
-    destination?: string
+    options: { multiples: boolean; destination?: string }
   ): Promise<File[] | null> {
     const form = await this._formidableFormFactory.create({
-      destination,
+      destination: options.destination,
+      multiples: options.multiples,
     });
 
     return new Promise((resolve, reject) => {
