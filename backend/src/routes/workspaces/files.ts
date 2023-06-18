@@ -6,10 +6,10 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { StoreController } from "@controllers/File/StoreController";
 import { GetAllController } from "@controllers/File/GetAllController";
+import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { useStoreSuperSchema } from "@schemas/File/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
-import { parseWorkspaceFormData } from "@middleware/parseWorkspaceFormData";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
@@ -21,7 +21,7 @@ filesRouter.use(requireWorkspaceAccess);
 filesRouter.post(
   "/v1",
   requirePermissions([Permission.UploadFiles]),
-  parseWorkspaceFormData({
+  parseUploadFormData({
     multiples: true,
     basePath: FILES.STORAGE.BASE_TEMPORARY_UPLOADS_PATH,
   }),

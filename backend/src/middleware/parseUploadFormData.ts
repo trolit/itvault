@@ -5,7 +5,7 @@ import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFactory";
 
-export const parseWorkspaceFormData = (options: {
+export const parseUploadFormData = (options: {
   basePath: string;
   multiples: boolean;
 }) => {
