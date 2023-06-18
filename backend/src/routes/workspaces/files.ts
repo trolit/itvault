@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import { FILES } from "@config";
 import { Permission } from "@enums/Permission";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
@@ -8,6 +9,7 @@ import { GetAllController } from "@controllers/File/GetAllController";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { useStoreSuperSchema } from "@schemas/File/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
+import { parseWorkspaceFormData } from "@middleware/parseWorkspaceFormData";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
@@ -19,6 +21,10 @@ filesRouter.use(requireWorkspaceAccess);
 filesRouter.post(
   "/v1",
   requirePermissions([Permission.UploadFiles]),
+  parseWorkspaceFormData({
+    multiples: true,
+    basePath: FILES.STORAGE.BASE_TEMPORARY_UPLOADS_PATH,
+  }),
   validateRequestWith(useStoreSuperSchema),
   processRequestWith(StoreController)
 );
