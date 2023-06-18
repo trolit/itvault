@@ -1,8 +1,8 @@
 import formidable from "formidable";
 
-export const mapFormDataFiles = (
-  files: formidable.Files
-): { key: string; file: formidable.File }[] => {
+import { IFormDataFile } from "@interfaces/IFormDataFile";
+
+export const mapFormDataFiles = (files: formidable.Files): IFormDataFile[] => {
   const result = [];
 
   for (const [key, value] of Object.entries(files)) {
