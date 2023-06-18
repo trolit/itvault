@@ -3,18 +3,21 @@ import fs from "fs-extra";
 import formidable from "formidable";
 import IncomingForm from "formidable/Formidable";
 
-import { FILES } from "@config";
 import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFactory";
 
 export class FormidableFormFactory implements IFormidableFormFactory {
+  public uploadDir: string;
+
   async create(options: {
-    destination?: string;
+    basePath: string;
     multiples: boolean;
+    destination?: string;
   }): Promise<IncomingForm> {
-    const uploadDir = path.join(
-      FILES.STORAGE.BASE_UPLOADS_PATH,
-      options.destination || ""
-    );
+    const { basePath, destination, multiples } = options;
+
+    const uploadDir = path.join(basePath, destination || "");
+
+    this.uploadDir = uploadDir;
 
     if (options.destination) {
       await fs.ensureDir(uploadDir);
@@ -42,9 +45,9 @@ export class FormidableFormFactory implements IFormidableFormFactory {
 
     const form = formidable({
       filter,
-      multiples: options.multiples,
-      keepExtensions: true,
+      multiples,
       uploadDir,
+      keepExtensions: true,
     });
 
     return form;
