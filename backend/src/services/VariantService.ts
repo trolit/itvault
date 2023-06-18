@@ -32,6 +32,7 @@ export class VariantService implements IVariantService {
     options: { destination?: string | undefined }
   ): Promise<Variant | null> {
     const form = await this._formidableFormFactory.create({
+      basePath: FILES.BASE_UPLOADS_PATH,
       destination: options.destination,
       multiples: false,
     });
