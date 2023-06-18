@@ -3,6 +3,7 @@ import { Router } from "express";
 import palettesRouter from "./palettes";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { StoreController } from "@controllers/Variant/StoreController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
 import { GetByIdController } from "@controllers/Variant/GetByIdController";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
@@ -19,6 +20,8 @@ variantsRouter.get(
 );
 
 variantsRouter.get("/:variantId/v1", processRequestWith(GetByIdController));
+
+variantsRouter.post("/v1", processRequestWith(StoreController));
 
 variantsRouter.use("/:variantId/palettes", palettesRouter);
 
