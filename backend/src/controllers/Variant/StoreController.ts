@@ -2,34 +2,41 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { File } from "@entities/File";
+import { Variant } from "@entities/Variant";
 import { IController } from "@interfaces/IController";
-import { IFileService } from "@interfaces/service/IFileService";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
+import { IVariantService } from "@interfaces/service/IVariantService";
 
 interface IParams {
   workspaceId: number;
 }
 
+interface IBody {
+  name: string;
+
+  fileId: number;
+
+  variantId: string | undefined;
+}
+
 @injectable()
 export class StoreController
-  implements IController<IParams, undefined, undefined, File[]>
+  implements IController<IParams, IBody, undefined, Variant>
 {
   constructor(
-    @inject(Di.FileService)
-    private _fileService: IFileService
+    @inject(Di.VariantService)
+    private _variantService: IVariantService
   ) {}
 
   async invoke(
-    request: CustomRequest<IParams>,
-    response: CustomResponse<File[]>
+    request: CustomRequest<IParams, IBody>,
+    response: CustomResponse<Variant>
   ) {
     const {
       params: { workspaceId },
     } = request;
 
-    const result = await this._fileService.upload(workspaceId, request, {
-      multiples: true,
+    const result = await this._variantService.upload(request, {
       destination: `workspace-${workspaceId}`,
     });
 
