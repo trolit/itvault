@@ -11,7 +11,7 @@ import { LocalFileService } from "@services/LocalFileService";
 export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
 
-  registerFileStorage();
+  registerFileService();
 
   registerDependencies({
     sourceFiles: {
@@ -24,7 +24,7 @@ export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   registerDependencies({
     sourceFiles: {
       dirname: "services",
-      excludedFilenames: [],
+      excludedFilenames: ["LocalFileService"],
     },
     interfacesDirname: "service",
   });
@@ -87,7 +87,7 @@ function registerDependencies(config: {
   });
 }
 
-function registerFileStorage() {
+function registerFileService() {
   if (FILES.ACTIVE_MODE === FileStorageMode.Local) {
     container.register(Di.FileService, LocalFileService);
 
