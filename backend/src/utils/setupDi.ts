@@ -4,9 +4,14 @@ import Redis from "ioredis/built/Redis";
 import { container, DependencyContainer } from "tsyringe";
 
 import { Di } from "@enums/Di";
+import { FILES } from "@config/index";
+import { FileStorageMode } from "@enums/FileStorageMode";
+import { LocalFileService } from "@services/LocalFileService";
 
 export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
+
+  registerFileStorage();
 
   registerDependencies({
     sourceFiles: {
@@ -80,4 +85,12 @@ function registerDependencies(config: {
       }
     }
   });
+}
+
+function registerFileStorage() {
+  if (FILES.STORAGE.MODE === FileStorageMode.Local) {
+    container.register(Di.FileService, LocalFileService);
+
+    console.log(`⭐ LocalFileService registered in DI container`);
+  }
 }
