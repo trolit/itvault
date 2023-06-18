@@ -88,7 +88,7 @@ function registerDependencies(config: {
 }
 
 function registerFileStorage() {
-  if (FILES.STORAGE.MODE === FileStorageMode.Local) {
+  if (FILES.ACTIVE_MODE === FileStorageMode.Local) {
     container.register(Di.FileService, LocalFileService);
 
     console.log(`⭐ LocalFileService registered in DI container`);

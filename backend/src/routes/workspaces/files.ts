@@ -24,7 +24,7 @@ filesRouter.post(
   IsWorkspaceAvailable,
   parseUploadFormData({
     multiples: true,
-    basePath: FILES.STORAGE.BASE_TEMPORARY_UPLOADS_PATH,
+    basePath: FILES.BASE_TEMPORARY_UPLOADS_PATH,
   }),
   processRequestWith(StoreController)
 );

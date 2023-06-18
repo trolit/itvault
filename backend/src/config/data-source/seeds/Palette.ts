@@ -63,7 +63,7 @@ export class PaletteSeeder implements Seeder {
       for (const variant of variants) {
         const file = await fs.readFile(
           path.join(
-            FILES.STORAGE.BASE_UPLOADS_PATH,
+            FILES.BASE_UPLOADS_PATH,
             `workspace-${workspace.id}`,
             variant.filename
           )
