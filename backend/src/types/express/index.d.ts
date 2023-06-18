@@ -13,7 +13,7 @@ declare global {
       // @NOTE --- available only after `requireAuthentication` middleware
       permissions: RequestPermissions;
 
-      // @NOTE --- available only after `parseFormData` middleware
+      // @NOTE --- available only after `parseWorkspaceFormData` middleware
       files: formidable.Files;
     }
   }
