@@ -11,7 +11,7 @@ interface IParams {
   workspaceId: number;
 }
 
-export interface IBody {
+interface IBody {
   name: string;
 
   fileId: number;

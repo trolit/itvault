@@ -6,7 +6,6 @@ import { Di } from "@enums/Di";
 import { FILES } from "@config";
 import { Variant } from "@entities/Variant";
 import { CustomRequest } from "@custom-types/express";
-import { IBody } from "@controllers/Variant/StoreController";
 import { IVariantService } from "@interfaces/service/IVariantService";
 import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
 import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFactory";
@@ -28,29 +27,10 @@ export class VariantService implements IVariantService {
     return file.toString();
   }
 
-  async upload<P, Q>(
-    request: CustomRequest<P, IBody, Q>,
+  async upload<P, B, Q>(
+    request: CustomRequest<P, B, Q>,
     options: { destination?: string | undefined }
   ): Promise<Variant | null> {
-    const {
-      body: { fileId, variantId, name },
-    } = request;
-
-    if (variantId) {
-      const variant = await this._variantRepository.getById(variantId);
-
-      return variant
-        ? this._variantRepository.primitiveSave({
-            name,
-            size: variant.size,
-            filename: variant.filename,
-            file: {
-              id: fileId,
-            },
-          })
-        : null;
-    }
-
     const form = await this._formidableFormFactory.create({
       destination: options.destination,
       multiples: false,
@@ -58,10 +38,35 @@ export class VariantService implements IVariantService {
 
     return new Promise((resolve, reject) => {
       form.parse(request, async (error, fields, files) => {
+        const { name, fileId, variantId } = fields;
+
         if (error) {
           reject(error);
 
           return;
+        }
+
+        if (
+          Array.isArray(name) ||
+          Array.isArray(fileId) ||
+          Array.isArray(variantId)
+        ) {
+          return resolve(null);
+        }
+
+        if (variantId) {
+          const variant = await this._variantRepository.getById(variantId);
+
+          return resolve(
+            variant
+              ? this.saveVariant({
+                  name,
+                  fileId,
+                  size: variant.size,
+                  filename: variant.filename,
+                })
+              : null
+          );
         }
 
         if (!Object.keys(files).length) {
@@ -74,17 +79,33 @@ export class VariantService implements IVariantService {
           return resolve(null);
         }
 
-        const variant = await this._variantRepository.primitiveSave({
-          name,
-          size: file.size,
-          filename: file.newFilename,
-          file: {
-            id: fileId,
-          },
-        });
-
-        return resolve(variant);
+        return resolve(
+          this.saveVariant({
+            name,
+            fileId,
+            size: file.size,
+            filename: file.newFilename,
+          })
+        );
       });
+    });
+  }
+
+  private saveVariant(options: {
+    name: string;
+    size: number;
+    filename: string;
+    fileId: string;
+  }) {
+    const { name, size, filename, fileId } = options;
+
+    return this._variantRepository.primitiveSave({
+      name,
+      size,
+      filename,
+      file: {
+        id: parseInt(fileId),
+      },
     });
   }
 }
