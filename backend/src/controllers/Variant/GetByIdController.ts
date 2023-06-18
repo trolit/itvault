@@ -44,6 +44,10 @@ export class GetByIdController
       `workspace-${workspaceId}`
     );
 
+    if (!content) {
+      return response.status(HTTP.NOT_FOUND).send();
+    }
+
     return response.status(HTTP.OK).send({
       entry: variant,
       content,
