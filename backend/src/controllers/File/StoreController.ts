@@ -32,14 +32,14 @@ export class StoreController
       params: { workspaceId },
     } = request;
 
-    const result = await this._fileRepository.save(workspaceId, files);
+    const savedFiles = await this._fileRepository.save(workspaceId, files);
 
-    if (!result) {
+    if (!savedFiles) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    await this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
+    this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
 
-    return response.status(HTTP.OK).send(result);
+    return response.status(HTTP.OK).send(savedFiles);
   }
 }
