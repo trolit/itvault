@@ -4,5 +4,5 @@ export interface IBaseFileService {
   moveFilesFromTemporaryDir(
     workspaceId: number,
     formDataFiles: IFormDataFile[]
-  ): void;
+  ): Promise<void>;
 }
