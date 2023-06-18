@@ -48,6 +48,7 @@ export class FormidableFormFactory implements IFormidableFormFactory {
       multiples,
       uploadDir,
       keepExtensions: true,
+      allowEmptyFiles: false,
     });
 
     return form;
