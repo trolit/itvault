@@ -10,9 +10,9 @@ export const parseUploadFormData = (options: {
   multiples: boolean;
 }) => {
   return async (request: Request, response: Response, next: NextFunction) => {
-    if (!request.params.workspaceId) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
-    }
+    const {
+      params: { workspaceId },
+    } = request;
 
     const formidableFormFactory = getInstanceOf<IFormidableFormFactory>(
       Di.FormidableFormFactory
@@ -20,7 +20,7 @@ export const parseUploadFormData = (options: {
 
     const form = await formidableFormFactory.create({
       ...options,
-      destination: `workspace-${request.params.workspaceId}`,
+      destination: `workspace-${workspaceId}`,
     });
 
     form.parse(request, (error, fields, files) => {
