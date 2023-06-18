@@ -1,13 +1,8 @@
-import formidable from "formidable";
+import { IFormDataFile } from "@interfaces/IFormDataFile";
 
 export interface IBaseFileService {
   moveFilesFromTemporaryDir(
     workspaceId: number,
-    files: formidable.Files
-  ): Promise<{ isSuccess: boolean }>;
-
-  removeFiles(
-    workspaceId: number,
-    files: formidable.Files
-  ): Promise<{ isSuccess: boolean }>;
+    formDataFiles: IFormDataFile[]
+  ): void;
 }
