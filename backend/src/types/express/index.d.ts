@@ -1,3 +1,4 @@
+import formidable from "formidable";
 import { RequestPermissions } from "@custom-types/express";
 
 // to make the file a module and avoid the TypeScript error
@@ -11,6 +12,9 @@ declare global {
 
       // @NOTE --- available only after `requireAuthentication` middleware
       permissions: RequestPermissions;
+
+      // @NOTE --- available only after `parseFormData` middleware
+      files: formidable.Files;
     }
   }
 }
