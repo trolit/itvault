@@ -3,6 +3,7 @@ import type { Request, NextFunction, Response } from "express";
 
 import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { mapFormDataFiles } from "@helpers/mapFormDataFiles";
 import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFactory";
 
 export const parseUploadFormData = (options: {
@@ -32,7 +33,7 @@ export const parseUploadFormData = (options: {
 
       request.body = fields;
 
-      request.files = files;
+      request.files = mapFormDataFiles(files);
 
       next();
     });
