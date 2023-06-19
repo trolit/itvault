@@ -21,6 +21,7 @@ variantsRouter.get(
 
 variantsRouter.get("/:variantId/v1", processRequestWith(GetByIdController));
 
+// @TODO refactor after merging changes related to "Files/StoreController"
 variantsRouter.post("/v1", processRequestWith(StoreController));
 
 variantsRouter.use("/:variantId/palettes", palettesRouter);

@@ -21,7 +21,7 @@ export class VariantService implements IVariantService {
 
   async getContent(variant: Variant, directory: string): Promise<string> {
     const file = await fs.readFile(
-      path.join(FILES.STORAGE.BASE_UPLOADS_PATH, directory, variant.filename)
+      path.join(FILES.BASE_UPLOADS_PATH, directory, variant.filename)
     );
 
     return file.toString();
@@ -32,6 +32,7 @@ export class VariantService implements IVariantService {
     options: { destination?: string | undefined }
   ): Promise<Variant | null> {
     const form = await this._formidableFormFactory.create({
+      basePath: FILES.BASE_UPLOADS_PATH,
       destination: options.destination,
       multiples: false,
     });

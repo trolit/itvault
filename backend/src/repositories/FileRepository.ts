@@ -1,4 +1,3 @@
-import formidable from "formidable";
 import { injectable } from "tsyringe";
 import { QueryRunner, Repository, Like, Not } from "typeorm";
 
@@ -7,6 +6,7 @@ import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { BaseRepository } from "./BaseRepository";
 import { IFileRepository } from "@interfaces/repository/IFileRepository";
+import { IFormDataFile } from "@interfaces/IFormDataFile";
 
 @injectable()
 export class FileRepository
@@ -21,7 +21,7 @@ export class FileRepository
 
   async save(
     workspaceId: number,
-    filesToAdd: formidable.Files
+    formDataFiles: IFormDataFile[]
   ): Promise<File[] | null> {
     const transaction = await this.useTransaction();
 
@@ -30,11 +30,16 @@ export class FileRepository
     try {
       const temporaryFilesContainer = [];
 
-      for (const [key, value] of Object.entries(filesToAdd)) {
-        const valueAsArray = Array.isArray(value) ? value : [value];
-
+      for (const { key, file } of formDataFiles) {
         temporaryFilesContainer.push(
-          ...this.getFilesFromValue(valueAsArray, workspaceId, transaction, key)
+          this.createFileInstance(transaction, {
+            size: file.size,
+            filename: file.newFilename,
+            variantName: "v1",
+            workspaceId: workspaceId,
+            relativePath: key,
+            originalFilename: file.originalFilename,
+          })
         );
       }
 
@@ -105,29 +110,5 @@ export class FileRepository
     });
 
     return file;
-  }
-
-  private getFilesFromValue(
-    value: formidable.File[],
-    workspaceId: number,
-    transaction: QueryRunner,
-    key: string
-  ): File[] {
-    const result: File[] = [];
-
-    for (const file of value) {
-      result.push(
-        this.createFileInstance(transaction, {
-          size: file.size,
-          filename: file.newFilename,
-          variantName: "v1",
-          workspaceId: workspaceId,
-          relativePath: key,
-          originalFilename: file.originalFilename,
-        })
-      );
-    }
-
-    return result;
   }
 }

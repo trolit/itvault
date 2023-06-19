@@ -2,7 +2,8 @@ import IncomingForm from "formidable/Formidable";
 
 export interface IFormidableFormFactory {
   create(options: {
-    destination?: string;
+    basePath: string;
     multiples: boolean;
+    destination?: string;
   }): Promise<IncomingForm>;
 }

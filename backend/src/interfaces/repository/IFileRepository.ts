@@ -1,10 +1,12 @@
-import formidable from "formidable";
-
 import { File } from "@entities/File";
 import { IBaseRepository } from "./IBaseRepository";
+import { IFormDataFile } from "@interfaces/IFormDataFile";
 
 export interface IFileRepository extends IBaseRepository<File> {
-  save(workspaceId: number, files: formidable.Files): Promise<File[] | null>;
+  save(
+    workspaceId: number,
+    formDataFiles: IFormDataFile[]
+  ): Promise<File[] | null>;
 
   getAllByRelativePath(
     workspaceId: number,

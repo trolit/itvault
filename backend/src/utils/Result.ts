@@ -25,7 +25,7 @@ export class Result<T> {
     return new Result<T>([], value);
   }
 
-  public static failure<T>(errors: IError[]): Result<T> {
-    return new Result<T>(errors, undefined);
+  public static failure<T>(errors: IError[], value?: T): Result<T> {
+    return new Result<T>(errors, value);
   }
 }
