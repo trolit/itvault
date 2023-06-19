@@ -5,7 +5,8 @@ import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IVariantService } from "@interfaces/service/IVariantService";
+import { IBaseFileService } from "@interfaces/service/IBaseFileService";
+import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
 
 interface IParams {
   workspaceId: number;
@@ -24,8 +25,10 @@ export class StoreController
   implements IController<IParams, IBody, undefined, Variant>
 {
   constructor(
-    @inject(Di.VariantService)
-    private _variantService: IVariantService
+    @inject(Di.VariantRepository)
+    private _variantRepository: IVariantRepository,
+    @inject(Di.FileService)
+    private _fileService: IBaseFileService
   ) {}
 
   async invoke(
@@ -33,17 +36,21 @@ export class StoreController
     response: CustomResponse<Variant>
   ) {
     const {
+      body,
+      files,
       params: { workspaceId },
     } = request;
 
-    const result = await this._variantService.upload(request, {
-      destination: `workspace-${workspaceId}`,
-    });
+    const variant = await this._variantRepository.save(body, files);
 
-    if (!result) {
-      return response.status(HTTP.BAD_REQUEST).send();
+    if (!variant) {
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    return response.status(HTTP.OK).send(result);
+    if (files.length) {
+      this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
+    }
+
+    return response.status(HTTP.CREATED).send(variant);
   }
 }
