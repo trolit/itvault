@@ -9,7 +9,8 @@ import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
 
 export const fieldsSchema = schemaForType<IBody>()(
   z.object({
-    name: z.string().min(3),
+    // @TODO check if name is unique
+    name: z.string().min(2),
 
     fileId: z.coerce
       .number()
