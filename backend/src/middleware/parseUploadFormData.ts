@@ -1,4 +1,5 @@
 import { ZodError, ZodSchema } from "zod";
+import IncomingForm from "formidable/Formidable";
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
@@ -12,6 +13,7 @@ export const parseUploadFormData = <T>(
   options: {
     basePath: string;
     multiples: boolean;
+    fieldsOrder?: string[];
   },
   validators?: { files?: ZodSchema<IFormDataFile[]>; fields?: ZodSchema<T> }
 ) => {
@@ -24,10 +26,16 @@ export const parseUploadFormData = <T>(
       Di.FormidableFormFactory
     );
 
+    const { fieldsOrder, ...formOptions } = options;
+
     const form = await formidableFormFactory.create({
-      ...options,
+      ...formOptions,
       destination: `workspace-${workspaceId}`,
     });
+
+    if (fieldsOrder?.length) {
+      configureFieldsOrderValidation(form, fieldsOrder);
+    }
 
     form.parse(request, async (error, fields, files) => {
       if (error) {
@@ -59,6 +67,21 @@ export const parseUploadFormData = <T>(
     });
   };
 };
+
+function configureFieldsOrderValidation(
+  form: IncomingForm,
+  fieldsOrder: string[]
+) {
+  let fieldsOrderIndex = 0;
+
+  form.on("field", name => {
+    if (name !== fieldsOrder[fieldsOrderIndex]) {
+      throw `Invalid fields order at position ${fieldsOrderIndex} (expected: ${fieldsOrder[fieldsOrderIndex]}, received: ${name})`;
+    }
+
+    fieldsOrderIndex++;
+  });
+}
 
 async function runValidators<T>(
   data: { files: IFormDataFile[]; fields: T },
