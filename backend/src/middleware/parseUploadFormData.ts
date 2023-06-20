@@ -45,10 +45,10 @@ export const parseUploadFormData = <T>(
         );
 
         if (errors) {
+          // @TODO remove files
+
           return response.status(HTTP.BAD_REQUEST).send(errors.format());
         }
-
-        // @TODO remove files
       }
 
       request.body = fields;
