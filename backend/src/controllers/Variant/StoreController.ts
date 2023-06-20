@@ -12,12 +12,12 @@ interface IParams {
   workspaceId: number;
 }
 
-interface IBody {
+export interface IBody {
   name: string;
 
   fileId: number;
 
-  variantId: string | undefined;
+  variantId?: string;
 }
 
 @injectable()
