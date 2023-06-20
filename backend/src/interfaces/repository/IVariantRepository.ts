@@ -7,7 +7,7 @@ export interface IVariantRepository extends IBaseRepository<Variant> {
     formDataBody: {
       name: string;
       fileId: number;
-      variantId: string | undefined;
+      variantId?: string;
     },
     formDataFiles: IFormDataFile[]
   ): Promise<Variant | null>;

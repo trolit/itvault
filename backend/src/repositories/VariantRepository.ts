@@ -21,7 +21,7 @@ export class VariantRepository
     formDataBody: {
       name: string;
       fileId: number;
-      variantId: string | undefined;
+      variantId?: string;
     },
     formDataFiles: IFormDataFile[]
   ): Promise<Variant | null> {
