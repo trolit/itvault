@@ -12,8 +12,14 @@ export class FormidableFormFactory implements IFormidableFormFactory {
     basePath: string;
     multiples: boolean;
     destination?: string;
+    customFilterFlag?: boolean;
   }): Promise<IncomingForm> {
-    const { basePath, destination, multiples } = options;
+    const {
+      basePath,
+      multiples,
+      destination,
+      customFilterFlag = true,
+    } = options;
 
     const uploadDir = path.join(basePath, destination || "");
 
@@ -36,6 +42,7 @@ export class FormidableFormFactory implements IFormidableFormFactory {
       const isNameWithoutDoubleSlash = !!name && !name.includes("//");
 
       return (
+        customFilterFlag &&
         isNotImage &&
         withValidNamePattern &&
         withoutDoubleExtension &&

@@ -5,5 +5,6 @@ export interface IFormidableFormFactory {
     basePath: string;
     multiples: boolean;
     destination?: string;
+    customFilterFlag?: boolean;
   }): Promise<IncomingForm>;
 }
