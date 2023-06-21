@@ -54,10 +54,10 @@ function useBodySchema(workspaceId?: string): SchemaProvider {
             },
           });
 
-          if (!blueprint) {
+          if (blueprint) {
             context.addIssue({
               code: ZodIssueCode.custom,
-              message: "There is already blueprint with this name.",
+              message: "This name is not available.",
             });
 
             return Zod.NEVER;
@@ -68,7 +68,10 @@ function useBodySchema(workspaceId?: string): SchemaProvider {
 
         color: z
           .string()
-          .regex(/^#[a-zA-Z0-9]{6}$/)
+          .regex(
+            /^#[a-zA-Z0-9]{6}$/,
+            "Color needs to be in hexadecimal pattern."
+          )
           .superRefine(async (value, context: RefinementCtx) => {
             const blueprint = await blueprintRepository.getOne({
               where: {
@@ -79,10 +82,10 @@ function useBodySchema(workspaceId?: string): SchemaProvider {
               },
             });
 
-            if (!blueprint) {
+            if (blueprint) {
               context.addIssue({
                 code: ZodIssueCode.custom,
-                message: "There is already blueprint with this color.",
+                message: "This color is not available.",
               });
 
               return Zod.NEVER;
