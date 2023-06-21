@@ -34,7 +34,7 @@ export const parseUploadFormData = <T>(
     });
 
     if (fieldsOrder?.length) {
-      configureFieldsOrderValidation(form, fieldsOrder);
+      setFieldsOrderValidation(form, fieldsOrder);
     }
 
     form.parse(request, async (error, fields, files) => {
@@ -45,6 +45,10 @@ export const parseUploadFormData = <T>(
       }
 
       const mappedFiles = mapFormDataFiles(files);
+
+      if (!mappedFiles.length) {
+        return response.status(HTTP.BAD_REQUEST).send();
+      }
 
       if (validators) {
         const errors = await runValidators(
@@ -68,10 +72,7 @@ export const parseUploadFormData = <T>(
   };
 };
 
-function configureFieldsOrderValidation(
-  form: IncomingForm,
-  fieldsOrder: string[]
-) {
+function setFieldsOrderValidation(form: IncomingForm, fieldsOrder: string[]) {
   let fieldsOrderIndex = 0;
 
   form.on("field", name => {
