@@ -42,10 +42,6 @@ export class VariantRepository
         : null;
     }
 
-    if (!formDataFiles.length) {
-      return null;
-    }
-
     const [{ file }] = formDataFiles;
 
     return this.primitiveSave({
