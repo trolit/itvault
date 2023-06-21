@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { FILES } from "@config";
 import palettesRouter from "./palettes";
-import { fieldsSchema } from "@schemas/Variant/fieldsSchema";
+import { storeSchema } from "@schemas/Variant/storeSchema";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
@@ -32,8 +32,9 @@ variantsRouter.post(
     {
       multiples: false,
       basePath: FILES.BASE_TEMPORARY_UPLOADS_PATH,
+      fieldsOrder: ["name", "fileId", "variantId"],
     },
-    { fields: fieldsSchema }
+    storeSchema
   ),
   processRequestWith(StoreController)
 );
