@@ -56,3 +56,5 @@ export const fieldsSchema = schemaForType<IBody>()(
     ),
   })
 );
+
+export const storeSchema = { fields: fieldsSchema };
