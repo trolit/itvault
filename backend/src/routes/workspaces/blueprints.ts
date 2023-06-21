@@ -5,6 +5,7 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { StoreController } from "@controllers/Blueprint/StoreController";
 import { GetAllController } from "@controllers/Blueprint/GetAllController";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { useStoreSuperSchema } from "@schemas/Blueprint/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 
 const blueprintsRouter = Router({ mergeParams: true });
@@ -17,6 +18,10 @@ blueprintsRouter.get(
   processRequestWith(GetAllController)
 );
 
-blueprintsRouter.post("/v1", processRequestWith(StoreController));
+blueprintsRouter.post(
+  "/v1",
+  validateRequestWith(useStoreSuperSchema),
+  processRequestWith(StoreController)
+);
 
 export = blueprintsRouter;
