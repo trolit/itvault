@@ -10,8 +10,8 @@ import {
   DataStoreUser,
   DataStoreKeyType,
 } from "@custom-types/data-store";
-import { IAuthService } from "types/interfaces/service/IAuthService";
-import { IDataStoreService } from "types/interfaces/service/IDataStoreService";
+import { IAuthService } from "@interfaces/service/IAuthService";
+import { IDataStoreService } from "@interfaces/service/IDataStoreService";
 
 @injectable()
 export class AuthService implements IAuthService {

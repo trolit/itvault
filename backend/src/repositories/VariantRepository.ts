@@ -3,8 +3,8 @@ import { injectable } from "tsyringe";
 
 import { Variant } from "@entities/Variant";
 import { BaseRepository } from "./BaseRepository";
-import { IFormDataFile } from "types/interfaces/IFormDataFile";
-import { IVariantRepository } from "types/interfaces/repository/IVariantRepository";
+import { IFormDataFile } from "@interfaces/IFormDataFile";
+import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
 
 @injectable()
 export class VariantRepository

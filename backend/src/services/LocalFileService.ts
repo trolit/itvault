@@ -3,8 +3,8 @@ import fs from "fs-extra";
 import { injectable } from "tsyringe";
 
 import { FILES } from "@config";
-import { IFormDataFile } from "types/interfaces/IFormDataFile";
-import { IBaseFileService } from "types/interfaces/service/IBaseFileService";
+import { IFormDataFile } from "@interfaces/IFormDataFile";
+import { IBaseFileService } from "@interfaces/service/IBaseFileService";
 
 @injectable()
 export class LocalFileService implements IBaseFileService {

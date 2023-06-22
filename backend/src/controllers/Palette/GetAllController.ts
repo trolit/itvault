@@ -3,9 +3,9 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Palette } from "@entities/Palette";
-import { IController } from "types/interfaces/IController";
+import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IPaletteRepository } from "types/interfaces/repository/IPaletteRepository";
+import { IPaletteRepository } from "@interfaces/repository/IPaletteRepository";
 
 interface IParams {
   variantId: string;

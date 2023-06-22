@@ -1,5 +1,5 @@
 import { Permission } from "@enums/Permission";
-import { IPermissionDefinition } from "types/interfaces/config/IPermissionDefinition";
+import { IPermissionDefinition } from "@interfaces/config/IPermissionDefinition";
 
 // ****************************************************
 // @NOTE ROLE PERMISSIONS

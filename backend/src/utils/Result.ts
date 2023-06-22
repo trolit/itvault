@@ -1,4 +1,4 @@
-import { IError } from "types/interfaces/IError";
+import { IError } from "@interfaces/IError";
 
 export class PaginatedResult<T> {
   result: T[];

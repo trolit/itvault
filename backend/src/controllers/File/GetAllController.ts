@@ -3,9 +3,9 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
-import { IController } from "types/interfaces/IController";
+import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IFileRepository } from "types/interfaces/repository/IFileRepository";
+import { IFileRepository } from "@interfaces/repository/IFileRepository";
 
 interface IParams {
   workspaceId: number;

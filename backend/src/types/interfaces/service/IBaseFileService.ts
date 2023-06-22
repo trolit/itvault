@@ -1,4 +1,4 @@
-import { IFormDataFile } from "types/interfaces/IFormDataFile";
+import { IFormDataFile } from "@interfaces/IFormDataFile";
 
 export interface IBaseFileService {
   moveFilesFromTemporaryDir(

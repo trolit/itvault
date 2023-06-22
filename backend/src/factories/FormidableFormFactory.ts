@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import formidable from "formidable";
 import IncomingForm from "formidable/Formidable";
 
-import { IFormidableFormFactory } from "types/interfaces/factory/IFormidableFormFactory";
+import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFactory";
 
 export class FormidableFormFactory implements IFormidableFormFactory {
   public uploadDir: string;

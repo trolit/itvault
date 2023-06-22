@@ -3,9 +3,9 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { IController } from "types/interfaces/IController";
+import { IController } from "@interfaces/IController";
 import { CustomRequest } from "@custom-types/express";
-import { IFileRepository } from "types/interfaces/repository/IFileRepository";
+import { IFileRepository } from "@interfaces/repository/IFileRepository";
 
 interface IParams {
   workspaceId: number;

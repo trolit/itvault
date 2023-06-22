@@ -9,7 +9,7 @@ import { baseSchemas } from "@schemas/Variant/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
-import { IBlueprintRepository } from "types/interfaces/repository/IBlueprintRepository";
+import { IBlueprintRepository } from "@interfaces/repository/IBlueprintRepository";
 
 export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {

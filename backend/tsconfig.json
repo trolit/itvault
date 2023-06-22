@@ -17,6 +17,7 @@
     "paths": {
       "@dtos/*": ["types/dtos/*"],
       "@enums/*": ["types/enums/*"],
+      "@interfaces/*": ["types/interfaces/*"],
       "@config": ["config/"],
       "@routes": ["routes/"],
       "@utils/*": ["utils/*"],

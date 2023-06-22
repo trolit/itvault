@@ -5,10 +5,10 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { RoleDto } from "@dtos/RoleDto";
 import { PaginatedResult } from "@utils/Result";
-import { IController } from "types/interfaces/IController";
+import { IController } from "@interfaces/IController";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IRoleRepository } from "types/interfaces/repository/IRoleRepository";
+import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
 
 interface IQuery {
   skip: number;
