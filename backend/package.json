@@ -24,7 +24,6 @@
   },
   "_moduleAliases": {
     "@dtos": "dist/dtos",
-    "@enums": "dist/enums",
     "@utils": "dist/utils",
     "@config": "dist/config",
     "@routes": "dist/routes",

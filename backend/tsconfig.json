@@ -18,7 +18,6 @@
       "@dtos/*": ["dtos/*"],
       "@config": ["config/"],
       "@routes": ["routes/"],
-      "@enums/*": ["enums/*"],
       "@utils/*": ["utils/*"],
       "@config/*": ["config/*"],
       "@routes/*": ["routes/*"],
