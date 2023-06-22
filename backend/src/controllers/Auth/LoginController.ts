@@ -3,10 +3,10 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { APP, JWT } from "@config";
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
-import { Environment } from "types/enums/Environment";
+import { Environment } from "@enums/Environment";
 import { IController } from "types/interfaces/IController";
 import { IAuthService } from "types/interfaces/service/IAuthService";
 import { CustomRequest, CustomResponse } from "@custom-types/express";

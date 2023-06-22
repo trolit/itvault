@@ -1,7 +1,7 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { IWorkspaceRepository } from "types/interfaces/repository/IWorkspaceRepository";
 

@@ -2,7 +2,7 @@ import { In } from "typeorm";
 import uniqBy from "lodash/uniqBy";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { StorePaletteDto } from "@dtos/StorePaletteDto";
 import { baseSchemas } from "@schemas/Variant/baseSchemas";

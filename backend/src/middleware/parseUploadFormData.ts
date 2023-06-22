@@ -3,7 +3,7 @@ import IncomingForm from "formidable/Formidable";
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { mapFormDataFiles } from "@helpers/mapFormDataFiles";
 import { IFormDataFile } from "types/interfaces/IFormDataFile";

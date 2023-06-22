@@ -1,8 +1,8 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { NextFunction, Response } from "express";
 
-import { Di } from "types/enums/Di";
-import { Permission } from "types/enums/Permission";
+import { Di } from "@enums/Di";
+import { Permission } from "@enums/Permission";
 import { CustomRequest } from "@custom-types/express";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";

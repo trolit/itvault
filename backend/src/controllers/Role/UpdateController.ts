@@ -2,7 +2,7 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
 import { CustomRequest } from "@custom-types/express";
 import { IController } from "types/interfaces/IController";

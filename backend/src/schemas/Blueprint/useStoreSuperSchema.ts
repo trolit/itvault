@@ -1,6 +1,6 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import {
   SchemaProvider,
   SuperCommonParam,

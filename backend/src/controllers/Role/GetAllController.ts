@@ -2,7 +2,7 @@ import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import { RoleDto } from "@dtos/RoleDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "types/interfaces/IController";

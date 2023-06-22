@@ -12,7 +12,7 @@ import { User } from "./User";
 import { Variant } from "./Variant";
 import { Blueprint } from "./Blueprint";
 import { Workspace } from "./Workspace";
-import { BundleExpire } from "types/enums/BundleExpire";
+import { BundleExpire } from "@enums/BundleExpire";
 
 @Entity("bundles")
 export class Bundle {

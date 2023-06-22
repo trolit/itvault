@@ -1,4 +1,4 @@
-import { Permission } from "types/enums/Permission";
+import { Permission } from "@enums/Permission";
 
 export interface IPermissionDefinition {
   id: Permission;

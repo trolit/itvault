@@ -16,6 +16,7 @@
     "baseUrl": "src",
     "paths": {
       "@dtos/*": ["types/dtos/*"],
+      "@enums/*": ["types/enums/*"],
       "@config": ["config/"],
       "@routes": ["routes/"],
       "@utils/*": ["utils/*"],

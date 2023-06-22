@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { FILES } from "@config";
-import { Permission } from "types/enums/Permission";
+import { Permission } from "@enums/Permission";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { StoreController } from "@controllers/File/StoreController";

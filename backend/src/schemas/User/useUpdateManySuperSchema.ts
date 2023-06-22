@@ -2,7 +2,7 @@ import { In } from "typeorm";
 import isArray from "lodash/isArray";
 import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import {
   SchemaProvider,
   SuperCommonParam,

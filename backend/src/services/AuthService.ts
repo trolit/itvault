@@ -4,7 +4,7 @@ import { inject, injectable } from "tsyringe";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { JWT } from "@config";
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import {
   DataStoreRole,
   DataStoreUser,

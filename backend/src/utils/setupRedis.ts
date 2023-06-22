@@ -1,6 +1,6 @@
 import { Redis } from "ioredis";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import { REDIS } from "@config";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";

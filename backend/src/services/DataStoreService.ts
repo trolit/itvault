@@ -1,7 +1,7 @@
 import { Redis } from "ioredis";
 import { inject, injectable } from "tsyringe";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import { DataStoreKey } from "@custom-types/data-store";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 import { IDataStoreService } from "types/interfaces/service/IDataStoreService";

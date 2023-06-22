@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { Di } from "types/enums/Di";
+import { Di } from "@enums/Di";
 import { Blueprint } from "@entities/Blueprint";
 import { BlueprintDto } from "@dtos/BlueprintDto";
 import { IController } from "types/interfaces/IController";
