@@ -1,5 +1,3 @@
-export class RoleDto {
-  id: number;
+import { Role } from "@entities/Role";
 
-  name: string;
-}
+export type RoleDto = Pick<Role, "id" | "name">;
