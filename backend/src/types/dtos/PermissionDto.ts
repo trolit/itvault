@@ -1,7 +1,5 @@
-export class PermissionDto {
-  id: number;
+import { Permission } from "@entities/Permission";
+import { PermissionToRole } from "@entities/PermissionToRole";
 
-  name: string;
-
-  enabled: boolean;
-}
+export type PermissionDto = Pick<Permission, "id" | "name"> &
+  Pick<PermissionToRole, "enabled">;
