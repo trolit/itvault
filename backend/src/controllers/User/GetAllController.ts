@@ -6,8 +6,8 @@ import { UserDto } from "@dtos/UserDto";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IUserRepository } from "@interfaces/repository/IUserRepository";
-import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
+import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 interface IQuery {
   skip: number;

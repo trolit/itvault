@@ -6,7 +6,7 @@ import { Di } from "@enums/Di";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
 import { CustomRequest } from "@custom-types/express";
 import { IController } from "@interfaces/IController";
-import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 interface IParams {
   id: number;

@@ -5,7 +5,7 @@ import { Di } from "@enums/Di";
 import { Palette } from "@entities/Palette";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IPaletteRepository } from "@interfaces/repository/IPaletteRepository";
+import { IPaletteRepository } from "@interfaces/repositories/IPaletteRepository";
 
 interface IParams {
   variantId: string;

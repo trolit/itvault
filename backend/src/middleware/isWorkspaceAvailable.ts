@@ -3,7 +3,7 @@ import type { Request, NextFunction, Response } from "express";
 
 import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
+import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 // @NOTE better to use in case of "parseUploadFormData" middleware
 export const IsWorkspaceAvailable = (() => {

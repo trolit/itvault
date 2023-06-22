@@ -3,7 +3,7 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
+import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 const paramsSchema = schemaForType<{
   workspaceId: number;

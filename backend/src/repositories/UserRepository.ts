@@ -8,7 +8,7 @@ import { Result } from "@utils/Result";
 import { IError } from "@interfaces/IError";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
-import { IUserRepository } from "@interfaces/repository/IUserRepository";
+import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 @injectable()
 export class UserRepository

@@ -18,7 +18,7 @@ export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
       dirname: "repositories",
       excludedFilenames: ["BaseRepository"],
     },
-    interfacesDirname: "repository",
+    interfacesDirname: "repositories",
   });
 
   registerDependencies({
@@ -26,7 +26,7 @@ export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
       dirname: "services",
       excludedFilenames: ["LocalFileService"],
     },
-    interfacesDirname: "service",
+    interfacesDirname: "services",
   });
 
   registerDependencies({
@@ -34,7 +34,7 @@ export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
       dirname: "factories",
       excludedFilenames: [],
     },
-    interfacesDirname: "factory",
+    interfacesDirname: "factories",
   });
 
   return new Promise(resolve =>

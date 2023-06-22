@@ -4,7 +4,7 @@ import { injectable } from "tsyringe";
 
 import { FILES } from "@config";
 import { Variant } from "@entities/Variant";
-import { IVariantService } from "@interfaces/service/IVariantService";
+import { IVariantService } from "@interfaces/services/IVariantService";
 
 @injectable()
 export class VariantService implements IVariantService {

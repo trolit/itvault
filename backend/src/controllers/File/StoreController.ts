@@ -5,8 +5,8 @@ import { Di } from "@enums/Di";
 import { File } from "@entities/File";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IBaseFileService } from "@interfaces/service/IBaseFileService";
-import { IFileRepository } from "@interfaces/repository/IFileRepository";
+import { IBaseFileService } from "@interfaces/services/IBaseFileService";
+import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 interface IParams {
   workspaceId: number;

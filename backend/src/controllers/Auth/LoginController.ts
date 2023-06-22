@@ -8,12 +8,12 @@ import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
-import { IAuthService } from "@interfaces/service/IAuthService";
+import { IAuthService } from "@interfaces/services/IAuthService";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IUserRepository } from "@interfaces/repository/IUserRepository";
-import { IDataStoreService } from "@interfaces/service/IDataStoreService";
+import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 import { DataStoreKeyType, DataStoreUser } from "@custom-types/data-store";
-import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
+import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 @injectable()
 export class LoginController

@@ -8,8 +8,8 @@ import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
-import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
+import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
+import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 interface IQuery {
   skip: number;

@@ -6,7 +6,7 @@ import { PaginatedResult } from "@utils/Result";
 import { Blueprint } from "@entities/Blueprint";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IBlueprintRepository } from "@interfaces/repository/IBlueprintRepository";
+import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 interface IParams {
   workspaceId: number;

@@ -3,7 +3,7 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
+import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
 const paramsSchema = schemaForType<{
   variantId: string;

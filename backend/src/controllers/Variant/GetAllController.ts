@@ -6,7 +6,7 @@ import { Variant } from "@entities/Variant";
 import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
+import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
 interface IParams {
   workspaceId: number;

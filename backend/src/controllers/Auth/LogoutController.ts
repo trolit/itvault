@@ -6,7 +6,7 @@ import { JWT } from "@config";
 import { Di } from "@enums/Di";
 import { CustomRequest } from "@custom-types/express";
 import { IController } from "@interfaces/IController";
-import { IAuthService } from "@interfaces/service/IAuthService";
+import { IAuthService } from "@interfaces/services/IAuthService";
 
 @injectable()
 export class LogoutController implements IController {

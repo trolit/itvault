@@ -4,7 +4,7 @@ import { injectable } from "tsyringe";
 import { Blueprint } from "@entities/Blueprint";
 import { BaseRepository } from "./BaseRepository";
 import { BlueprintDto } from "types/dtos/BlueprintDto";
-import { IBlueprintRepository } from "@interfaces/repository/IBlueprintRepository";
+import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 @injectable()
 export class BlueprintRepository

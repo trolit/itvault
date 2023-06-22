@@ -4,7 +4,7 @@ import { Di } from "@enums/Di";
 import { REDIS } from "@config";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
-import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 import { DataStoreKeyType, DataStoreRole } from "@custom-types/data-store";
 
 export const setupRedis = () => {

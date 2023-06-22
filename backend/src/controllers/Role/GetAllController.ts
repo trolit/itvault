@@ -8,7 +8,7 @@ import { PaginatedResult } from "@utils/Result";
 import { IController } from "@interfaces/IController";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 interface IQuery {
   skip: number;

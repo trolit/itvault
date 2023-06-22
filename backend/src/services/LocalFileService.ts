@@ -4,7 +4,7 @@ import { injectable } from "tsyringe";
 
 import { FILES } from "@config";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
-import { IBaseFileService } from "@interfaces/service/IBaseFileService";
+import { IBaseFileService } from "@interfaces/services/IBaseFileService";
 
 @injectable()
 export class LocalFileService implements IBaseFileService {
