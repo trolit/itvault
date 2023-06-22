@@ -24,7 +24,7 @@
   },
   "_moduleAliases": {
     "types": "dist/types",
-    "@dtos": "dist/dtos",
+    "@dtos": "dist/types/dtos",
     "@utils": "dist/utils",
     "@config": "dist/config",
     "@routes": "dist/routes",

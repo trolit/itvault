@@ -15,7 +15,7 @@
     "strict": true,
     "baseUrl": "src",
     "paths": {
-      "@dtos/*": ["dtos/*"],
+      "@dtos/*": ["types/dtos/*"],
       "@config": ["config/"],
       "@routes": ["routes/"],
       "@utils/*": ["utils/*"],
