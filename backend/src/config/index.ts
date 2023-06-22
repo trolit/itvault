@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config({});
 
 import { Environment } from "@enums/Environment";
-import { DatabaseType } from "@enums/DatabaseType";
+import { DatabaseType } from "types/enums/DatabaseType";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
 const envString = (name: string) => env.get(name).required().asString();
