@@ -7,7 +7,7 @@ import { Di } from "types/enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
 import { mapFormDataFiles } from "@helpers/mapFormDataFiles";
-import { IFormidableFormFactory } from "@interfaces/factory/IFormidableFormFactory";
+import { IFormidableFormFactory } from "types/interfaces/factory/IFormidableFormFactory";
 
 export const parseUploadFormData = <T>(
   options: {
