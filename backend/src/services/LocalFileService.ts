@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import { injectable } from "tsyringe";
 
 import { FILES } from "@config";
-import { IFormDataFile } from "@interfaces/IFormDataFile";
+import { IFormDataFile } from "types/interfaces/IFormDataFile";
 import { IBaseFileService } from "types/interfaces/service/IBaseFileService";
 
 @injectable()

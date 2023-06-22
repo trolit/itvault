@@ -5,8 +5,8 @@ import { FILES } from "@config";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { BaseRepository } from "./BaseRepository";
+import { IFormDataFile } from "types/interfaces/IFormDataFile";
 import { IFileRepository } from "types/interfaces/repository/IFileRepository";
-import { IFormDataFile } from "@interfaces/IFormDataFile";
 
 @injectable()
 export class FileRepository

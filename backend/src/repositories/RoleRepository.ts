@@ -3,7 +3,7 @@ import { Repository, EntityManager } from "typeorm";
 
 import { Role } from "@entities/Role";
 import { Result } from "@utils/Result";
-import { IError } from "@interfaces/IError";
+import { IError } from "types/interfaces/IError";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
 import { IRoleRepository } from "types/interfaces/repository/IRoleRepository";

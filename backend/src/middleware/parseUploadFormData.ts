@@ -5,8 +5,8 @@ import type { Request, NextFunction, Response } from "express";
 
 import { Di } from "types/enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { IFormDataFile } from "@interfaces/IFormDataFile";
 import { mapFormDataFiles } from "@helpers/mapFormDataFiles";
+import { IFormDataFile } from "types/interfaces/IFormDataFile";
 import { IFormidableFormFactory } from "types/interfaces/factory/IFormidableFormFactory";
 
 export const parseUploadFormData = <T>(
