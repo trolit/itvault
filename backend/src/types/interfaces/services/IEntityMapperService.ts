@@ -1,4 +1,4 @@
-import { Type } from "@common-types";
+import { Type } from "@commonTypes";
 import { Base } from "@entities/Base";
 
 export interface IEntityMapperService {

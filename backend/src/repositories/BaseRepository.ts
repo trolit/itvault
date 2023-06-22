@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import { Type } from "@common-types";
+import { Type } from "@commonTypes";
 import { dataSource } from "@config/data-source";
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
