@@ -5,13 +5,13 @@ import {
   SchemaProvider,
   SuperCommonParam,
   SuperSchemaRunner,
-} from "@custom-types/super-schema";
-import { BlueprintDto } from "@dtos/BlueprintDto";
+} from "@superSchema";
+import { BlueprintDto } from "types/dtos/BlueprintDto";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
-import { IBlueprintRepository } from "@interfaces/repository/IBlueprintRepository";
+import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   ({ request }: SuperCommonParam) => {

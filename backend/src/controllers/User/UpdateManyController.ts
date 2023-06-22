@@ -3,14 +3,14 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { Result } from "@utils/Result";
+import { Result } from "types/Result";
 import { Permission } from "@enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
-import { IUserService } from "@interfaces/service/IUserService";
+import { IUserService } from "@interfaces/services/IUserService";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IUserRepository } from "@interfaces/repository/IUserRepository";
+import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 interface IRequestBody {
   value: UpdateUserDto[];

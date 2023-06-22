@@ -1,4 +1,4 @@
-import { DataStoreKey } from "@custom-types/data-store";
+import { DataStoreKey } from "@dataStore";
 
 export interface IDataStoreService {
   createHash<T extends Record<keyof T, string>>(

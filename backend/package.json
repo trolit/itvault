@@ -23,8 +23,10 @@
     "docker:redis": "docker exec -it redis bash"
   },
   "_moduleAliases": {
-    "@dtos": "dist/dtos",
-    "@enums": "dist/enums",
+    "types": "dist/types",
+    "@dtos": "dist/types/dtos",
+    "@enums": "dist/types/enums",
+    "@interfaces": "dist/types/interfaces",
     "@utils": "dist/utils",
     "@config": "dist/config",
     "@routes": "dist/routes",
@@ -34,7 +36,6 @@
     "@services": "dist/services",
     "@factories": "dist/factories",
     "@middleware": "dist/middleware",
-    "@interfaces": "dist/interfaces",
     "@migrations": "dist/migrations",
     "@controllers": "dist/controllers",
     "@repositories": "dist/repositories"

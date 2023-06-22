@@ -7,13 +7,13 @@ import {
   SchemaProvider,
   SuperCommonParam,
   SuperSchemaRunner,
-} from "@custom-types/super-schema";
+} from "@superSchema";
 import type { Role } from "@entities/Role";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import type { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const useUpdateManySuperSchema: SuperSchemaRunner =

@@ -6,7 +6,7 @@ import { Palette } from "@entities/Palette";
 import { IController } from "@interfaces/IController";
 import { StorePaletteDto } from "@dtos/StorePaletteDto";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IPaletteRepository } from "@interfaces/repository/IPaletteRepository";
+import { IPaletteRepository } from "@interfaces/repositories/IPaletteRepository";
 
 interface IParams {
   variantId: string;

@@ -5,13 +5,9 @@ import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { JWT } from "@config";
 import { Di } from "@enums/Di";
-import {
-  DataStoreRole,
-  DataStoreUser,
-  DataStoreKeyType,
-} from "@custom-types/data-store";
-import { IAuthService } from "@interfaces/service/IAuthService";
-import { IDataStoreService } from "@interfaces/service/IDataStoreService";
+import { DataStoreRole, DataStoreUser, DataStoreKeyType } from "@dataStore";
+import { IAuthService } from "@interfaces/services/IAuthService";
+import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 @injectable()
 export class AuthService implements IAuthService {

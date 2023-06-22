@@ -4,7 +4,7 @@ import { ALL_PERMISSIONS } from "@config/permissions";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { schemaForType } from "@schemas/common/schemaForType";
 import type { UpdatePermissionDto, UpdateRoleDto } from "@dtos/UpdateRoleDto";
-import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(

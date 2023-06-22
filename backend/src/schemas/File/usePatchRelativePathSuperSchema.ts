@@ -4,8 +4,8 @@ import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { IFileRepository } from "@interfaces/repository/IFileRepository";
-import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { IFileRepository } from "@interfaces/repositories/IFileRepository";
+import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const usePatchRelativePathSuperSchema: SuperSchemaRunner =

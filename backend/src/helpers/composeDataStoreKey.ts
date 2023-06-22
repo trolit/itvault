@@ -1,4 +1,4 @@
-import { DataStoreKey } from "@custom-types/data-store";
+import { DataStoreKey } from "@dataStore";
 
 export const composeDataStoreKey = (key: DataStoreKey) => {
   const [identifier, keyType] = key;

@@ -6,8 +6,8 @@ import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { DataStorePermission } from "@custom-types/data-store";
-import { IAuthService } from "@interfaces/service/IAuthService";
+import { DataStorePermission } from "@dataStore";
+import { IAuthService } from "@interfaces/services/IAuthService";
 
 export const requireAuthentication = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {

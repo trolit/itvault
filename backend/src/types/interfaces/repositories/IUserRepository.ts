@@ -1,5 +1,5 @@
 import { User } from "@entities/User";
-import { Result } from "@utils/Result";
+import { Result } from "types/Result";
 import { IBaseRepository } from "./IBaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 

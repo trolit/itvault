@@ -9,9 +9,9 @@ import {
 } from "typeorm";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 
-import { Type } from "@common-types";
+import { Type } from "@commonTypes";
 import { dataSource } from "@config/data-source";
-import { IBaseRepository } from "@interfaces/repository/IBaseRepository";
+import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 export class BaseRepository<T extends { id: number | string }>
   implements IBaseRepository<T>

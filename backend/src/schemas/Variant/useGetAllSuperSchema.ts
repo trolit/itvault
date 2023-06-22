@@ -3,8 +3,8 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { IFileRepository } from "@interfaces/repository/IFileRepository";
-import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { IFileRepository } from "@interfaces/repositories/IFileRepository";
+import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(

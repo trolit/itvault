@@ -5,8 +5,8 @@ import { Di } from "@enums/Di";
 import { VariantDto } from "@dtos/VariantDto";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IVariantService } from "@interfaces/service/IVariantService";
-import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
+import { IVariantService } from "@interfaces/services/IVariantService";
+import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
 interface IParams {
   workspaceId: number;
