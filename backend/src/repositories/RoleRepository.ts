@@ -2,7 +2,7 @@ import { injectable } from "tsyringe";
 import { Repository, EntityManager } from "typeorm";
 
 import { Role } from "@entities/Role";
-import { Result } from "@utils/Result";
+import { Result } from "types/Result";
 import { IError } from "@interfaces/IError";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";

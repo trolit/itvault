@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
-import { PaginatedResult } from "@utils/Result";
+import { PaginatedResult } from "types/Result";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";

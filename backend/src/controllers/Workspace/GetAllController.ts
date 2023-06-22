@@ -4,7 +4,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
-import { PaginatedResult } from "@utils/Result";
+import { PaginatedResult } from "types/Result";
 import { IController } from "@interfaces/IController";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { CustomRequest, CustomResponse } from "@custom-types/express";

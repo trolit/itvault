@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { PaginatedResult } from "@utils/Result";
+import { PaginatedResult } from "types/Result";
 import { Blueprint } from "@entities/Blueprint";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";

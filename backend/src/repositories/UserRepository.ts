@@ -4,7 +4,7 @@ import { EntityManager, Repository } from "typeorm";
 
 import { Role } from "@entities/Role";
 import { User } from "@entities/User";
-import { Result } from "@utils/Result";
+import { Result } from "types/Result";
 import { IError } from "@interfaces/IError";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";

@@ -1,5 +1,5 @@
 import { Role } from "@entities/Role";
-import { Result } from "@utils/Result";
+import { Result } from "types/Result";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
 import { IBaseRepository } from "./IBaseRepository";
 
