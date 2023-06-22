@@ -5,7 +5,7 @@ import { container, DependencyContainer } from "tsyringe";
 
 import { Di } from "types/enums/Di";
 import { FILES } from "@config/index";
-import { FileStorageMode } from "@enums/FileStorageMode";
+import { FileStorageMode } from "types/enums/FileStorageMode";
 import { LocalFileService } from "@services/LocalFileService";
 
 export const setupDi = (redis: Redis): Promise<DependencyContainer> => {

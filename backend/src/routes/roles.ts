@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { Permission } from "@enums/Permission";
+import { Permission } from "types/enums/Permission";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { GetAllController } from "@controllers/Role/GetAllController";

@@ -4,7 +4,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "types/enums/Di";
 import { Result } from "@utils/Result";
-import { Permission } from "@enums/Permission";
+import { Permission } from "types/enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
 import { IUserService } from "@interfaces/service/IUserService";

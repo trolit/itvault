@@ -1,4 +1,4 @@
-import { Permission } from "@enums/Permission";
+import { Permission } from "types/enums/Permission";
 import { IPermissionDefinition } from "@interfaces/config/IPermissionDefinition";
 
 // ****************************************************

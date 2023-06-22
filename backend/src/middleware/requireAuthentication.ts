@@ -3,7 +3,7 @@ import type { Request, NextFunction, Response } from "express";
 
 import { JWT } from "@config";
 import { Di } from "types/enums/Di";
-import { Permission } from "@enums/Permission";
+import { Permission } from "types/enums/Permission";
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { DataStorePermission } from "@custom-types/data-store";

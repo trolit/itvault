@@ -1,6 +1,6 @@
 declare module "@custom-types/express" {
   import { Request, Response } from "express";
-  import { Permission } from "@enums/Permission";
+  import { Permission } from "types/enums/Permission";
 
   export type CustomRequest<P = void, B = void, Q = void> = Request<
     P,

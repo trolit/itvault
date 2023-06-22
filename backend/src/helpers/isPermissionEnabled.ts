@@ -1,4 +1,4 @@
-import { Permission } from "@enums/Permission";
+import { Permission } from "types/enums/Permission";
 import { PermissionDto } from "@dtos/PermissionDto";
 import { RequestPermissions } from "@custom-types/express";
 

@@ -6,7 +6,7 @@ dotenv.config({});
 
 import { Environment } from "types/enums/Environment";
 import { DatabaseType } from "types/enums/DatabaseType";
-import { FileStorageMode } from "@enums/FileStorageMode";
+import { FileStorageMode } from "types/enums/FileStorageMode";
 
 const envString = (name: string) => env.get(name).required().asString();
 const envPort = (name: string) => env.get(name).required().asPortNumber();
