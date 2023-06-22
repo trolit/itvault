@@ -11,7 +11,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
-import { IBlueprintRepository } from "@interfaces/repository/IBlueprintRepository";
+import { IBlueprintRepository } from "types/interfaces/repository/IBlueprintRepository";
 
 export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   ({ request }: SuperCommonParam) => {

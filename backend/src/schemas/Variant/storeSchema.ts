@@ -4,8 +4,8 @@ import { Di } from "types/enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { IBody } from "@controllers/Variant/StoreController";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { IFileRepository } from "@interfaces/repository/IFileRepository";
-import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
+import { IFileRepository } from "types/interfaces/repository/IFileRepository";
+import { IVariantRepository } from "types/interfaces/repository/IVariantRepository";
 
 export const fieldsSchema = schemaForType<IBody>()(
   z.object({

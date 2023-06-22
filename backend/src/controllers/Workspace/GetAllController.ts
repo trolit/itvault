@@ -5,11 +5,11 @@ import { Di } from "types/enums/Di";
 import { Permission } from "types/enums/Permission";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utils/Result";
-import { IController } from "@interfaces/IController";
+import { IController } from "types/interfaces/IController";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
-import { IWorkspaceRepository } from "@interfaces/repository/IWorkspaceRepository";
+import { IEntityMapperService } from "types/interfaces/service/IEntityMapperService";
+import { IWorkspaceRepository } from "types/interfaces/repository/IWorkspaceRepository";
 
 interface IQuery {
   skip: number;

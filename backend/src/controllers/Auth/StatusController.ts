@@ -5,9 +5,9 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { JWT } from "@config";
 import { Di } from "types/enums/Di";
 import { CustomRequest } from "@custom-types/express";
-import { IController } from "@interfaces/IController";
-import { IAuthService } from "@interfaces/service/IAuthService";
-import { IUserRepository } from "@interfaces/repository/IUserRepository";
+import { IController } from "types/interfaces/IController";
+import { IAuthService } from "types/interfaces/service/IAuthService";
+import { IUserRepository } from "types/interfaces/repository/IUserRepository";
 
 @injectable()
 export class StatusController implements IController {

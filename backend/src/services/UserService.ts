@@ -7,8 +7,8 @@ import {
   DataStoreKeyType,
 } from "@custom-types/data-store";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
-import { IUserService } from "@interfaces/service/IUserService";
-import { IDataStoreService } from "@interfaces/service/IDataStoreService";
+import { IUserService } from "types/interfaces/service/IUserService";
+import { IDataStoreService } from "types/interfaces/service/IDataStoreService";
 
 @injectable()
 export class UserService implements IUserService {

@@ -4,10 +4,10 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "types/enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { PaginatedResult } from "@utils/Result";
-import { IController } from "@interfaces/IController";
+import { IController } from "types/interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IUserRepository } from "@interfaces/repository/IUserRepository";
-import { IEntityMapperService } from "@interfaces/service/IEntityMapperService";
+import { IUserRepository } from "types/interfaces/repository/IUserRepository";
+import { IEntityMapperService } from "types/interfaces/service/IEntityMapperService";
 
 interface IQuery {
   skip: number;

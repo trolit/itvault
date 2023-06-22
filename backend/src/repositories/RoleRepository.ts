@@ -6,7 +6,7 @@ import { Result } from "@utils/Result";
 import { IError } from "@interfaces/IError";
 import { BaseRepository } from "./BaseRepository";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
-import { IRoleRepository } from "@interfaces/repository/IRoleRepository";
+import { IRoleRepository } from "types/interfaces/repository/IRoleRepository";
 
 @injectable()
 export class RoleRepository

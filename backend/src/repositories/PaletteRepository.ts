@@ -3,7 +3,7 @@ import { injectable } from "tsyringe";
 
 import { Palette } from "@entities/Palette";
 import { BaseRepository } from "./BaseRepository";
-import { IPaletteRepository } from "@interfaces/repository/IPaletteRepository";
+import { IPaletteRepository } from "types/interfaces/repository/IPaletteRepository";
 import { StorePaletteDto } from "@dtos/StorePaletteDto";
 
 @injectable()

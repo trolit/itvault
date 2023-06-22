@@ -3,10 +3,10 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "types/enums/Di";
 import { Variant } from "@entities/Variant";
-import { IController } from "@interfaces/IController";
+import { IController } from "types/interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IBaseFileService } from "@interfaces/service/IBaseFileService";
-import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
+import { IBaseFileService } from "types/interfaces/service/IBaseFileService";
+import { IVariantRepository } from "types/interfaces/repository/IVariantRepository";
 
 interface IParams {
   workspaceId: number;

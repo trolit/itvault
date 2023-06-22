@@ -4,9 +4,9 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "types/enums/Di";
 import { Variant } from "@entities/Variant";
 import { PaginatedResult } from "@utils/Result";
-import { IController } from "@interfaces/IController";
+import { IController } from "types/interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
-import { IVariantRepository } from "@interfaces/repository/IVariantRepository";
+import { IVariantRepository } from "types/interfaces/repository/IVariantRepository";
 
 interface IParams {
   workspaceId: number;
