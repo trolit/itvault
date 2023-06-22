@@ -1,5 +1,3 @@
-export class LoginDto {
-  email: string;
+import { User } from "@entities/User";
 
-  password: string;
-}
+export type LoginDto = Pick<User, "email" | "password">;
