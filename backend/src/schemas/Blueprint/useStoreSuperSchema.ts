@@ -5,7 +5,7 @@ import {
   SchemaProvider,
   SuperCommonParam,
   SuperSchemaRunner,
-} from "@custom-types/super-schema";
+} from "@superSchema";
 import { BlueprintDto } from "types/dtos/BlueprintDto";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { baseSchemas } from "@schemas/Workspace/baseSchemas";

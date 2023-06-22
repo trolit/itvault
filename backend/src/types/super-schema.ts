@@ -1,4 +1,4 @@
-declare module "@custom-types/super-schema" {
+declare module "@superSchema" {
   import { Request } from "express";
   import type { ZodSchema } from "zod";
 

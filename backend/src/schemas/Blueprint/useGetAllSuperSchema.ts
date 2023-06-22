@@ -1,6 +1,6 @@
 import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { paginationSchema } from "@schemas/common/paginationSchema";
-import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(

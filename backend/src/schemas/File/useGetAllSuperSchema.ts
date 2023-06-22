@@ -3,7 +3,7 @@ import { z } from "zod";
 import { FILES } from "@config";
 import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(

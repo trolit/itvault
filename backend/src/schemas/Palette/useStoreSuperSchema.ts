@@ -7,7 +7,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { StorePaletteDto } from "@dtos/StorePaletteDto";
 import { baseSchemas } from "@schemas/Variant/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
-import { SuperSchemaRunner, SchemaProvider } from "@custom-types/super-schema";
+import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 

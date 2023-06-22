@@ -7,7 +7,7 @@ import {
   SchemaProvider,
   SuperCommonParam,
   SuperSchemaRunner,
-} from "@custom-types/super-schema";
+} from "@superSchema";
 import type { Role } from "@entities/Role";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import type { UpdateUserDto } from "@dtos/UpdateUserDto";
