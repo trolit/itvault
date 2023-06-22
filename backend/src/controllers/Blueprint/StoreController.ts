@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "types/enums/Di";
 import { Blueprint } from "@entities/Blueprint";
-import { BlueprintDto } from "@dtos/BlueprintDto";
+import { BlueprintDto } from "types/dtos/BlueprintDto";
 import { IController } from "types/interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IBlueprintRepository } from "types/interfaces/repository/IBlueprintRepository";

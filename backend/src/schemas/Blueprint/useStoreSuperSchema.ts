@@ -6,7 +6,7 @@ import {
   SuperCommonParam,
   SuperSchemaRunner,
 } from "@custom-types/super-schema";
-import { BlueprintDto } from "@dtos/BlueprintDto";
+import { BlueprintDto } from "types/dtos/BlueprintDto";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
