@@ -23,6 +23,7 @@
     "docker:redis": "docker exec -it redis bash"
   },
   "_moduleAliases": {
+    "types": "dist/types",
     "@dtos": "dist/dtos",
     "@utils": "dist/utils",
     "@config": "dist/config",
