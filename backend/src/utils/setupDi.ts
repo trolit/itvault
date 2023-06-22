@@ -3,7 +3,7 @@ import path from "path";
 import Redis from "ioredis/built/Redis";
 import { container, DependencyContainer } from "tsyringe";
 
-import { Di } from "@enums/Di";
+import { Di } from "types/enums/Di";
 import { FILES } from "@config/index";
 import { FileStorageMode } from "@enums/FileStorageMode";
 import { LocalFileService } from "@services/LocalFileService";

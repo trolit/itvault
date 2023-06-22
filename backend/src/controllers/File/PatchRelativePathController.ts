@@ -2,7 +2,7 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { Di } from "@enums/Di";
+import { Di } from "types/enums/Di";
 import { IController } from "@interfaces/IController";
 import { CustomRequest } from "@custom-types/express";
 import { IFileRepository } from "@interfaces/repository/IFileRepository";

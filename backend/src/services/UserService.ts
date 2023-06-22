@@ -1,4 +1,4 @@
-import { Di } from "@enums/Di";
+import { Di } from "types/enums/Di";
 import { inject, injectable } from "tsyringe";
 
 import {

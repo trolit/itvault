@@ -1,4 +1,4 @@
-import { Di } from "@enums/Di";
+import { Di } from "types/enums/Di";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";

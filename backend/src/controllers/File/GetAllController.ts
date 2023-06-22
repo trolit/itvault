@@ -1,7 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { Di } from "@enums/Di";
+import { Di } from "types/enums/Di";
 import { File } from "@entities/File";
 import { IController } from "@interfaces/IController";
 import { CustomRequest, CustomResponse } from "@custom-types/express";

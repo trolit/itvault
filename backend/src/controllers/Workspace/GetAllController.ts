@@ -1,7 +1,7 @@
 import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { Di } from "@enums/Di";
+import { Di } from "types/enums/Di";
 import { Permission } from "@enums/Permission";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { PaginatedResult } from "@utils/Result";

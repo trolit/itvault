@@ -2,7 +2,7 @@ import { Request } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { Di } from "@enums/Di";
+import { Di } from "types/enums/Di";
 import { Result } from "@utils/Result";
 import { Permission } from "@enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
