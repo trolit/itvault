@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { JwtPayload, SignOptions, VerifyErrors } from "jsonwebtoken";
 
-import { DataStoreRole } from "@custom-types/data-store";
+import { DataStoreRole } from "@dataStore";
 
 type IVerifyTokenResult =
   | {

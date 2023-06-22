@@ -12,7 +12,7 @@ import { IAuthService } from "@interfaces/services/IAuthService";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 import { IDataStoreService } from "@interfaces/services/IDataStoreService";
-import { DataStoreKeyType, DataStoreUser } from "@custom-types/data-store";
+import { DataStoreKeyType, DataStoreUser } from "@dataStore";
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 @injectable()

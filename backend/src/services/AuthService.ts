@@ -5,11 +5,7 @@ import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { JWT } from "@config";
 import { Di } from "@enums/Di";
-import {
-  DataStoreRole,
-  DataStoreUser,
-  DataStoreKeyType,
-} from "@custom-types/data-store";
+import { DataStoreRole, DataStoreUser, DataStoreKeyType } from "@dataStore";
 import { IAuthService } from "@interfaces/services/IAuthService";
 import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 

@@ -1,4 +1,4 @@
-declare module "@custom-types/data-store" {
+declare module "@dataStore" {
   export const enum DataStoreKeyType {
     AuthenticatedUser = "authenticated-user",
     Role = "role",
