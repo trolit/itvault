@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config({});
 
-import { Environment } from "@enums/Environment";
+import { Environment } from "types/enums/Environment";
 import { DatabaseType } from "types/enums/DatabaseType";
 import { FileStorageMode } from "@enums/FileStorageMode";
 

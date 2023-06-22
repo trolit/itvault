@@ -6,7 +6,7 @@ import { entities } from "./entities";
 import { APP, DATABASE } from "@config";
 import { factories } from "./factories";
 import { migrations } from "./migrations";
-import { Environment } from "@enums/Environment";
+import { Environment } from "types/enums/Environment";
 
 const isProduction = APP.ENV === Environment.Production;
 

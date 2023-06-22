@@ -6,7 +6,7 @@ import { APP, JWT } from "@config";
 import { Di } from "types/enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
-import { Environment } from "@enums/Environment";
+import { Environment } from "types/enums/Environment";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/service/IAuthService";
 import { CustomRequest, CustomResponse } from "@custom-types/express";
