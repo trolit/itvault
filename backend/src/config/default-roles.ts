@@ -1,5 +1,5 @@
 import { ALL_PERMISSIONS } from "./permissions";
-import { IRoleDefinition } from "@interfaces/config/IRoleDefinition";
+import { IRoleDefinition } from "types/interfaces/config/IRoleDefinition";
 
 export const HEAD_ADMIN_ROLE: IRoleDefinition = {
   name: "Head Admin",
