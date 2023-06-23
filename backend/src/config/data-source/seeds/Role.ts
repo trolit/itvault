@@ -1,9 +1,11 @@
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 
-import { Role } from "@entities/Role";
-import { TEST_ACCOUNTS } from "./common";
 import { HEAD_ADMIN_ROLE, HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
+
+import { TEST_ACCOUNTS } from "./common";
+
+import { Role } from "@entities/Role";
 
 export class RoleSeeder implements Seeder {
   public async run(dataSource: DataSource) {

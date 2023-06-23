@@ -1,12 +1,12 @@
-import { StatusCodes as HTTP } from "http-status-codes";
 import type { NextFunction, Response } from "express";
+import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { CustomRequest } from "@custom-types/express";
+import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 interface IParams {
   workspaceId: number;

@@ -1,9 +1,10 @@
 import bcrypt from "bcrypt";
 import { Entity, Column, ManyToOne, OneToMany, BeforeInsert } from "typeorm";
 
-import { Base } from "./Base";
-import { Role } from "./Role";
 import { BCRYPT } from "@config";
+
+import { Role } from "./Role";
+import { Base } from "./Base";
 import { Bundle } from "./Bundle";
 import { UserToWorkspace } from "./UserToWorkspace";
 

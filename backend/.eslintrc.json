@@ -19,7 +19,7 @@
     "sourceType": "module"
   },
 
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "perfectionist"],
 
   "ignorePatterns": ["**/types"],
 
@@ -38,6 +38,53 @@
     "@typescript-eslint/no-non-null-asserted-nullish-coalescing": "warn",
     "@typescript-eslint/prefer-for-of": "warn",
     "@typescript-eslint/unified-signatures": "warn",
-    "@typescript-eslint/no-empty-interface": "off"
+    "@typescript-eslint/no-empty-interface": "off",
+
+    "perfectionist/sort-imports": [
+      "error",
+      {
+        "type": "line-length",
+        "order": "asc",
+        "custom-groups": {
+          "value": {
+            "config": ["@config/**", "@config"],
+
+            "same-directory": ["./**"],
+
+            "types": [
+              "miscellaneous-types",
+              "@dtos/**",
+              "@enums/**",
+              "@entities/**",
+              "@interfaces/**"
+            ],
+
+            "tools": [
+              "@helpers/**",
+              "@factories/**",
+              "@repositories/**",
+              "@middleware/**",
+              "@services/**",
+              "@utils/**"
+            ],
+
+            "schemas": ["@schemas/**"],
+
+            "controllers": ["@controllers/**"]
+          },
+          "type": {}
+        },
+        "groups": [
+          ["data-store", "super-schema", "builtin", "external"],
+          ["config"],
+          ["same-directory"],
+          "types",
+          "tools",
+          "schemas",
+          "controllers"
+        ],
+        "newlines-between": "always"
+      }
+    ]
   }
 }

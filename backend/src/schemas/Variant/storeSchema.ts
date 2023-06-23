@@ -1,11 +1,14 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { Di } from "@enums/Di";
-import { getInstanceOf } from "@helpers/getInstanceOf";
-import { IBody } from "@controllers/Variant/StoreController";
-import { schemaForType } from "@schemas/common/schemaForType";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
+
+import { schemaForType } from "@schemas/common/schemaForType";
+
+import { IBody } from "@controllers/Variant/StoreController";
 
 export const fieldsSchema = schemaForType<IBody>()(
   z.object({

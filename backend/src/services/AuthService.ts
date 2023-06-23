@@ -1,11 +1,12 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
+import { DataStoreRole, DataStoreUser, DataStoreKeyType } from "data-store";
 
 import { JWT } from "@config";
+
 import { Di } from "@enums/Di";
-import { DataStoreRole, DataStoreUser, DataStoreKeyType } from "@dataStore";
 import { IAuthService } from "@interfaces/services/IAuthService";
 import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 

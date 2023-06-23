@@ -4,7 +4,6 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { IController } from "@interfaces/IController";
-import { CustomRequest } from "@custom-types/express";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 interface IParams {

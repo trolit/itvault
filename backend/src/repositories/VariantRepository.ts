@@ -1,8 +1,9 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 
-import { Variant } from "@entities/Variant";
 import { BaseRepository } from "./BaseRepository";
+
+import { Variant } from "@entities/Variant";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 

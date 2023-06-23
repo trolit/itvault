@@ -2,8 +2,9 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
 import { Di } from "@enums/Di";
-import { getInstanceOf } from "@helpers/getInstanceOf";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
 // @NOTE better to use in case of "parseUploadFormData" middleware
 export const IsWorkspaceAvailable = (() => {

@@ -1,17 +1,21 @@
 import { Router } from "express";
 
 import { FILES } from "@config";
+
 import palettesRouter from "./palettes";
-import { storeSchema } from "@schemas/Variant/storeSchema";
+
 import { processRequestWith } from "@helpers/processRequestWith";
-import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
-import { StoreController } from "@controllers/Variant/StoreController";
+import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+
+import { storeSchema } from "@schemas/Variant/storeSchema";
+import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
+
+import { StoreController } from "@controllers/Variant/StoreController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
 import { GetByIdController } from "@controllers/Variant/GetByIdController";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
-import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 
 const variantsRouter = Router({ mergeParams: true });
 

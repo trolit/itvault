@@ -1,8 +1,9 @@
 import express from "express";
 
+import { dataSource } from "@config/data-source";
+
 import { setupDi } from "@utils/setupDi";
 import { setupRedis } from "@utils/setupRedis";
-import { dataSource } from "@config/data-source";
 import { setupExpress } from "@utils/setupExpress";
 
 export const server = async () => {

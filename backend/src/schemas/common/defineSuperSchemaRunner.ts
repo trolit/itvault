@@ -1,4 +1,4 @@
-import { SuperCommonParam, SuperSchema } from "@superSchema";
+import { SuperCommonParam, SuperSchema } from "super-schema-types";
 
 export const defineSuperSchemaRunner = (
   superSchemaRunner: (

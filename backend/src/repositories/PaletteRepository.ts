@@ -1,10 +1,11 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 
-import { Palette } from "@entities/Palette";
 import { BaseRepository } from "./BaseRepository";
-import { IPaletteRepository } from "@interfaces/repositories/IPaletteRepository";
+
+import { Palette } from "@entities/Palette";
 import { StorePaletteDto } from "@dtos/StorePaletteDto";
+import { IPaletteRepository } from "@interfaces/repositories/IPaletteRepository";
 
 @injectable()
 export class PaletteRepository

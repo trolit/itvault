@@ -1,9 +1,11 @@
-import { Di } from "@enums/Di";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
-import { getInstanceOf } from "@helpers/getInstanceOf";
-import { schemaForType } from "@schemas/common/schemaForType";
+import { Di } from "@enums/Di";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
+
+import { schemaForType } from "@schemas/common/schemaForType";
 
 const paramsSchema = schemaForType<{
   workspaceId: number;

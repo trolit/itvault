@@ -1,7 +1,6 @@
 import formidable from "formidable";
 
 import { IFormDataFile } from "@interfaces/IFormDataFile";
-import { RequestPermissions } from "@custom-types/express";
 
 // to make the file a module and avoid the TypeScript error
 export {};
@@ -19,4 +18,15 @@ declare global {
       files: IFormDataFile[];
     }
   }
+
+  export type CustomRequest<P = void, B = void, Q = void> = Request<
+    P,
+    unknown,
+    B,
+    Q
+  >;
+
+  export type CustomResponse<T> = Response<T, Record<string, T>>;
+
+  export type RequestPermissions = { [key in Permission]?: boolean };
 }

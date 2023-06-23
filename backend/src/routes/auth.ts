@@ -1,11 +1,13 @@
 import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
-import { LoginController } from "@controllers/Auth/LoginController";
-import { LogoutController } from "@controllers/Auth/LogoutController";
-import { StatusController } from "@controllers/Auth/StatusController";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+
 import { useLoginSuperSchema } from "@schemas/Auth/useLoginSuperSchema";
+
+import { LoginController } from "@controllers/Auth/LoginController";
+import { StatusController } from "@controllers/Auth/StatusController";
+import { LogoutController } from "@controllers/Auth/LogoutController";
 
 const authRouter = Router();
 

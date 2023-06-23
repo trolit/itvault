@@ -1,8 +1,9 @@
 import { z } from "zod";
+import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import type { LoginDto } from "@dtos/LoginDto";
+
 import { schemaForType } from "@schemas/common/schemaForType";
-import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const useLoginSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(

@@ -1,18 +1,18 @@
 import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { DataStoreKeyType, DataStoreUser } from "data-store";
 
 import { APP, JWT } from "@config";
+
 import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
 import { IController } from "@interfaces/IController";
 import { IAuthService } from "@interfaces/services/IAuthService";
-import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 import { IDataStoreService } from "@interfaces/services/IDataStoreService";
-import { DataStoreKeyType, DataStoreUser } from "@dataStore";
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 @injectable()

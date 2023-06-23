@@ -1,10 +1,12 @@
 import { DataSource } from "typeorm";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
+import { MEMBER_ROLE } from "@config/default-roles";
+
+import { PASSWORD, TEST_ACCOUNTS } from "./common";
+
 import { Role } from "@entities/Role";
 import { User } from "@entities/User";
-import { PASSWORD, TEST_ACCOUNTS } from "./common";
-import { MEMBER_ROLE } from "@config/default-roles";
 
 export class UserSeeder implements Seeder {
   public async run(

@@ -1,9 +1,11 @@
-import { Di } from "@enums/Di";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
-import { getInstanceOf } from "@helpers/getInstanceOf";
-import { schemaForType } from "@schemas/common/schemaForType";
+import { Di } from "@enums/Di";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
+
+import { schemaForType } from "@schemas/common/schemaForType";
 
 const paramsSchema = schemaForType<{
   variantId: string;

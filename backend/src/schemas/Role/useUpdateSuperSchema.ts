@@ -1,10 +1,12 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
+import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-import { schemaForType } from "@schemas/common/schemaForType";
+
 import type { UpdatePermissionDto, UpdateRoleDto } from "@dtos/UpdateRoleDto";
-import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
+
+import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(

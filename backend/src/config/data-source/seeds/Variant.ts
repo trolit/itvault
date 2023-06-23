@@ -5,11 +5,13 @@ import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 
 import { FILES } from "@config";
-import { File } from "@entities/File";
+
 import { TEST_WORKSPACE_1 } from "./common";
+import { createFile } from "./common/createFile";
+
+import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { Workspace } from "@entities/Workspace";
-import { createFile } from "./common/createFile";
 
 export class VariantSeeder implements Seeder {
   public async run(dataSource: DataSource) {

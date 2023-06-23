@@ -1,10 +1,12 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
+import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { Di } from "@enums/Di";
-import { getInstanceOf } from "@helpers/getInstanceOf";
-import { schemaForType } from "@schemas/common/schemaForType";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
+
+import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(

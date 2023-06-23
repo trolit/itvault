@@ -1,5 +1,3 @@
-import { CustomRequest, CustomResponse } from "@custom-types/express";
-
 export interface IController<P = void, B = void, Q = void, R = void> {
   invoke(
     request: CustomRequest<P, B, Q>,

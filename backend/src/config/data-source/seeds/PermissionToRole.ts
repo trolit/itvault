@@ -1,9 +1,11 @@
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 
-import { Role } from "@entities/Role";
-import { TEST_ACCOUNTS } from "./common";
 import { ALL_PERMISSIONS } from "@config/permissions";
+
+import { TEST_ACCOUNTS } from "./common";
+
+import { Role } from "@entities/Role";
 import { PermissionToRole } from "@entities/PermissionToRole";
 
 export class PermissionToRoleSeeder implements Seeder {
