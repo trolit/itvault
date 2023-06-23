@@ -1,7 +1,6 @@
 import formidable from "formidable";
 
 import { IFormDataFile } from "@interfaces/IFormDataFile";
-import { RequestPermissions } from "";
 
 // to make the file a module and avoid the TypeScript error
 export {};
