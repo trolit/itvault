@@ -2,7 +2,11 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
-import { DataStoreRole, DataStoreUser, DataStoreKeyType } from "data-store";
+import {
+  DataStoreRole,
+  DataStoreUser,
+  DataStoreKeyType,
+} from "data-store-types";
 
 import { JWT } from "@config";
 

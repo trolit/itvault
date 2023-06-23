@@ -1,4 +1,4 @@
-import { DataStorePermission } from "data-store";
+import { DataStorePermission } from "data-store-types";
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 

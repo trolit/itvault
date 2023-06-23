@@ -1,5 +1,5 @@
 import { Redis } from "ioredis";
-import { DataStoreKeyType, DataStoreRole } from "data-store";
+import { DataStoreKeyType, DataStoreRole } from "data-store-types";
 
 import { REDIS } from "@config";
 

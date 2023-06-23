@@ -1,5 +1,9 @@
 import { inject, injectable } from "tsyringe";
-import { DataStoreKey, DataStoreUser, DataStoreKeyType } from "data-store";
+import {
+  DataStoreKey,
+  DataStoreUser,
+  DataStoreKeyType,
+} from "data-store-types";
 
 import { Di } from "@enums/Di";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
