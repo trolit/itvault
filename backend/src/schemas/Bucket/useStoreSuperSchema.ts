@@ -27,7 +27,7 @@ function useParamsSchema(): SchemaProvider {
 }
 
 function useBodySchema(): SchemaProvider {
-  const paletteSchema = schemaForType<BucketDto>()(
+  const bucketSchema = schemaForType<BucketDto>()(
     z.object({
       value: z.record(z.coerce.number().gte(0), z.array(z.string())),
       blueprintId: z.number(),
@@ -38,7 +38,7 @@ function useBodySchema(): SchemaProvider {
     schemaForType<{ values: BucketDto[] }>()(
       z.object({
         values: z
-          .array(paletteSchema)
+          .array(bucketSchema)
           .superRefine((value: BucketDto[], context: RefinementCtx) => {
             const uniqueValues = uniqBy(value, element => element.blueprintId);
 
