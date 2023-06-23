@@ -47,7 +47,7 @@
         "order": "asc",
         "custom-groups": {
           "value": {
-            "modules": ["@dataStore/**", "@superSchema/**", "@commonTypes/**"],
+            "modules": ["@dataStore", "@superSchema", "@commonTypes"],
 
             "config": ["@config/**"],
 
@@ -75,7 +75,7 @@
         },
         "groups": [
           ["builtin", "external"],
-          "config",
+          ["modules", "config"],
           "types",
           "tools",
           "schemas",
