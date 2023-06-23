@@ -4,7 +4,7 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { Di } from "@enums/Di";
-import { StorePaletteDto } from "@dtos/StorePaletteDto";
+import { StorePaletteDto } from "@dtos/BucketDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";

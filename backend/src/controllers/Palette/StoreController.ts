@@ -4,8 +4,8 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { Palette } from "@entities/Bucket";
 import { IController } from "@interfaces/IController";
-import { StorePaletteDto } from "@dtos/StorePaletteDto";
-import { IPaletteRepository } from "@interfaces/repositories/IPaletteRepository";
+import { StorePaletteDto } from "@dtos/BucketDto";
+import { IPaletteRepository } from "@interfaces/repositories/IBucketRepository";
 
 interface IParams {
   variantId: string;

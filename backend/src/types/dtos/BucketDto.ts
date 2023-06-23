@@ -1,4 +1,4 @@
-export class StorePaletteDto {
+export class BucketDto {
   value: Record<number, string[]>;
 
   blueprintId: number;
