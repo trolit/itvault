@@ -1,18 +1,21 @@
+import { FILES } from "@config";
 import { Router } from "express";
 
-import { FILES } from "@config";
 import { Permission } from "@enums/Permission";
+
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
+import { validateRequestWith } from "@middleware/validateRequestWith";
+import { parseUploadFormData } from "@middleware/parseUploadFormData";
+import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+
+import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
+import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
+
 import { StoreController } from "@controllers/File/StoreController";
 import { GetAllController } from "@controllers/File/GetAllController";
-import { parseUploadFormData } from "@middleware/parseUploadFormData";
-import { validateRequestWith } from "@middleware/validateRequestWith";
-import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
-import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
 const filesRouter = Router({ mergeParams: true });
 

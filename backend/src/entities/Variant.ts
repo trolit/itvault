@@ -1,3 +1,5 @@
+import { File } from "./File";
+import { Palette } from "./Palette";
 import {
   Column,
   Entity,
@@ -7,9 +9,6 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
-
-import { File } from "./File";
-import { Palette } from "./Palette";
 
 @Entity("variants")
 export class Variant {

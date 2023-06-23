@@ -3,9 +3,11 @@ import path from "path";
 import Redis from "ioredis/built/Redis";
 import { container, DependencyContainer } from "tsyringe";
 
-import { Di } from "@enums/Di";
 import { FILES } from "@config/index";
+
+import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
+
 import { LocalFileService } from "@services/LocalFileService";
 
 export const setupDi = (redis: Redis): Promise<DependencyContainer> => {

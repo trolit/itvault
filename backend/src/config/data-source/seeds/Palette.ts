@@ -1,17 +1,17 @@
 import path from "path";
 import fs from "fs-extra";
-import random from "lodash/random";
-import sample from "lodash/sample";
-import { Seeder } from "typeorm-extension";
-
 import { FILES } from "@config";
+import sample from "lodash/sample";
+import random from "lodash/random";
 import { DataSource } from "typeorm";
-import { File } from "@entities/File";
-import { Palette } from "@entities/Palette";
+import { Seeder } from "typeorm-extension";
 import { TEST_WORKSPACE_1 } from "./common";
+
+import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
-import { Blueprint } from "@entities/Blueprint";
+import { Palette } from "@entities/Palette";
 import { Workspace } from "@entities/Workspace";
+import { Blueprint } from "@entities/Blueprint";
 
 export class PaletteSeeder implements Seeder {
   public async run(dataSource: DataSource) {

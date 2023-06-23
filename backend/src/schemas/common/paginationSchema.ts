@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-import { schemaForType } from "@schemas/common/schemaForType";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+
+import { schemaForType } from "@schemas/common/schemaForType";
 
 export const paginationSchema = schemaForType<IPaginationOptions>()(
   z.object({

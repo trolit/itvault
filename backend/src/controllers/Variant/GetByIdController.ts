@@ -4,7 +4,6 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { VariantDto } from "@dtos/VariantDto";
 import { IController } from "@interfaces/IController";
-import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IVariantService } from "@interfaces/services/IVariantService";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 

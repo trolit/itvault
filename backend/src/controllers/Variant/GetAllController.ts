@@ -1,11 +1,10 @@
 import { inject, injectable } from "tsyringe";
+import { PaginatedResult } from "types/Result";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
-import { PaginatedResult } from "types/Result";
 import { IController } from "@interfaces/IController";
-import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
 interface IParams {

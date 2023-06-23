@@ -1,16 +1,16 @@
 import { Request } from "express";
+import { Result } from "types/Result";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { Result } from "types/Result";
 import { Permission } from "@enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IController } from "@interfaces/IController";
 import { IUserService } from "@interfaces/services/IUserService";
-import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
-import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 interface IRequestBody {
   value: UpdateUserDto[];

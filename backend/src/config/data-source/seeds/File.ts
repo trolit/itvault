@@ -1,8 +1,8 @@
 import { DataSource } from "typeorm";
+import { TEST_WORKSPACE_1 } from "./common";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { File } from "@entities/File";
-import { TEST_WORKSPACE_1 } from "./common";
 import { Workspace } from "@entities/Workspace";
 
 export class FileSeeder implements Seeder {

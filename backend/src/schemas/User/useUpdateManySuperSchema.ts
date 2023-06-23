@@ -2,18 +2,21 @@ import { In } from "typeorm";
 import isArray from "lodash/isArray";
 import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
 
-import { Di } from "@enums/Di";
+import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import {
   SchemaProvider,
   SuperCommonParam,
   SuperSchemaRunner,
 } from "@superSchema";
+
+import { Di } from "@enums/Di";
 import type { Role } from "@entities/Role";
-import { getInstanceOf } from "@helpers/getInstanceOf";
 import type { UpdateUserDto } from "@dtos/UpdateUserDto";
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-import { schemaForType } from "@schemas/common/schemaForType";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
+
+import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 export const useUpdateManySuperSchema: SuperSchemaRunner =

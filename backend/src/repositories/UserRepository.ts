@@ -1,12 +1,12 @@
 import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
+import { Result } from "types/Result";
+import { BaseRepository } from "./BaseRepository";
 import { EntityManager, Repository } from "typeorm";
 
 import { Role } from "@entities/Role";
 import { User } from "@entities/User";
-import { Result } from "types/Result";
 import { IError } from "@interfaces/IError";
-import { BaseRepository } from "./BaseRepository";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 

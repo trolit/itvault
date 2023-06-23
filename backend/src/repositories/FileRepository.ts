@@ -1,10 +1,10 @@
+import { FILES } from "@config";
 import { injectable } from "tsyringe";
+import { BaseRepository } from "./BaseRepository";
 import { QueryRunner, Repository, Like, Not } from "typeorm";
 
-import { FILES } from "@config";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
-import { BaseRepository } from "./BaseRepository";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 

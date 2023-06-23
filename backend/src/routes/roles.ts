@@ -1,14 +1,17 @@
 import { Router } from "express";
 
 import { Permission } from "@enums/Permission";
+
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { GetAllController } from "@controllers/Role/GetAllController";
-import { UpdateController } from "@controllers/Role/UpdateController";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
-import { useGetAllSuperSchema } from "@schemas/Role/useGetAllSuperSchema";
+
 import { useUpdateSuperSchema } from "@schemas/Role/useUpdateSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/Role/useGetAllSuperSchema";
+
+import { UpdateController } from "@controllers/Role/UpdateController";
+import { GetAllController } from "@controllers/Role/GetAllController";
 
 const rolesRouter = Router();
 

@@ -1,8 +1,7 @@
-import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
-
 import { Base } from "./Base";
 import { Palette } from "./Palette";
 import { Workspace } from "./Workspace";
+import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 
 @Entity("blueprints")
 export class Blueprint extends Base {

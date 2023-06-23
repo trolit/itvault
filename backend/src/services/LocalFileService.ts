@@ -1,8 +1,8 @@
 import path from "path";
 import fs from "fs-extra";
+import { FILES } from "@config";
 import { injectable } from "tsyringe";
 
-import { FILES } from "@config";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
 import { IBaseFileService } from "@interfaces/services/IBaseFileService";
 

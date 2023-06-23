@@ -1,13 +1,13 @@
 import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { PaginatedResult } from "types/Result";
 import { StatusCodes as HTTP } from "http-status-codes";
+
+import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { RoleDto } from "@dtos/RoleDto";
-import { PaginatedResult } from "types/Result";
 import { IController } from "@interfaces/IController";
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-import { CustomRequest, CustomResponse } from "@custom-types/express";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 interface IQuery {

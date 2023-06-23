@@ -1,6 +1,7 @@
+import { RequestPermissions } from "@custom-types/express";
+
 import { Permission } from "@enums/Permission";
 import { PermissionDto } from "@dtos/PermissionDto";
-import { RequestPermissions } from "@custom-types/express";
 
 export const isPermissionEnabled = (
   permission: Permission,

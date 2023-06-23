@@ -1,6 +1,5 @@
-import { Router } from "express";
-
 import authRouter from "./auth";
+import { Router } from "express";
 import rolesRouter from "./roles";
 import usersRouter from "./users";
 import workspacesRouter from "./workspaces";

@@ -1,8 +1,7 @@
-import { Entity, Column, ManyToOne } from "typeorm";
-
 import { Base } from "./Base";
 import { User } from "./User";
 import { Workspace } from "./Workspace";
+import { Entity, Column, ManyToOne } from "typeorm";
 
 @Entity("users_workspaces")
 export class UserToWorkspace extends Base {

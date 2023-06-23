@@ -2,6 +2,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
 import { Permission } from "@enums/Permission";
+
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 export const requirePermissions = (

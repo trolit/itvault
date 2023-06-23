@@ -1,11 +1,11 @@
-import { SeederOptions } from "typeorm-extension";
-import { DataSource, DataSourceOptions } from "typeorm";
-
 import { seeds } from "./seeds";
 import { entities } from "./entities";
 import { APP, DATABASE } from "@config";
 import { factories } from "./factories";
 import { migrations } from "./migrations";
+import { SeederOptions } from "typeorm-extension";
+import { DataSource, DataSourceOptions } from "typeorm";
+
 import { Environment } from "@enums/Environment";
 
 const isProduction = APP.ENV === Environment.Production;

@@ -1,6 +1,5 @@
-import "module-alias/register";
 import "reflect-metadata";
-
+import "module-alias/register";
 import { APP } from "./config";
 import { server } from "./server";
 

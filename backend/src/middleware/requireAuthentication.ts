@@ -1,13 +1,15 @@
+import { JWT } from "@config";
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
-import { JWT } from "@config";
+import { DataStorePermission } from "@dataStore";
+import { ALL_PERMISSIONS } from "@config/permissions";
+
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { ALL_PERMISSIONS } from "@config/permissions";
-import { getInstanceOf } from "@helpers/getInstanceOf";
-import { DataStorePermission } from "@dataStore";
 import { IAuthService } from "@interfaces/services/IAuthService";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export const requireAuthentication = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {

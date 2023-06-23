@@ -1,8 +1,8 @@
 import path from "path";
 import fs from "fs-extra";
+import { FILES } from "@config";
 import { injectable } from "tsyringe";
 
-import { FILES } from "@config";
 import { Variant } from "@entities/Variant";
 import { IVariantService } from "@interfaces/services/IVariantService";
 
