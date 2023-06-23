@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
-import random from "lodash/random";
 import sample from "lodash/sample";
+import random from "lodash/random";
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 
@@ -10,12 +10,13 @@ import { FILES } from "@config";
 import { TEST_WORKSPACE_1 } from "./common";
 
 import { File } from "@entities/File";
+import { Bucket } from "@entities/Bucket";
 import { Variant } from "@entities/Variant";
-import { Palette } from "@entities/Palette";
 import { Workspace } from "@entities/Workspace";
 import { Blueprint } from "@entities/Blueprint";
+import { BucketContent } from "miscellaneous-types";
 
-export class PaletteSeeder implements Seeder {
+export class BucketSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const workspaceRepository = dataSource.getRepository(Workspace);
 
@@ -41,7 +42,7 @@ export class PaletteSeeder implements Seeder {
 
     const variantRepository = dataSource.getRepository(Variant);
 
-    const paletteRepository = dataSource.getRepository(Palette);
+    const bucketRepository = dataSource.getRepository(Bucket);
 
     const blueprintRepository = dataSource.getRepository(Blueprint);
 
@@ -77,7 +78,7 @@ export class PaletteSeeder implements Seeder {
 
         const splitContent = content.split("\n");
 
-        await paletteRepository.save({
+        await bucketRepository.save({
           value: this.generateValue(splitContent),
           variant,
           blueprint,
@@ -89,7 +90,7 @@ export class PaletteSeeder implements Seeder {
   private generateValue(splitContent: string[]) {
     const iterations = random(1, 3);
 
-    const value: Record<number, string[]> = {};
+    const value: BucketContent = {};
 
     const availableRows = splitContent.length - 1;
 

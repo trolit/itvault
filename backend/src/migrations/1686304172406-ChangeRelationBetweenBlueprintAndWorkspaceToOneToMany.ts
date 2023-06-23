@@ -6,19 +6,19 @@ export class ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany1686304172406 
     name = 'ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany1686304172406'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE \`palettes\` DROP FOREIGN KEY \`FK_211e1689e015a0463e635268425\``);
-        await queryRunner.query(`ALTER TABLE \`palettes\` CHANGE \`blueprintToWorkspaceId\` \`blueprintId\` int NULL`);
+        await queryRunner.query(`ALTER TABLE \`buckets\` DROP FOREIGN KEY \`FK_211e1689e015a0463e635268425\``);
+        await queryRunner.query(`ALTER TABLE \`buckets\` CHANGE \`blueprintToWorkspaceId\` \`blueprintId\` int NULL`);
         await queryRunner.query(`ALTER TABLE \`blueprints\` ADD \`workspaceId\` int NULL`);
         await queryRunner.query(`ALTER TABLE \`blueprints\` ADD CONSTRAINT \`FK_0754ff2b3e2eb3a6c05c7878270\` FOREIGN KEY (\`workspaceId\`) REFERENCES \`workspaces\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
-        await queryRunner.query(`ALTER TABLE \`palettes\` ADD CONSTRAINT \`FK_113463d56bd0b736d6c89139ef7\` FOREIGN KEY (\`blueprintId\`) REFERENCES \`blueprints\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE \`buckets\` ADD CONSTRAINT \`FK_113463d56bd0b736d6c89139ef7\` FOREIGN KEY (\`blueprintId\`) REFERENCES \`blueprints\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE \`palettes\` DROP FOREIGN KEY \`FK_113463d56bd0b736d6c89139ef7\``);
+        await queryRunner.query(`ALTER TABLE \`buckets\` DROP FOREIGN KEY \`FK_113463d56bd0b736d6c89139ef7\``);
         await queryRunner.query(`ALTER TABLE \`blueprints\` DROP FOREIGN KEY \`FK_0754ff2b3e2eb3a6c05c7878270\``);
         await queryRunner.query(`ALTER TABLE \`blueprints\` DROP COLUMN \`workspaceId\``);
-        await queryRunner.query(`ALTER TABLE \`palettes\` CHANGE \`blueprintId\` \`blueprintToWorkspaceId\` int NULL`);
-        await queryRunner.query(`ALTER TABLE \`palettes\` ADD CONSTRAINT \`FK_211e1689e015a0463e635268425\` FOREIGN KEY (\`blueprintToWorkspaceId\`) REFERENCES \`blueprints_workspaces\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE \`buckets\` CHANGE \`blueprintId\` \`blueprintToWorkspaceId\` int NULL`);
+        await queryRunner.query(`ALTER TABLE \`buckets\` ADD CONSTRAINT \`FK_211e1689e015a0463e635268425\` FOREIGN KEY (\`blueprintToWorkspaceId\`) REFERENCES \`blueprints_workspaces\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
     }
 
 }

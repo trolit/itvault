@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 
 import { File } from "./File";
-import { Palette } from "./Palette";
+import { Bucket } from "./Bucket";
 
 @Entity("variants")
 export class Variant {
@@ -34,6 +34,6 @@ export class Variant {
   @ManyToOne(() => File, file => file.variants)
   file: File;
 
-  @OneToMany(() => Palette, palette => palette.variant, { cascade: true })
-  palettes: Palette[];
+  @OneToMany(() => Bucket, bucket => bucket.variant, { cascade: true })
+  buckets: Bucket[];
 }

@@ -4,7 +4,7 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { Di } from "@enums/Di";
-import { StorePaletteDto } from "@dtos/StorePaletteDto";
+import { BucketDto } from "@dtos/BucketDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -27,7 +27,7 @@ function useParamsSchema(): SchemaProvider {
 }
 
 function useBodySchema(): SchemaProvider {
-  const paletteSchema = schemaForType<StorePaletteDto>()(
+  const bucketSchema = schemaForType<BucketDto>()(
     z.object({
       value: z.record(z.coerce.number().gte(0), z.array(z.string())),
       blueprintId: z.number(),
@@ -35,50 +35,49 @@ function useBodySchema(): SchemaProvider {
   );
 
   return () =>
-    schemaForType<{ values: StorePaletteDto[] }>()(
+    schemaForType<{ values: BucketDto[] }>()(
       z.object({
         values: z
-          .array(paletteSchema)
-          .superRefine((value: StorePaletteDto[], context: RefinementCtx) => {
+          .array(bucketSchema)
+          .superRefine((value: BucketDto[], context: RefinementCtx) => {
             const uniqueValues = uniqBy(value, element => element.blueprintId);
 
             if (uniqueValues.length !== value.length) {
               context.addIssue({
                 code: ZodIssueCode.custom,
-                message: "Blueprints must be unique in each palette value.",
+                message:
+                  "Buckets can't share blueprints. Use one bucket per one blueprint.",
                 fatal: true,
               });
 
               return Zod.NEVER;
             }
           })
-          .superRefine(
-            async (value: StorePaletteDto[], context: RefinementCtx) => {
-              const blueprintRepository = getInstanceOf<IBlueprintRepository>(
-                Di.BlueprintRepository
-              );
+          .superRefine(async (value: BucketDto[], context: RefinementCtx) => {
+            const blueprintRepository = getInstanceOf<IBlueprintRepository>(
+              Di.BlueprintRepository
+            );
 
-              const uniqueBlueprintIds = value.map(
-                ({ blueprintId }) => blueprintId
-              );
+            const uniqueBlueprintIds = value.map(
+              ({ blueprintId }) => blueprintId
+            );
 
-              const [blueprints] = await blueprintRepository.getAll({
-                where: {
-                  id: In(uniqueBlueprintIds),
-                },
+            const [blueprints] = await blueprintRepository.getAll({
+              where: {
+                id: In(uniqueBlueprintIds),
+              },
+            });
+
+            if (blueprints.length !== value.length) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message:
+                  "Failed to process request as one or more blueprints are not available.",
               });
 
-              if (blueprints.length !== value.length) {
-                context.addIssue({
-                  code: ZodIssueCode.custom,
-                  message:
-                    "Failed to process request as one or more blueprints are not available.",
-                });
-
-                return Zod.NEVER;
-              }
+              return Zod.NEVER;
             }
-          ),
+          }),
       })
     );
 }

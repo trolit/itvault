@@ -2,9 +2,9 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { Palette } from "@entities/Palette";
+import { Bucket } from "@entities/Bucket";
 import { IController } from "@interfaces/IController";
-import { IPaletteRepository } from "@interfaces/repositories/IPaletteRepository";
+import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 interface IParams {
   variantId: string;
@@ -12,22 +12,22 @@ interface IParams {
 
 @injectable()
 export class GetAllController
-  implements IController<IParams, undefined, undefined, Palette[]>
+  implements IController<IParams, undefined, undefined, Bucket[]>
 {
   constructor(
-    @inject(Di.PaletteRepository)
-    private _paletteRepository: IPaletteRepository
+    @inject(Di.BucketRepository)
+    private _bucketRepository: IBucketRepository
   ) {}
 
   async invoke(
     request: CustomRequest<IParams>,
-    response: CustomResponse<Palette[]>
+    response: CustomResponse<Bucket[]>
   ) {
     const {
       params: { variantId },
     } = request;
 
-    const [result] = await this._paletteRepository.getAll({
+    const [result] = await this._bucketRepository.getAll({
       select: {
         blueprint: {
           id: true,

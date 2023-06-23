@@ -2,38 +2,38 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { Palette } from "@entities/Palette";
+import { Bucket } from "@entities/Bucket";
+import { BucketDto } from "@dtos/BucketDto";
 import { IController } from "@interfaces/IController";
-import { StorePaletteDto } from "@dtos/StorePaletteDto";
-import { IPaletteRepository } from "@interfaces/repositories/IPaletteRepository";
+import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 interface IParams {
   variantId: string;
 }
 
 interface IBody {
-  values: StorePaletteDto[];
+  values: BucketDto[];
 }
 
 @injectable()
 export class StoreController
-  implements IController<IParams, IBody, undefined, Palette[]>
+  implements IController<IParams, IBody, undefined, Bucket[]>
 {
   constructor(
-    @inject(Di.PaletteRepository)
-    private _paletteRepository: IPaletteRepository
+    @inject(Di.BucketRepository)
+    private _bucketRepository: IBucketRepository
   ) {}
 
   async invoke(
     request: CustomRequest<IParams, IBody>,
-    response: CustomResponse<Palette[]>
+    response: CustomResponse<Bucket[]>
   ) {
     const {
       params: { variantId },
       body: { values },
     } = request;
 
-    const result = await this._paletteRepository.save(variantId, values);
+    const result = await this._bucketRepository.save(variantId, values);
 
     if (!result) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
