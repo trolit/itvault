@@ -10,8 +10,8 @@ import { FILES } from "@config";
 import { TEST_WORKSPACE_1 } from "./common";
 
 import { File } from "@entities/File";
+import { Bucket } from "@entities/Bucket";
 import { Variant } from "@entities/Variant";
-import { Palette } from "@entities/Bucket";
 import { Workspace } from "@entities/Workspace";
 import { Blueprint } from "@entities/Blueprint";
 
@@ -41,7 +41,7 @@ export class PaletteSeeder implements Seeder {
 
     const variantRepository = dataSource.getRepository(Variant);
 
-    const paletteRepository = dataSource.getRepository(Palette);
+    const bucketRepository = dataSource.getRepository(Bucket);
 
     const blueprintRepository = dataSource.getRepository(Blueprint);
 
@@ -77,7 +77,7 @@ export class PaletteSeeder implements Seeder {
 
         const splitContent = content.split("\n");
 
-        await paletteRepository.save({
+        await bucketRepository.save({
           value: this.generateValue(splitContent),
           variant,
           blueprint,
