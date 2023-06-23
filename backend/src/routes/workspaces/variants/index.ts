@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { FILES } from "@config";
 
-import palettesRouter from "./palettes";
+import bucketsRouter from "./buckets";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
@@ -43,6 +43,6 @@ variantsRouter.post(
   processRequestWith(StoreController)
 );
 
-variantsRouter.use("/:variantId/palettes", palettesRouter);
+variantsRouter.use("/:variantId/buckets", bucketsRouter);
 
 export = variantsRouter;

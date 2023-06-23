@@ -9,18 +9,18 @@ import { useGetAllSuperSchema } from "@schemas/Bucket/useGetAllSuperSchema";
 import { StoreController } from "@controllers/Bucket/StoreController";
 import { GetAllController } from "@controllers/Bucket/GetAllController";
 
-const palettesRouter = Router({ mergeParams: true });
+const bucketsRouter = Router({ mergeParams: true });
 
-palettesRouter.get(
+bucketsRouter.get(
   "/v1",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
-palettesRouter.post(
+bucketsRouter.post(
   "/v1",
   validateRequestWith(useStoreSuperSchema),
   processRequestWith(StoreController)
 );
 
-export = palettesRouter;
+export = bucketsRouter;
