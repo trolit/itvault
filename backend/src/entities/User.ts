@@ -1,11 +1,12 @@
 import bcrypt from "bcrypt";
-import { Base } from "./Base";
-import { Role } from "./Role";
-import { Bundle } from "./Bundle";
-import { UserToWorkspace } from "./UserToWorkspace";
 import { Entity, Column, ManyToOne, OneToMany, BeforeInsert } from "typeorm";
 
 import { BCRYPT } from "@config";
+
+import { Role } from "./Role";
+import { Base } from "./Base";
+import { Bundle } from "./Bundle";
+import { UserToWorkspace } from "./UserToWorkspace";
 
 @Entity("users")
 export class User extends Base {

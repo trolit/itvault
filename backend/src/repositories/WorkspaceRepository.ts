@@ -1,5 +1,6 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+
 import { BaseRepository } from "./BaseRepository";
 
 import { Workspace } from "@entities/Workspace";

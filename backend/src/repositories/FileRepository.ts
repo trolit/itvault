@@ -1,8 +1,9 @@
 import { injectable } from "tsyringe";
-import { BaseRepository } from "./BaseRepository";
 import { QueryRunner, Repository, Like, Not } from "typeorm";
 
 import { FILES } from "@config";
+
+import { BaseRepository } from "./BaseRepository";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";

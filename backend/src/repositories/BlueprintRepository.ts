@@ -1,7 +1,8 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
-import { BaseRepository } from "./BaseRepository";
 import { BlueprintDto } from "types/dtos/BlueprintDto";
+
+import { BaseRepository } from "./BaseRepository";
 
 import { Blueprint } from "@entities/Blueprint";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";

@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { InjectionToken } from "tsyringe";
+
 import { getInstanceOf } from "./getInstanceOf";
 
 import { IController } from "@interfaces/IController";

@@ -49,6 +49,8 @@
           "value": {
             "config": ["@config/**", "@config"],
 
+            "same-directory": ["./**"],
+
             "types": [
               "miscellaneous-types",
               "@dtos/**",
@@ -75,6 +77,7 @@
         "groups": [
           ["data-store", "super-schema", "builtin", "external"],
           ["config"],
+          ["same-directory"],
           "types",
           "tools",
           "schemas",

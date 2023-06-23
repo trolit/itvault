@@ -1,7 +1,3 @@
-import { User } from "./User";
-import { Variant } from "./Variant";
-import { Workspace } from "./Workspace";
-import { Blueprint } from "./Blueprint";
 import {
   Column,
   Entity,
@@ -11,6 +7,11 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
+
+import { User } from "./User";
+import { Variant } from "./Variant";
+import { Blueprint } from "./Blueprint";
+import { Workspace } from "./Workspace";
 
 import { BundleExpire } from "@enums/BundleExpire";
 

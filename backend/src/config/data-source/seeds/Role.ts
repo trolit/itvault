@@ -1,8 +1,9 @@
 import { DataSource } from "typeorm";
-import { TEST_ACCOUNTS } from "./common";
 import { Seeder } from "typeorm-extension";
 
 import { HEAD_ADMIN_ROLE, HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
+
+import { TEST_ACCOUNTS } from "./common";
 
 import { Role } from "@entities/Role";
 

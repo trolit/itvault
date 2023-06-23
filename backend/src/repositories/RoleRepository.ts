@@ -1,7 +1,8 @@
 import { injectable } from "tsyringe";
 import { Result } from "types/Result";
-import { BaseRepository } from "./BaseRepository";
 import { Repository, EntityManager } from "typeorm";
+
+import { BaseRepository } from "./BaseRepository";
 
 import { Role } from "@entities/Role";
 import { IError } from "@interfaces/IError";

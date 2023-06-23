@@ -1,6 +1,7 @@
 import { DataSource } from "typeorm";
-import { TEST_WORKSPACE_2, TEST_WORKSPACE_1 } from "./common";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
+
+import { TEST_WORKSPACE_2, TEST_WORKSPACE_1 } from "./common";
 
 import { Workspace } from "@entities/Workspace";
 

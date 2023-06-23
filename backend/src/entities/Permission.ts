@@ -1,5 +1,6 @@
-import { PermissionToRole } from "./PermissionToRole";
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+
+import { PermissionToRole } from "./PermissionToRole";
 
 import { IPermissionDefinition } from "@interfaces/config/IPermissionDefinition";
 

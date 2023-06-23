@@ -1,8 +1,9 @@
 import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
 import { Result } from "types/Result";
-import { BaseRepository } from "./BaseRepository";
 import { EntityManager, Repository } from "typeorm";
+
+import { BaseRepository } from "./BaseRepository";
 
 import { Role } from "@entities/Role";
 import { User } from "@entities/User";

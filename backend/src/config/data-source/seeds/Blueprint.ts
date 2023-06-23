@@ -1,10 +1,11 @@
 import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
 import { Seeder } from "typeorm-extension";
+
 import { TEST_WORKSPACE_1 } from "./common";
 
-import { Workspace } from "@entities/Workspace";
 import { Blueprint } from "@entities/Blueprint";
+import { Workspace } from "@entities/Workspace";
 
 export class BlueprintSeeder implements Seeder {
   public async run(dataSource: DataSource) {

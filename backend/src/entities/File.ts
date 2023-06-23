@@ -1,5 +1,3 @@
-import { Variant } from "./Variant";
-import { Workspace } from "./Workspace";
 import {
   Column,
   Entity,
@@ -8,6 +6,9 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
+
+import { Variant } from "./Variant";
+import { Workspace } from "./Workspace";
 
 @Entity("files")
 export class File {

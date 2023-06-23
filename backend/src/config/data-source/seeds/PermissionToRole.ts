@@ -1,8 +1,9 @@
 import { DataSource } from "typeorm";
-import { TEST_ACCOUNTS } from "./common";
 import { Seeder } from "typeorm-extension";
 
 import { ALL_PERMISSIONS } from "@config/permissions";
+
+import { TEST_ACCOUNTS } from "./common";
 
 import { Role } from "@entities/Role";
 import { PermissionToRole } from "@entities/PermissionToRole";

@@ -1,9 +1,10 @@
+import { Entity, Column, OneToMany } from "typeorm";
+
 import { Base } from "./Base";
 import { File } from "./File";
 import { Bundle } from "./Bundle";
 import { Blueprint } from "./Blueprint";
 import { UserToWorkspace } from "./UserToWorkspace";
-import { Entity, Column, OneToMany } from "typeorm";
 
 @Entity("workspaces")
 export class Workspace extends Base {

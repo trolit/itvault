@@ -1,8 +1,9 @@
 import { Seeder } from "typeorm-extension";
 import { DataSource, Repository } from "typeorm";
-import { TEST_ACCOUNTS, TEST_WORKSPACE_2, TEST_WORKSPACE_1 } from "./common";
 
 import { HEAD_ADMIN_ROLE } from "@config/default-roles";
+
+import { TEST_ACCOUNTS, TEST_WORKSPACE_2, TEST_WORKSPACE_1 } from "./common";
 
 import { User } from "@entities/User";
 import { Workspace } from "@entities/Workspace";
