@@ -5,7 +5,6 @@ import { Blueprint } from "./Blueprint";
 
 import { BucketContent } from "miscellaneous-types";
 
-// @NOTE holds workspace's blueprint color structure for particular variant
 @Entity("buckets")
 export class Bucket {
   @PrimaryGeneratedColumn()
