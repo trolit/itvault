@@ -6,4 +6,11 @@ declare module "jsonwebtoken" {
 
     email: string;
   }
+
+  export type VerifyTokenResult =
+    | {
+        error: VerifyErrors;
+        payload?: undefined;
+      }
+    | { payload: JwtPayload; error?: undefined };
 }

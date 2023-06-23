@@ -1,14 +1,7 @@
 import { Response } from "express";
-import { JwtPayload, SignOptions, VerifyErrors } from "jsonwebtoken";
+import { JwtPayload, SignOptions, VerifyTokenResult } from "jsonwebtoken";
 
 import { DataStoreRole } from "@dataStore";
-
-type VerifyTokenResult =
-  | {
-      error: VerifyErrors;
-      payload?: undefined;
-    }
-  | { payload: JwtPayload; error?: undefined };
 
 export interface IAuthService {
   signIn(payload: JwtPayload, options?: SignOptions): string;
