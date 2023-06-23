@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
-import random from "lodash/random";
 import sample from "lodash/sample";
+import random from "lodash/random";
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 
@@ -14,6 +14,7 @@ import { Bucket } from "@entities/Bucket";
 import { Variant } from "@entities/Variant";
 import { Workspace } from "@entities/Workspace";
 import { Blueprint } from "@entities/Blueprint";
+import { BucketContent } from "miscellaneous-types";
 
 export class BucketSeeder implements Seeder {
   public async run(dataSource: DataSource) {
@@ -89,7 +90,7 @@ export class BucketSeeder implements Seeder {
   private generateValue(splitContent: string[]) {
     const iterations = random(1, 3);
 
-    const value: Record<number, string[]> = {};
+    const value: BucketContent = {};
 
     const availableRows = splitContent.length - 1;
 

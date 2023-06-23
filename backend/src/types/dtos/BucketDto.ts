@@ -1,5 +1,7 @@
+import { BucketContent } from "miscellaneous-types";
+
 export class BucketDto {
-  value: Record<number, string[]>;
+  value: BucketContent;
 
   blueprintId: number;
 }
