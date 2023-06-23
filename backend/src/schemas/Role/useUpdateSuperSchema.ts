@@ -1,8 +1,8 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
+import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import type { UpdatePermissionDto, UpdateRoleDto } from "@dtos/UpdateRoleDto";
 

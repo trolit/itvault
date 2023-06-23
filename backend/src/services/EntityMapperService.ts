@@ -1,6 +1,5 @@
-import { Type } from "miscellaneous-types";
-
 import { Base } from "@entities/Base";
+import { Type } from "miscellaneous-types";
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 export class EntityMapperService implements IEntityMapperService {

@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import type { LoginDto } from "@dtos/LoginDto";

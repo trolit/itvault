@@ -2,9 +2,9 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
+import { DataStoreRole, DataStoreUser, DataStoreKeyType } from "data-store";
 
 import { JWT } from "@config";
-import { DataStoreRole, DataStoreUser, DataStoreKeyType } from "data-store";
 
 import { Di } from "@enums/Di";
 import { IAuthService } from "@interfaces/services/IAuthService";
