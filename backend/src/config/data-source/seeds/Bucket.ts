@@ -15,7 +15,7 @@ import { Variant } from "@entities/Variant";
 import { Workspace } from "@entities/Workspace";
 import { Blueprint } from "@entities/Blueprint";
 
-export class PaletteSeeder implements Seeder {
+export class BucketSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const workspaceRepository = dataSource.getRepository(Workspace);
 
