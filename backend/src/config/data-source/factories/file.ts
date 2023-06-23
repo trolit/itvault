@@ -1,7 +1,8 @@
-import { FILES } from "@config";
 import sample from "lodash/sample";
 import { faker } from "@faker-js/faker";
 import { setSeederFactory } from "typeorm-extension";
+
+import { FILES } from "@config";
 
 import { File } from "@entities/File";
 

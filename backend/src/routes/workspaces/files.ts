@@ -1,12 +1,13 @@
-import { FILES } from "@config";
 import { Router } from "express";
+
+import { FILES } from "@config";
 
 import { Permission } from "@enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { validateRequestWith } from "@middleware/validateRequestWith";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
+import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 

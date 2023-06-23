@@ -49,7 +49,7 @@
           "value": {
             "modules": ["@dataStore", "@superSchema", "@commonTypes"],
 
-            "config": ["@config/**"],
+            "config": ["@config/**", "@config"],
 
             "types": [
               "@dtos/**",

@@ -1,11 +1,12 @@
 import path from "path";
 import fs from "fs-extra";
 import crypto from "crypto";
-import { FILES } from "@config";
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 import { TEST_WORKSPACE_1 } from "./common";
 import { createFile } from "./common/createFile";
+
+import { FILES } from "@config";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";

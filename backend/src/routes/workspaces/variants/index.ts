@@ -1,10 +1,11 @@
-import { FILES } from "@config";
 import { Router } from "express";
 import palettesRouter from "./palettes";
 
+import { FILES } from "@config";
+
 import { processRequestWith } from "@helpers/processRequestWith";
-import { validateRequestWith } from "@middleware/validateRequestWith";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
+import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 

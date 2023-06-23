@@ -1,7 +1,7 @@
-import { JWT } from "@config";
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
+import { JWT } from "@config";
 import { DataStorePermission } from "@dataStore";
 import { ALL_PERMISSIONS } from "@config/permissions";
 

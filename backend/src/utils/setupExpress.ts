@@ -1,10 +1,11 @@
 import cors from "cors";
 import helmet from "helmet";
 import routes from "@routes";
-import { APP } from "@config";
 import cookieParser from "cookie-parser";
 import { StatusCodes as HTTP } from "http-status-codes";
 import express, { Application, Request, Response } from "express";
+
+import { APP } from "@config";
 
 export const setupExpress = (app: Application) => {
   app.use(

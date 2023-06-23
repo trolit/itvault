@@ -1,6 +1,6 @@
-import { REDIS } from "@config";
 import { Redis } from "ioredis";
 
+import { REDIS } from "@config";
 import { DataStoreKeyType, DataStoreRole } from "@dataStore";
 
 import { Di } from "@enums/Di";

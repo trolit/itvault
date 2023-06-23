@@ -1,10 +1,11 @@
 import { seeds } from "./seeds";
 import { entities } from "./entities";
-import { APP, DATABASE } from "@config";
 import { factories } from "./factories";
 import { migrations } from "./migrations";
 import { SeederOptions } from "typeorm-extension";
 import { DataSource, DataSourceOptions } from "typeorm";
+
+import { APP, DATABASE } from "@config";
 
 import { Environment } from "@enums/Environment";
 

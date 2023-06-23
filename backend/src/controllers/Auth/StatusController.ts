@@ -1,7 +1,8 @@
-import { JWT } from "@config";
 import type { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+
+import { JWT } from "@config";
 
 import { Di } from "@enums/Di";
 import { IController } from "@interfaces/IController";

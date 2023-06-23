@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
-import { APP, JWT } from "@config";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { APP, JWT } from "@config";
 import { DataStoreKeyType, DataStoreUser } from "@dataStore";
 
 import { Di } from "@enums/Di";
