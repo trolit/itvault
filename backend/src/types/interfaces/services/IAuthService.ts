@@ -3,7 +3,7 @@ import { JwtPayload, SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { DataStoreRole } from "@dataStore";
 
-type IVerifyTokenResult =
+type VerifyTokenResult =
   | {
       error: VerifyErrors;
       payload?: undefined;
@@ -15,7 +15,7 @@ export interface IAuthService {
 
   signOut(token: string, response: Response): Promise<number>;
 
-  verifyToken(token: string): IVerifyTokenResult;
+  verifyToken(token: string): VerifyTokenResult;
 
   getSignedUserRole(userId: number): Promise<DataStoreRole | null>;
 }
