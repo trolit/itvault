@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { Palette } from "@entities/Palette";
+import { Palette } from "@entities/Bucket";
 import { IController } from "@interfaces/IController";
 import { IPaletteRepository } from "@interfaces/repositories/IPaletteRepository";
 

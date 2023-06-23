@@ -11,7 +11,7 @@ import { TEST_WORKSPACE_1 } from "./common";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
-import { Palette } from "@entities/Palette";
+import { Palette } from "@entities/Bucket";
 import { Workspace } from "@entities/Workspace";
 import { Blueprint } from "@entities/Blueprint";
 

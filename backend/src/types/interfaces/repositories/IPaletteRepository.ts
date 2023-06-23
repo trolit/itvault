@@ -1,5 +1,5 @@
 import { StorePaletteDto } from "@dtos/StorePaletteDto";
-import { Palette } from "@entities/Palette";
+import { Palette } from "@entities/Bucket";
 import { IBaseRepository } from "./IBaseRepository";
 
 export interface IPaletteRepository extends IBaseRepository<Palette> {
