@@ -2,7 +2,7 @@ import { File } from "@entities/File";
 import { Role } from "@entities/Role";
 import { User } from "@entities/User";
 import { Bundle } from "@entities/Bundle";
-import { Palette } from "@entities/Bucket";
+import { Bucket } from "@entities/Bucket";
 import { Variant } from "@entities/Variant";
 import { Blueprint } from "@entities/Blueprint";
 import { Workspace } from "@entities/Workspace";
@@ -20,6 +20,6 @@ export const entities = [
   Blueprint,
   File,
   Variant,
-  Palette,
+  Bucket,
   Bundle,
 ];
