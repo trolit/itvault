@@ -6,8 +6,8 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { useStoreSuperSchema } from "@schemas/Palette/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Palette/useGetAllSuperSchema";
 
-import { StoreController } from "@controllers/Palette/StoreController";
-import { GetAllController } from "@controllers/Palette/GetAllController";
+import { StoreController } from "@controllers/Bucket/StoreController";
+import { GetAllController } from "@controllers/Bucket/GetAllController";
 
 const palettesRouter = Router({ mergeParams: true });
 
