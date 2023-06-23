@@ -45,7 +45,8 @@ function useBodySchema(): SchemaProvider {
             if (uniqueValues.length !== value.length) {
               context.addIssue({
                 code: ZodIssueCode.custom,
-                message: "Blueprints must be unique in each palette value.",
+                message:
+                  "Buckets can't share blueprints. Use one bucket per one blueprint.",
                 fatal: true,
               });
 
