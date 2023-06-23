@@ -3,8 +3,8 @@ import { Router } from "express";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 
-import { useStoreSuperSchema } from "@schemas/Palette/useStoreSuperSchema";
-import { useGetAllSuperSchema } from "@schemas/Palette/useGetAllSuperSchema";
+import { useStoreSuperSchema } from "@schemas/Bucket/useStoreSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/Bucket/useGetAllSuperSchema";
 
 import { StoreController } from "@controllers/Bucket/StoreController";
 import { GetAllController } from "@controllers/Bucket/GetAllController";
