@@ -1,4 +1,3 @@
-import { CustomRequest } from "@custom-types/express";
 import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 
