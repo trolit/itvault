@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { FILES } from "@config";
-import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
+import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";

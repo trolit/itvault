@@ -47,11 +47,10 @@
         "order": "asc",
         "custom-groups": {
           "value": {
-            "modules": ["@dataStore", "@superSchema", "@commonTypes"],
-
             "config": ["@config/**", "@config"],
 
             "types": [
+              "miscellaneous-types",
               "@dtos/**",
               "@enums/**",
               "@entities/**",
@@ -74,8 +73,8 @@
           "type": {}
         },
         "groups": [
-          ["builtin", "external"],
-          ["modules", "config"],
+          ["data-store", "super-schema", "builtin", "external"],
+          ["config"],
           "types",
           "tools",
           "schemas",

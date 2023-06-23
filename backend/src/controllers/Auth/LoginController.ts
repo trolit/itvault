@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { DataStoreKeyType, DataStoreUser } from "data-store";
 
 import { APP, JWT } from "@config";
-import { DataStoreKeyType, DataStoreUser } from "@dataStore";
 
 import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";

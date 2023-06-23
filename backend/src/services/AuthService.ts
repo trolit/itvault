@@ -4,7 +4,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
 
 import { JWT } from "@config";
-import { DataStoreRole, DataStoreUser, DataStoreKeyType } from "@dataStore";
+import { DataStoreRole, DataStoreUser, DataStoreKeyType } from "data-store";
 
 import { Di } from "@enums/Di";
 import { IAuthService } from "@interfaces/services/IAuthService";

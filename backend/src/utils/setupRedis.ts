@@ -1,7 +1,7 @@
 import { Redis } from "ioredis";
 
 import { REDIS } from "@config";
-import { DataStoreKeyType, DataStoreRole } from "@dataStore";
+import { DataStoreKeyType, DataStoreRole } from "data-store";
 
 import { Di } from "@enums/Di";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";

@@ -9,9 +9,9 @@ import {
   FindOptionsWhere,
 } from "typeorm";
 
-import { Type } from "@commonTypes";
 import { dataSource } from "@config/data-source";
 
+import { Type } from "miscellaneous-types";
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 export class BaseRepository<T extends { id: number | string }>

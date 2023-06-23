@@ -1,4 +1,4 @@
-import { Type } from "@commonTypes";
+import { Type } from "miscellaneous-types";
 
 import { Base } from "@entities/Base";
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";

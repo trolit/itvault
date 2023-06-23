@@ -1,4 +1,4 @@
-import { SuperSchemaRunner, SchemaProvider } from "@superSchema";
+import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { baseSchemas } from "@schemas/Variant/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";

@@ -2,7 +2,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
 import { JWT } from "@config";
-import { DataStorePermission } from "@dataStore";
+import { DataStorePermission } from "data-store";
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";

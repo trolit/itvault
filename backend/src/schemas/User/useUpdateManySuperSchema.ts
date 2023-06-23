@@ -7,7 +7,7 @@ import {
   SchemaProvider,
   SuperCommonParam,
   SuperSchemaRunner,
-} from "@superSchema";
+} from "super-schema-types";
 
 import { Di } from "@enums/Di";
 import type { Role } from "@entities/Role";
