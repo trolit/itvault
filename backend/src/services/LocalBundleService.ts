@@ -1,65 +1,63 @@
 import path from "path";
-import fs from "fs-extra";
 import JSZip from "jszip";
+import fs from "fs-extra";
+import crypto from "crypto";
 import { In } from "typeorm";
 import { inject, injectable } from "tsyringe";
 
 import { FILES } from "@config/index";
 
+import { BaseBundleService } from "./BaseBundleService";
+
 import { Di } from "@enums/Di";
 import { BundleDto } from "@dtos/BundleDto";
+import { IBundleService } from "@interfaces/services/IBundleService";
 import { IBaseFileService } from "@interfaces/services/IBaseFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { IBaseBundleService } from "@interfaces/services/IBaseBundleService";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 // @NOTE consider adding "status" column to "Bundle" entity - "generating" / "ready" / "failed"
 @injectable()
-export class LocalBundleService implements IBaseBundleService {
+export class LocalBundleService
+  extends BaseBundleService
+  implements IBundleService
+{
   constructor(
     @inject(Di.FileRepository)
-    private _fileRepository: IFileRepository,
+    protected _fileRepository: IFileRepository,
     @inject(Di.BucketRepository)
     private _bucketRepository: IBucketRepository,
     @inject(Di.FileService)
     private _fileService: IBaseFileService
-  ) {}
+  ) {
+    super(_fileRepository);
+  }
 
-  async build(workspaceId: number, data: BundleDto[]): Promise<void> {
-    const variantIds: string[] = [];
+  async build(workspaceId: number, context: BundleDto[]): Promise<void> {
+    const variantIds = this.getUniqueVariantIds(context);
 
-    for (const elem of data) {
-      elem.variantIds.map(value =>
-        variantIds.includes(value) ? "" : variantIds.push(value)
-      );
+    const [files] = await this.getFiles(workspaceId, variantIds);
+
+    if (!files.length) {
+      // err
+
+      return;
     }
-
-    const [files] = await this._fileRepository.getAll({
-      where: {
-        workspace: {
-          id: workspaceId,
-        },
-        variants: {
-          id: In(variantIds),
-        },
-      },
-      relations: {
-        variants: true,
-      },
-    });
 
     const jszip = new JSZip();
 
     for (const file of files) {
-      const { variants } = file;
+      if (file.variants.length !== 1) {
+        // err
 
-      const [variant] = variants;
+        return;
+      }
 
-      const matchedData = data.filter(({ variantIds }) =>
-        variantIds.some(variantId => variantId === variant.id)
-      );
+      const {
+        variants: [variant],
+      } = file;
 
-      const blueprintIds = matchedData.map(({ blueprintId }) => blueprintId);
+      const blueprintIds = this.getUniqueBlueprintIds(context, variant);
 
       const [buckets] = await this._bucketRepository.getAll({
         where: {
@@ -72,74 +70,38 @@ export class LocalBundleService implements IBaseBundleService {
         },
       });
 
+      if (!buckets) {
+        // err
+
+        return;
+      }
+
       const fileContent = await this._fileService.readFile(
         workspaceId,
         variant
       );
 
-      const rawContent: string[] = [];
-
-      fileContent.split("\n").map((line, index) => {
-        const matchedBuckets = buckets.filter(({ value }) => !!value[index]);
-
-        const parsedValues: { from: number; to: number }[] = [];
-
-        for (const { value } of matchedBuckets) {
-          const line = value[index];
-
-          const result = line.map(part => {
-            const [from, to] = part.split("-");
-
-            return {
-              from: parseInt(from),
-              to: parseInt(to),
-            };
-          });
-
-          parsedValues.push(...result);
-        }
-
-        for (const { from, to } of parsedValues) {
-          const substring = line.substring(from, to + 1);
-
-          if (!rawContent[index]) {
-            rawContent.push(substring);
-
-            continue;
-          }
-
-          rawContent[index] =
-            rawContent[index].substring(0, from) +
-            substring +
-            rawContent[index].substring(index + substring.length);
-        }
-
-        // 0-5, 15-30, 0-16, 4-7, 9-11
-        // dupa1
-        // 0-5
-
-        // 0-5, 15-20, 40-50
-        // to be:
-        // 0-5, 15-20, 40-50
-      });
-
-      console.log("xdd");
-      console.log(rawContent);
+      const data = this.generateData(fileContent, buckets);
 
       const absolutePath =
         file.relativePath === "."
           ? file.originalFilename
-          : file.relativePath.slice(2);
+          : file.relativePath.slice(2); // @NOTE ./src -> src
 
-      jszip.file(absolutePath, rawContent.join("\n"));
+      jszip.file(absolutePath, data);
     }
 
-    const result = await jszip.generateAsync({ type: "nodebuffer" });
+    const buffer = await jszip.generateAsync({ type: "nodebuffer" });
 
-    await fs.writeFile(
-      path.join(FILES.BASE_DOWNLOADS_PATH, "test.zip"),
-      result
-    );
+    const UUID = crypto.randomUUID();
+
+    const filename = `${UUID}.zip`;
+
+    const fileLocation = path.join(FILES.BASE_DOWNLOADS_PATH, filename);
+
+    await fs.writeFile(fileLocation, buffer);
+
+    const fileStats = await fs.stat(fileLocation);
 
     // @TODO save file name in db
 
