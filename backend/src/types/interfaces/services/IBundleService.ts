@@ -1,5 +1,5 @@
 import { BundleDto } from "@dtos/BundleDto";
 
-export interface IBaseBundleService {
+export interface IBundleService {
   build(workspaceId: number, data: BundleDto[]): Promise<void>;
 }
