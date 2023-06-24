@@ -1,6 +1,6 @@
 import path from "path";
-import JSZip from "jszip";
 import fs from "fs-extra";
+import JSZip from "jszip";
 import { In } from "typeorm";
 import { inject, injectable } from "tsyringe";
 
@@ -8,13 +8,14 @@ import { FILES } from "@config/index";
 
 import { Di } from "@enums/Di";
 import { BundleDto } from "@dtos/BundleDto";
-import { IBundleService } from "@interfaces/services/IBundleService";
 import { IBaseFileService } from "@interfaces/services/IBaseFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
+import { IBaseBundleService } from "@interfaces/services/IBaseBundleService";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
+// @NOTE consider adding "status" column to "Bundle" entity - "generating" / "ready" / "failed"
 @injectable()
-export class LocalBundleService implements IBundleService {
+export class LocalBundleService implements IBaseBundleService {
   constructor(
     @inject(Di.FileRepository)
     private _fileRepository: IFileRepository,
@@ -46,9 +47,6 @@ export class LocalBundleService implements IBundleService {
         variants: true,
       },
     });
-
-    console.log("--xd1");
-    console.log(files);
 
     const jszip = new JSZip();
 
