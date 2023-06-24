@@ -9,11 +9,12 @@ import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
 import { LocalFileService } from "@services/LocalFileService";
+import { LocalBundleService } from "@services/LocalBundleService";
 
 export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
 
-  registerFileService();
+  registerFileAndBundleServices();
 
   registerDependencies({
     sourceFiles: {
@@ -26,7 +27,7 @@ export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   registerDependencies({
     sourceFiles: {
       dirname: "services",
-      excludedFilenames: ["LocalFileService"],
+      excludedFilenames: ["LocalFileService", "LocalBundleService"],
     },
     interfacesDirname: "services",
   });
@@ -81,8 +82,6 @@ function registerDependencies(config: {
         const dependency = await import(`@${dirname}/${dependencyFilename}`);
 
         container.register(interfaceName, dependency[dependencyFilename]);
-
-        console.log(`⭐ ${dependencyFilename} registered in DI container`);
       } else {
         console.log(`❗❗❗ Failed to register ${dependencyFilename}`);
       }
@@ -90,10 +89,10 @@ function registerDependencies(config: {
   });
 }
 
-function registerFileService() {
+function registerFileAndBundleServices() {
   if (FILES.ACTIVE_MODE === FileStorageMode.Local) {
     container.register(Di.FileService, LocalFileService);
 
-    console.log(`⭐ LocalFileService registered in DI container`);
+    container.register(Di.BundleService, LocalBundleService);
   }
 }
