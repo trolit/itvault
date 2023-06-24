@@ -1,3 +1,4 @@
+import { Variant } from "@entities/Variant";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
 
 export interface IBaseFileService {
@@ -5,4 +6,6 @@ export interface IBaseFileService {
     workspaceId: number,
     formDataFiles: IFormDataFile[]
   ): Promise<void>;
+
+  readFile(workspaceId: number, variant: Variant): Promise<string>;
 }
