@@ -15,6 +15,7 @@ import { IBundleService } from "@interfaces/services/IBundleService";
 import { IBaseFileService } from "@interfaces/services/IBaseFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
+import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 // @NOTE consider adding "status" column to "Bundle" entity - "generating" / "ready" / "failed"
 @injectable()
@@ -28,7 +29,9 @@ export class LocalBundleService
     @inject(Di.BucketRepository)
     private _bucketRepository: IBucketRepository,
     @inject(Di.FileService)
-    private _fileService: IBaseFileService
+    private _fileService: IBaseFileService,
+    @inject(Di.BundleRepository)
+    private _bundleRepository: IBundleRepository
   ) {
     super(_fileRepository);
   }
@@ -103,8 +106,15 @@ export class LocalBundleService
 
     const fileStats = await fs.stat(fileLocation);
 
-    // @TODO save file name in db
-
-    // @TODO validate if chosen variants target same file. IF NOT - DO NOT ALLOW FOR BUNDLE BUILD
+    await this._bundleRepository.primitiveUpdate(
+      {
+        id: 1, // @TODO
+      },
+      {
+        filename,
+        size: fileStats.size,
+        blueprints: [{ id: 1 }], // @TODO
+      }
+    );
   }
 }
