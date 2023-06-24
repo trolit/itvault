@@ -4,6 +4,7 @@ export enum Di {
   AuthService = "IAuthService",
   FileService = "IFileService",
   UserService = "IUserService",
+  BundleService = "IBundleService",
   VariantService = "IVariantService",
   DataStoreService = "IDataStoreService",
   EntityMapperService = "IEntityMapperService",
