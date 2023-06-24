@@ -48,6 +48,7 @@ export class Bundle {
   @JoinTable({ name: "bundles_blueprints" })
   blueprints: Blueprint[];
 
+  // @NOTE consider removing it and leave only `blueprints`
   @ManyToMany(() => Variant, { cascade: true })
   @JoinTable({ name: "bundles_variants" })
   variants: Variant[];
