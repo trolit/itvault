@@ -1,4 +1,5 @@
 import formidable from "formidable";
+import { Request, Response } from "express";
 
 import { IFormDataFile } from "@interfaces/IFormDataFile";
 
