@@ -22,10 +22,10 @@ export class Bundle {
   id: number;
 
   @Column({ nullable: true })
-  filename: string | null;
+  filename: string;
 
   @Column({ nullable: true })
-  note: string | null;
+  note: string;
 
   @CreateDateColumn()
   createdAt: Date;
