@@ -11,27 +11,20 @@ import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 interface IParams {
   workspaceId: number;
-}
 
-interface IQuery {
   id: number;
 }
 
 @injectable()
-export class DownloadController
-  implements IController<IParams, undefined, IQuery>
-{
+export class DownloadController implements IController<IParams> {
   constructor(
     @inject(Di.BundleRepository)
     private _bundleRepository: IBundleRepository
   ) {}
 
-  async invoke(
-    request: CustomRequest<IParams, undefined, IQuery>,
-    response: Response
-  ) {
+  async invoke(request: CustomRequest<IParams>, response: Response) {
     const {
-      query: { id },
+      params: { id },
     } = request;
 
     const bundle = await this._bundleRepository.getById(id);
