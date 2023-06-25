@@ -1,7 +1,8 @@
-import { CreateUsersTable1665695149133 } from "@migrations/1665695149133-CreateUsersTable";
 import { CreateFilesTable1685023186515 } from "@migrations/1685023186515-CreateFilesTable";
-import { CreateBucketsTable1686234793370 } from "@migrations/1686234793370-CreateBucketsTable";
+import { CreateUsersTable1665695149133 } from "@migrations/1665695149133-CreateUsersTable";
+import { UpdateBundlesTable1687686325797 } from "@migrations/1687686325797-UpdateBundlesTable";
 import { CreateBundlesTable1687029050338 } from "@migrations/1687029050338-CreateBundlesTable";
+import { CreateBucketsTable1686234793370 } from "@migrations/1686234793370-CreateBucketsTable";
 import { CreateVariantsTable1685024333420 } from "@migrations/1685024333420-CreateVariantsTable";
 import { CreateBlueprintsTable1678582183597 } from "@migrations/1678582183597-CreateBlueprintsTable";
 import { CreateWorkspacesTable1678565252340 } from "@migrations/1678565252340-CreateWorkspacesTable";
@@ -12,8 +13,8 @@ import { UpdateNamePropertyInWorkspaceEntity1683571095013 } from "@migrations/16
 import { UpdateNamePropertyInPermissionEntity1679260617325 } from "@migrations/1679260617325-UpdateNamePropertyInPermissionEntity";
 import { CreateRoleAndPermissionRelatedTables1679236763287 } from "@migrations/1679236763287-CreateRoleAndPermissionRelatedTables";
 import { UpdatePasswordPropertyInWorkspaceEntity1678578515028 } from "@migrations/1678578515028-UpdatePasswordPropertyInWorkspaceEntity";
-import { SetOneToManyRelationBetweenFileAndVariant1685030994778 } from "@migrations/1685030994778-SetOneToManyRelationBetweenFileAndVariant";
 import { RemovePasswordPropertyFromWorkspaceEntity1687018579892 } from "@migrations/1687018579892-RemovePasswordPropertyFromWorkspaceEntity";
+import { SetOneToManyRelationBetweenFileAndVariant1685030994778 } from "@migrations/1685030994778-SetOneToManyRelationBetweenFileAndVariant";
 import { SetOneToManyRelationBetweenWorkspaceAndFile1685030356268 } from "@migrations/1685030356268-SetOneToManyRelationBetweenWorkspaceAndFile";
 import { UpdateEnabledPropertyInPermissionToRoleEntity1679260845721 } from "@migrations/1679260845721-UpdateEnabledPropertyInPermissionToRoleEntity";
 import { RemoveAccessPropertyFromUserToWorkspaceEntity1685798752314 } from "@migrations/1685798752314-RemoveAccessPropertyFromUserToWorkspaceEntity";
@@ -42,4 +43,5 @@ export const migrations = [
   ChangeRelationBetweenBlueprintAndWorkspaceToOneToMany1686304172406,
   RemovePasswordPropertyFromWorkspaceEntity1687018579892,
   CreateBundlesTable1687029050338,
+  UpdateBundlesTable1687686325797,
 ];

@@ -2,8 +2,9 @@ export enum Di {
   Redis = "Redis",
 
   AuthService = "IAuthService",
-  FileService = "IFileService",
   UserService = "IUserService",
+  FileService = "IFileService",
+  BundleService = "IBundleService",
   VariantService = "IVariantService",
   DataStoreService = "IDataStoreService",
   EntityMapperService = "IEntityMapperService",
@@ -11,6 +12,7 @@ export enum Di {
   RoleRepository = "IRoleRepository",
   UserRepository = "IUserRepository",
   FileRepository = "IFileRepository",
+  BundleRepository = "IBundleRepository",
   BucketRepository = "IBucketRepository",
   VariantRepository = "IVariantRepository",
   BlueprintRepository = "IBlueprintRepository",

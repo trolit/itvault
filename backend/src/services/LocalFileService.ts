@@ -4,11 +4,12 @@ import { injectable } from "tsyringe";
 
 import { FILES } from "@config";
 
+import { Variant } from "@entities/Variant";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
-import { IBaseFileService } from "@interfaces/services/IBaseFileService";
+import { IFileService } from "@interfaces/services/IFileService";
 
 @injectable()
-export class LocalFileService implements IBaseFileService {
+export class LocalFileService implements IFileService {
   async moveFilesFromTemporaryDir(
     workspaceId: number,
     formDataFiles: IFormDataFile[]
@@ -38,5 +39,17 @@ export class LocalFileService implements IBaseFileService {
         console.error(error);
       }
     }
+  }
+
+  async readFile(workspaceId: number, variant: Variant): Promise<string> {
+    const file = await fs.readFile(
+      path.join(
+        FILES.BASE_UPLOADS_PATH,
+        `workspace-${workspaceId}`,
+        variant.filename
+      )
+    );
+
+    return file.toString();
   }
 }

@@ -14,13 +14,14 @@ import { Blueprint } from "./Blueprint";
 import { Workspace } from "./Workspace";
 
 import { BundleExpire } from "@enums/BundleExpire";
+import { BundleStatus } from "@enums/BundleStatus";
 
 @Entity("bundles")
 export class Bundle {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   filename: string;
 
   @Column({ nullable: true })
@@ -35,6 +36,9 @@ export class Bundle {
   @CreateDateColumn({ nullable: true })
   expiresAt: Date | null;
 
+  @Column({ type: "enum", enum: BundleStatus })
+  status: BundleStatus;
+
   @Column()
   size: number; // @NOTE in bytes
 
@@ -48,6 +52,7 @@ export class Bundle {
   @JoinTable({ name: "bundles_blueprints" })
   blueprints: Blueprint[];
 
+  // @NOTE consider removing it and leave only `blueprints`
   @ManyToMany(() => Variant, { cascade: true })
   @JoinTable({ name: "bundles_variants" })
   variants: Variant[];
