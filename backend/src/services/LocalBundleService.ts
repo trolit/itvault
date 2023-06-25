@@ -59,7 +59,7 @@ export class LocalBundleService
 
     const stats = await fs.stat(location);
 
-    const { expire } = body;
+    const { expiration } = body;
 
     await this.bundleRepository.primitiveUpdate(
       {
@@ -68,8 +68,8 @@ export class LocalBundleService
       {
         filename,
         expiresAt:
-          expire !== BundleExpire.Never
-            ? this._dateService.getExpirationDate(body.expire)
+          expiration !== BundleExpire.Never
+            ? this._dateService.getExpirationDate(expiration)
             : null,
         size: stats.size,
         status: BundleStatus.Ready,
