@@ -4,7 +4,6 @@ import { Repository, UpdateResult } from "typeorm";
 import { BaseRepository } from "./BaseRepository";
 
 import { Bundle } from "@entities/Bundle";
-import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
@@ -21,10 +20,5 @@ export class BundleRepository
 
   setStatus(id: number, status: BundleStatus): Promise<UpdateResult> {
     return this.database.update({ id }, { status });
-  }
-
-  // @TODO
-  setExpiresAt(id: number, expiresAt: BundleExpire): Promise<UpdateResult> {
-    throw new Error("Method not implemented.");
   }
 }

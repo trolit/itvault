@@ -17,7 +17,7 @@ interface IParams {
 export interface IBody {
   note: string | undefined;
 
-  expire: BundleExpire;
+  expiration: BundleExpire;
 
   values: BundleDto[];
 }
@@ -35,16 +35,16 @@ export class StoreController implements IController<IParams, IBody> {
     const {
       userId,
       params: { workspaceId },
-      body: { values, note, expire },
+      body: { values, note, expiration },
     } = request;
 
     const bundle = await this._bundleRepository.primitiveSave({
       note,
-      expire,
       size: 0,
       createdBy: {
         id: userId,
       },
+      expire: expiration,
       status: BundleStatus.Queried,
       blueprints: values.map(({ blueprintId }) => ({ id: blueprintId })),
     });

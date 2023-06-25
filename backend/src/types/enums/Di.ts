@@ -2,6 +2,7 @@ export enum Di {
   Redis = "Redis",
 
   AuthService = "IAuthService",
+  DateService = "IDateService",
   UserService = "IUserService",
   FileService = "IFileService",
   BundleService = "IBundleService",
