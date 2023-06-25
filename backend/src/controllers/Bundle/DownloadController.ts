@@ -14,7 +14,7 @@ interface IParams {
 }
 
 interface IQuery {
-  bundleId: number;
+  id: number;
 }
 
 @injectable()
@@ -31,10 +31,10 @@ export class DownloadController
     response: Response
   ) {
     const {
-      query: { bundleId },
+      query: { id },
     } = request;
 
-    const bundle = await this._bundleRepository.getById(bundleId);
+    const bundle = await this._bundleRepository.getById(id);
 
     if (!bundle) {
       return response.status(HTTP.NOT_FOUND).send();
