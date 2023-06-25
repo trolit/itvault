@@ -11,6 +11,7 @@ import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { BundleStatus } from "@enums/BundleStatus";
+import { IDateService } from "@interfaces/services/IDateService";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
@@ -19,7 +20,6 @@ import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { IBody } from "@controllers/Bundle/StoreController";
 
-// @NOTE consider adding "status" column to "Bundle" entity - "generating" / "ready" / "failed"
 @injectable()
 export class LocalBundleService
   extends BaseBundleService
@@ -33,7 +33,9 @@ export class LocalBundleService
     @inject(Di.FileService)
     protected fileService: IFileService,
     @inject(Di.BundleRepository)
-    protected bundleRepository: IBundleRepository
+    protected bundleRepository: IBundleRepository,
+    @inject(Di.DateService)
+    private _dateService: IDateService
   ) {
     super(fileRepository, bucketRepository, fileService, bundleRepository);
   }
@@ -56,12 +58,15 @@ export class LocalBundleService
 
     const stats = await fs.stat(location);
 
+    const expiresAt = this._dateService.getExpirationDate(body.expire);
+
     await this.bundleRepository.primitiveUpdate(
       {
         id: bundle.id,
       },
       {
         filename,
+        expiresAt,
         size: stats.size,
         status: BundleStatus.Ready,
       }
