@@ -5,7 +5,7 @@ import { IDateService } from "@interfaces/services/IDateService";
 
 @injectable()
 export class DateService implements IDateService {
-  getExpirationDate(expiration: string, separator: "-"): string | null {
+  getExpirationDate(expiration: string, separator = "-"): string | null {
     if (!expiration.includes(separator)) {
       return null;
     }
