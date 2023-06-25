@@ -1,14 +1,23 @@
+import JSZip from "jszip";
 import { In } from "typeorm";
 
 import { Bucket } from "@entities/Bucket";
-import { BundleDto } from "@dtos/BundleDto";
 import { Variant } from "@entities/Variant";
+import { BundleDto } from "@dtos/BundleDto";
+import { IBaseFileService } from "@interfaces/services/IBaseFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
+import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
+
+import { IBody } from "@controllers/Bundle/StoreController";
 
 export class BaseBundleService {
-  constructor(protected fileRepository: IFileRepository) {}
+  constructor(
+    protected fileRepository: IFileRepository,
+    protected bucketRepository: IBucketRepository,
+    protected fileService: IBaseFileService
+  ) {}
 
-  protected getUniqueVariantIds(context: BundleDto[]) {
+  private _getUniqueVariantIds(context: BundleDto[]) {
     const result: string[] = [];
 
     for (const { variantIds } of context) {
@@ -20,7 +29,7 @@ export class BaseBundleService {
     return result;
   }
 
-  protected getUniqueBlueprintIds(context: BundleDto[], variant: Variant) {
+  private _getUniqueBlueprintIds(context: BundleDto[], variant: Variant) {
     const matchedContext = context.filter(({ variantIds }) =>
       variantIds.some(variantId => variantId === variant.id)
     );
@@ -28,7 +37,7 @@ export class BaseBundleService {
     return matchedContext.map(({ blueprintId }) => blueprintId);
   }
 
-  protected getFiles(workspaceId: number, variantIds: string[]) {
+  private _getFiles(workspaceId: number, variantIds: string[]) {
     return this.fileRepository.getAll({
       where: {
         workspace: {
@@ -44,7 +53,7 @@ export class BaseBundleService {
     });
   }
 
-  protected generateData(fileContent: string, buckets: Bucket[]) {
+  private _generateData(fileContent: string, buckets: Bucket[]) {
     const result: string[] = [];
 
     fileContent.split("\n").map((line, index) => {
@@ -97,5 +106,70 @@ export class BaseBundleService {
     }
 
     return result;
+  }
+
+  protected async generateZipFile(
+    bundleId: number,
+    workspaceId: number,
+    body: IBody,
+    readFileFunction: (variant: Variant) => Promise<string>
+  ) {
+    const { values: context } = body;
+
+    const variantIds = this._getUniqueVariantIds(context);
+
+    const [files] = await this._getFiles(workspaceId, variantIds);
+
+    if (!files.length) {
+      // err
+
+      return;
+    }
+
+    const jszip = new JSZip();
+
+    for (const file of files) {
+      if (file.variants.length !== 1) {
+        // err
+
+        return;
+      }
+
+      const {
+        variants: [variant],
+      } = file;
+
+      const blueprintIds = this._getUniqueBlueprintIds(context, variant);
+
+      const [buckets] = await this.bucketRepository.getAll({
+        where: {
+          blueprint: {
+            id: In(blueprintIds),
+          },
+          variant: {
+            id: variant.id,
+          },
+        },
+      });
+
+      if (!buckets) {
+        // err
+
+        return;
+      }
+
+      const fileContent = await readFileFunction(variant);
+
+      const data = this._generateData(fileContent, buckets);
+
+      const absolutePath =
+        file.relativePath === "."
+          ? file.originalFilename
+          : file.relativePath.slice(2); // @NOTE ./src -> src
+
+      jszip.file(absolutePath, data);
+    }
+
+    return jszip.generateAsync({ type: "nodebuffer" });
   }
 }
