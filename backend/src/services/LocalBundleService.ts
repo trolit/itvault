@@ -9,6 +9,7 @@ import { BaseBundleService } from "./BaseBundleService";
 
 import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
+import { Variant } from "@entities/Variant";
 import { BundleStatus } from "@enums/BundleStatus";
 import { IBundleService } from "@interfaces/services/IBundleService";
 import { IBaseFileService } from "@interfaces/services/IBaseFileService";
@@ -32,15 +33,20 @@ export class LocalBundleService
     @inject(Di.FileService)
     protected fileService: IBaseFileService,
     @inject(Di.BundleRepository)
-    private _bundleRepository: IBundleRepository
+    protected bundleRepository: IBundleRepository
   ) {
-    super(fileRepository, bucketRepository, fileService);
+    super(fileRepository, bucketRepository, fileService, bundleRepository);
   }
 
   async build(workspaceId: number, body: IBody, bundle: Bundle): Promise<void> {
-    await this._bundleRepository.setStatus(bundle.id, BundleStatus.Queried);
+    await this.bundleRepository.setStatus(bundle.id, BundleStatus.Queried);
 
-    const buffer = await this.generateZipFile(bundle.id, workspaceId, body);
+    const buffer = await this.generateZipFile(
+      bundle.id,
+      workspaceId,
+      body,
+      this._readFileFunction(workspaceId)
+    );
 
     if (!buffer) {
       return;
@@ -56,7 +62,7 @@ export class LocalBundleService
 
     const fileStats = await fs.stat(fileLocation);
 
-    await this._bundleRepository.primitiveUpdate(
+    await this.bundleRepository.primitiveUpdate(
       {
         id: bundle.id,
       },
@@ -66,5 +72,11 @@ export class LocalBundleService
         status: BundleStatus.Ready,
       }
     );
+  }
+
+  private _readFileFunction(workspaceId: number) {
+    return (variant: Variant) => {
+      return this.fileService.readFile(workspaceId, variant);
+    };
   }
 }
