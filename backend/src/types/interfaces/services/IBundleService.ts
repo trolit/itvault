@@ -1,5 +1,6 @@
-import { BundleDto } from "@dtos/BundleDto";
+import { Bundle } from "@entities/Bundle";
+import { IBody } from "@controllers/Bundle/StoreController";
 
 export interface IBundleService {
-  build(workspaceId: number, data: BundleDto[]): Promise<void>;
+  build(workspaceId: number, body: IBody, bundle: Bundle): Promise<void>;
 }
