@@ -2,10 +2,12 @@ import JSZip from "jszip";
 import { In } from "typeorm";
 
 import { Bucket } from "@entities/Bucket";
-import { Variant } from "@entities/Variant";
 import { BundleDto } from "@dtos/BundleDto";
+import { Variant } from "@entities/Variant";
+import { BundleStatus } from "@enums/BundleStatus";
 import { IBaseFileService } from "@interfaces/services/IBaseFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
+import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { IBody } from "@controllers/Bundle/StoreController";
@@ -14,7 +16,8 @@ export class BaseBundleService {
   constructor(
     protected fileRepository: IFileRepository,
     protected bucketRepository: IBucketRepository,
-    protected fileService: IBaseFileService
+    protected fileService: IBaseFileService,
+    protected bundleRepository: IBundleRepository
   ) {}
 
   private _getUniqueVariantIds(context: BundleDto[]) {
@@ -121,7 +124,7 @@ export class BaseBundleService {
     const [files] = await this._getFiles(workspaceId, variantIds);
 
     if (!files.length) {
-      // err
+      await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
 
       return;
     }
@@ -130,7 +133,7 @@ export class BaseBundleService {
 
     for (const file of files) {
       if (file.variants.length !== 1) {
-        // err
+        await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
 
         return;
       }
@@ -153,7 +156,7 @@ export class BaseBundleService {
       });
 
       if (!buckets) {
-        // err
+        await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
 
         return;
       }
