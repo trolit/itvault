@@ -45,22 +45,16 @@ export class LocalBundleService
       bundle.id,
       workspaceId,
       body,
-      this._readFileFunction(workspaceId)
+      this._readFile(workspaceId)
     );
 
     if (!buffer) {
       return;
     }
 
-    const UUID = crypto.randomUUID();
+    const { location, filename } = await this._saveFile(buffer);
 
-    const filename = `${UUID}.zip`;
-
-    const fileLocation = path.join(FILES.BASE_DOWNLOADS_PATH, filename);
-
-    await fs.writeFile(fileLocation, buffer);
-
-    const fileStats = await fs.stat(fileLocation);
+    const stats = await fs.stat(location);
 
     await this.bundleRepository.primitiveUpdate(
       {
@@ -68,15 +62,27 @@ export class LocalBundleService
       },
       {
         filename,
-        size: fileStats.size,
+        size: stats.size,
         status: BundleStatus.Ready,
       }
     );
   }
 
-  private _readFileFunction(workspaceId: number) {
+  private _readFile(workspaceId: number) {
     return (variant: Variant) => {
       return this.fileService.readFile(workspaceId, variant);
     };
+  }
+
+  private async _saveFile(buffer: Buffer) {
+    const UUID = crypto.randomUUID();
+
+    const filename = `${UUID}.zip`;
+
+    const location = path.join(FILES.BASE_DOWNLOADS_PATH, filename);
+
+    await fs.writeFile(location, buffer);
+
+    return { location, filename };
   }
 }
