@@ -63,7 +63,7 @@ function useBodySchema(): SchemaProvider {
             if (file) {
               context.addIssue({
                 code: ZodIssueCode.custom,
-                message: `File ${file.originalFilename} was selected with ${file.variants.length} different variants. To avoid conflicts, keep one variant.`,
+                message: `File ${file.originalFilename} was selected with ${file.variants.length} different variants. To avoid conflicts, please update your configuration to use only one variant.`,
               });
 
               return Zod.NEVER;
