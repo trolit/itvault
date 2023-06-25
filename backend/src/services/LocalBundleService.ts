@@ -1,8 +1,6 @@
 import path from "path";
-import JSZip from "jszip";
 import fs from "fs-extra";
 import crypto from "crypto";
-import { In } from "typeorm";
 import { inject, injectable } from "tsyringe";
 
 import { FILES } from "@config/index";
@@ -10,12 +8,15 @@ import { FILES } from "@config/index";
 import { BaseBundleService } from "./BaseBundleService";
 
 import { Di } from "@enums/Di";
-import { BundleDto } from "@dtos/BundleDto";
+import { Bundle } from "@entities/Bundle";
+import { BundleStatus } from "@enums/BundleStatus";
 import { IBundleService } from "@interfaces/services/IBundleService";
 import { IBaseFileService } from "@interfaces/services/IBaseFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
+
+import { IBody } from "@controllers/Bundle/StoreController";
 
 // @NOTE consider adding "status" column to "Bundle" entity - "generating" / "ready" / "failed"
 @injectable()
@@ -25,76 +26,25 @@ export class LocalBundleService
 {
   constructor(
     @inject(Di.FileRepository)
-    protected _fileRepository: IFileRepository,
+    protected fileRepository: IFileRepository,
     @inject(Di.BucketRepository)
-    private _bucketRepository: IBucketRepository,
+    protected bucketRepository: IBucketRepository,
     @inject(Di.FileService)
-    private _fileService: IBaseFileService,
+    protected fileService: IBaseFileService,
     @inject(Di.BundleRepository)
     private _bundleRepository: IBundleRepository
   ) {
-    super(_fileRepository);
+    super(fileRepository, bucketRepository, fileService);
   }
 
-  async build(workspaceId: number, context: BundleDto[]): Promise<void> {
-    const variantIds = this.getUniqueVariantIds(context);
+  async build(workspaceId: number, body: IBody, bundle: Bundle): Promise<void> {
+    await this._bundleRepository.setStatus(bundle.id, BundleStatus.Queried);
 
-    const [files] = await this.getFiles(workspaceId, variantIds);
+    const buffer = await this.generateZipFile(bundle.id, workspaceId, body);
 
-    if (!files.length) {
-      // err
-
+    if (!buffer) {
       return;
     }
-
-    const jszip = new JSZip();
-
-    for (const file of files) {
-      if (file.variants.length !== 1) {
-        // err
-
-        return;
-      }
-
-      const {
-        variants: [variant],
-      } = file;
-
-      const blueprintIds = this.getUniqueBlueprintIds(context, variant);
-
-      const [buckets] = await this._bucketRepository.getAll({
-        where: {
-          blueprint: {
-            id: In(blueprintIds),
-          },
-          variant: {
-            id: variant.id,
-          },
-        },
-      });
-
-      if (!buckets) {
-        // err
-
-        return;
-      }
-
-      const fileContent = await this._fileService.readFile(
-        workspaceId,
-        variant
-      );
-
-      const data = this.generateData(fileContent, buckets);
-
-      const absolutePath =
-        file.relativePath === "."
-          ? file.originalFilename
-          : file.relativePath.slice(2); // @NOTE ./src -> src
-
-      jszip.file(absolutePath, data);
-    }
-
-    const buffer = await jszip.generateAsync({ type: "nodebuffer" });
 
     const UUID = crypto.randomUUID();
 
@@ -108,12 +58,12 @@ export class LocalBundleService
 
     await this._bundleRepository.primitiveUpdate(
       {
-        id: 1, // @TODO
+        id: bundle.id,
       },
       {
         filename,
         size: fileStats.size,
-        blueprints: [{ id: 1 }], // @TODO
+        status: BundleStatus.Ready,
       }
     );
   }
