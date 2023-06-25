@@ -5,7 +5,7 @@ import { Bucket } from "@entities/Bucket";
 import { BundleDto } from "@dtos/BundleDto";
 import { Variant } from "@entities/Variant";
 import { BundleStatus } from "@enums/BundleStatus";
-import { IBaseFileService } from "@interfaces/services/IBaseFileService";
+import { IFileService } from "@interfaces/services/IFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
@@ -16,7 +16,7 @@ export class BaseBundleService {
   constructor(
     protected fileRepository: IFileRepository,
     protected bucketRepository: IBucketRepository,
-    protected fileService: IBaseFileService,
+    protected fileService: IFileService,
     protected bundleRepository: IBundleRepository
   ) {}
 

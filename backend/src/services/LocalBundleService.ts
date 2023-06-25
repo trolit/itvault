@@ -11,11 +11,11 @@ import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { BundleStatus } from "@enums/BundleStatus";
+import { IFileService } from "@interfaces/services/IFileService";
 import { IBundleService } from "@interfaces/services/IBundleService";
-import { IBaseFileService } from "@interfaces/services/IBaseFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
+import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { IBody } from "@controllers/Bundle/StoreController";
 
@@ -31,7 +31,7 @@ export class LocalBundleService
     @inject(Di.BucketRepository)
     protected bucketRepository: IBucketRepository,
     @inject(Di.FileService)
-    protected fileService: IBaseFileService,
+    protected fileService: IFileService,
     @inject(Di.BundleRepository)
     protected bundleRepository: IBundleRepository
   ) {

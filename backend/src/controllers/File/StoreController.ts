@@ -4,7 +4,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
 import { IController } from "@interfaces/IController";
-import { IBaseFileService } from "@interfaces/services/IBaseFileService";
+import { IFileService } from "@interfaces/services/IFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 interface IParams {
@@ -19,7 +19,7 @@ export class StoreController
     @inject(Di.FileRepository)
     private _fileRepository: IFileRepository,
     @inject(Di.FileService)
-    private _fileService: IBaseFileService
+    private _fileService: IFileService
   ) {}
 
   async invoke(
