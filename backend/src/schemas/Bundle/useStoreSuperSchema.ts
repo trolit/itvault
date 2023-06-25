@@ -1,8 +1,12 @@
-import { z } from "zod";
+import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
+import { Di } from "@enums/Di";
 import { BundleDto } from "@dtos/BundleDto";
 import { BundleExpire } from "@enums/BundleExpire";
+import { IFileRepository } from "@interfaces/repositories/IFileRepository";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -20,7 +24,7 @@ export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 function useBodySchema(): SchemaProvider {
   const valueSchema = schemaForType<BundleDto>()(
     z.object({
-      blueprintId: z.number(),
+      blueprintId: z.coerce.number(),
       variantIds: z.array(z.string()),
     })
   );
@@ -30,7 +34,41 @@ function useBodySchema(): SchemaProvider {
       z.object({
         note: z.optional(z.string()),
         expiration: z.nativeEnum(BundleExpire),
-        values: z.array(valueSchema).min(1),
+        values: z
+          .array(valueSchema)
+          .min(1)
+          .superRefine(async (value: BundleDto[], context: RefinementCtx) => {
+            if (value.length <= 1) {
+              return Zod.NEVER;
+            }
+
+            const uniqueVariantIds: string[] = [];
+
+            value.map(({ variantIds }) => {
+              variantIds.map(variantId =>
+                uniqueVariantIds.includes(variantId)
+                  ? null
+                  : uniqueVariantIds.push(variantId)
+              );
+            });
+
+            const fileRepository = getInstanceOf<IFileRepository>(
+              Di.FileRepository
+            );
+
+            const file = await fileRepository.getOneWithMoreThanTwoVariants(
+              uniqueVariantIds
+            );
+
+            if (file) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message: `File ${file.originalFilename} was selected with ${file.variants.length} different variants. To avoid conflicts, keep one variant.`,
+              });
+
+              return Zod.NEVER;
+            }
+          }),
       })
     );
 }
