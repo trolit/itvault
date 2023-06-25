@@ -60,11 +60,11 @@ export class FileRepository
   getOneWithMoreThanTwoVariants(variantIds: string[]): Promise<File | null> {
     return this.database
       .createQueryBuilder("file")
-      .leftJoinAndSelect("file.variants", "variants")
-      .where("variants.id IN (:...ids)", {
+      .leftJoinAndSelect("file.variants", "variant")
+      .where("variant.id IN (:...ids)", {
         ids: variantIds,
       })
-      .having("COUNT(file.variants) = 2")
+      .having("COUNT(variant.id) > 1")
       .getOne();
   }
 
