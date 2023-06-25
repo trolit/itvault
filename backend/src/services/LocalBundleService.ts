@@ -10,6 +10,7 @@ import { BaseBundleService } from "./BaseBundleService";
 import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
+import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
 import { IDateService } from "@interfaces/services/IDateService";
 import { IFileService } from "@interfaces/services/IFileService";
@@ -58,7 +59,7 @@ export class LocalBundleService
 
     const stats = await fs.stat(location);
 
-    const expiresAt = this._dateService.getExpirationDate(body.expire);
+    const { expire } = body;
 
     await this.bundleRepository.primitiveUpdate(
       {
@@ -66,7 +67,10 @@ export class LocalBundleService
       },
       {
         filename,
-        expiresAt,
+        expiresAt:
+          expire !== BundleExpire.Never
+            ? this._dateService.getExpirationDate(body.expire)
+            : null,
         size: stats.size,
         status: BundleStatus.Ready,
       }
