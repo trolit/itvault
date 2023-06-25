@@ -25,7 +25,7 @@ export class BaseBundleService {
 
     for (const { variantIds } of context) {
       variantIds.map(variantId =>
-        result.includes(variantId) ? null : variantIds.push(variantId)
+        result.includes(variantId) ? null : result.push(variantId)
       );
     }
 
@@ -120,6 +120,12 @@ export class BaseBundleService {
     const { values: context } = body;
 
     const variantIds = this._getUniqueVariantIds(context);
+
+    if (!variantIds.length) {
+      await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
+
+      return;
+    }
 
     const [files] = await this._getFiles(workspaceId, variantIds);
 
