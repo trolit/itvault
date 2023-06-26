@@ -7,17 +7,15 @@ import { BucketDto } from "@dtos/BucketDto";
 import { IController } from "@interfaces/IController";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
-interface IParams {
-  variantId: string;
-}
-
 interface IBody {
   values: BucketDto[];
+
+  variantId: string;
 }
 
 @injectable()
 export class StoreController
-  implements IController<IParams, IBody, undefined, Bucket[]>
+  implements IController<undefined, IBody, undefined, Bucket[]>
 {
   constructor(
     @inject(Di.BucketRepository)
@@ -25,12 +23,11 @@ export class StoreController
   ) {}
 
   async invoke(
-    request: CustomRequest<IParams, IBody>,
+    request: CustomRequest<undefined, IBody>,
     response: CustomResponse<Bucket[]>
   ) {
     const {
-      params: { variantId },
-      body: { values },
+      body: { values, variantId },
     } = request;
 
     const result = await this._bucketRepository.save(variantId, values);
