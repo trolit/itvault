@@ -2,8 +2,6 @@ import { Router } from "express";
 
 import { FILES } from "@config";
 
-import bucketsRouter from "./buckets";
-
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
@@ -42,7 +40,5 @@ variantsRouter.post(
   ),
   processRequestWith(StoreController)
 );
-
-variantsRouter.use("/:variantId/buckets", bucketsRouter);
 
 export = variantsRouter;
