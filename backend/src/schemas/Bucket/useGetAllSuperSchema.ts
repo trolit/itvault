@@ -8,11 +8,11 @@ const { variantIdSchema } = baseSchemas;
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
     return {
-      params: useParamsSchema(),
+      query: useQuerySchema(),
     };
   }
 );
 
-function useParamsSchema(): SchemaProvider {
+function useQuerySchema(): SchemaProvider {
   return () => variantIdSchema;
 }
