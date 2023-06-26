@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import filesRouter from "./files";
+import bucketsRouter from "./buckets";
 import bundlesRouter from "./bundles";
 import variantsRouter from "./variants";
 import blueprintsRouter from "./blueprints";
@@ -30,5 +31,7 @@ workspacesRouter.use("/:workspaceId/variants", variantsRouter);
 workspacesRouter.use("/:workspaceId/blueprints", blueprintsRouter);
 
 workspacesRouter.use("/:workspaceId/bundles", bundlesRouter);
+
+workspacesRouter.use("/:workspaceId/buckets", bucketsRouter);
 
 export = workspacesRouter;
