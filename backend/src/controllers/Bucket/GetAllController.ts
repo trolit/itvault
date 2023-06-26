@@ -6,13 +6,13 @@ import { Bucket } from "@entities/Bucket";
 import { IController } from "@interfaces/IController";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
-interface IParams {
+interface IQuery {
   variantId: string;
 }
 
 @injectable()
 export class GetAllController
-  implements IController<IParams, undefined, undefined, Bucket[]>
+  implements IController<undefined, undefined, IQuery, Bucket[]>
 {
   constructor(
     @inject(Di.BucketRepository)
@@ -20,11 +20,11 @@ export class GetAllController
   ) {}
 
   async invoke(
-    request: CustomRequest<IParams>,
+    request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<Bucket[]>
   ) {
     const {
-      params: { variantId },
+      query: { variantId },
     } = request;
 
     const [result] = await this._bucketRepository.getAll({
