@@ -12,4 +12,6 @@ export interface IFileRepository extends IBaseRepository<File> {
     workspaceId: number,
     relativePath: string
   ): Promise<File[]>;
+
+  getOneWithMoreThanTwoVariants(variantIds: string[]): Promise<File | null>;
 }

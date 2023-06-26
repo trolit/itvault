@@ -15,7 +15,7 @@ interface IParams {
 }
 
 export interface IBody {
-  note: string | undefined;
+  note?: string;
 
   expiration: BundleExpire;
 
