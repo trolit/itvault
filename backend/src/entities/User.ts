@@ -17,6 +17,18 @@ export class User extends Base {
   @Column({ select: false })
   password: string;
 
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column({
+    generatedType: "VIRTUAL",
+    asExpression: `CONCAT("users"."firstName", ' ', "users"."lastName") FROM "users"`,
+  })
+  fullName: string;
+
   @ManyToOne(() => Role, role => role.users, {
     nullable: false,
   })
