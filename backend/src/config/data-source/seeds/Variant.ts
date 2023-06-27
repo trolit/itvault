@@ -6,9 +6,10 @@ import { Seeder } from "typeorm-extension";
 
 import { FILES } from "@config";
 
-import { TEST_WORKSPACE_1 } from "./common";
 import { createFile } from "./common/createFile";
+import { TEST_WORKSPACE_1, HEAD_ADMIN_ROLE_TEST_ACCOUNT } from "./common";
 
+import { User } from "@entities/User";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { Workspace } from "@entities/Workspace";
@@ -17,11 +18,17 @@ export class VariantSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const workspaceRepository = dataSource.getRepository(Workspace);
 
+    const userRepository = dataSource.getRepository(User);
+
     const workspace = await workspaceRepository.findOneBy({
       name: TEST_WORKSPACE_1.name,
     });
 
-    if (!workspace) {
+    const user = await userRepository.findOneBy({
+      email: HEAD_ADMIN_ROLE_TEST_ACCOUNT.email,
+    });
+
+    if (!workspace || !user) {
       return;
     }
 
@@ -63,6 +70,7 @@ export class VariantSeeder implements Seeder {
         filename: variantFilename,
         file,
         size,
+        createdBy: user,
       });
 
       await variantRepository.save(variant);

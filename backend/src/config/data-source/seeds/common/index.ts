@@ -5,7 +5,7 @@ export const PASSWORD = "1234";
 
 const { name, permissions } = HEAD_ADMIN_ROLE;
 
-const HEAD_ADMIN_ROLE_TEST_ACCOUNT = {
+export const HEAD_ADMIN_ROLE_TEST_ACCOUNT = {
   email: generateEmailByRoleName(name),
   permissions,
   roleName: name,
