@@ -35,7 +35,7 @@ export class FileRepository
 
       for (const { key, file } of formDataFiles) {
         temporaryFilesContainer.push(
-          this.createFileInstance(transaction, {
+          this._createFileInstance(transaction, {
             userId,
             size: file.size,
             filename: file.newFilename,
@@ -113,7 +113,7 @@ export class FileRepository
     });
   }
 
-  private createFileInstance(
+  private _createFileInstance(
     transaction: QueryRunner,
     properties: {
       size: number;
