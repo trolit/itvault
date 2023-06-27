@@ -11,12 +11,14 @@ import { UserToWorkspace } from "./UserToWorkspace";
 
 @Entity("users")
 export class User extends Base {
+  // @TODO editable only by head admin or configurable permission (?)
   @Column()
   email!: string;
 
   @Column({ select: false })
   password: string;
 
+  // @NOTE allow to update firstName/lastName through profile settings (?)
   @Column()
   firstName: string;
 
