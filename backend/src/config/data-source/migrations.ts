@@ -1,3 +1,4 @@
+import { UpdateUsersTable1687880944635 } from "@migrations/1687880944635-UpdateUsersTable";
 import { CreateFilesTable1685023186515 } from "@migrations/1685023186515-CreateFilesTable";
 import { CreateUsersTable1665695149133 } from "@migrations/1665695149133-CreateUsersTable";
 import { CreateBucketsTable1686234793370 } from "@migrations/1686234793370-CreateBucketsTable";
@@ -46,4 +47,5 @@ export const migrations = [
   CreateBundlesTable1687029050338,
   UpdateBundlesTable1687686325797,
   ExpandVariantEntityWithCreatedByProperty1687872465293,
+  UpdateUsersTable1687880944635,
 ];
