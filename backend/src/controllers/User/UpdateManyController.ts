@@ -42,7 +42,7 @@ export class UpdateManyController
       return response.status(HTTP.BAD_REQUEST).send(result);
     }
 
-    this._userService.reflectUpdateManyInDataStore(value);
+    this._userService.reflectChangesInDataStore(value);
 
     return response.status(HTTP.NO_CONTENT).send();
   }
