@@ -10,7 +10,7 @@ interface IParams {
   workspaceId: number;
 }
 
-interface IQuery {
+export interface IQuery {
   blueprintId?: number;
 
   relativePath?: string;
