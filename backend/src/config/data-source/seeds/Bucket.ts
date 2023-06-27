@@ -79,7 +79,7 @@ export class BucketSeeder implements Seeder {
         const splitContent = content.split("\n");
 
         await bucketRepository.save({
-          value: this.generateValue(splitContent),
+          value: this._generateValue(splitContent),
           variant,
           blueprint,
         });
@@ -87,7 +87,7 @@ export class BucketSeeder implements Seeder {
     }
   }
 
-  private generateValue(splitContent: string[]) {
+  private _generateValue(splitContent: string[]) {
     const iterations = random(1, 3);
 
     const value: BucketContent = {};

@@ -4,6 +4,7 @@ import { IFormDataFile } from "@interfaces/IFormDataFile";
 
 export interface IFileRepository extends IBaseRepository<File> {
   save(
+    userId: number,
     workspaceId: number,
     formDataFiles: IFormDataFile[]
   ): Promise<File[] | null>;

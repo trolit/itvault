@@ -22,6 +22,7 @@ export class FileRepository
   }
 
   async save(
+    userId: number,
     workspaceId: number,
     formDataFiles: IFormDataFile[]
   ): Promise<File[] | null> {
@@ -34,7 +35,8 @@ export class FileRepository
 
       for (const { key, file } of formDataFiles) {
         temporaryFilesContainer.push(
-          this.createFileInstance(transaction, {
+          this._createFileInstance(transaction, {
+            userId,
             size: file.size,
             filename: file.newFilename,
             variantName: "v1",
@@ -111,10 +113,11 @@ export class FileRepository
     });
   }
 
-  private createFileInstance(
+  private _createFileInstance(
     transaction: QueryRunner,
     properties: {
       size: number;
+      userId: number;
       filename: string;
       variantName: string;
       workspaceId: number;
@@ -124,6 +127,7 @@ export class FileRepository
   ) {
     const {
       size,
+      userId,
       filename,
       variantName,
       workspaceId,
@@ -134,6 +138,9 @@ export class FileRepository
     const variant = transaction.manager.create(Variant, {
       size,
       filename,
+      createdBy: {
+        id: userId,
+      },
       name: variantName,
     });
 
