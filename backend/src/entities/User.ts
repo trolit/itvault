@@ -25,7 +25,7 @@ export class User extends Base {
 
   @Column({
     generatedType: "VIRTUAL",
-    asExpression: `CONCAT("users"."firstName", ' ', "users"."lastName") FROM "users"`,
+    asExpression: `CONCAT(firstName, ' ', lastName)`,
   })
   fullName: string;
 
