@@ -5,6 +5,8 @@ export class UserDto {
 
   email = "";
 
+  fullName = "";
+
   roleId: number;
 
   roleName: string;
