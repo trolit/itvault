@@ -22,7 +22,7 @@ function useParamsSchema(): SchemaProvider {
 
 function useQuerySchema(): SchemaProvider {
   return () =>
-    schemaForType<{ relativePat?: string; blueprintId?: number }>()(
+    schemaForType<{ relativePath?: string; blueprintId?: number }>()(
       z
         .object({
           relativePath: z.string().default(FILES.ROOT),
