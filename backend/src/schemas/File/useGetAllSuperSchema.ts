@@ -31,7 +31,7 @@ function useQuerySchema(): SchemaProvider {
         .partial()
         .refine(
           data => !!data.blueprintId || !!data.relativePath,
-          "Either blueprintId or relativePath should be provided."
+          "Either blueprintId or relativePath should be provided in query."
         )
     );
 }
