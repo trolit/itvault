@@ -39,7 +39,11 @@ export class UserRepository
       : {};
 
     return this.database.findOne({
-      select: ["id", "email", "password"],
+      select: {
+        id: true,
+        email: true,
+        password: true,
+      },
       where: {
         email,
       },
