@@ -37,10 +37,11 @@ export class StoreController
     const {
       body,
       files,
+      userId,
       params: { workspaceId },
     } = request;
 
-    const variant = await this._variantRepository.save(body, files);
+    const variant = await this._variantRepository.save(userId, body, files);
 
     if (!variant) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
