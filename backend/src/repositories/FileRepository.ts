@@ -87,6 +87,30 @@ export class FileRepository
     });
   }
 
+  getAllByBlueprintId(workspaceId: number, blueprintId: number) {
+    return this.database.find({
+      select: {
+        id: true,
+        originalFilename: true,
+        variants: {
+          id: true,
+          name: true,
+        },
+      },
+      where: {
+        workspace: {
+          id: workspaceId,
+          blueprints: {
+            id: blueprintId,
+          },
+        },
+      },
+      relations: {
+        variants: true,
+      },
+    });
+  }
+
   private createFileInstance(
     transaction: QueryRunner,
     properties: {

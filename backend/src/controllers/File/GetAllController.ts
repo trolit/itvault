@@ -10,8 +10,10 @@ interface IParams {
   workspaceId: number;
 }
 
-interface IQuery {
-  relativePath: string;
+export interface IQuery {
+  blueprintId?: number;
+
+  relativePath?: string;
 }
 
 @injectable()
@@ -29,13 +31,24 @@ export class GetAllController
   ) {
     const {
       params: { workspaceId },
-      query: { relativePath },
+      query: { relativePath, blueprintId },
     } = request;
 
-    const result = await this._fileRepository.getAllByRelativePath(
-      workspaceId,
-      relativePath
-    );
+    let result: File[] = [];
+
+    if (relativePath) {
+      result = await this._fileRepository.getAllByRelativePath(
+        workspaceId,
+        relativePath
+      );
+    }
+
+    if (blueprintId) {
+      result = await this._fileRepository.getAllByBlueprintId(
+        workspaceId,
+        blueprintId
+      );
+    }
 
     return response.status(HTTP.OK).send(result);
   }

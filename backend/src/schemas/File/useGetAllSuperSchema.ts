@@ -7,6 +7,8 @@ import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
+import { IQuery } from "@controllers/File/GetAllController";
+
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
     return {
@@ -22,9 +24,16 @@ function useParamsSchema(): SchemaProvider {
 
 function useQuerySchema(): SchemaProvider {
   return () =>
-    schemaForType<{ relativePath?: string }>()(
-      z.object({
-        relativePath: z.string().default(FILES.ROOT),
-      })
+    schemaForType<IQuery>()(
+      z
+        .object({
+          relativePath: z.string().default(FILES.ROOT),
+          blueprintId: z.coerce.number().gt(0),
+        })
+        .partial()
+        .refine(
+          data => !!data.blueprintId || !!data.relativePath,
+          "Either blueprintId or relativePath should be provided in query."
+        )
     );
 }
