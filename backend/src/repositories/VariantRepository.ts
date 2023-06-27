@@ -19,6 +19,7 @@ export class VariantRepository
   }
 
   async save(
+    userId: number,
     formDataBody: {
       name: string;
       fileId: number;
@@ -39,6 +40,9 @@ export class VariantRepository
             file: {
               id: fileId,
             },
+            createdBy: {
+              id: userId,
+            },
           })
         : null;
     }
@@ -51,6 +55,9 @@ export class VariantRepository
       filename: file.newFilename,
       file: {
         id: fileId,
+      },
+      createdBy: {
+        id: userId,
       },
     });
   }
