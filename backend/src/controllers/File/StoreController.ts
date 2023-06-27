@@ -28,10 +28,15 @@ export class StoreController
   ) {
     const {
       files,
+      userId,
       params: { workspaceId },
     } = request;
 
-    const savedFiles = await this._fileRepository.save(workspaceId, files);
+    const savedFiles = await this._fileRepository.save(
+      userId,
+      workspaceId,
+      files
+    );
 
     if (!savedFiles) {
       return response.status(HTTP.BAD_REQUEST).send();
