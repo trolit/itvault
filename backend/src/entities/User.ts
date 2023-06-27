@@ -6,6 +6,7 @@ import { BCRYPT } from "@config";
 import { Role } from "./Role";
 import { Base } from "./Base";
 import { Bundle } from "./Bundle";
+import { Variant } from "./Variant";
 import { UserToWorkspace } from "./UserToWorkspace";
 
 @Entity("users")
@@ -28,6 +29,9 @@ export class User extends Base {
     cascade: ["soft-remove"],
   })
   bundles: Bundle[];
+
+  @OneToMany(() => Variant, variant => variant.createdBy, { cascade: false })
+  variants: Variant[];
 
   @BeforeInsert()
   async hashPassword() {

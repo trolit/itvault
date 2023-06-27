@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
+import { User } from "./User";
 import { File } from "./File";
 import { Bucket } from "./Bucket";
 
@@ -27,6 +28,9 @@ export class Variant {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @ManyToOne(() => User, user => user.variants, { cascade: false })
+  createdBy: User;
 
   @UpdateDateColumn()
   updatedAt: Date;
