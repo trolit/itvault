@@ -24,6 +24,24 @@ services:
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
 
+  rabbitmq:
+    image: rabbitmq:3.12
+    container_name: "${RABBITMQ_CONTAINER_NAME}"
+    ports:
+      - ${RABBITMQ_PORT}:${RABBITMQ_CONTAINER_PORT}
+      - ${RABBITMQ_CONSOLE_PORT}:${RABBITMQ_CONSOLE_CONTAINER_PORT}
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    environment:
+      - RABBITMQ_SECURE_PASSWORD=yes
+    networks:
+      - rabbitmq_net
+
 volumes:
   db:
   redis:
+
+networks:
+  rabbitmq_net:
+    driver: bridge
