@@ -1,6 +1,6 @@
 export enum Di {
   Redis = "Redis",
-  Publisher = "Publisher",
+  MQPublisher = "MQPublisher",
 
   AuthService = "IAuthService",
   DateService = "IDateService",
