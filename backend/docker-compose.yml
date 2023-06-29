@@ -27,6 +27,7 @@ services:
   rabbitmq:
     image: rabbitmq:3.12
     container_name: "${RABBITMQ_CONTAINER_NAME}"
+    restart: unless-stopped
     ports:
       - ${RABBITMQ_PORT}:${RABBITMQ_CONTAINER_PORT}
       - ${RABBITMQ_CONSOLE_PORT}:${RABBITMQ_CONSOLE_CONTAINER_PORT}
