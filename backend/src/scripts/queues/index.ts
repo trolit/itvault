@@ -21,7 +21,7 @@ const { PORT, USER, PASSWORD } = MQRABBIT;
 
     await consumer(connection);
 
-    console.log("Consumer/Publisher channels initialized.");
+    console.log("MQRabbit consumer/publisher channels initialized.");
   } catch (error) {
     console.error(error);
 
