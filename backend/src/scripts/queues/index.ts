@@ -16,15 +16,23 @@ const { PORT, USER, PASSWORD } = MQRABBIT;
     password: PASSWORD,
   });
 
-  const publisherChannel = await publisher(connection);
+  try {
+    await publisher(connection);
 
-  const consumerChannel = await consumer(connection);
+    await consumer(connection);
 
-  process.on("SIGTERM", async () => {
-    await publisherChannel.close();
-
-    await consumerChannel.close();
+    console.log("Consumer/Publisher channels initialized.");
+  } catch (error) {
+    console.error(error);
 
     await connection.close();
+  }
+
+  process.on("SIGINT", () => {
+    if (connection) {
+      console.log("Shutting down queues...");
+
+      connection.close();
+    }
   });
 })();
