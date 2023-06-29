@@ -27,7 +27,7 @@ services:
   # https://dsinecos.github.io/blog/Multi-container-application-using-docker-compose
   rabbitmq:
     image: rabbitmq:3.12
-    hostname: rabbit
+    hostname: "${RABBITMQ_HOSTNAME}"
     container_name: "${RABBITMQ_CONTAINER_NAME}"
     restart: unless-stopped
     ports:
