@@ -44,8 +44,14 @@ export const JWT = {
 };
 
 export const REDIS = {
-  PORT: envInt("REDIS_CONTAINER_PORT"),
+  PORT: envPort("REDIS_CONTAINER_PORT"),
   PASSWORD: envString("REDIS_PASSWORD"),
+};
+
+export const MQRABBIT = {
+  PORT: envPort("RABBITMQ_CONTAINER_PORT"),
+  USER: envString("RABBITMQ_DEFAULT_USER"),
+  PASSWORD: envString("RABBITMQ_DEFAULT_PASSWORD"),
 };
 
 const FILES_STORAGE_MODE: FileStorageMode = envEnum(
