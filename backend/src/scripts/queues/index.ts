@@ -1,13 +1,25 @@
 import "reflect-metadata";
 import "module-alias/register";
-import { connect } from "amqplib";
+import { Channel, connect } from "amqplib";
 
 import { MQRABBIT } from "@config";
 
-import { consumer } from "./consumer";
 import { publisher } from "./publisher";
 
+import { Di } from "@enums/Di";
+import { Queue } from "@enums/Queue";
+import { IConsumerFactory } from "@interfaces/factories/IConsumerFactory";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
+
 const { PORT, USER, PASSWORD } = MQRABBIT;
+
+const consumers = [
+  {
+    queue: Queue.GenerateBundle,
+    handler: Di.GenerateBundleConsumerHandler,
+  },
+];
 
 (async () => {
   const connection = await connect({
@@ -16,10 +28,18 @@ const { PORT, USER, PASSWORD } = MQRABBIT;
     password: PASSWORD,
   });
 
-  try {
-    await publisher(connection);
+  const consumerFactory = getInstanceOf<IConsumerFactory>(Di.ConsumerFactory);
 
-    await consumer(connection);
+  let consumerChannels: Channel[] = [];
+
+  try {
+    consumerChannels = await Promise.all(
+      consumers.map(({ queue, handler }) =>
+        consumerFactory.create(queue, handler)
+      )
+    );
+
+    await publisher(connection);
 
     console.log("MQRabbit consumer/publisher channels initialized.");
   } catch (error) {
@@ -30,6 +50,9 @@ const { PORT, USER, PASSWORD } = MQRABBIT;
 
   process.on("SIGINT", () => {
     if (connection) {
+      console.log("Closing consumer channels...");
+      consumerChannels.map(channel => channel.close());
+
       console.log("Shutting down queues...");
 
       connection.close();
