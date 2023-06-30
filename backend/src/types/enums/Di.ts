@@ -22,4 +22,6 @@ export enum Di {
 
   ConsumerFactory = "IConsumerFactory",
   FormidableFormFactory = "IFormidableFormFactory",
+
+  GenerateBundleConsumerHandler = "BundleConsumerHandler",
 }
