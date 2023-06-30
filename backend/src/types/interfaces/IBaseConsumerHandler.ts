@@ -1,3 +1,3 @@
 export interface IBaseConsumerHandler<T> {
-  handle(data: T): Promise<void>;
+  handle(data: T): Promise<boolean>;
 }
