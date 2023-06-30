@@ -32,7 +32,8 @@
       "@middleware/*": ["middleware/*"],
       "@migrations/*": ["migrations/*"],
       "@controllers/*": ["controllers/*"],
-      "@repositories/*": ["repositories/*"]
+      "@repositories/*": ["repositories/*"],
+      "@consumer-handlers/*": ["consumer-handlers/*"]
     }
   }
 }
