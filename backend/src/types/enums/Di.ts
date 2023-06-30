@@ -1,6 +1,6 @@
 export enum Di {
   Redis = "Redis",
-  MQPublisher = "MQPublisher",
+  RabbitMQ = "RabbitMQ",
 
   AuthService = "IAuthService",
   DateService = "IDateService",
@@ -20,5 +20,6 @@ export enum Di {
   BlueprintRepository = "IBlueprintRepository",
   WorkspaceRepository = "IWorkspaceRepository",
 
+  ConsumerFactory = "IConsumerFactory",
   FormidableFormFactory = "IFormidableFormFactory",
 }
