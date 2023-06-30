@@ -21,14 +21,16 @@ export class ConsumerFactory implements IConsumerFactory {
 
     channel.consume(queue, async message => {
       if (message === null) {
-        console.log("Consumer not completed.");
+        console.log("Consumer cancelled by server.");
 
         return;
       }
 
       const instance = getInstanceOf<IBaseConsumerHandler<T>>(handler);
 
-      const isSuccessful = await instance.handle(<T>message);
+      const content = message.content.toString();
+
+      const isSuccessful = await instance.handle(JSON.parse(content));
 
       if (isSuccessful) {
         channel.ack(message);
