@@ -40,17 +40,23 @@ function initialize() {
 }
 
 async function createPublisher(connection: Connection) {
-  const publisher = await connection.createChannel();
+  try {
+    const publisher = await connection.createChannel();
 
-  const queues = Object.values(Queue);
+    const queues = Object.values(Queue);
 
-  queues.map(queue => {
-    publisher.assertQueue(queue);
-  });
+    queues.map(queue => {
+      publisher.assertQueue(queue);
+    });
 
-  container.register(Di.Publisher, { useValue: publisher });
+    container.register(Di.Publisher, { useValue: publisher });
 
-  return publisher;
+    return publisher;
+  } catch (error) {
+    console.log("");
+
+    throw "RabbitMQ: Failed to instantiate publisher!!";
+  }
 }
 
 async function createConsumers(connection: Connection): Promise<Channel[]> {
@@ -61,16 +67,14 @@ async function createConsumers(connection: Connection): Promise<Channel[]> {
     },
   ];
 
-  const consumerFactory = new ConsumerFactory(connection);
-
   try {
+    const consumerFactory = new ConsumerFactory(connection);
+
     const consumerChannels: Channel[] = await Promise.all(
       consumers.map(({ queue, handler }) =>
         consumerFactory.create(queue, handler)
       )
     );
-
-    console.log("RabbitMQ: consumers initialized.");
 
     return consumerChannels;
   } catch (error) {
