@@ -60,9 +60,6 @@ export class StoreController implements IController<IParams, IBody> {
       body: request.body,
     });
 
-    // @DEPRECATED
-    // await this._bundleService.build(workspaceId, request.body, bundle);
-
     return response.status(HTTP.CREATED).send();
   }
 }
