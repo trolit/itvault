@@ -1,5 +1,4 @@
 import path from "path";
-import fs from "fs-extra";
 import crypto from "crypto";
 import { injectable, inject } from "tsyringe";
 
@@ -65,9 +64,19 @@ export class LocalBundleConsumerHandler
       return false;
     }
 
-    const { location, filename } = await this._saveFile(buffer);
+    const UUID = crypto.randomUUID();
 
-    const stats = await fs.stat(location);
+    const filename = `${UUID}.zip`;
+
+    const location = path.join(FILES.BASE_DOWNLOADS_PATH, filename);
+
+    const file = await this.fileService.writeFile(filename, location, buffer);
+
+    if (!file) {
+      await this.bundleRepository.setStatus(bundle.id, BundleStatus.Failed);
+
+      return false;
+    }
 
     const { expiration } = body;
 
@@ -81,7 +90,7 @@ export class LocalBundleConsumerHandler
           expiration !== BundleExpire.Never
             ? this._dateService.getExpirationDate(expiration)
             : null,
-        size: stats.size,
+        size: file.size,
         status: BundleStatus.Ready,
       }
     );
@@ -97,18 +106,5 @@ export class LocalBundleConsumerHandler
     return (variant: Variant) => {
       return this.fileService.readFile(workspaceId, variant);
     };
-  }
-
-  // @TODO move to FileService
-  private async _saveFile(buffer: Buffer) {
-    const UUID = crypto.randomUUID();
-
-    const filename = `${UUID}.zip`;
-
-    const location = path.join(FILES.BASE_DOWNLOADS_PATH, filename);
-
-    await fs.writeFile(location, buffer);
-
-    return { location, filename };
   }
 }
