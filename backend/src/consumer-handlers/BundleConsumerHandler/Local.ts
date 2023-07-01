@@ -1,30 +1,31 @@
 import path from "path";
 import fs from "fs-extra";
 import crypto from "crypto";
-import { inject, injectable } from "tsyringe";
+import { injectable, inject } from "tsyringe";
 
 import { FILES } from "@config/index";
-
-import { BaseBundleService } from "./BaseBundleService";
 
 import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
-import { IDateService } from "@interfaces/services/IDateService";
 import { IFileService } from "@interfaces/services/IFileService";
-import { IBundleService } from "@interfaces/services/IBundleService";
+import { IDateService } from "@interfaces/services/IDateService";
+import { BundleConsumerHandlerData } from "consumer-handlers-types";
+import { IBaseConsumerHandler } from "@interfaces/IBaseConsumerHandler";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
+import { BaseBundleService } from "@services/BaseBundleService";
+
 import { IBody } from "@controllers/Bundle/StoreController";
 
 @injectable()
-export class LocalBundleService
+export class LocalBundleConsumerHandler
   extends BaseBundleService
-  implements IBundleService
+  implements IBaseConsumerHandler<BundleConsumerHandlerData>
 {
   constructor(
     @inject(Di.FileRepository)
@@ -41,7 +42,14 @@ export class LocalBundleService
     super(fileRepository, bucketRepository, fileService, bundleRepository);
   }
 
-  async build(workspaceId: number, body: IBody, bundle: Bundle): Promise<void> {
+  async handle(data: {
+    workspaceId: number;
+    body: IBody;
+    bundle: Bundle;
+  }): Promise<boolean> {
+    // @NOTE consider using zod here (?)
+    const { workspaceId, body, bundle } = data;
+
     await this.bundleRepository.setStatus(bundle.id, BundleStatus.Queried);
 
     const buffer = await this.generateZipFile(
@@ -52,7 +60,9 @@ export class LocalBundleService
     );
 
     if (!buffer) {
-      return;
+      await this.bundleRepository.setStatus(bundle.id, BundleStatus.Failed);
+
+      return false;
     }
 
     const { location, filename } = await this._saveFile(buffer);
@@ -61,7 +71,7 @@ export class LocalBundleService
 
     const { expiration } = body;
 
-    await this.bundleRepository.primitiveUpdate(
+    const result = await this.bundleRepository.primitiveUpdate(
       {
         id: bundle.id,
       },
@@ -75,6 +85,12 @@ export class LocalBundleService
         status: BundleStatus.Ready,
       }
     );
+
+    if (!result.affected) {
+      return false;
+    }
+
+    return true;
   }
 
   private _readFile(workspaceId: number) {
@@ -83,6 +99,7 @@ export class LocalBundleService
     };
   }
 
+  // @TODO move to FileService
   private async _saveFile(buffer: Buffer) {
     const UUID = crypto.randomUUID();
 

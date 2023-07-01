@@ -10,7 +10,6 @@
     "build": "npx tsc",
     "prod": "node dist/main.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/main.js\"",
-    "queues": "concurrently \"npx tsc --watch\" \"nodemon -q dist/scripts/queues/index.js\"",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
     "typeorm:extension": "ts-node -r tsconfig-paths/register ./node_modules/typeorm-extension/dist/cli/index.js",
     "db:seed": "npm run typeorm:extension -- -d ./src/config/data-source/index.ts seed",
@@ -40,7 +39,8 @@
     "@middleware": "dist/middleware",
     "@migrations": "dist/migrations",
     "@controllers": "dist/controllers",
-    "@repositories": "dist/repositories"
+    "@repositories": "dist/repositories",
+    "@consumer-handlers": "dist/consumer-handlers"
   },
   "dependencies": {
     "@types/amqplib": "^0.10.1",

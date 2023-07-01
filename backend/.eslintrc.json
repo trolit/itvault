@@ -52,6 +52,7 @@
             "same-directory": ["./**"],
 
             "types": [
+              "consumer-handlers-types",
               "miscellaneous-types",
               "@dtos/**",
               "@enums/**",
@@ -65,7 +66,8 @@
               "@repositories/**",
               "@middleware/**",
               "@services/**",
-              "@utils/**"
+              "@utils/**",
+              "@consumer-handlers/**"
             ],
 
             "schemas": ["@schemas/**"],
