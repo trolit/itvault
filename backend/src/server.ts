@@ -5,6 +5,7 @@ import { dataSource } from "@config/data-source";
 import { setupDi } from "@utils/setupDi";
 import { setupRedis } from "@utils/setupRedis";
 import { setupExpress } from "@utils/setupExpress";
+import { setupPublisher } from "@utils/setupPublisher";
 
 export const server = async () => {
   const app = express();
@@ -20,6 +21,8 @@ export const server = async () => {
   const redis = setupRedis();
 
   await setupDi(redis.instance);
+
+  await setupPublisher();
 
   redis.initializeRoleKeys();
 
