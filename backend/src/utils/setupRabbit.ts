@@ -17,13 +17,13 @@ export const setupRabbit = async () => {
 
   process.on("SIGINT", () => {
     if (connection) {
-      console.log("Closing publisher channel...");
+      console.log("RabbitMQ: Closing publisher channel...");
       publisher.close();
 
-      console.log("Closing consumer channels...");
+      console.log("RabbitMQ: Closing consumer channels...");
       consumers.map(channel => channel.close());
 
-      console.log("Shutting down queues...");
+      console.log("RabbitMQ: Closing connection...");
       connection.close();
     }
   });
@@ -70,12 +70,12 @@ async function createConsumers(connection: Connection): Promise<Channel[]> {
       )
     );
 
-    console.log("MQRabbit consumers initialized.");
+    console.log("RabbitMQ: consumers initialized.");
 
     return consumerChannels;
   } catch (error) {
     console.log(error);
 
-    throw "Failed to instantiate consumers";
+    throw "RabbitMQ: Failed to instantiate consumers!!";
   }
 }
