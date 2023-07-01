@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { injectable, inject } from "tsyringe";
 
-import { FILES } from "@config/index";
+import { FILES } from "@config";
 
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
