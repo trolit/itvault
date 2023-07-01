@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs-extra";
+import crypto from "crypto";
 import { injectable, inject } from "tsyringe";
 
 import { FILES } from "@config/index";
@@ -14,8 +15,8 @@ import { IDateService } from "@interfaces/services/IDateService";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBaseConsumerHandler } from "@interfaces/IBaseConsumerHandler";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
+import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { BaseBundleService } from "@services/BaseBundleService";
 
@@ -46,6 +47,7 @@ export class LocalBundleConsumerHandler
     body: IBody;
     bundle: Bundle;
   }): Promise<boolean> {
+    // @NOTE consider using zod here (?)
     const { workspaceId, body, bundle } = data;
 
     await this.bundleRepository.setStatus(bundle.id, BundleStatus.Queried);
