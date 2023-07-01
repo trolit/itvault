@@ -40,7 +40,10 @@
     "@middleware": "dist/middleware",
     "@migrations": "dist/migrations",
     "@controllers": "dist/controllers",
-    "@repositories": "dist/repositories"
+    "@repositories": "dist/repositories",
+    "@consumer-handlers": [
+      "dist/onsumer-handlers"
+    ]
   },
   "dependencies": {
     "@types/amqplib": "^0.10.1",
