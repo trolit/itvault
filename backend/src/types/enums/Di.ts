@@ -23,7 +23,6 @@ export enum Di {
 
   ConsumerFactory = "IConsumerFactory",
   FormidableFormFactory = "IFormidableFormFactory",
-  RabbitConnectionFactory = "IRabbitConnectionFactory",
 
   GenerateBundleConsumerHandler = "BundleConsumerHandler",
 }
