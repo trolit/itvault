@@ -3,12 +3,15 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
+import { Queue } from "@enums/Queue";
+import { Bundle } from "@entities/Bundle";
 import { BundleDto } from "@dtos/BundleDto";
-import { BundleStatus } from "@enums/BundleStatus";
 import { BundleExpire } from "@enums/BundleExpire";
+import { BundleStatus } from "@enums/BundleStatus";
 import { IController } from "@interfaces/IController";
-import { IBundleService } from "@interfaces/services/IBundleService";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
+
+import { sendToQueue } from "@helpers/sendToQueue";
 
 interface IParams {
   workspaceId: number;
@@ -26,9 +29,7 @@ export interface IBody {
 export class StoreController implements IController<IParams, IBody> {
   constructor(
     @inject(Di.BundleRepository)
-    private _bundleRepository: IBundleRepository,
-    @inject(Di.BundleService)
-    private _bundleService: IBundleService
+    private _bundleRepository: IBundleRepository
   ) {}
 
   async invoke(request: CustomRequest<IParams, IBody>, response: Response) {
@@ -53,7 +54,19 @@ export class StoreController implements IController<IParams, IBody> {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    await this._bundleService.build(workspaceId, request.body, bundle);
+    // @TODO introduce type (?)
+    sendToQueue<{
+      workspaceId: number;
+      body: IBody;
+      bundle: Bundle;
+    }>(Queue.GenerateBundle, {
+      workspaceId,
+      body: request.body,
+      bundle,
+    });
+
+    // @DEPRECATED
+    // await this._bundleService.build(workspaceId, request.body, bundle);
 
     return response.status(HTTP.CREATED).send();
   }
