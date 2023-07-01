@@ -9,12 +9,9 @@ import { IConsumerFactory } from "@interfaces/factories/IConsumerFactory";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export class ConsumerFactory implements IConsumerFactory {
-  constructor(
-    @inject(Di.RabbitMQ)
-    private _rabbitMQ: Connection
-  ) {}
+  constructor(@inject(Di.RabbitMQ) private _rabbitMQ: Connection) {}
 
-  async create<T>(queue: Queue, handler: Di): Promise<Channel> {
+  async create(queue: Queue, handler: Di): Promise<Channel> {
     const channel = await this._rabbitMQ.createChannel();
 
     await channel.assertQueue(queue);
@@ -26,7 +23,7 @@ export class ConsumerFactory implements IConsumerFactory {
         return;
       }
 
-      const instance = getInstanceOf<IBaseConsumerHandler<T>>(handler);
+      const instance = getInstanceOf<IBaseConsumerHandler<unknown>>(handler);
 
       const content = message.content.toString();
 
