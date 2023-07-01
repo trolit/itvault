@@ -1,12 +1,9 @@
-import path from "path";
-import fs from "fs-extra";
 import crypto from "crypto";
 import { injectable, inject } from "tsyringe";
 
-import { FILES } from "@config/index";
+import { FILES } from "@config";
 
 import { Di } from "@enums/Di";
-import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
@@ -19,8 +16,6 @@ import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { BaseBundleService } from "@services/BaseBundleService";
-
-import { IBody } from "@controllers/Bundle/StoreController";
 
 @injectable()
 export class LocalBundleConsumerHandler
@@ -42,15 +37,11 @@ export class LocalBundleConsumerHandler
     super(fileRepository, bucketRepository, fileService, bundleRepository);
   }
 
-  async handle(data: {
-    workspaceId: number;
-    body: IBody;
-    bundle: Bundle;
-  }): Promise<boolean> {
+  async handle(data: BundleConsumerHandlerData): Promise<boolean> {
     // @NOTE consider using zod here (?)
     const { workspaceId, body, bundle } = data;
 
-    await this.bundleRepository.setStatus(bundle.id, BundleStatus.Queried);
+    await this.bundleRepository.setStatus(bundle.id, BundleStatus.Building);
 
     const buffer = await this.generateZipFile(
       bundle.id,
@@ -60,14 +51,20 @@ export class LocalBundleConsumerHandler
     );
 
     if (!buffer) {
-      await this.bundleRepository.setStatus(bundle.id, BundleStatus.Failed);
-
       return false;
     }
 
-    const { location, filename } = await this._saveFile(buffer);
+    const filename = `${crypto.randomUUID()}.zip`;
 
-    const stats = await fs.stat(location);
+    const file = await this.fileService.writeFile(
+      filename,
+      FILES.BASE_DOWNLOADS_PATH,
+      buffer
+    );
+
+    if (!file) {
+      return false;
+    }
 
     const { expiration } = body;
 
@@ -81,7 +78,7 @@ export class LocalBundleConsumerHandler
           expiration !== BundleExpire.Never
             ? this._dateService.getExpirationDate(expiration)
             : null,
-        size: stats.size,
+        size: file.size,
         status: BundleStatus.Ready,
       }
     );
@@ -93,22 +90,17 @@ export class LocalBundleConsumerHandler
     return true;
   }
 
+  async onError(data: BundleConsumerHandlerData): Promise<void> {
+    const {
+      bundle: { id },
+    } = data;
+
+    await this.bundleRepository.setStatus(id, BundleStatus.Failed);
+  }
+
   private _readFile(workspaceId: number) {
     return (variant: Variant) => {
       return this.fileService.readFile(workspaceId, variant);
     };
-  }
-
-  // @TODO move to FileService
-  private async _saveFile(buffer: Buffer) {
-    const UUID = crypto.randomUUID();
-
-    const filename = `${UUID}.zip`;
-
-    const location = path.join(FILES.BASE_DOWNLOADS_PATH, filename);
-
-    await fs.writeFile(location, buffer);
-
-    return { location, filename };
   }
 }
