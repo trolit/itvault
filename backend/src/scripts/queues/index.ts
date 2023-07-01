@@ -28,6 +28,8 @@ const consumers = [
     password: PASSWORD,
   });
 
+  await publisher(connection);
+
   const consumerFactory = getInstanceOf<IConsumerFactory>(Di.ConsumerFactory);
 
   let consumerChannels: Channel[] = [];
@@ -38,8 +40,6 @@ const consumers = [
         consumerFactory.create(queue, handler)
       )
     );
-
-    await publisher(connection);
 
     console.log("MQRabbit consumer/publisher channels initialized.");
   } catch (error) {
