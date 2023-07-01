@@ -21,6 +21,7 @@ import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { IBody } from "@controllers/Bundle/StoreController";
 
+// @DEPRECATED
 @injectable()
 export class LocalBundleService
   extends BaseBundleService
