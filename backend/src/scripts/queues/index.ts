@@ -1,18 +1,12 @@
 import "reflect-metadata";
 import "module-alias/register";
-import { Channel, connect } from "amqplib";
-
-import { MQRABBIT } from "@config";
-
-import { publisher } from "./publisher";
+import { Channel } from "amqplib";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { IConsumerFactory } from "@interfaces/factories/IConsumerFactory";
 
-import { getInstanceOf } from "@helpers/getInstanceOf";
-
-const { PORT, USER, PASSWORD } = MQRABBIT;
+import { ConsumerFactory } from "@factories/ConsumerFactory";
+import { RabbitConnectionFactory } from "@factories/RabbitConnectionFactory";
 
 const consumers = [
   {
@@ -21,16 +15,12 @@ const consumers = [
   },
 ];
 
+const connectionFactory = new RabbitConnectionFactory();
+
 (async () => {
-  const connection = await connect({
-    port: PORT,
-    username: USER,
-    password: PASSWORD,
-  });
+  const connection = await connectionFactory.create();
 
-  await publisher(connection);
-
-  const consumerFactory = getInstanceOf<IConsumerFactory>(Di.ConsumerFactory);
+  const consumerFactory = new ConsumerFactory(connection);
 
   let consumerChannels: Channel[] = [];
 
@@ -41,7 +31,7 @@ const consumers = [
       )
     );
 
-    console.log("MQRabbit consumer/publisher channels initialized.");
+    console.log("MQRabbit consumers initialized.");
   } catch (error) {
     console.error(error);
 
