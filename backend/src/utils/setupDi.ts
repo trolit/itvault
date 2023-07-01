@@ -2,8 +2,6 @@ import fs from "fs";
 import path from "path";
 import Redis from "ioredis/built/Redis";
 import { container, DependencyContainer } from "tsyringe";
-// @TODO fix import!!
-import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
 import { FILES } from "@config/index";
 
@@ -11,6 +9,7 @@ import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
 import { LocalFileService } from "@services/LocalFileService";
+import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
 export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
