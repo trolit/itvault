@@ -1,4 +1,3 @@
-import path from "path";
 import crypto from "crypto";
 import { injectable, inject } from "tsyringe";
 
@@ -59,9 +58,11 @@ export class LocalBundleConsumerHandler
 
     const filename = `${UUID}.zip`;
 
-    const location = path.join(FILES.BASE_DOWNLOADS_PATH, filename);
-
-    const file = await this.fileService.writeFile(filename, location, buffer);
+    const file = await this.fileService.writeFile(
+      filename,
+      FILES.BASE_DOWNLOADS_PATH,
+      buffer
+    );
 
     if (!file) {
       return false;
