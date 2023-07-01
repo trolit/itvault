@@ -1,13 +1,13 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { BundleConsumerHandlerData } from "types/BundleConsumerHandlerData";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { Bundle } from "@entities/Bundle";
 import { BundleDto } from "@dtos/BundleDto";
-import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
+import { BundleExpire } from "@enums/BundleExpire";
 import { IController } from "@interfaces/IController";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
@@ -54,15 +54,10 @@ export class StoreController implements IController<IParams, IBody> {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    // @TODO introduce type (?)
-    sendToQueue<{
-      workspaceId: number;
-      body: IBody;
-      bundle: Bundle;
-    }>(Queue.GenerateBundle, {
+    sendToQueue<BundleConsumerHandlerData>(Queue.GenerateBundle, {
+      bundle,
       workspaceId,
       body: request.body,
-      bundle,
     });
 
     // @DEPRECATED

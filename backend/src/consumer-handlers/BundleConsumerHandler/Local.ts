@@ -1,20 +1,21 @@
 import path from "path";
 import fs from "fs-extra";
 import { injectable, inject } from "tsyringe";
+import { BundleConsumerHandlerData } from "types/BundleConsumerHandlerData";
 
 import { FILES } from "@config/index";
 
 import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
-import { BundleStatus } from "@enums/BundleStatus";
 import { BundleExpire } from "@enums/BundleExpire";
-import { IFileService } from "@interfaces/services/IFileService";
+import { BundleStatus } from "@enums/BundleStatus";
 import { IDateService } from "@interfaces/services/IDateService";
+import { IFileService } from "@interfaces/services/IFileService";
 import { IBaseConsumerHandler } from "@interfaces/IBaseConsumerHandler";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
+import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { BaseBundleService } from "@services/BaseBundleService";
 
@@ -23,12 +24,7 @@ import { IBody } from "@controllers/Bundle/StoreController";
 @injectable()
 export class LocalBundleConsumerHandler
   extends BaseBundleService
-  implements
-    IBaseConsumerHandler<{
-      workspaceId: number;
-      body: IBody;
-      bundle: Bundle;
-    }>
+  implements IBaseConsumerHandler<BundleConsumerHandlerData>
 {
   constructor(
     @inject(Di.FileRepository)
