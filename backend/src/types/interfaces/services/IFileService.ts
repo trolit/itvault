@@ -8,4 +8,6 @@ export interface IFileService {
   ): Promise<void>;
 
   readFile(workspaceId: number, variant: Variant): Promise<string>;
+
+  writeFile(filename: string, buffer: Buffer): Promise<{ size: number } | null>;
 }

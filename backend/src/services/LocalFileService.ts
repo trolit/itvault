@@ -52,4 +52,23 @@ export class LocalFileService implements IFileService {
 
     return file.toString();
   }
+
+  async writeFile(
+    filename: string,
+    buffer: Buffer
+  ): Promise<{ size: number } | null> {
+    const location = path.join(FILES.BASE_DOWNLOADS_PATH, filename);
+
+    try {
+      await fs.writeFile(location, buffer);
+
+      const stats = await fs.stat(location);
+
+      return { size: stats.size };
+    } catch (error) {
+      console.log(error);
+
+      return null;
+    }
+  }
 }
