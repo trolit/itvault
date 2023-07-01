@@ -62,6 +62,8 @@ export class LocalBundleConsumerHandler
     );
 
     if (!buffer) {
+      await this.bundleRepository.setStatus(bundle.id, BundleStatus.Failed);
+
       return false;
     }
 
