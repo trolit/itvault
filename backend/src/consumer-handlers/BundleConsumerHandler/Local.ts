@@ -3,6 +3,8 @@ import { injectable, inject } from "tsyringe";
 
 import { FILES } from "@config";
 
+import { BaseBundleConsumerHandler } from "./Base";
+
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
 import { BundleExpire } from "@enums/BundleExpire";
@@ -12,14 +14,12 @@ import { IDateService } from "@interfaces/services/IDateService";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBaseConsumerHandler } from "@interfaces/IBaseConsumerHandler";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
-
-import { BaseBundleService } from "@services/BaseBundleService";
+import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 @injectable()
 export class LocalBundleConsumerHandler
-  extends BaseBundleService
+  extends BaseBundleConsumerHandler
   implements IBaseConsumerHandler<BundleConsumerHandlerData>
 {
   constructor(
