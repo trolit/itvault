@@ -4,8 +4,8 @@ import { dataSource } from "@config/data-source";
 
 import { setupDi } from "@utils/setupDi";
 import { setupRedis } from "@utils/setupRedis";
+import { setupRabbit } from "@utils/setupRabbit";
 import { setupExpress } from "@utils/setupExpress";
-import { setupPublisher } from "@utils/setupPublisher";
 
 export const server = async () => {
   const app = express();
@@ -22,7 +22,7 @@ export const server = async () => {
 
   await setupDi(redis.instance);
 
-  await setupPublisher();
+  await setupRabbit();
 
   redis.initializeRoleKeys();
 
