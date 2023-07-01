@@ -5,7 +5,6 @@ import { injectable, inject } from "tsyringe";
 import { FILES } from "@config/index";
 
 import { Di } from "@enums/Di";
-import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
@@ -18,8 +17,6 @@ import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { BaseBundleService } from "@services/BaseBundleService";
-
-import { IBody } from "@controllers/Bundle/StoreController";
 
 @injectable()
 export class LocalBundleConsumerHandler
@@ -41,11 +38,7 @@ export class LocalBundleConsumerHandler
     super(fileRepository, bucketRepository, fileService, bundleRepository);
   }
 
-  async handle(data: {
-    workspaceId: number;
-    body: IBody;
-    bundle: Bundle;
-  }): Promise<boolean> {
+  async handle(data: BundleConsumerHandlerData): Promise<boolean> {
     // @NOTE consider using zod here (?)
     const { workspaceId, body, bundle } = data;
 
@@ -59,8 +52,6 @@ export class LocalBundleConsumerHandler
     );
 
     if (!buffer) {
-      await this.bundleRepository.setStatus(bundle.id, BundleStatus.Failed);
-
       return false;
     }
 
@@ -73,8 +64,6 @@ export class LocalBundleConsumerHandler
     const file = await this.fileService.writeFile(filename, location, buffer);
 
     if (!file) {
-      await this.bundleRepository.setStatus(bundle.id, BundleStatus.Failed);
-
       return false;
     }
 
@@ -100,6 +89,14 @@ export class LocalBundleConsumerHandler
     }
 
     return true;
+  }
+
+  async onError(data: BundleConsumerHandlerData): Promise<void> {
+    const {
+      bundle: { id },
+    } = data;
+
+    await this.bundleRepository.setStatus(id, BundleStatus.Failed);
   }
 
   private _readFile(workspaceId: number) {

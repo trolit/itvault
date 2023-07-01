@@ -17,7 +17,7 @@ export class ConsumerFactory implements IConsumerFactory {
 
     channel.consume(queue, async message => {
       if (message === null) {
-        console.log("Consumer cancelled by server.");
+        console.log("RabbitMQ: Consumer cancelled by server.");
 
         return;
       }
@@ -26,19 +26,25 @@ export class ConsumerFactory implements IConsumerFactory {
 
       const content = message.content.toString();
 
-      const isSuccessful = await instance.handle(JSON.parse(content));
+      const data = JSON.parse(content);
+
+      const isSuccessful = await instance.handle(data);
 
       if (isSuccessful) {
         channel.ack(message);
 
-        console.log(`${queue} consumer completed task.`);
+        console.log(`RabbitMQ: consumer completed task of ${queue} queue.`);
 
         return;
       }
 
+      await instance.onError(data);
+
       channel.nack(message, false, false);
 
-      console.log(`${queue} consumer failed to complete task.`);
+      console.log(
+        `RabbitMQ: consumer failed to complete task of ${queue} queue.`
+      );
     });
 
     return channel;
