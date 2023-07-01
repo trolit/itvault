@@ -49,7 +49,7 @@ export class LocalBundleConsumerHandler
     // @NOTE consider using zod here (?)
     const { workspaceId, body, bundle } = data;
 
-    await this.bundleRepository.setStatus(bundle.id, BundleStatus.Queried);
+    await this.bundleRepository.setStatus(bundle.id, BundleStatus.Building);
 
     const buffer = await this.generateZipFile(
       bundle.id,
