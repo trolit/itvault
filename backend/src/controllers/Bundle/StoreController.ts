@@ -1,7 +1,6 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { BundleConsumerHandlerData } from "types/BundleConsumerHandlerData";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
@@ -9,6 +8,7 @@ import { BundleDto } from "@dtos/BundleDto";
 import { BundleStatus } from "@enums/BundleStatus";
 import { BundleExpire } from "@enums/BundleExpire";
 import { IController } from "@interfaces/IController";
+import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 import { sendToQueue } from "@helpers/sendToQueue";
