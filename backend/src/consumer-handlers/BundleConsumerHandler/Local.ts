@@ -54,9 +54,7 @@ export class LocalBundleConsumerHandler
       return false;
     }
 
-    const UUID = crypto.randomUUID();
-
-    const filename = `${UUID}.zip`;
+    const filename = `${crypto.randomUUID()}.zip`;
 
     const file = await this.fileService.writeFile(
       filename,
