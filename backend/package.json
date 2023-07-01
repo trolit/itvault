@@ -41,9 +41,7 @@
     "@migrations": "dist/migrations",
     "@controllers": "dist/controllers",
     "@repositories": "dist/repositories",
-    "@consumer-handlers": [
-      "dist/consumer-handlers"
-    ]
+    "@consumer-handlers": "dist/consumer-handlers"
   },
   "dependencies": {
     "@types/amqplib": "^0.10.1",
