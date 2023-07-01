@@ -11,12 +11,11 @@ import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
 import { LocalFileService } from "@services/LocalFileService";
-import { LocalBundleService } from "@services/LocalBundleService";
 
 export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
 
-  registerFileAndBundleServices();
+  registerFileService();
 
   registerConsumerHandlers();
 
@@ -97,11 +96,9 @@ function registerDependencies(config: {
   });
 }
 
-function registerFileAndBundleServices() {
+function registerFileService() {
   if (FILES.ACTIVE_MODE === FileStorageMode.Local) {
     container.register(Di.FileService, LocalFileService);
-
-    container.register(Di.BundleService, LocalBundleService);
   }
 }
 
