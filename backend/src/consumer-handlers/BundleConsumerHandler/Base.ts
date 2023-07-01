@@ -12,7 +12,7 @@ import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { IBody } from "@controllers/Bundle/StoreController";
 
-export class BaseBundleService {
+export abstract class BaseBundleConsumerHandler {
   constructor(
     protected fileRepository: IFileRepository,
     protected bucketRepository: IBucketRepository,
