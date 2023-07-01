@@ -42,7 +42,7 @@
     "@controllers": "dist/controllers",
     "@repositories": "dist/repositories",
     "@consumer-handlers": [
-      "dist/onsumer-handlers"
+      "dist/consumer-handlers"
     ]
   },
   "dependencies": {
