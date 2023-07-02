@@ -26,8 +26,14 @@ export class StoreController
   ) {
     const {
       userId,
-      body: { fileId, text },
+      body: { id, text, target },
     } = request;
+
+    const entityReference = this._toEntityReference({ id, target });
+
+    if (!entityReference) {
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+    }
 
     const note = await this._noteRepository.primitiveSave({
       value: text,
@@ -37,9 +43,7 @@ export class StoreController
       updatedBy: {
         id: userId,
       },
-      file: {
-        id: fileId,
-      },
+      ...entityReference,
     });
 
     if (!note) {
@@ -47,5 +51,17 @@ export class StoreController
     }
 
     return response.status(HTTP.CREATED).send(note);
+  }
+
+  private _toEntityReference({ id, target }: Pick<NoteDto, "id" | "target">) {
+    switch (target) {
+      case "file": {
+        return {
+          file: {
+            id,
+          },
+        };
+      }
+    }
   }
 }
