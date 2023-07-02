@@ -25,8 +25,8 @@ export class File {
   @CreateDateColumn()
   createdAt: Date;
 
-  // @ManyToOne(() => Workspace, workspace => workspace.files)
-  // workspace: Workspace;
+  @ManyToOne(() => Workspace, workspace => workspace.files)
+  workspace: Workspace;
 
   @OneToMany(() => Variant, variant => variant.file, { cascade: true })
   variants: Variant[];
