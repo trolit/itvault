@@ -28,8 +28,8 @@ export class File {
   // @ManyToOne(() => Workspace, workspace => workspace.files)
   // workspace: Workspace;
 
-  // @OneToMany(() => Variant, variant => variant.file, { cascade: true })
-  // variants: Variant[];
+  @OneToMany(() => Variant, variant => variant.file, { cascade: true })
+  variants: Variant[];
 
   // @OneToMany(() => Note, note => note.file, { cascade: true })
   // notes: Note[];
