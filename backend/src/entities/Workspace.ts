@@ -13,11 +13,11 @@ export class Workspace extends Base {
   })
   name!: string;
 
-  // @OneToMany(
-  //   () => UserToWorkspace,
-  //   userToWorkspace => userToWorkspace.workspace
-  // )
-  // userToWorkspace: UserToWorkspace[];
+  @OneToMany(
+    () => UserToWorkspace,
+    userToWorkspace => userToWorkspace.workspace
+  )
+  userToWorkspace: UserToWorkspace[];
 
   @OneToMany(() => File, file => file.workspace, { cascade: true })
   files: File[];
