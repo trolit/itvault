@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
+import { Note } from "./Note";
 import { Variant } from "./Variant";
 import { Workspace } from "./Workspace";
 
@@ -29,4 +30,7 @@ export class File {
 
   @OneToMany(() => Variant, variant => variant.file, { cascade: true })
   variants: Variant[];
+
+  @OneToMany(() => Note, note => note.file, { cascade: true })
+  notes: Note[];
 }
