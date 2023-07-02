@@ -22,8 +22,8 @@ export class Workspace extends Base {
   @OneToMany(() => File, file => file.workspace, { cascade: true })
   files: File[];
 
-  // @OneToMany(() => Bundle, bundle => bundle.workspace, { cascade: true })
-  // bundles: Bundle[];
+  @OneToMany(() => Bundle, bundle => bundle.workspace, { cascade: true })
+  bundles: Bundle[];
 
   @OneToMany(() => Blueprint, blueprint => blueprint.workspace, {
     cascade: true,
