@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateBundlesTable1687029050338 implements MigrationInterface {
-    name = 'CreateBundlesTable1687029050338'
+export class CreateBundlesTable1688324413752 implements MigrationInterface {
+    name = 'CreateBundlesTable1688324413752'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE \`bundles\` (\`id\` int NOT NULL AUTO_INCREMENT, \`filename\` varchar(255) NOT NULL, \`note\` varchar(255) NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`expire\` enum ('1-day', '2-days', '3-days', '1-week', '2-weeks', '1-month', 'never') NOT NULL, \`expiresAt\` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6), \`size\` int NOT NULL, \`workspaceId\` int NULL, \`createdById\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`bundles\` (\`id\` int NOT NULL AUTO_INCREMENT, \`filename\` varchar(255) NULL, \`note\` varchar(255) NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`expire\` enum ('1-day', '2-days', '3-days', '1-week', '2-weeks', '1-month', 'never') NOT NULL, \`expiresAt\` datetime(6) NULL DEFAULT CURRENT_TIMESTAMP(6), \`status\` enum ('queried', 'building', 'ready', 'failed') NOT NULL, \`size\` int NOT NULL, \`workspaceId\` int NULL, \`createdById\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
         await queryRunner.query(`CREATE TABLE \`bundles_blueprints\` (\`bundlesId\` int NOT NULL, \`blueprintsId\` int NOT NULL, INDEX \`IDX_eeb7b53932ef0c54179dc2e2df\` (\`bundlesId\`), INDEX \`IDX_cf8fcc8418d854135401e0ecc3\` (\`blueprintsId\`), PRIMARY KEY (\`bundlesId\`, \`blueprintsId\`)) ENGINE=InnoDB`);
         await queryRunner.query(`ALTER TABLE \`bundles\` ADD CONSTRAINT \`FK_1acd04c0ff0966005978d0a7c3e\` FOREIGN KEY (\`workspaceId\`) REFERENCES \`workspaces\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE \`bundles\` ADD CONSTRAINT \`FK_07b4f7c6e07686faf15e75f49f2\` FOREIGN KEY (\`createdById\`) REFERENCES \`users\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
