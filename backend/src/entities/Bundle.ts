@@ -9,7 +9,6 @@ import {
 } from "typeorm";
 
 import { User } from "./User";
-import { Variant } from "./Variant";
 import { Blueprint } from "./Blueprint";
 import { Workspace } from "./Workspace";
 
@@ -51,9 +50,4 @@ export class Bundle {
   @ManyToMany(() => Blueprint, { cascade: true })
   @JoinTable({ name: "bundles_blueprints" })
   blueprints: Blueprint[];
-
-  // @NOTE consider removing it and leave only `blueprints`
-  @ManyToMany(() => Variant, { cascade: true })
-  @JoinTable({ name: "bundles_variants" })
-  variants: Variant[];
 }
