@@ -11,9 +11,10 @@ export enum Di {
   DataStoreService = "IDataStoreService",
   EntityMapperService = "IEntityMapperService",
 
+  FileRepository = "IFileRepository",
+  NoteRepository = "INoteRepository",
   RoleRepository = "IRoleRepository",
   UserRepository = "IUserRepository",
-  FileRepository = "IFileRepository",
   BundleRepository = "IBundleRepository",
   BucketRepository = "IBucketRepository",
   VariantRepository = "IVariantRepository",
