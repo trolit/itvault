@@ -31,6 +31,6 @@ export class File {
   @OneToMany(() => Variant, variant => variant.file, { cascade: true })
   variants: Variant[];
 
-  // @OneToMany(() => Note, note => note.file, { cascade: true })
-  // notes: Note[];
+  @OneToMany(() => Note, note => note.file, { cascade: true })
+  notes: Note[];
 }
