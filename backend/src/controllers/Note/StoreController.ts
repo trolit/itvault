@@ -3,6 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
+import { NoteDto } from "@dtos/NoteDto";
 import { IController } from "@interfaces/IController";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
@@ -10,15 +11,9 @@ interface IParams {
   workspaceId: number;
 }
 
-interface IBody {
-  text: string;
-
-  fileId: number;
-}
-
 @injectable()
 export class StoreController
-  implements IController<IParams, IBody, undefined, Note>
+  implements IController<IParams, NoteDto, undefined, Note>
 {
   constructor(
     @inject(Di.NoteRepository)
@@ -26,7 +21,7 @@ export class StoreController
   ) {}
 
   async invoke(
-    request: CustomRequest<IParams, IBody>,
+    request: CustomRequest<IParams, NoteDto>,
     response: CustomResponse<Note>
   ) {
     const {
