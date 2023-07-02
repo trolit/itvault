@@ -38,6 +38,6 @@ export class Variant {
   @ManyToOne(() => File, file => file.variants)
   file: File;
 
-  // @OneToMany(() => Bucket, bucket => bucket.variant, { cascade: true })
-  // buckets: Bucket[];
+  @OneToMany(() => Bucket, bucket => bucket.variant, { cascade: true })
+  buckets: Bucket[];
 }

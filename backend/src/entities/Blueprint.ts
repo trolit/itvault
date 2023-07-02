@@ -20,8 +20,8 @@ export class Blueprint extends Base {
   @ManyToOne(() => Workspace, workspace => workspace.blueprints)
   workspace: Workspace;
 
-  // @OneToMany(() => Bucket, bucket => bucket.blueprint, {
-  //   cascade: true,
-  // })
-  // buckets: Bucket[];
+  @OneToMany(() => Bucket, bucket => bucket.blueprint, {
+    cascade: true,
+  })
+  buckets: Bucket[];
 }
