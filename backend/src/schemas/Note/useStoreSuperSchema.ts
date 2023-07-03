@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
@@ -23,7 +24,7 @@ function useBodySchema(): SchemaProvider {
       z.object({
         id: z.coerce.number().gt(0),
 
-        text: z.string(),
+        text: z.string().transform(value => DOMPurify.sanitize(value)),
 
         resource: z.nativeEnum(Resource),
       })
