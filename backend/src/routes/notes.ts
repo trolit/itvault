@@ -7,7 +7,7 @@ import { useStoreSuperSchema } from "@schemas/Note/useStoreSuperSchema";
 
 import { StoreController } from "@controllers/Note/StoreController";
 
-const notesRouter = Router({ mergeParams: true });
+const notesRouter = Router();
 
 notesRouter.post(
   "/v1",

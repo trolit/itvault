@@ -7,13 +7,9 @@ import { NoteDto, Target } from "@dtos/NoteDto";
 import { IController } from "@interfaces/IController";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
-interface IParams {
-  workspaceId: number;
-}
-
 @injectable()
 export class StoreController
-  implements IController<IParams, NoteDto, undefined, Note>
+  implements IController<undefined, NoteDto, undefined, Note>
 {
   constructor(
     @inject(Di.NoteRepository)
@@ -21,7 +17,7 @@ export class StoreController
   ) {}
 
   async invoke(
-    request: CustomRequest<IParams, NoteDto>,
+    request: CustomRequest<undefined, NoteDto>,
     response: CustomResponse<Note>
   ) {
     const {
