@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
-import { NoteDto } from "@dtos/NoteDto";
+import { NoteDto, Target } from "@dtos/NoteDto";
 import { IController } from "@interfaces/IController";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
@@ -55,7 +55,7 @@ export class StoreController
 
   private _toEntityReference({ id, target }: Pick<NoteDto, "id" | "target">) {
     switch (target) {
-      case "file": {
+      case Target.file: {
         return {
           file: {
             id,
