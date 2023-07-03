@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
-import { NoteDto, Target } from "@dtos/NoteDto";
+import { NoteDto, Resource } from "@dtos/NoteDto";
 import { IController } from "@interfaces/IController";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
@@ -22,10 +22,10 @@ export class StoreController
   ) {
     const {
       userId,
-      body: { id, text, target },
+      body: { id, text, resource },
     } = request;
 
-    const entityReference = this._toEntityReference({ id, target });
+    const entityReference = this._resourceToEntityReference(id, resource);
 
     if (!entityReference) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
@@ -49,9 +49,9 @@ export class StoreController
     return response.status(HTTP.CREATED).send(note);
   }
 
-  private _toEntityReference({ id, target }: Pick<NoteDto, "id" | "target">) {
-    switch (target) {
-      case Target.file: {
+  private _resourceToEntityReference(id: number, resource: Resource) {
+    switch (resource) {
+      case Resource.File: {
         return {
           file: {
             id,

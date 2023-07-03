@@ -1,11 +1,11 @@
-export enum Target {
-  file,
+export enum Resource {
+  File,
 }
 
 export class NoteDto {
   constructor(
     readonly id: number,
     readonly text: string,
-    readonly target: Target
+    readonly resource: Resource
   ) {}
 }

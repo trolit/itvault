@@ -1,7 +1,10 @@
-import { z } from "zod";
+import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
-import { NoteDto, Target } from "@dtos/NoteDto";
+import { NoteDto, Resource } from "@dtos/NoteDto";
+import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -22,7 +25,28 @@ function useBodySchema(): SchemaProvider {
 
         text: z.string(),
 
-        target: z.nativeEnum(Target),
+        resource: z.nativeEnum(Resource),
       })
-    );
+    ).superRefine(async (value: NoteDto, context: RefinementCtx) => {
+      const { id, resource } = value;
+
+      if (!Resource[resource]) {
+        return Zod.NEVER;
+      }
+
+      const repository = getInstanceOf<IBaseRepository<unknown>>(
+        `I${resource}Repository`
+      );
+
+      const entity = await repository.getById(id);
+
+      if (!entity) {
+        context.addIssue({
+          code: ZodIssueCode.custom,
+          message: `${resource} is not available.`,
+        });
+
+        return Zod.NEVER;
+      }
+    });
 }
