@@ -29,14 +29,14 @@ function useBodySchema(): SchemaProvider {
         resource: z.nativeEnum(Resource),
       })
     ).superRefine(async (value: NoteDto, context: RefinementCtx) => {
-      const { id, resource } = value;
+      const { id, resource: resourceName } = value;
 
-      if (!Resource[resource]) {
+      if (!Resource[resourceName]) {
         return Zod.NEVER;
       }
 
       const repository = getInstanceOf<IBaseRepository<unknown>>(
-        `I${resource}Repository`
+        `I${resourceName}Repository`
       );
 
       const entity = await repository.getById(id);
@@ -44,7 +44,7 @@ function useBodySchema(): SchemaProvider {
       if (!entity) {
         context.addIssue({
           code: ZodIssueCode.custom,
-          message: `${resource} is not available.`,
+          message: `${resourceName} is not available.`,
         });
 
         return Zod.NEVER;
