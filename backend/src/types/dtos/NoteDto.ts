@@ -1,5 +1,5 @@
 export enum Resource {
-  File,
+  File = "File",
 }
 
 export class NoteDto {
