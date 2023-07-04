@@ -37,6 +37,18 @@ export class GetAllController
     const entityReference = resourceToEntityReference(resource, id);
 
     const [result, total] = await this._noteRepository.getAll({
+      select: {
+        id: true,
+        value: true,
+        createdAt: true,
+        updatedAt: true,
+        createdBy: {
+          fullName: true,
+        },
+        updatedBy: {
+          fullName: true,
+        },
+      },
       skip,
       take,
       where: {
