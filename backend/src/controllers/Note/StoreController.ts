@@ -3,9 +3,11 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
-import { NoteDto, Resource } from "@dtos/NoteDto";
+import { NoteDto } from "@dtos/NoteDto";
 import { IController } from "@interfaces/IController";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
+
+import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 
 @injectable()
 export class StoreController
@@ -25,7 +27,7 @@ export class StoreController
       body: { id, text, resource },
     } = request;
 
-    const entityReference = this._resourceToEntityReference(id, resource);
+    const entityReference = resourceToEntityReference(resource, id);
 
     if (!entityReference) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
@@ -47,17 +49,5 @@ export class StoreController
     }
 
     return response.status(HTTP.CREATED).send(note);
-  }
-
-  private _resourceToEntityReference(id: number, resource: Resource) {
-    switch (resource) {
-      case Resource.File: {
-        return {
-          file: {
-            id,
-          },
-        };
-      }
-    }
   }
 }
