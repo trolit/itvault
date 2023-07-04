@@ -1,6 +1,4 @@
-export enum Resource {
-  File = "File",
-}
+import { Resource } from "@enums/Resource";
 
 export class NoteDto {
   constructor(
