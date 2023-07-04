@@ -27,9 +27,6 @@ notesRouter.post(
   processRequestWith(StoreController)
 );
 
-notesRouter.delete(
-  "/v1/:resource/:id",
-  processRequestWith(SoftDeleteController)
-);
+notesRouter.delete("/v1/:id", processRequestWith(SoftDeleteController));
 
 export = notesRouter;
