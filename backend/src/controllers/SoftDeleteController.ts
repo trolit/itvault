@@ -8,15 +8,15 @@ import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-interface Params {
+interface IParams {
   resource: Resource;
 
   id: number;
 }
 
 @injectable()
-export class GetAllController implements IController<Params> {
-  async invoke(request: CustomRequest<Params>, response: Response) {
+export class SoftDeleteController implements IController<IParams> {
+  async invoke(request: CustomRequest<IParams>, response: Response) {
     const {
       params: { resource, id },
     } = request;
