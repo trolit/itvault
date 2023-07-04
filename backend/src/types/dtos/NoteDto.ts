@@ -1,9 +1,9 @@
-import { Resource } from "@enums/Resource";
+import { CommentableResource } from "@enums/CommentableResource";
 
 export class NoteDto {
   constructor(
     readonly id: number,
     readonly text: string,
-    readonly resource: Resource
+    readonly resource: CommentableResource
   ) {}
 }

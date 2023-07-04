@@ -1,6 +1,6 @@
 import { Resource } from "@enums/Resource";
 
-export const resourceToEntityReference = (resource: Resource, id: number) => {
+export const resourceToEntityReference = <T>(resource: T, id: number) => {
   switch (resource) {
     case Resource.File: {
       return {

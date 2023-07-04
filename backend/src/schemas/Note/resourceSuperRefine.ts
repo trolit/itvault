@@ -1,7 +1,7 @@
 import Zod, { RefinementCtx, ZodIssueCode } from "zod";
 
 import { NoteDto } from "@dtos/NoteDto";
-import { Resource } from "@enums/Resource";
+import { CommentableResource } from "@enums/CommentableResource";
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -14,7 +14,7 @@ export const resourceSuperRefine = async (
 ) => {
   const { id, resource: resourceName } = value;
 
-  if (!Resource[resourceName] || id <= 0) {
+  if (!CommentableResource[resourceName] || id <= 0) {
     return Zod.NEVER;
   }
 
