@@ -7,10 +7,13 @@ import { requireAuthentication } from "@middleware/requireAuthentication";
 import { useStoreSuperSchema } from "@schemas/Note/useStoreSuperSchema";
 
 import { StoreController } from "@controllers/Note/StoreController";
+import { GetAllController } from "@controllers/Note/GetAllController";
 
 const notesRouter = Router();
 
 notesRouter.use(requireAuthentication);
+
+notesRouter.get("/v1", processRequestWith(GetAllController));
 
 notesRouter.post(
   "/v1",
