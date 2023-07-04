@@ -4,18 +4,14 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
-import { Resource } from "@enums/Resource";
+import { NoteDto } from "@dtos/NoteDto";
 import { IController } from "@interfaces/IController";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 
-type Query = {
-  id: number;
-
-  resource: Resource;
-} & IPaginationOptions;
+type Query = Pick<NoteDto, "id" | "resource"> & IPaginationOptions;
 
 @injectable()
 export class GetAllController
