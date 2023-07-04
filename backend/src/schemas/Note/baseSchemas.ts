@@ -5,9 +5,7 @@ import { Resource } from "@enums/Resource";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 
-type ResourceRequest = Pick<NoteDto, "id" | "resource">;
-
-export const resourceSchema = schemaForType<ResourceRequest>()(
+export const resourceSchema = schemaForType<Pick<NoteDto, "id" | "resource">>()(
   z.object({
     id: z.coerce.number().gt(0),
 
