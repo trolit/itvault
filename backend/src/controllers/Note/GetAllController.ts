@@ -42,6 +42,10 @@ export class GetAllController
       where: {
         ...entityReference,
       },
+      relations: {
+        createdBy: true,
+        updatedBy: true,
+      },
     });
 
     return response.status(HTTP.OK).send({ result, total });
