@@ -2,7 +2,8 @@ import sanitizeHtml from "sanitize-html";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
-import { NoteDto, Resource } from "@dtos/NoteDto";
+import { NoteDto } from "@dtos/NoteDto";
+import { Resource } from "@enums/Resource";
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
