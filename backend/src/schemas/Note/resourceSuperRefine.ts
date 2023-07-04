@@ -14,7 +14,7 @@ export const resourceSuperRefine = async (
 ) => {
   const { id, resource: resourceName } = value;
 
-  if (!Resource[resourceName]) {
+  if (!Resource[resourceName] || id <= 0) {
     return Zod.NEVER;
   }
 
