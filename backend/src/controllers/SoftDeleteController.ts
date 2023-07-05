@@ -27,6 +27,12 @@ export class SoftDeleteController
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
+    const entity = await repository.getById(id);
+
+    if (!entity) {
+      return response.status(HTTP.NOT_FOUND).send();
+    }
+
     await repository.softDeleteById(id);
 
     return response.status(HTTP.NO_CONTENT).send();
