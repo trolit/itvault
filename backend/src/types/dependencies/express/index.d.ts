@@ -1,5 +1,5 @@
 import formidable from "formidable";
-import { Request, Response } from "express";
+import { Request, Response, ParsedQs } from "express";
 
 import { IFormDataFile } from "@interfaces/IFormDataFile";
 
@@ -24,7 +24,9 @@ declare global {
     P,
     unknown,
     B,
-    Q
+    Q & {
+      version: number;
+    }
   >;
 
   export type CustomResponse<T> = Response<T, Record<string, T>>;
