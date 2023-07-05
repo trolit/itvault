@@ -4,21 +4,24 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { IController } from "@interfaces/IController";
 
-import { getRepositoryByOriginalUrl } from "@helpers/getRepositoryByOriginalUrl";
+import { DeleteControllerUtils } from "@utils/DeleteControllerUtils";
 
 interface IParams {
   id: number;
 }
 
 @injectable()
-export class SoftDeleteController implements IController<IParams> {
+export class SoftDeleteController
+  extends DeleteControllerUtils
+  implements IController<IParams>
+{
   async invoke(request: CustomRequest<IParams>, response: Response) {
     const {
       originalUrl,
       params: { id },
     } = request;
 
-    const repository = getRepositoryByOriginalUrl(originalUrl);
+    const repository = this.getRepositoryByOriginalUrl(originalUrl);
 
     if (!repository) {
       return response.status(HTTP.BAD_REQUEST).send();
