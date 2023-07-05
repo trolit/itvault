@@ -6,7 +6,9 @@ import { getInstanceOf } from "./getInstanceOf";
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 // @TODO adjust after API versioning refactor!
-export const getRepositoryByOriginalUrl = (originalUrl: string) => {
+export const getRepositoryByOriginalUrl = <T = unknown>(
+  originalUrl: string
+) => {
   // @NOTE e.g. /api/notes/v1/1
   const resourceInPlural = originalUrl.split("/").at(-2);
 
@@ -22,5 +24,5 @@ export const getRepositoryByOriginalUrl = (originalUrl: string) => {
     return null;
   }
 
-  return getInstanceOf<IBaseRepository<unknown>>(dependency);
+  return getInstanceOf<IBaseRepository<T>>(dependency);
 };
