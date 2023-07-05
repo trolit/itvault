@@ -1,14 +1,10 @@
 import { Response } from "express";
 import { injectable } from "tsyringe";
-import capitalize from "lodash/capitalize";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { APP } from "@config";
-
 import { IController } from "@interfaces/IController";
-import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
-import { getInstanceOf } from "@helpers/getInstanceOf";
+import { getRepositoryByOriginalUrl } from "@helpers/getRepositoryByOriginalUrl";
 
 interface IParams {
   id: number;
@@ -22,18 +18,11 @@ export class SoftDeleteController implements IController<IParams> {
       params: { id },
     } = request;
 
-    const { ROUTES_PREFIX } = APP;
+    const repository = getRepositoryByOriginalUrl(originalUrl);
 
-    // @NOTE e.g. /api/notes/v1/1
-    const [resourceinPlural] = originalUrl
-      .replace(`${ROUTES_PREFIX}/`, "")
-      .split("/");
-
-    const resourceInSingular = resourceinPlural.slice(0, -1);
-
-    const repository = getInstanceOf<IBaseRepository<unknown>>(
-      `I${capitalize(resourceInSingular)}Repository`
-    );
+    if (!repository) {
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
 
     await repository.softDeleteById(id);
 
