@@ -10,7 +10,7 @@ export const getRepositoryByOriginalUrl = <T = unknown>(
   originalUrl: string
 ) => {
   // @NOTE e.g. /api/notes/v1/1
-  const resourceInPlural = originalUrl.split("/").at(-2);
+  const resourceInPlural = originalUrl.split("/").at(-3);
 
   if (!resourceInPlural) {
     return null;
