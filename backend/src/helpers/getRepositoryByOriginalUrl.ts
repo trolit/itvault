@@ -1,3 +1,4 @@
+import { container } from "tsyringe";
 import capitalize from "lodash/capitalize";
 
 import { getInstanceOf } from "./getInstanceOf";
@@ -16,6 +17,10 @@ export const getRepositoryByOriginalUrl = (originalUrl: string) => {
   const resource = resourceInPlural.slice(0, -1);
 
   const dependency = `I${capitalize(resource)}Repository`;
+
+  if (!container.isRegistered(dependency)) {
+    return null;
+  }
 
   return getInstanceOf<IBaseRepository<unknown>>(dependency);
 };
