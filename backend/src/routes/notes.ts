@@ -9,6 +9,7 @@ import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
 
 import { StoreController } from "@controllers/Note/StoreController";
 import { GetAllController } from "@controllers/Note/GetAllController";
+import { SoftDeleteController } from "@controllers/SoftDeleteController";
 
 const notesRouter = Router();
 
@@ -25,5 +26,7 @@ notesRouter.post(
   validateRequestWith(useStoreSuperSchema),
   processRequestWith(StoreController)
 );
+
+notesRouter.delete("/v1/:id", processRequestWith(SoftDeleteController));
 
 export = notesRouter;
