@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { IBaseController } from "@interfaces/IBaseController";
 import { ControllerImplementation } from "miscellaneous-types";
 
-export abstract class BaseController implements IBaseController {
+export abstract class BaseController {
   abstract implementations: ControllerImplementation[];
 
   async invoke(request: Request, response: Response) {
