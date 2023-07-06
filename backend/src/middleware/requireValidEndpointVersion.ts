@@ -1,7 +1,7 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 
-export const checkEndpointVersion = (versions: string[]) => {
+export const requireValidEndpointVersion = (versions: number[]) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const { version } = request.query;
 
@@ -9,9 +9,9 @@ export const checkEndpointVersion = (versions: string[]) => {
       return response
         .status(HTTP.BAD_REQUEST)
         .send(
-          `Wrong resource version, requested -> ${version}, found -> ${versions.join(
+          `Wrong resource version, requested ${version}, found: [${versions.join(
             ","
-          )}`
+          )}]`
         );
     }
 
