@@ -1,8 +1,8 @@
 import { Response } from "express";
 
 export interface IBaseController {
-  invoke(
-    request: CustomRequest<void>,
+  invoke<P, B, Q>(
+    request: CustomRequest<P, B, Q>,
     response: Response
   ): Promise<CustomResponse<any>>;
 }

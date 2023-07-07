@@ -7,7 +7,10 @@ import { ControllerImplementation } from "miscellaneous-types";
 export abstract class BaseController implements IBaseController {
   abstract implementations: ControllerImplementation[];
 
-  public async invoke(request: CustomRequest<void>, response: Response) {
+  public async invoke<P, B, Q>(
+    request: CustomRequest<P, B, Q>,
+    response: Response
+  ) {
     const {
       query: { version },
     } = request;
