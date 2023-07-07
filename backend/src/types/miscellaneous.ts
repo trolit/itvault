@@ -7,7 +7,7 @@ declare module "miscellaneous-types" {
   export type ControllerImplementation = {
     version: number;
 
-    handler: (
+    handle: (
       request: CustomRequest<any, any, any>,
       response: CustomResponse<any>
     ) => Promise<CustomResponse<any>>;
