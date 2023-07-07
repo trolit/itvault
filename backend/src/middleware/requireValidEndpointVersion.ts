@@ -1,19 +1,29 @@
+import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
-import type { Request, NextFunction, Response } from "express";
 
-export const requireValidEndpointVersion = (versions: number[]) => {
-  return async (request: Request, response: Response, next: NextFunction) => {
+import { getVersionSchema } from "@schemas/common/getVersionSchema";
+
+export const requireValidEndpointVersion = <P, B, Q>(versions: number[]) => {
+  return async (
+    request: CustomRequest<P, B, Q>,
+    response: Response,
+    next: NextFunction
+  ) => {
+    if (!versions.length) {
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+    }
+
+    const versionSchema = getVersionSchema(versions);
+
     const { version } = request.query;
 
-    if (!version || isNaN(+version)) {
-      return response
-        .status(HTTP.BAD_REQUEST)
-        .send(
-          `Wrong resource version, requested ${version}, found: [${versions.join(
-            ","
-          )}]`
-        );
+    const result = await versionSchema.safeParseAsync(version);
+
+    if (!result.success) {
+      return response.status(HTTP.BAD_REQUEST).send(result.error.format());
     }
+
+    request.query.version = result.data;
 
     next();
   };
