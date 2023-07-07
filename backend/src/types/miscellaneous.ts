@@ -7,6 +7,12 @@ declare module "miscellaneous-types" {
   export type ControllerImplementation = {
     version: number;
 
+    details?: {
+      url?: string;
+
+      incompatibileWith?: number[];
+    };
+
     handle: (
       request: CustomRequest<any, any, any>,
       response: CustomResponse<any>
