@@ -3,21 +3,17 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { schemaForType } from "@schemas/common/schemaForType";
 
 export const getVersionSchema = (versions: number[]) =>
-  schemaForType<{ version: number }>()(
-    z.object({
-      version: z.coerce
-        .number()
-        .superRefine((value: number, context: RefinementCtx) => {
-          if (!versions.includes(value)) {
-            context.addIssue({
-              code: ZodIssueCode.custom,
-              message: `Wrong resource version. Provided: ${value}, available: ${versions.join(
-                ","
-              )}`,
-            });
+  schemaForType<number>()(
+    z.coerce.number().superRefine((value: number, context: RefinementCtx) => {
+      if (!versions.includes(value)) {
+        context.addIssue({
+          code: ZodIssueCode.custom,
+          message: `Wrong resource version. Provided: ${value}, available: ${versions.join(
+            ","
+          )}`,
+        });
 
-            return Zod.NEVER;
-          }
-        }),
+        return Zod.NEVER;
+      }
     })
   );
