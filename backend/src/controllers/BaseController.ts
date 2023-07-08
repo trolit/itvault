@@ -7,6 +7,8 @@ import { ControllerImplementation } from "miscellaneous-types";
 export abstract class BaseController implements IBaseController {
   abstract implementations: ControllerImplementation[];
 
+  usedVersion: number;
+
   public async invoke<P, B, Q>(
     request: CustomRequest<P, B, Q>,
     response: Response
@@ -27,19 +29,20 @@ export abstract class BaseController implements IBaseController {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
+    this.usedVersion = implementation.version;
+
     return implementation.handle(request, response);
   }
 
   protected finalizeRequest<T>(
     response: CustomResponse<T>,
     code: HTTP,
-    data?: T
-  ) {
-    if (!data) {
-      return response.status(code).send();
-    }
+    data: T
+  ): CustomResponse<T> {
+    const versions = this.implementations
+      .filter(({ version }) => version !== this.usedVersion)
+      .map(({ version, details }) => ({ version, details }));
 
-    // @TODO version information
-    return response.status(code).send({ ...data, code: "1" });
+    return response.status(code).send({ ...data, versions });
   }
 }
