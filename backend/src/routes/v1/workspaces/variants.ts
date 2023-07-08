@@ -21,7 +21,9 @@ variantsRouter.use(requireWorkspaceAccess);
 
 variantsRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith(GetAllController)
 );
 
