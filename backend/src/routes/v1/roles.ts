@@ -21,14 +21,18 @@ rolesRouter.use(requirePermissions([Permission.ViewAllRoles]));
 
 rolesRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith(GetAllController)
 );
 
 rolesRouter.put(
   "/:id",
   requirePermissions([Permission.UpdateRole]),
-  validateRequestWith(useUpdateSuperSchema),
+  validateRequestWith(useUpdateSuperSchema, {
+    versions: UpdateController.ALL_VERSIONS,
+  }),
   processRequestWith(UpdateController)
 );
 

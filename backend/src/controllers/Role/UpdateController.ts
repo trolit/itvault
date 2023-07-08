@@ -4,24 +4,36 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
   id: number;
 }
 
+const version1 = 1;
+
 @injectable()
-export class UpdateController implements IController<IParams, UpdateRoleDto> {
+export class UpdateController extends BaseController {
   constructor(
     @inject(Di.RoleRepository)
     private _roleRepository: IRoleRepository
-  ) {}
-
-  async invoke(
-    request: CustomRequest<IParams, UpdateRoleDto, undefined>,
-    response: Response
   ) {
+    super();
+  }
+
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(request: CustomRequest<IParams, UpdateRoleDto>, response: Response) {
     const { id } = request.params;
 
     const result = await this._roleRepository.save(id, request.body);

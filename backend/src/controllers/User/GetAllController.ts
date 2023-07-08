@@ -33,7 +33,7 @@ export class GetAllController extends BaseController {
 
   static ALL_VERSIONS = [version1];
 
-  public async v1(
+  async v1(
     request: CustomRequest<undefined, undefined, IPaginationOptions>,
     response: CustomResponse<PaginatedResult<UserDto>>
   ) {

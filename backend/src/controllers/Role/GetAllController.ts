@@ -7,8 +7,10 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { RoleDto } from "@dtos/RoleDto";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IQuery {
   skip: number;
@@ -16,17 +18,27 @@ interface IQuery {
   take: number;
 }
 
+const version1 = 1;
+
 @injectable()
-export class GetAllController
-  implements
-    IController<undefined, undefined, IQuery, PaginatedResult<RoleDto>>
-{
+export class GetAllController extends BaseController {
   constructor(
     @inject(Di.RoleRepository)
     private _roleRepository: IRoleRepository
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<PaginatedResult<RoleDto>>
   ) {
@@ -42,6 +54,6 @@ export class GetAllController
       },
     });
 
-    return response.status(HTTP.OK).send({ result, total });
+    return this.finalizeRequest(response, HTTP.OK, { result, total });
   }
 }
