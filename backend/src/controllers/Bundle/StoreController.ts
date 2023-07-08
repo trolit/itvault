@@ -7,11 +7,13 @@ import { Queue } from "@enums/Queue";
 import { BundleDto } from "@dtos/BundleDto";
 import { BundleStatus } from "@enums/BundleStatus";
 import { BundleExpire } from "@enums/BundleExpire";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 import { sendToQueue } from "@helpers/sendToQueue";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
   workspaceId: number;
@@ -25,14 +27,27 @@ export interface IBody {
   values: BundleDto[];
 }
 
+const version1 = 1;
+
 @injectable()
-export class StoreController implements IController<IParams, IBody> {
+export class StoreController extends BaseController {
   constructor(
     @inject(Di.BundleRepository)
     private _bundleRepository: IBundleRepository
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(request: CustomRequest<IParams, IBody>, response: Response) {
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(request: CustomRequest<IParams, IBody>, response: Response) {
     const {
       userId,
       params: { workspaceId },
@@ -60,6 +75,6 @@ export class StoreController implements IController<IParams, IBody> {
       body: request.body,
     });
 
-    return response.status(HTTP.CREATED).send();
+    return this.finalizeRequest(response, HTTP.CREATED);
   }
 }

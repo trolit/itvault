@@ -17,7 +17,9 @@ bundlesRouter.use(IsWorkspaceAvailable);
 
 bundlesRouter.post(
   "",
-  validateRequestWith(useStoreSuperSchema),
+  validateRequestWith(useStoreSuperSchema, {
+    versions: StoreController.ALL_VERSIONS,
+  }),
   processRequestWith(StoreController)
 );
 
