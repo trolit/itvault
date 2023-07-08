@@ -4,21 +4,34 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
 import { NoteDto } from "@dtos/NoteDto";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 
+import { BaseController } from "@controllers/BaseController";
+
+const version1 = 1;
+
 @injectable()
-export class StoreController
-  implements IController<undefined, NoteDto, undefined, Note>
-{
+export class StoreController extends BaseController {
   constructor(
     @inject(Di.NoteRepository)
     private _noteRepository: INoteRepository
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(
     request: CustomRequest<undefined, NoteDto>,
     response: CustomResponse<Note>
   ) {
@@ -48,6 +61,6 @@ export class StoreController
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    return response.status(HTTP.CREATED).send(note);
+    return this.finalizeRequest(response, HTTP.CREATED, note);
   }
 }

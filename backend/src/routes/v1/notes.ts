@@ -17,13 +17,17 @@ notesRouter.use(requireAuthentication);
 
 notesRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith(GetAllController)
 );
 
 notesRouter.post(
   "",
-  validateRequestWith(useStoreSuperSchema),
+  validateRequestWith(useStoreSuperSchema, {
+    versions: StoreController.ALL_VERSIONS,
+  }),
   processRequestWith(StoreController)
 );
 
