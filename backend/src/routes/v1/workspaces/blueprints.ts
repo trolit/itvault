@@ -15,13 +15,13 @@ const blueprintsRouter = Router({ mergeParams: true });
 blueprintsRouter.use(requireWorkspaceAccess);
 
 blueprintsRouter.get(
-  "/v1",
+  "",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
 blueprintsRouter.post(
-  "/v1",
+  "",
   validateRequestWith(useStoreSuperSchema),
   processRequestWith(StoreController)
 );
