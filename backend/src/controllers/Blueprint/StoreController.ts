@@ -4,23 +4,36 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { Blueprint } from "@entities/Blueprint";
 import { BlueprintDto } from "@dtos/BlueprintDto";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
   workspaceId: number;
 }
 
+const version1 = 1;
+
 @injectable()
-export class StoreController
-  implements IController<IParams, BlueprintDto, undefined, Blueprint>
-{
+export class StoreController extends BaseController {
   constructor(
     @inject(Di.BlueprintRepository)
     private _blueprintRepository: IBlueprintRepository
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(
     request: CustomRequest<IParams, BlueprintDto>,
     response: CustomResponse<Blueprint>
   ) {
@@ -35,6 +48,6 @@ export class StoreController
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    return response.status(HTTP.CREATED).send(blueprint);
+    return this.finalizeRequest(response, HTTP.CREATED, blueprint);
   }
 }

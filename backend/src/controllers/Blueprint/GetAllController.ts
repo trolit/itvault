@@ -4,8 +4,10 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Blueprint } from "@entities/Blueprint";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
   workspaceId: number;
@@ -17,17 +19,27 @@ interface IQuery {
   take: number;
 }
 
+const version1 = 1;
+
 @injectable()
-export class GetAllController
-  implements
-    IController<IParams, undefined, IQuery, PaginatedResult<Blueprint>>
-{
+export class GetAllController extends BaseController {
   constructor(
     @inject(Di.BlueprintRepository)
     private _blueprintRepository: IBlueprintRepository
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(
     request: CustomRequest<IParams, undefined, IQuery>,
     response: CustomResponse<PaginatedResult<Blueprint>>
   ) {
@@ -46,6 +58,6 @@ export class GetAllController
       },
     });
 
-    return response.status(HTTP.OK).send({ result, total });
+    return this.finalizeRequest(response, HTTP.OK, { result, total });
   }
 }

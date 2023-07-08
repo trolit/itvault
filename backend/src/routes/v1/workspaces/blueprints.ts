@@ -16,13 +16,17 @@ blueprintsRouter.use(requireWorkspaceAccess);
 
 blueprintsRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith(GetAllController)
 );
 
 blueprintsRouter.post(
   "",
-  validateRequestWith(useStoreSuperSchema),
+  validateRequestWith(useStoreSuperSchema, {
+    versions: StoreController.ALL_VERSIONS,
+  }),
   processRequestWith(StoreController)
 );
 
