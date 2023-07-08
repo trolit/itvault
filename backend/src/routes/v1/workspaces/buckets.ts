@@ -13,13 +13,17 @@ const bucketsRouter = Router({ mergeParams: true });
 
 bucketsRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith(GetAllController)
 );
 
 bucketsRouter.post(
   "",
-  validateRequestWith(useStoreSuperSchema),
+  validateRequestWith(useStoreSuperSchema, {
+    versions: StoreController.ALL_VERSIONS,
+  }),
   processRequestWith(StoreController)
 );
 
