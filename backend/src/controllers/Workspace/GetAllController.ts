@@ -5,11 +5,13 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IQuery {
   skip: number;
@@ -17,19 +19,29 @@ interface IQuery {
   take: number;
 }
 
+const version1 = 1;
+
 @autoInjectable()
-export class GetAllController
-  implements
-    IController<undefined, undefined, IQuery, PaginatedResult<WorkspaceDto>>
-{
+export class GetAllController extends BaseController {
   constructor(
     @inject(Di.WorkspaceRepository)
     private _workspaceRepository: IWorkspaceRepository,
     @inject(Di.EntityMapperService)
     private _entityMapperService: IEntityMapperService
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<PaginatedResult<WorkspaceDto>>
   ) {
@@ -62,6 +74,9 @@ export class GetAllController
       WorkspaceDto
     );
 
-    return response.status(HTTP.OK).send({ result: mappedResult, total });
+    return this.finalizeRequest(response, HTTP.OK, {
+      result: mappedResult,
+      total,
+    });
   }
 }
