@@ -20,13 +20,13 @@ rolesRouter.use(requireAuthentication);
 rolesRouter.use(requirePermissions([Permission.ViewAllRoles]));
 
 rolesRouter.get(
-  "/v1",
+  "",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
 rolesRouter.put(
-  "/v1/:id",
+  "/:id",
   requirePermissions([Permission.UpdateRole]),
   validateRequestWith(useUpdateSuperSchema),
   processRequestWith(UpdateController)
