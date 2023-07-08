@@ -12,13 +12,13 @@ import { LogoutController } from "@controllers/Auth/LogoutController";
 const authRouter = Router();
 
 authRouter.post(
-  "/v1/login",
+  "/login",
   validateRequestWith(useLoginSuperSchema),
   processRequestWith(LoginController)
 );
 
-authRouter.post("/v1/logout", processRequestWith(LogoutController));
+authRouter.post("/logout", processRequestWith(LogoutController));
 
-authRouter.get("/v1/status", processRequestWith(StatusController));
+authRouter.get("/status", processRequestWith(StatusController));
 
 export = authRouter;

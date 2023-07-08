@@ -16,17 +16,17 @@ const notesRouter = Router();
 notesRouter.use(requireAuthentication);
 
 notesRouter.get(
-  "/v1",
+  "",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
 notesRouter.post(
-  "/v1",
+  "",
   validateRequestWith(useStoreSuperSchema),
   processRequestWith(StoreController)
 );
 
-notesRouter.delete("/v1/:id", processRequestWith(SoftDeleteController));
+notesRouter.delete("/:id", processRequestWith(SoftDeleteController));
 
 export = notesRouter;

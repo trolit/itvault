@@ -3,4 +3,19 @@ declare module "miscellaneous-types" {
   export type Type<T> = new (...args: unknown[]) => T;
 
   export type BucketContent = Record<number, string[]>;
+
+  export type ControllerImplementation = {
+    version: number;
+
+    details?: {
+      url?: string;
+
+      incompatibileWith?: number[];
+    };
+
+    handle: (
+      request: CustomRequest<any, any, any>,
+      response: CustomResponse<any>
+    ) => Promise<CustomResponse<any>>;
+  };
 }

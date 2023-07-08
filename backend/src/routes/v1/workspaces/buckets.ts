@@ -12,13 +12,13 @@ import { GetAllController } from "@controllers/Bucket/GetAllController";
 const bucketsRouter = Router({ mergeParams: true });
 
 bucketsRouter.get(
-  "/v1",
+  "",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
 
 bucketsRouter.post(
-  "/v1",
+  "",
   validateRequestWith(useStoreSuperSchema),
   processRequestWith(StoreController)
 );

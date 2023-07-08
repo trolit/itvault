@@ -4,30 +4,37 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
+import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
-interface IQuery {
-  skip: number;
+import { BaseController } from "@controllers/BaseController";
 
-  take: number;
-}
+const version1 = 1;
 
 @injectable()
-export class GetAllController
-  implements
-    IController<undefined, undefined, IQuery, PaginatedResult<UserDto>>
-{
+export class GetAllController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository,
     @inject(Di.EntityMapperService)
     private _entityMapperService: IEntityMapperService
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
-    request: CustomRequest<undefined, undefined, IQuery>,
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  public async v1(
+    request: CustomRequest<undefined, undefined, IPaginationOptions>,
     response: CustomResponse<PaginatedResult<UserDto>>
   ) {
     const {
@@ -56,6 +63,9 @@ export class GetAllController
       })
     );
 
-    return response.status(HTTP.OK).send({ result: mappedResult, total });
+    return this.finalizeRequest(response, HTTP.OK, {
+      result: mappedResult,
+      total,
+    });
   }
 }

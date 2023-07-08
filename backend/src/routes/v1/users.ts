@@ -2,10 +2,14 @@ import { Router } from "express";
 
 import { Permission } from "@enums/Permission";
 
-import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
+import { requireValidEndpointVersion } from "@middleware/requireValidEndpointVersion";
+import {
+  processRequestWith,
+  processRequestWith2,
+} from "@helpers/processRequestWith";
 
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
@@ -18,14 +22,16 @@ const usersRouter = Router();
 usersRouter.use(requireAuthentication);
 
 usersRouter.get(
-  "/v1",
+  "",
   requirePermissions([Permission.ViewAllUsers]),
-  validateRequestWith(useGetAllSuperSchema),
-  processRequestWith(GetAllController)
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
+  processRequestWith2(GetAllController)
 );
 
 usersRouter.patch(
-  "/v1",
+  "",
   requirePermissions(UpdateManyController.isMissingPermissions),
   validateRequestWith(useUpdateManySuperSchema),
   processRequestWith(UpdateManyController)
