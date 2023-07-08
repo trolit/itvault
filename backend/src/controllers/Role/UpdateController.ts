@@ -42,6 +42,6 @@ export class UpdateController extends BaseController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    return response.status(HTTP.NO_CONTENT).send();
+    return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
 }
