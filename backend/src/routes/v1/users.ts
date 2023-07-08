@@ -32,7 +32,9 @@ usersRouter.get(
 usersRouter.patch(
   "",
   requirePermissions(UpdateManyController.isMissingPermissions),
-  validateRequestWith(useUpdateManySuperSchema),
+  validateRequestWith(useUpdateManySuperSchema, {
+    versions: UpdateManyController.ALL_VERSIONS,
+  }),
   processRequestWith(UpdateManyController)
 );
 
