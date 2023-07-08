@@ -5,7 +5,6 @@ import { Permission } from "@enums/Permission";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
-import { requireValidEndpointVersion } from "@middleware/requireValidEndpointVersion";
 import {
   processRequestWith,
   processRequestWith2,
