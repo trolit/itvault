@@ -24,8 +24,9 @@ usersRouter.use(requireAuthentication);
 usersRouter.get(
   "",
   requirePermissions([Permission.ViewAllUsers]),
-  requireValidEndpointVersion(GetAllController.ALL_VERSIONS),
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith2(GetAllController)
 );
 
