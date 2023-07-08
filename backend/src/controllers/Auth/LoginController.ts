@@ -9,16 +9,18 @@ import { Di } from "@enums/Di";
 import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 import { IDataStoreService } from "@interfaces/services/IDataStoreService";
+import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
+import { BaseController } from "@controllers/BaseController";
+
+const version1 = 1;
+
 @injectable()
-export class LoginController
-  implements IController<undefined, LoginDto, undefined, UserDto>
-{
+export class LoginController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository,
@@ -28,9 +30,20 @@ export class LoginController
     private _entityMapperService: IEntityMapperService,
     @inject(Di.DataStoreService)
     private _dataStoreService: IDataStoreService
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(
     request: CustomRequest<undefined, LoginDto>,
     response: CustomResponse<UserDto>
   ) {
@@ -78,12 +91,11 @@ export class LoginController
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    return response
-      .cookie(JWT.COOKIE_KEY, token, {
-        httpOnly: true,
-        secure: APP.ENV === Environment.Production,
-      })
-      .status(HTTP.OK)
-      .send(mappedUserData);
+    response.cookie(JWT.COOKIE_KEY, token, {
+      httpOnly: true,
+      secure: APP.ENV === Environment.Production,
+    });
+
+    return this.finalizeRequest(response, HTTP.OK, mappedUserData);
   }
 }

@@ -13,7 +13,9 @@ const authRouter = Router();
 
 authRouter.post(
   "/login",
-  validateRequestWith(useLoginSuperSchema),
+  validateRequestWith(useLoginSuperSchema, {
+    versions: LoginController.ALL_VERSIONS,
+  }),
   processRequestWith(LoginController)
 );
 
