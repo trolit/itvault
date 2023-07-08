@@ -16,12 +16,12 @@ bundlesRouter.use(requireWorkspaceAccess);
 bundlesRouter.use(IsWorkspaceAvailable);
 
 bundlesRouter.post(
-  "/v1",
+  "",
   validateRequestWith(useStoreSuperSchema),
   processRequestWith(StoreController)
 );
 
-bundlesRouter.get("/v1/:id", processRequestWith(DownloadController));
+bundlesRouter.get("/:id", processRequestWith(DownloadController));
 
 // @TODO consider "try to build again" route
 
