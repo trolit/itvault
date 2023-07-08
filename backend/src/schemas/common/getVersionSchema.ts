@@ -8,9 +8,9 @@ export const getVersionSchema = (versions: number[]) =>
       if (!versions.includes(value)) {
         context.addIssue({
           code: ZodIssueCode.custom,
-          message: `Wrong resource version. Provided: ${value}, available: ${versions.join(
+          message: `Wrong resource version. Requested: ${value}, available: [${versions.join(
             ","
-          )}`,
+          )}]`,
         });
 
         return Zod.NEVER;
