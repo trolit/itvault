@@ -37,11 +37,19 @@ export abstract class BaseController implements IBaseController {
   protected finalizeRequest<T>(
     response: CustomResponse<T>,
     code: HTTP,
-    data: T
+    data?: T
   ): CustomResponse<T> {
     const versions = this.implementations
       .filter(({ version }) => version !== this.usedVersion)
       .map(({ version, details }) => ({ version, details }));
+
+    if (!data) {
+      return response.status(code).send();
+    }
+
+    if (!versions.length) {
+      return response.status(code).send(data);
+    }
 
     return response.status(code).send({ ...data, versions });
   }
