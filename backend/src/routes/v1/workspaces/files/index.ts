@@ -23,7 +23,7 @@ const filesRouter = Router({ mergeParams: true });
 filesRouter.use(requireWorkspaceAccess);
 
 filesRouter.post(
-  "/v1",
+  "",
   requirePermissions([Permission.UploadFiles]),
   IsWorkspaceAvailable,
   parseUploadFormData({
@@ -34,14 +34,14 @@ filesRouter.post(
 );
 
 filesRouter.patch(
-  "/:fileId/v1/relative-path",
+  "/:fileId/relative-path",
   requirePermissions([Permission.UpdateFileRelativePath]),
   validateRequestWith(usePatchRelativePathSuperSchema),
   processRequestWith(PatchRelativePathController)
 );
 
 filesRouter.get(
-  "/v1",
+  "",
   validateRequestWith(useGetAllSuperSchema),
   processRequestWith(GetAllController)
 );
