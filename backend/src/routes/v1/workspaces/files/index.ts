@@ -36,13 +36,17 @@ filesRouter.post(
 filesRouter.patch(
   "/:fileId/relative-path",
   requirePermissions([Permission.UpdateFileRelativePath]),
-  validateRequestWith(usePatchRelativePathSuperSchema),
+  validateRequestWith(usePatchRelativePathSuperSchema, {
+    versions: PatchRelativePathController.ALL_VERSIONS,
+  }),
   processRequestWith(PatchRelativePathController)
 );
 
 filesRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith(GetAllController)
 );
 
