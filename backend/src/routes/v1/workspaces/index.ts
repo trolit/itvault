@@ -2,7 +2,6 @@ import { Router } from "express";
 
 import filesRouter from "./files";
 import bucketsRouter from "./buckets";
-import bundlesRouter from "./bundles";
 import blueprintsRouter from "./blueprints";
 
 import { processRequestWith } from "@helpers/processRequestWith";
@@ -28,8 +27,6 @@ workspacesRouter.get(
 workspacesRouter.use("/:workspaceId/files", filesRouter);
 
 workspacesRouter.use("/:workspaceId/blueprints", blueprintsRouter);
-
-workspacesRouter.use("/:workspaceId/bundles", bundlesRouter);
 
 workspacesRouter.use("/:workspaceId/buckets", bucketsRouter);
 
