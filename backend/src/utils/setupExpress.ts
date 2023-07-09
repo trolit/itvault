@@ -8,8 +8,6 @@ import express, { Application, Request, Response, Router } from "express";
 
 import { APP } from "@config";
 
-import { logDependency } from "@helpers/logDependency";
-
 export const setupExpress = async (app: Application) => {
   app.use(
     cors({
@@ -61,12 +59,8 @@ async function getRoutes() {
       registeredRouters.push(routeName);
     }
 
-    logDependency(
-      "Express",
-      chalk =>
-        `Registered ${chalk.greenBright(
-          version
-        )} routes (${registeredRouters.join(", ")})`
+    console.log(
+      `Express: registered ${version} routes (${registeredRouters.join(", ")})`
     );
 
     mainRouter.use(`/${version}`, versionRouter);
