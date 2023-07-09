@@ -12,6 +12,7 @@ interface IParams {
   workspaceId: number;
 }
 
+// @TODO adjust after changes to endpoint structure
 export const requireWorkspaceAccess = (() => {
   return async (
     request: CustomRequest<IParams>,
