@@ -6,7 +6,6 @@ import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
@@ -62,33 +61,31 @@ function useBodySchema(): SchemaProvider {
 
 function useParamsSchema(): SchemaProvider {
   return () =>
-    baseSchemas.params.merge(
-      schemaForType<{ fileId: number }>()(
-        z.object({
-          fileId: z.coerce
-            .number()
-            .gt(0)
-            .superRefine(async (id, context: RefinementCtx) => {
-              if (id <= 0) {
-                return Zod.NEVER;
-              }
+    schemaForType<{ fileId: number }>()(
+      z.object({
+        fileId: z.coerce
+          .number()
+          .gt(0)
+          .superRefine(async (id, context: RefinementCtx) => {
+            if (id <= 0) {
+              return Zod.NEVER;
+            }
 
-              const fileRepository = getInstanceOf<IFileRepository>(
-                Di.FileRepository
-              );
+            const fileRepository = getInstanceOf<IFileRepository>(
+              Di.FileRepository
+            );
 
-              const file = await fileRepository.getById(id);
+            const file = await fileRepository.getById(id);
 
-              if (!file) {
-                context.addIssue({
-                  code: ZodIssueCode.custom,
-                  message: "File is not available.",
-                });
+            if (!file) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message: "File is not available.",
+              });
 
-                return Zod.NEVER;
-              }
-            }),
-        })
-      )
+              return Zod.NEVER;
+            }
+          }),
+      })
     );
 }

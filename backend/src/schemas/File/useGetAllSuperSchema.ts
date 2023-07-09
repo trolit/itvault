@@ -1,39 +1,55 @@
-import { z } from "zod";
+import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { FILES } from "@config";
 
-import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
+import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 import { IQuery } from "@controllers/File/GetAllController";
 
+const { workspaceIdSchema } = baseWorkspaceSchemas;
+
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
     return {
-      params: useParamsSchema(),
       query: useQuerySchema(),
     };
   }
 );
 
-function useParamsSchema(): SchemaProvider {
-  return () => baseSchemas.params;
-}
-
 function useQuerySchema(): SchemaProvider {
+  type IQueryPart = Pick<IQuery, "blueprintId" | "relativePath">;
+
+  const partialSchema = schemaForType<IQueryPart>()(
+    z.object({
+      relativePath: z.string().default(FILES.ROOT),
+      blueprintId: z.coerce.number().gt(0),
+    })
+  );
+
   return () =>
-    schemaForType<IQuery>()(
-      z
-        .object({
-          relativePath: z.string().default(FILES.ROOT),
-          blueprintId: z.coerce.number().gt(0),
-        })
-        .partial()
-        .refine(
-          data => !!data.blueprintId || !!data.relativePath,
-          "Either blueprintId or relativePath should be provided in query."
-        )
-    );
+    workspaceIdSchema
+      .merge(partialSchema)
+      .superRefine(
+        (
+          value: { blueprintId: number; relativePath: string },
+          context: RefinementCtx
+        ) => {
+          const { blueprintId, relativePath } = value;
+
+          if (
+            (!blueprintId && !relativePath) ||
+            (blueprintId && relativePath)
+          ) {
+            context.addIssue({
+              code: ZodIssueCode.custom,
+              message: `Either blueprintId or relativePath should be provided in query.`,
+            });
+
+            return Zod.NEVER;
+          }
+        }
+      );
 }

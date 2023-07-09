@@ -10,7 +10,7 @@ import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 import { StoreController } from "@controllers/Blueprint/StoreController";
 import { GetAllController } from "@controllers/Blueprint/GetAllController";
 
-const blueprintsRouter = Router({ mergeParams: true });
+const blueprintsRouter = Router();
 
 blueprintsRouter.use(requireWorkspaceAccess);
 

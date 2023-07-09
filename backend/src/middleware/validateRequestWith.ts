@@ -1,4 +1,4 @@
-import { z, ZodType } from "zod";
+import { z, ZodSchema, ZodType } from "zod";
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { NextFunction, Request, Response } from "express";
 import { SuperKeys, SuperSchemaRunner } from "super-schema-types";
@@ -16,6 +16,22 @@ export const validateRequestWith = (
       request,
     });
 
+    const versionSchema = getVersionSchema(data.versions);
+
+    const generalSchemasError = await runGeneralSchemasOnMissingKeys(
+      Object.keys(superSchema),
+      request,
+      {
+        versionSchema,
+      }
+    );
+
+    if (generalSchemasError) {
+      return response
+        .status(HTTP.BAD_REQUEST)
+        .send(generalSchemasError.format());
+    }
+
     for (const key in superSchema) {
       const propertyName = <keyof SuperKeys>key;
 
@@ -31,7 +47,9 @@ export const validateRequestWith = (
         return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
       }
 
-      const extendedSchema = extendSchema(propertyName, schema, data);
+      const extendedSchema = extendSchema(propertyName, schema, {
+        versionSchema,
+      });
 
       const result = await extendedSchema.safeParseAsync(request[propertyName]);
 
@@ -47,15 +65,37 @@ export const validateRequestWith = (
   };
 };
 
+async function runGeneralSchemasOnMissingKeys(
+  keys: string[],
+  request: Request,
+  schemas: {
+    versionSchema: ZodSchema;
+  }
+) {
+  if (!keys.includes("query")) {
+    const result = await schemas.versionSchema.safeParseAsync(request.query);
+
+    if (!result.success) {
+      return result.error;
+    }
+
+    request.query = result.data;
+
+    return null;
+  }
+
+  return null;
+}
+
 function extendSchema(
   key: keyof SuperKeys,
   schema: ZodType,
-  data: {
-    versions: number[];
+  schemas: {
+    versionSchema: ZodSchema;
   }
 ) {
   if (key === "query") {
-    return z.intersection(schema, getVersionSchema(data.versions));
+    return z.intersection(schema, schemas.versionSchema);
   }
 
   return schema;

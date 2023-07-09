@@ -30,6 +30,6 @@ const variantIdSchema = schemaForType<{
   })
 );
 
-export const baseSchemas = {
+export const baseVariantSchemas = {
   variantIdSchema,
 };

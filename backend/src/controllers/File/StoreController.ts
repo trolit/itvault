@@ -9,7 +9,7 @@ import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IParams {
+interface IQuery {
   workspaceId: number;
 }
 
@@ -35,11 +35,14 @@ export class StoreController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: CustomRequest<IParams>, response: CustomResponse<File[]>) {
+  async v1(
+    request: CustomRequest<undefined, undefined, IQuery>,
+    response: CustomResponse<File[]>
+  ) {
     const {
       files,
       userId,
-      params: { workspaceId },
+      query: { workspaceId },
     } = request;
 
     const savedFiles = await this._fileRepository.save(

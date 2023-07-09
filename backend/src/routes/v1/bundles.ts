@@ -11,7 +11,7 @@ import { useStoreSuperSchema } from "@schemas/Bundle/useStoreSuperSchema";
 import { StoreController } from "@controllers/Bundle/StoreController";
 import { DownloadController } from "@controllers/Bundle/DownloadController";
 
-const bundlesRouter = Router({ mergeParams: true });
+const bundlesRouter = Router();
 
 bundlesRouter.use(requireWorkspaceAccess);
 bundlesRouter.use(IsWorkspaceAvailable);

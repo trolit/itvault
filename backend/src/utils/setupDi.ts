@@ -68,7 +68,9 @@ function registerDependencies(config: {
     interfacesDirname
   );
 
-  fs.readdir(`dist/${dirname}`, async (error, files) => {
+  const dir = path.join("dist", dirname);
+
+  fs.readdir(dir, async (error, files) => {
     for (const file of files) {
       const [dependencyFilename] = file.split(".");
 

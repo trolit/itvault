@@ -9,7 +9,7 @@ import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintReposit
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IParams {
+interface IQuery {
   workspaceId: number;
 }
 
@@ -34,12 +34,12 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<IParams, BlueprintDto>,
+    request: CustomRequest<undefined, BlueprintDto, IQuery>,
     response: CustomResponse<Blueprint>
   ) {
     const {
       body,
-      params: { workspaceId },
+      query: { workspaceId },
     } = request;
 
     const blueprint = await this._blueprintRepository.save(workspaceId, body);

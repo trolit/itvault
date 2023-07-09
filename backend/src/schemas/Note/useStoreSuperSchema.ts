@@ -2,7 +2,7 @@ import { z } from "zod";
 import sanitizeHtml from "sanitize-html";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
-import { baseSchemas } from "./baseSchemas";
+import { baseNoteSchemas } from "./baseSchemas";
 import { resourceSuperRefine } from "./resourceSuperRefine";
 
 import { NoteDto } from "@dtos/NoteDto";
@@ -18,7 +18,7 @@ export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   }
 );
 
-const { resourceSchema } = baseSchemas;
+const { resourceSchema } = baseNoteSchemas;
 
 function useBodySchema(): SchemaProvider {
   const textSchema = schemaForType<Pick<NoteDto, "text">>()(

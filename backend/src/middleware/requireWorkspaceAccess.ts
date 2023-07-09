@@ -8,13 +8,13 @@ import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
-interface IParams {
+interface IQuery {
   workspaceId: number;
 }
 
 export const requireWorkspaceAccess = (() => {
   return async (
-    request: CustomRequest<IParams>,
+    request: CustomRequest<unknown, unknown, IQuery>,
     response: Response,
     next: NextFunction
   ) => {
@@ -22,7 +22,7 @@ export const requireWorkspaceAccess = (() => {
 
     const {
       userId,
-      params: { workspaceId },
+      query: { workspaceId },
     } = request;
 
     if (!userId || !workspaceId) {

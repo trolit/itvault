@@ -13,8 +13,16 @@ export const IsWorkspaceAvailable = (() => {
       Di.WorkspaceRepository
     );
 
+    const {
+      query: { workspaceId },
+    } = request;
+
+    if (!workspaceId) {
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
+
     const workspace = await workspaceRepository.getById(
-      request.params.workspaceId
+      parseInt(<string>workspaceId)
     );
 
     if (!workspace) {

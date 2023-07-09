@@ -9,8 +9,6 @@ import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
-  workspaceId: number;
-
   fileId: number;
 }
 

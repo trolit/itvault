@@ -9,14 +9,12 @@ import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintReposit
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IParams {
-  workspaceId: number;
-}
-
 interface IQuery {
   skip: number;
 
   take: number;
+
+  workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -40,12 +38,11 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<IParams, undefined, IQuery>,
+    request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<PaginatedResult<Blueprint>>
   ) {
     const {
-      params: { workspaceId },
-      query: { skip, take },
+      query: { skip, take, workspaceId },
     } = request;
 
     const [result, total] = await this._blueprintRepository.getAll({

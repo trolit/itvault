@@ -10,9 +10,11 @@ import { IVariantRepository } from "@interfaces/repositories/IVariantRepository"
 import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
-  workspaceId: number;
-
   variantId: string;
+}
+
+interface IQuery {
+  workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -38,11 +40,12 @@ export class GetByIdController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<IParams>,
+    request: CustomRequest<IParams, undefined, IQuery>,
     response: CustomResponse<VariantDto>
   ) {
     const {
-      params: { workspaceId, variantId },
+      query: { workspaceId },
+      params: { variantId },
     } = request;
 
     const variant = await this._variantRepository.getById(variantId);

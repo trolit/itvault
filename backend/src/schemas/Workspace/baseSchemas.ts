@@ -7,7 +7,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 
-const paramsSchema = schemaForType<{
+const workspaceIdSchema = schemaForType<{
   workspaceId: number;
 }>()(
   z.object({
@@ -37,6 +37,6 @@ const paramsSchema = schemaForType<{
   })
 );
 
-export const baseSchemas = {
-  params: paramsSchema,
+export const baseWorkspaceSchemas = {
+  workspaceIdSchema,
 };

@@ -15,16 +15,16 @@ import { sendToQueue } from "@helpers/sendToQueue";
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IParams {
-  workspaceId: number;
-}
-
 export interface IBody {
   note?: string;
 
   expiration: BundleExpire;
 
   values: BundleDto[];
+}
+
+interface IQuery {
+  workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -47,10 +47,13 @@ export class StoreController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: CustomRequest<IParams, IBody>, response: Response) {
+  async v1(
+    request: CustomRequest<undefined, IBody, IQuery>,
+    response: Response
+  ) {
     const {
       userId,
-      params: { workspaceId },
+      query: { workspaceId },
       body: { values, note, expiration },
     } = request;
 

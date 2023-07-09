@@ -9,17 +9,25 @@ import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { schemaForType } from "@schemas/common/schemaForType";
+import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 import { IBody } from "@controllers/Bundle/StoreController";
 
+const { workspaceIdSchema } = baseWorkspaceSchemas;
+
 export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
     return {
+      query: useQuerySchema(),
       body: useBodySchema(),
     };
   }
 );
+
+function useQuerySchema(): SchemaProvider {
+  return () => workspaceIdSchema;
+}
 
 function useBodySchema(): SchemaProvider {
   const valueSchema = schemaForType<BundleDto>()(

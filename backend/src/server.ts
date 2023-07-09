@@ -26,7 +26,7 @@ export const server = async () => {
 
   redis.initializeRoleKeys();
 
-  setupExpress(app);
+  await setupExpress(app);
 
   return app;
 };

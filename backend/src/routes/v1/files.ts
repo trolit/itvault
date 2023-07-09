@@ -19,7 +19,7 @@ import { StoreController } from "@controllers/File/StoreController";
 import { GetAllController } from "@controllers/File/GetAllController";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
 
-const filesRouter = Router({ mergeParams: true });
+const filesRouter = Router();
 
 filesRouter.use(requireWorkspaceAccess);
 

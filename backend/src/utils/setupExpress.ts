@@ -1,13 +1,14 @@
 import cors from "cors";
+import path from "path";
+import fs from "fs-extra";
 import helmet from "helmet";
-import routes from "@routes";
 import cookieParser from "cookie-parser";
 import { StatusCodes as HTTP } from "http-status-codes";
-import express, { Application, Request, Response } from "express";
+import express, { Application, Request, Response, Router } from "express";
 
 import { APP } from "@config";
 
-export const setupExpress = (app: Application) => {
+export const setupExpress = async (app: Application) => {
   app.use(
     cors({
       credentials: true,
@@ -21,7 +22,7 @@ export const setupExpress = (app: Application) => {
 
   app.use(cookieParser());
 
-  app.use(APP.ROUTES_PREFIX, routes);
+  app.use(APP.ROUTES_PREFIX, await getRoutes());
 
   app.use((error: Error, request: Request, response: Response) => {
     console.error(error.stack);
@@ -31,3 +32,39 @@ export const setupExpress = (app: Application) => {
       .send("Oops.. Something broke 😢");
   });
 };
+
+async function getRoutes() {
+  const routesDir = path.join("dist", "routes");
+
+  const versions = fs.readdirSync(routesDir);
+
+  const mainRouter = Router();
+
+  for (const version of versions) {
+    const versionRouter = Router();
+
+    const routers = fs.readdirSync(path.join(routesDir, version));
+
+    const registeredRouters: string[] = [];
+
+    for (const router of routers) {
+      const dependency = await import(
+        path.resolve("dist", "routes", version, router)
+      );
+
+      const [routeName] = router.split(".");
+
+      versionRouter.use(`/${routeName}`, dependency.default);
+
+      registeredRouters.push(routeName);
+    }
+
+    console.log(
+      `Express: registered ${version} routes (${registeredRouters.join(", ")})`
+    );
+
+    mainRouter.use(`/${version}`, versionRouter);
+  }
+
+  return mainRouter;
+}

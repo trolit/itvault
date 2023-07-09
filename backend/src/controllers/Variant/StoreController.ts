@@ -9,16 +9,16 @@ import { IVariantRepository } from "@interfaces/repositories/IVariantRepository"
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IParams {
-  workspaceId: number;
-}
-
 export interface IBody {
   name: string;
 
   fileId: number;
 
   variantId?: string;
+}
+
+interface IQuery {
+  workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -44,14 +44,14 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<IParams, IBody>,
+    request: CustomRequest<undefined, IBody, IQuery>,
     response: CustomResponse<Variant>
   ) {
     const {
       body,
       files,
       userId,
-      params: { workspaceId },
+      query: { workspaceId },
     } = request;
 
     const variant = await this._variantRepository.save(userId, body, files);
