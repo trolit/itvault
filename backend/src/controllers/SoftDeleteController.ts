@@ -12,18 +12,18 @@ interface IParams {
   id: number;
 }
 
-const version1 = 1;
+const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
 export class SoftDeleteController extends BaseController {
   implementations: ControllerImplementation[] = [
     {
-      version: version1,
+      version: v1_0,
       handle: this.v1.bind(this),
     },
   ];
 
-  static ALL_VERSIONS = [version1];
+  static ALL_VERSIONS = [v1_0];
 
   async v1(request: CustomRequest<IParams>, response: Response) {
     const {

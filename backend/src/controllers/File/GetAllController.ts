@@ -18,7 +18,7 @@ export interface IQuery {
   relativePath?: string;
 }
 
-const version1 = 1;
+const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
 export class GetAllController extends BaseController {
@@ -31,12 +31,12 @@ export class GetAllController extends BaseController {
 
   implementations: ControllerImplementation[] = [
     {
-      version: version1,
+      version: v1_0,
       handle: this.v1.bind(this),
     },
   ];
 
-  static ALL_VERSIONS = [version1];
+  static ALL_VERSIONS = [v1_0];
 
   async v1(
     request: CustomRequest<IParams, undefined, IQuery>,
