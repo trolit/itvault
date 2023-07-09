@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { getVersionSchema } from "@schemas/common/getVersionSchema";
 
-export const requireValidEndpointVersion = <P, B, Q>(versions: number[]) => {
+export const requireEndpointVersion = <P, B, Q>(versions: number[]) => {
   return async (
     request: CustomRequest<P, B, Q>,
     response: Response,
