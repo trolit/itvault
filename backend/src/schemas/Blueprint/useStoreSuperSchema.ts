@@ -11,11 +11,11 @@ import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintReposit
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
+import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { workspaceIdSchema } = baseSchemas;
+const { workspaceIdSchema } = baseWorkspaceSchemas;
 
 export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   ({ request }: SuperCommonParam) => {
