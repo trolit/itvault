@@ -16,9 +16,11 @@ import { StoreController } from "@controllers/Variant/StoreController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
 import { GetByIdController } from "@controllers/Variant/GetByIdController";
 
-const variantsRouter = Router({ mergeParams: true });
+const variantsRouter = Router();
 
 variantsRouter.use(requireWorkspaceAccess);
+
+// @TODO fix /:workspaceId
 
 variantsRouter.get(
   "",

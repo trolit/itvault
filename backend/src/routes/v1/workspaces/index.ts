@@ -3,7 +3,6 @@ import { Router } from "express";
 import filesRouter from "./files";
 import bucketsRouter from "./buckets";
 import bundlesRouter from "./bundles";
-import variantsRouter from "./variants";
 import blueprintsRouter from "./blueprints";
 
 import { processRequestWith } from "@helpers/processRequestWith";
@@ -27,8 +26,6 @@ workspacesRouter.get(
 );
 
 workspacesRouter.use("/:workspaceId/files", filesRouter);
-
-workspacesRouter.use("/:workspaceId/variants", variantsRouter);
 
 workspacesRouter.use("/:workspaceId/blueprints", blueprintsRouter);
 
