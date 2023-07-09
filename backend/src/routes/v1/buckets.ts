@@ -11,6 +11,8 @@ import { GetAllController } from "@controllers/Bucket/GetAllController";
 
 const bucketsRouter = Router({ mergeParams: true });
 
+// @TODO fix /:workspaceId
+
 bucketsRouter.get(
   "",
   validateRequestWith(useGetAllSuperSchema, {
