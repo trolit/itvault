@@ -9,6 +9,7 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
@@ -25,6 +26,7 @@ filesRouter.use(requireWorkspaceAccess);
 filesRouter.post(
   "",
   requirePermissions([Permission.UploadFiles]),
+  requireEndpointVersion(StoreController.ALL_VERSIONS),
   IsWorkspaceAvailable,
   parseUploadFormData({
     multiples: true,

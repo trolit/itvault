@@ -6,8 +6,10 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { FILES } from "@config/index";
 
 import { Di } from "@enums/Di";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
   workspaceId: number;
@@ -15,14 +17,27 @@ interface IParams {
   id: number;
 }
 
+const version1 = 1;
+
 @injectable()
-export class DownloadController implements IController<IParams> {
+export class DownloadController extends BaseController {
   constructor(
     @inject(Di.BundleRepository)
     private _bundleRepository: IBundleRepository
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(request: CustomRequest<IParams>, response: Response) {
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(request: CustomRequest<IParams>, response: Response) {
     const {
       params: { id },
     } = request;
@@ -35,6 +50,6 @@ export class DownloadController implements IController<IParams> {
 
     response.download(path.join(FILES.BASE_DOWNLOADS_PATH, bundle.filename));
 
-    return response.status(HTTP.OK).send();
+    return this.finalizeRequest(response, HTTP.OK);
   }
 }

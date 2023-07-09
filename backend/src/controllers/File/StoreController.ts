@@ -3,29 +3,39 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
   workspaceId: number;
 }
 
+const version1 = 1;
+
 @injectable()
-export class StoreController
-  implements IController<IParams, undefined, undefined, File[]>
-{
+export class StoreController extends BaseController {
   constructor(
     @inject(Di.FileRepository)
     private _fileRepository: IFileRepository,
     @inject(Di.FileService)
     private _fileService: IFileService
-  ) {}
-
-  async invoke(
-    request: CustomRequest<IParams>,
-    response: CustomResponse<File[]>
   ) {
+    super();
+  }
+
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(request: CustomRequest<IParams>, response: CustomResponse<File[]>) {
     const {
       files,
       userId,
@@ -44,6 +54,6 @@ export class StoreController
 
     this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
 
-    return response.status(HTTP.OK).send(savedFiles);
+    return this.finalizeRequest(response, HTTP.OK, savedFiles);
   }
 }
