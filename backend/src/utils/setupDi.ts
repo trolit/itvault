@@ -68,7 +68,9 @@ function registerDependencies(config: {
     interfacesDirname
   );
 
-  fs.readdir(`dist/${dirname}`, async (error, files) => {
+  const dir = path.join("dist", dirname);
+
+  fs.readdir(dir, async (error, files) => {
     for (const file of files) {
       const [dependencyFilename] = file.split(".");
 
@@ -81,7 +83,9 @@ function registerDependencies(config: {
       if (
         fs.existsSync(path.join(dependencyInterfacePath, `${interfaceName}.js`))
       ) {
-        const dependency = await import(`@${dirname}/${dependencyFilename}`);
+        const dependency = await import(
+          path.join(`@${dirname}`, dependencyFilename)
+        );
 
         container.register(interfaceName, dependency[dependencyFilename]);
       } else {
