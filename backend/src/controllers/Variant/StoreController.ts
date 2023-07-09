@@ -3,13 +3,17 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
   workspaceId: number;
 }
+
+const version1 = 1;
 
 export interface IBody {
   name: string;
@@ -20,17 +24,26 @@ export interface IBody {
 }
 
 @injectable()
-export class StoreController
-  implements IController<IParams, IBody, undefined, Variant>
-{
+export class StoreController extends BaseController {
   constructor(
     @inject(Di.VariantRepository)
     private _variantRepository: IVariantRepository,
     @inject(Di.FileService)
     private _fileService: IFileService
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(
     request: CustomRequest<IParams, IBody>,
     response: CustomResponse<Variant>
   ) {
@@ -51,6 +64,6 @@ export class StoreController
       this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
     }
 
-    return response.status(HTTP.CREATED).send(variant);
+    return this.finalizeRequest(response, HTTP.CREATED, variant);
   }
 }

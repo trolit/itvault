@@ -3,9 +3,11 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { VariantDto } from "@dtos/VariantDto";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IVariantService } from "@interfaces/services/IVariantService";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
   workspaceId: number;
@@ -13,18 +15,29 @@ interface IParams {
   variantId: string;
 }
 
+const version1 = 1;
+
 @injectable()
-export class GetByIdController
-  implements IController<IParams, undefined, undefined, VariantDto>
-{
+export class GetByIdController extends BaseController {
   constructor(
     @inject(Di.VariantRepository)
     private _variantRepository: IVariantRepository,
     @inject(Di.VariantService)
     private _variantService: IVariantService
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: version1,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [version1];
+
+  async v1(
     request: CustomRequest<IParams>,
     response: CustomResponse<VariantDto>
   ) {
@@ -47,9 +60,6 @@ export class GetByIdController
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    return response.status(HTTP.OK).send({
-      entry: variant,
-      content,
-    });
+    return this.finalizeRequest(response, HTTP.OK, { entry: variant, content });
   }
 }
