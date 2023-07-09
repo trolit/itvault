@@ -15,6 +15,10 @@ interface IBody {
   variantId: string;
 }
 
+interface IQuery {
+  workspaceId: number;
+}
+
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
@@ -36,7 +40,7 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, IBody>,
+    request: CustomRequest<undefined, IBody, IQuery>,
     response: CustomResponse<Bucket[]>
   ) {
     const {

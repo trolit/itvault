@@ -9,19 +9,26 @@ import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintReposit
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-import { baseSchemas } from "@schemas/Variant/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
+import { baseVariantSchemas } from "@schemas/Variant/baseSchemas";
+import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { variantIdSchema } = baseSchemas;
+const { variantIdSchema } = baseVariantSchemas;
+const { workspaceIdSchema } = baseWorkspaceSchemas;
 
 export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
     return {
+      query: useQuerySchema(),
       body: useBodySchema(),
     };
   }
 );
+
+function useQuerySchema(): SchemaProvider {
+  return () => workspaceIdSchema;
+}
 
 function useBodySchema(): SchemaProvider {
   const bucketSchema = schemaForType<BucketDto>()(

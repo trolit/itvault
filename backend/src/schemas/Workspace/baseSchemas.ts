@@ -37,6 +37,6 @@ const workspaceIdSchema = schemaForType<{
   })
 );
 
-export const baseSchemas = {
+export const baseWorkspaceSchemas = {
   workspaceIdSchema,
 };

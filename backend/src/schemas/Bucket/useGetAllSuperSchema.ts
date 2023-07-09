@@ -1,9 +1,11 @@
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
-import { baseSchemas } from "@schemas/Variant/baseSchemas";
+import { baseVariantSchemas } from "@schemas/Variant/baseSchemas";
+import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { variantIdSchema } = baseSchemas;
+const { variantIdSchema } = baseVariantSchemas;
+const { workspaceIdSchema } = baseWorkspaceSchemas;
 
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
@@ -14,5 +16,5 @@ export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 );
 
 function useQuerySchema(): SchemaProvider {
-  return () => variantIdSchema;
+  return () => variantIdSchema.merge(workspaceIdSchema);
 }
