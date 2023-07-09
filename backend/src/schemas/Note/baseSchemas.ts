@@ -13,6 +13,6 @@ export const resourceSchema = schemaForType<Pick<NoteDto, "id" | "resource">>()(
   })
 );
 
-export const baseSchemas = {
+export const baseNoteSchemas = {
   resourceSchema,
 };
