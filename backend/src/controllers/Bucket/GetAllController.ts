@@ -3,23 +3,36 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Bucket } from "@entities/Bucket";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IQuery {
   variantId: string;
 }
 
+const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
+
 @injectable()
-export class GetAllController
-  implements IController<undefined, undefined, IQuery, Bucket[]>
-{
+export class GetAllController extends BaseController {
   constructor(
     @inject(Di.BucketRepository)
     private _bucketRepository: IBucketRepository
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: v1_0,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [v1_0];
+
+  async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<Bucket[]>
   ) {
@@ -43,6 +56,6 @@ export class GetAllController
       },
     });
 
-    return response.status(HTTP.OK).send(result);
+    return this.finalizeRequest(response, HTTP.OK, result);
   }
 }

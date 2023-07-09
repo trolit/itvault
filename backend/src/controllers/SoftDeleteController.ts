@@ -2,26 +2,36 @@ import { Response } from "express";
 import { injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { IController } from "@interfaces/IController";
+import { BaseController } from "./BaseController";
 
-import { DeleteControllerUtils } from "@utils/DeleteControllerUtils";
+import { ControllerImplementation } from "miscellaneous-types";
+
+import { getRepositoryByOriginalUrl } from "@helpers/getRepositoryByOriginalUrl";
 
 interface IParams {
   id: number;
 }
 
+const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
+
 @injectable()
-export class SoftDeleteController
-  extends DeleteControllerUtils
-  implements IController<IParams>
-{
-  async invoke(request: CustomRequest<IParams>, response: Response) {
+export class SoftDeleteController extends BaseController {
+  implementations: ControllerImplementation[] = [
+    {
+      version: v1_0,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [v1_0];
+
+  async v1(request: CustomRequest<IParams>, response: Response) {
     const {
       originalUrl,
       params: { id },
     } = request;
 
-    const repository = this.getRepositoryByOriginalUrl(originalUrl);
+    const repository = getRepositoryByOriginalUrl(originalUrl);
 
     if (!repository) {
       return response.status(HTTP.BAD_REQUEST).send();
@@ -35,6 +45,6 @@ export class SoftDeleteController
 
     await repository.softDeleteById(id);
 
-    return response.status(HTTP.NO_CONTENT).send();
+    return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
 }

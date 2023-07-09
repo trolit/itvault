@@ -3,8 +3,10 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
+
+import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
   workspaceId: number;
@@ -16,16 +18,27 @@ export interface IQuery {
   relativePath?: string;
 }
 
+const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
+
 @injectable()
-export class GetAllController
-  implements IController<IParams, undefined, IQuery, File[]>
-{
+export class GetAllController extends BaseController {
   constructor(
     @inject(Di.FileRepository)
     private _fileRepository: IFileRepository
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: v1_0,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [v1_0];
+
+  async v1(
     request: CustomRequest<IParams, undefined, IQuery>,
     response: CustomResponse<File[]>
   ) {
@@ -50,6 +63,6 @@ export class GetAllController
       );
     }
 
-    return response.status(HTTP.OK).send(result);
+    return this.finalizeRequest(response, HTTP.OK, result);
   }
 }

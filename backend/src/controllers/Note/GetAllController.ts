@@ -5,24 +5,37 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
 import { NoteDto } from "@dtos/NoteDto";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 
+import { BaseController } from "@controllers/BaseController";
+
 type Query = Pick<NoteDto, "id" | "resource"> & IPaginationOptions;
 
+const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
+
 @injectable()
-export class GetAllController
-  implements IController<undefined, undefined, Query, PaginatedResult<Note>>
-{
+export class GetAllController extends BaseController {
   constructor(
     @inject(Di.NoteRepository)
     private _noteRepository: INoteRepository
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: v1_0,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [v1_0];
+
+  async v1(
     request: CustomRequest<undefined, undefined, Query>,
     response: CustomResponse<PaginatedResult<Note>>
   ) {
@@ -56,6 +69,6 @@ export class GetAllController
       },
     });
 
-    return response.status(HTTP.OK).send({ result, total });
+    return this.finalizeRequest(response, HTTP.OK, { result, total });
   }
 }

@@ -6,29 +6,41 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
-import { IController } from "@interfaces/IController";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IUserService } from "@interfaces/services/IUserService";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
+import { BaseController } from "@controllers/BaseController";
+
 interface IRequestBody {
   value: UpdateUserDto[];
 }
 
+const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
+
 @injectable()
-export class UpdateManyController
-  implements
-    IController<undefined, IRequestBody, undefined, Result<UpdateUserDto[]>>
-{
+export class UpdateManyController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository,
     @inject(Di.UserService)
     private _userService: IUserService
-  ) {}
+  ) {
+    super();
+  }
 
-  async invoke(
+  implementations: ControllerImplementation[] = [
+    {
+      version: v1_0,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [v1_0];
+
+  async v1(
     request: CustomRequest<undefined, IRequestBody>,
     response: CustomResponse<Result<UpdateUserDto[]>>
   ) {
@@ -44,7 +56,7 @@ export class UpdateManyController
 
     this._userService.reflectChangesInDataStore(value);
 
-    return response.status(HTTP.NO_CONTENT).send();
+    return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
 
   static isMissingPermissions(request: Request): boolean {

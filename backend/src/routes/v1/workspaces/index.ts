@@ -20,7 +20,9 @@ workspacesRouter.use(requireAuthentication);
 
 workspacesRouter.get(
   "/v1",
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith(GetAllController)
 );
 

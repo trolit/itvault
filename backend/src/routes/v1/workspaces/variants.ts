@@ -6,6 +6,7 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { storeSchema } from "@schemas/Variant/storeSchema";
@@ -21,14 +22,21 @@ variantsRouter.use(requireWorkspaceAccess);
 
 variantsRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith(GetAllController)
 );
 
-variantsRouter.get("/:variantId", processRequestWith(GetByIdController));
+variantsRouter.get(
+  "/:variantId",
+  requireEndpointVersion(GetByIdController.ALL_VERSIONS),
+  processRequestWith(GetByIdController)
+);
 
 variantsRouter.post(
   "",
+  requireEndpointVersion(StoreController.ALL_VERSIONS),
   IsWorkspaceAvailable,
   parseUploadFormData(
     {

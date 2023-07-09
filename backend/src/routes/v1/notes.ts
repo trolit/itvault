@@ -3,6 +3,7 @@ import { Router } from "express";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Note/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
@@ -17,16 +18,24 @@ notesRouter.use(requireAuthentication);
 
 notesRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema),
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
   processRequestWith(GetAllController)
 );
 
 notesRouter.post(
   "",
-  validateRequestWith(useStoreSuperSchema),
+  validateRequestWith(useStoreSuperSchema, {
+    versions: StoreController.ALL_VERSIONS,
+  }),
   processRequestWith(StoreController)
 );
 
-notesRouter.delete("/:id", processRequestWith(SoftDeleteController));
+notesRouter.delete(
+  "/:id",
+  requireEndpointVersion(SoftDeleteController.ALL_VERSIONS),
+  processRequestWith(SoftDeleteController)
+);
 
 export = notesRouter;
