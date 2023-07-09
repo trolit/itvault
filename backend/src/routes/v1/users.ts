@@ -2,13 +2,10 @@ import { Router } from "express";
 
 import { Permission } from "@enums/Permission";
 
+import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
-import {
-  processRequestWith,
-  processRequestWith2,
-} from "@helpers/processRequestWith";
 
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
@@ -26,7 +23,7 @@ usersRouter.get(
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
-  processRequestWith2(GetAllController)
+  processRequestWith(GetAllController)
 );
 
 usersRouter.patch(
