@@ -6,7 +6,6 @@ import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceReposit
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-// @TODO workspaceId in query
 // @NOTE better to use in case of "parseUploadFormData" middleware
 export const IsWorkspaceAvailable = (() => {
   return async (request: Request, response: Response, next: NextFunction) => {
@@ -14,8 +13,16 @@ export const IsWorkspaceAvailable = (() => {
       Di.WorkspaceRepository
     );
 
+    const {
+      query: { workspaceId },
+    } = request;
+
+    if (!workspaceId) {
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
+
     const workspace = await workspaceRepository.getById(
-      request.params.workspaceId
+      parseInt(<string>workspaceId)
     );
 
     if (!workspace) {
