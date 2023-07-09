@@ -15,6 +15,8 @@ import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
+const { workspaceIdSchema } = baseSchemas;
+
 export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   ({ request }: SuperCommonParam) => {
     const {
@@ -22,14 +24,14 @@ export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
     } = request;
 
     return {
-      params: useParamsSchema(),
+      query: useQuerySchema(),
       body: useBodySchema(workspaceId),
     };
   }
 );
 
-function useParamsSchema(): SchemaProvider {
-  return () => baseSchemas.params;
+function useQuerySchema(): SchemaProvider {
+  return () => workspaceIdSchema;
 }
 
 function useBodySchema(workspaceId?: string): SchemaProvider {

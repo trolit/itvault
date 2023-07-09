@@ -12,8 +12,6 @@ import { GetAllController } from "@controllers/Blueprint/GetAllController";
 
 const blueprintsRouter = Router();
 
-// @TODO fix /:workspaceId
-
 blueprintsRouter.use(requireWorkspaceAccess);
 
 blueprintsRouter.get(

@@ -4,19 +4,16 @@ import { baseSchemas } from "@schemas/Workspace/baseSchemas";
 import { paginationSchema } from "@schemas/common/paginationSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
+const { workspaceIdSchema } = baseSchemas;
+
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
     return {
-      params: useParamsSchema(),
       query: useQuerySchema(),
     };
   }
 );
 
 function useQuerySchema(): SchemaProvider {
-  return () => paginationSchema;
-}
-
-function useParamsSchema(): SchemaProvider {
-  return () => baseSchemas.params;
+  return () => paginationSchema.merge(workspaceIdSchema);
 }
