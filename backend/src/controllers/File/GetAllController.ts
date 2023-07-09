@@ -8,14 +8,12 @@ import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IParams {
-  workspaceId: number;
-}
-
 export interface IQuery {
   blueprintId?: number;
 
   relativePath?: string;
+
+  workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -39,12 +37,11 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<IParams, undefined, IQuery>,
+    request: CustomRequest<undefined, undefined, IQuery>,
     response: CustomResponse<File[]>
   ) {
     const {
-      params: { workspaceId },
-      query: { relativePath, blueprintId },
+      query: { relativePath, blueprintId, workspaceId },
     } = request;
 
     let result: File[] = [];

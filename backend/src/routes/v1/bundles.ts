@@ -16,8 +16,6 @@ const bundlesRouter = Router();
 bundlesRouter.use(requireWorkspaceAccess);
 bundlesRouter.use(IsWorkspaceAvailable);
 
-// @TODO fix /:workspaceId
-
 bundlesRouter.post(
   "",
   validateRequestWith(useStoreSuperSchema, {

@@ -9,13 +9,15 @@ import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
-  workspaceId: number;
-
   fileId: number;
 }
 
 interface IBody {
   relativePath: string;
+}
+
+interface IQuery {
+  workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -38,7 +40,7 @@ export class PatchRelativePathController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: CustomRequest<IParams, IBody>, response: Response) {
+  async v1(request: CustomRequest<IParams, IBody, IQuery>, response: Response) {
     const {
       params: { fileId },
       body: { relativePath },

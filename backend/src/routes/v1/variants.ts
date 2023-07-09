@@ -20,8 +20,6 @@ const variantsRouter = Router();
 
 variantsRouter.use(requireWorkspaceAccess);
 
-// @TODO fix /:workspaceId
-
 variantsRouter.get(
   "",
   validateRequestWith(useGetAllSuperSchema, {

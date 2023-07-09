@@ -21,8 +21,6 @@ import { PatchRelativePathController } from "@controllers/File/PatchRelativePath
 
 const filesRouter = Router();
 
-// @TODO fix /:workspaceId
-
 filesRouter.use(requireWorkspaceAccess);
 
 filesRouter.post(
