@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { getVersionSchema } from "@schemas/common/getVersionSchema";
 
-// @NOTE do not mix with "validateRequestWith" if it has `query` scheme
+// @NOTE do not mix with "validateRequestWith"
 export const requireEndpointVersion = <P, B, Q>(versions: number[]) => {
   return async (
     request: CustomRequest<P, B, Q>,
