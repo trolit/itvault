@@ -83,9 +83,7 @@ function registerDependencies(config: {
       if (
         fs.existsSync(path.join(dependencyInterfacePath, `${interfaceName}.js`))
       ) {
-        const dependency = await import(
-          path.join(`@${dirname}`, dependencyFilename)
-        );
+        const dependency = await import(`@${dirname}/${dependencyFilename}`);
 
         container.register(interfaceName, dependency[dependencyFilename]);
       } else {
