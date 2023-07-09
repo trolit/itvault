@@ -10,8 +10,6 @@ import { BaseController } from "@controllers/BaseController";
 
 interface IQuery {
   variantId: string;
-
-  workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;

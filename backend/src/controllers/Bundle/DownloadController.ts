@@ -12,8 +12,6 @@ import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { BaseController } from "@controllers/BaseController";
 
 interface IParams {
-  workspaceId: number;
-
   id: number;
 }
 
