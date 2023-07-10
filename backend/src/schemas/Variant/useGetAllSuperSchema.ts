@@ -25,7 +25,7 @@ function useQuerySchema(): SchemaProvider {
     workspaceIdSchema.merge(
       schemaForType<{ fileId: number }>()(
         z.object({
-          fileId: z
+          fileId: z.coerce
             .number()
             .gt(0)
             .superRefine(async (value: number, context: RefinementCtx) => {
