@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
+import { BundleStatus } from "@enums/BundleStatus";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
@@ -41,6 +42,10 @@ export class TryAgainController extends BaseController {
 
     if (!bundle) {
       return response.status(HTTP.NOT_FOUND).send();
+    }
+
+    if (bundle.status !== BundleStatus.Failed) {
+      return response.status(HTTP.ACCEPTED).send();
     }
 
     // @TODO queue bundle generation
