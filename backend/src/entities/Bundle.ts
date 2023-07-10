@@ -9,11 +9,12 @@ import {
 } from "typeorm";
 
 import { User } from "./User";
+import { Variant } from "./Variant";
 import { Blueprint } from "./Blueprint";
 import { Workspace } from "./Workspace";
 
-import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
+import { BundleExpire } from "@enums/BundleExpire";
 
 @Entity("bundles")
 export class Bundle {
@@ -50,4 +51,8 @@ export class Bundle {
   @ManyToMany(() => Blueprint, { cascade: true })
   @JoinTable({ name: "bundles_blueprints" })
   blueprints: Blueprint[];
+
+  @ManyToMany(() => Variant, { cascade: true })
+  @JoinTable({ name: "bundles_variants" })
+  variants: Variant[];
 }
