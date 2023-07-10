@@ -40,7 +40,7 @@ export const validateRequestWith = (
       if (!useSchemaProvider) {
         return response
           .status(HTTP.INTERNAL_SERVER_ERROR)
-          .send(`Super Schema incorrectly implements ${key} schema.`);
+          .send(`Super Schema incorrectly implements '${key}' schema.`);
       }
 
       const schema = await useSchemaProvider();
