@@ -22,19 +22,19 @@ export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 function useQuerySchema(): SchemaProvider {
   type IQueryPart = Pick<IQuery, "blueprintId" | "relativePath">;
 
-  const partialSchema = schemaForType<IQueryPart>()(
+  const optionalKeysSchema = schemaForType<IQueryPart>()(
     z.object({
-      relativePath: z.string().default(FILES.ROOT),
-      blueprintId: z.coerce.number().gt(0),
+      relativePath: z.optional(z.string().default(FILES.ROOT)),
+      blueprintId: z.optional(z.coerce.number().gt(0)),
     })
   );
 
   return () =>
     workspaceIdSchema
-      .merge(partialSchema)
+      .merge(optionalKeysSchema)
       .superRefine(
         (
-          value: { blueprintId: number; relativePath: string },
+          value: { blueprintId?: number; relativePath?: string },
           context: RefinementCtx
         ) => {
           const { blueprintId, relativePath } = value;
