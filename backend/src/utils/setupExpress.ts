@@ -26,9 +26,7 @@ export const setupExpress = async (app: Application) => {
 
   app.use(APP.ROUTES_PREFIX, await getRoutes());
 
-  app.use((error: Error, request: Request, response: Response) => {
-    console.error(error.stack);
-
+  app.use((request: Request, response: Response) => {
     response
       .status(HTTP.INTERNAL_SERVER_ERROR)
       .send("Oops.. Something broke 😢");
