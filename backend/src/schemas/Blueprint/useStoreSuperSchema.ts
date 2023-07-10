@@ -20,12 +20,12 @@ const { workspaceIdSchema } = baseWorkspaceSchemas;
 export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   ({ request }: SuperCommonParam) => {
     const {
-      params: { workspaceId },
+      query: { workspaceId },
     } = request;
 
     return {
       query: useQuerySchema(),
-      body: useBodySchema(workspaceId),
+      body: useBodySchema(<string>workspaceId),
     };
   }
 );

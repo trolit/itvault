@@ -8,6 +8,8 @@ import express, { Application, Request, Response, Router } from "express";
 
 import { APP } from "@config";
 
+import { requireAuthentication } from "@middleware/requireAuthentication";
+
 export const setupExpress = async (app: Application) => {
   app.use(
     cors({
@@ -53,6 +55,10 @@ async function getRoutes() {
       );
 
       const [routeName] = router.split(".");
+
+      if (routeName !== "auth") {
+        versionRouter.use(requireAuthentication);
+      }
 
       versionRouter.use(`/${routeName}`, dependency.default);
 

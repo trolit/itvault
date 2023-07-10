@@ -2,13 +2,14 @@ import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useLoginSuperSchema } from "@schemas/Auth/useLoginSuperSchema";
 
 import { LoginController } from "@controllers/Auth/LoginController";
-import { LogoutController } from "@controllers/Auth/LogoutController";
 import { StatusController } from "@controllers/Auth/StatusController";
+import { LogoutController } from "@controllers/Auth/LogoutController";
 
 const authRouter = Router();
 
@@ -29,6 +30,7 @@ authRouter.post(
 authRouter.get(
   "/status",
   requireEndpointVersion(StatusController.ALL_VERSIONS),
+  requireAuthentication,
   processRequestWith(StatusController)
 );
 

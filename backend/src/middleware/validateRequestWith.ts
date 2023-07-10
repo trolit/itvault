@@ -38,13 +38,17 @@ export const validateRequestWith = (
       const useSchemaProvider = superSchema[propertyName];
 
       if (!useSchemaProvider) {
-        continue;
+        return response
+          .status(HTTP.INTERNAL_SERVER_ERROR)
+          .send(`Super Schema incorrectly implements '${key}' schema.`);
       }
 
       const schema = await useSchemaProvider();
 
       if (!schema) {
-        return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+        return response
+          .status(HTTP.INTERNAL_SERVER_ERROR)
+          .send(`Failed to load '${key}' schema.`);
       }
 
       const extendedSchema = extendSchema(propertyName, schema, {

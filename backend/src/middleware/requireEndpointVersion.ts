@@ -18,7 +18,7 @@ export const requireEndpointVersion = <P, B, Q>(versions: number[]) => {
 
     const { version } = request.query;
 
-    const result = await versionSchema.safeParseAsync(version);
+    const result = await versionSchema.safeParseAsync({ version });
 
     if (!result.success) {
       return response.status(HTTP.BAD_REQUEST).send(result.error.format());
