@@ -38,11 +38,19 @@ export class UpdateController extends BaseController {
 
   async v1(request: CustomRequest<IParams, IBody>, response: Response) {
     const {
+      userId,
       params: { id },
       body: { text },
     } = request;
 
-    const note = await this._noteRepository.getById(id);
+    const note = await this._noteRepository.getOne({
+      where: {
+        id,
+        createdBy: {
+          id: userId,
+        },
+      },
+    });
 
     if (!note) {
       return response.status(HTTP.NOT_FOUND).send();
