@@ -10,11 +10,11 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-interface IQuery {
+export interface IParams {
   id: number;
 }
 
-interface IBody {
+export interface IBody {
   text: string;
 }
 
@@ -36,12 +36,9 @@ export class UpdateController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(
-    request: CustomRequest<undefined, IBody, IQuery>,
-    response: Response
-  ) {
+  async v1(request: CustomRequest<IParams, IBody>, response: Response) {
     const {
-      query: { id },
+      params: { id },
       body: { text },
     } = request;
 
