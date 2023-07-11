@@ -4,6 +4,7 @@ import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 import { Di } from "@enums/Di";
 import { BundleDto } from "@dtos/BundleDto";
 import { BundleExpire } from "@enums/BundleExpire";
+import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -49,15 +50,10 @@ function useBodySchema(): SchemaProvider {
             return Zod.NEVER;
           }
 
-          const uniqueVariantIds: string[] = [];
+          const bundleService = getInstanceOf<IBundleService>(Di.BundleService);
 
-          value.map(({ variantIds }) => {
-            variantIds.map(variantId =>
-              uniqueVariantIds.includes(variantId)
-                ? null
-                : uniqueVariantIds.push(variantId)
-            );
-          });
+          const uniqueVariantIds: string[] =
+            bundleService.getUniqueVariantIds(value);
 
           const fileRepository = getInstanceOf<IFileRepository>(
             Di.FileRepository
