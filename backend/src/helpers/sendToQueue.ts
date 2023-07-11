@@ -8,5 +8,9 @@ import { Queue } from "@enums/Queue";
 export const sendToQueue = <T>(queue: Queue, data: T) => {
   const publisher = getInstanceOf<Channel>(Di.Publisher);
 
-  publisher.sendToQueue(queue, Buffer.from(JSON.stringify(data)));
+  if (!publisher) {
+    return false;
+  }
+
+  return publisher.sendToQueue(queue, Buffer.from(JSON.stringify(data)));
 };
