@@ -13,16 +13,18 @@ import { sendToQueue } from "@helpers/sendToQueue";
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IBody {
+interface IParams {
   id: number;
+}
 
+interface IQuery {
   workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class TryAgainController extends BaseController {
+export class RequeueController extends BaseController {
   constructor(
     @inject(Di.BundleRepository)
     private _bundleRepository: IBundleRepository
@@ -39,9 +41,13 @@ export class TryAgainController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: CustomRequest<undefined, IBody>, response: Response) {
+  async v1(
+    request: CustomRequest<IParams, undefined, IQuery>,
+    response: Response
+  ) {
     const {
-      body: { id, workspaceId },
+      params: { id },
+      query: { workspaceId },
     } = request;
 
     const bundle = await this._bundleRepository.getOne({
