@@ -3,14 +3,20 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
+import { Queue } from "@enums/Queue";
 import { BundleStatus } from "@enums/BundleStatus";
 import { ControllerImplementation } from "miscellaneous-types";
+import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
+
+import { sendToQueue } from "@helpers/sendToQueue";
 
 import { BaseController } from "@controllers/BaseController";
 
 interface IBody {
   id: number;
+
+  workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -35,20 +41,35 @@ export class TryAgainController extends BaseController {
 
   async v1(request: CustomRequest<undefined, IBody>, response: Response) {
     const {
-      body: { id },
+      body: { id, workspaceId },
     } = request;
 
-    const bundle = await this._bundleRepository.getById(id);
+    const bundle = await this._bundleRepository.getOne({
+      select: {
+        blueprints: {
+          id: true,
+        },
+        variants: {
+          id: true,
+        },
+      },
+      where: {
+        id,
+        workspace: {
+          id: workspaceId,
+        },
+        status: BundleStatus.Failed,
+      },
+    });
 
     if (!bundle) {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    if (bundle.status !== BundleStatus.Failed) {
-      return response.status(HTTP.ACCEPTED).send();
-    }
-
-    // @TODO queue bundle generation
+    sendToQueue<BundleConsumerHandlerData>(Queue.GenerateBundle, {
+      workspaceId,
+      bundle,
+    });
 
     return this.finalizeRequest(response, HTTP.OK);
   }
