@@ -37,9 +37,7 @@ function useBodySchema(): SchemaProvider {
     })
   );
 
-  type BodySchema = Omit<IBody, "workspaceId">;
-
-  const bodySchema = schemaForType<BodySchema>()(
+  const bodySchema = schemaForType<IBody>()(
     z.object({
       note: z.optional(z.string()),
       expiration: z.nativeEnum(BundleExpire),
@@ -81,5 +79,5 @@ function useBodySchema(): SchemaProvider {
     })
   );
 
-  return () => workspaceIdSchema.merge(bodySchema);
+  return () => bodySchema;
 }

@@ -19,11 +19,13 @@ import { BaseController } from "@controllers/BaseController";
 export interface IBody {
   note?: string;
 
-  workspaceId: number;
-
   values: BundleDto[];
 
   expiration: BundleExpire;
+}
+
+interface IQuery {
+  workspaceId: number;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -48,10 +50,14 @@ export class StoreController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: CustomRequest<undefined, IBody>, response: Response) {
+  async v1(
+    request: CustomRequest<undefined, IBody, IQuery>,
+    response: Response
+  ) {
     const {
       userId,
-      body: { values, note, expiration, workspaceId },
+      query: { workspaceId },
+      body: { values, note, expiration },
     } = request;
 
     const variantIds = this._bundleService.getUniqueVariantIds(values);
