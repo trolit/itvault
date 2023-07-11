@@ -78,10 +78,17 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    sendToQueue<BundleConsumerHandlerData>(Queue.GenerateBundle, {
-      workspaceId,
-      bundle,
-    });
+    const isQueued = sendToQueue<BundleConsumerHandlerData>(
+      Queue.GenerateBundle,
+      {
+        workspaceId,
+        bundle,
+      }
+    );
+
+    if (!isQueued) {
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+    }
 
     return this.finalizeRequest(response, HTTP.CREATED);
   }
