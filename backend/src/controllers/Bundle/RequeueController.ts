@@ -74,6 +74,15 @@ export class RequeueController extends BaseController {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
+    await this._bundleRepository.primitiveUpdate(
+      {
+        id,
+      },
+      {
+        status: BundleStatus.Queried,
+      }
+    );
+
     sendToQueue<BundleConsumerHandlerData>(Queue.GenerateBundle, {
       workspaceId,
       bundle,
