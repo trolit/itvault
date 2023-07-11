@@ -1,3 +1,4 @@
+import path from "path";
 import JSZip from "jszip";
 import { In } from "typeorm";
 
@@ -8,8 +9,8 @@ import { BundleStatus } from "@enums/BundleStatus";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
+import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 export abstract class BaseBundleConsumerHandler {
   constructor(
@@ -155,7 +156,7 @@ export abstract class BaseBundleConsumerHandler {
           ? file.originalFilename
           : file.relativePath.slice(2); // @NOTE ./src -> src
 
-      jszip.file(absolutePath, data);
+      jszip.file(path.join(absolutePath, file.originalFilename), data);
     }
 
     return jszip.generateAsync({ type: "nodebuffer" });
