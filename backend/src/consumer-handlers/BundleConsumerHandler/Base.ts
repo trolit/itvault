@@ -1,44 +1,25 @@
+import path from "path";
 import JSZip from "jszip";
 import { In } from "typeorm";
 
 import { Bucket } from "@entities/Bucket";
-import { BundleDto } from "@dtos/BundleDto";
+import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { BundleStatus } from "@enums/BundleStatus";
 import { IFileService } from "@interfaces/services/IFileService";
+import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
-
-import { IBody } from "@controllers/Bundle/StoreController";
 
 export abstract class BaseBundleConsumerHandler {
   constructor(
     protected fileRepository: IFileRepository,
     protected bucketRepository: IBucketRepository,
     protected fileService: IFileService,
-    protected bundleRepository: IBundleRepository
+    protected bundleRepository: IBundleRepository,
+    protected bundleService: IBundleService
   ) {}
-
-  private _getUniqueVariantIds(context: BundleDto[]) {
-    const result: string[] = [];
-
-    for (const { variantIds } of context) {
-      variantIds.map(variantId =>
-        result.includes(variantId) ? null : result.push(variantId)
-      );
-    }
-
-    return result;
-  }
-
-  private _getUniqueBlueprintIds(context: BundleDto[], variant: Variant) {
-    const matchedContext = context.filter(({ variantIds }) =>
-      variantIds.some(variantId => variantId === variant.id)
-    );
-
-    return matchedContext.map(({ blueprintId }) => blueprintId);
-  }
 
   private _getFiles(workspaceId: number, variantIds: string[]) {
     return this.fileRepository.getAll({
@@ -112,16 +93,23 @@ export abstract class BaseBundleConsumerHandler {
   }
 
   protected async generateZipFile(
-    bundleId: number,
     workspaceId: number,
-    body: IBody,
+    bundle: Bundle,
     readFileFunction: (variant: Variant) => Promise<string>
   ) {
-    const { values: context } = body;
+    const { id: bundleId, variants, blueprints } = bundle;
 
-    const variantIds = this._getUniqueVariantIds(context);
+    if (!variants || !blueprints) {
+      await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
 
-    if (!variantIds.length) {
+      return;
+    }
+
+    const variantIds = variants.map(({ id }) => id);
+
+    const blueprintIds = blueprints.map(({ id }) => id);
+
+    if (!variantIds.length || !blueprintIds.length) {
       await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
 
       return;
@@ -147,8 +135,6 @@ export abstract class BaseBundleConsumerHandler {
       const {
         variants: [variant],
       } = file;
-
-      const blueprintIds = this._getUniqueBlueprintIds(context, variant);
 
       const [buckets] = await this.bucketRepository.getAll({
         where: {
@@ -176,7 +162,7 @@ export abstract class BaseBundleConsumerHandler {
           ? file.originalFilename
           : file.relativePath.slice(2); // @NOTE ./src -> src
 
-      jszip.file(absolutePath, data);
+      jszip.file(path.join(absolutePath, file.originalFilename), data);
     }
 
     return jszip.generateAsync({ type: "nodebuffer" });

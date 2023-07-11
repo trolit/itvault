@@ -66,6 +66,7 @@ export class FileRepository
       .where("variant.id IN (:...ids)", {
         ids: variantIds,
       })
+      .groupBy("variant.id")
       .having("COUNT(variant.id) > 1")
       .getOne();
   }

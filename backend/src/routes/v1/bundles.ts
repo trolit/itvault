@@ -6,9 +6,11 @@ import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
+import { useRequeueSchema } from "@schemas/Bundle/useRequeueSchema";
 import { useStoreSuperSchema } from "@schemas/Bundle/useStoreSuperSchema";
 
 import { StoreController } from "@controllers/Bundle/StoreController";
+import { RequeueController } from "@controllers/Bundle/RequeueController";
 import { DownloadController } from "@controllers/Bundle/DownloadController";
 
 const bundlesRouter = Router();
@@ -30,6 +32,12 @@ bundlesRouter.get(
   processRequestWith(DownloadController)
 );
 
-// @TODO consider "try to build again" route
+bundlesRouter.post(
+  "/:id/requeue",
+  validateRequestWith(useRequeueSchema, {
+    versions: RequeueController.ALL_VERSIONS,
+  }),
+  processRequestWith(RequeueController)
+);
 
 export = bundlesRouter;

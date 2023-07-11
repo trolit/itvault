@@ -4,6 +4,7 @@ import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 import { Di } from "@enums/Di";
 import { BundleDto } from "@dtos/BundleDto";
 import { BundleExpire } from "@enums/BundleExpire";
+import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -37,46 +38,42 @@ function useBodySchema(): SchemaProvider {
     })
   );
 
-  return () =>
-    schemaForType<IBody>()(
-      z.object({
-        note: z.optional(z.string()),
-        expiration: z.nativeEnum(BundleExpire),
-        values: z
-          .array(valueSchema)
-          .min(1)
-          .superRefine(async (value: BundleDto[], context: RefinementCtx) => {
-            if (value.length <= 1) {
-              return Zod.NEVER;
-            }
+  const bodySchema = schemaForType<IBody>()(
+    z.object({
+      note: z.optional(z.string()),
+      expiration: z.nativeEnum(BundleExpire),
+      values: z
+        .array(valueSchema)
+        .min(1)
+        .superRefine(async (value: BundleDto[], context: RefinementCtx) => {
+          if (value.length <= 1) {
+            return Zod.NEVER;
+          }
 
-            const uniqueVariantIds: string[] = [];
+          const bundleService = getInstanceOf<IBundleService>(Di.BundleService);
 
-            value.map(({ variantIds }) => {
-              variantIds.map(variantId =>
-                uniqueVariantIds.includes(variantId)
-                  ? null
-                  : uniqueVariantIds.push(variantId)
-              );
+          const uniqueVariantIds: string[] =
+            bundleService.getUniqueVariantIds(value);
+
+          const fileRepository = getInstanceOf<IFileRepository>(
+            Di.FileRepository
+          );
+
+          const file = await fileRepository.getOneWithMoreThanTwoVariants(
+            uniqueVariantIds
+          );
+
+          if (file) {
+            context.addIssue({
+              code: ZodIssueCode.custom,
+              message: `File ${file.originalFilename} was selected with ${file.variants.length} different variants. To avoid conflicts, please update your configuration to use only one variant.`,
             });
 
-            const fileRepository = getInstanceOf<IFileRepository>(
-              Di.FileRepository
-            );
+            return Zod.NEVER;
+          }
+        }),
+    })
+  );
 
-            const file = await fileRepository.getOneWithMoreThanTwoVariants(
-              uniqueVariantIds
-            );
-
-            if (file) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: `File ${file.originalFilename} was selected with ${file.variants.length} different variants. To avoid conflicts, please update your configuration to use only one variant.`,
-              });
-
-              return Zod.NEVER;
-            }
-          }),
-      })
-    );
+  return () => bodySchema;
 }
