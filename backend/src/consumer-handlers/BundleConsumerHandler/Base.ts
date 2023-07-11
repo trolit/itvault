@@ -99,6 +99,12 @@ export abstract class BaseBundleConsumerHandler {
   ) {
     const { id: bundleId, variants, blueprints } = bundle;
 
+    if (!variants || !blueprints) {
+      await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
+
+      return;
+    }
+
     const variantIds = variants.map(({ id }) => id);
 
     const blueprintIds = blueprints.map(({ id }) => id);
