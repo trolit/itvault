@@ -46,6 +46,8 @@ export class TryAgainController extends BaseController {
 
     const bundle = await this._bundleRepository.getOne({
       select: {
+        id: true,
+        expire: true,
         blueprints: {
           id: true,
         },

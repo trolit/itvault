@@ -5,10 +5,11 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 import { BundleDto } from "@dtos/BundleDto";
-import { BundleStatus } from "@enums/BundleStatus";
 import { BundleExpire } from "@enums/BundleExpire";
+import { BundleStatus } from "@enums/BundleStatus";
 import { ControllerImplementation } from "miscellaneous-types";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
+import { IBundleService } from "@interfaces/services/IBundleService";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 import { sendToQueue } from "@helpers/sendToQueue";
@@ -18,13 +19,11 @@ import { BaseController } from "@controllers/BaseController";
 export interface IBody {
   note?: string;
 
-  expiration: BundleExpire;
+  workspaceId: number;
 
   values: BundleDto[];
-}
 
-interface IQuery {
-  workspaceId: number;
+  expiration: BundleExpire;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -33,7 +32,9 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class StoreController extends BaseController {
   constructor(
     @inject(Di.BundleRepository)
-    private _bundleRepository: IBundleRepository
+    private _bundleRepository: IBundleRepository,
+    @inject(Di.BundleService)
+    private _bundleService: IBundleService
   ) {
     super();
   }
@@ -47,15 +48,13 @@ export class StoreController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(
-    request: CustomRequest<undefined, IBody, IQuery>,
-    response: Response
-  ) {
+  async v1(request: CustomRequest<undefined, IBody>, response: Response) {
     const {
       userId,
-      query: { workspaceId },
-      body: { values, note, expiration },
+      body: { values, note, expiration, workspaceId },
     } = request;
+
+    const variantIds = this._bundleService.getUniqueVariantIds(values);
 
     const bundle = await this._bundleRepository.primitiveSave({
       note,
@@ -65,6 +64,7 @@ export class StoreController extends BaseController {
       },
       expire: expiration,
       status: BundleStatus.Queried,
+      variants: variantIds.map(variantId => ({ id: variantId })),
       blueprints: values.map(({ blueprintId }) => ({ id: blueprintId })),
     });
 
@@ -73,9 +73,8 @@ export class StoreController extends BaseController {
     }
 
     sendToQueue<BundleConsumerHandlerData>(Queue.GenerateBundle, {
-      bundle,
       workspaceId,
-      body: request.body,
+      bundle,
     });
 
     return this.finalizeRequest(response, HTTP.CREATED);
