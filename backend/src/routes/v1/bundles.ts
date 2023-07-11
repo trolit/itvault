@@ -3,9 +3,10 @@ import { Router } from "express";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
+import { useRequeueSchema } from "@schemas/Bundle/useRequeueSchema";
 import { useStoreSuperSchema } from "@schemas/Bundle/useStoreSuperSchema";
 
 import { StoreController } from "@controllers/Bundle/StoreController";
@@ -33,7 +34,9 @@ bundlesRouter.get(
 
 bundlesRouter.post(
   "/:id/requeue",
-  requireEndpointVersion(RequeueController.ALL_VERSIONS),
+  validateRequestWith(useRequeueSchema, {
+    versions: RequeueController.ALL_VERSIONS,
+  }),
   processRequestWith(RequeueController)
 );
 
