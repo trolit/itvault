@@ -7,6 +7,7 @@ import { setupRedis } from "@utils/setupRedis";
 import { setupRabbit } from "@utils/setupRabbit";
 import { setupExpress } from "@utils/setupExpress";
 
+// @TODO util that detects if more permissions were added - if yes - updates DB
 export const server = async () => {
   const app = express();
 
