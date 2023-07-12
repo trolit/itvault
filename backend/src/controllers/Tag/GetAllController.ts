@@ -15,7 +15,7 @@ interface IQuery {
 
   take: number;
 
-  search: string;
+  search?: string;
 }
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -50,7 +50,7 @@ export class GetAllController extends BaseController {
       skip,
       take,
       where: {
-        value: Like(`%${search}%`),
+        value: search ? Like(`%${search}%`) : undefined,
       },
     });
 
