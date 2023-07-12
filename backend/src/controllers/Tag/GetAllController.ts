@@ -10,7 +10,7 @@ import { ITagRepository } from "@interfaces/repositories/ITagRepository";
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IQuery {
+export interface IQuery {
   skip: number;
 
   take: number;
