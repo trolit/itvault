@@ -32,7 +32,7 @@ export class Workspace extends Base {
   blueprints: Blueprint[];
 
   @OneToMany(() => Tag, tag => tag.workspace, {
-    cascade: ["insert"],
+    cascade: ["insert", "update"],
   })
   tags: Tag[];
 }
