@@ -5,7 +5,7 @@ import { IRoleDefinition } from "@interfaces/config/IRoleDefinition";
 export const HEAD_ADMIN_ROLE: IRoleDefinition = {
   name: "Head Admin",
 
-  permissions: ALL_PERMISSIONS.map(({ id }) => id),
+  permissions: ALL_PERMISSIONS.map(({ signature }) => signature),
 };
 
 export const HEAD_ADMIN_ROLE_ID = 1;
