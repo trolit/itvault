@@ -72,10 +72,16 @@ export class UserRepository
       });
 
       if (roles.length !== uniqueRoleIds.length) {
-        errors.push({
-          messages: [
-            "Failed to update users as one or more roles are not available.",
-          ],
+        const missingRoleIds = uniqueRoleIds.filter(uniqueRoleId =>
+          roles.every(role => role.id !== uniqueRoleId)
+        );
+
+        missingRoleIds.map(roleId => {
+          errors.push({
+            messages: [
+              `Failed to perform update as role identified by ${roleId} is not available.`,
+            ],
+          });
         });
 
         throw new Error();
@@ -106,7 +112,9 @@ export class UserRepository
         }
 
         errors.push({
-          messages: [`Failed to update users due to user ${id}.`],
+          messages: [
+            `Failed to perform update due to user identified by ${id}.`,
+          ],
         });
 
         throw new Error();
