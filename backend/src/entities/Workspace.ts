@@ -1,7 +1,8 @@
 import { Entity, Column, OneToMany } from "typeorm";
 
-import { Base } from "./Base";
+import { Tag } from "./Tag";
 import { File } from "./File";
+import { Base } from "./Base";
 import { Bundle } from "./Bundle";
 import { Blueprint } from "./Blueprint";
 import { UserToWorkspace } from "./UserToWorkspace";
@@ -29,4 +30,7 @@ export class Workspace extends Base {
     cascade: true,
   })
   blueprints: Blueprint[];
+
+  @OneToMany(() => Tag, tag => tag.workspace, { cascade: ["insert"] })
+  tags: Tag[];
 }
