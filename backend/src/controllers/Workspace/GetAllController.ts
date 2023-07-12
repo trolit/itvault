@@ -66,6 +66,7 @@ export class GetAllController extends BaseController {
       },
       relations: {
         userToWorkspace: true,
+        tags: true,
       },
     });
 
