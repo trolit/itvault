@@ -6,6 +6,7 @@ export class PaginatedResult<T> {
   total: number;
 }
 
+// @TODO refactor and apply to all Repository actions + Controllers (?)
 export class Result<T> {
   public value?: T;
 

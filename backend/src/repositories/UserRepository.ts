@@ -1,7 +1,7 @@
 import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
 import { Result } from "types/Result";
-import { EntityManager, Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 
 import { BaseRepository } from "./BaseRepository";
 
@@ -54,96 +54,79 @@ export class UserRepository
   async updateMany(
     entitiesToUpdate: UpdateUserDto[]
   ): Promise<Result<UpdateUserDto[]>> {
-    const transactionResult = await this.database.manager.transaction(
-      async (entityManager: EntityManager) => {
-        const errors: IError[] = [];
+    const transaction = await this.useTransaction();
 
-        const roleIds = entitiesToUpdate
-          .filter(({ data }) => !!data.roleId)
-          .map(({ data }) => data.roleId);
+    const roleIds = entitiesToUpdate
+      .filter(({ data }) => !!data.roleId)
+      .map(({ data }) => data.roleId);
 
-        const uniqueRoleIds = uniq(roleIds);
+    const uniqueRoleIds = uniq(roleIds);
 
-        // @SUGGESTION - single query (?)
-        const promises: Promise<Role>[] = uniqueRoleIds.map(roleId => {
-          return new Promise((resolve, reject) => {
-            const role = entityManager.findOneBy(Role, { id: roleId });
+    const errors: IError[] = [];
 
-            if (role) {
-              return resolve(<Promise<Role>>role);
-            }
+    try {
+      const roles = await transaction.manager.find(Role, {
+        where: {
+          id: In(uniqueRoleIds),
+        },
+      });
 
-            return reject();
+      if (roles.length !== uniqueRoleIds.length) {
+        const missingRoleIds = uniqueRoleIds.filter(uniqueRoleId =>
+          roles.every(role => role.id !== uniqueRoleId)
+        );
+
+        missingRoleIds.map(roleId => {
+          errors.push({
+            messages: [
+              `Failed to perform update as role identified by ${roleId} is not available.`,
+            ],
           });
         });
 
-        const roles = await Promise.all(promises);
-
-        if (roles.some(role => !role)) {
-          roles.map((role, index) => {
-            if (!role) {
-              const roleId = uniqueRoleIds[index];
-
-              entitiesToUpdate.map(({ id, data }) => {
-                if (data?.roleId && data.roleId === roleId) {
-                  errors.push({
-                    key: id,
-                    messages: ["Requested role is not available"],
-                  });
-                }
-              });
-            }
-          });
-
-          return { errors };
-        }
-
-        const rolesLength = roles.length;
-
-        for (const entityToUpdate of entitiesToUpdate) {
-          const {
-            id,
-            data: { isActive, roleId },
-          } = entityToUpdate;
-
-          const partialEntity: Partial<User> = new User();
-
-          partialEntity.id = id;
-
-          if (isActive !== undefined) {
-            partialEntity.deletedAt = isActive ? null : new Date();
-          }
-
-          if (rolesLength && roleId) {
-            const role = roles.find(role => role && role.id === roleId);
-
-            partialEntity.role = role;
-          }
-
-          const updateResult = await entityManager.update(
-            User,
-            { id },
-            partialEntity
-          );
-
-          if (updateResult.affected) {
-            continue;
-          }
-
-          errors.push({
-            key: id,
-            messages: [
-              "There was a problem while attempting to update that account.",
-            ],
-          });
-        }
-
-        return { errors };
+        throw new Error();
       }
-    );
 
-    return transactionResult.errors.length
-      ? Result.failure(transactionResult.errors)
-      : Result.success([]);
+      for (const entityToUpdate of entitiesToUpdate) {
+        const {
+          id,
+          data: { isActive, roleId },
+        } = entityToUpdate;
+
+        const userData: Partial<User> = transaction.manager.create(User, {
+          deletedAt: isActive ? null : new Date(),
+        });
+
+        if (roleId) {
+          userData.role = roles.find(role => role.id === roleId);
+        }
+
+        const updateResult = await transaction.manager.update(
+          User,
+          { id },
+          userData
+        );
+
+        if (updateResult.affected) {
+          continue;
+        }
+
+        errors.push({
+          messages: [
+            `Failed to perform update due to user identified by ${id}.`,
+          ],
+        });
+
+        throw new Error();
+      }
+
+      return Result.success();
+    } catch (error) {
+      await transaction.rollbackTransaction();
+
+      return Result.failure(errors);
+    } finally {
+      await transaction.release();
+    }
   }
 }
