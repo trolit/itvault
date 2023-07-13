@@ -65,18 +65,7 @@ export class LoginController extends BaseController {
 
     const token = this._authService.signIn({ email, id: user.id });
 
-    const mappedUserData = this._entityMapperService.mapOneToDto(
-      user,
-      UserDto,
-      ({ role: { id, name, permissionToRole } }) => ({
-        roleId: id,
-        roleName: name,
-        permissions: permissionToRole.map(({ enabled, permission }) => ({
-          ...permission,
-          enabled,
-        })),
-      })
-    );
+    const mappedUserData = this._entityMapperService.mapOneToDto(user, UserDto);
 
     try {
       await this._dataStoreService.createHash<DataStoreUser>(
