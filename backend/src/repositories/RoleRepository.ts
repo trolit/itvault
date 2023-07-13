@@ -21,6 +21,7 @@ export class RoleRepository
   }
 
   async save(roleId: number, payload: UpdateRoleDto): Promise<Result<Role>> {
+    // @TODO refactor transaction
     const transactionResult = await this.database.manager.transaction(
       async (entityManager: EntityManager) => {
         const errors: IError[] = [];
@@ -36,13 +37,13 @@ export class RoleRepository
           return { errors };
         }
 
-        role.permissionToRole.map(permission => {
+        role.permissionToRole.map(value => {
           const updatedPermission = payload.permissions.find(
-            element => element.id === permission.id
+            element => element.signature === value.permission.signature
           );
 
           if (updatedPermission) {
-            permission.enabled = updatedPermission.enabled;
+            value.enabled = updatedPermission.enabled;
           }
         });
 

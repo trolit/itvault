@@ -1,4 +1,7 @@
 declare module "data-store-types" {
+  import { Permission } from "@entities/Permission";
+  import { PermissionToRole } from "@entities/PermissionToRole";
+
   export const enum DataStoreKeyType {
     AuthenticatedUser = "authenticated-user",
     Role = "role",
@@ -6,13 +9,8 @@ declare module "data-store-types" {
 
   export type DataStoreKey = [string | number, DataStoreKeyType];
 
-  export type DataStorePermission = {
-    id: number;
-
-    name: string;
-
-    enabled: boolean;
-  };
+  export type DataStorePermission = Pick<Permission, "signature" | "name"> &
+    Pick<PermissionToRole, "enabled">;
 
   export type DataStoreRole = {
     id: number;

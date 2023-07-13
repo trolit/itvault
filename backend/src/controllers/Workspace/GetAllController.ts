@@ -72,7 +72,8 @@ export class GetAllController extends BaseController {
 
     const mappedResult = this._entityMapperService.mapToDto(
       result,
-      WorkspaceDto
+      WorkspaceDto,
+      value => ({ tags: value.tags })
     );
 
     return this.finalizeRequest(response, HTTP.OK, {

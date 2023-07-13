@@ -1,7 +1,7 @@
 import { Permission } from "@enums/Permission";
 
 export interface IPermissionDefinition {
-  id: Permission;
+  signature: Permission;
 
   name: string;
 }

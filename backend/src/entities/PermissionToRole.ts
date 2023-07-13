@@ -8,12 +8,6 @@ export class PermissionToRole {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  permissionId!: number;
-
-  @Column()
-  roleId!: number;
-
   @Column({ type: "boolean", width: 1, default: false })
   enabled!: boolean;
 

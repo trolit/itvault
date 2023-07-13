@@ -24,12 +24,16 @@ export class PermissionToRoleSeeder implements Seeder {
 
       ALL_PERMISSIONS.map(async permission => {
         const isPermissionEnabled = permissions.some(
-          permissionId => permissionId === permission.id
+          signature => signature === permission.signature
         );
 
         await permissionToRoleRepository.save({
-          roleId: role.id,
-          permissionId: permission.id,
+          role: {
+            id: role.id,
+          },
+          permission: {
+            signature: permission.signature,
+          },
           enabled: isPermissionEnabled,
         });
       });

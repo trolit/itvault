@@ -6,17 +6,17 @@ import { IPermissionDefinition } from "@interfaces/config/IPermissionDefinition"
 // ****************************************************
 
 const VIEW_ALL_ROLES_PERMISSION: IPermissionDefinition = {
-  id: Permission.ViewAllRoles,
+  signature: Permission.ViewAllRoles,
   name: "View all roles",
 };
 
 const CREATE_ROLE_PERMISSION: IPermissionDefinition = {
-  id: Permission.CreateRole,
+  signature: Permission.CreateRole,
   name: "Create role",
 };
 
 const UPDATE_ROLE_PERMISSION: IPermissionDefinition = {
-  id: Permission.UpdateRole,
+  signature: Permission.UpdateRole,
   name: "Update role",
 };
 
@@ -25,17 +25,17 @@ const UPDATE_ROLE_PERMISSION: IPermissionDefinition = {
 // ****************************************************
 
 const VIEW_ALL_WORKSPACES_PERMISSION: IPermissionDefinition = {
-  id: Permission.ViewAllWorkspaces,
+  signature: Permission.ViewAllWorkspaces,
   name: "View all workspaces",
 };
 
 const CREATE_WORKSPACE_PERMISSION: IPermissionDefinition = {
-  id: Permission.CreateWorkspace,
+  signature: Permission.CreateWorkspace,
   name: "Create workspace",
 };
 
 const UPDATE_WORKSPACE_PERMISSION: IPermissionDefinition = {
-  id: Permission.UpdateWorkspace,
+  signature: Permission.UpdateWorkspace,
   name: "Update workspace",
 };
 
@@ -44,22 +44,22 @@ const UPDATE_WORKSPACE_PERMISSION: IPermissionDefinition = {
 // ****************************************************
 
 const VIEW_ALL_USERS_PERMISSION: IPermissionDefinition = {
-  id: Permission.ViewAllUsers,
+  signature: Permission.ViewAllUsers,
   name: "View all users",
 };
 
 const DEACTIVATE_USER_ACCOUNT_PERMISSION: IPermissionDefinition = {
-  id: Permission.DeactivateUserAccount,
+  signature: Permission.DeactivateUserAccount,
   name: "Deactivate user account",
 };
 
 const CHANGE_USER_ROLE_PERMISSION: IPermissionDefinition = {
-  id: Permission.ChangeUserRole,
+  signature: Permission.ChangeUserRole,
   name: "Change user role",
 };
 
 const RESTORE_USER_ACCOUNT_PERMISSION: IPermissionDefinition = {
-  id: Permission.RestoreUserAccount,
+  signature: Permission.RestoreUserAccount,
   name: "Restore user account",
 };
 
@@ -68,22 +68,22 @@ const RESTORE_USER_ACCOUNT_PERMISSION: IPermissionDefinition = {
 // ****************************************************
 
 const UPLOAD_FILES_PERMISSION: IPermissionDefinition = {
-  id: Permission.UploadFiles,
+  signature: Permission.UploadFiles,
   name: "Upload files",
 };
 
 const REMOVE_FILE_PERMISSION: IPermissionDefinition = {
-  id: Permission.RemoveFile,
+  signature: Permission.RemoveFile,
   name: "Remove file",
 };
 
 const UPDATE_FILENAME_PERMISSION: IPermissionDefinition = {
-  id: Permission.UpdateFilename,
+  signature: Permission.UpdateFilename,
   name: "Update filename",
 };
 
 const UPDATE_FILE_RELATIVE_PATH: IPermissionDefinition = {
-  id: Permission.UpdateFileRelativePath,
+  signature: Permission.UpdateFileRelativePath,
   name: "Update file relative path",
 };
 

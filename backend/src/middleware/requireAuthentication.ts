@@ -61,10 +61,10 @@ function assignPermissionsToRequest(
 
   ALL_PERMISSIONS.map(permissionDefinition => {
     const rolePermission = rolePermissions.find(
-      ({ id }) => id === permissionDefinition.id
+      ({ signature }) => signature === permissionDefinition.signature
     );
 
-    requestPermissions[permissionDefinition.id] = rolePermission
+    requestPermissions[permissionDefinition.signature] = rolePermission
       ? rolePermission.enabled
       : false;
   });
