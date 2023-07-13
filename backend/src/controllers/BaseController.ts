@@ -1,8 +1,12 @@
 import { Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 
+import { Di } from "@enums/Di";
 import { IBaseController } from "@interfaces/IBaseController";
 import { ControllerImplementation } from "miscellaneous-types";
+import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export abstract class BaseController implements IBaseController {
   static ALL_VERSION_DEFINITIONS = {
@@ -15,6 +19,10 @@ export abstract class BaseController implements IBaseController {
   abstract implementations: ControllerImplementation[];
 
   usedVersion: number;
+
+  get mapper() {
+    return getInstanceOf<IEntityMapperService>(Di.EntityMapperService);
+  }
 
   public async invoke<P, B, Q>(
     request: CustomRequest<P, B, Q>,

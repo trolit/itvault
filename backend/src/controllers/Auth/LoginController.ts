@@ -2,18 +2,20 @@ import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { DataStoreKeyType, DataStoreUser } from "data-store-types";
+import {
+  LoginDto,
+  LoggedUserDto,
+} from "types/controllers/v1/Auth/LoginController";
 
 import { APP, JWT } from "@config";
 
 import { Di } from "@enums/Di";
-import { UserDto } from "@dtos/UserDto";
-import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
+import { LoggedUserMapDto } from "@dtos/LoggedUserMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
 import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
-import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -26,8 +28,6 @@ export class LoginController extends BaseController {
     private _userRepository: IUserRepository,
     @inject(Di.AuthService)
     private _authService: IAuthService,
-    @inject(Di.EntityMapperService)
-    private _entityMapperService: IEntityMapperService,
     @inject(Di.DataStoreService)
     private _dataStoreService: IDataStoreService
   ) {
@@ -43,10 +43,7 @@ export class LoginController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(
-    request: CustomRequest<undefined, LoginDto>,
-    response: CustomResponse<UserDto>
-  ) {
+  async v1(request: LoginDto, response: LoggedUserDto) {
     const { email, password } = request.body;
 
     const user = await this._userRepository.findByEmail(email, {
@@ -65,19 +62,6 @@ export class LoginController extends BaseController {
 
     const token = this._authService.signIn({ email, id: user.id });
 
-    const mappedUserData = this._entityMapperService.mapOneToDto(
-      user,
-      UserDto,
-      ({ role: { id, name, permissionToRole } }) => ({
-        roleId: id,
-        roleName: name,
-        permissions: permissionToRole.map(({ enabled, permission }) => ({
-          ...permission,
-          enabled,
-        })),
-      })
-    );
-
     try {
       await this._dataStoreService.createHash<DataStoreUser>(
         [user.id, DataStoreKeyType.AuthenticatedUser],
@@ -95,6 +79,8 @@ export class LoginController extends BaseController {
       httpOnly: true,
       secure: APP.ENV === Environment.Production,
     });
+
+    const mappedUserData = this.mapper.mapOneToDto(user, LoggedUserMapDto);
 
     return this.finalizeRequest(response, HTTP.OK, mappedUserData);
   }

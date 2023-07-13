@@ -3,11 +3,10 @@ import { PaginatedResult } from "types/Result";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { UserDto } from "@dtos/UserDto";
+import { UserMapDto } from "@dtos/UserMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
-import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -17,9 +16,7 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class GetAllController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
-    private _userRepository: IUserRepository,
-    @inject(Di.EntityMapperService)
-    private _entityMapperService: IEntityMapperService
+    private _userRepository: IUserRepository
   ) {
     super();
   }
@@ -35,7 +32,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IPaginationOptions>,
-    response: CustomResponse<PaginatedResult<UserDto>>
+    response: CustomResponse<PaginatedResult<UserMapDto>>
   ) {
     const {
       query: { skip, take },
@@ -53,15 +50,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this._entityMapperService.mapToDto(
-      result,
-      UserDto,
-      ({ role: { id, name }, deletedAt }) => ({
-        roleId: id,
-        roleName: name,
-        isActive: deletedAt === null,
-      })
-    );
+    const mappedResult = this.mapper.mapToDto(result, UserMapDto);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

@@ -1,16 +1,14 @@
-import { Type } from "miscellaneous-types";
 import { Base } from "@entities/Base";
+import { BaseMapDto } from "@dtos/BaseMapDto";
 
 export interface IEntityMapperService {
-  mapOneToDto<T extends Base, Y extends Partial<T>>(
+  mapOneToDto<T extends Base, Y extends BaseMapDto<T>>(
     entity: T,
-    target: Type<Y>,
-    customProps?: (from: T) => Partial<Y>
+    target: new (data: T) => Y
   ): Y;
 
-  mapToDto<T extends Base, Y extends Partial<T>>(
+  mapToDto<T extends Base, Y extends BaseMapDto<T>>(
     entities: T[],
-    target: Type<Y>,
-    customProps?: (from: T) => Partial<Y>
+    target: new (data: T) => Y
   ): Y[];
 }

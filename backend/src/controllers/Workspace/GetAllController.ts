@@ -4,9 +4,8 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { WorkspaceDto } from "@dtos/WorkspaceDto";
+import { WorkspaceMapDto } from "@dtos/WorkspaceMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
-import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
@@ -25,9 +24,7 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class GetAllController extends BaseController {
   constructor(
     @inject(Di.WorkspaceRepository)
-    private _workspaceRepository: IWorkspaceRepository,
-    @inject(Di.EntityMapperService)
-    private _entityMapperService: IEntityMapperService
+    private _workspaceRepository: IWorkspaceRepository
   ) {
     super();
   }
@@ -43,7 +40,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<PaginatedResult<WorkspaceDto>>
+    response: CustomResponse<PaginatedResult<WorkspaceMapDto>>
   ) {
     const {
       userId,
@@ -54,6 +51,12 @@ export class GetAllController extends BaseController {
     const [result, total] = await this._workspaceRepository.getAll({
       skip,
       take,
+      select: {
+        tags: {
+          id: true,
+          value: true,
+        },
+      },
       order: {
         name: "asc",
       },
@@ -70,11 +73,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this._entityMapperService.mapToDto(
-      result,
-      WorkspaceDto,
-      value => ({ tags: value.tags })
-    );
+    const mappedResult = this.mapper.mapToDto(result, WorkspaceMapDto);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,
