@@ -6,13 +6,13 @@ import { DataStoreKeyType, DataStoreUser } from "data-store-types";
 import { APP, JWT } from "@config";
 
 import { Di } from "@enums/Di";
-import { UserDto } from "@dtos/UserDto";
 import { LoginDto } from "@dtos/LoginDto";
 import { Environment } from "@enums/Environment";
+import { LoggedUserDto } from "@dtos/LoggedUserDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -42,7 +42,7 @@ export class LoginController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, LoginDto>,
-    response: CustomResponse<UserDto>
+    response: CustomResponse<LoggedUserDto>
   ) {
     const { email, password } = request.body;
 
@@ -62,7 +62,7 @@ export class LoginController extends BaseController {
 
     const token = this._authService.signIn({ email, id: user.id });
 
-    const mappedUserData = this.mapper.mapOneToDto(user, UserDto);
+    const mappedUserData = this.mapper.mapOneToDto(user, LoggedUserDto);
 
     try {
       await this._dataStoreService.createHash<DataStoreUser>(
