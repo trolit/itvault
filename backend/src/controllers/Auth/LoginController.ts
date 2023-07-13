@@ -13,7 +13,6 @@ import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
 import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
-import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -26,8 +25,6 @@ export class LoginController extends BaseController {
     private _userRepository: IUserRepository,
     @inject(Di.AuthService)
     private _authService: IAuthService,
-    @inject(Di.EntityMapperService)
-    private _entityMapperService: IEntityMapperService,
     @inject(Di.DataStoreService)
     private _dataStoreService: IDataStoreService
   ) {
@@ -65,7 +62,7 @@ export class LoginController extends BaseController {
 
     const token = this._authService.signIn({ email, id: user.id });
 
-    const mappedUserData = this._entityMapperService.mapOneToDto(user, UserDto);
+    const mappedUserData = this.mapper.mapOneToDto(user, UserDto);
 
     try {
       await this._dataStoreService.createHash<DataStoreUser>(
