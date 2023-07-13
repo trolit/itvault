@@ -40,7 +40,7 @@ export class SoftDeleteController extends BaseController {
     const entity = await repository.getById(id);
 
     if (!entity) {
-      return response.status(HTTP.NOT_FOUND).send();
+      return response.status(HTTP.NO_CONTENT).send();
     }
 
     await repository.softDeleteById(id);
