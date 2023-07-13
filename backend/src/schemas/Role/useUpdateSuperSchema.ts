@@ -22,7 +22,7 @@ function useBodySchema(): SchemaProvider {
   return () => {
     const permissionSchema = schemaForType<UpdatePermissionDto>()(
       z.object({
-        id: z.number().gt(0),
+        signature: z.string(),
         enabled: z.boolean(),
       })
     );
@@ -36,15 +36,17 @@ function useBodySchema(): SchemaProvider {
           .length(ALL_PERMISSIONS.length)
           .superRefine((permissions, context: RefinementCtx) => {
             const missingPermissions = ALL_PERMISSIONS.filter(
-              ({ id }) =>
-                permissions.findIndex(permission => permission.id === id) === -1
+              ({ signature }) =>
+                permissions.findIndex(
+                  permission => permission.signature === signature
+                ) === -1
             );
 
             if (missingPermissions.length) {
-              for (const { id, name } of missingPermissions) {
+              for (const { signature, name } of missingPermissions) {
                 context.addIssue({
                   code: ZodIssueCode.custom,
-                  message: `Permission '${name}' (${id}) must be provided in request.`,
+                  message: `Permission '${name}' (${signature}) must be provided in request.`,
                 });
               }
 

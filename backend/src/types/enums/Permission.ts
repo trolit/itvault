@@ -1,4 +1,4 @@
-export const enum Permission {
+export enum Permission {
   /* ROLE */
   ViewAllRoles = "RE-VAP",
   CreateRole = "RE-CP",
