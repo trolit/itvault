@@ -54,6 +54,12 @@ export class GetAllController extends BaseController {
     const [result, total] = await this._workspaceRepository.getAll({
       skip,
       take,
+      select: {
+        tags: {
+          id: true,
+          value: true,
+        },
+      },
       order: {
         name: "asc",
       },
@@ -72,8 +78,7 @@ export class GetAllController extends BaseController {
 
     const mappedResult = this._entityMapperService.mapToDto(
       result,
-      WorkspaceDto,
-      value => ({ tags: value.tags })
+      WorkspaceDto
     );
 
     return this.finalizeRequest(response, HTTP.OK, {

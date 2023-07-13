@@ -1,10 +1,13 @@
-import { Tag } from "@entities/Tag";
+import { BaseMapDto } from "./BaseMapDto";
+import { Workspace } from "@entities/Workspace";
 
-// @NOTE properties took from entity must be initialized for EntityMapperService
-export class WorkspaceDto {
-  id = 0;
+export class WorkspaceDto extends BaseMapDto<Workspace> {
+  constructor(
+    data: Workspace,
+    keys: (keyof Workspace)[] = ["id", "name", "tags"]
+  ) {
+    super(data, keys);
 
-  name = "";
-
-  tags: Tag[];
+    return this;
+  }
 }
