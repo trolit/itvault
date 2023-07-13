@@ -6,7 +6,6 @@ import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { WorkspaceDto } from "@dtos/WorkspaceDto";
 import { ControllerImplementation } from "miscellaneous-types";
-import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
@@ -25,9 +24,7 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class GetAllController extends BaseController {
   constructor(
     @inject(Di.WorkspaceRepository)
-    private _workspaceRepository: IWorkspaceRepository,
-    @inject(Di.EntityMapperService)
-    private _entityMapperService: IEntityMapperService
+    private _workspaceRepository: IWorkspaceRepository
   ) {
     super();
   }
@@ -76,10 +73,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this._entityMapperService.mapToDto(
-      result,
-      WorkspaceDto
-    );
+    const mappedResult = this.mapper.mapToDto(result, WorkspaceDto);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

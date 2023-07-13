@@ -7,7 +7,6 @@ import { UserDto } from "@dtos/UserDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
-import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -17,9 +16,7 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class GetAllController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
-    private _userRepository: IUserRepository,
-    @inject(Di.EntityMapperService)
-    private _entityMapperService: IEntityMapperService
+    private _userRepository: IUserRepository
   ) {
     super();
   }
@@ -53,7 +50,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this._entityMapperService.mapToDto(result, UserDto);
+    const mappedResult = this.mapper.mapToDto(result, UserDto);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,
