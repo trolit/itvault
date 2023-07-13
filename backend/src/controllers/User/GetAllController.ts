@@ -53,15 +53,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this._entityMapperService.mapToDto(
-      result,
-      UserDto,
-      ({ role: { id, name }, deletedAt }) => ({
-        roleId: id,
-        roleName: name,
-        isActive: deletedAt === null,
-      })
-    );
+    const mappedResult = this._entityMapperService.mapToDto(result, UserDto);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,
