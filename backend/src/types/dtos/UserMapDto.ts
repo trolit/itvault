@@ -1,25 +1,22 @@
 import { User } from "@entities/User";
 import { BaseMapDto } from "./BaseMapDto";
-import { PermissionDto } from "./PermissionDto";
 
-export class LoggedUserDto extends BaseMapDto<User> {
+export class UserMapDto extends BaseMapDto<User> {
   roleId: number;
   roleName: string;
-  permissions: PermissionDto[];
+  isActive: boolean;
 
   constructor(data: User, keys: (keyof User)[] = ["id", "email", "fullName"]) {
     super(data, keys);
 
     const {
-      role: { id, name, permissionToRole },
+      deletedAt,
+      role: { id, name },
     } = data;
 
     this.roleId = id;
     this.roleName = name;
-    this.permissions = permissionToRole.map(({ enabled, permission }) => ({
-      ...permission,
-      enabled,
-    }));
+    this.isActive = deletedAt === null;
 
     return this;
   }

@@ -4,7 +4,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { WorkspaceDto } from "@dtos/WorkspaceDto";
+import { WorkspaceMapDto } from "@dtos/WorkspaceMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
@@ -40,7 +40,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<PaginatedResult<WorkspaceDto>>
+    response: CustomResponse<PaginatedResult<WorkspaceMapDto>>
   ) {
     const {
       userId,
@@ -73,7 +73,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, WorkspaceDto);
+    const mappedResult = this.mapper.mapToDto(result, WorkspaceMapDto);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

@@ -3,7 +3,7 @@ import { PaginatedResult } from "types/Result";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { UserDto } from "@dtos/UserDto";
+import { UserMapDto } from "@dtos/UserMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
@@ -32,7 +32,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IPaginationOptions>,
-    response: CustomResponse<PaginatedResult<UserDto>>
+    response: CustomResponse<PaginatedResult<UserMapDto>>
   ) {
     const {
       query: { skip, take },
@@ -50,7 +50,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this.mapper.mapToDto(result, UserDto);
+    const mappedResult = this.mapper.mapToDto(result, UserMapDto);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,
