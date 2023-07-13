@@ -43,6 +43,7 @@ export class UserRepository
         id: true,
         email: true,
         password: true,
+        fullName: true,
       },
       where: {
         email,
