@@ -1,7 +1,6 @@
 import { z } from "zod";
+import { Body } from "types/controllers/v1/Auth/LoginController";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
-
-import type { LoginDto } from "@dtos/LoginDto";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -16,7 +15,7 @@ export const useLoginSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 
 function useBodySchema(): SchemaProvider {
   return () =>
-    schemaForType<LoginDto>()(
+    schemaForType<Body>()(
       z.object({
         email: z
           .string()
