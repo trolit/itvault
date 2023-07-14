@@ -8,9 +8,11 @@ export class TagToWorkspace {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Tag, tag => tag.tagToWorkspace)
+  @ManyToOne(() => Tag, tag => tag.tagToWorkspace, {
+    cascade: false,
+  })
   tag: Tag;
 
-  @ManyToOne(() => Workspace, role => role.tagToWorkspace)
+  @ManyToOne(() => Workspace, role => role.tagToWorkspace, { cascade: false })
   workspace: Workspace;
 }

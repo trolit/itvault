@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateTagsToWorkspacesTable1689347583896 implements MigrationInterface {
-    name = 'CreateTagsToWorkspacesTable1689347583896'
+export class CreateTagsToWorkspacesTable1689352576911 implements MigrationInterface {
+    name = 'CreateTagsToWorkspacesTable1689352576911'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE \`tags\` DROP FOREIGN KEY \`FK_d31ad143044deb9e8e8a19a72f0\``);

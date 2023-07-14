@@ -1,9 +1,9 @@
 import {
   Entity,
   Column,
+  OneToMany,
   CreateDateColumn,
   PrimaryGeneratedColumn,
-  OneToMany,
 } from "typeorm";
 
 import { TagToWorkspace } from "./TagToWorkspace";
