@@ -48,7 +48,7 @@ function useBodySchema(): SchemaProvider {
               return Zod.NEVER;
             }
           }),
-        tags: z.array(z.string()).min(1),
+        tags: z.array(z.string().min(2)).min(1),
       })
     );
 }
