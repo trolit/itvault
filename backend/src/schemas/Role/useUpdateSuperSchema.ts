@@ -4,7 +4,7 @@ import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
-import type { UpdatePermissionDto, UpdateRoleDto } from "@dtos/UpdateRoleDto";
+import type { UpdatePermissionDto, AddEditRoleDto } from "@dtos/AddEditRoleDto";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -27,7 +27,7 @@ function useBodySchema(): SchemaProvider {
       })
     );
 
-    return schemaForType<UpdateRoleDto>()(
+    return schemaForType<AddEditRoleDto>()(
       z.object({
         name: z.string().max(15),
         permissions: z

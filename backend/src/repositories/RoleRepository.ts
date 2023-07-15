@@ -4,7 +4,7 @@ import { injectable } from "tsyringe";
 import { BaseRepository } from "./BaseRepository";
 
 import { Role } from "@entities/Role";
-import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
+import { AddEditRoleDto } from "@dtos/AddEditRoleDto";
 import { PermissionToRole } from "@entities/PermissionToRole";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
@@ -19,7 +19,7 @@ export class RoleRepository
     super(Role);
   }
 
-  async update(roleId: number, data: UpdateRoleDto): Promise<Role | null> {
+  async update(roleId: number, data: AddEditRoleDto): Promise<Role | null> {
     const transaction = await this.useTransaction();
 
     const { manager } = transaction;
