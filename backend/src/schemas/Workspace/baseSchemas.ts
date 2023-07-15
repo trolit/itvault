@@ -36,6 +36,7 @@ const getIsWorkspaceAvailableSchema = (key: "workspaceId" | "id") =>
       }),
   });
 
+// @DEPRECATED
 const workspaceIdSchema = schemaForType<{
   workspaceId: number;
 }>()(
