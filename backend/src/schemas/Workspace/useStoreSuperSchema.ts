@@ -48,7 +48,14 @@ function useBodySchema(): SchemaProvider {
               return Zod.NEVER;
             }
           }),
-        tags: z.array(z.string().min(2)).min(1),
+        tags: z
+          .array(
+            z
+              .string()
+              .min(2)
+              .regex(/^[a-zA-Z0-9]*$/)
+          )
+          .min(1),
       })
     );
 }
