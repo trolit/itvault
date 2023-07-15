@@ -28,8 +28,6 @@ export class FileRepository
   ): Promise<File[] | null> {
     const transaction = await this.useTransaction();
 
-    let files: File[] | null = null;
-
     try {
       const temporaryFilesContainer = [];
 
@@ -47,16 +45,21 @@ export class FileRepository
         );
       }
 
-      files = await transaction.manager.save(File, temporaryFilesContainer);
+      const files = await transaction.manager.save(
+        File,
+        temporaryFilesContainer
+      );
 
       await transaction.commitTransaction();
+
+      return files;
     } catch (error) {
       await transaction.rollbackTransaction();
+
+      return null;
     } finally {
       await transaction.release();
     }
-
-    return files;
   }
 
   getOneWithMoreThanTwoVariants(variantIds: string[]): Promise<File | null> {
