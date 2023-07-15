@@ -41,6 +41,6 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    return this.finalizeRequest(response, HTTP.NO_CONTENT);
+    return this.finalizeRequest(response, HTTP.CREATED, result);
   }
 }
