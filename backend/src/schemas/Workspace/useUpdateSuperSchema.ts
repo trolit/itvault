@@ -4,7 +4,8 @@ import { baseWorkspaceSchemas } from "./baseSchemas";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { addEditBodySchema, workspaceAvailable } = baseWorkspaceSchemas;
+const { addEditBodySchema, getIsWorkspaceAvailableSchema } =
+  baseWorkspaceSchemas;
 
 export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
@@ -16,7 +17,7 @@ export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 );
 
 function useParamsSchema(): SchemaProvider {
-  return () => workspaceAvailable("id");
+  return () => getIsWorkspaceAvailableSchema("id");
 }
 
 function useBodySchema(): SchemaProvider {
