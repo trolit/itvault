@@ -47,14 +47,11 @@ export class RoleRepository
             );
           }
 
-          const { signature, enabled } = updatedPermission;
+          const { enabled } = updatedPermission;
 
           return {
+            ...permissionToRole,
             enabled,
-            permission: {
-              id: permission.id,
-              signature,
-            },
           };
         }),
       });
