@@ -1,6 +1,8 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 
+import { ALL_PERMISSIONS } from "@config/permissions";
+
 import { BaseRepository } from "./BaseRepository";
 
 import { Role } from "@entities/Role";
@@ -17,6 +19,49 @@ export class RoleRepository
 
   constructor() {
     super(Role);
+  }
+
+  async create(data: AddEditRoleDto): Promise<Role | null> {
+    const transaction = await this.useTransaction();
+
+    const { manager } = transaction;
+
+    const { name, permissions } = data;
+
+    try {
+      const role = await manager.save(Role, {
+        name,
+        permissionToRole: ALL_PERMISSIONS.map(({ signature }) => {
+          const permission = permissions.find(
+            element => element.signature === signature
+          );
+
+          if (!permission) {
+            throw new Error(
+              `Permission with signature ${signature} not included in request!`
+            );
+          }
+
+          return {
+            permission: {
+              signature,
+            },
+          };
+        }),
+      });
+
+      await transaction.commitTransaction();
+
+      return role;
+    } catch (error) {
+      console.log(error);
+
+      await transaction.rollbackTransaction();
+
+      return null;
+    } finally {
+      await transaction.release();
+    }
   }
 
   async update(roleId: number, data: AddEditRoleDto): Promise<Role | null> {
