@@ -1,3 +1,4 @@
+import uniq from "lodash/uniq";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
@@ -55,7 +56,8 @@ function useBodySchema(): SchemaProvider {
               .min(2)
               .regex(/^[a-zA-Z0-9]*$/)
           )
-          .min(1),
+          .min(1)
+          .transform(value => uniq(value)),
       })
     );
 }
