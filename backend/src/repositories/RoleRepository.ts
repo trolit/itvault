@@ -28,10 +28,11 @@ export class RoleRepository
     try {
       const currentRole = await manager.findOneOrFail(Role, {
         where: { id: roleId },
-        relations: { permissionToRole: true },
+        relations: { permissionToRole: { permission: true } },
       });
 
       const updatedRole = await manager.save(Role, {
+        ...currentRole,
         name,
         permissionToRole: currentRole.permissionToRole.map(permissionToRole => {
           const { permission } = permissionToRole;
