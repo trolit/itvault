@@ -1,10 +1,13 @@
-import { Entity, Column, OneToMany, PrimaryColumn } from "typeorm";
+import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 import { PermissionToRole } from "./PermissionToRole";
 
 @Entity("permissions")
 export class Permission {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ unique: true })
   signature: string;
 
   @Column({ unique: true })

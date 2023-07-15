@@ -34,12 +34,15 @@ export class UpdateController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(request: CustomRequest<IParams, UpdateRoleDto>, response: Response) {
-    const { id } = request.params;
+    const {
+      params: { id },
+      body,
+    } = request;
 
-    const result = await this._roleRepository.save(id, request.body);
+    const result = await this._roleRepository.update(id, body);
 
-    if (!result.success) {
-      return response.status(HTTP.BAD_REQUEST).send();
+    if (!result) {
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

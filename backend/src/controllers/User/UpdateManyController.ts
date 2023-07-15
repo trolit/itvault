@@ -1,5 +1,4 @@
 import { Request } from "express";
-import { Result } from "types/Result";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
@@ -42,16 +41,16 @@ export class UpdateManyController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, IRequestBody>,
-    response: CustomResponse<Result<UpdateUserDto[]>>
+    response: CustomResponse<UpdateUserDto[] | string>
   ) {
     const {
       body: { value },
     } = request;
 
-    const result = await this._userRepository.updateMany(value);
+    const error = await this._userService.updateMany(value);
 
-    if (!result.success) {
-      return response.status(HTTP.BAD_REQUEST).send(result);
+    if (error) {
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send(error);
     }
 
     this._userService.reflectChangesInDataStore(value);
