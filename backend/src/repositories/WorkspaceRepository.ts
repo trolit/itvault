@@ -55,24 +55,25 @@ export class WorkspaceRepository
     const transaction = await this.useTransaction();
 
     try {
-      const tagEntities = await this._adjustTags(transaction, tags, id);
-
-      const partialEntity = transaction.manager.create(Workspace, {
-        name,
-        tagToWorkspace: tagEntities.map(tagEntity => ({ tag: tagEntity })),
+      const workspace = await transaction.manager.findOneByOrFail(Workspace, {
+        id,
       });
 
-      const updateResult = await transaction.manager.update(
-        Workspace,
-        {
-          id,
-        },
-        partialEntity
+      const tagEntities = await this._adjustTags(transaction, tags);
+
+      const tagsToWorkspace = tagEntities.map(eo =>
+        transaction.manager.create(TagToWorkspace, { tag: eo })
       );
+
+      await transaction.manager.save(Workspace, {
+        ...workspace,
+        name,
+        tagToWorkspace: tagsToWorkspace,
+      });
 
       await transaction.commitTransaction();
 
-      return updateResult;
+      return null;
     } catch (error) {
       console.log(error);
 
@@ -84,17 +85,7 @@ export class WorkspaceRepository
     }
   }
 
-  private async _adjustTags(
-    transaction: QueryRunner,
-    tags: string[],
-    workspaceId?: number
-  ) {
-    if (workspaceId) {
-      await transaction.manager.delete(TagToWorkspace, {
-        workspace: { id: workspaceId },
-      });
-    }
-
+  private async _adjustTags(transaction: QueryRunner, tags: string[]) {
     const tagEntities = await Promise.all(
       tags.map(async value => {
         const element = await transaction.manager.findOneBy(Tag, {
