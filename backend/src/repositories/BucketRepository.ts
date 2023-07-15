@@ -24,12 +24,10 @@ export class BucketRepository
   ): Promise<Bucket[] | null> {
     const transaction = await this.useTransaction();
 
-    let buckets: Bucket[] | null = null;
-
     try {
       await transaction.manager.delete(Bucket, { variant: { id: variantId } });
 
-      buckets = await transaction.manager.save(
+      const buckets = await transaction.manager.save(
         Bucket,
         bucketsToAdd.map(({ value, blueprintId }) => ({
           value,
@@ -39,12 +37,14 @@ export class BucketRepository
       );
 
       await transaction.commitTransaction();
+
+      return buckets;
     } catch (error) {
       await transaction.rollbackTransaction();
+
+      return null;
     } finally {
       await transaction.release();
     }
-
-    return buckets;
   }
 }
