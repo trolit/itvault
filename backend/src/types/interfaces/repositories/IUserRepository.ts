@@ -7,6 +7,4 @@ export interface IUserRepository extends IBaseRepository<User> {
     email: string,
     options?: { includePermissions: boolean }
   ): Promise<User | null>;
-
-  updateMany(entitiesToUpdate: UpdateUserDto[]): Promise<boolean>;
 }
