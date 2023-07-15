@@ -54,6 +54,8 @@ export class FileRepository
 
       return files;
     } catch (error) {
+      console.log(error);
+
       await transaction.rollbackTransaction();
 
       return null;
