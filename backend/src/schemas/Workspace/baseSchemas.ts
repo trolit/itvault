@@ -9,6 +9,36 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 
+const workspaceAvailable = (key: "workspaceId" | "id") =>
+  z.object({}).setKey(
+    key,
+    z.object({
+      [key]: z.coerce
+        .number()
+        .gt(0)
+        .superRefine(async (id, context: RefinementCtx) => {
+          if (id <= 0) {
+            return Zod.NEVER;
+          }
+
+          const workspaceRepository = getInstanceOf<IWorkspaceRepository>(
+            Di.WorkspaceRepository
+          );
+
+          const workspace = await workspaceRepository.getById(id);
+
+          if (!workspace) {
+            context.addIssue({
+              code: ZodIssueCode.custom,
+              message: "Workspace is not available.",
+            });
+
+            return Zod.NEVER;
+          }
+        }),
+    })
+  );
+
 const workspaceIdSchema = schemaForType<{
   workspaceId: number;
 }>()(
@@ -79,6 +109,7 @@ const addEditBodySchema = schemaForType<AddEditWorkspaceDto>()(
 );
 
 export const baseWorkspaceSchemas = {
+  workspaceAvailable,
   workspaceIdSchema,
   addEditBodySchema,
 };
