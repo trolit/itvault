@@ -10,6 +10,7 @@ export enum Di {
   BundleService = "IBundleService",
   VariantService = "IVariantService",
   DataStoreService = "IDataStoreService",
+  WorkspaceService = "IWorkspaceService",
   EntityMapperService = "IEntityMapperService",
 
   TagRepository = "ITagRepository",
