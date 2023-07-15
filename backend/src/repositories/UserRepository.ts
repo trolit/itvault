@@ -1,13 +1,14 @@
-import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
 import { In, Repository } from "typeorm";
 
 import { BaseRepository } from "./BaseRepository";
 
-import { Role } from "@entities/Role";
 import { User } from "@entities/User";
+import { Role } from "@entities/Role";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+
+import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
 @injectable()
 export class UserRepository
@@ -53,11 +54,10 @@ export class UserRepository
   async updateMany(entitiesToUpdate: UpdateUserDto[]): Promise<boolean> {
     const transaction = await this.useTransaction();
 
-    const roleIds = entitiesToUpdate
-      .filter(({ data }) => !!data.roleId)
-      .map(({ data }) => data.roleId);
-
-    const uniqueRoleIds = uniq(roleIds);
+    const uniqueRoleIds = getUniqueValuesFromCollection<UpdateUserDto, number>(
+      entitiesToUpdate,
+      "data.roleId"
+    );
 
     try {
       const roles = await transaction.manager.find(Role, {
