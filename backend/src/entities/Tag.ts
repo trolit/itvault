@@ -1,12 +1,12 @@
 import {
   Entity,
   Column,
-  ManyToOne,
+  OneToMany,
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
-import { Workspace } from "./Workspace";
+import { TagToWorkspace } from "./TagToWorkspace";
 
 @Entity("tags")
 export class Tag {
@@ -19,9 +19,9 @@ export class Tag {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => Workspace, workspace => workspace.tags, {
+  @OneToMany(() => TagToWorkspace, tagToWorkspace => tagToWorkspace.tag, {
     cascade: false,
     nullable: true,
   })
-  workspace: Workspace;
+  tagToWorkspace: TagToWorkspace[];
 }

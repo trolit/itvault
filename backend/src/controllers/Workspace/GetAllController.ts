@@ -51,12 +51,6 @@ export class GetAllController extends BaseController {
     const [result, total] = await this._workspaceRepository.getAll({
       skip,
       take,
-      select: {
-        tags: {
-          id: true,
-          value: true,
-        },
-      },
       order: {
         name: "asc",
       },
@@ -69,7 +63,9 @@ export class GetAllController extends BaseController {
       },
       relations: {
         userToWorkspace: true,
-        tags: true,
+        tagToWorkspace: {
+          tag: true,
+        },
       },
     });
 
