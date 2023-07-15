@@ -4,11 +4,11 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
 import { ControllerImplementation } from "miscellaneous-types";
-import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
+import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IQuery {
+interface IParams {
   id: number;
 }
 
@@ -23,8 +23,8 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 @injectable()
 export class UpdateController extends BaseController {
   constructor(
-    @inject(Di.WorkspaceRepository)
-    private _workspaceRepository: IWorkspaceRepository
+    @inject(Di.WorkspaceService)
+    private _workspaceService: IWorkspaceService
   ) {
     super();
   }
@@ -39,17 +39,17 @@ export class UpdateController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, IBody, IQuery>,
+    request: CustomRequest<IParams, IBody>,
     response: CustomResponse<Workspace>
   ) {
     const {
-      query: { id },
-      body: { name, tags },
+      params: { id },
+      body,
     } = request;
 
-    const result = await this._workspaceRepository.update(id, name, tags);
+    const result = await this._workspaceService.update(id, body);
 
-    if (!result?.affected) {
+    if (!result) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
