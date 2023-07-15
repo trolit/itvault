@@ -1,11 +1,9 @@
+import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
-import { Result } from "types/Result";
-import { Repository, EntityManager } from "typeorm";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { Role } from "@entities/Role";
-import { IError } from "@interfaces/IError";
 import { UpdateRoleDto } from "@dtos/UpdateRoleDto";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
@@ -20,43 +18,56 @@ export class RoleRepository
     super(Role);
   }
 
-  async save(roleId: number, payload: UpdateRoleDto): Promise<Result<Role>> {
-    // @TODO refactor transaction
-    const transactionResult = await this.database.manager.transaction(
-      async (entityManager: EntityManager) => {
-        const errors: IError[] = [];
+  async update(roleId: number, data: UpdateRoleDto): Promise<Role | null> {
+    const transaction = await this.useTransaction();
 
-        const role = await entityManager.findOne(Role, {
-          where: { id: roleId },
-          relations: { permissionToRole: true },
-        });
+    const { manager } = transaction;
 
-        if (!role) {
-          errors.push({ key: roleId, messages: ["Role is not available."] });
+    const { name, permissions } = data;
 
-          return { errors };
-        }
+    try {
+      const currentRole = await manager.findOneOrFail(Role, {
+        where: { id: roleId },
+        relations: { permissionToRole: true },
+      });
 
-        role.permissionToRole.map(value => {
-          const updatedPermission = payload.permissions.find(
-            element => element.signature === value.permission.signature
+      const updatedRole = await manager.save(Role, {
+        name,
+        permissionToRole: currentRole.permissionToRole.map(permissionToRole => {
+          const { permission } = permissionToRole;
+
+          const updatedPermission = permissions.find(
+            ({ signature }) => signature === permission.signature
           );
 
-          if (updatedPermission) {
-            value.enabled = updatedPermission.enabled;
+          if (!updatedPermission) {
+            throw new Error(
+              `Permission with signature ${permission.signature} not included in request!`
+            );
           }
-        });
 
-        role.name = payload.name;
+          const { signature, enabled } = updatedPermission;
 
-        const updatedRole = await entityManager.save(role);
+          return {
+            enabled,
+            permission: {
+              signature,
+            },
+          };
+        }),
+      });
 
-        return { errors, updatedRole };
-      }
-    );
+      await transaction.commitTransaction();
 
-    const { errors, updatedRole } = transactionResult;
+      return updatedRole;
+    } catch (error) {
+      console.log(error);
 
-    return errors.length ? Result.failure(errors) : Result.success(updatedRole);
+      await transaction.rollbackTransaction();
+
+      return null;
+    } finally {
+      await transaction.release();
+    }
   }
 }
