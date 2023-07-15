@@ -52,6 +52,7 @@ export class RoleRepository
           return {
             enabled,
             permission: {
+              id: permission.id,
               signature,
             },
           };
