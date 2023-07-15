@@ -42,13 +42,10 @@ export class StoreController extends BaseController {
       body: { name, tags },
     } = request;
 
-    const workspace = await this._workspaceRepository.primitiveSave({
-      name,
-      tags: tags.map(tag => ({ value: tag })),
-    });
+    const workspace = await this._workspaceRepository.save(name, tags);
 
     if (!workspace) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
     return this.finalizeRequest(response, HTTP.CREATED, workspace);
