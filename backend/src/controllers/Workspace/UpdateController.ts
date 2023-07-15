@@ -8,6 +8,10 @@ import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
 import { BaseController } from "@controllers/BaseController";
 
+interface IParams {
+  id: number;
+}
+
 export interface IBody {
   name: string;
 
@@ -17,7 +21,7 @@ export interface IBody {
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class StoreController extends BaseController {
+export class UpdateController extends BaseController {
   constructor(
     @inject(Di.WorkspaceService)
     private _workspaceService: IWorkspaceService
@@ -35,17 +39,20 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, IBody>,
+    request: CustomRequest<IParams, IBody>,
     response: CustomResponse<Workspace>
   ) {
-    const { body } = request;
+    const {
+      params: { id },
+      body,
+    } = request;
 
-    const workspace = await this._workspaceService.create(body);
+    const result = await this._workspaceService.update(id, body);
 
-    if (!workspace) {
+    if (!result) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, workspace);
+    return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
 }

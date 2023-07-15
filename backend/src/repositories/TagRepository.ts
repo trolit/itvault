@@ -1,5 +1,5 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { Like, QueryRunner, Repository } from "typeorm";
 
 import { BaseRepository } from "./BaseRepository";
 
@@ -15,5 +15,20 @@ export class TagRepository
 
   constructor() {
     super(Tag);
+  }
+
+  transactionSaveMany(
+    transaction: QueryRunner,
+    tags: string[]
+  ): Promise<Tag[]> {
+    return Promise.all(
+      tags.map(async value => {
+        const element = await transaction.manager.findOneBy(Tag, {
+          value: Like(value),
+        });
+
+        return element ? element : transaction.manager.save(Tag, { value });
+      })
+    );
   }
 }

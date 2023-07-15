@@ -1,5 +1,6 @@
 import {
   DeepPartial,
+  QueryRunner,
   UpdateResult,
   FindOneOptions,
   FindManyOptions,
@@ -24,4 +25,6 @@ export interface IBaseRepository<T> {
     options: FindOptionsWhere<T>,
     partialEntity: QueryDeepPartialEntity<T>
   ): Promise<UpdateResult>;
+
+  useTransaction(): Promise<QueryRunner>;
 }

@@ -19,7 +19,7 @@ export class BaseRepository<T extends { id: number | string }>
 {
   protected database: Repository<T>;
 
-  protected useTransaction: () => Promise<QueryRunner>;
+  public useTransaction: () => Promise<QueryRunner>;
 
   constructor(entity: Type<T>) {
     this.database = dataSource.getRepository(entity);

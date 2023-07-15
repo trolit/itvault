@@ -21,7 +21,6 @@ export class Tag {
 
   @OneToMany(() => TagToWorkspace, tagToWorkspace => tagToWorkspace.tag, {
     cascade: false,
-    nullable: true,
   })
   tagToWorkspace: TagToWorkspace[];
 }
