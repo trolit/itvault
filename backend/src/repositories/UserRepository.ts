@@ -1,13 +1,11 @@
 import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
-import { Result } from "types/Result";
 import { In, Repository } from "typeorm";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { Role } from "@entities/Role";
 import { User } from "@entities/User";
-import { IError } from "@interfaces/IError";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
@@ -52,9 +50,7 @@ export class UserRepository
     });
   }
 
-  async updateMany(
-    entitiesToUpdate: UpdateUserDto[]
-  ): Promise<Result<UpdateUserDto[]>> {
+  async updateMany(entitiesToUpdate: UpdateUserDto[]): Promise<boolean> {
     const transaction = await this.useTransaction();
 
     const roleIds = entitiesToUpdate
@@ -62,8 +58,6 @@ export class UserRepository
       .map(({ data }) => data.roleId);
 
     const uniqueRoleIds = uniq(roleIds);
-
-    const errors: IError[] = [];
 
     try {
       const roles = await transaction.manager.find(Role, {
@@ -77,15 +71,11 @@ export class UserRepository
           roles.every(role => role.id !== uniqueRoleId)
         );
 
-        missingRoleIds.map(roleId => {
-          errors.push({
-            messages: [
-              `Failed to perform update as role identified by ${roleId} is not available.`,
-            ],
-          });
-        });
-
-        throw new Error();
+        throw new Error(
+          `Failed to perform update due role(s) identified by: ${missingRoleIds.join(
+            ", "
+          )}`
+        );
       }
 
       for (const entityToUpdate of entitiesToUpdate) {
@@ -112,20 +102,18 @@ export class UserRepository
           continue;
         }
 
-        errors.push({
-          messages: [
-            `Failed to perform update due to user identified by ${id}.`,
-          ],
-        });
-
-        throw new Error();
+        throw new Error(
+          `Failed to perform update due to user identified by ${id}.`
+        );
       }
 
-      return Result.success();
+      return true;
     } catch (error) {
+      console.log(error);
+
       await transaction.rollbackTransaction();
 
-      return Result.failure(errors);
+      return false;
     } finally {
       await transaction.release();
     }

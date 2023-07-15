@@ -48,10 +48,10 @@ export class UpdateManyController extends BaseController {
       body: { value },
     } = request;
 
-    const result = await this._userRepository.updateMany(value);
+    const isSuccessful = await this._userRepository.updateMany(value);
 
-    if (!result.success) {
-      return response.status(HTTP.BAD_REQUEST).send(result);
+    if (!isSuccessful) {
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
     this._userService.reflectChangesInDataStore(value);
