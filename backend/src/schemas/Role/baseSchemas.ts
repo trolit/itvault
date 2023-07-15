@@ -15,6 +15,7 @@ const permissionSchema = schemaForType<UpdatePermissionDto>()(
 
 const addEditBodySchema = schemaForType<AddEditRoleDto>()(
   z.object({
+    // @TODO check if it's not taken already
     name: z.string().max(15),
     permissions: z
       .array(permissionSchema)
