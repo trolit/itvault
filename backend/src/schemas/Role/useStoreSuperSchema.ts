@@ -6,7 +6,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const { addEditBodySchema } = baseRoleSchemas;
 
-export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
+export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
     return {
       body: useBodySchema(),
