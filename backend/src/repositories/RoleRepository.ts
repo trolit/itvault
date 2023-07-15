@@ -1,11 +1,10 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 
-import { ALL_PERMISSIONS } from "@config/permissions";
-
 import { BaseRepository } from "./BaseRepository";
 
 import { Role } from "@entities/Role";
+import { Permission } from "@entities/Permission";
 import { AddEditRoleDto } from "@dtos/AddEditRoleDto";
 import { PermissionToRole } from "@entities/PermissionToRole";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
@@ -29,23 +28,24 @@ export class RoleRepository
     const { name, permissions } = data;
 
     try {
+      const permissionEntities = await manager.find(Permission);
+
       const role = await manager.save(Role, {
         name,
-        permissionToRole: ALL_PERMISSIONS.map(({ signature }) => {
+        permissionToRole: permissionEntities.map(entity => {
           const permission = permissions.find(
-            element => element.signature === signature
+            element => element.signature === entity.signature
           );
 
           if (!permission) {
             throw new Error(
-              `Permission with signature ${signature} not included in request!`
+              `Permission with signature ${entity.signature} not included in request!`
             );
           }
 
           return {
-            permission: {
-              signature,
-            },
+            enabled: permission.enabled,
+            permission: entity,
           };
         }),
       });
