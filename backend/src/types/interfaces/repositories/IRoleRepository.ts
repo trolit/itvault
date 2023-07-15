@@ -5,5 +5,5 @@ import { IBaseRepository } from "./IBaseRepository";
 export interface IRoleRepository extends IBaseRepository<Role> {
   create(data: AddEditRoleDto): Promise<Role | null>;
 
-  update(roleId: number, data: AddEditRoleDto): Promise<Role | null>;
+  update(id: number, data: AddEditRoleDto): Promise<Role | null>;
 }

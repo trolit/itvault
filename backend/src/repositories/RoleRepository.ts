@@ -64,7 +64,7 @@ export class RoleRepository
     }
   }
 
-  async update(roleId: number, data: AddEditRoleDto): Promise<Role | null> {
+  async update(id: number, data: AddEditRoleDto): Promise<Role | null> {
     const transaction = await this.useTransaction();
 
     const { manager } = transaction;
@@ -94,7 +94,7 @@ export class RoleRepository
 
     try {
       const currentRole = await manager.findOneOrFail(Role, {
-        where: { id: roleId },
+        where: { id },
         relations: { permissionToRole: { permission: true } },
       });
 
