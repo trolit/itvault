@@ -30,7 +30,10 @@ const addEditBodySchema = (id?: number) =>
 
           const role = await roleRepository.getOne({ where: { name: value } });
 
-          if ((!id && role) || (id && role?.id !== id)) {
+          const isSameName = !id && role;
+          const isSameNameButDifferentIds = id && role && role.id !== id;
+
+          if (isSameName || isSameNameButDifferentIds) {
             context.addIssue({
               code: ZodIssueCode.custom,
               message: `This name is not available.`,
