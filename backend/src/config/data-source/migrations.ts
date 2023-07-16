@@ -12,6 +12,7 @@ import { CreatePermissionsTable1688323160526 } from "@migrations/1688323160526-C
 import { CreateTagsToWorkspacesTable1689352576911 } from "@migrations/1689352576911-CreateTagsToWorkspacesTable";
 import { CreateUsersToWorkspacesTable1688324250620 } from "@migrations/1688324250620-CreateUsersToWorkspacesTable";
 import { CreatePermissionsToRolesTable1688323459863 } from "@migrations/1688323459863-CreatePermissionsToRolesTable";
+import { AddSoftDeleteOptionToWorkspaceRelatedEntities1689510774041 } from "@migrations/1689510774041-AddSoftDeleteOptionToWorkspaceRelatedEntities";
 
 export const migrations = [
   CreatePermissionsTable1688323160526,
@@ -28,4 +29,5 @@ export const migrations = [
   CreateNotesTable1688324664250,
   CreateTagsTable1689180061786,
   CreateTagsToWorkspacesTable1689352576911,
+  AddSoftDeleteOptionToWorkspaceRelatedEntities1689510774041,
 ];

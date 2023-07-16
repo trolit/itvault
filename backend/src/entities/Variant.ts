@@ -4,6 +4,7 @@ import {
   ManyToOne,
   OneToMany,
   CreateDateColumn,
+  DeleteDateColumn,
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
@@ -26,18 +27,23 @@ export class Variant {
   @Column()
   size: number; // @NOTE in bytes
 
-  @CreateDateColumn()
-  createdAt: Date;
-
   @ManyToOne(() => User, user => user.variants, { cascade: false })
   createdBy: User;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 
   @ManyToOne(() => File, file => file.variants)
   file: File;
 
   @OneToMany(() => Bucket, bucket => bucket.variant, { cascade: true })
   buckets: Bucket[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @DeleteDateColumn({
+    nullable: true,
+  })
+  deletedAt: Date | null;
 }
