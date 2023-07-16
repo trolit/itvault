@@ -1,5 +1,5 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { In, Repository } from "typeorm";
 
 import { BaseRepository } from "./BaseRepository";
 
@@ -25,7 +25,12 @@ export class BucketRepository
     const transaction = await this.useTransaction();
 
     try {
-      await transaction.manager.delete(Bucket, { variant: { id: variantId } });
+      await transaction.manager.delete(Bucket, {
+        variant: { id: variantId },
+        blueprint: {
+          id: In(bucketsToAdd.map(({ blueprintId }) => blueprintId)),
+        },
+      });
 
       const buckets = await transaction.manager.save(
         Bucket,
