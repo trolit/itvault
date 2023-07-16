@@ -44,8 +44,8 @@ export class UpdateController extends BaseController {
 
     const result = await this._roleService.update(id, body);
 
-    if (!result) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
+    if (!result.isSuccess) {
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

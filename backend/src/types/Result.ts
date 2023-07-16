@@ -1,32 +1,29 @@
-import { IError } from "@interfaces/IError";
-
 export class PaginatedResult<T> {
   result: T[];
 
   total: number;
 }
 
-// @TODO refactor and apply to all Repository actions + Controllers (?)
 export class Result<T> {
-  public value?: T;
+  isSuccess: boolean;
 
-  public errors: IError[];
+  value?: T;
 
-  public success: boolean;
+  error?: string;
 
-  constructor(errors: IError[], value?: T) {
+  private constructor(isSuccess: boolean, value?: T, error?: string) {
+    this.isSuccess = isSuccess;
+
     this.value = value;
 
-    this.errors = errors;
-
-    this.success = errors.length === 0;
+    this.error = error;
   }
 
-  public static success<T>(value?: T): Result<T> {
-    return new Result<T>([], value);
+  static success<T>(value?: T): Result<T> {
+    return new Result<T>(true, value);
   }
 
-  public static failure<T>(errors: IError[], value?: T): Result<T> {
-    return new Result<T>(errors, value);
+  static failure<T>(error?: string): Result<T> {
+    return new Result<T>(false, undefined, error);
   }
 }
