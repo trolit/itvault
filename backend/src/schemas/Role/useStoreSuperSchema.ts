@@ -15,5 +15,5 @@ export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 );
 
 function useBodySchema(): SchemaProvider {
-  return () => addEditBodySchema;
+  return () => addEditBodySchema();
 }

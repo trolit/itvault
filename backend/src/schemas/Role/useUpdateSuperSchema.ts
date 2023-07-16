@@ -11,16 +11,20 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 const { addEditBodySchema } = baseRoleSchemas;
 
 export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  () => {
+  ({ request }) => {
+    const {
+      params: { id },
+    } = request;
+
     return {
-      body: useBodySchema(),
       params: useParamsSchema(),
+      body: useBodySchema(id),
     };
   }
 );
 
-function useBodySchema(): SchemaProvider {
-  return () => addEditBodySchema;
+function useBodySchema(id: string): SchemaProvider {
+  return () => addEditBodySchema(parseInt(id));
 }
 
 function useParamsSchema(): SchemaProvider {
