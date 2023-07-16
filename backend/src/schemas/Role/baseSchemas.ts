@@ -2,7 +2,11 @@ import Zod, { z, RefinementCtx, ZodIssueCode } from "zod";
 
 import { ALL_PERMISSIONS } from "@config/permissions";
 
+import { Di } from "@enums/Di";
+import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 import { AddEditRoleDto, UpdatePermissionDto } from "@dtos/AddEditRoleDto";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 
@@ -13,35 +17,57 @@ const permissionSchema = schemaForType<UpdatePermissionDto>()(
   })
 );
 
-const addEditBodySchema = schemaForType<AddEditRoleDto>()(
-  z.object({
-    // @TODO check if it's not taken already
-    name: z.string().max(15),
-    permissions: z
-      .array(permissionSchema)
-      .nonempty()
-      .length(ALL_PERMISSIONS.length)
-      .superRefine((permissions, context: RefinementCtx) => {
-        const missingPermissions = ALL_PERMISSIONS.filter(
-          ({ signature }) =>
-            permissions.findIndex(
-              permission => permission.signature === signature
-            ) === -1
-        );
+const addEditBodySchema = (id?: number) =>
+  schemaForType<AddEditRoleDto>()(
+    z.object({
+      name: z
+        .string()
+        .max(15)
+        .superRefine(async (value, context: RefinementCtx) => {
+          const roleRepository = getInstanceOf<IRoleRepository>(
+            Di.RoleRepository
+          );
 
-        if (missingPermissions.length) {
-          for (const { signature, name } of missingPermissions) {
+          const role = await roleRepository.getOne({ where: { name: value } });
+
+          const isSameName = !id && role;
+          const isSameNameButDifferentIds = id && role && role.id !== id;
+
+          if (isSameName || isSameNameButDifferentIds) {
             context.addIssue({
               code: ZodIssueCode.custom,
-              message: `Permission '${name}' (${signature}) must be provided in request.`,
+              message: `This name is not available.`,
             });
-          }
 
-          return Zod.NEVER;
-        }
-      }),
-  })
-);
+            return Zod.NEVER;
+          }
+        }),
+
+      permissions: z
+        .array(permissionSchema)
+        .nonempty()
+        .length(ALL_PERMISSIONS.length)
+        .superRefine((permissions, context: RefinementCtx) => {
+          const missingPermissions = ALL_PERMISSIONS.filter(
+            ({ signature }) =>
+              permissions.findIndex(
+                permission => permission.signature === signature
+              ) === -1
+          );
+
+          if (missingPermissions.length) {
+            for (const { signature, name } of missingPermissions) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message: `Permission '${name}' (${signature}) must be provided in request.`,
+              });
+            }
+
+            return Zod.NEVER;
+          }
+        }),
+    })
+  );
 
 export const baseRoleSchemas = {
   addEditBodySchema,

@@ -1,11 +1,13 @@
+import { Result } from "types/Result";
 import { inject, injectable } from "tsyringe";
+import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { Permission } from "@entities/Permission";
 import { IRoleService } from "@interfaces/services/IRoleService";
-import { AddEditRoleDto, UpdatePermissionDto } from "@dtos/AddEditRoleDto";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
+import { AddEditRoleDto, UpdatePermissionDto } from "@dtos/AddEditRoleDto";
 
 @injectable()
 export class RoleService implements IRoleService {
@@ -14,7 +16,7 @@ export class RoleService implements IRoleService {
     private _roleRepository: IRoleRepository
   ) {}
 
-  async create(data: AddEditRoleDto): Promise<Role | null> {
+  async create(data: AddEditRoleDto): Promise<Result<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
     const { name, permissions } = data;
@@ -39,19 +41,21 @@ export class RoleService implements IRoleService {
 
       await transaction.commitTransaction();
 
-      return role;
+      return Result.success(role);
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return null;
+      return Result.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
     } finally {
       await transaction.release();
     }
   }
 
-  async update(id: number, data: AddEditRoleDto): Promise<Role | null> {
+  async update(id: number, data: AddEditRoleDto): Promise<Result<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
     const { name, permissions } = data;
@@ -64,7 +68,7 @@ export class RoleService implements IRoleService {
 
       const { permissionToRole } = currentRole;
 
-      const updatedRole = await manager.save(Role, {
+      await manager.save(Role, {
         ...currentRole,
         name,
         permissionToRole: permissionToRole.map(value => {
@@ -76,7 +80,7 @@ export class RoleService implements IRoleService {
           );
 
           return {
-            ...permissionToRole,
+            ...value,
             enabled,
           };
         }),
@@ -84,13 +88,15 @@ export class RoleService implements IRoleService {
 
       await transaction.commitTransaction();
 
-      return updatedRole;
+      return Result.success();
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return null;
+      return Result.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
     } finally {
       await transaction.release();
     }
@@ -105,7 +111,7 @@ export class RoleService implements IRoleService {
     );
 
     if (!permission) {
-      throw new Error(
+      throw new TransactionError(
         `Permission with signature ${signature} should be included in request!`
       );
     }
