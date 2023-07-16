@@ -5,7 +5,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Di } from "@enums/Di";
 import { AddEditRoleDto } from "@dtos/AddEditRoleDto";
 import { ControllerImplementation } from "miscellaneous-types";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
+import { IRoleService } from "@interfaces/services/IRoleService";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -18,8 +18,8 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 @injectable()
 export class UpdateController extends BaseController {
   constructor(
-    @inject(Di.RoleRepository)
-    private _roleRepository: IRoleRepository
+    @inject(Di.RoleService)
+    private _roleService: IRoleService
   ) {
     super();
   }
@@ -42,7 +42,7 @@ export class UpdateController extends BaseController {
       body,
     } = request;
 
-    const result = await this._roleRepository.update(id, body);
+    const result = await this._roleService.update(id, body);
 
     if (!result) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
