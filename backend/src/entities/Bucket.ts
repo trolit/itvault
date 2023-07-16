@@ -1,15 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 
+import { Base } from "./Base";
 import { Variant } from "./Variant";
 import { Blueprint } from "./Blueprint";
 
 import { BucketContent } from "miscellaneous-types";
 
 @Entity("buckets")
-export class Bucket {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Bucket extends Base {
   @Column({ type: "json" })
   value: BucketContent;
 

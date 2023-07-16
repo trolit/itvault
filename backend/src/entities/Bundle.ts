@@ -5,6 +5,7 @@ import {
   ManyToOne,
   ManyToMany,
   CreateDateColumn,
+  DeleteDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
@@ -26,9 +27,6 @@ export class Bundle {
 
   @Column({ nullable: true })
   note: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
 
   @Column({ type: "enum", enum: BundleExpire })
   expire: BundleExpire;
@@ -55,4 +53,12 @@ export class Bundle {
   @ManyToMany(() => Variant, { cascade: true })
   @JoinTable({ name: "bundles_variants" })
   variants: Variant[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @DeleteDateColumn({
+    nullable: true,
+  })
+  deletedAt: Date | null;
 }

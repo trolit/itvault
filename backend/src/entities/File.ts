@@ -1,29 +1,17 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  CreateDateColumn,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
 import { Note } from "./Note";
+import { Base } from "./Base";
 import { Variant } from "./Variant";
 import { Workspace } from "./Workspace";
 
 @Entity("files")
-export class File {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class File extends Base {
   @Column()
   originalFilename: string;
 
   @Column({ default: "." })
   relativePath: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
 
   @ManyToOne(() => Workspace, workspace => workspace.files)
   workspace: Workspace;
