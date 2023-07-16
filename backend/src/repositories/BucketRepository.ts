@@ -1,5 +1,6 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { In, Repository } from "typeorm";
+import { TransactionResult } from "types/TransactionResult";
 
 import { BaseRepository } from "./BaseRepository";
 
@@ -21,11 +22,16 @@ export class BucketRepository
   async save(
     variantId: string,
     bucketsToAdd: BucketDto[]
-  ): Promise<Bucket[] | null> {
+  ): Promise<TransactionResult<Bucket[]>> {
     const transaction = await this.useTransaction();
 
     try {
-      await transaction.manager.delete(Bucket, { variant: { id: variantId } });
+      await transaction.manager.delete(Bucket, {
+        variant: { id: variantId },
+        blueprint: {
+          id: In(bucketsToAdd.map(({ blueprintId }) => blueprintId)),
+        },
+      });
 
       const buckets = await transaction.manager.save(
         Bucket,
@@ -38,11 +44,11 @@ export class BucketRepository
 
       await transaction.commitTransaction();
 
-      return buckets;
+      return TransactionResult.success(buckets);
     } catch (error) {
       await transaction.rollbackTransaction();
 
-      return null;
+      return TransactionResult.failure();
     } finally {
       await transaction.release();
     }

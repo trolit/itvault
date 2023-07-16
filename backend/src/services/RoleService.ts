@@ -1,13 +1,13 @@
-import { Result } from "types/Result";
 import { inject, injectable } from "tsyringe";
+import { TransactionResult } from "types/TransactionResult";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { Permission } from "@entities/Permission";
 import { IRoleService } from "@interfaces/services/IRoleService";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 import { AddEditRoleDto, UpdatePermissionDto } from "@dtos/AddEditRoleDto";
+import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 @injectable()
 export class RoleService implements IRoleService {
@@ -16,7 +16,7 @@ export class RoleService implements IRoleService {
     private _roleRepository: IRoleRepository
   ) {}
 
-  async create(data: AddEditRoleDto): Promise<Result<Role>> {
+  async create(data: AddEditRoleDto): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
     const { name, permissions } = data;
@@ -41,13 +41,13 @@ export class RoleService implements IRoleService {
 
       await transaction.commitTransaction();
 
-      return Result.success(role);
+      return TransactionResult.success(role);
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return Result.failure(
+      return TransactionResult.failure(
         error instanceof TransactionError ? error.message : undefined
       );
     } finally {
@@ -55,7 +55,10 @@ export class RoleService implements IRoleService {
     }
   }
 
-  async update(id: number, data: AddEditRoleDto): Promise<Result<Role>> {
+  async update(
+    id: number,
+    data: AddEditRoleDto
+  ): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
     const { name, permissions } = data;
@@ -88,13 +91,13 @@ export class RoleService implements IRoleService {
 
       await transaction.commitTransaction();
 
-      return Result.success();
+      return TransactionResult.success();
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return Result.failure(
+      return TransactionResult.failure(
         error instanceof TransactionError ? error.message : undefined
       );
     } finally {

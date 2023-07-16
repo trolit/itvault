@@ -46,18 +46,14 @@ export class StoreController extends BaseController {
     } = request;
 
     // @TODO chunk!!
-    const savedFiles = await this._fileRepository.save(
-      userId,
-      workspaceId,
-      files
-    );
+    const result = await this._fileRepository.save(userId, workspaceId, files);
 
-    if (!savedFiles) {
+    if (!result.isSuccess) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
     this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
 
-    return this.finalizeRequest(response, HTTP.OK, savedFiles);
+    return this.finalizeRequest(response, HTTP.OK, result.value);
   }
 }

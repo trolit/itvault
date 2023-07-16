@@ -1,14 +1,16 @@
 import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
-import { PaginatedResult } from "types/Result";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { RoleDto } from "@dtos/RoleDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
+import {
+  ControllerImplementation,
+  PaginatedResponse,
+} from "miscellaneous-types";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -40,7 +42,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<PaginatedResult<RoleDto>>
+    response: CustomResponse<PaginatedResponse<RoleDto>>
   ) {
     const {
       query: { skip, take },

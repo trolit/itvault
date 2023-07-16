@@ -1,5 +1,8 @@
+import assert from "assert";
 import { In } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { TransactionResult } from "types/TransactionResult";
+import { TransactionError } from "types/custom-errors/TransactionError";
 import {
   DataStoreKey,
   DataStoreUser,
@@ -49,7 +52,9 @@ export class UserService implements IUserService {
     }
   }
 
-  async updateMany(usersToUpdate: UpdateUserDto[]): Promise<string | null> {
+  async updateMany(
+    usersToUpdate: UpdateUserDto[]
+  ): Promise<TransactionResult<User[]>> {
     const transaction = await this._userRepository.useTransaction();
     const { manager } = transaction;
 
@@ -66,39 +71,42 @@ export class UserService implements IUserService {
       });
 
       if (roles.length !== uniqueRoleIds.length) {
-        throw new Error(
-          `Not all roles are available. Found only: ${roles
-            .map(role => role.name)
-            .join(", ")}`
+        throw new TransactionError(
+          `Not all roles are available to perform operation.`
         );
       }
 
       const entities = usersToUpdate.map(
         ({ id, data: { isActive, roleId } }) => {
-          const userData: Partial<User> = manager.create(User, {
+          const userData: User = manager.create(User, {
             id,
             deletedAt: isActive ? null : new Date(),
           });
 
           if (roleId) {
-            userData.role = roles.find(role => role.id === roleId);
+            const role = roles.find(role => role.id === roleId);
+            assert(role);
+
+            userData.role = role;
           }
 
           return userData;
         }
       );
 
-      await manager.save(User, entities);
+      const users = await manager.save(User, entities);
 
       await transaction.commitTransaction();
 
-      return null;
+      return TransactionResult.success(users);
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return <string>error;
+      return TransactionResult.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
     } finally {
       await transaction.release();
     }

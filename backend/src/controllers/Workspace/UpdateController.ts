@@ -2,7 +2,6 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { Workspace } from "@entities/Workspace";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
@@ -40,7 +39,7 @@ export class UpdateController extends BaseController {
 
   async v1(
     request: CustomRequest<IParams, IBody>,
-    response: CustomResponse<Workspace>
+    response: CustomResponse<undefined | string>
   ) {
     const {
       params: { id },
@@ -49,8 +48,8 @@ export class UpdateController extends BaseController {
 
     const result = await this._workspaceService.update(id, body);
 
-    if (!result) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
+    if (!result.isSuccess) {
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

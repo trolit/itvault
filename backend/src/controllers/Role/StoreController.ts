@@ -1,8 +1,8 @@
-import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
+import { Role } from "@entities/Role";
 import { AddEditRoleDto } from "@dtos/AddEditRoleDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleService } from "@interfaces/services/IRoleService";
@@ -31,7 +31,7 @@ export class StoreController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, AddEditRoleDto>,
-    response: Response
+    response: CustomResponse<Role | string>
   ) {
     const { body } = request;
 
@@ -41,6 +41,6 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, result);
+    return this.finalizeRequest(response, HTTP.CREATED, result.value);
   }
 }

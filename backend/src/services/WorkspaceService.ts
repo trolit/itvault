@@ -1,4 +1,6 @@
 import { inject, injectable } from "tsyringe";
+import { TransactionResult } from "types/TransactionResult";
+import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
@@ -16,7 +18,9 @@ export class WorkspaceService implements IWorkspaceService {
     private _tagRepository: ITagRepository
   ) {}
 
-  async create(data: AddEditWorkspaceDto): Promise<Workspace | null> {
+  async create(
+    data: AddEditWorkspaceDto
+  ): Promise<TransactionResult<Workspace>> {
     const transaction = await this._workspaceRepository.useTransaction();
 
     const { name, tags } = data;
@@ -34,13 +38,15 @@ export class WorkspaceService implements IWorkspaceService {
 
       await transaction.commitTransaction();
 
-      return workspace;
+      return TransactionResult.success(workspace);
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return null;
+      return TransactionResult.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
     } finally {
       await transaction.release();
     }
@@ -49,7 +55,7 @@ export class WorkspaceService implements IWorkspaceService {
   async update(
     id: number,
     data: AddEditWorkspaceDto
-  ): Promise<Workspace | null> {
+  ): Promise<TransactionResult<Workspace>> {
     const transaction = await this._workspaceRepository.useTransaction();
 
     const { name, tags } = data;
@@ -75,13 +81,15 @@ export class WorkspaceService implements IWorkspaceService {
 
       await transaction.commitTransaction();
 
-      return updatedWorkspace;
+      return TransactionResult.success(updatedWorkspace);
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return null;
+      return TransactionResult.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
     } finally {
       await transaction.release();
     }
