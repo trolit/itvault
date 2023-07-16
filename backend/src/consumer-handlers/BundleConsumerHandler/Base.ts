@@ -2,10 +2,9 @@ import path from "path";
 import JSZip from "jszip";
 import { In } from "typeorm";
 
-import { Bucket } from "@entities/Bucket";
 import { Bundle } from "@entities/Bundle";
+import { Bucket } from "@entities/Bucket";
 import { Variant } from "@entities/Variant";
-import { BundleStatus } from "@enums/BundleStatus";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
@@ -95,12 +94,13 @@ export abstract class BaseBundleConsumerHandler {
   protected async generateZipFile(
     workspaceId: number,
     bundle: Bundle,
-    readFileFunction: (variant: Variant) => Promise<string>
+    readFile: (variant: Variant) => Promise<string>,
+    onError: () => Promise<void>
   ) {
-    const { id: bundleId, variants, blueprints } = bundle;
+    const { variants, blueprints } = bundle;
 
     if (!variants || !blueprints) {
-      await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
+      await onError();
 
       return;
     }
@@ -110,7 +110,7 @@ export abstract class BaseBundleConsumerHandler {
     const blueprintIds = blueprints.map(({ id }) => id);
 
     if (!variantIds.length || !blueprintIds.length) {
-      await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
+      await onError();
 
       return;
     }
@@ -118,7 +118,7 @@ export abstract class BaseBundleConsumerHandler {
     const [files] = await this._getFiles(workspaceId, variantIds);
 
     if (!files.length) {
-      await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
+      await onError();
 
       return;
     }
@@ -127,7 +127,7 @@ export abstract class BaseBundleConsumerHandler {
 
     for (const file of files) {
       if (file.variants.length !== 1) {
-        await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
+        await onError();
 
         return;
       }
@@ -148,12 +148,12 @@ export abstract class BaseBundleConsumerHandler {
       });
 
       if (!buckets) {
-        await this.bundleRepository.setStatus(bundleId, BundleStatus.Failed);
+        await onError();
 
         return;
       }
 
-      const fileContent = await readFileFunction(variant);
+      const fileContent = await readFile(variant);
 
       const data = this._generateData(fileContent, buckets);
 

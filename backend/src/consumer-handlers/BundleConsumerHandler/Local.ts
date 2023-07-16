@@ -55,7 +55,8 @@ export class LocalBundleConsumerHandler
     const buffer = await this.generateZipFile(
       workspaceId,
       bundle,
-      this._readFile(workspaceId)
+      this._readFile(workspaceId),
+      () => this.onError(data)
     );
 
     if (!buffer) {
