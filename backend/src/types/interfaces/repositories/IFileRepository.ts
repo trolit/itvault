@@ -1,14 +1,14 @@
 import { File } from "@entities/File";
-import { Result } from "types/Result";
 import { IBaseRepository } from "./IBaseRepository";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
+import { TransactionResult } from "types/TransactionResult";
 
 export interface IFileRepository extends IBaseRepository<File> {
   save(
     userId: number,
     workspaceId: number,
     formDataFiles: IFormDataFile[]
-  ): Promise<Result<File[]>>;
+  ): Promise<TransactionResult<File[]>>;
 
   getAllByRelativePath(
     workspaceId: number,

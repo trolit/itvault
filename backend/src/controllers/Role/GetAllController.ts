@@ -1,7 +1,7 @@
 import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
-import { PaginatedResult } from "types/Result";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { PaginatedResult } from "types/TransactionResult";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 

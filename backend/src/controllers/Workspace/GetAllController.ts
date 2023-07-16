@@ -1,6 +1,6 @@
-import { PaginatedResult } from "types/Result";
 import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { PaginatedResult } from "types/TransactionResult";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";

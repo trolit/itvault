@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
-import { PaginatedResult } from "types/Result";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { PaginatedResult } from "types/TransactionResult";
 
 import { Di } from "@enums/Di";
 import { UserMapDto } from "@dtos/UserMapDto";

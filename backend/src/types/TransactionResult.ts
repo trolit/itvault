@@ -4,7 +4,7 @@ export class PaginatedResult<T> {
   total: number;
 }
 
-export class Result<T> {
+export class TransactionResult<T> {
   isSuccess: boolean;
 
   value?: T;
@@ -19,11 +19,11 @@ export class Result<T> {
     this.error = error;
   }
 
-  static success<T>(value?: T): Result<T> {
-    return new Result<T>(true, value);
+  static success<T>(value?: T): TransactionResult<T> {
+    return new TransactionResult<T>(true, value);
   }
 
-  static failure<T>(error?: string): Result<T> {
-    return new Result<T>(false, undefined, error);
+  static failure<T>(error?: string): TransactionResult<T> {
+    return new TransactionResult<T>(false, undefined, error);
   }
 }

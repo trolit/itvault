@@ -1,7 +1,7 @@
 import assert from "assert";
 import { In } from "typeorm";
-import { Result } from "types/Result";
 import { inject, injectable } from "tsyringe";
+import { TransactionResult } from "types/TransactionResult";
 import { TransactionError } from "types/custom-errors/TransactionError";
 import {
   DataStoreKey,
@@ -10,12 +10,12 @@ import {
 } from "data-store-types";
 
 import { Di } from "@enums/Di";
-import { Role } from "@entities/Role";
 import { User } from "@entities/User";
+import { Role } from "@entities/Role";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IUserService } from "@interfaces/services/IUserService";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
@@ -52,7 +52,9 @@ export class UserService implements IUserService {
     }
   }
 
-  async updateMany(usersToUpdate: UpdateUserDto[]): Promise<Result<User[]>> {
+  async updateMany(
+    usersToUpdate: UpdateUserDto[]
+  ): Promise<TransactionResult<User[]>> {
     const transaction = await this._userRepository.useTransaction();
     const { manager } = transaction;
 
@@ -96,13 +98,13 @@ export class UserService implements IUserService {
 
       await transaction.commitTransaction();
 
-      return Result.success(users);
+      return TransactionResult.success(users);
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return Result.failure(
+      return TransactionResult.failure(
         error instanceof TransactionError ? error.message : undefined
       );
     } finally {

@@ -1,5 +1,5 @@
-import { Result } from "types/Result";
 import { injectable } from "tsyringe";
+import { TransactionResult } from "types/TransactionResult";
 import { QueryRunner, Repository, Like, Not } from "typeorm";
 
 import { FILES } from "@config";
@@ -26,7 +26,7 @@ export class FileRepository
     userId: number,
     workspaceId: number,
     formDataFiles: IFormDataFile[]
-  ): Promise<Result<File[]>> {
+  ): Promise<TransactionResult<File[]>> {
     const transaction = await this.useTransaction();
 
     try {
@@ -53,13 +53,13 @@ export class FileRepository
 
       await transaction.commitTransaction();
 
-      return Result.success(files);
+      return TransactionResult.success(files);
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return Result.failure();
+      return TransactionResult.failure();
     } finally {
       await transaction.release();
     }
