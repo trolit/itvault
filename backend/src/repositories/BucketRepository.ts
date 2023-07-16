@@ -1,3 +1,4 @@
+import { Result } from "types/Result";
 import { injectable } from "tsyringe";
 import { In, Repository } from "typeorm";
 
@@ -21,7 +22,7 @@ export class BucketRepository
   async save(
     variantId: string,
     bucketsToAdd: BucketDto[]
-  ): Promise<Bucket[] | null> {
+  ): Promise<Result<Bucket[]>> {
     const transaction = await this.useTransaction();
 
     try {
@@ -43,11 +44,11 @@ export class BucketRepository
 
       await transaction.commitTransaction();
 
-      return buckets;
+      return Result.success(buckets);
     } catch (error) {
       await transaction.rollbackTransaction();
 
-      return null;
+      return Result.failure();
     } finally {
       await transaction.release();
     }

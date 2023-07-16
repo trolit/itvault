@@ -37,7 +37,7 @@ export class StoreController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, IBody>,
-    response: CustomResponse<Bucket[]>
+    response: CustomResponse<Bucket[] | string>
   ) {
     const {
       body: { values, variantId },
@@ -45,10 +45,10 @@ export class StoreController extends BaseController {
 
     const result = await this._bucketRepository.save(variantId, values);
 
-    if (!result) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
+    if (!result.isSuccess) {
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
-    return this.finalizeRequest(response, HTTP.NO_CONTENT);
+    return this.finalizeRequest(response, HTTP.CREATED, result.value);
   }
 }
