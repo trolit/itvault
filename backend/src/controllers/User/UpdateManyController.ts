@@ -7,7 +7,6 @@ import { Permission } from "@enums/Permission";
 import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IUserService } from "@interfaces/services/IUserService";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
@@ -22,8 +21,6 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 @injectable()
 export class UpdateManyController extends BaseController {
   constructor(
-    @inject(Di.UserRepository)
-    private _userRepository: IUserRepository,
     @inject(Di.UserService)
     private _userService: IUserService
   ) {
@@ -47,10 +44,10 @@ export class UpdateManyController extends BaseController {
       body: { value },
     } = request;
 
-    const error = await this._userService.updateMany(value);
+    const result = await this._userService.updateMany(value);
 
-    if (error) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send(error);
+    if (!result.isSuccess) {
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
     this._userService.reflectChangesInDataStore(value);
