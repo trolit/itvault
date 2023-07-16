@@ -1,11 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { PaginatedResult } from "types/TransactionResult";
 
 import { Di } from "@enums/Di";
 import { Blueprint } from "@entities/Blueprint";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
+import {
+  PaginatedResponse,
+  ControllerImplementation,
+} from "miscellaneous-types";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -39,7 +41,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<PaginatedResult<Blueprint>>
+    response: CustomResponse<PaginatedResponse<Blueprint>>
   ) {
     const {
       query: { skip, take, workspaceId },

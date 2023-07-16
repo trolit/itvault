@@ -1,13 +1,15 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { PaginatedResult } from "types/TransactionResult";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
 import { NoteDto } from "@dtos/NoteDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
+import {
+  PaginatedResponse,
+  ControllerImplementation,
+} from "miscellaneous-types";
 
 import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 
@@ -37,7 +39,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, Query>,
-    response: CustomResponse<PaginatedResult<Note>>
+    response: CustomResponse<PaginatedResponse<Note>>
   ) {
     const {
       query: { id, resource, skip, take },

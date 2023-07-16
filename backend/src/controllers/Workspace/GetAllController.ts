@@ -1,12 +1,14 @@
 import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { PaginatedResult } from "types/TransactionResult";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
 import { WorkspaceMapDto } from "@dtos/WorkspaceMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
+import {
+  ControllerImplementation,
+  PaginatedResponse,
+} from "miscellaneous-types";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
@@ -40,7 +42,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<PaginatedResult<WorkspaceMapDto>>
+    response: CustomResponse<PaginatedResponse<WorkspaceMapDto>>
   ) {
     const {
       userId,

@@ -1,9 +1,3 @@
-export class PaginatedResult<T> {
-  result: T[];
-
-  total: number;
-}
-
 export class TransactionResult<T> {
   isSuccess: boolean;
 

@@ -1,12 +1,14 @@
 import { Like } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { PaginatedResult } from "types/TransactionResult";
 
 import { Di } from "@enums/Di";
 import { Tag } from "@entities/Tag";
-import { ControllerImplementation } from "miscellaneous-types";
 import { ITagRepository } from "@interfaces/repositories/ITagRepository";
+import {
+  ControllerImplementation,
+  PaginatedResponse,
+} from "miscellaneous-types";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -40,7 +42,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<PaginatedResult<Tag>>
+    response: CustomResponse<PaginatedResponse<Tag>>
   ) {
     const {
       query: { skip, take, search },

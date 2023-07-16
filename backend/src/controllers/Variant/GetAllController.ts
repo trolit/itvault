@@ -1,11 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { PaginatedResult } from "types/TransactionResult";
 
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
+import {
+  ControllerImplementation,
+  PaginatedResponse,
+} from "miscellaneous-types";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -37,7 +39,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<PaginatedResult<Variant>>
+    response: CustomResponse<PaginatedResponse<Variant>>
   ) {
     const {
       query: { fileId, workspaceId },

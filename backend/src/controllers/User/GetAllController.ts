@@ -1,12 +1,14 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { PaginatedResult } from "types/TransactionResult";
 
 import { Di } from "@enums/Di";
 import { UserMapDto } from "@dtos/UserMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import {
+  ControllerImplementation,
+  PaginatedResponse,
+} from "miscellaneous-types";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -32,7 +34,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, IPaginationOptions>,
-    response: CustomResponse<PaginatedResult<UserMapDto>>
+    response: CustomResponse<PaginatedResponse<UserMapDto>>
   ) {
     const {
       query: { skip, take },

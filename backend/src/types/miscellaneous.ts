@@ -25,4 +25,10 @@ declare module "miscellaneous-types" {
       response: CustomResponse<any>
     ) => Promise<CustomResponse<any>>;
   };
+
+  export type PaginatedResponse<T> = {
+    result: T[];
+
+    total: number;
+  };
 }
