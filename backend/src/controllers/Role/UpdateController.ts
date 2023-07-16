@@ -1,4 +1,3 @@
-import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
@@ -35,7 +34,7 @@ export class UpdateController extends BaseController {
 
   async v1(
     request: CustomRequest<IParams, AddEditRoleDto>,
-    response: Response
+    response: CustomResponse<undefined | string>
   ) {
     const {
       params: { id },

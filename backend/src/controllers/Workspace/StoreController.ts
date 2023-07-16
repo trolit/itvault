@@ -36,16 +36,16 @@ export class StoreController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, IBody>,
-    response: CustomResponse<Workspace>
+    response: CustomResponse<Workspace | string>
   ) {
     const { body } = request;
 
-    const workspace = await this._workspaceService.create(body);
+    const result = await this._workspaceService.create(body);
 
-    if (!workspace) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
+    if (!result.isSuccess) {
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, workspace);
+    return this.finalizeRequest(response, HTTP.CREATED, result.value);
   }
 }

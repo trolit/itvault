@@ -1,8 +1,9 @@
-import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
+import { Result } from "types/Result";
 import { Workspace } from "@entities/Workspace";
+import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
 
 export interface IWorkspaceService {
-  create(data: AddEditWorkspaceDto): Promise<Workspace | null>;
+  create(data: AddEditWorkspaceDto): Promise<Result<Workspace>>;
 
-  update(id: number, data: AddEditWorkspaceDto): Promise<Workspace | null>;
+  update(id: number, data: AddEditWorkspaceDto): Promise<Result<Workspace>>;
 }

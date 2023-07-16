@@ -1,4 +1,6 @@
+import { Result } from "types/Result";
 import { inject, injectable } from "tsyringe";
+import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
@@ -16,7 +18,7 @@ export class WorkspaceService implements IWorkspaceService {
     private _tagRepository: ITagRepository
   ) {}
 
-  async create(data: AddEditWorkspaceDto): Promise<Workspace | null> {
+  async create(data: AddEditWorkspaceDto): Promise<Result<Workspace>> {
     const transaction = await this._workspaceRepository.useTransaction();
 
     const { name, tags } = data;
@@ -34,13 +36,15 @@ export class WorkspaceService implements IWorkspaceService {
 
       await transaction.commitTransaction();
 
-      return workspace;
+      return Result.success(workspace);
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return null;
+      return Result.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
     } finally {
       await transaction.release();
     }
@@ -49,7 +53,7 @@ export class WorkspaceService implements IWorkspaceService {
   async update(
     id: number,
     data: AddEditWorkspaceDto
-  ): Promise<Workspace | null> {
+  ): Promise<Result<Workspace>> {
     const transaction = await this._workspaceRepository.useTransaction();
 
     const { name, tags } = data;
@@ -75,13 +79,15 @@ export class WorkspaceService implements IWorkspaceService {
 
       await transaction.commitTransaction();
 
-      return updatedWorkspace;
+      return Result.success(updatedWorkspace);
     } catch (error) {
       console.log(error);
 
       await transaction.rollbackTransaction();
 
-      return null;
+      return Result.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
     } finally {
       await transaction.release();
     }
