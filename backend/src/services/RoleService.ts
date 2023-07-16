@@ -80,7 +80,7 @@ export class RoleService implements IRoleService {
           );
 
           return {
-            ...permissionToRole,
+            ...value,
             enabled,
           };
         }),
