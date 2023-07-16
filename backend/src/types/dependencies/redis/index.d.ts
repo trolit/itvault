@@ -1,5 +1,5 @@
 // Type definitions for ioredis
-import { Redis } from "ioredis";
+import { Redis, Result } from "ioredis";
 
 declare module "ioredis" {
   export interface Redis {
