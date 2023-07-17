@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import Redis from "ioredis/built/Redis";
+import { Transporter } from "nodemailer";
 import { container, DependencyContainer } from "tsyringe";
 
 import { FILES } from "@config/index";
@@ -11,8 +12,13 @@ import { FileStorageMode } from "@enums/FileStorageMode";
 import { LocalFileService } from "@services/LocalFileService";
 import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
-export const setupDi = (redis: Redis): Promise<DependencyContainer> => {
+export const setupDi = (
+  redis: Redis,
+  mailTransporter: Transporter
+): Promise<DependencyContainer> => {
   container.register(Di.Redis, { useValue: redis });
+
+  container.register(Di.MailTransporter, { useValue: mailTransporter });
 
   registerFileService();
 
