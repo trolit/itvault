@@ -2,6 +2,7 @@ export enum Di {
   Redis = "Redis",
   RabbitMQ = "RabbitMQ",
   Publisher = "RabbitMQ Publisher",
+  MailTransporter = "MailTransporter",
 
   AuthService = "IAuthService",
   DateService = "IDateService",

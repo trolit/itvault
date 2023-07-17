@@ -54,6 +54,13 @@ export const MQRABBIT = {
   PASSWORD: envString("RABBITMQ_DEFAULT_PASSWORD"),
 };
 
+export const EMAIL = {
+  HOST: envString("EMAIL_HOST"),
+  PORT: envPort("EMAIL_PORT"),
+  USER: envString("EMAIL_USER"),
+  PASSWORD: envString("EMAIL_PASSWORD"),
+};
+
 const FILES_STORAGE_MODE: FileStorageMode = envEnum(
   "FILES_STORAGE_MODE",
   FileStorageMode

@@ -6,6 +6,7 @@ import { setupDi } from "@utils/setupDi";
 import { setupRedis } from "@utils/setupRedis";
 import { setupRabbit } from "@utils/setupRabbit";
 import { setupExpress } from "@utils/setupExpress";
+import { setupMailTransporter } from "@utils/setupMailTransporter";
 
 // @TODO util that detects if more permissions were added - if yes - updates DB
 export const server = async () => {
@@ -21,7 +22,9 @@ export const server = async () => {
 
   const redis = setupRedis();
 
-  await setupDi(redis.instance);
+  const mailTransporter = setupMailTransporter();
+
+  await setupDi(redis.instance, mailTransporter);
 
   await setupRabbit();
 
