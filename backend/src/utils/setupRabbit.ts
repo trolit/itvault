@@ -65,6 +65,10 @@ async function createConsumers(connection: Connection): Promise<Channel[]> {
       queue: Queue.GenerateBundle,
       handler: Di.GenerateBundleConsumerHandler,
     },
+    {
+      queue: Queue.SendMail,
+      handler: Di.SendMailConsumerHandler,
+    },
   ];
 
   try {

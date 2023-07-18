@@ -10,6 +10,7 @@ import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
 import { LocalFileService } from "@services/LocalFileService";
+import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
 import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
 export const setupDi = (
@@ -78,7 +79,7 @@ function registerDependencies(config: {
 
   fs.readdir(dir, async (error, files) => {
     for (const file of files) {
-      const [dependencyFilename] = file.split(".");
+      const dependencyFilename = file.includes(".") ? file.split(".")[0] : file;
 
       if (excludedFilenames.includes(dependencyFilename)) {
         continue;
@@ -89,9 +90,11 @@ function registerDependencies(config: {
       if (
         fs.existsSync(path.join(dependencyInterfacePath, `${interfaceName}.js`))
       ) {
-        const dependency = await import(`@${dirname}/${dependencyFilename}`);
+        const module = await import(`@${dirname}/${dependencyFilename}`);
 
-        container.register(interfaceName, dependency[dependencyFilename]);
+        const className = module[dependencyFilename];
+
+        container.register(interfaceName, className);
       } else {
         console.log(`❗❗❗ Failed to register ${dependencyFilename}`);
       }
@@ -112,4 +115,6 @@ function registerConsumerHandlers() {
       LocalBundleConsumerHandler
     );
   }
+
+  container.register(Di.SendMailConsumerHandler, MailConsumerHandler);
 }

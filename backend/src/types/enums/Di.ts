@@ -6,6 +6,7 @@ export enum Di {
 
   AuthService = "IAuthService",
   DateService = "IDateService",
+  MailService = "IMailService",
   RoleService = "IRoleService",
   UserService = "IUserService",
   FileService = "IFileService",
@@ -29,5 +30,6 @@ export enum Di {
   ConsumerFactory = "IConsumerFactory",
   FormidableFormFactory = "IFormidableFormFactory",
 
+  SendMailConsumerHandler = "MailConsumerHandler",
   GenerateBundleConsumerHandler = "BundleConsumerHandler",
 }
