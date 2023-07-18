@@ -1,4 +1,3 @@
-import isEqual from "lodash/isEqual";
 import { injectable, inject } from "tsyringe";
 
 import { Di } from "@enums/Di";
@@ -24,17 +23,25 @@ export class MailConsumerHandler
       return false;
     }
 
-    const response = await this._mailService.sendMail({
-      to: userData.email,
-      text: "TBA",
-      subject,
-      html,
-    });
+    try {
+      await this._mailService.sendMail({
+        to: userData.email,
+        text: "TBA",
+        subject,
+        html,
+      });
 
-    return isEqual(userData, response);
+      return true;
+    } catch (error) {
+      console.log(error);
+
+      return false;
+    }
   }
 
   async onError(data: MailConsumerHandlerData): Promise<void> {
-    // @TODO
+    const { subject, email } = data;
+
+    console.error(`Failed to send ${subject} email to ${email}`);
   }
 }
