@@ -53,6 +53,7 @@
 
             "types": [
               "consumer-handlers-types",
+              "mail-view-builders-types",
               "miscellaneous-types",
               "@dtos/**",
               "@enums/**",

@@ -1,34 +1,19 @@
 import { APP } from "@config";
 
 import { IMailViewBuilder } from "@interfaces/IMailViewBuilder";
+import { RegistrationMailViewBuilder as VB } from "mail-view-builders-types";
 
 import { buildUrl } from "@helpers/buildURL";
 
-export interface IData {
-  userId: number;
-
-  email: string;
-
-  code: string;
-}
-
-export interface IResult {
-  email: string;
-
-  code: string;
-
-  href: string;
-}
-
 export class RegistrationMailViewBuilder
-  implements IMailViewBuilder<IData, IResult>
+  implements IMailViewBuilder<VB.Input, VB.Output>
 {
-  build(data: IData) {
+  build(data: VB.Input) {
     const { userId, email, code } = data;
 
-    const url = buildUrl(APP.URL, ["auth", "sign-up"], {
+    const url = buildUrl(APP.URL, ["auth", "register"], {
       email,
-      userId: userId.toString(),
+      id: userId,
     });
 
     return {
