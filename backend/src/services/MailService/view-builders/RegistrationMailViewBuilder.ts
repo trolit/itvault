@@ -1,6 +1,6 @@
 import { IMailViewBuilder } from "@interfaces/IMailViewBuilder";
 
-export class SignUpMailViewBuilder
+export class RegistrationMailViewBuilder
   implements IMailViewBuilder<{ email: string }>
 {
   build(data: { email: string }) {
