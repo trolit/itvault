@@ -38,15 +38,15 @@ export class MailService<T> implements IMailService<T> {
     return this._renderHtml(view, { contentTemplate: template.toString() });
   }
 
-  sendMail(mailOptions: Options): Promise<T> {
-    return this._mailTransporter.sendMail(mailOptions);
-  }
-
   private async _renderHtml(view: T, partials: { contentTemplate: string }) {
     const baseTemplateBuffer = await fs.readFile(
       path.join(this._templatesDir, `base.mustache`)
     );
 
     return mustache.render(baseTemplateBuffer.toString(), view, partials);
+  }
+
+  sendMail(mailOptions: Options): Promise<T> {
+    return this._mailTransporter.sendMail(mailOptions);
   }
 }
