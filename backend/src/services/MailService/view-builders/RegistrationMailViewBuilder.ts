@@ -1,6 +1,12 @@
+import { APP } from "@config";
+
 import { IMailViewBuilder } from "@interfaces/IMailViewBuilder";
 
+import { buildUrl } from "@helpers/buildURL";
+
 export interface IData {
+  userId: number;
+
   email: string;
 
   code: string;
@@ -18,14 +24,17 @@ export class RegistrationMailViewBuilder
   implements IMailViewBuilder<IData, IResult>
 {
   build(data: IData) {
-    const { email, code } = data;
+    const { userId, email, code } = data;
 
-    // @TODO generate code
+    const url = buildUrl(APP.URL, ["auth", "sign-up"], {
+      email,
+      userId: userId.toString(),
+    });
 
     return {
       email,
       code,
-      href: "",
+      href: url.href,
     };
   }
 }
