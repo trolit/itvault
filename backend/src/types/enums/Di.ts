@@ -30,5 +30,6 @@ export enum Di {
   ConsumerFactory = "IConsumerFactory",
   FormidableFormFactory = "IFormidableFormFactory",
 
+  SendMailConsumerHandler = "MailConsumerHandler",
   GenerateBundleConsumerHandler = "BundleConsumerHandler",
 }

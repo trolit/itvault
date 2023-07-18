@@ -6,4 +6,14 @@ declare module "consumer-handlers-types" {
 
     workspaceId: number;
   };
+
+  export type MailConsumerHandlerData = {
+    subject: string;
+
+    viewBuilderName: string;
+
+    email: string;
+
+    code: string;
+  };
 }

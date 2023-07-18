@@ -10,6 +10,7 @@ import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
 import { LocalFileService } from "@services/LocalFileService";
+import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
 import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
 export const setupDi = (
@@ -114,4 +115,6 @@ function registerConsumerHandlers() {
       LocalBundleConsumerHandler
     );
   }
+
+  container.register(Di.SendMailConsumerHandler, MailConsumerHandler);
 }
