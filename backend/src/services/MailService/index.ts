@@ -26,7 +26,7 @@ export class MailService<T> implements IMailService<T> {
     private _mailTransporter: Transporter
   ) {}
 
-  async buildHtml(viewBuilderName: string, data: T): Promise<string> {
+  async buildHtml(viewBuilderName: string, data: object): Promise<string> {
     const templateFilename = viewBuilderName.replace("ViewBuilder", "");
 
     const template = await fs.readFile(
@@ -35,7 +35,7 @@ export class MailService<T> implements IMailService<T> {
 
     const viewBuilder = getInstanceOf<IMailViewBuilder<T>>(viewBuilderName);
 
-    const view = viewBuilder.build(data);
+    const view = viewBuilder.build(<T>data);
 
     return this._renderHtml(view, { contentTemplate: template.toString() });
   }
