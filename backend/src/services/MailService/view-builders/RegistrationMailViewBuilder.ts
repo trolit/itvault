@@ -3,7 +3,7 @@ import { APP } from "@config";
 import { IMailViewBuilder } from "@interfaces/IMailViewBuilder";
 import { RegistrationMailViewBuilder as VB } from "mail-view-builders-types";
 
-import { buildUrl } from "@helpers/buildURL";
+import { buildUrl } from "@helpers/buildUrl";
 
 export class RegistrationMailViewBuilder
   implements IMailViewBuilder<VB.Input, VB.Output>
