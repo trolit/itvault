@@ -51,4 +51,10 @@ export class User extends Base {
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
   }
+
+  @ManyToOne(() => User, User => User.registeredBy, {
+    nullable: true,
+    cascade: false,
+  })
+  registeredBy: User;
 }
