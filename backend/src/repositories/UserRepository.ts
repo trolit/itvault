@@ -42,6 +42,7 @@ export class UserRepository
       },
       where: {
         email,
+        isRegistrationFinished: true,
       },
       ...permissionsRelation,
     });
