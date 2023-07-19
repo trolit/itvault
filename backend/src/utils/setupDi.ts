@@ -49,6 +49,8 @@ export const setupDi = (
     interfacesDirname: "factories",
   });
 
+  registerMailViewBuilders();
+
   return new Promise(resolve =>
     setInterval(() => {
       // @NOTE wait for dependencies that must be available instantly
@@ -58,6 +60,24 @@ export const setupDi = (
     }, 1000)
   );
 };
+
+function registerMailViewBuilders() {
+  const dir = path.join("dist", "services", "MailService", "view-builders");
+
+  fs.readdir(dir, async (error, files) => {
+    for (const file of files) {
+      const [dependencyFilename] = file.split(".");
+
+      const module = await import(
+        `@services/MailService/view-builders/${file}`
+      );
+
+      const className = module[dependencyFilename];
+
+      container.register(dependencyFilename, className);
+    }
+  });
+}
 
 function registerDependencies(config: {
   sourceFiles: { dirname: string; excludedFilenames: string[] };
