@@ -1,10 +1,12 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
+import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
+
 import { Di } from "@enums/Di";
 import { AddEditUserDto } from "@dtos/AddEditUserDto";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
@@ -58,6 +60,15 @@ function useBodySchema(): SchemaProvider {
           .number()
           .gt(0)
           .superRefine(async (id: number, context: RefinementCtx) => {
+            if (id === HEAD_ADMIN_ROLE_ID) {
+              context.addIssue({
+                code: ZodIssueCode.custom,
+                message: "This role is not assignable.",
+              });
+
+              return Zod.NEVER;
+            }
+
             const roleRepository = getInstanceOf<IRoleRepository>(
               Di.RoleRepository
             );
