@@ -4,8 +4,6 @@ declare module "mail-view-builders-types" {
   export namespace RegistrationMailViewBuilder {
     export type Input = {
       user: User;
-
-      code: string;
     };
 
     export type Output = {

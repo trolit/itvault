@@ -8,7 +8,7 @@ declare module "consumer-handlers-types" {
   };
 
   export type MailConsumerHandlerData<T> = {
-    email: string;
+    sendTo: string;
 
     subject: string;
 

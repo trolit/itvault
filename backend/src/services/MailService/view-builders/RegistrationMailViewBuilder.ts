@@ -10,8 +10,7 @@ export class RegistrationMailViewBuilder
 {
   build(data: VB.Input) {
     const {
-      code,
-      user: { id, email },
+      user: { id, email, registrationCode },
     } = data;
 
     const url = buildUrl(APP.URL, ["auth", "register"], {
@@ -21,8 +20,8 @@ export class RegistrationMailViewBuilder
 
     return {
       email,
-      code,
       href: url.href,
+      code: registrationCode,
     };
   }
 }
