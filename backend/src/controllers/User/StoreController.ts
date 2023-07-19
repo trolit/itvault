@@ -45,8 +45,6 @@ export class StoreController extends BaseController {
       body: { email, firstName, lastName, roleId },
     } = request;
 
-    const code = generateCode();
-
     const user = await this._userRepository.primitiveSave({
       email,
       firstName,
@@ -57,7 +55,7 @@ export class StoreController extends BaseController {
       registeredBy: {
         id: userId,
       },
-      registrationCode: code,
+      registrationCode: generateCode(),
     });
 
     if (!user) {
