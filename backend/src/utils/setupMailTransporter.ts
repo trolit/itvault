@@ -8,7 +8,6 @@ export const setupMailTransporter = () => {
   const transporter = nodemailer.createTransport({
     host: HOST,
     port: PORT,
-    secure: false,
     auth: {
       type: "login",
       user: USER,
