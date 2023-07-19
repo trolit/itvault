@@ -15,13 +15,15 @@ export class RegistrationMailViewBuilder
 
     const url = buildUrl(APP.URL, ["auth", "register"], {
       email,
+
       id: id.toString(),
+
+      code: registrationCode,
     });
 
     return {
       email,
       href: url.href,
-      code: registrationCode,
     };
   }
 }

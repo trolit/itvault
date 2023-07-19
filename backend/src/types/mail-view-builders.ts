@@ -9,8 +9,6 @@ declare module "mail-view-builders-types" {
     export type Output = {
       email: string;
 
-      code: string;
-
       href: string;
     };
   }
