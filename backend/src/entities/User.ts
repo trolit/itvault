@@ -15,7 +15,7 @@ export class User extends Base {
   @Column()
   email!: string;
 
-  @Column({ select: false })
+  @Column({ select: false, nullable: true })
   password: string;
 
   // @NOTE allow to update firstName/lastName through profile settings (?)
