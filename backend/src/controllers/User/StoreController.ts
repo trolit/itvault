@@ -65,7 +65,7 @@ export class StoreController extends BaseController {
     sendToQueue<MailConsumerHandlerData<VB.Input>>(Queue.SendMail, {
       user,
       sendTo: user.email,
-      subject: `Register at itvault`,
+      subject: `itvault - finish registration process to access application`,
       viewBuilderName: RegistrationMailViewBuilder.name,
     });
 
