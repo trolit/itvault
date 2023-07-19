@@ -23,7 +23,7 @@ export class MailService<T> implements IMailService<T> {
 
   constructor(
     @inject(Di.MailTransporter)
-    private _mailTransporter: Transporter
+    private _mailTransporter: Transporter<T>
   ) {}
 
   async buildHtml(viewBuilderName: string, data: object): Promise<string> {
