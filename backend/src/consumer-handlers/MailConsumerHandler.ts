@@ -26,7 +26,7 @@ export class MailConsumerHandler
     try {
       await this._mailService.sendMail({
         to: sendTo,
-        text: "TBA",
+        text: subject,
         subject,
         html,
       });
