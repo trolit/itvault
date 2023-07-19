@@ -42,11 +42,15 @@ export class MailService<T> implements IMailService<T> {
   }
 
   private async _renderHtml(view: T, partials: { contentTemplate: string }) {
+    const { contentTemplate } = partials;
+
     const baseTemplateBuffer = await fs.readFile(
       path.join(this._templatesDir, `base.mustache`)
     );
 
-    return mustache.render(baseTemplateBuffer.toString(), view, partials);
+    return mustache.render(baseTemplateBuffer.toString(), view, {
+      content: contentTemplate,
+    });
   }
 
   sendMail(mailOptions: Options): Promise<T> {
