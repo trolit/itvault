@@ -25,7 +25,7 @@ export const setupDi = (
 
   registerConsumerHandlers();
 
-  registerDependencies({
+  registerDependenciesByInterfaces({
     sourceFiles: {
       dirname: "repositories",
       excludedFilenames: ["BaseRepository"],
@@ -33,7 +33,7 @@ export const setupDi = (
     interfacesDirname: "repositories",
   });
 
-  registerDependencies({
+  registerDependenciesByInterfaces({
     sourceFiles: {
       dirname: "services",
       excludedFilenames: ["LocalFileService"],
@@ -41,7 +41,7 @@ export const setupDi = (
     interfacesDirname: "services",
   });
 
-  registerDependencies({
+  registerDependenciesByInterfaces({
     sourceFiles: {
       dirname: "factories",
       excludedFilenames: [],
@@ -79,7 +79,7 @@ function registerMailViewBuilders() {
   });
 }
 
-function registerDependencies(config: {
+function registerDependenciesByInterfaces(config: {
   sourceFiles: { dirname: string; excludedFilenames: string[] };
   interfacesDirname: string;
 }) {
