@@ -44,6 +44,7 @@ services:
     image: maildev/maildev
     ports:
       - ${MAIL_CATCHER_PORT}:${MAIL_CATCHER_CONTAINER_PORT}
+      - 1025:1025
 
 volumes:
   db:

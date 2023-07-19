@@ -19,6 +19,7 @@
     "migration:generate": "npm run typeorm migration:generate -- -d ./src/config/data-source/index.ts",
     "migration:run": "npm run typeorm migration:run -- -d ./src/config/data-source/index.ts",
     "migration:revert": "npm run typeorm migration:revert -- -d ./src/config/data-source/index.ts",
+    "docker:init": "docker compose up -d",
     "docker:db": "docker exec -it db bash",
     "docker:redis": "docker exec -it redis bash",
     "eslint:fix": "npx eslint --fix ."
