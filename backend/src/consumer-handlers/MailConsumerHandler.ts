@@ -10,7 +10,7 @@ export class MailConsumerHandler
   implements IBaseConsumerHandler<MailConsumerHandlerData<unknown>>
 {
   constructor(
-    @inject(Di.FileRepository)
+    @inject(Di.MailService)
     private _mailService: IMailService<unknown>
   ) {}
 
