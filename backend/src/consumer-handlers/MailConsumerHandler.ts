@@ -11,7 +11,7 @@ export class MailConsumerHandler
 {
   constructor(
     @inject(Di.FileRepository)
-    private _mailService: IMailService<{ email: string }>
+    private _mailService: IMailService<unknown>
   ) {}
 
   async handle(data: MailConsumerHandlerData<unknown>): Promise<boolean> {
