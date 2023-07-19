@@ -7,6 +7,7 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 
+import { useStoreSuperSchema } from "@schemas/User/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
 
@@ -27,8 +28,13 @@ usersRouter.get(
   processRequestWith(GetAllController)
 );
 
-// @TODO validation
-usersRouter.post("", processRequestWith(StoreController));
+usersRouter.post(
+  "",
+  validateRequestWith(useStoreSuperSchema, {
+    versions: StoreController.ALL_VERSIONS,
+  }),
+  processRequestWith(StoreController)
+);
 
 usersRouter.patch(
   "",
