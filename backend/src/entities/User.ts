@@ -31,6 +31,14 @@ export class User extends Base {
   })
   fullName: string;
 
+  @Column({
+    nullable: true,
+  })
+  registrationCode: string;
+
+  @Column({ type: "boolean", width: 1, default: false })
+  isRegistrationFinished: boolean;
+
   @ManyToOne(() => Role, role => role.users, {
     nullable: false,
   })

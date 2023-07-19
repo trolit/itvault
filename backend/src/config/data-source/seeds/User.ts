@@ -30,6 +30,7 @@ export class UserSeeder implements Seeder {
         await userFactory.saveMany(4, {
           role,
           deletedAt: new Date(),
+          isRegistrationFinished: true,
         });
       }
     }
