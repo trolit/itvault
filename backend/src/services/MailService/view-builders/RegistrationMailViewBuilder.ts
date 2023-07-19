@@ -9,11 +9,14 @@ export class RegistrationMailViewBuilder
   implements IMailViewBuilder<VB.Input, VB.Output>
 {
   build(data: VB.Input) {
-    const { userId, email, code } = data;
+    const {
+      code,
+      user: { id, email },
+    } = data;
 
     const url = buildUrl(APP.URL, ["auth", "register"], {
       email,
-      id: userId,
+      id: id.toString(),
     });
 
     return {
