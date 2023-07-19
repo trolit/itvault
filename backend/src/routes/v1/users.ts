@@ -10,6 +10,7 @@ import { requireAuthentication } from "@middleware/requireAuthentication";
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
 
+import { StoreController } from "@controllers/User/StoreController";
 import { GetAllController } from "@controllers/User/GetAllController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
 
@@ -25,6 +26,9 @@ usersRouter.get(
   }),
   processRequestWith(GetAllController)
 );
+
+// @TODO validation
+usersRouter.post("", processRequestWith(StoreController));
 
 usersRouter.patch(
   "",
