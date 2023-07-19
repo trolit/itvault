@@ -24,12 +24,18 @@ export class UserSeeder implements Seeder {
         continue;
       }
 
-      await userFactory.save({ email, password: PASSWORD, role });
+      await userFactory.save({
+        email,
+        password: PASSWORD,
+        role,
+        isRegistrationFinished: true,
+      });
 
       if (role.name === MEMBER_ROLE.name) {
         await userFactory.saveMany(4, {
           role,
           deletedAt: new Date(),
+          isRegistrationFinished: false,
         });
       }
     }

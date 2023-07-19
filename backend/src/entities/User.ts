@@ -15,7 +15,7 @@ export class User extends Base {
   @Column()
   email!: string;
 
-  @Column({ select: false })
+  @Column({ select: false, nullable: true })
   password: string;
 
   // @NOTE allow to update firstName/lastName through profile settings (?)
@@ -30,6 +30,14 @@ export class User extends Base {
     asExpression: `CONCAT(firstName,' ',lastName)`,
   })
   fullName: string;
+
+  @Column({
+    nullable: true,
+  })
+  registrationCode: string;
+
+  @Column({ type: "boolean", width: 1, default: false })
+  isRegistrationFinished: boolean;
 
   @ManyToOne(() => Role, role => role.users, {
     nullable: false,
@@ -51,4 +59,10 @@ export class User extends Base {
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
   }
+
+  @ManyToOne(() => User, User => User.registeredBy, {
+    nullable: true,
+    cascade: false,
+  })
+  registeredBy: User;
 }

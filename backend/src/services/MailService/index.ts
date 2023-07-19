@@ -1,9 +1,9 @@
 import path from "path";
 import fs from "fs-extra";
 import mustache from "mustache";
-import { inject } from "tsyringe";
 import camelCase from "lodash/camelCase";
 import { Transporter } from "nodemailer";
+import { inject, injectable } from "tsyringe";
 import { Options } from "nodemailer/lib/mailer";
 
 import { Di } from "@enums/Di";
@@ -12,6 +12,7 @@ import { IMailService } from "@interfaces/services/IMailService";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
+@injectable()
 export class MailService<T> implements IMailService<T> {
   private _templatesDir: string = path.join(
     ".",
@@ -23,7 +24,7 @@ export class MailService<T> implements IMailService<T> {
 
   constructor(
     @inject(Di.MailTransporter)
-    private _mailTransporter: Transporter
+    private _mailTransporter: Transporter<T>
   ) {}
 
   async buildHtml(viewBuilderName: string, data: object): Promise<string> {
@@ -41,11 +42,15 @@ export class MailService<T> implements IMailService<T> {
   }
 
   private async _renderHtml(view: T, partials: { contentTemplate: string }) {
+    const { contentTemplate } = partials;
+
     const baseTemplateBuffer = await fs.readFile(
       path.join(this._templatesDir, `base.mustache`)
     );
 
-    return mustache.render(baseTemplateBuffer.toString(), view, partials);
+    return mustache.render(baseTemplateBuffer.toString(), view, {
+      content: contentTemplate,
+    });
   }
 
   sendMail(mailOptions: Options): Promise<T> {

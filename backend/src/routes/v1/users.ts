@@ -7,9 +7,11 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 
+import { useStoreSuperSchema } from "@schemas/User/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
 
+import { StoreController } from "@controllers/User/StoreController";
 import { GetAllController } from "@controllers/User/GetAllController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
 
@@ -24,6 +26,14 @@ usersRouter.get(
     versions: GetAllController.ALL_VERSIONS,
   }),
   processRequestWith(GetAllController)
+);
+
+usersRouter.post(
+  "",
+  validateRequestWith(useStoreSuperSchema, {
+    versions: StoreController.ALL_VERSIONS,
+  }),
+  processRequestWith(StoreController)
 );
 
 usersRouter.patch(

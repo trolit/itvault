@@ -40,9 +40,11 @@ services:
 
   maildev:
     container_name: mailcatcher
+    restart: always
     image: maildev/maildev
     ports:
       - ${MAIL_CATCHER_PORT}:${MAIL_CATCHER_CONTAINER_PORT}
+      - 1025:1025
 
 volumes:
   db:

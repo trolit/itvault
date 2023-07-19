@@ -10,12 +10,12 @@ export class MailConsumerHandler
   implements IBaseConsumerHandler<MailConsumerHandlerData<unknown>>
 {
   constructor(
-    @inject(Di.FileRepository)
-    private _mailService: IMailService<{ email: string }>
+    @inject(Di.MailService)
+    private _mailService: IMailService<unknown>
   ) {}
 
   async handle(data: MailConsumerHandlerData<unknown>): Promise<boolean> {
-    const { viewBuilderName, subject, email, ...mailData } = data;
+    const { viewBuilderName, subject, sendTo, ...mailData } = data;
 
     const html = await this._mailService.buildHtml(viewBuilderName, mailData);
 
@@ -25,8 +25,8 @@ export class MailConsumerHandler
 
     try {
       await this._mailService.sendMail({
-        to: email,
-        text: "TBA",
+        to: sendTo,
+        text: subject,
         subject,
         html,
       });
@@ -40,8 +40,8 @@ export class MailConsumerHandler
   }
 
   async onError(data: MailConsumerHandlerData<unknown>): Promise<void> {
-    const { subject, email } = data;
+    const { subject, sendTo } = data;
 
-    console.error(`Failed to send '${subject}' email to ${email}`);
+    console.error(`Failed to send '${subject}' email to ${sendTo}`);
   }
 }

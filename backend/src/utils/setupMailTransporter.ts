@@ -5,7 +5,7 @@ import { EMAIL } from "@config";
 const { HOST, PORT, USER, PASSWORD } = EMAIL;
 
 export const setupMailTransporter = () => {
-  return nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     host: HOST,
     port: PORT,
     auth: {
@@ -14,4 +14,13 @@ export const setupMailTransporter = () => {
       pass: PASSWORD,
     },
   });
+
+  transporter.verify(error => {
+    if (error) {
+      console.log("NODEMAILER: invalid config!!");
+      console.log(error);
+    }
+  });
+
+  return transporter;
 };

@@ -25,7 +25,7 @@ export const setupDi = (
 
   registerConsumerHandlers();
 
-  registerDependencies({
+  registerDependenciesByInterfaces({
     sourceFiles: {
       dirname: "repositories",
       excludedFilenames: ["BaseRepository"],
@@ -33,7 +33,7 @@ export const setupDi = (
     interfacesDirname: "repositories",
   });
 
-  registerDependencies({
+  registerDependenciesByInterfaces({
     sourceFiles: {
       dirname: "services",
       excludedFilenames: ["LocalFileService"],
@@ -41,13 +41,15 @@ export const setupDi = (
     interfacesDirname: "services",
   });
 
-  registerDependencies({
+  registerDependenciesByInterfaces({
     sourceFiles: {
       dirname: "factories",
       excludedFilenames: [],
     },
     interfacesDirname: "factories",
   });
+
+  registerMailViewBuilders();
 
   return new Promise(resolve =>
     setInterval(() => {
@@ -59,7 +61,25 @@ export const setupDi = (
   );
 };
 
-function registerDependencies(config: {
+function registerMailViewBuilders() {
+  const dir = path.join("dist", "services", "MailService", "view-builders");
+
+  fs.readdir(dir, async (error, files) => {
+    for (const file of files) {
+      const [dependencyFilename] = file.split(".");
+
+      const module = await import(
+        `@services/MailService/view-builders/${file}`
+      );
+
+      const className = module[dependencyFilename];
+
+      container.register(dependencyFilename, className);
+    }
+  });
+}
+
+function registerDependenciesByInterfaces(config: {
   sourceFiles: { dirname: string; excludedFilenames: string[] };
   interfacesDirname: string;
 }) {

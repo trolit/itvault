@@ -85,17 +85,10 @@ export class RequeueController extends BaseController {
       }
     );
 
-    const isQueued = sendToQueue<BundleConsumerHandlerData>(
-      Queue.GenerateBundle,
-      {
-        workspaceId,
-        bundle,
-      }
-    );
-
-    if (!isQueued) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
-    }
+    sendToQueue<BundleConsumerHandlerData>(Queue.GenerateBundle, {
+      workspaceId,
+      bundle,
+    });
 
     return this.finalizeRequest(response, HTTP.OK);
   }
