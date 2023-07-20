@@ -69,7 +69,6 @@ export class LoginController extends BaseController {
         { withTTL: { seconds: JWT.TOKEN_LIFETIME_IN_SECONDS } }
       );
     } catch (error) {
-      // @TODO log error
       console.error(error);
 
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
