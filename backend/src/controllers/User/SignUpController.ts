@@ -38,6 +38,7 @@ export class SignUpController extends BaseController {
       where: {
         id,
         email,
+        isRegistrationFinished: false,
       },
     });
 
