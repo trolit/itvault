@@ -5,7 +5,7 @@ import { DataStoreKeyType, DataStoreUser } from "data-store-types";
 import {
   SignInDto,
   LoggedUserDto,
-} from "types/controllers/v1/Auth/LoginController";
+} from "types/controllers/v1/Auth/SignInController";
 
 import { APP, JWT } from "@config";
 
@@ -14,15 +14,15 @@ import { Environment } from "@enums/Environment";
 import { LoggedUserMapDto } from "@dtos/LoggedUserMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 import { BaseController } from "@controllers/BaseController";
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class LoginController extends BaseController {
+export class SignInController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository,
