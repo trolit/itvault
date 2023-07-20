@@ -62,9 +62,9 @@ export class User extends Base {
     }
   }
 
-  @ManyToOne(() => User, User => User.registeredBy, {
+  @ManyToOne(() => User, User => User.createdBy, {
     nullable: true,
     cascade: false,
   })
-  registeredBy: User | null;
+  createdBy: User | null;
 }

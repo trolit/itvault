@@ -52,7 +52,7 @@ export class StoreController extends BaseController {
       role: {
         id: roleId,
       },
-      registeredBy: {
+      createdBy: {
         id: userId,
       },
       registrationCode: generateCode(),
