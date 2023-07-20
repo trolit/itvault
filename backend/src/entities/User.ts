@@ -16,7 +16,7 @@ export class User extends Base {
   email!: string;
 
   @Column({ select: false, nullable: true })
-  password: string | null;
+  password: string;
 
   // @NOTE allow to update firstName/lastName through profile settings (?)
   @Column()
@@ -34,7 +34,7 @@ export class User extends Base {
   @Column({
     nullable: true,
   })
-  registrationCode: string | null;
+  registrationCode: string;
 
   @Column({ type: "boolean", width: 1, default: false })
   isRegistrationFinished: boolean;
