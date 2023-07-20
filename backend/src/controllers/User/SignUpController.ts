@@ -1,6 +1,9 @@
+import bcrypt from "bcrypt";
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+
+import { BCRYPT } from "@config";
 
 import { Di } from "@enums/Di";
 import { SignUpDto } from "@dtos/SignUpDto";
@@ -55,10 +58,12 @@ export class SignUpController extends BaseController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
+    const hashedPassword = await bcrypt.hash(password, BCRYPT.SALT_ROUNDS);
+
     await this._userRepository.primitiveSave({
       ...user,
-      password,
       registrationCode: "",
+      password: hashedPassword,
       isRegistrationFinished: true,
     });
 
