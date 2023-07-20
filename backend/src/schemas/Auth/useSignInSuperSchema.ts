@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { Body } from "types/controllers/v1/Auth/LoginController";
+import { Body } from "types/controllers/v1/Auth/SignInController";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const useLoginSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
+export const useSignInSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
     return {
       body: useBodySchema(),

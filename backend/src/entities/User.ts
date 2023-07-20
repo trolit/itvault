@@ -34,10 +34,10 @@ export class User extends Base {
   @Column({
     nullable: true,
   })
-  registrationCode: string;
+  signUpCode: string;
 
   @Column({ type: "boolean", width: 1, default: false })
-  isRegistrationFinished: boolean;
+  isSignedUp: boolean;
 
   @ManyToOne(() => Role, role => role.users, {
     nullable: false,
@@ -62,9 +62,9 @@ export class User extends Base {
     }
   }
 
-  @ManyToOne(() => User, User => User.registeredBy, {
+  @ManyToOne(() => User, User => User.createdBy, {
     nullable: true,
     cascade: false,
   })
-  registeredBy: User | null;
+  createdBy: User | null;
 }

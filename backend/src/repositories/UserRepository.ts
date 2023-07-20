@@ -42,7 +42,7 @@ export class UserRepository
       },
       where: {
         email,
-        isRegistrationFinished: true,
+        isSignedUp: true,
       },
       ...permissionsRelation,
     });

@@ -34,14 +34,14 @@ export class SignUpController extends BaseController {
 
   async v1(request: CustomRequest<undefined, SignUpDto>, response: Response) {
     const {
-      body: { id, email, registrationCode, password },
+      body: { id, email, signUpCode, password },
     } = request;
 
     const user = await this._userRepository.getOne({
       where: {
         id,
         email,
-        isRegistrationFinished: false,
+        isSignedUp: false,
       },
     });
 
@@ -49,10 +49,10 @@ export class SignUpController extends BaseController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    if (user && user.registrationCode !== registrationCode) {
+    if (user && user.signUpCode !== signUpCode) {
       await this._userRepository.primitiveSave({
         ...user,
-        registrationCode: "",
+        signUpCode: "",
       });
 
       return response.status(HTTP.BAD_REQUEST).send();
@@ -62,9 +62,9 @@ export class SignUpController extends BaseController {
 
     await this._userRepository.primitiveSave({
       ...user,
-      registrationCode: "",
+      signUpCode: "",
       password: hashedPassword,
-      isRegistrationFinished: true,
+      isSignedUp: true,
     });
 
     return this.finalizeRequest(response, HTTP.OK);

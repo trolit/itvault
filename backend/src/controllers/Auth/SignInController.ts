@@ -3,9 +3,9 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { DataStoreKeyType, DataStoreUser } from "data-store-types";
 import {
-  LoginDto,
+  SignInDto,
   LoggedUserDto,
-} from "types/controllers/v1/Auth/LoginController";
+} from "types/controllers/v1/Auth/SignInController";
 
 import { APP, JWT } from "@config";
 
@@ -14,15 +14,15 @@ import { Environment } from "@enums/Environment";
 import { LoggedUserMapDto } from "@dtos/LoggedUserMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 import { BaseController } from "@controllers/BaseController";
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class LoginController extends BaseController {
+export class SignInController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository,
@@ -43,7 +43,7 @@ export class LoginController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: LoginDto, response: LoggedUserDto) {
+  async v1(request: SignInDto, response: LoggedUserDto) {
     const { email, password } = request.body;
 
     const user = await this._userRepository.findByEmail(email, {
@@ -69,7 +69,6 @@ export class LoginController extends BaseController {
         { withTTL: { seconds: JWT.TOKEN_LIFETIME_IN_SECONDS } }
       );
     } catch (error) {
-      // @TODO log error
       console.error(error);
 
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();

@@ -1,6 +1,3 @@
 import { User } from "@entities/User";
 
-export type SignUpDto = Pick<
-  User,
-  "email" | "id" | "registrationCode" | "password"
->;
+export type SignUpDto = Pick<User, "email" | "id" | "signUpCode" | "password">;

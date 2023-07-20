@@ -1,28 +1,24 @@
-import assert from "assert";
-
 import { APP } from "@config";
 
 import { IMailViewBuilder } from "@interfaces/IMailViewBuilder";
-import { RegistrationMailViewBuilder as VB } from "mail-view-builders-types";
+import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";
 
 import { buildUrl } from "@helpers/buildUrl";
 
-export class RegistrationMailViewBuilder
+export class SignUpMailViewBuilder
   implements IMailViewBuilder<VB.Input, VB.Output>
 {
   build(data: VB.Input) {
     const {
-      user: { id, email, registrationCode },
+      user: { id, email, signUpCode },
     } = data;
-
-    assert(registrationCode);
 
     const url = buildUrl(APP.URL, ["auth", "register"], {
       email,
 
       id: id.toString(),
 
-      code: registrationCode,
+      code: signUpCode,
     });
 
     return {
