@@ -1,7 +1,7 @@
 declare module "mail-view-builders-types" {
   import { User } from "@entities/User";
 
-  export namespace RegistrationMailViewBuilder {
+  export namespace SignUpMailViewBuilder {
     export type Input = {
       user: User;
     };

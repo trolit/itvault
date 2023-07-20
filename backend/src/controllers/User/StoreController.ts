@@ -7,12 +7,12 @@ import { Queue } from "@enums/Queue";
 import { AddEditUserDto } from "@dtos/AddEditUserDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { MailConsumerHandlerData } from "consumer-handlers-types";
+import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
-import { RegistrationMailViewBuilder as VB } from "mail-view-builders-types";
 
 import { sendToQueue } from "@helpers/sendToQueue";
 import { generateCode } from "@helpers/generateCode";
-import { RegistrationMailViewBuilder } from "@services/MailService/view-builders/RegistrationMailViewBuilder";
+import { SignUpMailViewBuilder } from "@services/MailService/view-builders/SignUpMailViewBuilder";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -65,8 +65,8 @@ export class StoreController extends BaseController {
     sendToQueue<MailConsumerHandlerData<VB.Input>>(Queue.SendMail, {
       user,
       sendTo: user.email,
-      subject: `itvault - finish registration process to access application`,
-      viewBuilderName: RegistrationMailViewBuilder.name,
+      subject: `itvault - invitation to application`,
+      viewBuilderName: SignUpMailViewBuilder.name,
     });
 
     return this.finalizeRequest(response, HTTP.CREATED, user);

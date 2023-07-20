@@ -1,11 +1,11 @@
 import { APP } from "@config";
 
 import { IMailViewBuilder } from "@interfaces/IMailViewBuilder";
-import { RegistrationMailViewBuilder as VB } from "mail-view-builders-types";
+import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";
 
 import { buildUrl } from "@helpers/buildUrl";
 
-export class RegistrationMailViewBuilder
+export class SignUpMailViewBuilder
   implements IMailViewBuilder<VB.Input, VB.Output>
 {
   build(data: VB.Input) {
