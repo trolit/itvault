@@ -17,7 +17,9 @@ export class Blueprint extends Base {
   @Column()
   color!: string;
 
-  @ManyToOne(() => Workspace, workspace => workspace.blueprints)
+  @ManyToOne(() => Workspace, workspace => workspace.blueprints, {
+    cascade: false,
+  })
   workspace: Workspace;
 
   @OneToMany(() => Bucket, bucket => bucket.blueprint, {
