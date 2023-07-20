@@ -55,7 +55,7 @@ export class StoreController extends BaseController {
       createdBy: {
         id: userId,
       },
-      registrationCode: generateCode(),
+      signUpCode: generateCode(),
     });
 
     if (!user) {

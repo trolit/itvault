@@ -26,7 +26,7 @@ function useBodySchema(): SchemaProvider {
           .max(254)
           .transform(value => value.toLowerCase()),
 
-        registrationCode: z.string(),
+        signUpCode: z.string(),
 
         password: z
           .string()

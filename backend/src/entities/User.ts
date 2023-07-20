@@ -34,7 +34,7 @@ export class User extends Base {
   @Column({
     nullable: true,
   })
-  registrationCode: string;
+  signUpCode: string;
 
   @Column({ type: "boolean", width: 1, default: false })
   isRegistrationFinished: boolean;
