@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { DataStoreKeyType, DataStoreUser } from "data-store-types";
 import {
-  LoginDto,
+  SignInDto,
   LoggedUserDto,
 } from "types/controllers/v1/Auth/LoginController";
 
@@ -43,7 +43,7 @@ export class LoginController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: LoginDto, response: LoggedUserDto) {
+  async v1(request: SignInDto, response: LoggedUserDto) {
     const { email, password } = request.body;
 
     const user = await this._userRepository.findByEmail(email, {
