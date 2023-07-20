@@ -1,0 +1,66 @@
+import { Response } from "express";
+import { inject, injectable } from "tsyringe";
+import { StatusCodes as HTTP } from "http-status-codes";
+
+import { Di } from "@enums/Di";
+import { SignUpDto } from "@dtos/SignUpDto";
+import { ControllerImplementation } from "miscellaneous-types";
+import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+
+import { BaseController } from "@controllers/BaseController";
+
+const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
+
+@injectable()
+export class SignUpController extends BaseController {
+  constructor(
+    @inject(Di.UserRepository)
+    private _userRepository: IUserRepository
+  ) {
+    super();
+  }
+
+  implementations: ControllerImplementation[] = [
+    {
+      version: v1_0,
+      handle: this.v1.bind(this),
+    },
+  ];
+
+  static ALL_VERSIONS = [v1_0];
+
+  async v1(request: CustomRequest<undefined, SignUpDto>, response: Response) {
+    const {
+      body: { id, email, registrationCode, password },
+    } = request;
+
+    const user = await this._userRepository.getOne({
+      where: {
+        id,
+        email,
+      },
+    });
+
+    if (!user) {
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
+
+    if (user && user.registrationCode !== registrationCode) {
+      await this._userRepository.primitiveSave({
+        ...user,
+        registrationCode: null,
+      });
+
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
+
+    await this._userRepository.primitiveSave({
+      ...user,
+      password,
+      registrationCode: null,
+      isRegistrationFinished: true,
+    });
+
+    return this.finalizeRequest(response, HTTP.OK);
+  }
+}
