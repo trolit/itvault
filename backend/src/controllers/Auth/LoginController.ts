@@ -50,7 +50,7 @@ export class LoginController extends BaseController {
       includePermissions: true,
     });
 
-    if (!user) {
+    if (!user || !user?.password) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
