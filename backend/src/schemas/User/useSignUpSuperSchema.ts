@@ -18,7 +18,7 @@ function useBodySchema(): SchemaProvider {
   return () =>
     schemaForType<SignUpDto>()(
       z.object({
-        id: z.number(),
+        id: z.number().gt(0),
 
         email: z
           .string()
