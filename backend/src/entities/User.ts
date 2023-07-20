@@ -16,7 +16,7 @@ export class User extends Base {
   email!: string;
 
   @Column({ select: false, nullable: true })
-  password: string;
+  password: string | null;
 
   // @NOTE allow to update firstName/lastName through profile settings (?)
   @Column()
@@ -57,12 +57,14 @@ export class User extends Base {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
+    }
   }
 
   @ManyToOne(() => User, User => User.registeredBy, {
     nullable: true,
     cascade: false,
   })
-  registeredBy: User;
+  registeredBy: User | null;
 }
