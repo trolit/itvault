@@ -17,10 +17,9 @@ import { UpdateManyController } from "@controllers/User/UpdateManyController";
 
 const usersRouter = Router();
 
-usersRouter.use(requireAuthentication);
-
 usersRouter.get(
   "",
+  requireAuthentication,
   requirePermissions([Permission.ViewAllUsers]),
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
@@ -30,6 +29,7 @@ usersRouter.get(
 
 usersRouter.post(
   "",
+  requireAuthentication,
   validateRequestWith(useStoreSuperSchema, {
     versions: StoreController.ALL_VERSIONS,
   }),
@@ -38,6 +38,7 @@ usersRouter.post(
 
 usersRouter.patch(
   "",
+  requireAuthentication,
   requirePermissions(UpdateManyController.isMissingPermissions),
   validateRequestWith(useUpdateManySuperSchema, {
     versions: UpdateManyController.ALL_VERSIONS,
