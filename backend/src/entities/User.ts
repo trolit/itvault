@@ -37,7 +37,7 @@ export class User extends Base {
   signUpCode: string;
 
   @Column({ type: "boolean", width: 1, default: false })
-  isRegistrationFinished: boolean;
+  isSignedUp: boolean;
 
   @ManyToOne(() => Role, role => role.users, {
     nullable: false,

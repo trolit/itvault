@@ -28,14 +28,14 @@ export class UserSeeder implements Seeder {
         email,
         password: PASSWORD,
         role,
-        isRegistrationFinished: true,
+        isSignedUp: true,
       });
 
       if (role.name === MEMBER_ROLE.name) {
         await userFactory.saveMany(4, {
           role,
           deletedAt: new Date(),
-          isRegistrationFinished: false,
+          isSignedUp: false,
         });
       }
     }

@@ -41,7 +41,7 @@ export class SignUpController extends BaseController {
       where: {
         id,
         email,
-        isRegistrationFinished: false,
+        isSignedUp: false,
       },
     });
 
@@ -64,7 +64,7 @@ export class SignUpController extends BaseController {
       ...user,
       signUpCode: "",
       password: hashedPassword,
-      isRegistrationFinished: true,
+      isSignedUp: true,
     });
 
     return this.finalizeRequest(response, HTTP.OK);
