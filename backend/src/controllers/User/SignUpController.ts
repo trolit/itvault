@@ -48,7 +48,7 @@ export class SignUpController extends BaseController {
     if (user && user.registrationCode !== registrationCode) {
       await this._userRepository.primitiveSave({
         ...user,
-        registrationCode: null,
+        registrationCode: "",
       });
 
       return response.status(HTTP.BAD_REQUEST).send();
@@ -57,7 +57,7 @@ export class SignUpController extends BaseController {
     await this._userRepository.primitiveSave({
       ...user,
       password,
-      registrationCode: null,
+      registrationCode: "",
       isRegistrationFinished: true,
     });
 
