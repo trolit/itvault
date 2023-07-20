@@ -57,12 +57,14 @@ export class User extends Base {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
+    }
   }
 
   @ManyToOne(() => User, User => User.registeredBy, {
     nullable: true,
     cascade: false,
   })
-  registeredBy: User;
+  registeredBy: User | null;
 }

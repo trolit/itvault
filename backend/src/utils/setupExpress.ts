@@ -54,7 +54,7 @@ async function getRoutes() {
 
       const [routeName] = router.split(".");
 
-      if (routeName !== "auth") {
+      if (!["auth", "users"].includes(routeName)) {
         versionRouter.use(requireAuthentication);
       }
 

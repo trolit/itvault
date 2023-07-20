@@ -1,3 +1,5 @@
+import assert from "assert";
+
 import { APP } from "@config";
 
 import { IMailViewBuilder } from "@interfaces/IMailViewBuilder";
@@ -12,6 +14,8 @@ export class RegistrationMailViewBuilder
     const {
       user: { id, email, registrationCode },
     } = data;
+
+    assert(registrationCode);
 
     const url = buildUrl(APP.URL, ["auth", "register"], {
       email,
