@@ -52,11 +52,15 @@ export class RequeueController extends BaseController {
 
     const bundle = await this._bundleRepository.getOne({
       select: {
-        blueprints: {
-          id: true,
+        blueprintToBundle: {
+          blueprint: {
+            id: true,
+          },
         },
-        variants: {
-          id: true,
+        variantToBundle: {
+          variant: {
+            id: true,
+          },
         },
       },
       where: {
@@ -67,8 +71,12 @@ export class RequeueController extends BaseController {
         status: BundleStatus.Failed,
       },
       relations: {
-        blueprints: true,
-        variants: true,
+        blueprintToBundle: {
+          blueprint: true,
+        },
+        variantToBundle: {
+          variant: true,
+        },
       },
     });
 
