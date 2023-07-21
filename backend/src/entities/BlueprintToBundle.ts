@@ -1,9 +1,4 @@
-import {
-  Entity,
-  ManyToOne,
-  DeleteDateColumn,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { Bundle } from "./Bundle";
 import { Blueprint } from "./Blueprint";
@@ -18,9 +13,4 @@ export class BlueprintToBundle {
 
   @ManyToOne(() => Bundle, bundle => bundle.blueprintToBundle)
   bundle: Bundle;
-
-  @DeleteDateColumn({
-    nullable: true,
-  })
-  deletedAt: Date | null;
 }

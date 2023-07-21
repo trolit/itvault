@@ -1,9 +1,4 @@
-import {
-  Entity,
-  ManyToOne,
-  DeleteDateColumn,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import { Bundle } from "./Bundle";
 import { Variant } from "./Variant";
@@ -18,9 +13,4 @@ export class VariantToBundle {
 
   @ManyToOne(() => Bundle, bundle => bundle.variantToBundle)
   bundle: Bundle;
-
-  @DeleteDateColumn({
-    nullable: true,
-  })
-  deletedAt: Date | null;
 }
