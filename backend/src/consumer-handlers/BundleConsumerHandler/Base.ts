@@ -97,17 +97,17 @@ export abstract class BaseBundleConsumerHandler {
     readFile: (variant: Variant) => Promise<string>,
     onError: () => Promise<void>
   ) {
-    const { variants, blueprints } = bundle;
+    const { variantToBundle, blueprintToBundle } = bundle;
 
-    if (!variants || !blueprints) {
+    if (!variantToBundle || !blueprintToBundle) {
       await onError();
 
       return;
     }
 
-    const variantIds = variants.map(({ id }) => id);
+    const variantIds = variantToBundle.map(({ variant }) => variant.id);
 
-    const blueprintIds = blueprints.map(({ id }) => id);
+    const blueprintIds = blueprintToBundle.map(({ blueprint }) => blueprint.id);
 
     if (!variantIds.length || !blueprintIds.length) {
       await onError();
