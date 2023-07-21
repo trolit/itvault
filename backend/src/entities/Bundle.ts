@@ -1,22 +1,20 @@
 import {
   Column,
   Entity,
-  JoinTable,
   ManyToOne,
   OneToMany,
-  ManyToMany,
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { User } from "./User";
-import { Variant } from "./Variant";
 import { Workspace } from "./Workspace";
+import { VariantToBundle } from "./VariantToBundle";
 import { BlueprintToBundle } from "./BlueprintToBundle";
 
-import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
+import { BundleExpire } from "@enums/BundleExpire";
 
 @Entity("bundles")
 export class Bundle {
@@ -54,9 +52,10 @@ export class Bundle {
   )
   blueprintToBundle: BlueprintToBundle[];
 
-  @ManyToMany(() => Variant, { cascade: true })
-  @JoinTable({ name: "bundles_variants" })
-  variants: Variant[];
+  @OneToMany(() => VariantToBundle, variantToBundle => variantToBundle.bundle, {
+    cascade: true,
+  })
+  variantToBundle: VariantToBundle[];
 
   @CreateDateColumn()
   createdAt: Date;

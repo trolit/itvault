@@ -12,6 +12,7 @@ import {
 import { User } from "./User";
 import { File } from "./File";
 import { Bucket } from "./Bucket";
+import { VariantToBundle } from "./VariantToBundle";
 
 @Entity("variants")
 export class Variant {
@@ -35,6 +36,15 @@ export class Variant {
 
   @OneToMany(() => Bucket, bucket => bucket.variant, { cascade: true })
   buckets: Bucket[];
+
+  @OneToMany(
+    () => VariantToBundle,
+    variantToBundle => variantToBundle.variant,
+    {
+      cascade: true,
+    }
+  )
+  variantToBundle: VariantToBundle[];
 
   @CreateDateColumn()
   createdAt: Date;
