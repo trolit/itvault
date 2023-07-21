@@ -43,7 +43,7 @@ export class SoftDeleteController extends BaseController {
       return response.status(HTTP.NO_CONTENT).send();
     }
 
-    await repository.softDeleteById(id);
+    await repository.softRemoveEntity(entity);
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
