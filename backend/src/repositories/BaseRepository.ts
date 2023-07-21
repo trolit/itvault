@@ -59,6 +59,10 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.softDelete({ id } as FindOptionsWhere<T>);
   }
 
+  softRemoveEntity(entity: T): Promise<T> {
+    return this.database.softRemove(entity);
+  }
+
   primitiveSave(entity: DeepPartial<T>): Promise<T> {
     return this.database.save(entity);
   }

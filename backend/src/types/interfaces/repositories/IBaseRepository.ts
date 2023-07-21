@@ -19,6 +19,8 @@ export interface IBaseRepository<T> {
 
   softDeleteById(id: number | string): Promise<UpdateResult>;
 
+  softRemoveEntity(entity: T): Promise<T>;
+
   primitiveSave(entity: DeepPartial<T>): Promise<T>;
 
   primitiveUpdate(
