@@ -1,18 +1,17 @@
 import {
   Column,
   Entity,
-  JoinTable,
   ManyToOne,
-  ManyToMany,
+  OneToMany,
   CreateDateColumn,
   DeleteDateColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 
 import { User } from "./User";
-import { Variant } from "./Variant";
-import { Blueprint } from "./Blueprint";
 import { Workspace } from "./Workspace";
+import { VariantToBundle } from "./VariantToBundle";
+import { BlueprintToBundle } from "./BlueprintToBundle";
 
 import { BundleStatus } from "@enums/BundleStatus";
 import { BundleExpire } from "@enums/BundleExpire";
@@ -46,13 +45,17 @@ export class Bundle {
   @ManyToOne(() => User, user => user.bundles)
   createdBy: User;
 
-  @ManyToMany(() => Blueprint, { cascade: true })
-  @JoinTable({ name: "bundles_blueprints" })
-  blueprints: Blueprint[];
+  @OneToMany(
+    () => BlueprintToBundle,
+    blueprintToBundle => blueprintToBundle.bundle,
+    { cascade: true }
+  )
+  blueprintToBundle: BlueprintToBundle[];
 
-  @ManyToMany(() => Variant, { cascade: true })
-  @JoinTable({ name: "bundles_variants" })
-  variants: Variant[];
+  @OneToMany(() => VariantToBundle, variantToBundle => variantToBundle.bundle, {
+    cascade: true,
+  })
+  variantToBundle: VariantToBundle[];
 
   @CreateDateColumn()
   createdAt: Date;
