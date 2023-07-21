@@ -70,8 +70,12 @@ export class StoreController extends BaseController {
       },
       expire: expiration,
       status: BundleStatus.Queried,
-      variants: variantIds.map(variantId => ({ id: variantId })),
-      blueprints: values.map(({ blueprintId }) => ({ id: blueprintId })),
+      variantToBundle: variantIds.map(variantId => ({
+        variant: { id: variantId },
+      })),
+      blueprintToBundle: values.map(({ blueprintId }) => ({
+        blueprint: { id: blueprintId },
+      })),
     });
 
     if (!bundle) {
