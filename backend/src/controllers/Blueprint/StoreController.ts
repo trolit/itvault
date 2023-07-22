@@ -42,12 +42,8 @@ export class StoreController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const { name, color, description } = body;
-
     const blueprint = await this._blueprintRepository.primitiveSave({
-      name,
-      color,
-      description,
+      ...body,
       workspace: {
         id: workspaceId,
       },

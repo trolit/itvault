@@ -47,7 +47,7 @@ export class UpdateController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const isUpdated = await this._blueprintRepository.primitiveUpdate(
+    const result = await this._blueprintRepository.primitiveUpdate(
       {
         id,
         workspace: { id: workspaceId },
@@ -55,7 +55,7 @@ export class UpdateController extends BaseController {
       body
     );
 
-    if (!isUpdated?.affected) {
+    if (!result?.affected) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
