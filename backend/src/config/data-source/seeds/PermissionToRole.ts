@@ -25,14 +25,14 @@ export class PermissionToRoleSeeder implements Seeder {
         continue;
       }
 
-      ALL_PERMISSIONS.map(async permission => {
+      ALL_PERMISSIONS.map(async ({ signature }) => {
         const isPermissionEnabled = permissions.some(
-          signature => signature === permission.signature
+          permission => permission.signature === signature
         );
 
         const permissionEntity = await permissionRepository.findOneOrFail({
           where: {
-            signature: permission.signature,
+            signature,
           },
         });
 
