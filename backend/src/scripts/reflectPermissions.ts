@@ -33,6 +33,12 @@ import { PermissionToRole } from "@entities/PermissionToRole";
       ({ signature }) => !signatures.includes(signature)
     );
 
+    if (missingPermissions.length === 0) {
+      console.log("TypeORM: permissions are up to date.");
+
+      await queryRunner.commitTransaction();
+    }
+
     const parsedMissingPermissions = missingPermissions.map(
       ({ name, signature }) => {
         return manager.create(Permission, { name, signature });
