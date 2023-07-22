@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { Bundle } from "@entities/Bundle";
+import { BundleMapDto } from "@dtos/BundleMapDto";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import {
@@ -38,7 +38,7 @@ export class GetAllController extends BaseController {
 
   async v1(
     request: CustomRequest<undefined, undefined, Query>,
-    response: CustomResponse<PaginatedResponse<Bundle>>
+    response: CustomResponse<PaginatedResponse<BundleMapDto>>
   ) {
     const {
       query: { skip, take, workspaceId },
@@ -69,6 +69,11 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    return this.finalizeRequest(response, HTTP.OK, { result, total });
+    const mappedResult = this.mapper.mapToDto(result, BundleMapDto);
+
+    return this.finalizeRequest(response, HTTP.OK, {
+      result: mappedResult,
+      total,
+    });
   }
 }
