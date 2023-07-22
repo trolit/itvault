@@ -1,6 +1,5 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
-import { BlueprintDto } from "types/dtos/BlueprintDto";
 
 import { BaseRepository } from "./BaseRepository";
 
@@ -16,14 +15,5 @@ export class BlueprintRepository
 
   constructor() {
     super(Blueprint);
-  }
-
-  save(workspaceId: number, data: BlueprintDto): Promise<Blueprint> {
-    return this.database.save({
-      ...data,
-      workspace: {
-        id: workspaceId,
-      },
-    });
   }
 }

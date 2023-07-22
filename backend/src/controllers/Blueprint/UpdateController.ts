@@ -1,8 +1,8 @@
+import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
-import { Blueprint } from "@entities/Blueprint";
 import { ControllerImplementation } from "miscellaneous-types";
 import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
@@ -13,10 +13,14 @@ interface IQuery {
   workspaceId: number;
 }
 
+interface IParams {
+  id: number;
+}
+
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class StoreController extends BaseController {
+export class UpdateController extends BaseController {
   constructor(
     @inject(Di.BlueprintRepository)
     private _blueprintRepository: IBlueprintRepository
@@ -34,25 +38,27 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, AddEditBlueprintDto, IQuery>,
-    response: CustomResponse<Blueprint>
+    request: CustomRequest<IParams, AddEditBlueprintDto, IQuery>,
+    response: Response
   ) {
     const {
       body,
+      params: { id },
       query: { workspaceId },
     } = request;
 
-    const blueprint = await this._blueprintRepository.primitiveSave({
-      ...body,
-      workspace: {
-        id: workspaceId,
+    const result = await this._blueprintRepository.primitiveUpdate(
+      {
+        id,
+        workspace: { id: workspaceId },
       },
-    });
+      body
+    );
 
-    if (!blueprint) {
+    if (!result?.affected) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, blueprint);
+    return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
 }

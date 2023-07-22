@@ -13,32 +13,40 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
+import { getIsEntityAvailableSchema } from "@schemas/common/getIsEntityAvailableSchema";
 
-const { workspaceIdSchema } = baseWorkspaceSchemas;
+const { getIsWorkspaceAvailableSchema } = baseWorkspaceSchemas;
 
 const { getAddEditBodySchema } = baseBlueprintSchemas;
 
-export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
+export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   ({ request }: SuperCommonParam) => {
     const {
+      params: { id },
       query: { workspaceId },
     } = request;
 
     return {
       query: useQuerySchema(),
-      body: useBodySchema(<string>workspaceId),
+      params: useParamsSchema(),
+      body: useBodySchema(id, <string>workspaceId),
     };
   }
 );
 
 function useQuerySchema(): SchemaProvider {
-  return () => workspaceIdSchema;
+  return () => getIsWorkspaceAvailableSchema("workspaceId");
 }
 
-function useBodySchema(workspaceId?: string): SchemaProvider {
+function useParamsSchema(): SchemaProvider {
+  return () =>
+    getIsEntityAvailableSchema("id", Di.BlueprintRepository, "Blueprint");
+}
+
+function useBodySchema(id: string, workspaceId?: string): SchemaProvider {
   const blueprintRepository = getInstanceOf<IBlueprintRepository>(
     Di.BlueprintRepository
   );
 
-  return () => getAddEditBodySchema(blueprintRepository, workspaceId);
+  return () => getAddEditBodySchema(blueprintRepository, workspaceId, id);
 }

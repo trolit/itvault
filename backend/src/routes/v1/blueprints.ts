@@ -2,14 +2,16 @@ import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Blueprint/useStoreSuperSchema";
+import { useUpdateSuperSchema } from "@schemas/Blueprint/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 
-import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { StoreController } from "@controllers/Blueprint/StoreController";
+import { SoftDeleteController } from "@controllers/SoftDeleteController";
+import { UpdateController } from "@controllers/Blueprint/UpdateController";
 import { GetAllController } from "@controllers/Blueprint/GetAllController";
 
 const blueprintsRouter = Router();
@@ -36,6 +38,14 @@ blueprintsRouter.delete(
   "/:id",
   requireEndpointVersion(SoftDeleteController.ALL_VERSIONS),
   processRequestWith(SoftDeleteController)
+);
+
+blueprintsRouter.put(
+  "/:id",
+  validateRequestWith(useUpdateSuperSchema, {
+    versions: UpdateController.ALL_VERSIONS,
+  }),
+  processRequestWith(UpdateController)
 );
 
 export = blueprintsRouter;
