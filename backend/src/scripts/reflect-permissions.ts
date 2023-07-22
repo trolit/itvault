@@ -9,7 +9,7 @@ import { Role } from "@entities/Role";
 import { Permission } from "@entities/Permission";
 import { PermissionToRole } from "@entities/PermissionToRole";
 
-(async function reflectPermissions() {
+(async function () {
   if (!dataSource.isInitialized) {
     await dataSource.initialize();
   }
