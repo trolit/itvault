@@ -18,7 +18,7 @@ import { getIsEntityAvailableSchema } from "@schemas/common/getIsEntityAvailable
 const { getIsWorkspaceAvailableSchema } = baseWorkspaceSchemas;
 const { getAddEditBodySchema } = baseBlueprintSchemas;
 
-export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
+export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   ({ request }: SuperCommonParam) => {
     const {
       query: { workspaceId },
