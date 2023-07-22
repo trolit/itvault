@@ -87,6 +87,15 @@ const UPDATE_FILE_RELATIVE_PATH: IPermissionDefinition = {
   name: "Update file relative path",
 };
 
+// ****************************************************
+// @NOTE BLUEPRINT PERMISSIONS
+// ****************************************************
+
+const CREATE_BLUEPRINT_PERMISSION: IPermissionDefinition = {
+  signature: Permission.CreateBlueprint,
+  name: "Create blueprint",
+};
+
 export const ALL_PERMISSIONS = [
   VIEW_ALL_ROLES_PERMISSION,
   CREATE_ROLE_PERMISSION,
@@ -105,4 +114,6 @@ export const ALL_PERMISSIONS = [
   REMOVE_FILE_PERMISSION,
   UPDATE_FILENAME_PERMISSION,
   UPDATE_FILE_RELATIVE_PATH,
+
+  CREATE_BLUEPRINT_PERMISSION,
 ];

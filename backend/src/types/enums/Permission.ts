@@ -9,6 +9,9 @@ export enum Permission {
   CreateWorkspace = "WE-CP",
   UpdateWorkspace = "WE-UP",
 
+  /* BLUEPRINT */
+  CreateBlueprint = "BT-CP",
+
   /* USER */
   ViewAllUsers = "UR-VAP",
   ChangeUserRole = "UR-CRP",
