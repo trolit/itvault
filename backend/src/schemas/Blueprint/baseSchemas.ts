@@ -1,3 +1,4 @@
+import { Not } from "typeorm";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
@@ -7,9 +8,12 @@ import { schemaForType } from "@schemas/common/schemaForType";
 
 const getAddEditBodySchema = (
   blueprintRepository: IBlueprintRepository,
-  workspaceId?: string
+  workspaceId?: string,
+  id?: string
 ) => {
   const parsedWorkspaceId = workspaceId ? parseInt(workspaceId) : null;
+
+  const idQuery = id ? Not(parseInt(id)) : undefined;
 
   if (!parsedWorkspaceId) {
     return null;
@@ -20,6 +24,7 @@ const getAddEditBodySchema = (
       name: z.string().superRefine(async (value, context: RefinementCtx) => {
         const blueprint = await blueprintRepository.getOne({
           where: {
+            id: idQuery,
             name: value,
             workspace: {
               id: parsedWorkspaceId,
@@ -45,6 +50,7 @@ const getAddEditBodySchema = (
         .superRefine(async (value, context: RefinementCtx) => {
           const blueprint = await blueprintRepository.getOne({
             where: {
+              id: idQuery,
               color: value,
               workspace: {
                 id: parsedWorkspaceId,

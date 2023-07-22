@@ -22,13 +22,14 @@ const { getAddEditBodySchema } = baseBlueprintSchemas;
 export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   ({ request }: SuperCommonParam) => {
     const {
+      params: { id },
       query: { workspaceId },
     } = request;
 
     return {
       query: useQuerySchema(),
       params: useParamsSchema(),
-      body: useBodySchema(<string>workspaceId),
+      body: useBodySchema(id, <string>workspaceId),
     };
   }
 );
@@ -42,10 +43,10 @@ function useParamsSchema(): SchemaProvider {
     getIsEntityAvailableSchema("id", Di.BlueprintRepository, "Blueprint");
 }
 
-function useBodySchema(workspaceId?: string): SchemaProvider {
+function useBodySchema(id: string, workspaceId?: string): SchemaProvider {
   const blueprintRepository = getInstanceOf<IBlueprintRepository>(
     Di.BlueprintRepository
   );
 
-  return () => getAddEditBodySchema(blueprintRepository, workspaceId);
+  return () => getAddEditBodySchema(blueprintRepository, workspaceId, id);
 }
