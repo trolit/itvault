@@ -33,8 +33,6 @@ import { PermissionToRole } from "@entities/PermissionToRole";
 
     const signatures = implementedPermissions.map(({ signature }) => signature);
 
-    console.log(ALL_PERMISSIONS);
-
     const missingPermissions = ALL_PERMISSIONS.filter(
       ({ signature }) => !signatures.includes(signature)
     );
@@ -55,7 +53,9 @@ import { PermissionToRole } from "@entities/PermissionToRole";
 
     const newPermissions = await manager.save(parsedMissingPermissions);
 
-    const allRoles = await manager.find(Role);
+    const allRoles = await manager.find(Role, {
+      relations: { permissionToRole: true },
+    });
 
     for (const role of allRoles) {
       for (const newPermission of newPermissions) {
@@ -72,9 +72,7 @@ import { PermissionToRole } from "@entities/PermissionToRole";
     await manager.save(allRoles);
 
     console.log(
-      `TypeORM: ${
-        newPermissions.length
-      } permissions were added to the database (${signatures.join(", ")}).`
+      `TypeORM: ${newPermissions.length} permission(s) were added to the database.`
     );
 
     await queryRunner.commitTransaction();
