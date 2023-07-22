@@ -3,8 +3,8 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Blueprint } from "@entities/Blueprint";
-import { BlueprintDto } from "@dtos/BlueprintDto";
 import { ControllerImplementation } from "miscellaneous-types";
+import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -34,7 +34,7 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, BlueprintDto, IQuery>,
+    request: CustomRequest<undefined, AddEditBlueprintDto, IQuery>,
     response: CustomResponse<Blueprint>
   ) {
     const {
@@ -42,7 +42,16 @@ export class StoreController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const blueprint = await this._blueprintRepository.save(workspaceId, body);
+    const { name, color, description } = body;
+
+    const blueprint = await this._blueprintRepository.primitiveSave({
+      name,
+      color,
+      description,
+      workspace: {
+        id: workspaceId,
+      },
+    });
 
     if (!blueprint) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
