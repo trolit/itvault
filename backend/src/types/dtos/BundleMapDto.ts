@@ -4,7 +4,7 @@ import { BaseMapDto } from "./BaseMapDto";
 export class BundleMapDto extends BaseMapDto<Bundle> {
   blueprints: { name: string; isDeleted: boolean }[];
 
-  variants: { name: string; isDeleted: boolean }[];
+  variants: { file: string; version: string; isDeleted: boolean }[];
 
   constructor(
     data: Bundle,
@@ -16,8 +16,6 @@ export class BundleMapDto extends BaseMapDto<Bundle> {
       "status",
       "size",
       "createdBy",
-      "blueprintToBundle",
-      "variantToBundle",
     ]
   ) {
     super(data, keys);
@@ -28,7 +26,8 @@ export class BundleMapDto extends BaseMapDto<Bundle> {
     }));
 
     this.variants = data.variantToBundle.map(({ variant }) => ({
-      name: variant.name,
+      file: variant.file.originalFilename,
+      version: variant.name,
       isDeleted: !!variant.deletedAt,
     }));
 

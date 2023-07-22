@@ -62,7 +62,9 @@ export class GetAllController extends BaseController {
           blueprint: true,
         },
         variantToBundle: {
-          variant: true,
+          variant: {
+            file: true,
+          },
         },
         createdBy: true,
       },
