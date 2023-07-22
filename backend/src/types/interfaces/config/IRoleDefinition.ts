@@ -1,7 +1,7 @@
-import { Permission } from "@enums/Permission";
+import { IPermissionDefinition } from "./IPermissionDefinition";
 
 export interface IRoleDefinition {
   name: string;
 
-  permissions: Permission[];
+  permissions: IPermissionDefinition[];
 }
