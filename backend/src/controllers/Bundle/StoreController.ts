@@ -68,6 +68,9 @@ export class StoreController extends BaseController {
       createdBy: {
         id: userId,
       },
+      workspace: {
+        id: workspaceId,
+      },
       expire: expiration,
       status: BundleStatus.Queried,
       variantToBundle: variantIds.map(variantId => ({
