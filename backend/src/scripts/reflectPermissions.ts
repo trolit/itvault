@@ -33,6 +33,8 @@ import { PermissionToRole } from "@entities/PermissionToRole";
 
     const signatures = implementedPermissions.map(({ signature }) => signature);
 
+    console.log(ALL_PERMISSIONS);
+
     const missingPermissions = ALL_PERMISSIONS.filter(
       ({ signature }) => !signatures.includes(signature)
     );
@@ -82,5 +84,7 @@ import { PermissionToRole } from "@entities/PermissionToRole";
     await queryRunner.rollbackTransaction();
   } finally {
     await queryRunner.release();
+
+    process.exit(0);
   }
 })();
