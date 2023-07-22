@@ -40,7 +40,7 @@ blueprintsRouter.delete(
   processRequestWith(SoftDeleteController)
 );
 
-blueprintsRouter.patch(
+blueprintsRouter.put(
   "/:id",
   validateRequestWith(useUpdateSuperSchema, {
     versions: UpdateController.ALL_VERSIONS,
