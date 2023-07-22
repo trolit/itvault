@@ -47,6 +47,11 @@ export class GetAllController extends BaseController {
     const [result, total] = await this._bundleRepository.getAll({
       skip,
       take,
+      select: {
+        createdBy: {
+          fullName: true,
+        },
+      },
       where: {
         workspace: {
           id: workspaceId,
@@ -59,6 +64,7 @@ export class GetAllController extends BaseController {
         variantToBundle: {
           variant: true,
         },
+        createdBy: true,
       },
       withDeleted: true,
     });
