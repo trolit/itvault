@@ -60,6 +60,7 @@ export class GetAllController extends BaseController {
           variant: true,
         },
       },
+      withDeleted: true,
     });
 
     return this.finalizeRequest(response, HTTP.OK, { result, total });
