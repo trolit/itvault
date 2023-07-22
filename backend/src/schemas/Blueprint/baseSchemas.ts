@@ -7,8 +7,14 @@ import { schemaForType } from "@schemas/common/schemaForType";
 
 const getAddEditBodySchema = (
   blueprintRepository: IBlueprintRepository,
-  workspaceId: number
+  workspaceId?: string
 ) => {
+  const parsedWorkspaceId = workspaceId ? parseInt(workspaceId) : null;
+
+  if (!parsedWorkspaceId) {
+    return null;
+  }
+
   return schemaForType<AddEditBlueprintDto>()(
     z.object({
       name: z.string().superRefine(async (value, context: RefinementCtx) => {
@@ -16,7 +22,7 @@ const getAddEditBodySchema = (
           where: {
             name: value,
             workspace: {
-              id: workspaceId,
+              id: parsedWorkspaceId,
             },
           },
         });
@@ -41,7 +47,7 @@ const getAddEditBodySchema = (
             where: {
               color: value,
               workspace: {
-                id: workspaceId,
+                id: parsedWorkspaceId,
               },
             },
           });

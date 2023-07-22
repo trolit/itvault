@@ -16,6 +16,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 import { getIsEntityAvailableSchema } from "@schemas/common/getIsEntityAvailableSchema";
 
 const { getIsWorkspaceAvailableSchema } = baseWorkspaceSchemas;
+
 const { getAddEditBodySchema } = baseBlueprintSchemas;
 
 export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
@@ -46,11 +47,5 @@ function useBodySchema(workspaceId?: string): SchemaProvider {
     Di.BlueprintRepository
   );
 
-  const parsedWorkspaceId = workspaceId ? parseInt(workspaceId) : null;
-
-  if (!parsedWorkspaceId) {
-    return () => null;
-  }
-
-  return () => getAddEditBodySchema(blueprintRepository, parsedWorkspaceId);
+  return () => getAddEditBodySchema(blueprintRepository, workspaceId);
 }
