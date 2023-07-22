@@ -54,14 +54,10 @@ export class GetAllController extends BaseController {
       },
       relations: {
         blueprintToBundle: {
-          blueprint: {
-            name: true,
-          },
+          blueprint: true,
         },
         variantToBundle: {
-          variant: {
-            name: true,
-          },
+          variant: true,
         },
       },
     });
