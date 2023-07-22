@@ -11,9 +11,7 @@ import { PermissionToRole } from "@entities/PermissionToRole";
 
 (async function reflectPermissions() {
   if (!dataSource.isInitialized) {
-    console.log("TypeORM: data source is not initialized!!");
-
-    return;
+    await dataSource.initialize();
   }
 
   const queryRunner = dataSource.createQueryRunner();
@@ -23,6 +21,12 @@ import { PermissionToRole } from "@entities/PermissionToRole";
   await queryRunner.startTransaction();
 
   const { manager } = queryRunner;
+
+  if (!queryRunner.isTransactionActive) {
+    console.log("TypeORM: Failed to start transaction.");
+
+    return;
+  }
 
   try {
     const implementedPermissions = await manager.find(Permission);
@@ -37,6 +41,8 @@ import { PermissionToRole } from "@entities/PermissionToRole";
       console.log("TypeORM: permissions are up to date.");
 
       await queryRunner.commitTransaction();
+
+      return;
     }
 
     const parsedMissingPermissions = missingPermissions.map(
