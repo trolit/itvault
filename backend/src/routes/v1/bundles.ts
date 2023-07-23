@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
@@ -33,6 +34,7 @@ bundlesRouter.get(
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
+  transformPagination,
   processRequestWith(GetAllController)
 );
 
