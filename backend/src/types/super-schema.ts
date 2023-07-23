@@ -19,7 +19,7 @@ declare module "super-schema-types" {
 
   export type SuperSchema = Partial<Record<keyof SuperKeys, SchemaProvider>>;
 
-  export type SuperSchemaRunner = <P, B, Q>(
+  export type SuperSchemaRunner<P = any, B = any, Q = any> = (
     common: SuperCommonParam<P, B, Q>
   ) => SuperSchema | Promise<SuperSchema>;
 }
