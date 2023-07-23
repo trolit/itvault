@@ -1,17 +1,21 @@
 import { z, ZodSchema, ZodType } from "zod";
+import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
-import type { NextFunction, Request, Response } from "express";
 import { SuperKeys, SuperSchemaRunner } from "super-schema-types";
 
 import { getVersionSchema } from "@schemas/common/getVersionSchema";
 
-export const validateRequestWith = (
-  useSuperSchemaRunner: SuperSchemaRunner,
+export const validateRequestWith = <P, B, Q>(
+  useSuperSchemaRunner: SuperSchemaRunner<P, B, Q>,
   data: {
     versions: number[];
   }
 ) => {
-  return async (request: Request, response: Response, next: NextFunction) => {
+  return async (
+    request: CustomRequest<P, B, Q>,
+    response: Response,
+    next: NextFunction
+  ) => {
     const superSchema = await useSuperSchemaRunner({
       request,
     });
@@ -69,9 +73,9 @@ export const validateRequestWith = (
   };
 };
 
-async function runGeneralSchemasOnMissingKeys(
+async function runGeneralSchemasOnMissingKeys<P, B, Q>(
   keys: string[],
-  request: Request,
+  request: CustomRequest<P, B, Q>,
   schemas: {
     versionSchema: ZodSchema;
   }

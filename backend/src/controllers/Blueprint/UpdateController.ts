@@ -9,11 +9,11 @@ import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintReposit
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IQuery {
+export interface IQuery {
   workspaceId: number;
 }
 
-interface IParams {
+export interface IParams {
   id: number;
 }
 

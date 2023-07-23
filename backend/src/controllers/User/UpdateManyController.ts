@@ -1,4 +1,3 @@
-import { Request } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 
@@ -55,14 +54,14 @@ export class UpdateManyController extends BaseController {
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
 
-  static isMissingPermissions(request: Request): boolean {
+  static isMissingPermissions(
+    request: CustomRequest<undefined, IRequestBody>
+  ): boolean {
     const { permissions, body } = request;
 
     if (!isPermissionEnabled(Permission.ViewAllUsers, permissions)) {
       return false;
     }
-
-    const castedBody = <IRequestBody>body;
 
     const isAllowedToRestoreUserAccount = isPermissionEnabled(
       Permission.RestoreUserAccount,
@@ -89,7 +88,7 @@ export class UpdateManyController extends BaseController {
         : !isAllowedToDeactivateUserAccount;
     };
 
-    return castedBody.value.some(
+    return body.value.some(
       ({ data }) =>
         isActivePropertyCheck(data.isActive) ||
         (data.roleId && !isAllowedToChangeUserRole)

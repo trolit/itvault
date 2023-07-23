@@ -8,16 +8,10 @@ import { schemaForType } from "@schemas/common/schemaForType";
 
 const getAddEditBodySchema = (
   blueprintRepository: IBlueprintRepository,
-  workspaceId?: string,
-  id?: string
+  workspaceId: number,
+  id?: number
 ) => {
-  const parsedWorkspaceId = workspaceId ? parseInt(workspaceId) : null;
-
-  const idQuery = id ? Not(parseInt(id)) : undefined;
-
-  if (!parsedWorkspaceId) {
-    return null;
-  }
+  const idQuery = id ? Not(id) : undefined;
 
   return schemaForType<AddEditBlueprintDto>()(
     z.object({
@@ -27,7 +21,7 @@ const getAddEditBodySchema = (
             id: idQuery,
             name: value,
             workspace: {
-              id: parsedWorkspaceId,
+              id: workspaceId,
             },
           },
         });
@@ -53,7 +47,7 @@ const getAddEditBodySchema = (
               id: idQuery,
               color: value,
               workspace: {
-                id: parsedWorkspaceId,
+                id: workspaceId,
               },
             },
           });

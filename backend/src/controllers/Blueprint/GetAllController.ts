@@ -3,6 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Di } from "@enums/Di";
 import { Blueprint } from "@entities/Blueprint";
+import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 import {
   PaginatedResponse,
@@ -11,13 +12,9 @@ import {
 
 import { BaseController } from "@controllers/BaseController";
 
-interface IQuery {
-  skip: number;
-
-  take: number;
-
+type Query = {
   workspaceId: number;
-}
+} & IPaginationOptions;
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -40,7 +37,7 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, undefined, IQuery>,
+    request: CustomRequest<undefined, undefined, Query>,
     response: CustomResponse<PaginatedResponse<Blueprint>>
   ) {
     const {
