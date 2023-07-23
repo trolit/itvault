@@ -9,6 +9,8 @@ const isProduction = APP.ENV === Environment.Production;
 
 const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
 
+const baseDir = isProduction ? "dist" : "src";
+
 const options: DataSourceOptions & SeederOptions = {
   type: TYPE,
   host: HOST,
@@ -16,13 +18,15 @@ const options: DataSourceOptions & SeederOptions = {
   username: ROOT.USERNAME,
   password: ROOT.PASSWORD,
   database: NAME,
-  entities: ["src/entities/*.ts"],
-  migrations: ["src/migrations/*.ts"],
+  entities: [`${baseDir}/entities/*.{ts,js}`],
+  migrations: [`${baseDir}/migrations/*.{ts,js}`],
   logging: true,
   synchronize: false,
 
-  seeds: isProduction ? [] : ["src/config/data-source/seeds/*.ts"],
-  factories: isProduction ? [] : ["src/config/data-source/factories/*.ts"],
+  seeds: isProduction ? [] : [`${baseDir}/config/data-source/seeds/*.{ts,js}`],
+  factories: isProduction
+    ? []
+    : [`${baseDir}/config/data-source/factories/*.{ts,js}`],
 };
 
 export const dataSource = new DataSource(options);
