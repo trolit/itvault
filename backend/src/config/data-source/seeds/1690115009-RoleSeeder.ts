@@ -7,7 +7,7 @@ import { TEST_ACCOUNTS } from "./common";
 
 import { Role } from "@entities/Role";
 
-export class RoleSeeder implements Seeder {
+export default class RoleSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const repository = dataSource.getRepository(Role);
 

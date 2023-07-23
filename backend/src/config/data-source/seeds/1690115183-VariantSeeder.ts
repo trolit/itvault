@@ -14,7 +14,7 @@ import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { Workspace } from "@entities/Workspace";
 
-export class VariantSeeder implements Seeder {
+export default class VariantSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const workspaceRepository = dataSource.getRepository(Workspace);
 

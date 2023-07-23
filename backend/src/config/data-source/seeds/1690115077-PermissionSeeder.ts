@@ -5,7 +5,7 @@ import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Permission } from "@entities/Permission";
 
-export class PermissionSeeder implements Seeder {
+export default class PermissionSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const repository = dataSource.getRepository(Permission);
 

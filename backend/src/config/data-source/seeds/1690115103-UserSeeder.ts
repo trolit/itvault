@@ -8,7 +8,7 @@ import { PASSWORD, TEST_ACCOUNTS } from "./common";
 import { Role } from "@entities/Role";
 import { User } from "@entities/User";
 
-export class UserSeeder implements Seeder {
+export default class UserSeeder implements Seeder {
   public async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager

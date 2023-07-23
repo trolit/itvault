@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "module-alias/register";
+import { DataStoreKeyType, DataStoreRole } from "data-store-types";
 
 import { dataSource } from "@config/data-source";
 import { ALL_PERMISSIONS } from "@config/permissions";
@@ -8,6 +9,9 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { Role } from "@entities/Role";
 import { Permission } from "@entities/Permission";
 import { PermissionToRole } from "@entities/PermissionToRole";
+
+import { setupRedis } from "@utils/setupRedis";
+import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
 (async function () {
   if (!dataSource.isInitialized) {
@@ -69,11 +73,13 @@ import { PermissionToRole } from "@entities/PermissionToRole";
       }
     }
 
-    await manager.save(allRoles);
+    const roles = await manager.save(allRoles);
 
     console.log(
       `TypeORM: ${newPermissions.length} permission(s) were added to the database.`
     );
+
+    await reflectChangesInRedis(roles);
 
     await queryRunner.commitTransaction();
   } catch (error) {
@@ -82,7 +88,35 @@ import { PermissionToRole } from "@entities/PermissionToRole";
     await queryRunner.rollbackTransaction();
   } finally {
     await queryRunner.release();
-
-    process.exit(0);
   }
+
+  process.exit(0);
 })();
+
+async function reflectChangesInRedis(roles: Role[]) {
+  const { instance } = setupRedis();
+
+  const mutli = instance.multi();
+
+  for (const { id, permissionToRole } of roles) {
+    const dataStoreKey = composeDataStoreKey([id, DataStoreKeyType.Role]);
+
+    const value: DataStoreRole = {
+      id,
+      permissions: permissionToRole.map(({ enabled, permission }) => ({
+        ...permission,
+        enabled,
+      })),
+    };
+
+    mutli.set(dataStoreKey, JSON.stringify(value));
+  }
+
+  mutli.exec(error => {
+    if (error) {
+      console.log(error);
+    }
+  });
+
+  await instance.quit();
+}

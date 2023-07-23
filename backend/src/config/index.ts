@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config({});
 
+import { WorkingDir } from "@enums/WorkingDir";
 import { Environment } from "@enums/Environment";
 import { DatabaseType } from "@enums/DatabaseType";
 import { FileStorageMode } from "@enums/FileStorageMode";
@@ -20,6 +21,7 @@ export const APP = {
   URL: envString("APP_URL"),
   ENV: <Environment>envEnum("NODE_ENV", Environment),
   ROUTES_PREFIX: envString("ROUTES_PREFIX"),
+  WORKING_DIR: <WorkingDir>envEnum("WORKING_DIRECTORY", WorkingDir),
 };
 
 export const DATABASE = {

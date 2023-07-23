@@ -9,7 +9,7 @@ import { Role } from "@entities/Role";
 import { Permission } from "@entities/Permission";
 import { PermissionToRole } from "@entities/PermissionToRole";
 
-export class PermissionToRoleSeeder implements Seeder {
+export default class PermissionToRoleSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const roleRepository = dataSource.getRepository(Role);
 

@@ -6,7 +6,7 @@ import { TEST_WORKSPACE_1 } from "./common";
 import { File } from "@entities/File";
 import { Workspace } from "@entities/Workspace";
 
-export class FileSeeder implements Seeder {
+export default class FileSeeder implements Seeder {
   public async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager

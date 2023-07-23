@@ -16,7 +16,7 @@ import { Workspace } from "@entities/Workspace";
 import { Blueprint } from "@entities/Blueprint";
 import { BucketContent } from "miscellaneous-types";
 
-export class BucketSeeder implements Seeder {
+export default class BucketSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const workspaceRepository = dataSource.getRepository(Workspace);
 

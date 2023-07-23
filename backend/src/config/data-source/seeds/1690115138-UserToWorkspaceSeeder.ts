@@ -9,7 +9,7 @@ import { User } from "@entities/User";
 import { Workspace } from "@entities/Workspace";
 import { UserToWorkspace } from "@entities/UserToWorkspace";
 
-export class UserToWorkspaceSeeder implements Seeder {
+export default class UserToWorkspaceSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const userRepository = dataSource.getRepository(User);
 

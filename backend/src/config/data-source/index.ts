@@ -3,16 +3,12 @@ import { DataSource, DataSourceOptions } from "typeorm";
 
 import { APP, DATABASE } from "@config";
 
-import { seeds } from "./seeds";
-import { entities } from "./entities";
-import { factories } from "./factories";
-import { migrations } from "./migrations";
-
 import { Environment } from "@enums/Environment";
 
-const isProduction = APP.ENV === Environment.Production;
-
+const { ENV, WORKING_DIR } = APP;
 const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
+
+const isProduction = ENV === Environment.Production;
 
 const options: DataSourceOptions & SeederOptions = {
   type: TYPE,
@@ -21,13 +17,17 @@ const options: DataSourceOptions & SeederOptions = {
   username: ROOT.USERNAME,
   password: ROOT.PASSWORD,
   database: NAME,
-  entities,
-  migrations,
+  entities: [`${WORKING_DIR}/entities/*.{ts,js}`],
+  migrations: [`${WORKING_DIR}/migrations/*.{ts,js}`],
   logging: true,
   synchronize: false,
 
-  seeds: isProduction ? [] : seeds,
-  factories: isProduction ? [] : factories,
+  seeds: isProduction
+    ? []
+    : [`${WORKING_DIR}/config/data-source/seeds/*.{ts,js}`],
+  factories: isProduction
+    ? []
+    : [`${WORKING_DIR}/config/data-source/factories/*.{ts,js}`],
 };
 
 export const dataSource = new DataSource(options);
