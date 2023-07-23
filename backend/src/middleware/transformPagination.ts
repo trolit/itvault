@@ -4,7 +4,7 @@ import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export const transformPagination = (<P, B, Q extends IPaginationOptions>() => {
   return async (
-    request: CustomRequest<P, B, Q & { page: string; perPage: string }>,
+    request: CustomRequest<P, B, Q & { page: number; perPage: number }>,
     response: Response,
     next: NextFunction
   ) => {
@@ -12,15 +12,9 @@ export const transformPagination = (<P, B, Q extends IPaginationOptions>() => {
       query: { page, perPage },
     } = request;
 
-    const parsedPage = parseInt(page);
-    const parsedPerPage = parseInt(perPage);
+    request.query.skip = page === 1 ? 0 : (page - 1) * perPage;
 
-    if (!isNaN(parsedPage) && !isNaN(parsedPerPage)) {
-      request.query.skip =
-        parsedPage === 1 ? 0 : (parsedPage - 1) * parsedPerPage;
-
-      request.query.take = parsedPerPage > 20 ? 20 : parsedPerPage;
-    }
+    request.query.take = perPage > 20 ? 20 : perPage;
 
     next();
   };
