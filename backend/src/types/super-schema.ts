@@ -1,5 +1,4 @@
 declare module "super-schema-types" {
-  import { Request } from "express";
   import type { ZodSchema } from "zod";
 
   export type SuperKeys = {
