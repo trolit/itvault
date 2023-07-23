@@ -18,13 +18,13 @@ export const requireAuthentication = (() => {
     const userId = processTokenFromRequest(request, authService);
 
     if (!userId) {
-      return response.status(HTTP.FORBIDDEN).send();
+      return response.status(HTTP.UNAUTHORIZED).send();
     }
 
     const role = await authService.getSignedUserRole(userId);
 
     if (!role) {
-      return response.status(HTTP.FORBIDDEN).send();
+      return response.status(HTTP.UNAUTHORIZED).send();
     }
 
     assignPermissionsToRequest(request, role.permissions);
