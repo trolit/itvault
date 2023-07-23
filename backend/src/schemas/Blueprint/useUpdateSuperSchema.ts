@@ -7,6 +7,7 @@ import {
 import { baseBlueprintSchemas } from "./baseSchemas";
 
 import { Di } from "@enums/Di";
+import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -15,12 +16,14 @@ import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 import { getIsEntityAvailableSchema } from "@schemas/common/getIsEntityAvailableSchema";
 
+import { IParams, IQuery } from "@controllers/Blueprint/UpdateController";
+
 const { getIsWorkspaceAvailableSchema } = baseWorkspaceSchemas;
 
 const { getAddEditBodySchema } = baseBlueprintSchemas;
 
 export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  ({ request }: SuperCommonParam) => {
+  ({ request }: SuperCommonParam<IParams, AddEditBlueprintDto, IQuery>) => {
     const {
       params: { id },
       query: { workspaceId },
@@ -29,7 +32,7 @@ export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
     return {
       query: useQuerySchema(),
       params: useParamsSchema(),
-      body: useBodySchema(id, <string>workspaceId),
+      body: useBodySchema(id, workspaceId),
     };
   }
 );
@@ -43,7 +46,7 @@ function useParamsSchema(): SchemaProvider {
     getIsEntityAvailableSchema("id", Di.BlueprintRepository, "Blueprint");
 }
 
-function useBodySchema(id: string, workspaceId?: string): SchemaProvider {
+function useBodySchema(id: number, workspaceId: number): SchemaProvider {
   const blueprintRepository = getInstanceOf<IBlueprintRepository>(
     Di.BlueprintRepository
   );

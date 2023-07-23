@@ -9,9 +9,9 @@ import { schemaForType } from "@schemas/common/schemaForType";
 const getAddEditBodySchema = (
   blueprintRepository: IBlueprintRepository,
   workspaceId: number,
-  id?: string
+  id?: number
 ) => {
-  const idQuery = id ? Not(parseInt(id)) : undefined;
+  const idQuery = id ? Not(id) : undefined;
 
   return schemaForType<AddEditBlueprintDto>()(
     z.object({
