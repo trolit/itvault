@@ -9,7 +9,7 @@ declare module "super-schema-types" {
     params: string;
   };
 
-  export type SuperCommonParam<P, B, Q> = {
+  export type SuperCommonParam<P = any, B = any, Q = any> = {
     request: CustomRequest<P, B, Q>;
   };
 
