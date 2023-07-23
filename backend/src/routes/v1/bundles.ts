@@ -21,14 +21,6 @@ const bundlesRouter = Router();
 bundlesRouter.use(requireWorkspaceAccess);
 bundlesRouter.use(IsWorkspaceAvailable);
 
-bundlesRouter.post(
-  "",
-  validateRequestWith(useStoreSuperSchema, {
-    versions: StoreController.ALL_VERSIONS,
-  }),
-  processRequestWith(StoreController)
-);
-
 bundlesRouter.get(
   "",
   validateRequestWith(useGetAllSuperSchema, {
@@ -42,6 +34,14 @@ bundlesRouter.get(
   "/:id",
   requireEndpointVersion(DownloadController.ALL_VERSIONS),
   processRequestWith(DownloadController)
+);
+
+bundlesRouter.post(
+  "",
+  validateRequestWith(useStoreSuperSchema, {
+    versions: StoreController.ALL_VERSIONS,
+  }),
+  processRequestWith(StoreController)
 );
 
 bundlesRouter.post(

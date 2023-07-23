@@ -23,6 +23,14 @@ const filesRouter = Router();
 
 filesRouter.use(requireWorkspaceAccess);
 
+filesRouter.get(
+  "",
+  validateRequestWith(useGetAllSuperSchema, {
+    versions: GetAllController.ALL_VERSIONS,
+  }),
+  processRequestWith(GetAllController)
+);
+
 filesRouter.post(
   "",
   requirePermissions([Permission.UploadFiles]),
@@ -42,14 +50,6 @@ filesRouter.patch(
     versions: PatchRelativePathController.ALL_VERSIONS,
   }),
   processRequestWith(PatchRelativePathController)
-);
-
-filesRouter.get(
-  "",
-  validateRequestWith(useGetAllSuperSchema, {
-    versions: GetAllController.ALL_VERSIONS,
-  }),
-  processRequestWith(GetAllController)
 );
 
 export = filesRouter;
