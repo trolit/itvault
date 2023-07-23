@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 
-export const paginationSchema = schemaForType<IPaginationOptions>()(
+export const paginationSchema = schemaForType<IPaginationQuery>()(
   z.object({
-    take: z.coerce.number().gt(0).max(9999),
-    skip: z.coerce.number().gte(0).max(9999),
+    page: z.coerce.number().int().gt(0),
+    perPage: z.coerce.number().int().gte(0),
   })
 );

@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
@@ -23,6 +24,7 @@ blueprintsRouter.get(
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
+  transformPagination,
   processRequestWith(GetAllController)
 );
 

@@ -1,5 +1,4 @@
 declare module "super-schema-types" {
-  import { Request } from "express";
   import type { ZodSchema } from "zod";
 
   export type SuperKeys = {
@@ -10,8 +9,8 @@ declare module "super-schema-types" {
     params: string;
   };
 
-  export type SuperCommonParam = {
-    request: Request;
+  export type SuperCommonParam<P = any, B = any, Q = any> = {
+    request: CustomRequest<P, B, Q>;
   };
 
   export type SchemaProvider = () =>
@@ -20,7 +19,7 @@ declare module "super-schema-types" {
 
   export type SuperSchema = Partial<Record<keyof SuperKeys, SchemaProvider>>;
 
-  export type SuperSchemaRunner = (
-    common: SuperCommonParam
+  export type SuperSchemaRunner<P = any, B = any, Q = any> = (
+    common: SuperCommonParam<P, B, Q>
   ) => SuperSchema | Promise<SuperSchema>;
 }

@@ -1,12 +1,13 @@
 import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Note/useStoreSuperSchema";
-import { useUpdateSuperSchema } from "@schemas/Note/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
+import { useUpdateSuperSchema } from "@schemas/Note/useUpdateSuperSchema";
 
 import { StoreController } from "@controllers/Note/StoreController";
 import { UpdateController } from "@controllers/Note/UpdateController";
@@ -20,6 +21,7 @@ notesRouter.get(
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
+  transformPagination,
   processRequestWith(GetAllController)
 );
 

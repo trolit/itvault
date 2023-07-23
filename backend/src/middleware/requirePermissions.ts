@@ -1,14 +1,18 @@
+import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
-import type { Request, NextFunction, Response } from "express";
 
 import { Permission } from "@enums/Permission";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
-export const requirePermissions = (
-  context: Permission[] | ((request: Request) => boolean)
+export const requirePermissions = <P, B, Q>(
+  context: Permission[] | ((request: CustomRequest<P, B, Q>) => boolean)
 ) => {
-  return async (request: Request, response: Response, next: NextFunction) => {
+  return async (
+    request: CustomRequest<P, B, Q>,
+    response: Response,
+    next: NextFunction
+  ) => {
     const { permissions } = request;
 
     if (!permissions) {

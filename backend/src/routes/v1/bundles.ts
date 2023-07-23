@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
@@ -20,19 +21,12 @@ const bundlesRouter = Router();
 bundlesRouter.use(requireWorkspaceAccess);
 bundlesRouter.use(IsWorkspaceAvailable);
 
-bundlesRouter.post(
-  "",
-  validateRequestWith(useStoreSuperSchema, {
-    versions: StoreController.ALL_VERSIONS,
-  }),
-  processRequestWith(StoreController)
-);
-
 bundlesRouter.get(
   "",
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
+  transformPagination,
   processRequestWith(GetAllController)
 );
 
@@ -40,6 +34,14 @@ bundlesRouter.get(
   "/:id",
   requireEndpointVersion(DownloadController.ALL_VERSIONS),
   processRequestWith(DownloadController)
+);
+
+bundlesRouter.post(
+  "",
+  validateRequestWith(useStoreSuperSchema, {
+    versions: StoreController.ALL_VERSIONS,
+  }),
+  processRequestWith(StoreController)
 );
 
 bundlesRouter.post(
