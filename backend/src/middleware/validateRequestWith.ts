@@ -6,7 +6,7 @@ import { SuperKeys, SuperSchemaRunner } from "super-schema-types";
 import { getVersionSchema } from "@schemas/common/getVersionSchema";
 
 export const validateRequestWith = <P, B, Q>(
-  useSuperSchemaRunner: SuperSchemaRunner,
+  useSuperSchemaRunner: SuperSchemaRunner<P, B, Q>,
   data: {
     versions: number[];
   }
