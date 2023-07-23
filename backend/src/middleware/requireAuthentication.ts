@@ -1,6 +1,6 @@
+import type { NextFunction, Response } from "express";
 import { DataStorePermission } from "data-store-types";
 import { StatusCodes as HTTP } from "http-status-codes";
-import type { Request, NextFunction, Response } from "express";
 
 import { JWT } from "@config";
 import { ALL_PERMISSIONS } from "@config/permissions";
@@ -11,8 +11,12 @@ import { IAuthService } from "@interfaces/services/IAuthService";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-export const requireAuthentication = (() => {
-  return async (request: Request, response: Response, next: NextFunction) => {
+export const requireAuthentication = (<P, B, Q>() => {
+  return async (
+    request: CustomRequest<P, B, Q>,
+    response: Response,
+    next: NextFunction
+  ) => {
     const authService = getInstanceOf<IAuthService>(Di.AuthService);
 
     const userId = processTokenFromRequest(request, authService);
@@ -33,7 +37,10 @@ export const requireAuthentication = (() => {
   };
 })();
 
-function processTokenFromRequest(request: Request, authService: IAuthService) {
+function processTokenFromRequest<P, B, Q>(
+  request: CustomRequest<P, B, Q>,
+  authService: IAuthService
+) {
   const token = request.cookies[JWT.COOKIE_KEY];
 
   if (!token) {
@@ -53,8 +60,8 @@ function processTokenFromRequest(request: Request, authService: IAuthService) {
   return userId;
 }
 
-function assignPermissionsToRequest(
-  request: Request,
+function assignPermissionsToRequest<P, B, Q>(
+  request: CustomRequest<P, B, Q>,
   rolePermissions: DataStorePermission[]
 ) {
   const requestPermissions: Partial<{ [key in Permission]: boolean }> = {};
