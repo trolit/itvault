@@ -1,8 +1,4 @@
-import {
-  SchemaProvider,
-  SuperCommonParam,
-  SuperSchemaRunner,
-} from "super-schema-types";
+import { SchemaProvider, SuperSchemaRunner } from "super-schema-types";
 
 import { baseBlueprintSchemas } from "./baseSchemas";
 
@@ -22,20 +18,22 @@ const { getIsWorkspaceAvailableSchema } = baseWorkspaceSchemas;
 
 const { getAddEditBodySchema } = baseBlueprintSchemas;
 
-export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  ({ request }: SuperCommonParam<IParams, AddEditBlueprintDto, IQuery>) => {
-    const {
-      params: { id },
-      query: { workspaceId },
-    } = request;
+export const useUpdateSuperSchema: SuperSchemaRunner<
+  IParams,
+  AddEditBlueprintDto,
+  IQuery
+> = defineSuperSchemaRunner(({ request }) => {
+  const {
+    params: { id },
+    query: { workspaceId },
+  } = request;
 
-    return {
-      query: useQuerySchema(),
-      params: useParamsSchema(),
-      body: useBodySchema(id, workspaceId),
-    };
-  }
-);
+  return {
+    query: useQuerySchema(),
+    params: useParamsSchema(),
+    body: useBodySchema(id, workspaceId),
+  };
+});
 
 function useQuerySchema(): SchemaProvider {
   return () => getIsWorkspaceAvailableSchema("workspaceId");
