@@ -21,7 +21,7 @@ const relativePaths = [
   buildPath("assets"),
 ];
 
-export const file = setSeederFactory(File, () => {
+export default setSeederFactory(File, () => {
   const file = new File();
 
   const filename = faker.system.commonFileName(

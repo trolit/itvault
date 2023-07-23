@@ -3,7 +3,7 @@ import { setSeederFactory } from "typeorm-extension";
 
 import { User } from "@entities/User";
 
-export const user = setSeederFactory(User, () => {
+export default setSeederFactory(User, () => {
   const user = new User();
 
   user.firstName = faker.name.firstName();
