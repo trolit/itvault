@@ -5,11 +5,10 @@ import { APP, DATABASE } from "@config";
 
 import { Environment } from "@enums/Environment";
 
-const isProduction = APP.ENV === Environment.Production;
-
+const { ENV, WORKING_DIR } = APP;
 const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
 
-const baseDir = isProduction ? "dist" : "src";
+const isProduction = ENV === Environment.Production;
 
 const options: DataSourceOptions & SeederOptions = {
   type: TYPE,
@@ -18,15 +17,17 @@ const options: DataSourceOptions & SeederOptions = {
   username: ROOT.USERNAME,
   password: ROOT.PASSWORD,
   database: NAME,
-  entities: [`${baseDir}/entities/*.{ts,js}`],
-  migrations: [`${baseDir}/migrations/*.{ts,js}`],
+  entities: [`${WORKING_DIR}/entities/*.{ts,js}`],
+  migrations: [`${WORKING_DIR}/migrations/*.{ts,js}`],
   logging: true,
   synchronize: false,
 
-  seeds: isProduction ? [] : [`${baseDir}/config/data-source/seeds/*.{ts,js}`],
+  seeds: isProduction
+    ? []
+    : [`${WORKING_DIR}/config/data-source/seeds/*.{ts,js}`],
   factories: isProduction
     ? []
-    : [`${baseDir}/config/data-source/factories/*.{ts,js}`],
+    : [`${WORKING_DIR}/config/data-source/factories/*.{ts,js}`],
 };
 
 export const dataSource = new DataSource(options);
