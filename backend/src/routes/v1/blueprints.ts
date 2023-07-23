@@ -1,18 +1,19 @@
 import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Blueprint/useStoreSuperSchema";
-import { useUpdateSuperSchema } from "@schemas/Blueprint/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
+import { useUpdateSuperSchema } from "@schemas/Blueprint/useUpdateSuperSchema";
 
-import { StoreController } from "@controllers/Blueprint/StoreController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
-import { UpdateController } from "@controllers/Blueprint/UpdateController";
+import { StoreController } from "@controllers/Blueprint/StoreController";
 import { GetAllController } from "@controllers/Blueprint/GetAllController";
+import { UpdateController } from "@controllers/Blueprint/UpdateController";
 
 const blueprintsRouter = Router();
 
@@ -23,6 +24,7 @@ blueprintsRouter.get(
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
+  transformPagination,
   processRequestWith(GetAllController)
 );
 
