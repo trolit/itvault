@@ -7,13 +7,13 @@ import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Blueprint/useStoreSuperSchema";
-import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Blueprint/useUpdateSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 
-import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { StoreController } from "@controllers/Blueprint/StoreController";
-import { GetAllController } from "@controllers/Blueprint/GetAllController";
+import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { UpdateController } from "@controllers/Blueprint/UpdateController";
+import { GetAllController } from "@controllers/Blueprint/GetAllController";
 
 const blueprintsRouter = Router();
 
