@@ -3,7 +3,7 @@ import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { Tag } from "@entities/Tag";
 
-export class TagSeeder implements Seeder {
+export default class TagSeeder implements Seeder {
   public async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager

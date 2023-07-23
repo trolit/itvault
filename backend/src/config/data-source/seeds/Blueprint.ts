@@ -7,7 +7,7 @@ import { TEST_WORKSPACE_1 } from "./common";
 import { Blueprint } from "@entities/Blueprint";
 import { Workspace } from "@entities/Workspace";
 
-export class BlueprintSeeder implements Seeder {
+export default class BlueprintSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const workspaceRepository = dataSource.getRepository(Workspace);
 

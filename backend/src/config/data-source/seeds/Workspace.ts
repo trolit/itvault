@@ -5,7 +5,7 @@ import { TEST_WORKSPACE_2, TEST_WORKSPACE_1 } from "./common";
 
 import { Workspace } from "@entities/Workspace";
 
-export class WorkspaceSeeder implements Seeder {
+export default class WorkspaceSeeder implements Seeder {
   public async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager
