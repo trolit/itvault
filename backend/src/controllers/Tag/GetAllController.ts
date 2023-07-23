@@ -13,10 +13,6 @@ import {
 import { BaseController } from "@controllers/BaseController";
 
 export interface IQuery {
-  skip: number;
-
-  take: number;
-
   search?: string;
 }
 
@@ -45,12 +41,12 @@ export class GetAllController extends BaseController {
     response: CustomResponse<PaginatedResponse<Tag>>
   ) {
     const {
-      query: { skip, take, search },
+      query: { search },
     } = request;
 
     const [result, total] = await this._tagRepository.getAll({
-      skip,
-      take,
+      skip: 0,
+      take: 5,
       where: {
         value: search ? Like(`%${search}%`) : undefined,
       },
