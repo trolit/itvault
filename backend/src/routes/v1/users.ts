@@ -4,6 +4,7 @@ import { Permission } from "@enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
+import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 
@@ -26,6 +27,7 @@ usersRouter.get(
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
+  transformPagination,
   processRequestWith(GetAllController)
 );
 
