@@ -1,24 +1,15 @@
 import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import { RoleDto } from "@dtos/RoleDto";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
-import {
-  ControllerImplementation,
-  PaginatedResponse,
-} from "miscellaneous-types";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IQuery {
-  skip: number;
-
-  take: number;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -41,8 +32,8 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<PaginatedResponse<RoleDto>>
+    request: GetAllControllerTypes.v1.Request,
+    response: GetAllControllerTypes.v1.Response
   ) {
     const {
       query: { skip, take },
