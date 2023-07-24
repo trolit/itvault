@@ -1,21 +1,13 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { UpdateControllerTypes } from "types/controllers/Blueprint/UpdateController";
 
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
-import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { BaseController } from "@controllers/BaseController";
-
-export interface IQuery {
-  workspaceId: number;
-}
-
-export interface IParams {
-  id: number;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -37,10 +29,7 @@ export class UpdateController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(
-    request: CustomRequest<IParams, AddEditBlueprintDto, IQuery>,
-    response: Response
-  ) {
+  async v1(request: UpdateControllerTypes.v1.Request, response: Response) {
     const {
       body,
       params: { id },
