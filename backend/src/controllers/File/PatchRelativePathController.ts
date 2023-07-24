@@ -1,20 +1,13 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { PatchRelativePathControllerTypes } from "types/controllers/File/PatchRelativePathController";
 
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IParams {
-  fileId: number;
-}
-
-interface IBody {
-  relativePath: string;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -36,7 +29,10 @@ export class PatchRelativePathController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: CustomRequest<IParams, IBody>, response: Response) {
+  async v1(
+    request: PatchRelativePathControllerTypes.v1.Request,
+    response: Response
+  ) {
     const {
       params: { fileId },
       body: { relativePath },
