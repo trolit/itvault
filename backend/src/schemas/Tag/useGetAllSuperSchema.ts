@@ -1,10 +1,9 @@
 import { z } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { GetAllControllerTypes } from "types/controllers/Tag/GetAllController";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
-
-import { IQuery } from "@controllers/Tag/GetAllController";
 
 export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
@@ -16,7 +15,7 @@ export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 
 function useQuerySchema(): SchemaProvider {
   return () =>
-    schemaForType<IQuery>()(
+    schemaForType<GetAllControllerTypes.v1.Query>()(
       z.object({
         search: z.optional(z.string()),
       })

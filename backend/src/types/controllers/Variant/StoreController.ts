@@ -2,7 +2,7 @@ import { Variant } from "@entities/Variant";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    type Body = {
+    export type Body = {
       name: string;
 
       fileId: number;

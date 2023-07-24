@@ -1,4 +1,5 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
+import { StoreControllerTypes } from "types/controllers/Variant/StoreController";
 
 import { Di } from "@enums/Di";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
@@ -8,9 +9,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 
-import { IBody } from "@controllers/Variant/StoreController";
-
-export const fieldsSchema = schemaForType<IBody>()(
+export const fieldsSchema = schemaForType<StoreControllerTypes.v1.Body>()(
   z.object({
     // @TODO check if name is unique
     name: z.string().min(2),

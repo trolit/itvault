@@ -1,11 +1,8 @@
 import { In } from "typeorm";
 import isArray from "lodash/isArray";
 import Zod, { RefinementCtx, z, ZodIssueCode, ZodSchema } from "zod";
-import {
-  SchemaProvider,
-  SuperCommonParam,
-  SuperSchemaRunner,
-} from "super-schema-types";
+import { SchemaProvider, SuperSchemaRunner } from "super-schema-types";
+import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
@@ -19,11 +16,9 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const useUpdateManySuperSchema: SuperSchemaRunner =
-  defineSuperSchemaRunner((common: SuperCommonParam) => {
-    const {
-      request: { userId, body },
-    } = common;
+export const useUpdateManySuperSchema: SuperSchemaRunner<UpdateManyControllerTypes.v1.Request> =
+  defineSuperSchemaRunner(({ request }) => {
+    const { userId, body } = request;
 
     return {
       body: useBodySchema(userId, body),
