@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
 
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
@@ -36,7 +37,7 @@ export class UpdateController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: CustomRequest<IParams, IBody>, response: Response) {
+  async v1(request: UpdateControllerTypes.v1.Request, response: Response) {
     const {
       userId,
       params: { id },

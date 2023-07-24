@@ -1,21 +1,14 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 
 import { Di } from "@enums/Di";
-import { Note } from "@entities/Note";
-import { NoteDto } from "@dtos/NoteDto";
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
-import {
-  PaginatedResponse,
-  ControllerImplementation,
-} from "miscellaneous-types";
 
 import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 
 import { BaseController } from "@controllers/BaseController";
-
-type Query = Pick<NoteDto, "id" | "resource"> & IPaginationOptions;
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -38,8 +31,8 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, undefined, Query>,
-    response: CustomResponse<PaginatedResponse<Note>>
+    request: GetAllControllerTypes.v1.Request,
+    response: GetAllControllerTypes.v1.Response
   ) {
     const {
       query: { id, resource, skip, take },
