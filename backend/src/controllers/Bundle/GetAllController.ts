@@ -1,20 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { GetAllControllerTypes } from "types/controllers/Bundle/GetAllController";
 
 import { Di } from "@enums/Di";
 import { BundleMapDto } from "@dtos/BundleMapDto";
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
-import {
-  PaginatedResponse,
-  ControllerImplementation,
-} from "miscellaneous-types";
 
 import { BaseController } from "@controllers/BaseController";
-
-type Query = {
-  workspaceId: number;
-} & IPaginationOptions;
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -37,8 +30,8 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, undefined, Query>,
-    response: CustomResponse<PaginatedResponse<BundleMapDto>>
+    request: GetAllControllerTypes.v1.Request,
+    response: GetAllControllerTypes.v1.Response
   ) {
     const {
       query: { skip, take, workspaceId },

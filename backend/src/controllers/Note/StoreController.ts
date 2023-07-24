@@ -1,9 +1,8 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { StoreControllerTypes } from "types/controllers/Note/StoreController";
 
 import { Di } from "@enums/Di";
-import { Note } from "@entities/Note";
-import { NoteDto } from "@dtos/NoteDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
@@ -32,8 +31,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, NoteDto>,
-    response: CustomResponse<Note>
+    request: StoreControllerTypes.v1.Request,
+    response: StoreControllerTypes.v1.Response
   ) {
     const {
       userId,

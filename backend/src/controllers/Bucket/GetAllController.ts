@@ -1,16 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { GetAllControllerTypes } from "types/controllers/Bucket/GetAllController";
 
 import { Di } from "@enums/Di";
-import { Bucket } from "@entities/Bucket";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IQuery {
-  variantId: string;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -33,8 +29,8 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<Bucket[]>
+    request: GetAllControllerTypes.v1.Request,
+    response: GetAllControllerTypes.v1.Response
   ) {
     const {
       query: { variantId },

@@ -1,13 +1,12 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
 
 import { FILES } from "@config";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
-
-import { IQuery } from "@controllers/File/GetAllController";
 
 const { workspaceIdSchema } = baseWorkspaceSchemas;
 
@@ -20,7 +19,10 @@ export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 );
 
 function useQuerySchema(): SchemaProvider {
-  type IQueryPart = Pick<IQuery, "blueprintId" | "relativePath">;
+  type IQueryPart = Pick<
+    GetAllControllerTypes.v1.Query,
+    "blueprintId" | "relativePath"
+  >;
 
   const optionalKeysSchema = schemaForType<IQueryPart>()(
     z.object({

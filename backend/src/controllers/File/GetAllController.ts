@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
@@ -7,14 +8,6 @@ import { ControllerImplementation } from "miscellaneous-types";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";
-
-export interface IQuery {
-  blueprintId?: number;
-
-  relativePath?: string;
-
-  workspaceId: number;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -37,8 +30,8 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, undefined, IQuery>,
-    response: CustomResponse<File[]>
+    request: GetAllControllerTypes.v1.Request,
+    response: GetAllControllerTypes.v1.Response
   ) {
     const {
       query: { relativePath, blueprintId, workspaceId },

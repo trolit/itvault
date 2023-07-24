@@ -1,9 +1,8 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { StoreControllerTypes } from "types/controllers/Role/StoreController";
 
 import { Di } from "@enums/Di";
-import { Role } from "@entities/Role";
-import { AddEditRoleDto } from "@dtos/AddEditRoleDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleService } from "@interfaces/services/IRoleService";
 
@@ -30,8 +29,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, AddEditRoleDto>,
-    response: CustomResponse<Role | string>
+    request: StoreControllerTypes.v1.Request,
+    response: StoreControllerTypes.v1.Response
   ) {
     const { body } = request;
 

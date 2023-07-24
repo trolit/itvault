@@ -1,21 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { GetByIdControllerTypes } from "types/controllers/Variant/GetByIdController";
 
 import { Di } from "@enums/Di";
-import { VariantDto } from "@dtos/VariantDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IVariantService } from "@interfaces/services/IVariantService";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IParams {
-  variantId: string;
-}
-
-interface IQuery {
-  workspaceId: number;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -40,8 +32,8 @@ export class GetByIdController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<IParams, undefined, IQuery>,
-    response: CustomResponse<VariantDto>
+    request: GetByIdControllerTypes.v1.Request,
+    response: GetByIdControllerTypes.v1.Response
   ) {
     const {
       query: { workspaceId },

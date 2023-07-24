@@ -1,6 +1,7 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { RequeueControllerTypes } from "types/controllers/Bundle/RequeueController";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
@@ -12,14 +13,6 @@ import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { sendToQueue } from "@helpers/sendToQueue";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IParams {
-  id: number;
-}
-
-interface IQuery {
-  workspaceId: number;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -41,10 +34,7 @@ export class RequeueController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(
-    request: CustomRequest<IParams, undefined, IQuery>,
-    response: Response
-  ) {
+  async v1(request: RequeueControllerTypes.v1.Request, response: Response) {
     const {
       params: { id },
       query: { workspaceId },

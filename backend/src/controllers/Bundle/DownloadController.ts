@@ -2,6 +2,7 @@ import path from "path";
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { DownloadControllerTypes } from "types/controllers/Bundle/DownloadController";
 
 import { FILES } from "@config/index";
 
@@ -10,10 +11,6 @@ import { ControllerImplementation } from "miscellaneous-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IParams {
-  id: number;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -35,7 +32,7 @@ export class DownloadController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: CustomRequest<IParams>, response: Response) {
+  async v1(request: DownloadControllerTypes.v1.Request, response: Response) {
     const {
       params: { id },
     } = request;

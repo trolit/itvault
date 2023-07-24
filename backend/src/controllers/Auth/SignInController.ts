@@ -2,10 +2,7 @@ import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { DataStoreKeyType, DataStoreUser } from "data-store-types";
-import {
-  SignInDto,
-  LoggedUserDto,
-} from "types/controllers/v1/Auth/SignInController";
+import { SignInControllerTypes } from "types/controllers/Auth/SignInController";
 
 import { APP, JWT } from "@config";
 
@@ -14,8 +11,8 @@ import { Environment } from "@enums/Environment";
 import { LoggedUserMapDto } from "@dtos/LoggedUserMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 import { IDataStoreService } from "@interfaces/services/IDataStoreService";
+import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -43,14 +40,17 @@ export class SignInController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: SignInDto, response: LoggedUserDto) {
+  async v1(
+    request: SignInControllerTypes.v1.Request,
+    response: SignInControllerTypes.v1.Response
+  ) {
     const { email, password } = request.body;
 
     const user = await this._userRepository.findByEmail(email, {
       includePermissions: true,
     });
 
-    if (!user || !user?.password) {
+    if (!user) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 

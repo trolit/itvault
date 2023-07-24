@@ -1,16 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { UpdateControllerTypes } from "types/controllers/Role/UpdateController";
 
 import { Di } from "@enums/Di";
-import { AddEditRoleDto } from "@dtos/AddEditRoleDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleService } from "@interfaces/services/IRoleService";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IParams {
-  id: number;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -33,8 +29,8 @@ export class UpdateController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<IParams, AddEditRoleDto>,
-    response: CustomResponse<undefined | string>
+    request: UpdateControllerTypes.v1.Request,
+    response: UpdateControllerTypes.v1.Response
   ) {
     const {
       params: { id },

@@ -1,17 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { StoreControllerTypes } from "types/controllers/Blueprint/StoreController";
 
 import { Di } from "@enums/Di";
-import { Blueprint } from "@entities/Blueprint";
 import { ControllerImplementation } from "miscellaneous-types";
-import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { BaseController } from "@controllers/BaseController";
-
-export interface IQuery {
-  workspaceId: number;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -34,8 +29,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, AddEditBlueprintDto, IQuery>,
-    response: CustomResponse<Blueprint>
+    request: StoreControllerTypes.v1.Request,
+    response: StoreControllerTypes.v1.Response
   ) {
     const {
       body,

@@ -1,19 +1,15 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IUserService } from "@interfaces/services/IUserService";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IRequestBody {
-  value: UpdateUserDto[];
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -36,8 +32,8 @@ export class UpdateManyController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, IRequestBody>,
-    response: CustomResponse<UpdateUserDto[] | string>
+    request: UpdateManyControllerTypes.v1.Request,
+    response: UpdateManyControllerTypes.v1.Response
   ) {
     const {
       body: { value },
@@ -55,7 +51,7 @@ export class UpdateManyController extends BaseController {
   }
 
   static isMissingPermissions(
-    request: CustomRequest<undefined, IRequestBody>
+    request: UpdateManyControllerTypes.v1.Request
   ): boolean {
     const { permissions, body } = request;
 

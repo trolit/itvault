@@ -1,5 +1,6 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { UpdateControllerTypes } from "types/controllers/Role/UpdateController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
@@ -10,8 +11,8 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const { addEditBodySchema } = baseRoleSchemas;
 
-export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  ({ request }) => {
+export const useUpdateSuperSchema: SuperSchemaRunner<UpdateControllerTypes.v1.Request> =
+  defineSuperSchemaRunner(({ request }) => {
     const {
       params: { id },
     } = request;
@@ -20,11 +21,10 @@ export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
       params: useParamsSchema(),
       body: useBodySchema(id),
     };
-  }
-);
+  });
 
-function useBodySchema(id: string): SchemaProvider {
-  return () => addEditBodySchema(parseInt(id));
+function useBodySchema(id: number): SchemaProvider {
+  return () => addEditBodySchema(id);
 }
 
 function useParamsSchema(): SchemaProvider {

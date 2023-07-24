@@ -1,10 +1,10 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { StoreControllerTypes } from "types/controllers/User/StoreController";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { AddEditUserDto } from "@dtos/AddEditUserDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { MailConsumerHandlerData } from "consumer-handlers-types";
 import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";
@@ -36,10 +36,7 @@ export class StoreController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(
-    request: CustomRequest<undefined, AddEditUserDto>,
-    response: Response
-  ) {
+  async v1(request: StoreControllerTypes.v1.Request, response: Response) {
     const {
       userId,
       body: { email, firstName, lastName, roleId },

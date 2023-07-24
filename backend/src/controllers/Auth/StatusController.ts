@@ -45,7 +45,7 @@ export class StatusController extends BaseController {
     if (result.error) {
       response.clearCookie(JWT.COOKIE_KEY);
 
-      return response.status(HTTP.FORBIDDEN).send();
+      return response.status(HTTP.UNAUTHORIZED).send();
     }
 
     const { email } = result.payload;
