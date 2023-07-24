@@ -31,9 +31,9 @@ export const validateRequestWith = <P, B, Q>(
     );
 
     if (generalSchemasError) {
-      return response
-        .status(HTTP.BAD_REQUEST)
-        .send(generalSchemasError.format());
+      return response.status(HTTP.BAD_REQUEST).send({
+        general: generalSchemasError.format(),
+      });
     }
 
     for (const key in superSchema) {
@@ -62,10 +62,12 @@ export const validateRequestWith = <P, B, Q>(
       const result = await extendedSchema.safeParseAsync(request[propertyName]);
 
       if (!result.success) {
-        return response.status(HTTP.BAD_REQUEST).send(result.error.format());
+        return response.status(HTTP.BAD_REQUEST).send({
+          [propertyName]: result.error.format(),
+        });
       }
 
-      // overwrite body with sanitized result
+      // overwrites body with sanitized result
       request[propertyName] = result.data;
     }
 
