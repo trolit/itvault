@@ -1,11 +1,10 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { BundleDto } from "@dtos/BundleDto";
-import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
 import { ControllerImplementation } from "miscellaneous-types";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
@@ -15,18 +14,6 @@ import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { sendToQueue } from "@helpers/sendToQueue";
 
 import { BaseController } from "@controllers/BaseController";
-
-export interface IBody {
-  note?: string;
-
-  values: BundleDto[];
-
-  expiration: BundleExpire;
-}
-
-interface IQuery {
-  workspaceId: number;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -50,10 +37,7 @@ export class StoreController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(
-    request: CustomRequest<undefined, IBody, IQuery>,
-    response: Response
-  ) {
+  async v1(request: StoreControllerTypes.v1.Request, response: Response) {
     const {
       userId,
       query: { workspaceId },

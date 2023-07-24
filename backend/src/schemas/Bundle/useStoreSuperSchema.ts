@@ -1,5 +1,6 @@
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
 import { BundleDto } from "@dtos/BundleDto";
@@ -12,8 +13,6 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { schemaForType } from "@schemas/common/schemaForType";
 import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
-
-import { IBody } from "@controllers/Bundle/StoreController";
 
 const { workspaceIdSchema } = baseWorkspaceSchemas;
 
@@ -38,7 +37,7 @@ function useBodySchema(): SchemaProvider {
     })
   );
 
-  const bodySchema = schemaForType<IBody>()(
+  const bodySchema = schemaForType<StoreControllerTypes.v1.Body>()(
     z.object({
       note: z.optional(z.string()),
       expiration: z.nativeEnum(BundleExpire),
