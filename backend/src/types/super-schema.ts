@@ -9,8 +9,8 @@ declare module "super-schema-types" {
     params: string;
   };
 
-  export type SuperCommonParam<P = any, B = any, Q = any> = {
-    request: CustomRequest<P, B, Q>;
+  export type SuperCommonParam<R> = {
+    request: R;
   };
 
   export type SchemaProvider = () =>
@@ -19,7 +19,6 @@ declare module "super-schema-types" {
 
   export type SuperSchema = Partial<Record<keyof SuperKeys, SchemaProvider>>;
 
-  export type SuperSchemaRunner<P = any, B = any, Q = any> = (
-    common: SuperCommonParam<P, B, Q>
-  ) => SuperSchema | Promise<SuperSchema>;
+  export type SuperSchemaRunner<R extends CustomRequest<any, any, any> = any> =
+    (common: SuperCommonParam<R>) => SuperSchema | Promise<SuperSchema>;
 }
