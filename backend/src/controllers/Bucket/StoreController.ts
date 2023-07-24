@@ -1,19 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { StoreControllerTypes } from "types/controllers/Bucket/StoreController";
 
 import { Di } from "@enums/Di";
-import { Bucket } from "@entities/Bucket";
-import { BucketDto } from "@dtos/BucketDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IBody {
-  values: BucketDto[];
-
-  variantId: string;
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -36,8 +29,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, IBody>,
-    response: CustomResponse<Bucket[] | string>
+    request: StoreControllerTypes.v1.Request,
+    response: StoreControllerTypes.v1.Response
   ) {
     const {
       body: { values, variantId },
