@@ -1,20 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { GetAllControllerTypes } from "types/controllers/Blueprint/GetAllController";
 
 import { Di } from "@enums/Di";
-import { Blueprint } from "@entities/Blueprint";
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+import { ControllerImplementation } from "miscellaneous-types";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
-import {
-  PaginatedResponse,
-  ControllerImplementation,
-} from "miscellaneous-types";
 
 import { BaseController } from "@controllers/BaseController";
-
-type Query = {
-  workspaceId: number;
-} & IPaginationOptions;
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -37,8 +29,8 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, undefined, Query>,
-    response: CustomResponse<PaginatedResponse<Blueprint>>
+    request: GetAllControllerTypes.v1.Request,
+    response: GetAllControllerTypes.v1.Response
   ) {
     const {
       query: { skip, take, workspaceId },
