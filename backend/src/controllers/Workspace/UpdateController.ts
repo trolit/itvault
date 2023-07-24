@@ -1,21 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { UpdateControllerTypes } from "types/controllers/Workspace/UpdateController";
 
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
 import { BaseController } from "@controllers/BaseController";
-
-interface IParams {
-  id: number;
-}
-
-export interface IBody {
-  name: string;
-
-  tags: string[];
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -38,8 +29,8 @@ export class UpdateController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<IParams, IBody>,
-    response: CustomResponse<undefined | string>
+    request: UpdateControllerTypes.v1.Request,
+    response: UpdateControllerTypes.v1.Response
   ) {
     const {
       params: { id },

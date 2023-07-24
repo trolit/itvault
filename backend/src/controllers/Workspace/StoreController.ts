@@ -1,18 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { StoreControllerTypes } from "types/controllers/Workspace/StoreController";
 
 import { Di } from "@enums/Di";
-import { Workspace } from "@entities/Workspace";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
 import { BaseController } from "@controllers/BaseController";
-
-export interface IBody {
-  name: string;
-
-  tags: string[];
-}
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -35,8 +29,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: CustomRequest<undefined, IBody>,
-    response: CustomResponse<Workspace | string>
+    request: StoreControllerTypes.v1.Request,
+    response: StoreControllerTypes.v1.Response
   ) {
     const { body } = request;
 
