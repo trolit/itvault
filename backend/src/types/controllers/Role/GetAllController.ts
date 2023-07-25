@@ -1,4 +1,4 @@
-import { RoleDto } from "@dtos/RoleDto";
+import { RoleMapDto } from "@dtos/RoleMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
@@ -10,6 +10,6 @@ export namespace GetAllControllerTypes {
       IPaginationOptions
     >;
 
-    export type Response = CustomResponse<PaginatedResponse<RoleDto>>;
+    export type Response = CustomResponse<PaginatedResponse<RoleMapDto>>;
   }
 }
