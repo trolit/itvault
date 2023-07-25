@@ -1,4 +1,4 @@
-import { Bucket } from "@entities/Bucket";
+import { BucketMapDto } from "@dtos/BucketMapDto";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
@@ -8,6 +8,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, Query>;
 
-    export type Response = CustomResponse<Bucket[]>;
+    export type Response = CustomResponse<BucketMapDto[]>;
   }
 }
