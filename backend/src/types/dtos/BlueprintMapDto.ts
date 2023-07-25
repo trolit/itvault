@@ -9,7 +9,13 @@ export class BlueprintMapDto extends BaseMapDto<Blueprint> {
 
   constructor(
     data: Blueprint,
-    keys: (keyof Blueprint)[] = ["id", "name", "color"]
+    keys: (keyof Blueprint)[] = [
+      "id",
+      "name",
+      "color",
+      "createdAt",
+      "updatedAt",
+    ]
   ) {
     super(data, keys);
 

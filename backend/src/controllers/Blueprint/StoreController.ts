@@ -3,6 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Blueprint/StoreController";
 
 import { Di } from "@enums/Di";
+import { BlueprintMapDto } from "@dtos/BlueprintMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
@@ -48,6 +49,8 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, blueprint);
+    const result = this.mapper.mapOneToDto(blueprint, BlueprintMapDto);
+
+    return this.finalizeRequest(response, HTTP.CREATED, result);
   }
 }

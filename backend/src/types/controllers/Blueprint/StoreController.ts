@@ -1,4 +1,4 @@
-import { Blueprint } from "@entities/Blueprint";
+import { BlueprintMapDto } from "@dtos/BlueprintMapDto";
 import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 
 export namespace StoreControllerTypes {
@@ -9,6 +9,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, AddEditBlueprintDto, Query>;
 
-    export type Response = CustomResponse<Blueprint>;
+    export type Response = CustomResponse<BlueprintMapDto>;
   }
 }
