@@ -1,4 +1,4 @@
-import { VariantDto } from "@dtos/VariantDto";
+import { VariantMapDto } from "@dtos/VariantMapDto";
 
 export namespace GetByIdControllerTypes {
   export namespace v1 {
@@ -12,6 +12,10 @@ export namespace GetByIdControllerTypes {
 
     export type Request = CustomRequest<Params, undefined, Query>;
 
-    export type Response = CustomResponse<VariantDto>;
+    export type Response = CustomResponse<{
+      record: VariantMapDto;
+
+      content: string;
+    }>;
   }
 }

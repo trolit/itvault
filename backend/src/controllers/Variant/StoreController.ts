@@ -3,6 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Variant/StoreController";
 
 import { Di } from "@enums/Di";
+import { VariantMapDto } from "@dtos/VariantMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
@@ -52,6 +53,8 @@ export class StoreController extends BaseController {
       this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, variant);
+    const mappedResult = this.mapper.mapOneToDto(variant, VariantMapDto);
+
+    return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }
 }

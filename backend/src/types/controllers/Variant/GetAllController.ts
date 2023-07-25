@@ -1,4 +1,4 @@
-import { Variant } from "@entities/Variant";
+import { VariantMapDto } from "@dtos/VariantMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 
 export namespace GetAllControllerTypes {
@@ -11,6 +11,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, Query>;
 
-    export type Response = CustomResponse<PaginatedResponse<Variant>>;
+    export type Response = CustomResponse<PaginatedResponse<VariantMapDto>>;
   }
 }
