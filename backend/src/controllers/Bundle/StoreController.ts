@@ -1,10 +1,10 @@
-import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
+import { BundleMapDto } from "@dtos/BundleMapDto";
 import { BundleStatus } from "@enums/BundleStatus";
 import { ControllerImplementation } from "miscellaneous-types";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
@@ -37,7 +37,10 @@ export class StoreController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: StoreControllerTypes.v1.Request, response: Response) {
+  async v1(
+    request: StoreControllerTypes.v1.Request,
+    response: StoreControllerTypes.v1.Response
+  ) {
     const {
       userId,
       query: { workspaceId },
@@ -74,6 +77,8 @@ export class StoreController extends BaseController {
       bundle,
     });
 
-    return this.finalizeRequest(response, HTTP.CREATED, bundle);
+    const result = this.mapper.mapOneToDto(bundle, BundleMapDto);
+
+    return this.finalizeRequest(response, HTTP.CREATED, result);
   }
 }

@@ -20,16 +20,20 @@ export class BundleMapDto extends BaseMapDto<Bundle> {
   ) {
     super(data, keys);
 
-    this.blueprints = data.blueprintToBundle.map(({ blueprint }) => ({
-      name: blueprint.name,
-      isDeleted: !!blueprint.deletedAt,
-    }));
+    if (data.blueprintToBundle) {
+      this.blueprints = data.blueprintToBundle.map(({ blueprint }) => ({
+        name: blueprint.name,
+        isDeleted: !!blueprint.deletedAt,
+      }));
+    }
 
-    this.variants = data.variantToBundle.map(({ variant }) => ({
-      file: variant.file.originalFilename,
-      version: variant.name,
-      isDeleted: !!variant.deletedAt,
-    }));
+    if (data.variantToBundle) {
+      this.variants = data.variantToBundle.map(({ variant }) => ({
+        file: variant.file.originalFilename,
+        version: variant.name,
+        isDeleted: !!variant.deletedAt,
+      }));
+    }
 
     return this;
   }

@@ -1,4 +1,5 @@
 import { BundleDto } from "@dtos/BundleDto";
+import { BundleMapDto } from "@dtos/BundleMapDto";
 import { BundleExpire } from "@enums/BundleExpire";
 
 export namespace StoreControllerTypes {
@@ -16,5 +17,7 @@ export namespace StoreControllerTypes {
     };
 
     export type Request = CustomRequest<undefined, Body, Query>;
+
+    export type Response = CustomResponse<BundleMapDto>;
   }
 }
