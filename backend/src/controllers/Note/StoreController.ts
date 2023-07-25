@@ -3,6 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Note/StoreController";
 
 import { Di } from "@enums/Di";
+import { NoteMapDto } from "@dtos/NoteMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
@@ -60,6 +61,8 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, note);
+    const result = this.mapper.mapOneToDto(note, NoteMapDto);
+
+    return this.finalizeRequest(response, HTTP.CREATED, result);
   }
 }
