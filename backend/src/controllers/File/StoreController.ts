@@ -1,8 +1,10 @@
+import assert from "assert";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/File/StoreController";
 
 import { Di } from "@enums/Di";
+import { FileMapDto } from "@dtos/FileMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
@@ -50,6 +52,10 @@ export class StoreController extends BaseController {
 
     this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
 
-    return this.finalizeRequest(response, HTTP.OK, result.value);
+    assert(result.value);
+
+    const mappedResult = this.mapper.mapToDto(result.value, FileMapDto);
+
+    return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }
 }
