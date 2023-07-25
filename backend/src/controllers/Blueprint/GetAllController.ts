@@ -3,6 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Blueprint/GetAllController";
 
 import { Di } from "@enums/Di";
+import { BlueprintMapDto } from "@dtos/BlueprintMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
@@ -46,6 +47,11 @@ export class GetAllController extends BaseController {
       },
     });
 
-    return this.finalizeRequest(response, HTTP.OK, { result, total });
+    const mappedResult = this.mapper.mapToDto(result, BlueprintMapDto);
+
+    return this.finalizeRequest(response, HTTP.OK, {
+      result: mappedResult,
+      total,
+    });
   }
 }
