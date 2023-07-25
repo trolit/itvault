@@ -15,13 +15,12 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const { variantIdSchema } = baseVariantSchemas;
 
-export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  () => {
+export const useStoreManySuperSchema: SuperSchemaRunner =
+  defineSuperSchemaRunner(() => {
     return {
       body: useBodySchema(),
     };
-  }
-);
+  });
 
 function useBodySchema(): SchemaProvider {
   const bucketSchema = schemaForType<AddBucketDto>()(
