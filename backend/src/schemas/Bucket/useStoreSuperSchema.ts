@@ -4,7 +4,7 @@ import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 
 import { Di } from "@enums/Di";
-import { BucketDto } from "@dtos/BucketDto";
+import { AddBucketDto } from "@dtos/AddBucketDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -24,18 +24,18 @@ export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 );
 
 function useBodySchema(): SchemaProvider {
-  const bucketSchema = schemaForType<BucketDto>()(
+  const bucketSchema = schemaForType<AddBucketDto>()(
     z.object({
       value: z.record(z.coerce.number().gte(0), z.array(z.string())),
       blueprintId: z.number(),
     })
   );
 
-  const valuesSchema = schemaForType<{ values: BucketDto[] }>()(
+  const valuesSchema = schemaForType<{ values: AddBucketDto[] }>()(
     z.object({
       values: z
         .array(bucketSchema)
-        .superRefine((value: BucketDto[], context: RefinementCtx) => {
+        .superRefine((value: AddBucketDto[], context: RefinementCtx) => {
           const uniqueValues = uniqBy(value, element => element.blueprintId);
 
           if (uniqueValues.length !== value.length) {
@@ -49,7 +49,7 @@ function useBodySchema(): SchemaProvider {
             return Zod.NEVER;
           }
         })
-        .superRefine(async (value: BucketDto[], context: RefinementCtx) => {
+        .superRefine(async (value: AddBucketDto[], context: RefinementCtx) => {
           const blueprintRepository = getInstanceOf<IBlueprintRepository>(
             Di.BlueprintRepository
           );

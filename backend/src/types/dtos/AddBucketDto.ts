@@ -1,6 +1,6 @@
 import { BucketContent } from "miscellaneous-types";
 
-export class BucketDto {
+export class AddBucketDto {
   value: BucketContent;
 
   blueprintId: number;
