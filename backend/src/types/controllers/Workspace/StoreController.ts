@@ -1,4 +1,4 @@
-import { Workspace } from "@entities/Workspace";
+import { WorkspaceMapDto } from "@dtos/WorkspaceMapDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
@@ -10,6 +10,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, Body>;
 
-    export type Response = CustomResponse<Workspace | string>;
+    export type Response = CustomResponse<WorkspaceMapDto | string>;
   }
 }
