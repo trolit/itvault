@@ -1,4 +1,4 @@
-import { BundleDto } from "@dtos/BundleDto";
+import { AddBundleDto } from "@dtos/AddBundleDto";
 import { BundleMapDto } from "@dtos/BundleMapDto";
 import { BundleExpire } from "@enums/BundleExpire";
 
@@ -7,7 +7,7 @@ export namespace StoreControllerTypes {
     export type Body = {
       note?: string;
 
-      values: BundleDto[];
+      values: AddBundleDto[];
 
       expiration: BundleExpire;
     };

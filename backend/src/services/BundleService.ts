@@ -1,12 +1,12 @@
 import { injectable } from "tsyringe";
 
-import { BundleDto } from "@dtos/BundleDto";
 import { Variant } from "@entities/Variant";
+import { AddBundleDto } from "@dtos/AddBundleDto";
 import { IBundleService } from "@interfaces/services/IBundleService";
 
 @injectable()
 export class BundleService implements IBundleService {
-  getUniqueVariantIds(context: BundleDto[]): string[] {
+  getUniqueVariantIds(context: AddBundleDto[]): string[] {
     const result: string[] = [];
 
     for (const { variantIds } of context) {
@@ -19,7 +19,7 @@ export class BundleService implements IBundleService {
   }
 
   getUniqueBlueprintIdsByVariant(
-    context: BundleDto[],
+    context: AddBundleDto[],
     variant: Variant
   ): number[] {
     const matchedContext = context.filter(({ variantIds }) =>

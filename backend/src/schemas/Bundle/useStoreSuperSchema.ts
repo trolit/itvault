@@ -3,7 +3,7 @@ import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
-import { BundleDto } from "@dtos/BundleDto";
+import { AddBundleDto } from "@dtos/AddBundleDto";
 import { BundleExpire } from "@enums/BundleExpire";
 import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
@@ -30,7 +30,7 @@ function useQuerySchema(): SchemaProvider {
 }
 
 function useBodySchema(): SchemaProvider {
-  const valueSchema = schemaForType<BundleDto>()(
+  const valueSchema = schemaForType<AddBundleDto>()(
     z.object({
       blueprintId: z.coerce.number(),
       variantIds: z.array(z.string()),
@@ -44,7 +44,7 @@ function useBodySchema(): SchemaProvider {
       values: z
         .array(valueSchema)
         .min(1)
-        .superRefine(async (value: BundleDto[], context: RefinementCtx) => {
+        .superRefine(async (value: AddBundleDto[], context: RefinementCtx) => {
           if (value.length <= 1) {
             return Zod.NEVER;
           }
