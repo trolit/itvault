@@ -22,7 +22,9 @@ export const setupJobs = async () => {
       continue;
     }
 
-    const Job = await import(`@jobs/${dependencyFilename}`);
+    const JobDependency = await import(`@jobs/${dependencyFilename}`);
+
+    const Job = JobDependency[dependencyFilename];
 
     const job = jobFactory.create(Job);
 
