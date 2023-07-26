@@ -6,6 +6,8 @@ export namespace UpdateControllerTypes {
       id: number;
     };
 
-    export type Request = CustomRequest<Params, AddEditNoteDto>;
+    export type Body = Pick<AddEditNoteDto, "text">;
+
+    export type Request = CustomRequest<Params, Body>;
   }
 }

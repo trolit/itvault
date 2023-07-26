@@ -37,7 +37,7 @@ export class StoreController extends BaseController {
   ) {
     const {
       userId,
-      body: { id, value, resource },
+      body: { id, text, resource },
     } = request;
 
     const entityReference = resourceToEntityReference(resource, id);
@@ -47,7 +47,7 @@ export class StoreController extends BaseController {
     }
 
     const note = await this._noteRepository.primitiveSave({
-      value,
+      value: text,
       createdBy: {
         id: userId,
       },

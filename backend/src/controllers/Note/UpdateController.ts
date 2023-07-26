@@ -11,14 +11,6 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-export interface IParams {
-  id: number;
-}
-
-export interface IBody {
-  text: string;
-}
-
 @injectable()
 export class UpdateController extends BaseController {
   constructor(
@@ -41,7 +33,7 @@ export class UpdateController extends BaseController {
     const {
       userId,
       params: { id },
-      body: { value },
+      body: { text },
     } = request;
 
     const note = await this._noteRepository.getOne({
@@ -59,7 +51,7 @@ export class UpdateController extends BaseController {
 
     const isUpdated = await this._noteRepository.primitiveUpdate(
       { id },
-      { value }
+      { value: text }
     );
 
     if (!isUpdated?.affected) {
