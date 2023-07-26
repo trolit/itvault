@@ -72,9 +72,9 @@ function registerMailViewBuilders() {
         `@services/MailService/view-builders/${file}`
       );
 
-      const className = module[dependencyFilename];
+      const Dependency = module[dependencyFilename];
 
-      container.register(dependencyFilename, className);
+      container.register(dependencyFilename, Dependency);
     }
   });
 }
@@ -112,9 +112,9 @@ function registerDependenciesByInterfaces(config: {
       ) {
         const module = await import(`@${dirname}/${dependencyFilename}`);
 
-        const className = module[dependencyFilename];
+        const Dependency = module[dependencyFilename];
 
-        container.register(interfaceName, className);
+        container.register(interfaceName, Dependency);
       } else {
         console.log(`❗❗❗ Failed to register ${dependencyFilename}`);
       }
