@@ -1,19 +1,14 @@
-import { CronCommand, CronJob } from "cron";
+import { CronJob } from "cron";
 
+import { JobConfig } from "miscellaneous-types";
 import { IJobFactory } from "@interfaces/factories/IJobFactory";
 
 export class JobFactory implements IJobFactory {
-  create(
-    time: string,
-    runners: { onTick: CronCommand; onComplete?: CronCommand },
-    options: {
-      startNow?: boolean;
-      timeZone?: string;
-      runOnInit?: boolean;
-    } = {}
-  ): CronJob {
+  create(config: JobConfig): CronJob {
+    const { time, runners, options } = config;
+
     const { onTick, onComplete } = runners;
-    const { startNow, timeZone, runOnInit } = options;
+    const { startNow, timeZone, runOnInit } = options || {};
 
     return new CronJob(
       time,
