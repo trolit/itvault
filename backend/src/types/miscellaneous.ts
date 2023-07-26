@@ -38,7 +38,6 @@ declare module "miscellaneous-types" {
     time: string;
     runners: { onTick: CronCommand; onComplete?: CronCommand };
     options?: {
-      startNow?: boolean;
       timeZone?: string;
       runOnInit?: boolean;
     };

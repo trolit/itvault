@@ -12,7 +12,6 @@ export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
     time: "59 23 * * *",
     runners: { onTick: this.onTick.bind(this) },
     options: {
-      startNow: true,
       runOnInit: true,
       timeZone: "Europe/Warsaw",
     },
