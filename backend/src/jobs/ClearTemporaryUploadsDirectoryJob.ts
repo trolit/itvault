@@ -9,7 +9,7 @@ export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
   jobName = ClearTemporaryUploadsDirectoryJob.name;
 
   config: JobConfig = {
-    time: "",
+    time: "59 23 * * *",
     runners: { onTick: this.onTick.bind(this) },
     options: {
       startNow: true,
