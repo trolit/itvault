@@ -6,7 +6,7 @@ import { JobConfig } from "miscellaneous-types";
 
 @injectable()
 export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
-  jobName: string;
+  jobName = ClearTemporaryUploadsDirectoryJob.name;
 
   config: JobConfig = {
     time: "",
