@@ -13,7 +13,7 @@ const variantRepository = getInstanceOf<IVariantRepository>(
   Di.VariantRepository
 );
 
-export const fieldsSchema = schemaForType<StoreControllerTypes.v1.Body>()(
+export const storeSchema = schemaForType<StoreControllerTypes.v1.Body>()(
   z
     .object({
       name: z.string().min(2),
@@ -81,5 +81,3 @@ export const fieldsSchema = schemaForType<StoreControllerTypes.v1.Body>()(
       }
     )
 );
-
-export const storeSchema = { fields: fieldsSchema };
