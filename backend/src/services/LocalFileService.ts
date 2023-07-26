@@ -70,4 +70,18 @@ export class LocalFileService implements IFileService {
       return null;
     }
   }
+
+  async clearTemporaryDir(): Promise<void> {
+    const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;
+
+    try {
+      const files = await fs.readdir(BASE_TEMPORARY_UPLOADS_PATH);
+
+      for (const file of files) {
+        await fs.unlink(path.join(BASE_TEMPORARY_UPLOADS_PATH, file));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
