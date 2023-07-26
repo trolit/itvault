@@ -1,14 +1,9 @@
 import { WorkspaceMapDto } from "@dtos/WorkspaceMapDto";
+import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = {
-      name: string;
-
-      tags: string[];
-    };
-
-    export type Request = CustomRequest<undefined, Body>;
+    export type Request = CustomRequest<undefined, AddEditWorkspaceDto>;
 
     export type Response = CustomResponse<WorkspaceMapDto | string>;
   }
