@@ -53,10 +53,6 @@ export const parseUploadFormData = <T>(
 
       const mappedFiles = mapFormDataFiles(files);
 
-      if (!mappedFiles.length) {
-        return response.status(HTTP.BAD_REQUEST).send();
-      }
-
       if (validators) {
         const errors = await runValidators(
           { fields, files: mappedFiles },
