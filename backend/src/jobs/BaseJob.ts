@@ -1,11 +1,7 @@
 import { CronJob } from "cron";
 
-import { Di } from "@enums/Di";
 import { IJob } from "@interfaces/IJob";
 import { JobConfig } from "miscellaneous-types";
-import { IJobFactory } from "@interfaces/factories/IJobFactory";
-
-import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export abstract class BaseJob implements IJob {
   instance: CronJob | null = null;
@@ -15,11 +11,15 @@ export abstract class BaseJob implements IJob {
   abstract config: JobConfig;
 
   run(): void {
-    const jobFactory = getInstanceOf<IJobFactory>(Di.JobFactory);
+    if (!this.instance) {
+      console.log(`CRON: Something wrong with ${this.jobName} job!!`);
 
-    this.instance = jobFactory.create(this.config);
+      return;
+    }
 
-    console.log(`CRON: Job ${this.jobName} is running!!`);
+    this.instance.start();
+
+    console.log(`CRON: Job ${this.jobName} is running.`);
   }
 
   stop(): void {
