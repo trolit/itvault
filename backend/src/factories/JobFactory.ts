@@ -1,16 +1,22 @@
 import { CronJob } from "cron";
+import { BaseJob } from "@jobs/BaseJob";
 
-import { JobConfig } from "miscellaneous-types";
+import { Type } from "miscellaneous-types";
 import { IJobFactory } from "@interfaces/factories/IJobFactory";
 
 export class JobFactory implements IJobFactory {
-  create(config: JobConfig): CronJob {
-    const { time, runners, options } = config;
+  create<T extends BaseJob>(Job: Type<T>): BaseJob {
+    const jobInstance = new Job();
 
+    const { config: jobConfig } = jobInstance;
+
+    const { time, runners, options } = jobConfig;
     const { onTick, onComplete } = runners;
-    const { startNow, timeZone, runOnInit } = options || {};
+    const { timeZone, runOnInit } = options || {};
 
-    return new CronJob(
+    const startNow = false;
+
+    jobInstance.instance = new CronJob(
       time,
       onTick,
       onComplete,
@@ -19,5 +25,7 @@ export class JobFactory implements IJobFactory {
       undefined,
       runOnInit
     );
+
+    return jobInstance;
   }
 }

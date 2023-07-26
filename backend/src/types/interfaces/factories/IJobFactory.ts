@@ -1,6 +1,6 @@
-import { CronJob } from "cron";
-import { JobConfig } from "miscellaneous-types";
+import { BaseJob } from "@jobs/BaseJob";
+import { Type } from "miscellaneous-types";
 
 export interface IJobFactory {
-  create(config: JobConfig): CronJob;
+  create<T extends BaseJob>(Job: Type<T>): BaseJob;
 }
