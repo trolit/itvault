@@ -1,11 +1,13 @@
 import { z } from "zod";
 
-import { NoteDto } from "@dtos/NoteDto";
+import { AddEditNoteDto } from "@dtos/AddEditNoteDto";
 import { CommentableResource } from "@enums/CommentableResource";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 
-export const resourceSchema = schemaForType<Pick<NoteDto, "id" | "resource">>()(
+export const resourceSchema = schemaForType<
+  Pick<AddEditNoteDto, "id" | "resource">
+>()(
   z.object({
     id: z.coerce.number().gt(0),
 
