@@ -8,6 +8,6 @@ export namespace UpdateManyControllerTypes {
 
     export type Request = CustomRequest<undefined, Body>;
 
-    export type Response = CustomResponse<UpdateUserDto[] | string>;
+    export type Response = CustomResponse<string>;
   }
 }

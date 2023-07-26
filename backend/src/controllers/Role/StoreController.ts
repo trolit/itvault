@@ -1,8 +1,10 @@
+import assert from "assert";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Role/StoreController";
 
 import { Di } from "@enums/Di";
+import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleService } from "@interfaces/services/IRoleService";
 
@@ -40,6 +42,10 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, result.value);
+    assert(result.value);
+
+    const mappedResult = this.mapper.mapOneToDto(result.value, RoleMapDto);
+
+    return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }
 }

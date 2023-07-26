@@ -3,11 +3,11 @@ import { Router } from "express";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 
-import { useStoreSuperSchema } from "@schemas/Bucket/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Bucket/useGetAllSuperSchema";
+import { useStoreManySuperSchema } from "@schemas/Bucket/useStoreManySuperSchema";
 
-import { StoreController } from "@controllers/Bucket/StoreController";
 import { GetAllController } from "@controllers/Bucket/GetAllController";
+import { StoreManyController } from "@controllers/Bucket/StoreManyController";
 
 const bucketsRouter = Router({ mergeParams: true });
 
@@ -21,10 +21,10 @@ bucketsRouter.get(
 
 bucketsRouter.post(
   "",
-  validateRequestWith(useStoreSuperSchema, {
-    versions: StoreController.ALL_VERSIONS,
+  validateRequestWith(useStoreManySuperSchema, {
+    versions: StoreManyController.ALL_VERSIONS,
   }),
-  processRequestWith(StoreController)
+  processRequestWith(StoreManyController)
 );
 
 export = bucketsRouter;

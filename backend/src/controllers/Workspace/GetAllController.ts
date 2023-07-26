@@ -4,8 +4,8 @@ import { GetAllControllerTypes } from "types/controllers/Workspace/GetAllControl
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { WorkspaceMapDto } from "@dtos/WorkspaceMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
+import { WorkspaceMapDto } from "@dtos/mappers/WorkspaceMapDto";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";

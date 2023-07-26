@@ -3,6 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Variant/GetAllController";
 
 import { Di } from "@enums/Di";
+import { VariantMapDto } from "@dtos/mappers/VariantMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
@@ -47,6 +48,11 @@ export class GetAllController extends BaseController {
       },
     });
 
-    return this.finalizeRequest(response, HTTP.OK, { result, total });
+    const mappedResult = this.mapper.mapToDto(result, VariantMapDto);
+
+    return this.finalizeRequest(response, HTTP.OK, {
+      result: mappedResult,
+      total,
+    });
   }
 }

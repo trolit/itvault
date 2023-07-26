@@ -1,4 +1,4 @@
-import { Variant } from "@entities/Variant";
+import { VariantMapDto } from "@dtos/mappers/VariantMapDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
@@ -16,6 +16,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, Body, Query>;
 
-    export type Response = CustomResponse<Variant>;
+    export type Response = CustomResponse<VariantMapDto>;
   }
 }

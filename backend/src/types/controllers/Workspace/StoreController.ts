@@ -1,15 +1,10 @@
-import { Workspace } from "@entities/Workspace";
+import { WorkspaceMapDto } from "@dtos/mappers/WorkspaceMapDto";
+import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = {
-      name: string;
+    export type Request = CustomRequest<undefined, AddEditWorkspaceDto>;
 
-      tags: string[];
-    };
-
-    export type Request = CustomRequest<undefined, Body>;
-
-    export type Response = CustomResponse<Workspace | string>;
+    export type Response = CustomResponse<WorkspaceMapDto | string>;
   }
 }

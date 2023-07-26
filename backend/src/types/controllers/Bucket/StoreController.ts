@@ -1,16 +1,16 @@
-import { BucketDto } from "@dtos/BucketDto";
-import { Bucket } from "@entities/Bucket";
+import { AddBucketDto } from "@dtos/AddBucketDto";
+import { BucketMapDto } from "@dtos/mappers/BucketMapDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
     export type Body = {
-      values: BucketDto[];
+      values: AddBucketDto[];
 
       variantId: string;
     };
 
     export type Request = CustomRequest<undefined, Body>;
 
-    export type Response = CustomResponse<Bucket[] | string>;
+    export type Response = CustomResponse<BucketMapDto[] | string>;
   }
 }

@@ -3,6 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 
 import { Di } from "@enums/Di";
+import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
@@ -64,6 +65,11 @@ export class GetAllController extends BaseController {
       },
     });
 
-    return this.finalizeRequest(response, HTTP.OK, { result, total });
+    const mappedResult = this.mapper.mapToDto(result, NoteMapDto);
+
+    return this.finalizeRequest(response, HTTP.OK, {
+      result: mappedResult,
+      total,
+    });
   }
 }

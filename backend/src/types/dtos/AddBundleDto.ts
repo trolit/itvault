@@ -1,4 +1,4 @@
-export type BundleDto = {
+export type AddBundleDto = {
   blueprintId: number;
 
   variantIds: string[];

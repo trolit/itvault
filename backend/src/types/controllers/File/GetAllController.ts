@@ -1,4 +1,4 @@
-import { File } from "@entities/File";
+import { FileMapDto } from "@dtos/mappers/FileMapDto";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
@@ -12,6 +12,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, Query>;
 
-    export type Response = CustomResponse<File[]>;
+    export type Response = CustomResponse<FileMapDto[]>;
   }
 }

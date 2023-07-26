@@ -1,4 +1,4 @@
-import { BaseMapDto } from "@dtos/BaseMapDto";
+import { BaseMapDto } from "@dtos/mappers/BaseMapDto";
 
 export interface IEntityMapperService {
   mapOneToDto<T, Y extends BaseMapDto<T>>(

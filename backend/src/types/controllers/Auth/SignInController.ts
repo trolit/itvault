@@ -1,5 +1,5 @@
 import { User } from "@entities/User";
-import { LoggedUserMapDto } from "@dtos/LoggedUserMapDto";
+import { LoggedUserMapDto } from "@dtos/mappers/LoggedUserMapDto";
 
 export namespace SignInControllerTypes {
   export namespace v1 {

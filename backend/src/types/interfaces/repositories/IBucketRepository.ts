@@ -1,11 +1,11 @@
 import { Bucket } from "@entities/Bucket";
-import { BucketDto } from "@dtos/BucketDto";
+import { AddBucketDto } from "@dtos/AddBucketDto";
 import { IBaseRepository } from "./IBaseRepository";
 import { TransactionResult } from "types/TransactionResult";
 
 export interface IBucketRepository extends IBaseRepository<Bucket> {
   save(
     variantId: string,
-    bucketsToAdd: BucketDto[]
+    bucketsToAdd: AddBucketDto[]
   ): Promise<TransactionResult<Bucket[]>>;
 }

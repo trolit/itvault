@@ -4,6 +4,7 @@ import { GetAllControllerTypes } from "types/controllers/Blueprint/GetAllControl
 
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
+import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -46,6 +47,11 @@ export class GetAllController extends BaseController {
       },
     });
 
-    return this.finalizeRequest(response, HTTP.OK, { result, total });
+    const mappedResult = this.mapper.mapToDto(result, BlueprintMapDto);
+
+    return this.finalizeRequest(response, HTTP.OK, {
+      result: mappedResult,
+      total,
+    });
   }
 }

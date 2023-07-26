@@ -5,7 +5,7 @@ import { TransactionResult } from "types/TransactionResult";
 import { BaseRepository } from "./BaseRepository";
 
 import { Bucket } from "@entities/Bucket";
-import { BucketDto } from "@dtos/BucketDto";
+import { AddBucketDto } from "@dtos/AddBucketDto";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 @injectable()
@@ -21,7 +21,7 @@ export class BucketRepository
 
   async save(
     variantId: string,
-    bucketsToAdd: BucketDto[]
+    bucketsToAdd: AddBucketDto[]
   ): Promise<TransactionResult<Bucket[]>> {
     const transaction = await this.useTransaction();
 

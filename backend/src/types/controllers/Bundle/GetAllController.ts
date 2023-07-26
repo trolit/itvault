@@ -1,5 +1,5 @@
-import { BundleMapDto } from "@dtos/BundleMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
+import { BundleMapDto } from "@dtos/mappers/BundleMapDto";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export namespace GetAllControllerTypes {

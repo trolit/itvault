@@ -1,4 +1,4 @@
-import { Tag } from "@entities/Tag";
+import { TagMapDto } from "@dtos/mappers/TagMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 
 export namespace GetAllControllerTypes {
@@ -9,6 +9,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, Query>;
 
-    export type Response = CustomResponse<PaginatedResponse<Tag>>;
+    export type Response = CustomResponse<PaginatedResponse<TagMapDto>>;
   }
 }

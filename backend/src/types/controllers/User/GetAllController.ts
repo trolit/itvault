@@ -1,5 +1,5 @@
 import { User } from "@entities/User";
-import { UserMapDto } from "@dtos/UserMapDto";
+import { UserMapDto } from "@dtos/mappers/UserMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 

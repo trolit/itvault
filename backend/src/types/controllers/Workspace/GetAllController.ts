@@ -1,4 +1,4 @@
-import { WorkspaceMapDto } from "@dtos/WorkspaceMapDto";
+import { WorkspaceMapDto } from "@dtos/mappers/WorkspaceMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 

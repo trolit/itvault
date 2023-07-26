@@ -1,6 +1,6 @@
 import { User } from "@entities/User";
 import { BaseMapDto } from "./BaseMapDto";
-import { PermissionDto } from "./PermissionDto";
+import { PermissionDto } from "@dtos/PermissionDto";
 
 export class LoggedUserMapDto extends BaseMapDto<User> {
   roleId: number;

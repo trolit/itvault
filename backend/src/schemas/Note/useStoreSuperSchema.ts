@@ -5,7 +5,7 @@ import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
 import { baseNoteSchemas } from "./baseSchemas";
 import { resourceSuperRefine } from "./resourceSuperRefine";
 
-import { NoteDto } from "@dtos/NoteDto";
+import { AddNoteDto } from "@dtos/AddNoteDto";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -21,7 +21,7 @@ export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 const { resourceSchema } = baseNoteSchemas;
 
 function useBodySchema(): SchemaProvider {
-  const textSchema = schemaForType<Pick<NoteDto, "text">>()(
+  const textSchema = schemaForType<Pick<AddNoteDto, "text">>()(
     z.object({
       text: z.string().transform(value => sanitizeHtml(value)),
     })

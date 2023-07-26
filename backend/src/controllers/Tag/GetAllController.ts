@@ -4,6 +4,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Tag/GetAllController";
 
 import { Di } from "@enums/Di";
+import { TagMapDto } from "@dtos/mappers/TagMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { ITagRepository } from "@interfaces/repositories/ITagRepository";
 
@@ -45,6 +46,11 @@ export class GetAllController extends BaseController {
       },
     });
 
-    return this.finalizeRequest(response, HTTP.OK, { result, total });
+    const mappedResult = this.mapper.mapToDto(result, TagMapDto);
+
+    return this.finalizeRequest(response, HTTP.OK, {
+      result: mappedResult,
+      total,
+    });
   }
 }

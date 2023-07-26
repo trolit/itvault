@@ -1,11 +1,11 @@
-import { BundleDto } from "@dtos/BundleDto";
+import { AddBundleDto } from "@dtos/AddBundleDto";
 import { Variant } from "@entities/Variant";
 
 export interface IBundleService {
-  getUniqueVariantIds(context: BundleDto[]): string[];
+  getUniqueVariantIds(context: AddBundleDto[]): string[];
 
   getUniqueBlueprintIdsByVariant(
-    context: BundleDto[],
+    context: AddBundleDto[],
     variant: Variant
   ): number[];
 }

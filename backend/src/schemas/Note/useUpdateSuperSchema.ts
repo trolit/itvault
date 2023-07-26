@@ -1,11 +1,10 @@
 import { z } from "zod";
 import sanitizeHtml from "sanitize-html";
 import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
-
-import { IBody, IParams } from "@controllers/Note/UpdateController";
 
 export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
   () => {
@@ -18,7 +17,7 @@ export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
 
 function useParamsSchema(): SchemaProvider {
   return () =>
-    schemaForType<IParams>()(
+    schemaForType<UpdateControllerTypes.v1.Params>()(
       z.object({
         id: z.coerce.number().gt(0),
       })
@@ -27,7 +26,7 @@ function useParamsSchema(): SchemaProvider {
 
 function useBodySchema(): SchemaProvider {
   return () =>
-    schemaForType<IBody>()(
+    schemaForType<UpdateControllerTypes.v1.Body>()(
       z.object({
         text: z.string().transform(value => sanitizeHtml(value)),
       })

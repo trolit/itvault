@@ -5,6 +5,7 @@ import { StoreControllerTypes } from "types/controllers/User/StoreController";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
+import { UserMapDto } from "@dtos/mappers/UserMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { MailConsumerHandlerData } from "consumer-handlers-types";
 import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";
@@ -66,6 +67,8 @@ export class StoreController extends BaseController {
       viewBuilderName: SignUpMailViewBuilder.name,
     });
 
-    return this.finalizeRequest(response, HTTP.CREATED, user);
+    const mappedResult = this.mapper.mapOneToDto(user, UserMapDto);
+
+    return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }
 }

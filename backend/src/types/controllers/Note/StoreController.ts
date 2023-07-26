@@ -1,10 +1,10 @@
-import { Note } from "@entities/Note";
-import { NoteDto } from "@dtos/NoteDto";
+import { AddNoteDto } from "@dtos/AddNoteDto";
+import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Request = CustomRequest<undefined, NoteDto>;
+    export type Request = CustomRequest<undefined, AddNoteDto>;
 
-    export type Response = CustomResponse<Note>;
+    export type Response = CustomResponse<NoteMapDto>;
   }
 }

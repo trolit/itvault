@@ -4,6 +4,7 @@ import { StoreControllerTypes } from "types/controllers/Blueprint/StoreControlle
 
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
+import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -48,6 +49,8 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, blueprint);
+    const result = this.mapper.mapOneToDto(blueprint, BlueprintMapDto);
+
+    return this.finalizeRequest(response, HTTP.CREATED, result);
   }
 }

@@ -1,8 +1,10 @@
+import assert from "assert";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Bucket/StoreController";
 
 import { Di } from "@enums/Di";
+import { BucketMapDto } from "@dtos/mappers/BucketMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
@@ -11,7 +13,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class StoreController extends BaseController {
+export class StoreManyController extends BaseController {
   constructor(
     @inject(Di.BucketRepository)
     private _bucketRepository: IBucketRepository
@@ -42,6 +44,10 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
-    return this.finalizeRequest(response, HTTP.CREATED, result.value);
+    assert(result.value);
+
+    const mappedResult = this.mapper.mapToDto(result.value, BucketMapDto);
+
+    return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }
 }
