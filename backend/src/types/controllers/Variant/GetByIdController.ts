@@ -1,4 +1,4 @@
-import { VariantMapDto } from "@dtos/VariantMapDto";
+import { VariantMapDto } from "@dtos/mappers/VariantMapDto";
 
 export namespace GetByIdControllerTypes {
   export namespace v1 {

@@ -1,4 +1,4 @@
-import { TagMapDto } from "@dtos/TagMapDto";
+import { TagMapDto } from "@dtos/mappers/TagMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 
 export namespace GetAllControllerTypes {

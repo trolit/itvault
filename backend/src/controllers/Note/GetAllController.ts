@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 
 import { Di } from "@enums/Di";
-import { NoteMapDto } from "@dtos/NoteMapDto";
+import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 

@@ -1,4 +1,4 @@
-import { BlueprintMapDto } from "@dtos/BlueprintMapDto";
+import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
 import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 
 export namespace StoreControllerTypes {

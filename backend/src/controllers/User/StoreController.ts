@@ -5,7 +5,7 @@ import { StoreControllerTypes } from "types/controllers/User/StoreController";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { UserMapDto } from "@dtos/UserMapDto";
+import { UserMapDto } from "@dtos/mappers/UserMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { MailConsumerHandlerData } from "consumer-handlers-types";
 import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";

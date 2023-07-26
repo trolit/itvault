@@ -4,8 +4,8 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Workspace/StoreController";
 
 import { Di } from "@enums/Di";
-import { WorkspaceMapDto } from "@dtos/WorkspaceMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
+import { WorkspaceMapDto } from "@dtos/mappers/WorkspaceMapDto";
 import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
 import { BaseController } from "@controllers/BaseController";

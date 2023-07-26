@@ -1,4 +1,4 @@
-import { VariantMapDto } from "@dtos/VariantMapDto";
+import { VariantMapDto } from "@dtos/mappers/VariantMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 
 export namespace GetAllControllerTypes {

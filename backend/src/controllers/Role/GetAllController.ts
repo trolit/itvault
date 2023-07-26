@@ -6,7 +6,7 @@ import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import { RoleMapDto } from "@dtos/RoleMapDto";
+import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 

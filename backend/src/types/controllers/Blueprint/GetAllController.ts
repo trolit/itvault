@@ -1,4 +1,4 @@
-import { BlueprintMapDto } from "@dtos/BlueprintMapDto";
+import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 import { PaginatedResponse } from "miscellaneous-types";

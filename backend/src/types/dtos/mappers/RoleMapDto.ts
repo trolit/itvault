@@ -1,6 +1,6 @@
 import { Role } from "@entities/Role";
 import { BaseMapDto } from "./BaseMapDto";
-import { PermissionDto } from "./PermissionDto";
+import { PermissionDto } from "../PermissionDto";
 
 export class RoleMapDto extends BaseMapDto<Role> {
   permissions: PermissionDto[];

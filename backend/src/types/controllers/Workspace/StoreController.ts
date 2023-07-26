@@ -1,4 +1,4 @@
-import { WorkspaceMapDto } from "@dtos/WorkspaceMapDto";
+import { WorkspaceMapDto } from "@dtos/mappers/WorkspaceMapDto";
 import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
 
 export namespace StoreControllerTypes {

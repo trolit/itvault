@@ -1,4 +1,4 @@
-import { FileMapDto } from "@dtos/FileMapDto";
+import { FileMapDto } from "@dtos/mappers/FileMapDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {

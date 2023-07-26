@@ -3,8 +3,8 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Blueprint/StoreController";
 
 import { Di } from "@enums/Di";
-import { BlueprintMapDto } from "@dtos/BlueprintMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
+import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { BaseController } from "@controllers/BaseController";

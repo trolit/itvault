@@ -1,5 +1,5 @@
 import { AddEditNoteDto } from "@dtos/AddEditNoteDto";
-import { NoteMapDto } from "@dtos/NoteMapDto";
+import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
