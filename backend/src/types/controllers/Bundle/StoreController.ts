@@ -1,6 +1,6 @@
 import { AddBundleDto } from "@dtos/AddBundleDto";
-import { BundleMapDto } from "@dtos/BundleMapDto";
 import { BundleExpire } from "@enums/BundleExpire";
+import { BundleMapDto } from "@dtos/mappers/BundleMapDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {

@@ -1,4 +1,4 @@
-import { BucketMapDto } from "@dtos/BucketMapDto";
+import { BucketMapDto } from "@dtos/mappers/BucketMapDto";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {

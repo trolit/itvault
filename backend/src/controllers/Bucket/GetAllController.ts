@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Bucket/GetAllController";
 
 import { Di } from "@enums/Di";
-import { BucketMapDto } from "@dtos/BucketMapDto";
+import { BucketMapDto } from "@dtos/mappers/BucketMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 

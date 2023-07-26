@@ -41,7 +41,7 @@ export class UpdateController extends BaseController {
     const {
       userId,
       params: { id },
-      body: { text },
+      body: { value },
     } = request;
 
     const note = await this._noteRepository.getOne({
@@ -59,7 +59,7 @@ export class UpdateController extends BaseController {
 
     const isUpdated = await this._noteRepository.primitiveUpdate(
       { id },
-      { value: text }
+      { value }
     );
 
     if (!isUpdated?.affected) {

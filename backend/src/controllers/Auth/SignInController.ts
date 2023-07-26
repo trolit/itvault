@@ -8,11 +8,11 @@ import { APP, JWT } from "@config";
 
 import { Di } from "@enums/Di";
 import { Environment } from "@enums/Environment";
-import { LoggedUserMapDto } from "@dtos/LoggedUserMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
+import { LoggedUserMapDto } from "@dtos/mappers/LoggedUserMapDto";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 import { BaseController } from "@controllers/BaseController";
 

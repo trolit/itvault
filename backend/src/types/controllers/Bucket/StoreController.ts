@@ -1,5 +1,5 @@
-import { BucketMapDto } from "@dtos/BucketMapDto";
 import { AddBucketDto } from "@dtos/AddBucketDto";
+import { BucketMapDto } from "@dtos/mappers/BucketMapDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
