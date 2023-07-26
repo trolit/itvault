@@ -1,7 +1,10 @@
 import path from "path";
 import fs from "fs-extra";
 
-import { IJob } from "@interfaces/IJob";
+import { Di } from "@enums/Di";
+import { IJobFactory } from "@interfaces/factories/IJobFactory";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
 const allJobs = [];
 
@@ -10,6 +13,8 @@ export const setupJobs = async () => {
 
   const files = await fs.readdir(dir);
 
+  const jobFactory = getInstanceOf<IJobFactory>(Di.JobFactory);
+
   for (const file of files) {
     const [dependencyFilename] = file.split(".");
 
@@ -17,9 +22,9 @@ export const setupJobs = async () => {
       continue;
     }
 
-    const module = await import(`@jobs/${dependencyFilename}`);
+    const Job = await import(`@jobs/${dependencyFilename}`);
 
-    const job = module[dependencyFilename] as IJob;
+    const job = jobFactory.create(Job);
 
     job.run();
 
