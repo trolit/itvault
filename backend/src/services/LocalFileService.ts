@@ -77,8 +77,10 @@ export class LocalFileService implements IFileService {
     try {
       const files = await fs.readdir(BASE_TEMPORARY_UPLOADS_PATH);
 
-      for (const file of files) {
-        await fs.unlink(path.join(BASE_TEMPORARY_UPLOADS_PATH, file));
+      for (const source of files) {
+        const fullPath = path.join(BASE_TEMPORARY_UPLOADS_PATH, source);
+
+        await fs.remove(fullPath);
       }
     } catch (error) {
       console.log(error);
