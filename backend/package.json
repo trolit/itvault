@@ -28,6 +28,7 @@
   },
   "_moduleAliases": {
     "types": "dist/types",
+    "@jobs": "dist/jobs",
     "@dtos": "dist/types/dtos",
     "@enums": "dist/types/enums",
     "@interfaces": "dist/types/interfaces",

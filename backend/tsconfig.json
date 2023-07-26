@@ -16,6 +16,7 @@
     "baseUrl": "src",
     "paths": {
       "miscellaneous-types": ["types/miscellaneous"],
+      "@jobs/*": ["jobs/*"],
       "@dtos/*": ["types/dtos/*"],
       "@enums/*": ["types/enums/*"],
       "@interfaces/*": ["types/interfaces/*"],
