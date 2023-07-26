@@ -22,7 +22,7 @@ export const parseUploadFormData = <T>(
 ) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const {
-      params: { workspaceId },
+      query: { workspaceId },
     } = request;
 
     if (APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR) {

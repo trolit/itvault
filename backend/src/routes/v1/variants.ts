@@ -44,7 +44,9 @@ variantsRouter.post(
       basePath: FILES.BASE_TEMPORARY_UPLOADS_PATH,
       fieldsOrder: ["name", "fileId", "variantId"],
     },
-    storeSchema
+    {
+      fields: storeSchema,
+    }
   ),
   processRequestWith(StoreController)
 );
