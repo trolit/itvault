@@ -1,3 +1,5 @@
+import { CronCommand } from "cron";
+
 declare module "miscellaneous-types" {
   // @NOTE https://stackoverflow.com/questions/39622778/what-is-new-in-typescript
   export type Type<T> = new (...args: unknown[]) => T;
@@ -30,5 +32,14 @@ declare module "miscellaneous-types" {
     result: T[];
 
     total: number;
+  };
+
+  export type JobConfig = {
+    time: string;
+    runners: { onTick: CronCommand; onComplete?: CronCommand };
+    options?: {
+      timeZone?: string;
+      runOnInit?: boolean;
+    };
   };
 }

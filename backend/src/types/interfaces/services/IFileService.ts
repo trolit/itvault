@@ -14,4 +14,6 @@ export interface IFileService {
     location: string,
     buffer: Buffer
   ): Promise<{ size: number } | null>;
+
+  clearTemporaryDir(): Promise<void>;
 }

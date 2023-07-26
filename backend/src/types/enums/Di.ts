@@ -27,6 +27,7 @@ export enum Di {
   BlueprintRepository = "IBlueprintRepository",
   WorkspaceRepository = "IWorkspaceRepository",
 
+  JobFactory = "IJobFactory",
   ConsumerFactory = "IConsumerFactory",
   FormidableFormFactory = "IFormidableFormFactory",
 

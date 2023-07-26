@@ -22,6 +22,7 @@ export const APP = {
   ENV: <Environment>envEnum("NODE_ENV", Environment),
   ROUTES_PREFIX: envString("ROUTES_PREFIX"),
   WORKING_DIR: <WorkingDir>envEnum("WORKING_DIRECTORY", WorkingDir),
+  IS_CLEARING_TEMPORARY_UPLOADS_DIR: false,
 };
 
 export const DATABASE = {
