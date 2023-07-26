@@ -2,7 +2,11 @@ import { injectable } from "tsyringe";
 
 import { BaseJob } from "./BaseJob";
 
+import { Di } from "@enums/Di";
 import { JobConfig } from "miscellaneous-types";
+import { IFileService } from "@interfaces/services/IFileService";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
 @injectable()
 export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
@@ -20,7 +24,9 @@ export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
     super();
   }
 
-  onTick() {
-    console.log("aha");
+  async onTick() {
+    const fileService = getInstanceOf<IFileService>(Di.FileService);
+
+    await fileService.clearTemporaryDir();
   }
 }
