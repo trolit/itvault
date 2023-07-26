@@ -1,5 +1,5 @@
 declare module "super-schema-types" {
-  import type { ZodSchema } from "zod";
+  import { Schema } from "yup";
 
   export type SuperKeys = {
     body: string;
@@ -13,9 +13,7 @@ declare module "super-schema-types" {
     request: R;
   };
 
-  export type SchemaProvider = () =>
-    | (ZodSchema | null)
-    | Promise<ZodSchema | null>;
+  export type SchemaProvider = () => (Schema | null) | Promise<Schema | null>;
 
   export type SuperSchema = Partial<Record<keyof SuperKeys, SchemaProvider>>;
 
