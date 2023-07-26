@@ -12,7 +12,7 @@ export class JobFactory implements IJobFactory {
 
     const { time, runners, options } = jobConfig;
     const { onTick, onComplete } = runners;
-    const { timeZone, runOnInit } = options || {};
+    const { timeZone = "Europe/Warsaw", runOnInit } = options || {};
 
     const startNow = false;
 
