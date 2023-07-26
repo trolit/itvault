@@ -9,54 +9,78 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { schemaForType } from "@schemas/common/schemaForType";
 
+const variantRepository = getInstanceOf<IVariantRepository>(
+  Di.VariantRepository
+);
+
 export const fieldsSchema = schemaForType<StoreControllerTypes.v1.Body>()(
-  z.object({
-    // @TODO check if name is unique
-    name: z.string().min(2),
+  z
+    .object({
+      // @TODO check if name is unique
+      name: z.string().min(2),
 
-    fileId: z.coerce
-      .number()
-      .gt(0)
-      .superRefine(async (id, context: RefinementCtx) => {
-        if (id <= 0) {
-          return Zod.NEVER;
-        }
+      fileId: z.coerce
+        .number()
+        .gt(0)
+        .superRefine(async (id, context: RefinementCtx) => {
+          if (id <= 0) {
+            return Zod.NEVER;
+          }
 
-        const fileRepository = getInstanceOf<IFileRepository>(
-          Di.FileRepository
-        );
+          const fileRepository = getInstanceOf<IFileRepository>(
+            Di.FileRepository
+          );
 
-        const file = await fileRepository.getById(id);
+          const file = await fileRepository.getById(id);
 
-        if (!file) {
+          if (!file) {
+            context.addIssue({
+              code: ZodIssueCode.custom,
+              message: "File is not available.",
+            });
+
+            return Zod.NEVER;
+          }
+        }),
+
+      variantId: z.optional(
+        z.string().superRefine(async (id, context: RefinementCtx) => {
+          const variant = await variantRepository.getById(id);
+
+          if (!variant) {
+            context.addIssue({
+              code: ZodIssueCode.custom,
+              message: "Variant is not available.",
+            });
+
+            return Zod.NEVER;
+          }
+        })
+      ),
+    })
+    .superRefine(
+      async (value: StoreControllerTypes.v1.Body, context: RefinementCtx) => {
+        const { name, fileId } = value;
+
+        const variant = await variantRepository.getOne({
+          where: {
+            name,
+            file: {
+              id: fileId,
+            },
+          },
+        });
+
+        if (variant) {
           context.addIssue({
             code: ZodIssueCode.custom,
-            message: "File is not available.",
+            message: "Name must be unique!",
           });
 
           return Zod.NEVER;
         }
-      }),
-
-    variantId: z.optional(
-      z.string().superRefine(async (id, context: RefinementCtx) => {
-        const variantRepository = getInstanceOf<IVariantRepository>(
-          Di.VariantRepository
-        );
-
-        const variant = await variantRepository.getById(id);
-
-        if (!variant) {
-          context.addIssue({
-            code: ZodIssueCode.custom,
-            message: "Variant is not available.",
-          });
-
-          return Zod.NEVER;
-        }
-      })
-    ),
-  })
+      }
+    )
 );
 
 export const storeSchema = { fields: fieldsSchema };
