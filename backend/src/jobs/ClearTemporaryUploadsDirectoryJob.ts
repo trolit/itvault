@@ -1,5 +1,7 @@
 import { injectable } from "tsyringe";
 
+import { APP } from "@config/index";
+
 import { BaseJob } from "./BaseJob";
 
 import { Di } from "@enums/Di";
@@ -14,7 +16,9 @@ export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
 
   config: JobConfig = {
     time: "59 23 * * *",
-    runners: { onTick: this.onTick.bind(this) },
+    runners: {
+      onTick: this.onTick.bind(this),
+    },
     options: {
       runOnInit: true,
     },
@@ -25,8 +29,18 @@ export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
   }
 
   async onTick() {
+    APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR = true;
+
     const fileService = getInstanceOf<IFileService>(Di.FileService);
 
     await fileService.clearTemporaryDir();
+
+    this.onComplete();
+  }
+
+  onComplete() {
+    APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR = false;
+
+    console.log(`CRON: ${this.jobName} completed.`);
   }
 }
