@@ -35,4 +35,6 @@ export abstract class BaseJob implements IJob {
 
     console.log(`CRON: Stopped ${this.jobName} job.`);
   }
+
+  abstract onTick(): Promise<void> | void;
 }
