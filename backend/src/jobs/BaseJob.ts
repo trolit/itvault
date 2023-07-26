@@ -19,7 +19,7 @@ export abstract class BaseJob implements IJob {
 
     this.instance.start();
 
-    console.log(`CRON: Job ${this.jobName} is running.`);
+    console.log(`CRON: ${this.jobName} is running.`);
   }
 
   stop(): void {
