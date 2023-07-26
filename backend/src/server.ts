@@ -3,6 +3,7 @@ import express from "express";
 import { dataSource } from "@config/data-source";
 
 import { setupDi } from "@utils/setupDi";
+import { setupJobs } from "@utils/setupJobs";
 import { setupRedis } from "@utils/setupRedis";
 import { setupRabbit } from "@utils/setupRabbit";
 import { setupExpress } from "@utils/setupExpress";
@@ -28,6 +29,8 @@ export const server = async () => {
   await setupRabbit();
 
   redis.initializeRoleKeys();
+
+  await setupJobs();
 
   await setupExpress(app);
 
