@@ -16,7 +16,6 @@ const variantRepository = getInstanceOf<IVariantRepository>(
 export const fieldsSchema = schemaForType<StoreControllerTypes.v1.Body>()(
   z
     .object({
-      // @TODO check if name is unique
       name: z.string().min(2),
 
       fileId: z.coerce
