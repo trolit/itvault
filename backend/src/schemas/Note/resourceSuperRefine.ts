@@ -1,12 +1,12 @@
 import Zod, { RefinementCtx, ZodIssueCode } from "zod";
 
-import { AddEditNoteDto } from "@dtos/AddEditNoteDto";
+import { AddNoteDto } from "@dtos/AddNoteDto";
 import { CommentableResource } from "@enums/CommentableResource";
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-type Value = Pick<AddEditNoteDto, "id" | "resource">;
+type Value = Pick<AddNoteDto, "id" | "resource">;
 
 export const resourceSuperRefine = async (
   value: Value,
