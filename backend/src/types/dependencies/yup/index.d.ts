@@ -12,4 +12,7 @@ declare module "yup" {
       where: <T>(value: number) => object;
     }): this;
   }
+
+  // @NOTE https://vee-validate.logaretm.com/v3/advanced/server-side-validation.html#setting-errors-manually
+  export type FormattedError = Record<string, string[]>;
 }
