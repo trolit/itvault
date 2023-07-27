@@ -14,7 +14,7 @@ addMethod<NumberSchema>(
   }) {
     const { message, repositoryName, where: buildWhere } = options;
 
-    return this.test(async (value: unknown, ctx) => {
+    return this.test(async (value, ctx) => {
       const repository =
         getInstanceOf<IBaseRepository<unknown>>(repositoryName);
 
