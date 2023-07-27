@@ -1,7 +1,5 @@
-import { FindOptionsWhere } from "typeorm";
 import { addMethod, number, NumberSchema } from "yup";
 
-import { Di } from "@enums/Di";
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -11,20 +9,22 @@ addMethod<NumberSchema>(
   "isAvailable",
   function (options: {
     message?: string;
-    repositoryName: Di;
-    where: (value: number) => FindOptionsWhere<unknown>;
+    repositoryName: string;
+    where: (value: number) => object;
   }) {
-    const { message, repositoryName, where } = options;
+    const { message, repositoryName, where: buildWhere } = options;
 
     return this.test(async (value: unknown, ctx) => {
       const repository =
         getInstanceOf<IBaseRepository<unknown>>(repositoryName);
 
-      const result = await repository.getOne(where(<number>value));
+      const where = buildWhere(<number>value);
 
-      if (result) {
+      const result = await repository.getOne({ where });
+
+      if (!result) {
         return ctx.createError({
-          message: message || "Resource is not available.",
+          message: message || "Resource not available",
         });
       }
 
