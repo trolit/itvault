@@ -15,7 +15,11 @@ export const formatError = (error: unknown) => {
 
     const formattedErrorValue = formattedError[key];
 
-    formattedErrorValue ? formattedErrorValue.push(message) : [message];
+    if (formattedErrorValue) {
+      formattedErrorValue.push(message);
+    } else {
+      (formattedError as FormattedError)[key] = [message];
+    }
   });
 
   return formattedError;
