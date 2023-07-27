@@ -5,7 +5,7 @@ import { SuperKeys, SuperSchemaRunner } from "super-schema-types";
 
 import { formatError } from "@helpers/yup/formatError";
 
-import { useVersionSchema } from "@schemas/common/getVersionSchema";
+import { useVersionSchema } from "@schemas/common/useVersionSchema";
 
 export const validateRequestWith = <P, B, Q>(
   useSuperSchemaRunner: SuperSchemaRunner<CustomRequest<P, B, Q>>,

@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 
 import { formatError } from "@helpers/yup/formatError";
 
-import { useVersionSchema } from "@schemas/common/getVersionSchema";
+import { useVersionSchema } from "@schemas/common/useVersionSchema";
 
 // @NOTE do not mix with "validateRequestWith"
 export const requireEndpointVersion = <P, B, Q>(versions: string[]) => {
