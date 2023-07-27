@@ -13,9 +13,11 @@ declare module "super-schema-types" {
     request: R;
   };
 
-  export type SchemaProvider = () => (Schema | null) | Promise<Schema | null>;
+  export type SchemaProvider<T = void> = Schema<T>;
 
-  export type SuperSchema = Partial<Record<keyof SuperKeys, SchemaProvider>>;
+  export type SuperSchema = Partial<
+    Record<keyof SuperKeys, SchemaProvider<any>>
+  >;
 
   export type SuperSchemaRunner<R extends CustomRequest<any, any, any> = any> =
     (common: SuperCommonParam<R>) => SuperSchema | Promise<SuperSchema>;
