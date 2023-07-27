@@ -10,10 +10,10 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export abstract class BaseController implements IBaseController {
   static ALL_VERSION_DEFINITIONS = {
-    v1_0: 1,
-    v1_1: 1.1,
-    v2_0: 2,
-    v2_1: 2.1,
+    v1_0: "1",
+    v1_1: "1.1",
+    v2_0: "2",
+    v2_1: "2.1",
   };
 
   abstract implementations: ControllerImplementation[];

@@ -10,7 +10,7 @@ import { useVersionSchema } from "@schemas/common/getVersionSchema";
 export const validateRequestWith = <P, B, Q>(
   useSuperSchemaRunner: SuperSchemaRunner<CustomRequest<P, B, Q>>,
   data: {
-    versions: number[];
+    versions: string[];
   }
 ) => {
   return async (
@@ -56,7 +56,7 @@ export const validateRequestWith = <P, B, Q>(
 
 function includeGeneralQuerySchemas(
   superSchema: SuperSchema,
-  data: { versions: number[] }
+  data: { versions: string[] }
 ) {
   const querySchema = superSchema["query"];
 
