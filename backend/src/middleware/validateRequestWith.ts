@@ -38,6 +38,7 @@ export const validateRequestWith = <P, B, Q>(
       try {
         const parsedData = await schema.validate(request[propertyName], {
           abortEarly: false,
+          stripUnknown: true,
         });
 
         // overwrites body with sanitized result
