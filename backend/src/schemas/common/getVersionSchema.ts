@@ -30,5 +30,5 @@ export const useVersionSchema: (
   object({
     version: number()
       .required()
-      .oneOf(versions, "Wrong resource version. Expected: ${values}"),
+      .oneOf(versions, "Wrong resource version (available: ${values})"),
   });
