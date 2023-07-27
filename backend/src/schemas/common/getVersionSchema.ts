@@ -1,3 +1,5 @@
+import { number, object } from "yup";
+import { SchemaProvider } from "super-schema-types";
 import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
 
 import { schemaForType } from "@schemas/common/schemaForType";
@@ -21,3 +23,12 @@ export const getVersionSchema = (versions: number[]) =>
         }),
     })
   );
+
+export const useVersionSchema: (
+  versions: number[]
+) => SchemaProvider<{ version: number }> = (versions: number[]) =>
+  object({
+    version: number()
+      .required()
+      .oneOf(versions, "Wrong resource version. Expected: ${values}"),
+  });
