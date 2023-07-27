@@ -6,7 +6,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 
 addMethod<NumberSchema>(
   number,
-  "isEntityAvailable",
+  "isEntityAvailableRule",
   function (options: {
     message?: string;
     repositoryName: string;
