@@ -8,6 +8,7 @@ import { setupRedis } from "@utils/setupRedis";
 import { setupRabbit } from "@utils/setupRabbit";
 import { setupExpress } from "@utils/setupExpress";
 import { setupMailTransporter } from "@utils/setupMailTransporter";
+import { loadYupCustomMethods } from "@utils/loadYupCustomMethods";
 
 export const server = async () => {
   const app = express();
@@ -31,6 +32,8 @@ export const server = async () => {
   redis.initializeRoleKeys();
 
   await setupJobs();
+
+  await loadYupCustomMethods();
 
   await setupExpress(app);
 
