@@ -15,10 +15,14 @@ addMethod<NumberSchema>(
     const { message, repositoryName, where: buildWhere } = options;
 
     return this.test(async (value, ctx) => {
+      if (!value) {
+        return ctx.createError();
+      }
+
       const repository =
         getInstanceOf<IBaseRepository<unknown>>(repositoryName);
 
-      const where = buildWhere(<number>value);
+      const where = buildWhere(value);
 
       const result = await repository.getOne({ where });
 
