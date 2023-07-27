@@ -6,7 +6,7 @@ import { Di } from "@enums/Di";
 
 declare module "yup" {
   interface NumberSchema {
-    isAvailable(options: {
+    isEntityAvailable(options: {
       message?: string;
       repositoryName: string;
       where: <T>(value: number) => object;
