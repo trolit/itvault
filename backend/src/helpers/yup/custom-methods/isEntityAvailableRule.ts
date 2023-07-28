@@ -1,3 +1,4 @@
+import { FindOptionsWhere } from "typeorm";
 import { addMethod, number, NumberSchema } from "yup";
 
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
@@ -7,22 +8,18 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 addMethod<NumberSchema>(
   number,
   "isEntityAvailableRule",
-  function (options: {
-    message?: string;
-    repositoryName: string;
-    where: (value: number) => object;
-  }) {
-    const { message, repositoryName, where: buildWhere } = options;
-
+  function (
+    repositoryToken: string,
+    where: FindOptionsWhere<any>,
+    message?: string
+  ) {
     return this.test(async (value, ctx) => {
       if (!value) {
         return ctx.createError();
       }
 
       const repository =
-        getInstanceOf<IBaseRepository<unknown>>(repositoryName);
-
-      const where = buildWhere(value);
+        getInstanceOf<IBaseRepository<unknown>>(repositoryToken);
 
       const result = await repository.getOne({ where });
 
