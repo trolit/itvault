@@ -8,7 +8,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 function isEntityAvailable<T>(
   this: NumberSchema,
   repositoryToken: string,
-  where: FindOptionsWhere<T>,
+  where: (value: number) => FindOptionsWhere<T>,
   message?: string
 ) {
   return this.test(async (value, ctx) => {
@@ -18,7 +18,7 @@ function isEntityAvailable<T>(
 
     const repository = getInstanceOf<IBaseRepository<unknown>>(repositoryToken);
 
-    const result = await repository.getOne({ where });
+    const result = await repository.getOne({ where: where(value) });
 
     if (!result) {
       return ctx.createError({

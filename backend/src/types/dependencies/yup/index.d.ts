@@ -8,7 +8,7 @@ declare module "yup" {
   interface NumberSchema {
     isEntityAvailable<T>(
       repositoryToken: string,
-      where: FindOptionsWhere<T>,
+      where: (value: number) => FindOptionsWhere<T>,
       message?: string
     ): this;
   }
