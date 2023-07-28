@@ -1,23 +1,19 @@
-import { number, object } from "yup";
-import { SuperSchemaRunner } from "super-schema-types";
+import { object } from "yup";
+import { SuperSchemaElement, SuperSchemaRunner } from "super-schema-types";
 import { GetAllControllerTypes } from "types/controllers/Blueprint/GetAllController";
 
 import { Di } from "@enums/Di";
-import { Workspace } from "@entities/Workspace";
 
-import { paginationSchema } from "@schemas/common/paginationSchema";
+import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
+import { pageSchema, perPageSchema } from "@schemas/common/paginationSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const querySchema = paginationSchema.required().concat(
+const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.QueryInput> =
   object({
-    workspaceId: number()
-      .required()
-      .integer()
-      .isEntityAvailable<Workspace>(Di.WorkspaceRepository, value => ({
-        id: value,
-      })),
-  })
-);
+    page: pageSchema,
+    perPage: perPageSchema,
+    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+  });
 
 export const useGetAllSuperSchema: SuperSchemaRunner<
   void,
