@@ -1,10 +1,11 @@
 import type { NextFunction, Response } from "express";
 
+import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
-export const transformPagination = (<P, B, Q extends IPaginationOptions>() => {
+export const transformPagination = (<P, B, Q extends IPaginationQuery>() => {
   return async (
-    request: CustomRequest<P, B, Q & { page: number; perPage: number }>,
+    request: CustomRequest<P, B, Q>,
     response: Response,
     next: NextFunction
   ) => {
@@ -12,9 +13,11 @@ export const transformPagination = (<P, B, Q extends IPaginationOptions>() => {
       query: { page, perPage },
     } = request;
 
-    request.query.skip = page === 1 ? 0 : (page - 1) * perPage;
+    const castedRequest = <CustomRequest<P, B, Q & IPaginationOptions>>request;
 
-    request.query.take = perPage > 20 ? 20 : perPage;
+    castedRequest.query.skip = page === 1 ? 0 : (page - 1) * perPage;
+
+    castedRequest.query.take = perPage > 20 ? 20 : perPage;
 
     next();
   };
