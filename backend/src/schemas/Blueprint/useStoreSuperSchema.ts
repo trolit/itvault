@@ -1,41 +1,34 @@
-import { SchemaProvider, SuperSchemaRunner } from "super-schema-types";
+import { number, object } from "yup";
+import { SuperSchemaElement, SuperSchemaRunner } from "super-schema-types";
 import { StoreControllerTypes } from "types/controllers/Blueprint/StoreController";
 
-import { baseBlueprintSchemas } from "./baseSchemas";
+import { useAddEditBodySchema } from "./useAddEditBodySchema";
 
 import { Di } from "@enums/Di";
-import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
+import { Workspace } from "@entities/Workspace";
 
-import { getInstanceOf } from "@helpers/getInstanceOf";
-
-import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { workspaceIdSchema } = baseWorkspaceSchemas;
+const querySchema: SuperSchemaElement<StoreControllerTypes.v1.Query> = object({
+  workspaceId: number()
+    .required()
+    .integer()
+    .isEntityAvailable<Workspace>(Di.WorkspaceRepository, value => ({
+      id: value,
+    })),
+});
 
-const { getAddEditBodySchema } = baseBlueprintSchemas;
+export const useStoreSuperSchema: SuperSchemaRunner<
+  void,
+  StoreControllerTypes.v1.Body,
+  StoreControllerTypes.v1.Query
+> = defineSuperSchemaRunner(({ request }) => {
+  const {
+    query: { workspaceId },
+  } = request;
 
-export const useStoreSuperSchema: SuperSchemaRunner<StoreControllerTypes.v1.Request> =
-  defineSuperSchemaRunner(({ request }) => {
-    const {
-      query: { workspaceId },
-    } = request;
-
-    return {
-      query: useQuerySchema(),
-      // @NOTE keep body below to validate query first!
-      body: useBodySchema(workspaceId),
-    };
-  });
-
-function useQuerySchema(): SchemaProvider {
-  return () => workspaceIdSchema;
-}
-
-function useBodySchema(workspaceId: number): SchemaProvider {
-  const blueprintRepository = getInstanceOf<IBlueprintRepository>(
-    Di.BlueprintRepository
-  );
-
-  return () => getAddEditBodySchema(blueprintRepository, workspaceId);
-}
+  return {
+    query: querySchema,
+    body: useAddEditBodySchema(workspaceId),
+  };
+});
