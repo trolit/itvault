@@ -1,6 +1,6 @@
 import { Not } from "typeorm";
 import { object, string } from "yup";
-import { SchemaProvider } from "super-schema-types";
+import { SuperSchemaElement } from "super-schema-types";
 
 import { Di } from "@enums/Di";
 import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
@@ -11,7 +11,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 export const useAddEditBodySchema: (
   workspaceId: number,
   id?: number
-) => SchemaProvider<AddEditBlueprintDto> = (
+) => SuperSchemaElement<AddEditBlueprintDto> = (
   workspaceId: number,
   id?: number
 ) => {
