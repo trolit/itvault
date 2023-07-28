@@ -13,6 +13,8 @@ import { loadYupCustomMethods } from "@utils/loadYupCustomMethods";
 export const server = async () => {
   const app = express();
 
+  await loadYupCustomMethods();
+
   try {
     await dataSource.initialize();
 
@@ -32,8 +34,6 @@ export const server = async () => {
   redis.initializeRoleKeys();
 
   await setupJobs();
-
-  await loadYupCustomMethods();
 
   await setupExpress(app);
 

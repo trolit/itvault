@@ -6,7 +6,7 @@ export const loadYupCustomMethods = async () => {
 
   fs.readdir(dir, async (error, files) => {
     for (const file of files) {
-      await import(`@helpers/yup/${file}`);
+      await import(`@helpers/yup/custom-methods/${file}`);
     }
   });
 };
