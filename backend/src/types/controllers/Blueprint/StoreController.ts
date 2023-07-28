@@ -7,7 +7,9 @@ export namespace StoreControllerTypes {
       workspaceId: number;
     };
 
-    export type Request = CustomRequest<undefined, AddEditBlueprintDto, Query>;
+    export type Body = AddEditBlueprintDto;
+
+    export type Request = CustomRequest<undefined, Body, Query>;
 
     export type Response = CustomResponse<BlueprintMapDto>;
   }
