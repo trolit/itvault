@@ -1,13 +1,17 @@
 export namespace PatchRelativePathControllerTypes {
   export namespace v1 {
-    type Params = {
+    export type Params = {
       fileId: number;
     };
 
-    type Body = {
+    export type Body = {
       relativePath: string;
     };
 
-    export type Request = CustomRequest<Params, Body>;
+    export type Query = {
+      workspaceId: number;
+    };
+
+    export type Request = CustomRequest<Params, Body, Query>;
   }
 }
