@@ -1,3 +1,4 @@
+import { FindOptionsWhere } from "typeorm";
 import {
   number,
   string,
@@ -25,7 +26,13 @@ function handleRule<T extends Schema>(
 
     const repository = getInstanceOf<IBaseRepository<unknown>>(repositoryToken);
 
-    const result = await repository.getOne({ where: where(value) });
+    const result = await repository.getOne({
+      where: where
+        ? where(value)
+        : ({
+            id: value,
+          } as FindOptionsWhere<T>),
+    });
 
     if (!result) {
       return ctx.createError({
