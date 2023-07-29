@@ -1,34 +1,29 @@
-import { z } from "zod";
-import sanitizeHtml from "sanitize-html";
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { object } from "yup";
+import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
 
-import { schemaForType } from "@schemas/common/schemaForType";
+import { addEditBodySchema } from "./addEditBodySchema";
+
+import { Di } from "@enums/Di";
+
+import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const useUpdateSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  () => {
-    return {
-      params: useParamsSchema(),
-      body: useBodySchema(),
-    };
-  }
-);
+const paramsSchema: SuperSchemaElement<UpdateControllerTypes.v1.Params> =
+  object({
+    id: useIdNumberSchema(Di.NoteRepository),
+  });
 
-function useParamsSchema(): SchemaProvider {
-  return () =>
-    schemaForType<UpdateControllerTypes.v1.Params>()(
-      z.object({
-        id: z.coerce.number().gt(0),
-      })
-    );
-}
+const bodySchema: SuperSchemaElement<UpdateControllerTypes.v1.Body> =
+  addEditBodySchema;
 
-function useBodySchema(): SchemaProvider {
-  return () =>
-    schemaForType<UpdateControllerTypes.v1.Body>()(
-      z.object({
-        text: z.string().transform(value => sanitizeHtml(value)),
-      })
-    );
-}
+export const useUpdateSuperSchema: SuperSchemaRunner<
+  UpdateControllerTypes.v1.Params,
+  UpdateControllerTypes.v1.Body,
+  void
+> = defineSuperSchemaRunner(() => {
+  return {
+    params: paramsSchema,
+    body: bodySchema,
+  };
+});

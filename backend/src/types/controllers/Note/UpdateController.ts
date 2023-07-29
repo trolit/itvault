@@ -1,4 +1,4 @@
-import { AddNoteDto } from "@dtos/AddNoteDto";
+import { AddEditNoteDto } from "@dtos/AddEditNoteDto";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {
@@ -6,7 +6,7 @@ export namespace UpdateControllerTypes {
       id: number;
     };
 
-    export type Body = Pick<AddNoteDto, "text">;
+    export type Body = AddEditNoteDto;
 
     export type Request = CustomRequest<Params, Body>;
   }
