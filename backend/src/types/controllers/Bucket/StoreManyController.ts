@@ -1,7 +1,7 @@
 import { AddBucketDto } from "@dtos/AddBucketDto";
 import { BucketMapDto } from "@dtos/mappers/BucketMapDto";
 
-export namespace StoreControllerTypes {
+export namespace StoreManyControllerTypes {
   export namespace v1 {
     export type Body = {
       values: AddBucketDto[];

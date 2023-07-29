@@ -1,7 +1,7 @@
 import assert from "assert";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { StoreControllerTypes } from "types/controllers/Bucket/StoreController";
+import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
 
 import { Di } from "@enums/Di";
 import { BucketMapDto } from "@dtos/mappers/BucketMapDto";
@@ -31,8 +31,8 @@ export class StoreManyController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: StoreControllerTypes.v1.Request,
-    response: StoreControllerTypes.v1.Response
+    request: StoreManyControllerTypes.v1.Request,
+    response: StoreManyControllerTypes.v1.Response
   ) {
     const {
       body: { values, variantId },
