@@ -1,19 +1,16 @@
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { SuperSchemaRunner } from "super-schema-types";
+import { StoreControllerTypes } from "types/controllers/Role/StoreController";
 
-import { baseRoleSchemas } from "./baseSchemas";
+import { useAddEditBodySchema } from "./useAddEditBodySchema";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { addEditBodySchema } = baseRoleSchemas;
-
-export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  () => {
-    return {
-      body: useBodySchema(),
-    };
-  }
-);
-
-function useBodySchema(): SchemaProvider {
-  return () => addEditBodySchema();
-}
+export const useStoreSuperSchema: SuperSchemaRunner<
+  void,
+  StoreControllerTypes.v1.Body,
+  void
+> = defineSuperSchemaRunner(() => {
+  return {
+    body: useAddEditBodySchema(),
+  };
+});

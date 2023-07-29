@@ -1,49 +1,38 @@
-import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { object } from "yup";
+import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { UpdateControllerTypes } from "types/controllers/Role/UpdateController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
-import { baseRoleSchemas } from "./baseSchemas";
+import { useAddEditBodySchema } from "./useAddEditBodySchema";
 
-import { schemaForType } from "@schemas/common/schemaForType";
+import { Di } from "@enums/Di";
+
+import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { addEditBodySchema } = baseRoleSchemas;
+const paramsSchema: SuperSchemaElement<UpdateControllerTypes.v1.Params> =
+  object({
+    id: useIdNumberSchema(Di.RoleRepository).test((value, ctx) => {
+      if (value === HEAD_ADMIN_ROLE_ID) {
+        return ctx.createError({ message: "This role is not editable." });
+      }
 
-export const useUpdateSuperSchema: SuperSchemaRunner<UpdateControllerTypes.v1.Request> =
-  defineSuperSchemaRunner(({ request }) => {
-    const {
-      params: { id },
-    } = request;
-
-    return {
-      params: useParamsSchema(),
-      body: useBodySchema(id),
-    };
+      return true;
+    }),
   });
 
-function useBodySchema(id: number): SchemaProvider {
-  return () => addEditBodySchema(id);
-}
+export const useUpdateSuperSchema: SuperSchemaRunner<
+  UpdateControllerTypes.v1.Params,
+  UpdateControllerTypes.v1.Body,
+  void
+> = defineSuperSchemaRunner(({ request }) => {
+  const {
+    params: { id },
+  } = request;
 
-function useParamsSchema(): SchemaProvider {
-  return () =>
-    schemaForType<{ id: number }>()(
-      z.object({
-        id: z.coerce
-          .number()
-          .gte(0)
-          .superRefine((id, context: RefinementCtx) => {
-            if (id === HEAD_ADMIN_ROLE_ID) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "This role is not editable.",
-              });
-
-              return Zod.NEVER;
-            }
-          }),
-      })
-    );
-}
+  return {
+    params: paramsSchema,
+    body: useAddEditBodySchema(id),
+  };
+});

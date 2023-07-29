@@ -1,4 +1,4 @@
-import { AddNoteDto } from "@dtos/AddEditNoteDto";
+import { AddEditNoteDto } from "@dtos/AddEditNoteDto";
 import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
@@ -6,7 +6,7 @@ import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    type QueryCommon = Pick<AddNoteDto, "id" | "resource">;
+    type QueryCommon = Pick<AddEditNoteDto, "id" | "resource">;
 
     export type QueryInput = QueryCommon & IPaginationQuery;
 

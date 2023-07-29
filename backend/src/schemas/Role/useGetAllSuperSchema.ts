@@ -1,16 +1,22 @@
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { object } from "yup";
+import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 
-import { paginationSchema } from "@schemas/common/paginationSchema";
+import { pageSchema, perPageSchema } from "@schemas/common/paginationSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const useGetAllSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  () => {
-    return {
-      query: useQuerySchema(),
-    };
-  }
-);
+const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.QueryInput> =
+  object({
+    page: pageSchema,
+    perPage: perPageSchema,
+  });
 
-function useQuerySchema(): SchemaProvider {
-  return () => paginationSchema;
-}
+export const useGetAllSuperSchema: SuperSchemaRunner<
+  void,
+  void,
+  GetAllControllerTypes.v1.QueryInput
+> = defineSuperSchemaRunner(() => {
+  return {
+    query: querySchema,
+  };
+});
