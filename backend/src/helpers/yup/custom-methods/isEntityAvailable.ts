@@ -1,17 +1,24 @@
-import { FindOptionsWhere } from "typeorm";
-import { addMethod, number, NumberSchema } from "yup";
+import {
+  number,
+  string,
+  Schema,
+  addMethod,
+  WhereBuilder,
+  NumberSchema,
+  StringSchema,
+} from "yup";
 
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-function isEntityAvailable<T>(
-  this: NumberSchema,
+function handleRule<T extends Schema>(
+  instance: T,
   repositoryToken: string,
-  where: (value: number) => FindOptionsWhere<T>,
+  where: WhereBuilder<T>,
   message?: string
 ) {
-  return this.test(async (value, ctx) => {
+  return instance.test(async (value, ctx) => {
     if (!value) {
       return ctx.createError();
     }
@@ -30,4 +37,23 @@ function isEntityAvailable<T>(
   });
 }
 
-addMethod<NumberSchema>(number, "isEntityAvailable", isEntityAvailable);
+function isEntityAvailableNumber<T>(
+  this: NumberSchema,
+  repositoryToken: string,
+  where: WhereBuilder<T>,
+  message?: string
+) {
+  return handleRule(this, repositoryToken, where, message);
+}
+
+function isEntityAvailableString<T>(
+  this: StringSchema,
+  repositoryToken: string,
+  where: WhereBuilder<T>,
+  message?: string
+) {
+  return handleRule(this, repositoryToken, where, message);
+}
+
+addMethod<NumberSchema>(number, "isEntityAvailable", isEntityAvailableNumber);
+addMethod<StringSchema>(string, "isEntityAvailable", isEntityAvailableString);

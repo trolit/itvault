@@ -5,10 +5,20 @@ import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 import { Di } from "@enums/Di";
 
 declare module "yup" {
+  export type WhereBuilder<T> = (value: number | string) => FindOptionsWhere<T>;
+
   interface NumberSchema {
     isEntityAvailable<T>(
       repositoryToken: string,
-      where: (value: number) => FindOptionsWhere<T>,
+      where: WhereBuilder<T>,
+      message?: string
+    ): this;
+  }
+
+  interface StringSchema {
+    isEntityAvailable<T>(
+      repositoryToken: string,
+      where: WhereBuilder<T>,
       message?: string
     ): this;
   }
