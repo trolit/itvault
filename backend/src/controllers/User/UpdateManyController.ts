@@ -36,16 +36,16 @@ export class UpdateManyController extends BaseController {
     response: UpdateManyControllerTypes.v1.Response
   ) {
     const {
-      body: { value },
+      body: { values },
     } = request;
 
-    const result = await this._userService.updateMany(value);
+    const result = await this._userService.updateMany(values);
 
     if (!result.isSuccess) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
-    this._userService.reflectChangesInDataStore(value);
+    this._userService.reflectChangesInDataStore(values);
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
@@ -84,7 +84,7 @@ export class UpdateManyController extends BaseController {
         : !isAllowedToDeactivateUserAccount;
     };
 
-    return body.value.some(
+    return body.values.some(
       ({ data }) =>
         isActivePropertyCheck(data.isActive) ||
         (data.roleId && !isAllowedToChangeUserRole)

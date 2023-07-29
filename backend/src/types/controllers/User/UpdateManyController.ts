@@ -2,8 +2,8 @@ import { UpdateUserDto } from "@dtos/UpdateUserDto";
 
 export namespace UpdateManyControllerTypes {
   export namespace v1 {
-    type Body = {
-      value: UpdateUserDto[];
+    export type Body = {
+      values: UpdateUserDto[];
     };
 
     export type Request = CustomRequest<undefined, Body>;

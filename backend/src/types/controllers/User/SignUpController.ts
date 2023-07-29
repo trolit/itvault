@@ -2,6 +2,8 @@ import { SignUpDto } from "@dtos/SignUpDto";
 
 export namespace SignUpControllerTypes {
   export namespace v1 {
-    export type Request = CustomRequest<undefined, SignUpDto>;
+    export type Body = SignUpDto;
+
+    export type Request = CustomRequest<undefined, Body>;
   }
 }
