@@ -1,10 +1,10 @@
 export namespace RequeueControllerTypes {
   export namespace v1 {
-    type Params = {
+    export type Params = {
       id: number;
     };
 
-    type Query = {
+    export type Query = {
       workspaceId: number;
     };
 
