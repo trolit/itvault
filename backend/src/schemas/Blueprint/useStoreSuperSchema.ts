@@ -22,7 +22,7 @@ export const useStoreSuperSchema: SuperSchemaRunner<
     query: { workspaceId },
   } = request;
 
-  // @NOTE order of key definitions matters
+  // @NOTE check 'query' first to make sure that workspaceId is valid
   return {
     query: querySchema,
     body: useAddEditBodySchema(workspaceId),
