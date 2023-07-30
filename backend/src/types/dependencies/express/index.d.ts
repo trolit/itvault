@@ -26,7 +26,7 @@ declare global {
     unknown,
     B,
     Q & {
-      version: number;
+      version: string;
     }
   >;
 

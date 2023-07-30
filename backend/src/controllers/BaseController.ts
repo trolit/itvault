@@ -18,7 +18,7 @@ export abstract class BaseController implements IBaseController {
 
   abstract implementations: ControllerImplementation[];
 
-  usedVersion: number;
+  usedVersion: string;
 
   get mapper() {
     return getInstanceOf<IEntityMapperService>(Di.EntityMapperService);
