@@ -1,4 +1,4 @@
-import { ZodError, ZodSchema } from "zod";
+import { Schema } from "yup";
 import IncomingForm from "formidable/Formidable";
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
@@ -9,16 +9,23 @@ import { Di } from "@enums/Di";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
 import { IFormidableFormFactory } from "@interfaces/factories/IFormidableFormFactory";
 
+import { formatError } from "@helpers/yup/formatError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { mapFormDataFiles } from "@helpers/mapFormDataFiles";
 
-export const parseUploadFormData = <T>(
+interface IFormValidators {
+  files?: Schema<IFormDataFile[]>;
+
+  fields?: Schema;
+}
+
+export const parseUploadFormData = (
   options: {
     basePath: string;
     multiples: boolean;
     fieldsOrder?: string[];
   },
-  validators?: { files?: ZodSchema<IFormDataFile[]>; fields?: ZodSchema<T> }
+  validators?: IFormValidators
 ) => {
   return async (request: Request, response: Response, next: NextFunction) => {
     const {
@@ -54,15 +61,17 @@ export const parseUploadFormData = <T>(
       const mappedFiles = mapFormDataFiles(files);
 
       if (validators) {
-        const errors = await runValidators(
+        const isValidOrErrors = await handleValidators(
           { fields, files: mappedFiles },
           validators
         );
 
-        if (errors) {
+        if (!(typeof isValidOrErrors === "boolean")) {
           // @TODO remove files
 
-          return response.status(HTTP.BAD_REQUEST).send(errors.format());
+          return response
+            .status(HTTP.BAD_REQUEST)
+            .send({ body: isValidOrErrors });
         }
       }
 
@@ -87,30 +96,32 @@ function setFieldsOrderValidation(form: IncomingForm, fieldsOrder: string[]) {
   });
 }
 
-async function runValidators<T>(
-  data: { files: IFormDataFile[]; fields: T },
-  validators: {
-    files?: ZodSchema;
-    fields?: ZodSchema;
+async function handleValidators<T>(
+  data: {
+    files: IFormDataFile[];
+    fields: T;
+  },
+  validators?: IFormValidators
+) {
+  if (!validators) {
+    return true;
   }
-): Promise<ZodError | null> {
-  const { fields, files } = data;
 
-  if (validators.fields) {
-    const result = await validators.fields.safeParseAsync(fields);
+  const { files, fields } = data;
 
-    if (!result.success) {
-      return result.error;
+  try {
+    if (validators.fields) {
+      await validators.fields.validate(fields);
     }
-  }
 
-  if (validators.files) {
-    const result = await validators.files.safeParseAsync(files);
-
-    if (!result.success) {
-      return result.error;
+    if (validators.files) {
+      await validators.files.validate(files);
     }
-  }
 
-  return null;
+    return true;
+  } catch (error) {
+    console.log(error);
+
+    return formatError(error);
+  }
 }
