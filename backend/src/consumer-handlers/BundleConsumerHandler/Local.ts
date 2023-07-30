@@ -47,7 +47,7 @@ export class LocalBundleConsumerHandler
   }
 
   async handle(data: BundleConsumerHandlerData): Promise<boolean> {
-    // @NOTE consider using zod here (?)
+    // @NOTE consider using yup here (?)
     const { workspaceId, bundle } = data;
 
     await this.bundleRepository.setStatus(bundle.id, BundleStatus.Building);
