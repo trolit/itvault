@@ -34,7 +34,7 @@ export class StatusController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(request: CustomRequest, response: Response) {
-    const { token } = request.cookies;
+    const { [JWT.COOKIE_KEY]: token } = request.cookies;
 
     if (!token) {
       return response.status(HTTP.FORBIDDEN).send();
