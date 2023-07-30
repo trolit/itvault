@@ -3,7 +3,7 @@ import { PaginatedResponse } from "miscellaneous-types";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    type Query = {
+    export type Query = {
       fileId: number;
 
       workspaceId: number;
