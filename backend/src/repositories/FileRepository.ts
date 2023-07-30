@@ -49,7 +49,10 @@ export class FileRepository
 
       const files = await transaction.manager.save(
         File,
-        temporaryFilesContainer
+        temporaryFilesContainer,
+        {
+          chunk: 1000,
+        }
       );
 
       await transaction.commitTransaction();

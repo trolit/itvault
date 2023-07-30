@@ -43,7 +43,6 @@ export class StoreController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    // @TODO chunk!!
     const result = await this._fileRepository.save(userId, workspaceId, files);
 
     if (!result.isSuccess) {
