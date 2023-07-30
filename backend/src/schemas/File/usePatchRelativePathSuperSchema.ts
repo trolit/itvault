@@ -2,6 +2,8 @@ import { object, string } from "yup";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { PatchRelativePathControllerTypes } from "types/controllers/File/PatchRelativePathController";
 
+import { FILES } from "@config";
+
 import { Di } from "@enums/Di";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
@@ -30,16 +32,15 @@ const bodySchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Body> =
           });
         }
 
-        if (value.split(".").length !== 2) {
+        if (value.split(FILES.ROOT).length !== 2) {
           return ctx.createError({
-            message:
-              "Relative path should only contain one root indicator (dot).",
+            message: `Relative path should only contain one root indicator '${FILES.ROOT}'.`,
           });
         }
 
-        if (value.includes("/") && !value.startsWith(".")) {
+        if (value.includes("/") && !value.startsWith(FILES.ROOT)) {
           return ctx.createError({
-            message: "Relative path should start with root indicator (dot).",
+            message: `Relative path should start with root indicator '${FILES.ROOT}'.`,
           });
         }
 
