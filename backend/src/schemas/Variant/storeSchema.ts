@@ -10,7 +10,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 
-export const storeSchema2: SuperSchemaElement<StoreControllerTypes.v1.Body> =
+export const storeSchema: SuperSchemaElement<StoreControllerTypes.v1.Body> =
   object({
     name: string()
       .required()
