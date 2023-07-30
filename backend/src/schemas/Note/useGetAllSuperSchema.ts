@@ -4,7 +4,7 @@ import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 
 import { Resource } from "@enums/Resource";
 
-import { pageSchema, perPageSchema } from "@schemas/common/paginationSchema";
+import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.QueryInput> =

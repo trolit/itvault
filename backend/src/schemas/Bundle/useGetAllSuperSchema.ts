@@ -5,7 +5,7 @@ import { GetAllControllerTypes } from "types/controllers/Bundle/GetAllController
 import { Di } from "@enums/Di";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
-import { pageSchema, perPageSchema } from "@schemas/common/paginationSchema";
+import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.QueryInput> =
