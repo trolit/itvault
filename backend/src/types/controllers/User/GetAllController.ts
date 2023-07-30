@@ -1,17 +1,15 @@
-import { User } from "@entities/User";
 import { UserMapDto } from "@dtos/mappers/UserMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
+import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    export type Body = Pick<User, "email" | "password">;
+    export type QueryInput = IPaginationQuery;
 
-    export type Request = CustomRequest<
-      undefined,
-      undefined,
-      IPaginationOptions
-    >;
+    export type QueryOutput = IPaginationOptions;
+
+    export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 
     export type Response = CustomResponse<PaginatedResponse<UserMapDto>>;
   }

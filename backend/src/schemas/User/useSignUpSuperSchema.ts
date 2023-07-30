@@ -1,43 +1,39 @@
-import { z } from "zod";
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { number, object, string } from "yup";
+import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { SignUpControllerTypes } from "types/controllers/User/SignUpController";
 
-import { SignUpDto } from "@dtos/SignUpDto";
-
-import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const useSignUpSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  () => {
-    return {
-      body: useBodySchema(),
-    };
-  }
-);
+const bodySchema: SuperSchemaElement<SignUpControllerTypes.v1.Body> = object({
+  id: number().required().integer(),
 
-function useBodySchema(): SchemaProvider {
-  return () =>
-    schemaForType<SignUpDto>()(
-      z.object({
-        id: z.number().gt(0),
+  email: string()
+    .trim()
+    .email()
+    .max(254)
+    .required()
+    .transform(value => value.toLowerCase()),
 
-        email: z
-          .string()
-          .email()
-          .max(254)
-          .transform(value => value.toLowerCase()),
+  signUpCode: string().required(),
 
-        signUpCode: z.string(),
+  password: string()
+    .required()
+    .min(7)
+    .matches(/[a-z]/, "At least one lowercase letter")
+    .matches(/[A-Z]/, "At least one uppercase letter")
+    .matches(/\d/, "At least one digit")
+    .matches(
+      /[*.!@#$%^&(){}[\]:;<>,.?/~_+-=|]/,
+      "At least one special character"
+    ),
+});
 
-        password: z
-          .string()
-          .min(7)
-          .regex(/[a-z]/, "At least one lowercase letter")
-          .regex(/[A-Z]/, "At least one uppercase letter")
-          .regex(/\d/, "At least one digit")
-          .regex(
-            /[*.!@#$%^&(){}[\]:;<>,.?/~_+-=|]/,
-            "At least one special character"
-          ),
-      })
-    );
-}
+export const useSignUpSuperSchema: SuperSchemaRunner<
+  void,
+  SignUpControllerTypes.v1.Body,
+  void
+> = defineSuperSchemaRunner(() => {
+  return {
+    body: bodySchema,
+  };
+});

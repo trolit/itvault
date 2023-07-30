@@ -1,13 +1,11 @@
 import { VariantMapDto } from "@dtos/mappers/VariantMapDto";
-import { PaginatedResponse } from "miscellaneous-types";
+import { PaginatedResponse, WorkspaceId } from "miscellaneous-types";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    type Query = {
+    export type Query = {
       fileId: number;
-
-      workspaceId: number;
-    };
+    } & WorkspaceId;
 
     export type Request = CustomRequest<undefined, undefined, Query>;
 

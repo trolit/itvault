@@ -14,7 +14,7 @@ declare module "miscellaneous-types" {
   }[keyof ObjectType & (string | number)];
 
   export type ControllerImplementation = {
-    version: number;
+    version: string;
 
     details?: {
       url?: string;
@@ -41,5 +41,11 @@ declare module "miscellaneous-types" {
       timeZone?: string;
       runOnInit?: boolean;
     };
+  };
+
+  // *******************************************************************
+
+  export type WorkspaceId = {
+    workspaceId: number;
   };
 }

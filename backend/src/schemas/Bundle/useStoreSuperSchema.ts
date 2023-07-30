@@ -1,5 +1,5 @@
-import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { array, number, object, string } from "yup";
+import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
@@ -10,69 +10,55 @@ import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-import { schemaForType } from "@schemas/common/schemaForType";
-import { baseWorkspaceSchemas } from "@schemas/Workspace/baseSchemas";
+import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { workspaceIdSchema } = baseWorkspaceSchemas;
+const querySchema: SuperSchemaElement<StoreControllerTypes.v1.Query> = object({
+  workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+});
 
-export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  () => {
-    return {
-      query: useQuerySchema(),
-      body: useBodySchema(),
-    };
-  }
-);
+const valueSchema: SuperSchemaElement<AddBundleDto> = object({
+  blueprintId: number().integer().required(),
+  variantIds: array().of(string().required()).required(),
+});
 
-function useQuerySchema(): SchemaProvider {
-  return () => workspaceIdSchema;
-}
+const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
+  note: string().optional(),
+  values: array()
+    .of(valueSchema)
+    .min(1)
+    .required()
+    .test(async (values: AddBundleDto[], ctx) => {
+      const bundleService = getInstanceOf<IBundleService>(Di.BundleService);
 
-function useBodySchema(): SchemaProvider {
-  const valueSchema = schemaForType<AddBundleDto>()(
-    z.object({
-      blueprintId: z.coerce.number(),
-      variantIds: z.array(z.string()),
-    })
-  );
+      // @NOTE use helper (?)
+      const uniqueVariantIds: string[] =
+        bundleService.getUniqueVariantIds(values);
 
-  const bodySchema = schemaForType<StoreControllerTypes.v1.Body>()(
-    z.object({
-      note: z.optional(z.string()),
-      expiration: z.nativeEnum(BundleExpire),
-      values: z
-        .array(valueSchema)
-        .min(1)
-        .superRefine(async (value: AddBundleDto[], context: RefinementCtx) => {
-          if (value.length <= 1) {
-            return Zod.NEVER;
-          }
+      const fileRepository = getInstanceOf<IFileRepository>(Di.FileRepository);
 
-          const bundleService = getInstanceOf<IBundleService>(Di.BundleService);
+      const file = await fileRepository.getOneWithMoreThanTwoVariants(
+        uniqueVariantIds
+      );
 
-          const uniqueVariantIds: string[] =
-            bundleService.getUniqueVariantIds(value);
+      if (file) {
+        return ctx.createError({
+          message: `File ${file.originalFilename} was selected with ${file.variants.length} different variants. To avoid conflicts, please update your configuration to use only one variant.`,
+        });
+      }
 
-          const fileRepository = getInstanceOf<IFileRepository>(
-            Di.FileRepository
-          );
+      return true;
+    }),
+  expiration: string().required().oneOf(Object.values(BundleExpire)),
+});
 
-          const file = await fileRepository.getOneWithMoreThanTwoVariants(
-            uniqueVariantIds
-          );
-
-          if (file) {
-            context.addIssue({
-              code: ZodIssueCode.custom,
-              message: `File ${file.originalFilename} was selected with ${file.variants.length} different variants. To avoid conflicts, please update your configuration to use only one variant.`,
-            });
-
-            return Zod.NEVER;
-          }
-        }),
-    })
-  );
-
-  return () => bodySchema;
-}
+export const useStoreSuperSchema: SuperSchemaRunner<
+  void,
+  StoreControllerTypes.v1.Body,
+  StoreControllerTypes.v1.Query
+> = defineSuperSchemaRunner(() => {
+  return {
+    query: querySchema,
+    body: bodySchema,
+  };
+});

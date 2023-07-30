@@ -1,14 +1,16 @@
-import { z, ZodSchema, ZodType } from "zod";
+import { Schema } from "yup";
 import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { SuperKeys, SuperSchemaRunner } from "super-schema-types";
+import { SuperKeys, SuperSchema, SuperSchemaRunner } from "super-schema-types";
 
-import { getVersionSchema } from "@schemas/common/getVersionSchema";
+import { formatError } from "@helpers/yup/formatError";
+
+import { useVersionSchema } from "@schemas/common/useVersionSchema";
 
 export const validateRequestWith = <P, B, Q>(
-  useSuperSchemaRunner: SuperSchemaRunner<CustomRequest<P, B, Q>>,
+  useSuperSchemaRunner: SuperSchemaRunner<P, B, Q>,
   data: {
-    versions: number[];
+    versions: string[];
   }
 ) => {
   return async (
@@ -20,93 +22,47 @@ export const validateRequestWith = <P, B, Q>(
       request,
     });
 
-    const versionSchema = getVersionSchema(data.versions);
-
-    const generalSchemasError = await runGeneralSchemasOnMissingKeys(
-      Object.keys(superSchema),
-      request,
-      {
-        versionSchema,
-      }
-    );
-
-    if (generalSchemasError) {
-      return response.status(HTTP.BAD_REQUEST).send({
-        general: generalSchemasError.format(),
-      });
-    }
+    includeGeneralQuerySchemas(superSchema, data);
 
     for (const key in superSchema) {
-      const propertyName = <keyof SuperKeys>key;
-
-      const useSchemaProvider = superSchema[propertyName];
-
-      if (!useSchemaProvider) {
-        return response
-          .status(HTTP.INTERNAL_SERVER_ERROR)
-          .send(`Super Schema incorrectly implements '${key}' schema.`);
-      }
-
-      const schema = await useSchemaProvider();
+      const schema = <Schema>superSchema[key as keyof SuperSchema];
 
       if (!schema) {
         return response
           .status(HTTP.INTERNAL_SERVER_ERROR)
-          .send(`Failed to load '${key}' schema.`);
+          .send(`Failed to load '${key}' schema!`);
       }
 
-      const extendedSchema = extendSchema(propertyName, schema, {
-        versionSchema,
-      });
+      const superKey = key as keyof SuperKeys;
 
-      const result = await extendedSchema.safeParseAsync(request[propertyName]);
+      try {
+        const parsedData = await schema.validate(request[superKey], {
+          abortEarly: false,
+          stripUnknown: true,
+        });
 
-      if (!result.success) {
+        // overwrites body with sanitized result
+        request[superKey as keyof SuperKeys] = parsedData;
+      } catch (error) {
         return response.status(HTTP.BAD_REQUEST).send({
-          [propertyName]: result.error.format(),
+          [superKey]: formatError(error),
         });
       }
-
-      // overwrites body with sanitized result
-      request[propertyName] = result.data;
     }
 
     next();
   };
 };
 
-async function runGeneralSchemasOnMissingKeys<P, B, Q>(
-  keys: string[],
-  request: CustomRequest<P, B, Q>,
-  schemas: {
-    versionSchema: ZodSchema;
-  }
+function includeGeneralQuerySchemas(
+  superSchema: SuperSchema,
+  data: { versions: string[] }
 ) {
-  if (!keys.includes("query")) {
-    const result = await schemas.versionSchema.safeParseAsync(request.query);
+  const querySchema = <Schema>superSchema["query" as keyof SuperSchema];
 
-    if (!result.success) {
-      return result.error;
-    }
+  const versionSchema = useVersionSchema(data.versions);
 
-    request.query = result.data;
-
-    return null;
-  }
-
-  return null;
-}
-
-function extendSchema(
-  key: keyof SuperKeys,
-  schema: ZodType,
-  schemas: {
-    versionSchema: ZodSchema;
-  }
-) {
-  if (key === "query") {
-    return z.intersection(schema, schemas.versionSchema);
-  }
-
-  return schema;
+  (superSchema as SuperSchema<unknown, unknown, 1>).query = querySchema
+    ? querySchema.concat(versionSchema)
+    : versionSchema;
 }

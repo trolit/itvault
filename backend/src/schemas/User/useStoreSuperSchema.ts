@@ -1,89 +1,59 @@
-import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { object, string } from "yup";
+import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { StoreControllerTypes } from "types/controllers/User/StoreController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import { AddEditUserDto } from "@dtos/AddEditUserDto";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-import { schemaForType } from "@schemas/common/schemaForType";
+import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  () => {
-    return {
-      body: useBodySchema(),
-    };
-  }
-);
+const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
+  email: string()
+    .email()
+    .max(254)
+    .required()
+    .transform(value => value.toLowerCase())
+    .test(async (value, ctx) => {
+      const userRepository = getInstanceOf<IUserRepository>(Di.UserRepository);
 
-function useBodySchema(): SchemaProvider {
-  return () =>
-    schemaForType<AddEditUserDto>()(
-      z.object({
-        email: z
-          .string()
-          .email()
-          .max(254)
-          .transform(value => value.toLowerCase())
-          .superRefine(async (value: string, context: RefinementCtx) => {
-            const userRepository = getInstanceOf<IUserRepository>(
-              Di.UserRepository
-            );
+      const user = await userRepository.getOne({
+        where: {
+          email: value,
+        },
+        withDeleted: true,
+      });
 
-            const user = await userRepository.getOne({
-              where: {
-                email: value,
-              },
-              withDeleted: true,
-            });
+      if (user) {
+        return ctx.createError({ message: "This email is not available." });
+      }
 
-            if (user) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "This email is already in the system.",
-              });
+      return true;
+    }),
 
-              return Zod.NEVER;
-            }
-          }),
+  firstName: string().required().min(2),
 
-        firstName: z.string().min(2),
+  lastName: string().required().min(2),
 
-        lastName: z.string().min(2),
+  roleId: useIdNumberSchema(Di.RoleRepository).test((value, ctx) => {
+    if (value === HEAD_ADMIN_ROLE_ID) {
+      return ctx.createError({ message: "This role is not assignable." });
+    }
 
-        roleId: z
-          .number()
-          .gt(0)
-          .superRefine(async (id: number, context: RefinementCtx) => {
-            if (id === HEAD_ADMIN_ROLE_ID) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "This role is not assignable.",
-              });
+    return true;
+  }),
+});
 
-              return Zod.NEVER;
-            }
-
-            const roleRepository = getInstanceOf<IRoleRepository>(
-              Di.RoleRepository
-            );
-
-            const role = await roleRepository.getById(id);
-
-            if (!role) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "This role is not available.",
-              });
-
-              return Zod.NEVER;
-            }
-          }),
-      })
-    );
-}
+export const useStoreSuperSchema: SuperSchemaRunner<
+  void,
+  StoreControllerTypes.v1.Body,
+  void
+> = defineSuperSchemaRunner(() => {
+  return {
+    body: bodySchema,
+  };
+});

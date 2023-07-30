@@ -2,11 +2,13 @@ import { AddEditRoleDto } from "@dtos/AddEditRoleDto";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {
-    type Params = {
+    export type Params = {
       id: number;
     };
 
-    export type Request = CustomRequest<Params, AddEditRoleDto>;
+    export type Body = AddEditRoleDto;
+
+    export type Request = CustomRequest<Params, Body>;
 
     export type Response = CustomResponse<string>;
   }

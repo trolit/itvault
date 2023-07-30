@@ -1,80 +1,95 @@
 import { In } from "typeorm";
 import uniqBy from "lodash/uniqBy";
-import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { array, number, object } from "yup";
+import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
 
 import { Di } from "@enums/Di";
 import { AddBucketDto } from "@dtos/AddBucketDto";
+import { BucketContent } from "miscellaneous-types";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-import { schemaForType } from "@schemas/common/schemaForType";
-import { baseVariantSchemas } from "@schemas/Variant/baseSchemas";
+import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { variantIdSchema } = baseVariantSchemas;
+const valueSchema: SuperSchemaElement<AddBucketDto> = object({
+  value: object<BucketContent>().test(
+    "has-valid-buckets",
+    () => "Buckets configuration is invalid!",
+    (data: BucketContent) => {
+      for (const [key, value] of Object.entries(data)) {
+        const parsedKey = parseInt(key);
 
-export const useStoreManySuperSchema: SuperSchemaRunner =
-  defineSuperSchemaRunner(() => {
-    return {
-      body: useBodySchema(),
-    };
-  });
+        if (!parsedKey) {
+          return false;
+        }
 
-function useBodySchema(): SchemaProvider {
-  const bucketSchema = schemaForType<AddBucketDto>()(
-    z.object({
-      value: z.record(z.coerce.number().gte(0), z.array(z.string())),
-      blueprintId: z.number(),
-    })
-  );
+        if (value.some(text => typeof text !== "string")) {
+          return false;
+        }
+      }
 
-  const valuesSchema = schemaForType<{ values: AddBucketDto[] }>()(
-    z.object({
-      values: z
-        .array(bucketSchema)
-        .superRefine((value: AddBucketDto[], context: RefinementCtx) => {
-          const uniqueValues = uniqBy(value, element => element.blueprintId);
+      return true;
+    }
+  ),
+  blueprintId: number().required(),
+});
 
-          if (uniqueValues.length !== value.length) {
-            context.addIssue({
-              code: ZodIssueCode.custom,
-              message:
-                "Buckets can't share blueprints. Use one bucket per one blueprint.",
-              fatal: true,
-            });
+const bodySchema: SuperSchemaElement<StoreManyControllerTypes.v1.Body> = object(
+  {
+    values: array()
+      .of(valueSchema)
+      .required()
+      .test(
+        "has-unique-blueprints",
+        () =>
+          "Buckets can't share blueprints. Use one bucket per one blueprint.",
+        (values: AddBucketDto[]) => {
+          const uniqueBlueprintIds = uniqBy(
+            values,
+            element => element.blueprintId
+          );
 
-            return Zod.NEVER;
-          }
-        })
-        .superRefine(async (value: AddBucketDto[], context: RefinementCtx) => {
+          return uniqueBlueprintIds.length === values.length;
+        }
+      )
+      .test(
+        "has-available-blueprints",
+        () => "One or more blueprints are not available.",
+        async (values: AddBucketDto[]) => {
           const blueprintRepository = getInstanceOf<IBlueprintRepository>(
             Di.BlueprintRepository
           );
 
-          const uniqueBlueprintIds = value.map(
+          const uniqueBlueprintIds = values.map(
             ({ blueprintId }) => blueprintId
           );
 
           const [blueprints] = await blueprintRepository.getAll({
+            select: {
+              id: true,
+            },
             where: {
               id: In(uniqueBlueprintIds),
             },
           });
 
-          if (blueprints.length !== value.length) {
-            context.addIssue({
-              code: ZodIssueCode.custom,
-              message:
-                "Failed to process request as one or more blueprints are not available.",
-            });
+          return blueprints.length === values.length;
+        }
+      ),
 
-            return Zod.NEVER;
-          }
-        }),
-    })
-  );
+    variantId: useIdStringSchema(Di.VariantRepository),
+  }
+);
 
-  return () => variantIdSchema.merge(valuesSchema);
-}
+export const useStoreManySuperSchema: SuperSchemaRunner<
+  void,
+  StoreManyControllerTypes.v1.Body,
+  void
+> = defineSuperSchemaRunner(() => {
+  return {
+    body: bodySchema,
+  };
+});

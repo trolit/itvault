@@ -11,7 +11,6 @@ import { UserToWorkspace } from "./UserToWorkspace";
 
 @Entity("users")
 export class User extends Base {
-  // @TODO editable only by head admin or configurable permission (?)
   @Column()
   email!: string;
 

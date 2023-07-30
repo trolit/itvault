@@ -1,91 +1,61 @@
-import Zod, { RefinementCtx, z, ZodIssueCode } from "zod";
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { object, string } from "yup";
+import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { PatchRelativePathControllerTypes } from "types/controllers/File/PatchRelativePathController";
+
+import { FILES } from "@config";
 
 import { Di } from "@enums/Di";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
-import { getInstanceOf } from "@helpers/getInstanceOf";
-
-import { schemaForType } from "@schemas/common/schemaForType";
+import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const usePatchRelativePathSuperSchema: SuperSchemaRunner =
-  defineSuperSchemaRunner(() => {
-    return {
-      body: useBodySchema(),
-      params: useParamsSchema(),
-    };
+const paramsSchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Params> =
+  object({
+    fileId: useIdNumberSchema(Di.FileRepository),
   });
 
-function useBodySchema(): SchemaProvider {
-  return () =>
-    schemaForType<{ relativePath: string }>()(
-      z.object({
-        relativePath: z
-          .string()
-          .trim()
-          .regex(/^[a-zA-Z0-9/._-]+$/)
-          .superRefine((value, context: RefinementCtx) => {
-            if (value.includes("//")) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "Double slash is forbidden.",
-              });
+const querySchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Query> =
+  object({
+    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+  });
 
-              return Zod.NEVER;
-            }
+const bodySchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Body> =
+  object({
+    relativePath: string()
+      .trim()
+      .required()
+      .matches(/^[a-zA-Z0-9/._-]+$/)
+      .test((value: string, ctx) => {
+        if (value.includes("//")) {
+          return ctx.createError({
+            message: "Double slash is forbidden.",
+          });
+        }
 
-            if (value.split(".").length !== 2) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message:
-                  "Relative path should only contain one root indicator (dot).",
-              });
+        if (value.split(FILES.ROOT).length !== 2) {
+          return ctx.createError({
+            message: `Relative path should only contain one root indicator '${FILES.ROOT}'.`,
+          });
+        }
 
-              return Zod.NEVER;
-            }
+        if (value.includes("/") && !value.startsWith(FILES.ROOT)) {
+          return ctx.createError({
+            message: `Relative path should start with root indicator '${FILES.ROOT}'.`,
+          });
+        }
 
-            if (value.includes("/") && !value.startsWith(".")) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message:
-                  "Relative path should start with root indicator (dot).",
-              });
+        return true;
+      }),
+  });
 
-              return Zod.NEVER;
-            }
-          }),
-      })
-    );
-}
-
-function useParamsSchema(): SchemaProvider {
-  return () =>
-    schemaForType<{ fileId: number }>()(
-      z.object({
-        fileId: z.coerce
-          .number()
-          .gt(0)
-          .superRefine(async (id, context: RefinementCtx) => {
-            if (id <= 0) {
-              return Zod.NEVER;
-            }
-
-            const fileRepository = getInstanceOf<IFileRepository>(
-              Di.FileRepository
-            );
-
-            const file = await fileRepository.getById(id);
-
-            if (!file) {
-              context.addIssue({
-                code: ZodIssueCode.custom,
-                message: "File is not available.",
-              });
-
-              return Zod.NEVER;
-            }
-          }),
-      })
-    );
-}
+export const usePatchRelativePathSuperSchema: SuperSchemaRunner<
+  PatchRelativePathControllerTypes.v1.Params,
+  PatchRelativePathControllerTypes.v1.Body,
+  PatchRelativePathControllerTypes.v1.Query
+> = defineSuperSchemaRunner(() => {
+  return {
+    query: querySchema,
+    params: paramsSchema,
+    body: bodySchema,
+  };
+});

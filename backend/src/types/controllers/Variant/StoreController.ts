@@ -1,3 +1,4 @@
+import { WorkspaceId } from "miscellaneous-types";
 import { VariantMapDto } from "@dtos/mappers/VariantMapDto";
 
 export namespace StoreControllerTypes {
@@ -10,9 +11,7 @@ export namespace StoreControllerTypes {
       variantId?: string;
     };
 
-    type Query = {
-      workspaceId: number;
-    };
+    type Query = WorkspaceId;
 
     export type Request = CustomRequest<undefined, Body, Query>;
 

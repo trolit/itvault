@@ -1,12 +1,12 @@
+import { WorkspaceId } from "miscellaneous-types";
+
 export namespace RequeueControllerTypes {
   export namespace v1 {
-    type Params = {
+    export type Params = {
       id: number;
     };
 
-    type Query = {
-      workspaceId: number;
-    };
+    export type Query = WorkspaceId;
 
     export type Request = CustomRequest<Params, undefined, Query>;
   }

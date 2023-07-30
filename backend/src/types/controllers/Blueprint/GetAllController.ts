@@ -1,15 +1,16 @@
 import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
+import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
-import { PaginatedResponse } from "miscellaneous-types";
+import { PaginatedResponse, WorkspaceId } from "miscellaneous-types";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    type Query = {
-      workspaceId: number;
-    } & IPaginationOptions;
+    export type QueryInput = WorkspaceId & IPaginationQuery;
 
-    export type Request = CustomRequest<undefined, undefined, Query>;
+    export type QueryOutput = WorkspaceId & IPaginationOptions;
+
+    export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 
     export type Response = CustomResponse<PaginatedResponse<BlueprintMapDto>>;
   }

@@ -1,10 +1,12 @@
 import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 
-import { getVersionSchema } from "@schemas/common/getVersionSchema";
+import { formatError } from "@helpers/yup/formatError";
+
+import { useVersionSchema } from "@schemas/common/useVersionSchema";
 
 // @NOTE do not mix with "validateRequestWith"
-export const requireEndpointVersion = <P, B, Q>(versions: number[]) => {
+export const requireEndpointVersion = <P, B, Q>(versions: string[]) => {
   return async (
     request: CustomRequest<P, B, Q>,
     response: Response,
@@ -14,17 +16,16 @@ export const requireEndpointVersion = <P, B, Q>(versions: number[]) => {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    const versionSchema = getVersionSchema(versions);
+    const versionSchema = useVersionSchema(versions);
 
-    const { version } = request.query;
-
-    const result = await versionSchema.safeParseAsync({ version });
-
-    if (!result.success) {
-      return response.status(HTTP.BAD_REQUEST).send(result.error.format());
+    try {
+      await versionSchema.validate(request.query, {
+        abortEarly: false,
+        stripUnknown: true,
+      });
+    } catch (error) {
+      return response.status(HTTP.BAD_REQUEST).send(formatError(error));
     }
-
-    request.query.version = result.data.version;
 
     next();
   };

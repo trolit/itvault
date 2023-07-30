@@ -1,32 +1,19 @@
-import { z } from "zod";
-import sanitizeHtml from "sanitize-html";
-import { SuperSchemaRunner, SchemaProvider } from "super-schema-types";
+import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { StoreControllerTypes } from "types/controllers/Note/StoreController";
 
-import { baseNoteSchemas } from "./baseSchemas";
-import { resourceSuperRefine } from "./resourceSuperRefine";
+import { addEditBodySchema } from "./addEditBodySchema";
 
-import { AddNoteDto } from "@dtos/AddNoteDto";
-
-import { schemaForType } from "@schemas/common/schemaForType";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const useStoreSuperSchema: SuperSchemaRunner = defineSuperSchemaRunner(
-  () => {
-    return {
-      body: useBodySchema(),
-    };
-  }
-);
+const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> =
+  addEditBodySchema;
 
-const { resourceSchema } = baseNoteSchemas;
-
-function useBodySchema(): SchemaProvider {
-  const textSchema = schemaForType<Pick<AddNoteDto, "text">>()(
-    z.object({
-      text: z.string().transform(value => sanitizeHtml(value)),
-    })
-  );
-
-  return () =>
-    resourceSchema.merge(textSchema).superRefine(resourceSuperRefine);
-}
+export const useStoreSuperSchema: SuperSchemaRunner<
+  void,
+  StoreControllerTypes.v1.Body,
+  void
+> = defineSuperSchemaRunner(() => {
+  return {
+    body: bodySchema,
+  };
+});
