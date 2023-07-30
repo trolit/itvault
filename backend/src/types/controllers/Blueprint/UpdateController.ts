@@ -1,3 +1,4 @@
+import { WorkspaceId } from "miscellaneous-types";
 import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 
 export namespace UpdateControllerTypes {
@@ -8,9 +9,7 @@ export namespace UpdateControllerTypes {
 
     export type Body = AddEditBlueprintDto;
 
-    export type Query = {
-      workspaceId: number;
-    };
+    export type Query = WorkspaceId;
 
     export type Request = CustomRequest<Params, Body, Query>;
   }

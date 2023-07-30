@@ -1,10 +1,9 @@
+import { WorkspaceId } from "miscellaneous-types";
 import { FileMapDto } from "@dtos/mappers/FileMapDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    type Query = {
-      workspaceId: number;
-    };
+    type Query = WorkspaceId;
 
     export type Request = CustomRequest<undefined, undefined, Query>;
 

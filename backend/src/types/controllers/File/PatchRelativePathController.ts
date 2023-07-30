@@ -1,3 +1,5 @@
+import { WorkspaceId } from "miscellaneous-types";
+
 export namespace PatchRelativePathControllerTypes {
   export namespace v1 {
     export type Params = {
@@ -8,9 +10,7 @@ export namespace PatchRelativePathControllerTypes {
       relativePath: string;
     };
 
-    export type Query = {
-      workspaceId: number;
-    };
+    export type Query = WorkspaceId;
 
     export type Request = CustomRequest<Params, Body, Query>;
   }

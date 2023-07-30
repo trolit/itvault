@@ -1,3 +1,4 @@
+import { WorkspaceId } from "miscellaneous-types";
 import { FileMapDto } from "@dtos/mappers/FileMapDto";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
@@ -8,9 +9,7 @@ export namespace GetAllControllerTypes {
       blueprintId?: number;
 
       relativePath?: string;
-
-      workspaceId: number;
-    };
+    } & WorkspaceId;
 
     export type QueryInput = QueryCommon & IPaginationQuery;
 

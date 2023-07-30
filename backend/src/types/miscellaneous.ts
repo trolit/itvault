@@ -42,4 +42,10 @@ declare module "miscellaneous-types" {
       runOnInit?: boolean;
     };
   };
+
+  // *******************************************************************
+
+  export type WorkspaceId = {
+    workspaceId: number;
+  };
 }

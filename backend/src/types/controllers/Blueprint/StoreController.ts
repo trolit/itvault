@@ -1,11 +1,10 @@
+import { WorkspaceId } from "miscellaneous-types";
 import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
 import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Query = {
-      workspaceId: number;
-    };
+    export type Query = WorkspaceId;
 
     export type Body = AddEditBlueprintDto;
 

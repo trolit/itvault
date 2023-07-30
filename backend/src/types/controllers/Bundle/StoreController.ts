@@ -1,4 +1,5 @@
 import { AddBundleDto } from "@dtos/AddBundleDto";
+import { WorkspaceId } from "miscellaneous-types";
 import { BundleExpire } from "@enums/BundleExpire";
 import { BundleMapDto } from "@dtos/mappers/BundleMapDto";
 
@@ -12,9 +13,7 @@ export namespace StoreControllerTypes {
       expiration: BundleExpire;
     };
 
-    export type Query = {
-      workspaceId: number;
-    };
+    export type Query = WorkspaceId;
 
     export type Request = CustomRequest<undefined, Body, Query>;
 
