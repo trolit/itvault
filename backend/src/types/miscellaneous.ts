@@ -14,7 +14,7 @@ declare module "miscellaneous-types" {
   }[keyof ObjectType & (string | number)];
 
   export type ControllerImplementation = {
-    version: number;
+    version: string;
 
     details?: {
       url?: string;
