@@ -9,10 +9,11 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
+import { useSoftDeleteSuperSchema } from "@schemas/File/useSoftDeleteSuperSchema";
 import { usePatchFilenameSuperSchema } from "@schemas/File/usePatchFilenameSuperSchema";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
@@ -67,7 +68,9 @@ filesRouter.patch(
 filesRouter.delete(
   "/:id",
   requirePermissions([Permission.DeleteFile]),
-  requireEndpointVersion(SoftDeleteController.ALL_VERSIONS),
+  validateRequestWith(useSoftDeleteSuperSchema, {
+    versions: SoftDeleteController.ALL_VERSIONS,
+  }),
   processRequestWith(SoftDeleteController)
 );
 

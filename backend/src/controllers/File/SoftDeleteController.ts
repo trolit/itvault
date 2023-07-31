@@ -1,8 +1,7 @@
 import { Response } from "express";
-import isInteger from "lodash/isInteger";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { SoftDeleteControllerTypes } from "types/controllers/SoftDeleteController";
+import { SoftDeleteControllerTypes } from "types/controllers/File/SoftDeleteController";
 
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
@@ -35,13 +34,7 @@ export class SoftDeleteController extends BaseController {
       params: { id },
     } = request;
 
-    const parsedId = parseInt(id);
-
-    if (!isInteger(parsedId)) {
-      return this.finalizeRequest(response, HTTP.NO_CONTENT);
-    }
-
-    await this._fileService.softDeleteFileAndVariants(parsedId);
+    await this._fileService.softDeleteFileAndVariants(id);
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }

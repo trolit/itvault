@@ -8,6 +8,7 @@ export const useIdNumberSchema = <T extends { id: number }>(
   number()
     .required()
     .integer()
+    .transform(value => parseInt(value))
     .isEntityAvailable<T>(
       repositoryName,
       value =>
