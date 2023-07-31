@@ -34,11 +34,6 @@ const REQUEUE_BUNDLE_PERMISSION: IPermissionDefinition = {
   name: "Requeue bundle",
 };
 
-const UPDATE_BUNDLE_PERMISSION: IPermissionDefinition = {
-  signature: Permission.UpdateBundle,
-  name: "Update bundle",
-};
-
 const DOWNLOAD_BUNDLE_PERMISSION: IPermissionDefinition = {
   signature: Permission.DownloadBundle,
   name: "Download bundle",
@@ -185,7 +180,6 @@ export const ALL_PERMISSIONS = [
 
   CREATE_BUNDLE_PERMISSION,
   REQUEUE_BUNDLE_PERMISSION,
-  UPDATE_BUNDLE_PERMISSION,
   DOWNLOAD_BUNDLE_PERMISSION,
 
   UPLOAD_FILES_PERMISSION,
