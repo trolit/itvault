@@ -58,10 +58,12 @@ export class LocalFileService implements IFileService {
     location: string,
     buffer: Buffer
   ): Promise<{ size: number } | null> {
-    try {
-      await fs.writeFile(path.join(location, filename), buffer);
+    const fullPath = path.join(location, filename);
 
-      const stats = await fs.stat(location);
+    try {
+      await fs.writeFile(fullPath, buffer);
+
+      const stats = await fs.stat(fullPath);
 
       return { size: stats.size };
     } catch (error) {
