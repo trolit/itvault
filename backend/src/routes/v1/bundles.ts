@@ -6,7 +6,6 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
-import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
@@ -22,7 +21,6 @@ import { DownloadController } from "@controllers/Bundle/DownloadController";
 const bundlesRouter = Router();
 
 bundlesRouter.use(requireWorkspaceAccess);
-bundlesRouter.use(IsWorkspaceAvailable);
 
 bundlesRouter.get(
   "",
