@@ -1,15 +1,25 @@
 import path from "path";
 import fs from "fs-extra";
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
 import { FILES } from "@config";
 
+import { BaseFileService } from "./BaseFileService";
+
+import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
-import { IFileService } from "@interfaces/services/IFileService";
+import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 @injectable()
-export class LocalFileService implements IFileService {
+export class LocalFileService extends BaseFileService {
+  constructor(
+    @inject(Di.FileRepository)
+    protected fileRepository: IFileRepository
+  ) {
+    super(fileRepository);
+  }
+
   async moveFilesFromTemporaryDir(
     workspaceId: number,
     formDataFiles: IFormDataFile[]
