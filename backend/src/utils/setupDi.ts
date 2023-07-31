@@ -9,7 +9,7 @@ import { FILES } from "@config/index";
 import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
-import { LocalFileService } from "@services/LocalFileService";
+import { LocalFileService } from "@services/FileService/LocalFileService";
 import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
 import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
@@ -36,7 +36,7 @@ export const setupDi = (
   registerDependenciesByInterfaces({
     sourceFiles: {
       dirname: "services",
-      excludedFilenames: ["LocalFileService"],
+      excludedFilenames: ["FileService"],
     },
     interfacesDirname: "services",
   });
