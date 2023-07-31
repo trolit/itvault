@@ -13,9 +13,9 @@ export enum Permission {
 
   /* FILE */
   UploadFiles = "FE-U",
-  UpdateFilename = "FE-UFN", // @TODO endpoint
+  UpdateFilename = "FE-UFN",
   UpdateFileRelativePath = "FE-CRPP",
-  DeleteFile = "FE-D", // @TODO endpoint
+  DeleteFile = "FE-D",
 
   /* NOTE */
   CreateNote = "NE-C",
