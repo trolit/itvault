@@ -17,6 +17,7 @@ export abstract class BaseFileService implements IBaseFileService {
     try {
       const file = await transaction.manager.findOneByOrFail(File, { id });
 
+      // @NOTE consider adding to each file name e.g. underscore to mark file as deleted?
       transaction.manager.softDelete(Variant, { file: { id: file.id } });
 
       await transaction.commitTransaction();
