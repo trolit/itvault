@@ -2,9 +2,12 @@ import { Router } from "express";
 
 import { FILES } from "@config";
 
+import { Permission } from "@enums/Permission";
+
 import { processRequestWith } from "@helpers/processRequestWith";
-import { validateRequestWith } from "@middleware/validateRequestWith";
+import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
+import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
@@ -37,6 +40,7 @@ variantsRouter.get(
 variantsRouter.post(
   "",
   requireEndpointVersion(StoreController.ALL_VERSIONS),
+  requirePermissions([Permission.CreateVariant]),
   IsWorkspaceAvailable,
   parseUploadFormData(
     {

@@ -9,7 +9,7 @@ export namespace GetAllControllerTypes {
 
     export type QueryOutput = IPaginationOptions;
 
-    export type Request = CustomRequest<undefined, undefined, QueryOutput>;
+    export type Request = CustomRequest<void, void, QueryOutput>;
 
     export type Response = CustomResponse<PaginatedResponse<RoleMapDto>>;
   }

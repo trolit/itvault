@@ -1,13 +1,16 @@
 import { Router } from "express";
 
+import { Permission } from "@enums/Permission";
+
 import { processRequestWith } from "@helpers/processRequestWith";
-import { transformPagination } from "@middleware/transformPagination";
+import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Note/useStoreSuperSchema";
-import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Note/useUpdateSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
 
 import { StoreController } from "@controllers/Note/StoreController";
 import { UpdateController } from "@controllers/Note/UpdateController";
@@ -27,6 +30,7 @@ notesRouter.get(
 
 notesRouter.post(
   "",
+  requirePermissions([Permission.CreateNote]),
   validateRequestWith(useStoreSuperSchema, {
     versions: StoreController.ALL_VERSIONS,
   }),

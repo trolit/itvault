@@ -34,6 +34,7 @@ usersRouter.get(
 usersRouter.post(
   "",
   requireAuthentication,
+  requirePermissions([Permission.CreateUser]),
   validateRequestWith(useStoreSuperSchema, {
     versions: StoreController.ALL_VERSIONS,
   }),

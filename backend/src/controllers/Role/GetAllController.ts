@@ -6,9 +6,12 @@ import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
+import { Permission } from "@enums/Permission";
 import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
+
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -54,5 +57,16 @@ export class GetAllController extends BaseController {
       result: mappedResult,
       total,
     });
+  }
+
+  static isMissingPermissions(
+    request: CustomRequest<void, void, GetAllControllerTypes.v1.QueryInput>
+  ) {
+    const { permissions } = request;
+
+    return (
+      !isPermissionEnabled(Permission.CreateRole, permissions) &&
+      !isPermissionEnabled(Permission.UpdateRole, permissions)
+    );
   }
 }

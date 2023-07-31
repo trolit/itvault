@@ -1,8 +1,11 @@
 import { Router } from "express";
 
+import { Permission } from "@enums/Permission";
+
 import { processRequestWith } from "@helpers/processRequestWith";
-import { transformPagination } from "@middleware/transformPagination";
+import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
@@ -32,12 +35,14 @@ bundlesRouter.get(
 
 bundlesRouter.get(
   "/:id",
+  requirePermissions([Permission.DownloadBundle]),
   requireEndpointVersion(DownloadController.ALL_VERSIONS),
   processRequestWith(DownloadController)
 );
 
 bundlesRouter.post(
   "",
+  requirePermissions([Permission.CreateBundle]),
   validateRequestWith(useStoreSuperSchema, {
     versions: StoreController.ALL_VERSIONS,
   }),
@@ -46,6 +51,7 @@ bundlesRouter.post(
 
 bundlesRouter.post(
   "/:id/requeue",
+  requirePermissions([Permission.RequeueBundle]),
   validateRequestWith(useRequeueSchema, {
     versions: RequeueController.ALL_VERSIONS,
   }),
