@@ -1,26 +1,46 @@
 export enum Permission {
-  /* ROLE */
-  ViewAllRoles = "RE-VAP",
-  CreateRole = "RE-CP",
-  UpdateRole = "RE-UP",
-
-  /* WORKSPACE */
-  ViewAllWorkspaces = "WE-VAP",
-  CreateWorkspace = "WE-CP",
-  UpdateWorkspace = "WE-UP",
-
   /* BLUEPRINT */
-  CreateBlueprint = "BT-CP",
+  CreateBlueprint = "BT-C",
+  UpdateBlueprint = "BT-U",
+  DeleteBlueprint = "BT-D",
+
+  /* BUNDLE */
+  CreateBundle = "BE-C",
+  RequeueBundle = "BE-R",
+  UpdateBundle = "BE-U", // @TODO endpoint
+  DownloadBundle = "BE-D",
+
+  /* FILE */
+  UploadFiles = "FE-U",
+  UpdateFilename = "FE-UFN", // @TODO endpoint
+  UpdateFileRelativePath = "FE-CRPP",
+  DeleteFile = "FE-D", // @TODO endpoint
+
+  /* NOTE */
+  CreateNote = "NE-C",
+  UpdateAnyNote = "NE-UA", // @TODO adjust validator
+  DeleteAnyNote = "NE-DA", // @TODO adjust validator
+  ViewDeletedNotes = "NE-VD", // @TODO adjust endpoint
+
+  /* ROLE */
+  CreateRole = "RE-C",
+  UpdateRole = "RE-U",
 
   /* USER */
   ViewAllUsers = "UR-VAP",
-  ChangeUserRole = "UR-CRP",
-  RestoreUserAccount = "UR-RAP",
-  DeactivateUserAccount = "UR-DAP",
+  CreateUser = "UR-C",
+  ChangeUserRole = "UR-CR",
+  RestoreUserAccount = "UR-RA",
+  DeactivateUserAccount = "UR-DA",
 
-  /* FILE */
-  UploadFiles = "FE-UP",
-  RemoveFile = "FE-RP",
-  UpdateFilename = "FE-UFNP",
-  UpdateFileRelativePath = "FE-CRPP",
+  /* VARIANTS */
+  CreateVariant = "VT-C", // @TODO
+  UpdateVariant = "VT-U", // @TODO
+  DeleteVariant = "VT-D", // @TODO
+  ManageVariantColoring = "VT-MC", // @TODO
+
+  /* WORKSPACE */
+  ViewAllWorkspaces = "WE-VA",
+  CreateWorkspace = "WE-C",
+  UpdateWorkspace = "WE-U",
 }
