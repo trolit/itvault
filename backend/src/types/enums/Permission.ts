@@ -7,8 +7,9 @@ export enum Permission {
   /* BUNDLE */
   CreateBundle = "BE-C",
   RequeueBundle = "BE-R",
-  UpdateBundle = "BE-U", // @TODO endpoint
   DownloadBundle = "BE-D",
+  // @NOTE consider PatchBundleNoteController
+  // @NOTE consider PatchBundleExpireController
 
   /* FILE */
   UploadFiles = "FE-U",
