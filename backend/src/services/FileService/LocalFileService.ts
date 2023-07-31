@@ -1,15 +1,25 @@
 import path from "path";
 import fs from "fs-extra";
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 
 import { FILES } from "@config";
 
+import { BaseFileService } from "./BaseFileService";
+
+import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
-import { IFileService } from "@interfaces/services/IFileService";
+import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 @injectable()
-export class LocalFileService implements IFileService {
+export class LocalFileService extends BaseFileService {
+  constructor(
+    @inject(Di.FileRepository)
+    protected fileRepository: IFileRepository
+  ) {
+    super(fileRepository);
+  }
+
   async moveFilesFromTemporaryDir(
     workspaceId: number,
     formDataFiles: IFormDataFile[]
@@ -58,10 +68,12 @@ export class LocalFileService implements IFileService {
     location: string,
     buffer: Buffer
   ): Promise<{ size: number } | null> {
-    try {
-      await fs.writeFile(path.join(location, filename), buffer);
+    const fullPath = path.join(location, filename);
 
-      const stats = await fs.stat(location);
+    try {
+      await fs.writeFile(fullPath, buffer);
+
+      const stats = await fs.stat(fullPath);
 
       return { size: stats.size };
     } catch (error) {

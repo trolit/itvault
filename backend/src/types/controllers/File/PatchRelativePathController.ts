@@ -3,7 +3,7 @@ import { WorkspaceId } from "miscellaneous-types";
 export namespace PatchRelativePathControllerTypes {
   export namespace v1 {
     export type Params = {
-      fileId: number;
+      id: number;
     };
 
     export type Body = {

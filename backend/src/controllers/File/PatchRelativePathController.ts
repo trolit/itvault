@@ -34,13 +34,13 @@ export class PatchRelativePathController extends BaseController {
     response: Response
   ) {
     const {
-      params: { fileId },
+      params: { id },
       body: { relativePath },
     } = request;
 
     await this._fileRepository.primitiveUpdate(
       {
-        id: fileId,
+        id,
       },
       { relativePath }
     );

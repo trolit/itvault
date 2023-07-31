@@ -13,11 +13,13 @@ import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
+import { useSoftDeleteSuperSchema } from "@schemas/File/useSoftDeleteSuperSchema";
 import { usePatchFilenameSuperSchema } from "@schemas/File/usePatchFilenameSuperSchema";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
 import { StoreController } from "@controllers/File/StoreController";
 import { GetAllController } from "@controllers/File/GetAllController";
+import { SoftDeleteController } from "@controllers/File/SoftDeleteController";
 import { PatchFilenameController } from "@controllers/File/PatchFilenameController";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
 
@@ -46,7 +48,7 @@ filesRouter.post(
 );
 
 filesRouter.patch(
-  "/:fileId/relative-path",
+  "/:id/relative-path",
   requirePermissions([Permission.UpdateFileRelativePath]),
   validateRequestWith(usePatchRelativePathSuperSchema, {
     versions: PatchRelativePathController.ALL_VERSIONS,
@@ -55,12 +57,21 @@ filesRouter.patch(
 );
 
 filesRouter.patch(
-  "/:fileId/filename",
+  "/:id/filename",
   requirePermissions([Permission.UpdateFilename]),
   validateRequestWith(usePatchFilenameSuperSchema, {
     versions: PatchFilenameController.ALL_VERSIONS,
   }),
   processRequestWith(PatchFilenameController)
+);
+
+filesRouter.delete(
+  "/:id",
+  requirePermissions([Permission.DeleteFile]),
+  validateRequestWith(useSoftDeleteSuperSchema, {
+    versions: SoftDeleteController.ALL_VERSIONS,
+  }),
+  processRequestWith(SoftDeleteController)
 );
 
 export = filesRouter;

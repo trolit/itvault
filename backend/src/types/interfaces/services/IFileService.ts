@@ -1,7 +1,8 @@
 import { Variant } from "@entities/Variant";
+import { IBaseFileService } from "./IBaseFileService";
 import { IFormDataFile } from "@interfaces/IFormDataFile";
 
-export interface IFileService {
+export interface IFileService extends IBaseFileService {
   moveFilesFromTemporaryDir(
     workspaceId: number,
     formDataFiles: IFormDataFile[]
