@@ -11,7 +11,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const paramsSchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Params> =
   object({
-    fileId: useIdNumberSchema(Di.FileRepository),
+    id: useIdNumberSchema(Di.FileRepository),
   });
 
 const querySchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Query> =

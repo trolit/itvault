@@ -12,7 +12,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const paramsSchema: SuperSchemaElement<PatchFilenameControllerTypes.v1.Params> =
   object({
-    fileId: useIdNumberSchema(Di.FileRepository),
+    id: useIdNumberSchema(Di.FileRepository),
   });
 
 const querySchema: SuperSchemaElement<PatchFilenameControllerTypes.v1.Query> =
@@ -71,13 +71,13 @@ export const usePatchFilenameSuperSchema: SuperSchemaRunner<
   PatchFilenameControllerTypes.v1.Query
 > = defineSuperSchemaRunner(({ request }) => {
   const {
-    params: { fileId },
+    params: { id },
     query: { workspaceId },
   } = request;
 
   return {
     query: querySchema,
     params: paramsSchema,
-    body: useBodySchema(fileId, workspaceId),
+    body: useBodySchema(id, workspaceId),
   };
 });

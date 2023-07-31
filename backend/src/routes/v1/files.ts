@@ -47,7 +47,7 @@ filesRouter.post(
 );
 
 filesRouter.patch(
-  "/:fileId/relative-path",
+  "/:id/relative-path",
   requirePermissions([Permission.UpdateFileRelativePath]),
   validateRequestWith(usePatchRelativePathSuperSchema, {
     versions: PatchRelativePathController.ALL_VERSIONS,
@@ -56,7 +56,7 @@ filesRouter.patch(
 );
 
 filesRouter.patch(
-  "/:fileId/filename",
+  "/:id/filename",
   requirePermissions([Permission.UpdateFilename]),
   validateRequestWith(usePatchFilenameSuperSchema, {
     versions: PatchFilenameController.ALL_VERSIONS,

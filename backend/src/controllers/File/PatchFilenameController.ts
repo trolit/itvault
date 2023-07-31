@@ -34,13 +34,13 @@ export class PatchFilenameController extends BaseController {
     response: Response
   ) {
     const {
-      params: { fileId },
+      params: { id },
       body: { filename },
     } = request;
 
     await this._fileRepository.primitiveUpdate(
       {
-        id: fileId,
+        id,
       },
       { originalFilename: filename }
     );
