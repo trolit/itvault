@@ -1,6 +1,6 @@
 import { WorkspaceId } from "miscellaneous-types";
 
-export namespace PatchOriginalFilenameControllerTypes {
+export namespace PatchFilenameControllerTypes {
   export namespace v1 {
     export type Params = {
       fileId: number;

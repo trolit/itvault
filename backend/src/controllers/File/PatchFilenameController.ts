@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { PatchOriginalFilenameControllerTypes } from "types/controllers/File/PatchOriginalFilenameController";
+import { PatchFilenameControllerTypes } from "types/controllers/File/PatchFilenameController";
 
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
@@ -12,7 +12,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class PatchOriginalFilenameController extends BaseController {
+export class PatchFilenameController extends BaseController {
   constructor(
     @inject(Di.FileRepository)
     private _fileRepository: IFileRepository
@@ -30,7 +30,7 @@ export class PatchOriginalFilenameController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: PatchOriginalFilenameControllerTypes.v1.Request,
+    request: PatchFilenameControllerTypes.v1.Request,
     response: Response
   ) {
     const {
