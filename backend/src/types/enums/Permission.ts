@@ -34,10 +34,10 @@ export enum Permission {
   DeactivateUserAccount = "UR-DA",
 
   /* VARIANTS */
-  CreateVariant = "VT-C", // @TODO
+  CreateVariant = "VT-C",
   UpdateVariant = "VT-U", // @TODO
   DeleteVariant = "VT-D", // @TODO
-  ManageVariantColoring = "VT-MC", // @TODO
+  ManageVariantColoring = "VT-MC",
 
   /* WORKSPACE */
   ViewAllWorkspaces = "WE-VA",

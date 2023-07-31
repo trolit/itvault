@@ -20,10 +20,9 @@ const rolesRouter = Router();
 
 rolesRouter.use(requireAuthentication);
 
-rolesRouter.use(requirePermissions([Permission.ViewAllRoles]));
-
 rolesRouter.get(
   "",
+  requirePermissions(GetAllController.isMissingPermissions),
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
@@ -33,6 +32,7 @@ rolesRouter.get(
 
 rolesRouter.post(
   "",
+  requirePermissions([Permission.CreateRole]),
   validateRequestWith(useStoreSuperSchema, {
     versions: StoreController.ALL_VERSIONS,
   }),
