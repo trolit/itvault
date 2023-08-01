@@ -14,10 +14,13 @@ import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { storeSchema } from "@schemas/Variant/storeSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
+import { usePatchNameSuperSchema } from "@schemas/Variant/usePatchNameSuperSchema";
 
 import { StoreController } from "@controllers/Variant/StoreController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
+import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { GetByIdController } from "@controllers/Variant/GetByIdController";
+import { PatchNameController } from "@controllers/Variant/PatchNameController";
 
 const variantsRouter = Router();
 
@@ -39,8 +42,8 @@ variantsRouter.get(
 
 variantsRouter.post(
   "",
-  requireEndpointVersion(StoreController.ALL_VERSIONS),
   requirePermissions([Permission.CreateVariant]),
+  requireEndpointVersion(StoreController.ALL_VERSIONS),
   IsWorkspaceAvailable,
   parseUploadFormData(
     {
@@ -53,6 +56,22 @@ variantsRouter.post(
     }
   ),
   processRequestWith(StoreController)
+);
+
+variantsRouter.delete(
+  "/:id",
+  requirePermissions([Permission.DeleteVariant]),
+  requireEndpointVersion(SoftDeleteController.ALL_VERSIONS),
+  processRequestWith(SoftDeleteController)
+);
+
+variantsRouter.put(
+  "/:id/name",
+  requirePermissions([Permission.UpdateVariantName]),
+  validateRequestWith(usePatchNameSuperSchema, {
+    versions: PatchNameController.ALL_VERSIONS,
+  }),
+  processRequestWith(PatchNameController)
 );
 
 export = variantsRouter;

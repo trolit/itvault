@@ -36,8 +36,8 @@ export enum Permission {
 
   /* VARIANTS */
   CreateVariant = "VT-C",
-  UpdateVariant = "VT-U", // @TODO
-  DeleteVariant = "VT-D", // @TODO
+  DeleteVariant = "VT-D",
+  UpdateVariantName = "VT-UN",
   ManageVariantColoring = "VT-MC",
 
   /* WORKSPACE */

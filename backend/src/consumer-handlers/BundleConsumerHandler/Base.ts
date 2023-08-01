@@ -2,14 +2,16 @@ import path from "path";
 import JSZip from "jszip";
 import { In } from "typeorm";
 
-import { Bundle } from "@entities/Bundle";
+import { FILES } from "@config/index";
+
 import { Bucket } from "@entities/Bucket";
+import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
+import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 export abstract class BaseBundleConsumerHandler {
   constructor(
@@ -158,9 +160,9 @@ export abstract class BaseBundleConsumerHandler {
       const data = this._generateData(fileContent, buckets);
 
       const absolutePath =
-        file.relativePath === "."
+        file.relativePath === FILES.ROOT
           ? file.originalFilename
-          : file.relativePath.slice(2); // @NOTE ./src -> src
+          : file.relativePath.slice(2); // @NOTE e.g. ./src -> src
 
       jszip.file(path.join(absolutePath, file.originalFilename), data);
     }

@@ -10,13 +10,13 @@ export {};
 declare global {
   namespace Express {
     export interface Request {
-      // @NOTE --- available only after `requireAuthentication` middleware
+      // @NOTE -> available only after `requireAuthentication`
       userId: number;
 
-      // @NOTE --- available only after `requireAuthentication` middleware
+      // @NOTE -> available only after `requireAuthentication`
       permissions: RequestPermissions;
 
-      // @NOTE --- available only after `parseWorkspaceFormData` middleware
+      // @NOTE -> available only after `parseWorkspaceFormData`
       files: IFormDataFile[];
     }
   }

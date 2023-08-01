@@ -139,14 +139,14 @@ const CREATE_VARIANT_PERMISSION: IPermissionDefinition = {
   name: "Create variant",
 };
 
-const UPDATE_VARIANT_PERMISSION: IPermissionDefinition = {
-  signature: Permission.UpdateVariant,
-  name: "Update variant",
-};
-
 const DELETE_VARIANT_PERMISSION: IPermissionDefinition = {
   signature: Permission.DeleteVariant,
   name: "Delete variant",
+};
+
+const UPDATE_VARIANT_NAME: IPermissionDefinition = {
+  signature: Permission.UpdateVariantName,
+  name: "Update variant name",
 };
 
 const MANAGE_VARIANT_COLORING_PERMISSION: IPermissionDefinition = {
@@ -202,8 +202,8 @@ export const ALL_PERMISSIONS = [
   DEACTIVATE_USER_ACCOUNT_PERMISSION,
 
   CREATE_VARIANT_PERMISSION,
-  UPDATE_VARIANT_PERMISSION,
   DELETE_VARIANT_PERMISSION,
+  UPDATE_VARIANT_NAME,
   MANAGE_VARIANT_COLORING_PERMISSION,
 
   VIEW_ALL_WORKSPACES_PERMISSION,
