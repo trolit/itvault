@@ -19,9 +19,9 @@ export enum Permission {
 
   /* NOTE */
   CreateNote = "NE-C",
-  UpdateAnyNote = "NE-UA", // @TODO adjust validator
-  DeleteAnyNote = "NE-DA", // @TODO adjust validator
-  ViewDeletedNotes = "NE-VD", // @TODO adjust endpoint
+  UpdateAnyNote = "NE-UA",
+  DeleteAnyNote = "NE-DA",
+  ViewDeletedNotes = "NE-VD",
 
   /* ROLE */
   CreateRole = "RE-C",
