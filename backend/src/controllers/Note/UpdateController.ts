@@ -4,8 +4,11 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
 
 import { Di } from "@enums/Di";
+import { Permission } from "@enums/Permission";
 import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
+
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -32,6 +35,7 @@ export class UpdateController extends BaseController {
   async v1(request: UpdateControllerTypes.v1.Request, response: Response) {
     const {
       userId,
+      permissions,
       params: { id },
       body: { text },
     } = request;
@@ -40,7 +44,9 @@ export class UpdateController extends BaseController {
       where: {
         id,
         createdBy: {
-          id: userId,
+          id: isPermissionEnabled(Permission.UpdateAnyNote, permissions)
+            ? undefined
+            : userId,
         },
       },
     });
