@@ -1,4 +1,5 @@
 import { Response } from "express";
+import isInteger from "lodash/isInteger";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { SoftDeleteControllerTypes } from "types/controllers/SoftDeleteController";
@@ -41,8 +42,8 @@ export class SoftDeleteController extends BaseController {
 
     const parsedId = parseInt(id);
 
-    if (isNaN(parsedId)) {
-      return response.sendStatus(HTTP.NO_CONTENT);
+    if (!isInteger(id) || isNaN(parsedId)) {
+      return response.sendStatus(HTTP.BAD_REQUEST);
     }
 
     const note = await this._noteRepository.getOne({
@@ -55,7 +56,7 @@ export class SoftDeleteController extends BaseController {
     });
 
     if (!note) {
-      return this.finalizeRequest(response, HTTP.NO_CONTENT);
+      return response.sendStatus(HTTP.NO_CONTENT);
     }
 
     if (
