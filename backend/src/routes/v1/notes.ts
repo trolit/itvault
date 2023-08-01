@@ -15,7 +15,7 @@ import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
 import { StoreController } from "@controllers/Note/StoreController";
 import { UpdateController } from "@controllers/Note/UpdateController";
 import { GetAllController } from "@controllers/Note/GetAllController";
-import { SoftDeleteController } from "@controllers/SoftDeleteController";
+import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
 
 const notesRouter = Router();
 

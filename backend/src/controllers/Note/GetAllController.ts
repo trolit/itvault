@@ -3,10 +3,12 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 
 import { Di } from "@enums/Di";
+import { Permission } from "@enums/Permission";
 import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
+import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 
 import { BaseController } from "@controllers/BaseController";
@@ -36,6 +38,7 @@ export class GetAllController extends BaseController {
     response: GetAllControllerTypes.v1.Response
   ) {
     const {
+      permissions,
       query: { id, resource, skip, take },
     } = request;
 
@@ -63,6 +66,10 @@ export class GetAllController extends BaseController {
         createdBy: true,
         updatedBy: true,
       },
+      withDeleted: isPermissionEnabled(
+        Permission.ViewDeletedNotes,
+        permissions
+      ),
     });
 
     const mappedResult = this.mapper.mapToDto(result, NoteMapDto);

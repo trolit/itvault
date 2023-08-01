@@ -1,7 +1,8 @@
 import { Response } from "express";
+import isInteger from "lodash/isInteger";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
+import { SoftDeleteControllerTypes } from "types/controllers/SoftDeleteController";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
@@ -15,7 +16,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class UpdateController extends BaseController {
+export class SoftDeleteController extends BaseController {
   constructor(
     @inject(Di.NoteRepository)
     private _noteRepository: INoteRepository
@@ -32,37 +33,40 @@ export class UpdateController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
-  async v1(request: UpdateControllerTypes.v1.Request, response: Response) {
+  async v1(request: SoftDeleteControllerTypes.v1.Request, response: Response) {
     const {
       userId,
       permissions,
       params: { id },
-      body: { text },
     } = request;
+
+    const parsedId = parseInt(id);
+
+    if (!isInteger(id) || isNaN(parsedId)) {
+      return response.sendStatus(HTTP.BAD_REQUEST);
+    }
 
     const note = await this._noteRepository.getOne({
       where: {
-        id,
-        createdBy: {
-          id: isPermissionEnabled(Permission.UpdateAnyNote, permissions)
-            ? undefined
-            : userId,
-        },
+        id: parsedId,
+      },
+      relations: {
+        createdBy: true,
       },
     });
 
     if (!note) {
-      return response.status(HTTP.NOT_FOUND).send();
+      return response.sendStatus(HTTP.NO_CONTENT);
     }
 
-    const isUpdated = await this._noteRepository.primitiveUpdate(
-      { id },
-      { value: text }
-    );
-
-    if (!isUpdated?.affected) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
+    if (
+      note.createdBy.id !== userId &&
+      !isPermissionEnabled(Permission.DeleteAnyNote, permissions)
+    ) {
+      return response.sendStatus(HTTP.FORBIDDEN);
     }
+
+    await this._noteRepository.softDeleteEntity(note);
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }

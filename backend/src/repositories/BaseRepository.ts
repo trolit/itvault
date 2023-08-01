@@ -55,11 +55,11 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.findOneBy({ id } as FindOptionsWhere<T>);
   }
 
-  softDeleteById(id: number | string): Promise<UpdateResult> {
-    return this.database.softDelete({ id } as FindOptionsWhere<T>);
+  softDelete(options: FindOptionsWhere<T>): Promise<UpdateResult> {
+    return this.database.softDelete(options);
   }
 
-  softRemoveEntity(entity: T): Promise<T> {
+  softDeleteEntity(entity: T): Promise<T> {
     return this.database.softRemove(entity);
   }
 

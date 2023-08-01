@@ -1,6 +1,6 @@
 export namespace SoftDeleteControllerTypes {
   export namespace v1 {
-    type Params = {
+    export type Params = {
       id: string;
     };
 
