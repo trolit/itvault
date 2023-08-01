@@ -9,13 +9,14 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { storeSchema } from "@schemas/Variant/storeSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 
 import { StoreController } from "@controllers/Variant/StoreController";
+import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
 import { GetByIdController } from "@controllers/Variant/GetByIdController";
 
@@ -53,6 +54,12 @@ variantsRouter.post(
     }
   ),
   processRequestWith(StoreController)
+);
+
+variantsRouter.delete(
+  "/:id",
+  requireEndpointVersion(SoftDeleteController.ALL_VERSIONS),
+  processRequestWith(SoftDeleteController)
 );
 
 export = variantsRouter;
