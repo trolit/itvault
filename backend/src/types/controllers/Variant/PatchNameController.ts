@@ -10,7 +10,7 @@ export namespace PatchNameControllerTypes {
       name: string;
     };
 
-    export type Query = WorkspaceId;
+    export type Query = { fileId: number } & WorkspaceId;
 
     export type Request = CustomRequest<Params, Body, Query>;
   }
