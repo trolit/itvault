@@ -42,7 +42,7 @@ export class SoftDeleteController extends BaseController {
     const parsedId = parseInt(id);
 
     if (isNaN(parsedId)) {
-      return response.status(HTTP.NO_CONTENT).send();
+      return this.finalizeRequest(response, HTTP.NO_CONTENT);
     }
 
     const note = await this._noteRepository.getOne({
@@ -57,7 +57,7 @@ export class SoftDeleteController extends BaseController {
     });
 
     if (!note) {
-      return response.status(HTTP.NO_CONTENT).send();
+      return this.finalizeRequest(response, HTTP.NO_CONTENT);
     }
 
     await this._noteRepository.softRemoveEntity(note);
