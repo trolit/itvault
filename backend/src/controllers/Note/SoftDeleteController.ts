@@ -42,17 +42,15 @@ export class SoftDeleteController extends BaseController {
     const parsedId = parseInt(id);
 
     if (isNaN(parsedId)) {
-      return this.finalizeRequest(response, HTTP.NO_CONTENT);
+      return response.sendStatus(HTTP.NO_CONTENT);
     }
 
     const note = await this._noteRepository.getOne({
       where: {
         id: parsedId,
-        createdBy: {
-          id: isPermissionEnabled(Permission.DeleteAnyNote, permissions)
-            ? undefined
-            : userId,
-        },
+      },
+      relations: {
+        createdBy: true,
       },
     });
 
@@ -60,7 +58,14 @@ export class SoftDeleteController extends BaseController {
       return this.finalizeRequest(response, HTTP.NO_CONTENT);
     }
 
-    await this._noteRepository.softRemoveEntity(note);
+    if (
+      note.createdBy.id !== userId &&
+      !isPermissionEnabled(Permission.DeleteAnyNote, permissions)
+    ) {
+      return response.sendStatus(HTTP.FORBIDDEN);
+    }
+
+    await this._noteRepository.softDeleteEntity(note);
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
