@@ -22,6 +22,7 @@ export enum Permission {
   UpdateAnyNote = "NE-UA",
   DeleteAnyNote = "NE-DA",
   ViewDeletedNotes = "NE-VD",
+  ViewUserNotes = "NE-VU",
 
   /* ROLE */
   CreateRole = "RE-C",
