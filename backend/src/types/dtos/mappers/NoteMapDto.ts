@@ -4,6 +4,7 @@ import { BaseMapDto } from "./BaseMapDto";
 export class NoteMapDto extends BaseMapDto<Note> {
   createdBy: string;
   updatedBy: string;
+  isDeleted: boolean;
 
   constructor(
     data: Note,
@@ -11,10 +12,11 @@ export class NoteMapDto extends BaseMapDto<Note> {
   ) {
     super(data, keys);
 
-    const { createdBy, updatedBy } = data;
+    const { createdBy, updatedBy, deletedAt } = data;
 
     this.createdBy = createdBy.fullName;
     this.updatedBy = updatedBy.fullName;
+    this.isDeleted = !!deletedAt;
 
     return this;
   }
