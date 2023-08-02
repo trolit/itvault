@@ -4,14 +4,15 @@ import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
+import { AddBundleDto } from "@dtos/AddBundleDto";
 import { BundleStatus } from "@enums/BundleStatus";
 import { BundleMapDto } from "@dtos/mappers/BundleMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
-import { IBundleService } from "@interfaces/services/IBundleService";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 import { sendToQueue } from "@helpers/sendToQueue";
+import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -21,9 +22,7 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class StoreController extends BaseController {
   constructor(
     @inject(Di.BundleRepository)
-    private _bundleRepository: IBundleRepository,
-    @inject(Di.BundleService)
-    private _bundleService: IBundleService
+    private _bundleRepository: IBundleRepository
   ) {
     super();
   }
@@ -47,7 +46,10 @@ export class StoreController extends BaseController {
       body: { values, note, expiration },
     } = request;
 
-    const variantIds = this._bundleService.getUniqueVariantIds(values);
+    const variantIds = getUniqueValuesFromCollection<AddBundleDto, string>(
+      values,
+      "variantIds"
+    );
 
     const bundle = await this._bundleRepository.primitiveSave({
       note,

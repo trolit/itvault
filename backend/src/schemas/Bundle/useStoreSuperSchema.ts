@@ -29,7 +29,7 @@ const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
     .min(1)
     .required()
     .test(async (values: AddBundleDto[], ctx) => {
-      const uniqueVariantIds: string[] = getUniqueValuesFromCollection<
+      const uniqueVariantIds = getUniqueValuesFromCollection<
         AddBundleDto,
         string
       >(values, "variantIds");
