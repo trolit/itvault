@@ -6,7 +6,9 @@ import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    type QueryCommon = Pick<AddEditNoteDto, "id" | "resource">;
+    type QueryCommon = Pick<AddEditNoteDto, "id" | "resource"> & {
+      userId?: number;
+    };
 
     export type QueryInput = QueryCommon & IPaginationQuery;
 

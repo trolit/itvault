@@ -11,6 +11,7 @@ const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.QueryInput> =
   object({
     page: pageSchema,
     perPage: perPageSchema,
+    userId: number().optional(),
     id: number().required().integer(),
     resource: string().required().oneOf([Resource.File]),
   });
