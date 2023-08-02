@@ -1,6 +1,6 @@
-import { FindOptionsWhere } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { FindOptionsSelect, FindOptionsWhere } from "typeorm";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 
 import { Di } from "@enums/Di";
@@ -35,13 +35,28 @@ export class GetAllController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
+  private get _select(): FindOptionsSelect<Note> {
+    return {
+      id: true,
+      value: true,
+      createdAt: true,
+      updatedAt: true,
+      createdBy: {
+        fullName: true,
+      },
+      updatedBy: {
+        fullName: true,
+      },
+    };
+  }
+
   async v1(
     request: GetAllControllerTypes.v1.Request,
     response: GetAllControllerTypes.v1.Response
   ) {
     const {
       permissions,
-      query: { id, resource, skip, take, userId },
+      query: { id, resource, skip, take },
     } = request;
 
     const entityReference = resourceToEntityReference(resource, id);
@@ -50,29 +65,8 @@ export class GetAllController extends BaseController {
       ...entityReference,
     };
 
-    if (userId && !isPermissionEnabled(Permission.ViewUserNotes, permissions)) {
-      return response.status(HTTP.FORBIDDEN).send();
-    }
-
-    if (userId) {
-      where.createdBy = {
-        id: userId,
-      };
-    }
-
     const [result, total] = await this._noteRepository.getAll({
-      select: {
-        id: true,
-        value: true,
-        createdAt: true,
-        updatedAt: true,
-        createdBy: {
-          fullName: true,
-        },
-        updatedBy: {
-          fullName: true,
-        },
-      },
+      select: this._select,
       skip,
       take,
       where,
