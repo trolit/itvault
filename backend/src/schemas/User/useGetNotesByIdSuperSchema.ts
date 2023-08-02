@@ -2,7 +2,7 @@ import { number, object } from "yup";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { GetNotesByIdControllerTypes } from "types/controllers/User/GetNotesByIdController";
 
-import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
+import { pageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const paramsSchema: SuperSchemaElement<GetNotesByIdControllerTypes.v1.Params> =
@@ -15,7 +15,6 @@ const paramsSchema: SuperSchemaElement<GetNotesByIdControllerTypes.v1.Params> =
 const querySchema: SuperSchemaElement<GetNotesByIdControllerTypes.v1.QueryInput> =
   object({
     page: pageSchema,
-    perPage: perPageSchema,
   });
 
 export const useGetNotesByIdSuperSchema: SuperSchemaRunner<

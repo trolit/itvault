@@ -7,7 +7,7 @@ export namespace GetNotesByIdControllerTypes {
   export namespace v1 {
     export type Params = { id: number };
 
-    export type QueryInput = IPaginationQuery;
+    export type QueryInput = Pick<IPaginationQuery, "page">;
 
     export type QueryOutput = IPaginationOptions;
 

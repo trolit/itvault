@@ -34,6 +34,8 @@ export class GetNotesByIdController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
+  static ITEMS_PER_PAGE = 5;
+
   private get _select(): FindOptionsSelect<Note> {
     return {
       id: true,
@@ -56,7 +58,7 @@ export class GetNotesByIdController extends BaseController {
     const {
       permissions,
       params: { id },
-      query: { skip, take },
+      query: { skip },
     } = request;
 
     if (!isPermissionEnabled(Permission.ViewUserNotes, permissions)) {
@@ -65,7 +67,7 @@ export class GetNotesByIdController extends BaseController {
 
     const [result, total] = await this._noteRepository.getAll({
       skip,
-      take,
+      take: GetNotesByIdController.ITEMS_PER_PAGE,
       select: this._select,
       where: [
         {

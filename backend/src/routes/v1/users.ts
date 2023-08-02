@@ -38,6 +38,7 @@ usersRouter.get(
   validateRequestWith(useGetNotesByIdSuperSchema, {
     versions: GetNotesByIdController.ALL_VERSIONS,
   }),
+  transformPagination({ perPage: GetNotesByIdController.ITEMS_PER_PAGE }),
   processRequestWith(GetNotesByIdController)
 );
 
