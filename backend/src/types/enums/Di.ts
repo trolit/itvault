@@ -10,7 +10,6 @@ export enum Di {
   RoleService = "IRoleService",
   UserService = "IUserService",
   FileService = "IFileService",
-  BundleService = "IBundleService",
   VariantService = "IVariantService",
   DataStoreService = "IDataStoreService",
   WorkspaceService = "IWorkspaceService",
