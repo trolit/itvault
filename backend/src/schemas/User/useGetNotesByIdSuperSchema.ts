@@ -18,7 +18,7 @@ const querySchema: SuperSchemaElement<GetNotesByIdControllerTypes.v1.QueryInput>
     perPage: perPageSchema,
   });
 
-export const useGetAllSuperSchema: SuperSchemaRunner<
+export const useGetNotesByIdSuperSchema: SuperSchemaRunner<
   GetNotesByIdControllerTypes.v1.Params,
   void,
   GetNotesByIdControllerTypes.v1.QueryInput
