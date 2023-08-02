@@ -17,7 +17,7 @@ const querySchema: SuperSchemaElement<GetAllNotesByIdControllerTypes.v1.QueryInp
     page: pageSchema,
   });
 
-export const useGetNotesByIdSuperSchema: SuperSchemaRunner<
+export const useGetAllNotesByIdSuperSchema: SuperSchemaRunner<
   GetAllNotesByIdControllerTypes.v1.Params,
   void,
   GetAllNotesByIdControllerTypes.v1.QueryInput

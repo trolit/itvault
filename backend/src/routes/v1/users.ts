@@ -12,7 +12,7 @@ import { useStoreSuperSchema } from "@schemas/User/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
-import { useGetNotesByIdSuperSchema } from "@schemas/User/useGetAllNotesByIdSuperSchema";
+import { useGetAllNotesByIdSuperSchema } from "@schemas/User/useGetAllNotesByIdSuperSchema";
 
 import { StoreController } from "@controllers/User/StoreController";
 import { GetAllController } from "@controllers/User/GetAllController";
@@ -35,7 +35,7 @@ usersRouter.get(
 
 usersRouter.get(
   "/:id/notes",
-  validateRequestWith(useGetNotesByIdSuperSchema, {
+  validateRequestWith(useGetAllNotesByIdSuperSchema, {
     versions: GetAllNotesByIdController.ALL_VERSIONS,
   }),
   transformPagination({ perPage: GetAllNotesByIdController.ITEMS_PER_PAGE }),
