@@ -1,8 +1,10 @@
+import { FindOptionsWhere } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 
 import { Di } from "@enums/Di";
+import { Note } from "@entities/Note";
 import { Permission } from "@enums/Permission";
 import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
@@ -39,10 +41,24 @@ export class GetAllController extends BaseController {
   ) {
     const {
       permissions,
-      query: { id, resource, skip, take },
+      query: { id, resource, skip, take, userId },
     } = request;
 
     const entityReference = resourceToEntityReference(resource, id);
+
+    const where: FindOptionsWhere<Note> = {
+      ...entityReference,
+    };
+
+    if (userId && !isPermissionEnabled(Permission.ViewUserNotes, permissions)) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    if (userId) {
+      where.createdBy = {
+        id: userId,
+      };
+    }
 
     const [result, total] = await this._noteRepository.getAll({
       select: {
@@ -59,9 +75,7 @@ export class GetAllController extends BaseController {
       },
       skip,
       take,
-      where: {
-        ...entityReference,
-      },
+      where,
       relations: {
         createdBy: true,
         updatedBy: true,
