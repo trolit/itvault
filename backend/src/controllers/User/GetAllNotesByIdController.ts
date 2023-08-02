@@ -1,7 +1,7 @@
+import { FindOptionsSelect } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { FindOptionsSelect, FindOptionsWhere } from "typeorm";
-import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
+import { GetAllNotesByIdControllerTypes } from "types/controllers/User/GetAllNotesByIdController";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
@@ -11,14 +11,13 @@ import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
-import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 
 import { BaseController } from "@controllers/BaseController";
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class GetAllController extends BaseController {
+export class GetAllNotesByIdController extends BaseController {
   constructor(
     @inject(Di.NoteRepository)
     private _noteRepository: INoteRepository
@@ -34,6 +33,8 @@ export class GetAllController extends BaseController {
   ];
 
   static ALL_VERSIONS = [v1_0];
+
+  static ITEMS_PER_PAGE = 5;
 
   private get _select(): FindOptionsSelect<Note> {
     return {
@@ -51,25 +52,35 @@ export class GetAllController extends BaseController {
   }
 
   async v1(
-    request: GetAllControllerTypes.v1.Request,
-    response: GetAllControllerTypes.v1.Response
+    request: GetAllNotesByIdControllerTypes.v1.Request,
+    response: GetAllNotesByIdControllerTypes.v1.Response
   ) {
     const {
       permissions,
-      query: { id, resource, skip, take },
+      params: { id },
+      query: { skip },
     } = request;
 
-    const entityReference = resourceToEntityReference(resource, id);
-
-    const where: FindOptionsWhere<Note> = {
-      ...entityReference,
-    };
+    if (!isPermissionEnabled(Permission.ViewUserNotes, permissions)) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
 
     const [result, total] = await this._noteRepository.getAll({
-      select: this._select,
       skip,
-      take,
-      where,
+      take: GetAllNotesByIdController.ITEMS_PER_PAGE,
+      select: this._select,
+      where: [
+        {
+          createdBy: {
+            id,
+          },
+        },
+        {
+          updatedBy: {
+            id,
+          },
+        },
+      ],
       relations: {
         createdBy: true,
         updatedBy: true,

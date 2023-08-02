@@ -9,14 +9,16 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 
 import { useStoreSuperSchema } from "@schemas/User/useStoreSuperSchema";
-import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
+import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
+import { useGetAllNotesByIdSuperSchema } from "@schemas/User/useGetAllNotesByIdSuperSchema";
 
 import { StoreController } from "@controllers/User/StoreController";
-import { SignUpController } from "@controllers/User/SignUpController";
 import { GetAllController } from "@controllers/User/GetAllController";
+import { SignUpController } from "@controllers/User/SignUpController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
+import { GetAllNotesByIdController } from "@controllers/User/GetAllNotesByIdController";
 
 const usersRouter = Router();
 
@@ -27,8 +29,17 @@ usersRouter.get(
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
-  transformPagination,
+  transformPagination(),
   processRequestWith(GetAllController)
+);
+
+usersRouter.get(
+  "/:id/notes",
+  validateRequestWith(useGetAllNotesByIdSuperSchema, {
+    versions: GetAllNotesByIdController.ALL_VERSIONS,
+  }),
+  transformPagination({ perPage: GetAllNotesByIdController.ITEMS_PER_PAGE }),
+  processRequestWith(GetAllNotesByIdController)
 );
 
 usersRouter.post(

@@ -87,6 +87,11 @@ const VIEW_DELETED_NOTES_PERMISSION: IPermissionDefinition = {
   name: "View deleted notes",
 };
 
+const VIEW_USER_NOTES_PERMISSION: IPermissionDefinition = {
+  signature: Permission.ViewUserNotes,
+  name: "View user notes",
+};
+
 // ****************************************************
 // @NOTE ROLE PERMISSIONS
 // ****************************************************
@@ -191,6 +196,7 @@ export const ALL_PERMISSIONS = [
   UPDATE_ANY_NOTE_PERMISSION,
   DELETE_ANY_NOTE_PERMISSION,
   VIEW_DELETED_NOTES_PERMISSION,
+  VIEW_USER_NOTES_PERMISSION,
 
   CREATE_ROLE_PERMISSION,
   UPDATE_ROLE_PERMISSION,
