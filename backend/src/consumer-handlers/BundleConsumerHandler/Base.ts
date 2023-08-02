@@ -8,7 +8,6 @@ import { Bucket } from "@entities/Bucket";
 import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { IFileService } from "@interfaces/services/IFileService";
-import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
@@ -18,8 +17,7 @@ export abstract class BaseBundleConsumerHandler {
     protected fileRepository: IFileRepository,
     protected bucketRepository: IBucketRepository,
     protected fileService: IFileService,
-    protected bundleRepository: IBundleRepository,
-    protected bundleService: IBundleService
+    protected bundleRepository: IBundleRepository
   ) {}
 
   private _getFiles(workspaceId: number, variantIds: string[]) {

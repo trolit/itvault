@@ -5,10 +5,10 @@ import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 import { Di } from "@enums/Di";
 import { AddBundleDto } from "@dtos/AddBundleDto";
 import { BundleExpire } from "@enums/BundleExpire";
-import { IBundleService } from "@interfaces/services/IBundleService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -29,11 +29,10 @@ const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
     .min(1)
     .required()
     .test(async (values: AddBundleDto[], ctx) => {
-      const bundleService = getInstanceOf<IBundleService>(Di.BundleService);
-
-      // @NOTE use helper (?)
-      const uniqueVariantIds: string[] =
-        bundleService.getUniqueVariantIds(values);
+      const uniqueVariantIds = getUniqueValuesFromCollection<
+        AddBundleDto,
+        string
+      >(values, "variantIds");
 
       const fileRepository = getInstanceOf<IFileRepository>(Di.FileRepository);
 

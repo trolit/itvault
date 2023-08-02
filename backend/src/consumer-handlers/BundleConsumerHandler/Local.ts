@@ -12,7 +12,6 @@ import { BundleExpire } from "@enums/BundleExpire";
 import { IDateService } from "@interfaces/services/IDateService";
 import { IFileService } from "@interfaces/services/IFileService";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
-import { IBundleService } from "@interfaces/services/IBundleService";
 import { IBaseConsumerHandler } from "@interfaces/IBaseConsumerHandler";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
@@ -32,18 +31,10 @@ export class LocalBundleConsumerHandler
     protected fileService: IFileService,
     @inject(Di.BundleRepository)
     protected bundleRepository: IBundleRepository,
-    @inject(Di.BundleRepository)
-    protected bundleService: IBundleService,
     @inject(Di.DateService)
     private _dateService: IDateService
   ) {
-    super(
-      fileRepository,
-      bucketRepository,
-      fileService,
-      bundleRepository,
-      bundleService
-    );
+    super(fileRepository, bucketRepository, fileService, bundleRepository);
   }
 
   async handle(data: BundleConsumerHandlerData): Promise<boolean> {

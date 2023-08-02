@@ -1,4 +1,5 @@
 import uniq from "lodash/uniq";
+import flattenDeep from "lodash/flattenDeep";
 
 import { NestedKey } from "miscellaneous-types";
 
@@ -12,7 +13,7 @@ export const getUniqueValuesFromCollection = <T extends object, Y>(
     .filter(element => !!getValueFromKey(splitKey, element))
     .map(element => <Y>getValueFromKey(splitKey, element));
 
-  return uniq(fixedCollection);
+  return uniq(flattenDeep(fixedCollection));
 };
 
 function getValueFromKey<T>(splitKey: string[], element: T) {

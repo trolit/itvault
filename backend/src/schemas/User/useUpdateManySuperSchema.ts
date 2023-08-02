@@ -11,6 +11,7 @@ import type { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
@@ -82,18 +83,9 @@ export const useUpdateManySuperSchema: SuperSchemaRunner<
 });
 
 async function getRolesFromValue(value: UpdateUserDto[]): Promise<Role[]> {
-  // @NOTE consider using nested helper
-  const uniqueRoleIds: number[] = value.reduce(
-    (accumulator: number[], element) => {
-      const roleId = element.data.roleId;
-
-      if (roleId && !accumulator.includes(roleId)) {
-        accumulator.push(roleId);
-      }
-
-      return accumulator;
-    },
-    []
+  const uniqueRoleIds = getUniqueValuesFromCollection<UpdateUserDto, number>(
+    value,
+    "data.roleId"
   );
 
   if (uniqueRoleIds.length) {
