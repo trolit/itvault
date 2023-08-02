@@ -24,7 +24,7 @@ notesRouter.get(
   validateRequestWith(useGetAllSuperSchema, {
     versions: GetAllController.ALL_VERSIONS,
   }),
-  transformPagination,
+  transformPagination(),
   processRequestWith(GetAllController)
 );
 
