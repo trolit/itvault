@@ -1,8 +1,10 @@
+import { FindOptionsSelect } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetNotesByIdControllerTypes } from "types/controllers/User/GetNotesByIdController";
 
 import { Di } from "@enums/Di";
+import { Note } from "@entities/Note";
 import { Permission } from "@enums/Permission";
 import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
@@ -32,13 +34,29 @@ export class GetNotesByIdController extends BaseController {
 
   static ALL_VERSIONS = [v1_0];
 
+  private get _select(): FindOptionsSelect<Note> {
+    return {
+      id: true,
+      value: true,
+      createdAt: true,
+      updatedAt: true,
+      createdBy: {
+        fullName: true,
+      },
+      updatedBy: {
+        fullName: true,
+      },
+    };
+  }
+
   async v1(
     request: GetNotesByIdControllerTypes.v1.Request,
     response: GetNotesByIdControllerTypes.v1.Response
   ) {
     const {
       permissions,
-      query: { userId, skip, take },
+      params: { id },
+      query: { skip, take },
     } = request;
 
     if (!isPermissionEnabled(Permission.ViewUserNotes, permissions)) {
@@ -48,27 +66,16 @@ export class GetNotesByIdController extends BaseController {
     const [result, total] = await this._noteRepository.getAll({
       skip,
       take,
-      select: {
-        id: true,
-        value: true,
-        createdAt: true,
-        updatedAt: true,
-        createdBy: {
-          fullName: true,
-        },
-        updatedBy: {
-          fullName: true,
-        },
-      },
+      select: this._select,
       where: [
         {
           createdBy: {
-            id: userId,
+            id,
           },
         },
         {
           updatedBy: {
-            id: userId,
+            id,
           },
         },
       ],

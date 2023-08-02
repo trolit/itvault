@@ -5,13 +5,13 @@ import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export namespace GetNotesByIdControllerTypes {
   export namespace v1 {
-    export type CommonQuery = { userId: number };
+    export type Params = { id: number };
 
-    export type QueryInput = IPaginationQuery & CommonQuery;
+    export type QueryInput = IPaginationQuery;
 
-    export type QueryOutput = IPaginationOptions & CommonQuery;
+    export type QueryOutput = IPaginationOptions;
 
-    export type Request = CustomRequest<undefined, undefined, QueryOutput>;
+    export type Request = CustomRequest<Params, undefined, QueryOutput>;
 
     export type Response = CustomResponse<PaginatedResponse<NoteMapDto>>;
   }
