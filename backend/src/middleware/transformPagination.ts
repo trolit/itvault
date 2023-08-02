@@ -25,7 +25,7 @@ export const transformPagination = <
 
     castedRequest.query.skip = page === 1 ? 0 : (page - 1) * fixedPerPage;
 
-    castedRequest.query.take = perPage > 20 ? 20 : fixedPerPage;
+    castedRequest.query.take = fixedPerPage > 20 ? 20 : fixedPerPage;
 
     next();
   };
