@@ -3,7 +3,7 @@ import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
-export namespace GetNotesByIdControllerTypes {
+export namespace GetAllNotesByIdControllerTypes {
   export namespace v1 {
     export type Params = { id: number };
 

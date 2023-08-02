@@ -1,26 +1,26 @@
 import { number, object } from "yup";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
-import { GetNotesByIdControllerTypes } from "types/controllers/User/GetNotesByIdController";
+import { GetAllNotesByIdControllerTypes } from "types/controllers/User/GetAllNotesByIdController";
 
 import { pageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const paramsSchema: SuperSchemaElement<GetNotesByIdControllerTypes.v1.Params> =
+const paramsSchema: SuperSchemaElement<GetAllNotesByIdControllerTypes.v1.Params> =
   object({
     id: number()
       .required()
       .transform(value => parseInt(value)),
   });
 
-const querySchema: SuperSchemaElement<GetNotesByIdControllerTypes.v1.QueryInput> =
+const querySchema: SuperSchemaElement<GetAllNotesByIdControllerTypes.v1.QueryInput> =
   object({
     page: pageSchema,
   });
 
 export const useGetNotesByIdSuperSchema: SuperSchemaRunner<
-  GetNotesByIdControllerTypes.v1.Params,
+  GetAllNotesByIdControllerTypes.v1.Params,
   void,
-  GetNotesByIdControllerTypes.v1.QueryInput
+  GetAllNotesByIdControllerTypes.v1.QueryInput
 > = defineSuperSchemaRunner(() => {
   return {
     params: paramsSchema,

@@ -1,7 +1,7 @@
 import { FindOptionsSelect } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { GetNotesByIdControllerTypes } from "types/controllers/User/GetNotesByIdController";
+import { GetAllNotesByIdControllerTypes } from "types/controllers/User/GetAllNotesByIdController";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
@@ -17,7 +17,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class GetNotesByIdController extends BaseController {
+export class GetAllNotesByIdController extends BaseController {
   constructor(
     @inject(Di.NoteRepository)
     private _noteRepository: INoteRepository
@@ -52,8 +52,8 @@ export class GetNotesByIdController extends BaseController {
   }
 
   async v1(
-    request: GetNotesByIdControllerTypes.v1.Request,
-    response: GetNotesByIdControllerTypes.v1.Response
+    request: GetAllNotesByIdControllerTypes.v1.Request,
+    response: GetAllNotesByIdControllerTypes.v1.Response
   ) {
     const {
       permissions,
@@ -67,7 +67,7 @@ export class GetNotesByIdController extends BaseController {
 
     const [result, total] = await this._noteRepository.getAll({
       skip,
-      take: GetNotesByIdController.ITEMS_PER_PAGE,
+      take: GetAllNotesByIdController.ITEMS_PER_PAGE,
       select: this._select,
       where: [
         {
