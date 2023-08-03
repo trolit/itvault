@@ -6,10 +6,7 @@ import { SuperKeys, SuperSchema, SuperSchemaRunner } from "super-schema-types";
 import { formatError } from "@helpers/yup/formatError";
 
 export const validateRequestWith = <P, B, Q>(
-  superSchemaRunners: Record<string, SuperSchemaRunner<P, B, Q>>,
-  data: {
-    versions: string[];
-  }
+  superSchemaRunners: Record<string, SuperSchemaRunner<P, B, Q>>
 ) => {
   return async (
     request: CustomRequest<P, B, Q>,
@@ -20,7 +17,7 @@ export const validateRequestWith = <P, B, Q>(
       query: { version: requestedVersion },
     } = request;
 
-    const { versions } = data;
+    const versions = Object.keys(superSchemaRunners);
 
     if (!versions.includes(requestedVersion)) {
       return response.status(HTTP.BAD_REQUEST).send({
