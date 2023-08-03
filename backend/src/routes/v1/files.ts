@@ -9,14 +9,15 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
 import { useSoftDeleteSuperSchema } from "@schemas/File/useSoftDeleteSuperSchema";
 import { usePatchFilenameSuperSchema } from "@schemas/File/usePatchFilenameSuperSchema";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
+import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/File/StoreController";
 import { GetAllController } from "@controllers/File/GetAllController";
 import { SoftDeleteController } from "@controllers/File/SoftDeleteController";
@@ -25,13 +26,15 @@ import { PatchRelativePathController } from "@controllers/File/PatchRelativePath
 
 const filesRouter = Router();
 
+const {
+  ALL_VERSION_DEFINITIONS: { v1_0 },
+} = BaseController;
+
 filesRouter.use(requireWorkspaceAccess);
 
 filesRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema, {
-    versions: GetAllController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
   processRequestWith(GetAllController)
 );
 
@@ -50,27 +53,21 @@ filesRouter.post(
 filesRouter.patch(
   "/:id/relative-path",
   requirePermissions([Permission.UpdateFileRelativePath]),
-  validateRequestWith(usePatchRelativePathSuperSchema, {
-    versions: PatchRelativePathController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: usePatchRelativePathSuperSchema }),
   processRequestWith(PatchRelativePathController)
 );
 
 filesRouter.patch(
   "/:id/filename",
   requirePermissions([Permission.UpdateFilename]),
-  validateRequestWith(usePatchFilenameSuperSchema, {
-    versions: PatchFilenameController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: usePatchFilenameSuperSchema }),
   processRequestWith(PatchFilenameController)
 );
 
 filesRouter.delete(
   "/:id",
   requirePermissions([Permission.DeleteFile]),
-  validateRequestWith(useSoftDeleteSuperSchema, {
-    versions: SoftDeleteController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useSoftDeleteSuperSchema }),
   processRequestWith(SoftDeleteController)
 );
 

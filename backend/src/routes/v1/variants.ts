@@ -9,13 +9,14 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { storeSchema } from "@schemas/Variant/storeSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 import { usePatchNameSuperSchema } from "@schemas/Variant/usePatchNameSuperSchema";
 
+import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Variant/StoreController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
@@ -24,13 +25,15 @@ import { PatchNameController } from "@controllers/Variant/PatchNameController";
 
 const variantsRouter = Router();
 
+const {
+  ALL_VERSION_DEFINITIONS: { v1_0 },
+} = BaseController;
+
 variantsRouter.use(requireWorkspaceAccess);
 
 variantsRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema, {
-    versions: GetAllController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
   processRequestWith(GetAllController)
 );
 
@@ -68,9 +71,7 @@ variantsRouter.delete(
 variantsRouter.put(
   "/:id/name",
   requirePermissions([Permission.UpdateVariantName]),
-  validateRequestWith(usePatchNameSuperSchema, {
-    versions: PatchNameController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: usePatchNameSuperSchema }),
   processRequestWith(PatchNameController)
 );
 

@@ -9,23 +9,26 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 
 import { useStoreSuperSchema } from "@schemas/Role/useStoreSuperSchema";
-import { useGetAllSuperSchema } from "@schemas/Role/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Role/useUpdateSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/Role/useGetAllSuperSchema";
 
+import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Role/StoreController";
 import { GetAllController } from "@controllers/Role/GetAllController";
 import { UpdateController } from "@controllers/Role/UpdateController";
 
 const rolesRouter = Router();
 
+const {
+  ALL_VERSION_DEFINITIONS: { v1_0 },
+} = BaseController;
+
 rolesRouter.use(requireAuthentication);
 
 rolesRouter.get(
   "",
   requirePermissions(GetAllController.isMissingPermissions),
-  validateRequestWith(useGetAllSuperSchema, {
-    versions: GetAllController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
 );
@@ -33,18 +36,14 @@ rolesRouter.get(
 rolesRouter.post(
   "",
   requirePermissions([Permission.CreateRole]),
-  validateRequestWith(useStoreSuperSchema, {
-    versions: StoreController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
 
 rolesRouter.put(
   "/:id",
   requirePermissions([Permission.UpdateRole]),
-  validateRequestWith(useUpdateSuperSchema, {
-    versions: UpdateController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useUpdateSuperSchema }),
   processRequestWith(UpdateController)
 );
 
