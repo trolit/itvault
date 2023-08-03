@@ -5,10 +5,8 @@ import { SuperKeys, SuperSchema, SuperSchemaRunner } from "super-schema-types";
 
 import { formatError } from "@helpers/yup/formatError";
 
-import { useVersionSchema } from "@schemas/common/useVersionSchema";
-
 export const validateRequestWith = <P, B, Q>(
-  useSuperSchemaRunner: SuperSchemaRunner<P, B, Q>,
+  superSchemaRunners: Record<string, SuperSchemaRunner<P, B, Q>>,
   data: {
     versions: string[];
   }
@@ -18,11 +16,31 @@ export const validateRequestWith = <P, B, Q>(
     response: Response,
     next: NextFunction
   ) => {
+    const {
+      query: { version: requestedVersion },
+    } = request;
+
+    const { versions } = data;
+
+    if (!versions.includes(requestedVersion)) {
+      return response.status(HTTP.BAD_REQUEST).send({
+        query: {
+          version: `Wrong resource version (available: ${versions.join(", ")})`,
+        },
+      });
+    }
+
+    const useSuperSchemaRunner = superSchemaRunners[requestedVersion];
+
+    if (!useSuperSchemaRunner) {
+      return response
+        .status(HTTP.INTERNAL_SERVER_ERROR)
+        .send(`Oops... Resource version is defined but not implemented!`);
+    }
+
     const superSchema = await useSuperSchemaRunner({
       request,
     });
-
-    includeGeneralQuerySchemas(superSchema, data);
 
     for (const key in superSchema) {
       const schema = <Schema>superSchema[key as keyof SuperSchema];
@@ -53,16 +71,3 @@ export const validateRequestWith = <P, B, Q>(
     next();
   };
 };
-
-function includeGeneralQuerySchemas(
-  superSchema: SuperSchema,
-  data: { versions: string[] }
-) {
-  const querySchema = <Schema>superSchema["query" as keyof SuperSchema];
-
-  const versionSchema = useVersionSchema(data.versions);
-
-  (superSchema as SuperSchema<unknown, unknown, 1>).query = querySchema
-    ? querySchema.concat(versionSchema)
-    : versionSchema;
-}
