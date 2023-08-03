@@ -16,8 +16,8 @@ import Guest from "@/views/Guest.vue";
 import Guide from "@/views/Guide.vue";
 import Login from "@/views/Login.vue";
 import Updates from "@/views/Updates.vue";
-import { useAuthStore, type IProfile } from "@/stores/auth";
 import Dashboard from "@/views/Dashboard.vue";
+import { useAuthStore, type IProfile } from "@/stores/auth";
 import { localStorageManager } from "@/helpers/localStorageManager";
 
 const router = createRouter({
