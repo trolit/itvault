@@ -6,14 +6,14 @@ import { setupDi } from "@utils/setupDi";
 import { setupJobs } from "@utils/setupJobs";
 import { setupRedis } from "@utils/setupRedis";
 import { setupRabbit } from "@utils/setupRabbit";
+import { loadYupUtils } from "@utils/loadYupUtils";
 import { setupExpress } from "@utils/setupExpress";
 import { setupMailTransporter } from "@utils/setupMailTransporter";
-import { loadYupCustomMethods } from "@utils/loadYupCustomMethods";
 
 export const server = async () => {
   const app = express();
 
-  await loadYupCustomMethods();
+  await loadYupUtils();
 
   try {
     await dataSource.initialize();

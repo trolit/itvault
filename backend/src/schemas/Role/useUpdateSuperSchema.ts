@@ -8,6 +8,9 @@ import { useAddEditBodySchema } from "./useAddEditBodySchema";
 
 import { Di } from "@enums/Di";
 
+import { setYupError } from "@helpers/yup/setError";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
+
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
@@ -15,7 +18,9 @@ const paramsSchema: SuperSchemaElement<UpdateControllerTypes.v1.Params> =
   object({
     id: useIdNumberSchema(Di.RoleRepository).test((value, ctx) => {
       if (value === HEAD_ADMIN_ROLE_ID) {
-        return ctx.createError({ message: "This role is not editable." });
+        return ctx.createError({
+          message: setYupError(CUSTOM_MESSAGES.GENERAL.NOT_EDITABLE, "role"),
+        });
       }
 
       return true;

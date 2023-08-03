@@ -1,7 +1,9 @@
 import path from "path";
 import fs from "fs-extra";
 
-export const loadYupCustomMethods = async () => {
+import "@helpers/yup/internal-messages";
+
+export const loadYupUtils = async () => {
   const dir = path.join("dist", "helpers", "yup", "custom-methods");
 
   fs.readdir(dir, async (error, files) => {
