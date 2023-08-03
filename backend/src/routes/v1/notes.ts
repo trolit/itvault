@@ -9,21 +9,24 @@ import { transformPagination } from "@middleware/transformPagination";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Note/useStoreSuperSchema";
-import { useUpdateSuperSchema } from "@schemas/Note/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
+import { useUpdateSuperSchema } from "@schemas/Note/useUpdateSuperSchema";
 
+import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Note/StoreController";
-import { UpdateController } from "@controllers/Note/UpdateController";
 import { GetAllController } from "@controllers/Note/GetAllController";
+import { UpdateController } from "@controllers/Note/UpdateController";
 import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
 
 const notesRouter = Router();
 
+const {
+  ALL_VERSION_DEFINITIONS: { v1_0 },
+} = BaseController;
+
 notesRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema, {
-    versions: GetAllController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
 );
@@ -31,17 +34,13 @@ notesRouter.get(
 notesRouter.post(
   "",
   requirePermissions([Permission.CreateNote]),
-  validateRequestWith(useStoreSuperSchema, {
-    versions: StoreController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
 
 notesRouter.put(
   "/:id",
-  validateRequestWith(useUpdateSuperSchema, {
-    versions: UpdateController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useUpdateSuperSchema }),
   processRequestWith(UpdateController)
 );
 

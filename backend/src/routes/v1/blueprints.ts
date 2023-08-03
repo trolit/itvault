@@ -4,15 +4,16 @@ import { Permission } from "@enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { transformPagination } from "@middleware/transformPagination";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useStoreSuperSchema } from "@schemas/Blueprint/useStoreSuperSchema";
-import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Blueprint/useUpdateSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 
+import { BaseController } from "@controllers/BaseController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { StoreController } from "@controllers/Blueprint/StoreController";
 import { GetAllController } from "@controllers/Blueprint/GetAllController";
@@ -20,13 +21,15 @@ import { UpdateController } from "@controllers/Blueprint/UpdateController";
 
 const blueprintsRouter = Router();
 
+const {
+  ALL_VERSION_DEFINITIONS: { v1_0 },
+} = BaseController;
+
 blueprintsRouter.use(requireWorkspaceAccess);
 
 blueprintsRouter.get(
   "",
-  validateRequestWith(useGetAllSuperSchema, {
-    versions: GetAllController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
 );
@@ -34,9 +37,7 @@ blueprintsRouter.get(
 blueprintsRouter.post(
   "",
   requirePermissions([Permission.CreateBlueprint]),
-  validateRequestWith(useStoreSuperSchema, {
-    versions: StoreController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
 
@@ -50,9 +51,7 @@ blueprintsRouter.delete(
 blueprintsRouter.put(
   "/:id",
   requirePermissions([Permission.UpdateBlueprint]),
-  validateRequestWith(useUpdateSuperSchema, {
-    versions: UpdateController.ALL_VERSIONS,
-  }),
+  validateRequestWith({ [v1_0]: useUpdateSuperSchema }),
   processRequestWith(UpdateController)
 );
 
