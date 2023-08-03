@@ -1,27 +1,37 @@
 <template>
-  <ref-card :icon="UserProfileIcon" title="account.email@company.com">
+  <ref-card :icon="UserProfileIcon" :title="email">
     <template #content>
       <div class="statistics">
         <n-statistic label="Workspaces"> 10 </n-statistic>
 
         <n-statistic label="Account type">
-          <!-- @TODO Itvault admin, Company admin, Company user-->
-          <n-tag type="info"> Company user </n-tag>
+          <n-tag type="info"> {{ roleName }} </n-tag>
         </n-statistic>
       </div>
 
       <n-divider />
 
       <div class="scrollable-data">
-        <!-- @TODO hide for account type that has R/W access to all workspaces -->
         <div class="access">
-          <div class="title">Privileges</div>
+          <div class="title">Your permissions</div>
 
           <n-scrollbar trigger="none">
             <div class="levels">
-              <n-tag type="success"> vue (w) </n-tag>
+              <n-tag
+                v-for="({ name, enabled }, index) in permissions"
+                :type="enabled ? 'success' : 'error'"
+                :key="index"
+              >
+                <template #icon>
+                  <n-icon
+                    :component="
+                      enabled ? OwnedPermissionIcon : NotOwnedPermissionIcon
+                    "
+                  />
+                </template>
 
-              <n-tag type="success"> .NET (r) </n-tag>
+                {{ name }}
+              </n-tag>
             </div>
           </n-scrollbar>
         </div>
@@ -82,13 +92,23 @@
 <script setup lang="ts">
 import {
   NTag,
+  NIcon,
   NDivider,
   NTimeline,
   NScrollbar,
   NStatistic,
   NTimelineItem,
 } from "naive-ui";
-import { UserProfile as UserProfileIcon } from "@vicons/carbon";
+import {
+  UserProfile as UserProfileIcon,
+  Close as NotOwnedPermissionIcon,
+  Checkmark as OwnedPermissionIcon,
+} from "@vicons/carbon";
 
 import RefCard from "./RefCard.vue";
+import { useAuthStore } from "@/stores/auth";
+
+const {
+  profile: { email, roleName, permissions },
+} = useAuthStore();
 </script>
