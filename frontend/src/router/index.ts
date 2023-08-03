@@ -16,8 +16,9 @@ import Guest from "@/views/Guest.vue";
 import Guide from "@/views/Guide.vue";
 import Login from "@/views/Login.vue";
 import Updates from "@/views/Updates.vue";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore, type IProfile } from "@/stores/auth";
 import Dashboard from "@/views/Dashboard.vue";
+import { localStorageManager } from "@/helpers/localStorageManager";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -71,6 +72,14 @@ router.beforeEach(
 
       try {
         await authStore.status();
+
+        const profileData = localStorageManager.load<IProfile>("profile");
+
+        if (!profileData) {
+          throw "Seems to be logged in but missing profile data! Try to relogin.";
+        }
+
+        authStore.profile = profileData;
 
         next();
       } catch (error) {
