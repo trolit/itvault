@@ -10,6 +10,8 @@ import type { Role } from "@entities/Role";
 import type { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
@@ -25,7 +27,9 @@ const useSingleValueSchema: (
       .required()
       .test((value, ctx) => {
         if (value === userId) {
-          return ctx.createError({ message: "Can't change personal account." });
+          return ctx.createError({
+            message: setYupError(MESSAGES.USER.NO_PERSONAL_ACCOUNT_CHANGES),
+          });
         }
 
         return true;
@@ -36,13 +40,17 @@ const useSingleValueSchema: (
         .optional()
         .test((value, ctx) => {
           if (value === HEAD_ADMIN_ROLE_ID) {
-            return ctx.createError({ message: "This role is not assignable." });
+            return ctx.createError({
+              message: setYupError(MESSAGES.GENERAL.NOT_ASSIGNABLE, "role"),
+            });
           }
 
           const role = roles.find(role => role.id === value);
 
           if (!role) {
-            return ctx.createError({ message: "This role is not available." });
+            return ctx.createError({
+              message: setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "role"),
+            });
           }
 
           return true;

@@ -2,6 +2,9 @@ import { number, object, string } from "yup";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { SignUpControllerTypes } from "types/controllers/User/SignUpController";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
+
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const bodySchema: SuperSchemaElement<SignUpControllerTypes.v1.Body> = object({
@@ -10,7 +13,7 @@ const bodySchema: SuperSchemaElement<SignUpControllerTypes.v1.Body> = object({
   email: string()
     .trim()
     .email()
-    .max(254)
+    .max(254, setYupError(MESSAGES.GENERAL.MAX_CHARACTERS, 254))
     .required()
     .transform(value => value.toLowerCase()),
 
@@ -19,12 +22,12 @@ const bodySchema: SuperSchemaElement<SignUpControllerTypes.v1.Body> = object({
   password: string()
     .required()
     .min(7)
-    .matches(/[a-z]/, "At least one lowercase letter")
-    .matches(/[A-Z]/, "At least one uppercase letter")
-    .matches(/\d/, "At least one digit")
+    .matches(/[a-z]/, setYupError(MESSAGES.AUTH.PASSWORD.ONE_LOWERCASE_LETTER))
+    .matches(/[A-Z]/, setYupError(MESSAGES.AUTH.PASSWORD.ONE_UPPERCASE_LETTER))
+    .matches(/\d/, setYupError(MESSAGES.AUTH.PASSWORD.ONE_DIGIT))
     .matches(
       /[*.!@#$%^&(){}[\]:;<>,.?/~_+-=|]/,
-      "At least one special character"
+      setYupError(MESSAGES.AUTH.PASSWORD.ONE_SPECIAL_CHARACTER)
     ),
 });
 

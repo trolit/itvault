@@ -6,6 +6,8 @@ import { Di } from "@enums/Di";
 import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export const useAddEditBodySchema: (
@@ -24,7 +26,9 @@ export const useAddEditBodySchema: (
         });
 
         if (workspace) {
-          return ctx.createError({ message: "This name is already taken." });
+          return ctx.createError({
+            message: setYupError(MESSAGES.GENERAL.ALREADY_TAKEN, "name"),
+          });
         }
 
         return true;

@@ -7,6 +7,8 @@ import { AddBundleDto } from "@dtos/AddBundleDto";
 import { BundleExpire } from "@enums/BundleExpire";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
@@ -42,7 +44,11 @@ const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
 
       if (file) {
         return ctx.createError({
-          message: `File ${file.originalFilename} was selected with ${file.variants.length} different variants. To avoid conflicts, please update your configuration to use only one variant.`,
+          message: setYupError(
+            MESSAGES.FILE.VARIANTS_CONFLICT,
+            file.originalFilename,
+            file.variants.length
+          ),
         });
       }
 

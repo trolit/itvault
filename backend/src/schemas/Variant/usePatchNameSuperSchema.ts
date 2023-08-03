@@ -5,6 +5,8 @@ import { PatchNameControllerTypes } from "types/controllers/Variant/PatchNameCon
 import { Di } from "@enums/Di";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
@@ -45,7 +47,9 @@ const useBodySchema: (
         });
 
         if (variant) {
-          return ctx.createError({ message: "Name is not available." });
+          return ctx.createError({
+            message: setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "Name"),
+          });
         }
 
         return true;

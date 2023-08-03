@@ -4,9 +4,18 @@ import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
 
 import { Di } from "@enums/Di";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
+
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
+
+const requireOneOfError = setYupError(
+  MESSAGES.GENERAL.REQUIRE_ONE_OF,
+  "blueprintId",
+  "relativePath"
+);
 
 const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.QueryInput> =
   object().shape(
@@ -19,10 +28,7 @@ const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.QueryInput> =
         .optional()
         .when("relativePath", {
           is: (value: string) => !!value,
-          then: schema =>
-            schema.typeError(
-              "Either blueprintId or relativePath should be provided."
-            ),
+          then: schema => schema.typeError(requireOneOfError),
           otherwise: schema => schema.required(),
         }),
 
@@ -30,10 +36,7 @@ const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.QueryInput> =
         .optional()
         .when("blueprintId", {
           is: (value: string) => !!value,
-          then: schema =>
-            schema.typeError(
-              "Either blueprintId or relativePath should be provided."
-            ),
+          then: schema => schema.typeError(requireOneOfError),
           otherwise: schema => schema.required(),
         }),
 

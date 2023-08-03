@@ -2,6 +2,8 @@ import { number } from "yup";
 
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export const useResourceEntityTest = () =>
@@ -10,7 +12,9 @@ export const useResourceEntityTest = () =>
     .integer()
     .when("resource", ([resource], schema) => {
       if (!resource || typeof resource !== "string") {
-        return schema.typeError("Resource not specified.");
+        return schema.typeError(
+          setYupError(MESSAGES.NOTE.RESOURCE_NOT_SPECIFIED)
+        );
       }
 
       return schema.test(async (value, ctx) => {
@@ -21,7 +25,9 @@ export const useResourceEntityTest = () =>
         const entity = await repository.getById(value);
 
         if (!entity) {
-          return ctx.createError({ message: "Resource is not available." });
+          return ctx.createError({
+            message: setYupError(MESSAGES.NOTE.RESOURCE_NOT_AVAILABLE),
+          });
         }
 
         return true;

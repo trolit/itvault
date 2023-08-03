@@ -6,6 +6,8 @@ import { Di } from "@enums/Di";
 import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export const useAddEditBodySchema: (
@@ -26,7 +28,7 @@ export const useAddEditBodySchema: (
       .required()
       .test(
         "is-name-unique",
-        () => `This name is not available.`,
+        setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "name"),
         async value => {
           const blueprint = await blueprintRepository.getOne({
             where: {
@@ -47,11 +49,11 @@ export const useAddEditBodySchema: (
     color: string()
       .required()
       .matches(/^#[a-zA-Z0-9]{6}$/, {
-        message: "Color needs to be in hexadecimal pattern.",
+        message: setYupError(MESSAGES.GENERAL.HEXADECIMAL_FORMAT, "Color"),
       })
       .test(
         "is-color-unique",
-        () => `This color is not available.`,
+        setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "color"),
         async value => {
           const blueprint = await blueprintRepository.getOne({
             where: {

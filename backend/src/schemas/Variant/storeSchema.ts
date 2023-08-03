@@ -5,10 +5,12 @@ import { StoreControllerTypes } from "types/controllers/Variant/StoreController"
 import { Di } from "@enums/Di";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
+import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 
 export const storeSchema: SuperSchemaElement<StoreControllerTypes.v1.Body> =
   object({
@@ -17,7 +19,9 @@ export const storeSchema: SuperSchemaElement<StoreControllerTypes.v1.Body> =
       .when("fileId", ([fileId], schema) => {
         return schema.test(async (value, ctx) => {
           if (!fileId) {
-            return ctx.createError({ message: "Must reference file." });
+            return ctx.createError({
+              message: setYupError(MESSAGES.VARIANT.MUST_REFERENCE_FILE),
+            });
           }
 
           const variantRepository = getInstanceOf<IVariantRepository>(
@@ -34,7 +38,9 @@ export const storeSchema: SuperSchemaElement<StoreControllerTypes.v1.Body> =
           });
 
           if (variant) {
-            return ctx.createError({ message: "Name must be unique!" });
+            return ctx.createError({
+              message: setYupError(MESSAGES.GENERAL.UNIQUE, "Name"),
+            });
           }
 
           return true;

@@ -4,9 +4,11 @@ import { SuperSchemaElement } from "super-schema-types";
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 import { AddEditRoleDto, UpdatePermissionDto } from "@dtos/AddEditRoleDto";
+import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 const permissionSchema: SuperSchemaElement<UpdatePermissionDto> = object({
@@ -32,7 +34,9 @@ export const useAddEditBodySchema: (
         const isSameNameButDifferentIds = id && role && role.id !== id;
 
         if (isSameName || isSameNameButDifferentIds) {
-          return ctx.createError({ message: "This name is not available." });
+          return ctx.createError({
+            message: setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "name"),
+          });
         }
 
         return true;
@@ -54,6 +58,14 @@ export const useAddEditBodySchema: (
           for (const { signature, name } of missingPermissions) {
             ctx.createError({
               message: `Permission '${name}' (${signature}) must be provided in request.`,
+            });
+
+            ctx.createError({
+              message: setYupError(
+                MESSAGES.PERMISSION.MISSING_PERMISSION,
+                name,
+                signature
+              ),
             });
           }
 

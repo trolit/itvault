@@ -6,6 +6,9 @@ import { FILES } from "@config";
 
 import { Di } from "@enums/Di";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
+
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
@@ -34,13 +37,15 @@ const bodySchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Body> =
 
         if (value.split(FILES.ROOT).length !== 2) {
           return ctx.createError({
-            message: `Relative path should only contain one root indicator '${FILES.ROOT}'.`,
+            message: setYupError(MESSAGES.FILE.ONLY_ONE_ROOT_INDICATOR),
           });
         }
 
         if (value.includes("/") && !value.startsWith(FILES.ROOT)) {
           return ctx.createError({
-            message: `Relative path should start with root indicator '${FILES.ROOT}'.`,
+            message: setYupError(
+              MESSAGES.FILE.SHOULD_START_WITH_ROOT_INDICATOR
+            ),
           });
         }
 

@@ -5,6 +5,8 @@ import { PatchFilenameControllerTypes } from "types/controllers/File/PatchFilena
 import { Di } from "@enums/Di";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
@@ -41,7 +43,7 @@ const useBodySchema: (
 
         if (!file) {
           return ctx.createError({
-            message: "File is not available.",
+            message: setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "File"),
           });
         }
 
@@ -57,7 +59,10 @@ const useBodySchema: (
 
         if (fileWithSimiliarName) {
           return ctx.createError({
-            message: "There is already file with such name under given dir.",
+            message: setYupError(
+              MESSAGES.FILE.DUPLICATE_FILE,
+              fileWithSimiliarName.relativePath
+            ),
           });
         }
 

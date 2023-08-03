@@ -9,6 +9,8 @@ import { AddBucketDto } from "@dtos/AddBucketDto";
 import { BucketContent } from "miscellaneous-types";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
@@ -17,7 +19,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 const valueSchema: SuperSchemaElement<AddBucketDto> = object({
   value: object<BucketContent>().test(
     "has-valid-buckets",
-    () => "Buckets configuration is invalid!",
+    setYupError(MESSAGES.BUCKETS.INVALID_CONFIGURATION),
     (data: BucketContent) => {
       for (const [key, value] of Object.entries(data)) {
         const parsedKey = parseInt(key);
@@ -44,8 +46,7 @@ const bodySchema: SuperSchemaElement<StoreManyControllerTypes.v1.Body> = object(
       .required()
       .test(
         "has-unique-blueprints",
-        () =>
-          "Buckets can't share blueprints. Use one bucket per one blueprint.",
+        setYupError(MESSAGES.BUCKETS.NO_BLUEPRINTS_SHARING),
         (values: AddBucketDto[]) => {
           const uniqueBlueprintIds = uniqBy(
             values,
@@ -57,7 +58,7 @@ const bodySchema: SuperSchemaElement<StoreManyControllerTypes.v1.Body> = object(
       )
       .test(
         "has-available-blueprints",
-        () => "One or more blueprints are not available.",
+        setYupError(MESSAGES.BLUEPRINTS.SOME_NOT_AVAILABLE),
         async (values: AddBucketDto[]) => {
           const blueprintRepository = getInstanceOf<IBlueprintRepository>(
             Di.BlueprintRepository

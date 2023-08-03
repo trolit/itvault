@@ -7,6 +7,8 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { Di } from "@enums/Di";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
+import { MESSAGES } from "@helpers/yup/messages";
+import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
@@ -29,7 +31,9 @@ const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
       });
 
       if (user) {
-        return ctx.createError({ message: "This email is not available." });
+        return ctx.createError({
+          message: setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "email"),
+        });
       }
 
       return true;
@@ -41,7 +45,9 @@ const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
 
   roleId: useIdNumberSchema(Di.RoleRepository).test((value, ctx) => {
     if (value === HEAD_ADMIN_ROLE_ID) {
-      return ctx.createError({ message: "This role is not assignable." });
+      return ctx.createError({
+        message: setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "role"),
+      });
     }
 
     return true;
