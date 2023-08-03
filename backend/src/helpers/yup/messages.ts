@@ -12,6 +12,7 @@ export const MESSAGES = {
     NOT_ASSIGNABLE: "This %s is not assignable.",
     REQUIRE_ONE_OF: "Either %s or %s should be provided.",
     HEXADECIMAL_FORMAT: "%s needs to be in hexadecimal pattern (e.g. #4231E2)",
+    WRONG_VERSION: "Wrong resource version (available: ${values})",
   },
 
   BLUEPRINTS: {
