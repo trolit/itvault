@@ -1,6 +1,6 @@
 import { FILES } from "@config";
 
-export const MESSAGES = {
+export const CUSTOM_MESSAGES = {
   GENERAL: {
     UNIQUE: "%s must be unique!",
     ALREADY_TAKEN: "This %s is already taken.",

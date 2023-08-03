@@ -10,9 +10,9 @@ import type { Role } from "@entities/Role";
 import type { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -28,7 +28,9 @@ const useSingleValueSchema: (
       .test((value, ctx) => {
         if (value === userId) {
           return ctx.createError({
-            message: setYupError(MESSAGES.USER.NO_PERSONAL_ACCOUNT_CHANGES),
+            message: setYupError(
+              CUSTOM_MESSAGES.USER.NO_PERSONAL_ACCOUNT_CHANGES
+            ),
           });
         }
 
@@ -41,7 +43,10 @@ const useSingleValueSchema: (
         .test((value, ctx) => {
           if (value === HEAD_ADMIN_ROLE_ID) {
             return ctx.createError({
-              message: setYupError(MESSAGES.GENERAL.NOT_ASSIGNABLE, "role"),
+              message: setYupError(
+                CUSTOM_MESSAGES.GENERAL.NOT_ASSIGNABLE,
+                "role"
+              ),
             });
           }
 
@@ -49,7 +54,10 @@ const useSingleValueSchema: (
 
           if (!role) {
             return ctx.createError({
-              message: setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "role"),
+              message: setYupError(
+                CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE,
+                "role"
+              ),
             });
           }
 

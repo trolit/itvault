@@ -6,9 +6,9 @@ import { Di } from "@enums/Di";
 import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 export const useAddEditBodySchema: (
   workspaceId: number,
@@ -28,7 +28,7 @@ export const useAddEditBodySchema: (
       .required()
       .test(
         "is-name-unique",
-        setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "name"),
+        setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "name"),
         async value => {
           const blueprint = await blueprintRepository.getOne({
             where: {
@@ -49,11 +49,14 @@ export const useAddEditBodySchema: (
     color: string()
       .required()
       .matches(/^#[a-zA-Z0-9]{6}$/, {
-        message: setYupError(MESSAGES.GENERAL.HEXADECIMAL_FORMAT, "Color"),
+        message: setYupError(
+          CUSTOM_MESSAGES.GENERAL.HEXADECIMAL_FORMAT,
+          "Color"
+        ),
       })
       .test(
         "is-color-unique",
-        setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "color"),
+        setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "color"),
         async value => {
           const blueprint = await blueprintRepository.getOne({
             where: {

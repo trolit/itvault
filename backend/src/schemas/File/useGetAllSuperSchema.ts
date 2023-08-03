@@ -4,15 +4,15 @@ import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
 
 import { Di } from "@enums/Di";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const requireOneOfError = setYupError(
-  MESSAGES.GENERAL.REQUIRE_ONE_OF,
+  CUSTOM_MESSAGES.GENERAL.REQUIRE_ONE_OF,
   "blueprintId",
   "relativePath"
 );

@@ -4,12 +4,12 @@ import { SuperSchemaElement } from "super-schema-types";
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
-import { AddEditRoleDto, UpdatePermissionDto } from "@dtos/AddEditRoleDto";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
+import { AddEditRoleDto, UpdatePermissionDto } from "@dtos/AddEditRoleDto";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 const permissionSchema: SuperSchemaElement<UpdatePermissionDto> = object({
   signature: string().required(),
@@ -35,7 +35,7 @@ export const useAddEditBodySchema: (
 
         if (isSameName || isSameNameButDifferentIds) {
           return ctx.createError({
-            message: setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "name"),
+            message: setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "name"),
           });
         }
 
@@ -62,7 +62,7 @@ export const useAddEditBodySchema: (
 
             ctx.createError({
               message: setYupError(
-                MESSAGES.PERMISSION.MISSING_PERMISSION,
+                CUSTOM_MESSAGES.PERMISSION.MISSING_PERMISSION,
                 name,
                 signature
               ),

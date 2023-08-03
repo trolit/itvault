@@ -2,8 +2,8 @@ import { number, object, string } from "yup";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { SignUpControllerTypes } from "types/controllers/User/SignUpController";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
@@ -13,7 +13,7 @@ const bodySchema: SuperSchemaElement<SignUpControllerTypes.v1.Body> = object({
   email: string()
     .trim()
     .email()
-    .max(254, setYupError(MESSAGES.GENERAL.MAX_CHARACTERS, 254))
+    .max(254, setYupError(CUSTOM_MESSAGES.GENERAL.MAX_CHARACTERS, 254))
     .required()
     .transform(value => value.toLowerCase()),
 
@@ -22,12 +22,18 @@ const bodySchema: SuperSchemaElement<SignUpControllerTypes.v1.Body> = object({
   password: string()
     .required()
     .min(7)
-    .matches(/[a-z]/, setYupError(MESSAGES.AUTH.PASSWORD.ONE_LOWERCASE_LETTER))
-    .matches(/[A-Z]/, setYupError(MESSAGES.AUTH.PASSWORD.ONE_UPPERCASE_LETTER))
-    .matches(/\d/, setYupError(MESSAGES.AUTH.PASSWORD.ONE_DIGIT))
+    .matches(
+      /[a-z]/,
+      setYupError(CUSTOM_MESSAGES.AUTH.PASSWORD.ONE_LOWERCASE_LETTER)
+    )
+    .matches(
+      /[A-Z]/,
+      setYupError(CUSTOM_MESSAGES.AUTH.PASSWORD.ONE_UPPERCASE_LETTER)
+    )
+    .matches(/\d/, setYupError(CUSTOM_MESSAGES.AUTH.PASSWORD.ONE_DIGIT))
     .matches(
       /[*.!@#$%^&(){}[\]:;<>,.?/~_+-=|]/,
-      setYupError(MESSAGES.AUTH.PASSWORD.ONE_SPECIAL_CHARACTER)
+      setYupError(CUSTOM_MESSAGES.AUTH.PASSWORD.ONE_SPECIAL_CHARACTER)
     ),
 });
 

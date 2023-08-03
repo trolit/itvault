@@ -6,9 +6,9 @@ import { Di } from "@enums/Di";
 import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 export const useAddEditBodySchema: (
   id?: number
@@ -27,7 +27,7 @@ export const useAddEditBodySchema: (
 
         if (workspace) {
           return ctx.createError({
-            message: setYupError(MESSAGES.GENERAL.ALREADY_TAKEN, "name"),
+            message: setYupError(CUSTOM_MESSAGES.GENERAL.ALREADY_TAKEN, "name"),
           });
         }
 

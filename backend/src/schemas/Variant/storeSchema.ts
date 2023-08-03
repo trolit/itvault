@@ -5,12 +5,12 @@ import { StoreControllerTypes } from "types/controllers/Variant/StoreController"
 import { Di } from "@enums/Di";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
-import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
+import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 
 export const storeSchema: SuperSchemaElement<StoreControllerTypes.v1.Body> =
   object({
@@ -20,7 +20,7 @@ export const storeSchema: SuperSchemaElement<StoreControllerTypes.v1.Body> =
         return schema.test(async (value, ctx) => {
           if (!fileId) {
             return ctx.createError({
-              message: setYupError(MESSAGES.VARIANT.MUST_REFERENCE_FILE),
+              message: setYupError(CUSTOM_MESSAGES.VARIANT.MUST_REFERENCE_FILE),
             });
           }
 
@@ -39,7 +39,7 @@ export const storeSchema: SuperSchemaElement<StoreControllerTypes.v1.Body> =
 
           if (variant) {
             return ctx.createError({
-              message: setYupError(MESSAGES.GENERAL.UNIQUE, "Name"),
+              message: setYupError(CUSTOM_MESSAGES.GENERAL.UNIQUE, "Name"),
             });
           }
 

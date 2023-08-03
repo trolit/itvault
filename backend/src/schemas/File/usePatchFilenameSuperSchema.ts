@@ -5,9 +5,9 @@ import { PatchFilenameControllerTypes } from "types/controllers/File/PatchFilena
 import { Di } from "@enums/Di";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -43,7 +43,7 @@ const useBodySchema: (
 
         if (!file) {
           return ctx.createError({
-            message: setYupError(MESSAGES.GENERAL.NOT_AVAILABLE, "File"),
+            message: setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "File"),
           });
         }
 
@@ -60,7 +60,7 @@ const useBodySchema: (
         if (fileWithSimiliarName) {
           return ctx.createError({
             message: setYupError(
-              MESSAGES.FILE.DUPLICATE_FILE,
+              CUSTOM_MESSAGES.FILE.DUPLICATE_FILE,
               fileWithSimiliarName.relativePath
             ),
           });

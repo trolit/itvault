@@ -6,8 +6,8 @@ import { FILES } from "@config";
 
 import { Di } from "@enums/Di";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -37,14 +37,14 @@ const bodySchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Body> =
 
         if (value.split(FILES.ROOT).length !== 2) {
           return ctx.createError({
-            message: setYupError(MESSAGES.FILE.ONLY_ONE_ROOT_INDICATOR),
+            message: setYupError(CUSTOM_MESSAGES.FILE.ONLY_ONE_ROOT_INDICATOR),
           });
         }
 
         if (value.includes("/") && !value.startsWith(FILES.ROOT)) {
           return ctx.createError({
             message: setYupError(
-              MESSAGES.FILE.SHOULD_START_WITH_ROOT_INDICATOR
+              CUSTOM_MESSAGES.FILE.SHOULD_START_WITH_ROOT_INDICATOR
             ),
           });
         }

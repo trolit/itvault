@@ -7,9 +7,9 @@ import { AddBundleDto } from "@dtos/AddBundleDto";
 import { BundleExpire } from "@enums/BundleExpire";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
-import { MESSAGES } from "@helpers/yup/messages";
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
@@ -45,7 +45,7 @@ const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
       if (file) {
         return ctx.createError({
           message: setYupError(
-            MESSAGES.FILE.VARIANTS_CONFLICT,
+            CUSTOM_MESSAGES.FILE.VARIANTS_CONFLICT,
             file.originalFilename,
             file.variants.length
           ),
