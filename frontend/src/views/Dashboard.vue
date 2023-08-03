@@ -7,16 +7,21 @@
       responsive="screen"
       cols="1 s:1 m:3 l:3 xl:3 2xl:3"
     >
-      <n-grid-item class="profile-card-wrapper">
+      <n-grid-item class="profile-card-wrapper" span="1">
         <profile-card />
       </n-grid-item>
 
-      <n-grid-item class="workspaces-card-wrapper">
+      <n-grid-item class="workspaces-card-wrapper" span="2">
         <workspaces-card />
       </n-grid-item>
 
-      <n-grid-item class="other-cards-wrapper">
-        <n-grid x-gap="20" y-gap="20" cols="2">
+      <n-grid-item class="other-cards-wrapper" span="3">
+        <n-grid
+          x-gap="20"
+          y-gap="20"
+          responsive="screen"
+          cols="1 s:1 m:3 l:3 xl:3 2xl:3"
+        >
           <n-grid-item
             v-for="(
               { title, to, icon, description, props }, index
@@ -84,7 +89,6 @@ const otherCards: Ref<OtherCard[]> = ref([
     title: "Contact",
     to: ROUTE_UPDATES_NAME,
     icon: shallowRef(EmailIcon),
-    props: { span: 2 },
     description: "Need help? Found an issue? Send us an ticket.",
   },
 ]);
