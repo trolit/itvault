@@ -38,7 +38,7 @@ export class StatusController extends BaseController {
     const { [JWT.COOKIE_KEY]: token } = request.cookies;
 
     if (!token) {
-      return response.status(HTTP.FORBIDDEN).send();
+      return response.status(HTTP.UNAUTHORIZED).send();
     }
 
     const result = this._authService.verifyToken(token);
