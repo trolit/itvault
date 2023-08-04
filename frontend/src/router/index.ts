@@ -73,6 +73,7 @@ router.beforeEach(
       try {
         await authStore.status();
 
+        // @TODO adjust status request to return user data (instead of storing it in local storage)
         const profileData = localStorageManager.load<IProfile>("profile");
 
         if (!profileData) {
