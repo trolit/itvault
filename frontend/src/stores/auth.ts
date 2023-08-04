@@ -7,28 +7,47 @@ interface IState {
   profile: IProfile;
 }
 
-interface IProfile {
+type Permission = {
+  id: number;
+  signature: string;
+  name: string;
+  enabled: boolean;
+};
+
+export interface IProfile {
+  id: number;
+
   email: string;
+
+  fullName: string;
+
+  roleName: string;
+
+  permissions: Permission[];
 }
 
 export const useAuthStore = defineStore("auth", {
   state: (): IState => ({
     profile: {
+      id: -1,
       email: "",
+      fullName: "",
+      roleName: "",
+      permissions: [],
     },
   }),
 
   actions: {
     async status() {
-      const { data } = await axios.get<IProfile>("auth/v1/status");
-
-      this.profile = data;
+      return axios.get<IProfile>("v1/auth/status", {
+        params: { version: 1 },
+      });
     },
 
     async login(payload: ILoginForm) {
-      const { data } = await axios.post<IProfile>("auth/v1/login", payload);
-
-      this.profile = data;
+      return axios.post<IProfile>("v1/auth/sign-in", payload, {
+        params: { version: 1 },
+      });
     },
   },
 });

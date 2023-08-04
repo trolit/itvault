@@ -45,6 +45,7 @@ import { useAuthStore } from "@/stores/auth";
 import type { ILoginForm } from "@/interfaces/ILoginForm";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
+import { localStorageManager } from "@/helpers/localStorageManager";
 
 const router = useRouter();
 
@@ -77,7 +78,9 @@ const onSubmit = handleSubmit.withControlled(async values => {
   isLoading.value = true;
 
   try {
-    await authStore.login(values as ILoginForm);
+    const { data } = await authStore.login(values as ILoginForm);
+
+    localStorageManager.save("profile", data);
 
     router.push({ name: ROUTE_DASHBOARD_NAME });
   } catch (error) {
