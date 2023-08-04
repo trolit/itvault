@@ -2,7 +2,6 @@ import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
-import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useSignInSuperSchema } from "@schemas/Auth/useSignInSuperSchema";
@@ -33,7 +32,6 @@ authRouter.post(
 authRouter.get(
   "/status",
   requireEndpointVersion(StatusController.ALL_VERSIONS),
-  requireAuthentication,
   processRequestWith(StatusController)
 );
 
