@@ -2,6 +2,8 @@ import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 import { PermissionToRole } from "./PermissionToRole";
 
+import { PermissionGroup } from "@enums/PermissionGroup";
+
 @Entity("permissions")
 export class Permission {
   @PrimaryGeneratedColumn()
@@ -9,6 +11,9 @@ export class Permission {
 
   @Column({ unique: true })
   signature: string;
+
+  @Column()
+  group: PermissionGroup;
 
   @Column({ unique: true })
   name!: string;
