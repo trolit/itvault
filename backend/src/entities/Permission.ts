@@ -12,7 +12,7 @@ export class Permission {
   @Column({ unique: true })
   signature: string;
 
-  @Column()
+  @Column({ type: "enum", enum: PermissionGroup })
   group: PermissionGroup;
 
   @Column({ unique: true })
