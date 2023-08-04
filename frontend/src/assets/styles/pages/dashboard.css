@@ -12,6 +12,15 @@
       display: inherit;
     }
 
+    .profile-card-wrapper,
+    .workspaces-card-wrapper {
+      min-height: 70vh;
+    }
+
+    .other-cards-wrapper {
+      min-height: 30vh;
+    }
+
     .ref-card {
       .n-thing {
         height: 100%;
