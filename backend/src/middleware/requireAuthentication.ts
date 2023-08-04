@@ -19,7 +19,7 @@ export const requireAuthentication = (<P, B, Q>() => {
   ) => {
     const authService = getInstanceOf<IAuthService>(Di.AuthService);
 
-    const userId = processTokenFromRequest(request, authService);
+    const userId = analyzeTokenFromRequest(request, authService);
 
     if (!userId) {
       return response.status(HTTP.UNAUTHORIZED).send();
@@ -37,7 +37,7 @@ export const requireAuthentication = (<P, B, Q>() => {
   };
 })();
 
-function processTokenFromRequest<P, B, Q>(
+function analyzeTokenFromRequest<P, B, Q>(
   request: CustomRequest<P, B, Q>,
   authService: IAuthService
 ) {

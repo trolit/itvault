@@ -7,6 +7,7 @@ import { JWT } from "@config";
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
+import { LoggedUserMapDto } from "@dtos/mappers/LoggedUserMapDto";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -37,7 +38,7 @@ export class StatusController extends BaseController {
     const { [JWT.COOKIE_KEY]: token } = request.cookies;
 
     if (!token) {
-      return response.status(HTTP.FORBIDDEN).send();
+      return response.status(HTTP.UNAUTHORIZED).send();
     }
 
     const result = this._authService.verifyToken(token);
@@ -50,12 +51,16 @@ export class StatusController extends BaseController {
 
     const { email } = result.payload;
 
-    const user = await this._userRepository.findByEmail(email);
+    const user = await this._userRepository.findByEmail(email, {
+      includePermissions: true,
+    });
 
     if (!user) {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    return this.finalizeRequest(response, HTTP.OK);
+    const mappedUserData = this.mapper.mapOneToDto(user, LoggedUserMapDto);
+
+    return this.finalizeRequest(response, HTTP.OK, mappedUserData);
   }
 }
