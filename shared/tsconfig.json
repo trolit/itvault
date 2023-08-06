@@ -11,6 +11,7 @@
     "noEmitOnError": true,
     "noImplicitAny": false,
     "preserveConstEnums": true,
+    "strictPropertyInitialization": false,
     "sourceMap": true
   },
   "include": ["./src/**/*.ts"]
