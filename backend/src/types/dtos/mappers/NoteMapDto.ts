@@ -1,7 +1,11 @@
 import { Note } from "@entities/Note";
 import { BaseMapDto } from "./BaseMapDto";
+import { INoteDto } from "@shared/types/dtos/INoteDto";
 
-export class NoteMapDto extends BaseMapDto<Note> {
+export class NoteMapDto extends BaseMapDto<Note> implements INoteDto {
+  id: number;
+  value: string;
+  createdAt: string;
   createdBy: string;
   updatedBy: string;
   isDeleted: boolean;

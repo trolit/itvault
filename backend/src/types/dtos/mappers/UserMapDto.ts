@@ -1,7 +1,12 @@
 import { User } from "@entities/User";
 import { BaseMapDto } from "./BaseMapDto";
+import { IUserDto } from "@shared/types/dtos/IUserDto";
 
-export class UserMapDto extends BaseMapDto<User> {
+export class UserMapDto extends BaseMapDto<User> implements IUserDto {
+  id: number;
+  email: string;
+  fullName: string;
+  isSignedUp: boolean;
   roleId: number;
   roleName: string;
   isActive: boolean;

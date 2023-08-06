@@ -1,8 +1,11 @@
 import { Role } from "@entities/Role";
 import { BaseMapDto } from "./BaseMapDto";
-import { PermissionDto } from "../PermissionDto";
+import { IRoleDto } from "@shared/types/dtos/IRoleDto";
+import { PermissionDto } from "@shared/types/dtos/PermissionDto";
 
-export class RoleMapDto extends BaseMapDto<Role> {
+export class RoleMapDto extends BaseMapDto<Role> implements IRoleDto {
+  id: number;
+  name: string;
   permissions: PermissionDto[];
 
   constructor(data: Role, keys: (keyof Role)[] = ["id", "name"]) {

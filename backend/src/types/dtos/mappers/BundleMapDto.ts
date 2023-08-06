@@ -1,10 +1,19 @@
 import { Bundle } from "@entities/Bundle";
 import { BaseMapDto } from "./BaseMapDto";
+import { IBundleDto } from "@shared/types/dtos/IBundleDto";
+import { BundleExpire } from "@shared/types/enums/BundleExpire";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 
-export class BundleMapDto extends BaseMapDto<Bundle> {
+export class BundleMapDto extends BaseMapDto<Bundle> implements IBundleDto {
+  id: number;
+  note: string;
+  expire: BundleExpire;
+  expiresAt: string;
+  status: BundleStatus;
+  size: number;
   blueprints: { name: string; isDeleted: boolean }[];
-
   variants: { file: string; version: string; isDeleted: boolean }[];
+  createdBy: { fullName: string };
 
   constructor(
     data: Bundle,
