@@ -7,12 +7,10 @@
     "outDir": "./dist/",
     "strict": true,
     "composite": true,
-    "declaration": true,
     "noEmitOnError": true,
     "noImplicitAny": false,
     "preserveConstEnums": true,
-    "strictPropertyInitialization": false,
-    "sourceMap": true
+    "strictPropertyInitialization": false
   },
   "include": ["./src/**/*.ts"]
 }
