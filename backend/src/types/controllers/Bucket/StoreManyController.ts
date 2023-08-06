@@ -1,5 +1,5 @@
-import { AddBucketDto } from "@dtos/AddBucketDto";
 import { BucketMapDto } from "@dtos/mappers/BucketMapDto";
+import { AddBucketDto } from "@shared/types/dtos/AddBucketDto";
 
 export namespace StoreManyControllerTypes {
   export namespace v1 {
