@@ -1,4 +1,5 @@
-import { number } from "yup";
+import { string } from "yup";
+import isInteger from "lodash/isInteger";
 
 import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
@@ -7,11 +8,11 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 export const useResourceEntityTest = () =>
-  number()
+  string()
     .required()
-    .integer()
-    .when("resource", ([resource], schema) => {
-      if (!resource || typeof resource !== "string") {
+    .transform(value => (isInteger(parseInt(value)) ? parseInt(value) : value))
+    .when("name", ([name], schema) => {
+      if (!name || typeof name !== "string") {
         return schema.typeError(
           setYupError(CUSTOM_MESSAGES.NOTE.RESOURCE_NOT_SPECIFIED)
         );
@@ -19,7 +20,7 @@ export const useResourceEntityTest = () =>
 
       return schema.test(async (value, ctx) => {
         const repository = getInstanceOf<IBaseRepository<unknown>>(
-          `I${resource}Repository`
+          `I${name}Repository`
         );
 
         const entity = await repository.getById(value);

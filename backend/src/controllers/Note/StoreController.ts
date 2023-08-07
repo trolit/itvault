@@ -37,10 +37,13 @@ export class StoreController extends BaseController {
   ) {
     const {
       userId,
-      body: { id, text, resource },
+      body: {
+        text,
+        resource: { id, name },
+      },
     } = request;
 
-    const entityReference = resourceToEntityReference(resource, id);
+    const entityReference = resourceToEntityReference(name, id);
 
     if (!entityReference) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();

@@ -1,4 +1,5 @@
-import { AddEditNoteDto } from "@dtos/AddEditNoteDto";
+import { Resource } from "@enums/Resource";
+import { AddEditNoteDto } from "@shared/types/dtos/AddEditNoteDto";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {
