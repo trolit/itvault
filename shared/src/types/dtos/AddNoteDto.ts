@@ -1,5 +1,4 @@
-// @TODO rename to AddNoteDto
-export type AddEditNoteDto<T> = {
+export type AddNoteDto<T> = {
   text: string;
 
   resource: {
