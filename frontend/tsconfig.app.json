@@ -9,5 +9,10 @@
       "@/*": ["./src/*"],
       "@shared/*": ["../shared/src/*"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../shared/tsconfig.json"
+    }
+  ]
 }
