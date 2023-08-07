@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { BlueprintMapDto } from "@mappers/BlueprintMapDto";
 import { StoreControllerTypes } from "types/controllers/Blueprint/StoreController";
 
 import { Di } from "@enums/Di";
 import { ControllerImplementation } from "miscellaneous-types";
-import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { BaseController } from "@controllers/BaseController";

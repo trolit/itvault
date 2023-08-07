@@ -1,5 +1,5 @@
 import { Resource } from "@enums/Resource";
-import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
+import { NoteMapDto } from "@mappers/NoteMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";

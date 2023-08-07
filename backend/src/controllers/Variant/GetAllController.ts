@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
+import { VariantMapDto } from "@mappers/VariantMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Variant/GetAllController";
 
 import { Di } from "@enums/Di";
-import { VariantMapDto } from "@dtos/mappers/VariantMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 

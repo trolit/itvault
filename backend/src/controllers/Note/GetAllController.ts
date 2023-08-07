@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { NoteMapDto } from "@mappers/NoteMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { FindOptionsSelect, FindOptionsWhere } from "typeorm";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
@@ -6,7 +7,6 @@ import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
 import { Permission } from "@enums/Permission";
-import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 

@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
+import { BundleMapDto } from "@mappers/BundleMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Bundle/GetAllController";
 
 import { Di } from "@enums/Di";
-import { BundleMapDto } from "@dtos/mappers/BundleMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 

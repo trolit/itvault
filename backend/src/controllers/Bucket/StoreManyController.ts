@@ -1,10 +1,10 @@
 import assert from "assert";
 import { inject, injectable } from "tsyringe";
+import { BucketMapDto } from "@mappers/BucketMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
 
 import { Di } from "@enums/Di";
-import { BucketMapDto } from "@dtos/mappers/BucketMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 

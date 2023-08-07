@@ -1,10 +1,10 @@
 import assert from "assert";
 import { inject, injectable } from "tsyringe";
+import { FileMapDto } from "@mappers/FileMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/File/StoreController";
 
 import { Di } from "@enums/Di";
-import { FileMapDto } from "@dtos/mappers/FileMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";

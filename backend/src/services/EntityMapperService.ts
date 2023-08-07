@@ -1,4 +1,5 @@
-import { BaseMapDto } from "@dtos/mappers/BaseMapDto";
+import { BaseMapDto } from "@mappers/BaseMapDto";
+
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 export class EntityMapperService implements IEntityMapperService {

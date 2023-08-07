@@ -1,5 +1,6 @@
-import { Tag } from "@entities/Tag";
 import { BaseMapDto } from "./BaseMapDto";
+
+import { Tag } from "@entities/Tag";
 import { ITagDto } from "@shared/types/dtos/ITagDto";
 
 export class TagMapDto extends BaseMapDto<Tag> implements ITagDto {

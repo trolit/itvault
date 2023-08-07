@@ -1,5 +1,5 @@
 import { SignInDto } from "@shared/types/dtos/SignInDto";
-import { LoggedUserMapDto } from "@dtos/mappers/LoggedUserMapDto";
+import { LoggedUserMapDto } from "@mappers/LoggedUserMapDto";
 
 export namespace SignInControllerTypes {
   export namespace v1 {

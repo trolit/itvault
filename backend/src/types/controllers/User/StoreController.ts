@@ -1,4 +1,4 @@
-import { UserMapDto } from "@dtos/mappers/UserMapDto";
+import { UserMapDto } from "@mappers/UserMapDto";
 import { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 
 export namespace StoreControllerTypes {

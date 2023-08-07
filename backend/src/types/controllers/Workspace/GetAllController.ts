@@ -1,5 +1,5 @@
 import { PaginatedResponse } from "miscellaneous-types";
-import { WorkspaceMapDto } from "@dtos/mappers/WorkspaceMapDto";
+import { WorkspaceMapDto } from "@mappers/WorkspaceMapDto";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 

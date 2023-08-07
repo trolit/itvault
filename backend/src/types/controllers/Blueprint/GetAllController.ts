@@ -1,4 +1,4 @@
-import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
+import { BlueprintMapDto } from "@mappers/BlueprintMapDto";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 

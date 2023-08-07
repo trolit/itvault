@@ -1,5 +1,6 @@
-import { File } from "@entities/File";
 import { BaseMapDto } from "./BaseMapDto";
+
+import { File } from "@entities/File";
 import { IFileDto } from "@shared/types/dtos/IFileDto";
 
 export class FileMapDto extends BaseMapDto<File> implements IFileDto {

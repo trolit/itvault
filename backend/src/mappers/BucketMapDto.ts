@@ -1,4 +1,5 @@
 import { BaseMapDto } from "./BaseMapDto";
+
 import { Bucket } from "@entities/Bucket";
 import { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import { BucketContent } from "@shared/types/BucketContent";

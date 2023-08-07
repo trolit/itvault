@@ -1,5 +1,5 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { FileMapDto } from "@dtos/mappers/FileMapDto";
+import { FileMapDto } from "@mappers/FileMapDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {

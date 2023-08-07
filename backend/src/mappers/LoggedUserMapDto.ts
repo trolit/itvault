@@ -1,5 +1,6 @@
-import { User } from "@entities/User";
 import { BaseMapDto } from "./BaseMapDto";
+
+import { User } from "@entities/User";
 import { PermissionDto } from "@shared/types/dtos/PermissionDto";
 import { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 

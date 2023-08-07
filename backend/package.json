@@ -29,7 +29,7 @@
   "_moduleAliases": {
     "types": "dist/types",
     "@jobs": "dist/jobs",
-    "@dtos": "dist/types/dtos",
+    "@mappers": "dist/mappers",
     "@enums": "dist/types/enums",
     "@interfaces": "dist/types/interfaces",
     "@utils": "dist/utils",

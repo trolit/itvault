@@ -1,5 +1,6 @@
-import { Role } from "@entities/Role";
 import { BaseMapDto } from "./BaseMapDto";
+
+import { Role } from "@entities/Role";
 import { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import { PermissionDto } from "@shared/types/dtos/PermissionDto";
 

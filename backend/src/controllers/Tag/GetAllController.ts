@@ -1,10 +1,10 @@
 import { Like } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { TagMapDto } from "@mappers/TagMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Tag/GetAllController";
 
 import { Di } from "@enums/Di";
-import { TagMapDto } from "@dtos/mappers/TagMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { ITagRepository } from "@interfaces/repositories/ITagRepository";
 

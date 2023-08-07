@@ -1,5 +1,6 @@
-import { User } from "@entities/User";
 import { BaseMapDto } from "./BaseMapDto";
+
+import { User } from "@entities/User";
 import { IUserDto } from "@shared/types/dtos/IUserDto";
 
 export class UserMapDto extends BaseMapDto<User> implements IUserDto {

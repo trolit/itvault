@@ -1,5 +1,6 @@
-import { Note } from "@entities/Note";
 import { BaseMapDto } from "./BaseMapDto";
+
+import { Note } from "@entities/Note";
 import { INoteDto } from "@shared/types/dtos/INoteDto";
 
 export class NoteMapDto extends BaseMapDto<Note> implements INoteDto {

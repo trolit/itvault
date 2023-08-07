@@ -1,4 +1,4 @@
-import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
+import { RoleMapDto } from "@mappers/RoleMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";

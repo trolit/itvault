@@ -1,13 +1,13 @@
 import { inject, injectable } from "tsyringe";
+import { BundleMapDto } from "@mappers/BundleMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 import { BundleStatus } from "@enums/BundleStatus";
-import { BundleMapDto } from "@dtos/mappers/BundleMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+import { ControllerImplementation } from "miscellaneous-types";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 

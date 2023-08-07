@@ -1,5 +1,5 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { FileMapDto } from "@dtos/mappers/FileMapDto";
+import { FileMapDto } from "@mappers/FileMapDto";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 

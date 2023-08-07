@@ -1,4 +1,5 @@
 import { BaseMapDto } from "./BaseMapDto";
+
 import { Variant } from "@entities/Variant";
 import { IVariantDto } from "@shared/types/dtos/IVariantDto";
 

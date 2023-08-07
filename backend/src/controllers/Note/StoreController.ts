@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
+import { NoteMapDto } from "@mappers/NoteMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Note/StoreController";
 
 import { Di } from "@enums/Di";
-import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 

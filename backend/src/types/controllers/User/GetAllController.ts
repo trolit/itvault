@@ -1,4 +1,4 @@
-import { UserMapDto } from "@dtos/mappers/UserMapDto";
+import { UserMapDto } from "@mappers/UserMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";

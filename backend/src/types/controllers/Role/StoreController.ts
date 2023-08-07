@@ -1,4 +1,4 @@
-import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
+import { RoleMapDto } from "@mappers/RoleMapDto";
 import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
 
 export namespace StoreControllerTypes {

@@ -1,4 +1,4 @@
-import { BundleMapDto } from "@dtos/mappers/BundleMapDto";
+import { BundleMapDto } from "@mappers/BundleMapDto";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { PaginatedResponse, WorkspaceId } from "miscellaneous-types";

@@ -1,5 +1,6 @@
 import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { RoleMapDto } from "@mappers/RoleMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 
@@ -7,7 +8,6 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 

@@ -1,10 +1,10 @@
 import assert from "assert";
 import { inject, injectable } from "tsyringe";
+import { RoleMapDto } from "@mappers/RoleMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Role/StoreController";
 
 import { Di } from "@enums/Di";
-import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
 import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleService } from "@interfaces/services/IRoleService";
 
