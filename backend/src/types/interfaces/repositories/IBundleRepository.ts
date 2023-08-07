@@ -1,7 +1,6 @@
 import { UpdateResult } from "typeorm";
 
 import { Bundle } from "@entities/Bundle";
-import { BundleExpire } from "@enums/BundleExpire";
 import { BundleStatus } from "@enums/BundleStatus";
 import { IBaseRepository } from "./IBaseRepository";
 

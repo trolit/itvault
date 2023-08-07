@@ -14,7 +14,7 @@ import { VariantToBundle } from "./VariantToBundle";
 import { BlueprintToBundle } from "./BlueprintToBundle";
 
 import { BundleStatus } from "@enums/BundleStatus";
-import { BundleExpire } from "@enums/BundleExpire";
+import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 @Entity("bundles")
 export class Bundle {

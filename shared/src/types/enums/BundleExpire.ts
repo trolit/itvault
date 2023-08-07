@@ -1,4 +1,4 @@
-export const enum BundleExpire {
+export enum BundleExpire {
   OneDay = "1-day",
   TwoDays = "2-days",
   ThreeDays = "3-days",

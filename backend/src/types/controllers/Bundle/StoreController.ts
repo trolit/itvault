@@ -1,7 +1,7 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { BundleExpire } from "@enums/BundleExpire";
 import { BundleMapDto } from "@mappers/BundleMapDto";
 import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
