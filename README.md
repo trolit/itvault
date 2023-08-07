@@ -1,5 +1,9 @@
 # Itvault
 
+# Getting started
+
+- `frontend` and `backend` use [shared library](./shared/src/). Build `backend` first to compile `shared` library.
+
 https://vuejs.org/api/sfc-script-setup.html
 
 This template should help get you started developing with Vue 3 in Vite.
