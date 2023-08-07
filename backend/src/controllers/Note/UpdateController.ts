@@ -57,7 +57,7 @@ export class UpdateController extends BaseController {
 
     const isUpdated = await this._noteRepository.primitiveUpdate(
       { id },
-      { value: text }
+      { value: text, updatedAt: note.updatedAt, updatedBy: note.updatedBy }
     );
 
     if (!isUpdated?.affected) {

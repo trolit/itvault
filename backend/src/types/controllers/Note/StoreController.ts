@@ -1,10 +1,10 @@
 import { Resource } from "@enums/Resource";
 import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
-import { AddEditNoteDto } from "@shared/types/dtos/AddEditNoteDto";
+import { AddNoteDto } from "@shared/types/dtos/AddNoteDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = AddEditNoteDto<Resource>;
+    export type Body = AddNoteDto<Resource>;
 
     export type Request = CustomRequest<undefined, Body>;
 

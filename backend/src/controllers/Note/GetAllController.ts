@@ -59,7 +59,7 @@ export class GetAllController extends BaseController {
       query: { id, resource, skip, take },
     } = request;
 
-    const entityReference = resourceToEntityReference(resource, id);
+    const entityReference = resourceToEntityReference(resource, <number>id);
 
     const where: FindOptionsWhere<Note> = {
       ...entityReference,

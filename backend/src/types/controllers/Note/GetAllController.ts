@@ -2,13 +2,11 @@ import { Resource } from "@enums/Resource";
 import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
-import { AddEditNoteDto } from "@shared/types/dtos/AddEditNoteDto";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    // @TODO adjust to new structure!!!
-    type QueryCommon = Pick<AddEditNoteDto<Resource>, "id" | "resource"> & {
+    type QueryCommon = { id: string; resource: Resource } & {
       userId?: number;
     };
 
