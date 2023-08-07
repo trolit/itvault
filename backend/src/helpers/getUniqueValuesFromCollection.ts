@@ -1,7 +1,6 @@
 import uniq from "lodash/uniq";
+import { NestedKey } from "types/NestedKey";
 import flattenDeep from "lodash/flattenDeep";
-
-import { NestedKey } from "miscellaneous-types";
 
 export const getUniqueValuesFromCollection = <T extends object, Y>(
   collection: T[],
