@@ -1,10 +1,10 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { PatchFilenameControllerTypes } from "types/controllers/File/PatchFilenameController";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";

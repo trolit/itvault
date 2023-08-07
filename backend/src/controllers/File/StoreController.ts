@@ -3,9 +3,9 @@ import { inject, injectable } from "tsyringe";
 import { FileMapDto } from "@mappers/FileMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/File/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 

@@ -3,9 +3,9 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { WorkspaceMapDto } from "@mappers/WorkspaceMapDto";
 import { StoreControllerTypes } from "types/controllers/Workspace/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
 import { BaseController } from "@controllers/BaseController";

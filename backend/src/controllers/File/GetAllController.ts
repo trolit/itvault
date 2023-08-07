@@ -2,10 +2,10 @@ import { inject, injectable } from "tsyringe";
 import { FileMapDto } from "@mappers/FileMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";

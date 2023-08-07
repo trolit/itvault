@@ -4,15 +4,15 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { LoggedUserMapDto } from "@mappers/LoggedUserMapDto";
 import { DataStoreKeyType, DataStoreUser } from "data-store-types";
 import { SignInControllerTypes } from "types/controllers/Auth/SignInController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { APP, JWT } from "@config";
 
 import { Di } from "@enums/Di";
 import { Environment } from "@enums/Environment";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
+import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 import { BaseController } from "@controllers/BaseController";
 

@@ -2,11 +2,11 @@ import type { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { LoggedUserMapDto } from "@mappers/LoggedUserMapDto";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { JWT } from "@config";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IAuthService } from "@interfaces/services/IAuthService";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 

@@ -3,9 +3,9 @@ import { inject, injectable } from "tsyringe";
 import { TagMapDto } from "@mappers/TagMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Tag/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { ITagRepository } from "@interfaces/repositories/ITagRepository";
 
 import { BaseController } from "@controllers/BaseController";

@@ -3,10 +3,10 @@ import { inject, injectable } from "tsyringe";
 import { UserMapDto } from "@mappers/UserMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/User/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { ControllerImplementation } from "miscellaneous-types";
 import { MailConsumerHandlerData } from "consumer-handlers-types";
 import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";

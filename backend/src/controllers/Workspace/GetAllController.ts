@@ -2,10 +2,10 @@ import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { WorkspaceMapDto } from "@mappers/WorkspaceMapDto";
 import { GetAllControllerTypes } from "types/controllers/Workspace/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";

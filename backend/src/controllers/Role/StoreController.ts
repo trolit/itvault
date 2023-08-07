@@ -3,9 +3,9 @@ import { inject, injectable } from "tsyringe";
 import { RoleMapDto } from "@mappers/RoleMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Role/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleService } from "@interfaces/services/IRoleService";
 
 import { BaseController } from "@controllers/BaseController";

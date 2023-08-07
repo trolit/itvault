@@ -3,11 +3,11 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { SignUpControllerTypes } from "types/controllers/User/SignUpController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { BCRYPT } from "@config";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { BaseController } from "@controllers/BaseController";

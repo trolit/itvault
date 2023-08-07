@@ -3,12 +3,12 @@ import { inject, injectable } from "tsyringe";
 import { RoleMapDto } from "@mappers/RoleMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";

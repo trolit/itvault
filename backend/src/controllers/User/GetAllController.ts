@@ -2,9 +2,9 @@ import { inject, injectable } from "tsyringe";
 import { UserMapDto } from "@mappers/UserMapDto";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/User/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { BaseController } from "@controllers/BaseController";

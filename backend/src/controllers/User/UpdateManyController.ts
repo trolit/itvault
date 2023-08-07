@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@enums/Permission";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IUserService } from "@interfaces/services/IUserService";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
