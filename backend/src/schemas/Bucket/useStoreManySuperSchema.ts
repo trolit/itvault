@@ -5,7 +5,7 @@ import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
 
 import { Di } from "@enums/Di";
-import { BucketContent } from "miscellaneous-types";
+import { BucketContent } from "@shared/types/BucketContent";
 import { AddBucketDto } from "@shared/types/dtos/AddBucketDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 

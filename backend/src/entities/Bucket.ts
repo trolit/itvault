@@ -4,7 +4,7 @@ import { Base } from "./Base";
 import { Variant } from "./Variant";
 import { Blueprint } from "./Blueprint";
 
-import { BucketContent } from "miscellaneous-types";
+import { BucketContent } from "@shared/types/BucketContent";
 
 @Entity("buckets")
 export class Bucket extends Base {

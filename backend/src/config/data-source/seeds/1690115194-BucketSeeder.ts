@@ -14,7 +14,7 @@ import { Bucket } from "@entities/Bucket";
 import { Variant } from "@entities/Variant";
 import { Workspace } from "@entities/Workspace";
 import { Blueprint } from "@entities/Blueprint";
-import { BucketContent } from "miscellaneous-types";
+import { BucketContent } from "@shared/types/BucketContent";
 
 export default class BucketSeeder implements Seeder {
   public async run(dataSource: DataSource) {
