@@ -2,7 +2,7 @@ import { Entity, Column, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 import { PermissionToRole } from "./PermissionToRole";
 
-import { PermissionGroup } from "@enums/PermissionGroup";
+import { PermissionGroup } from "@shared/types/enums/PermissionGroup";
 
 @Entity("permissions")
 export class Permission {
