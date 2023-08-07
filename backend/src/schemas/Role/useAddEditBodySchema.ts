@@ -4,8 +4,9 @@ import { SuperSchemaElement } from "super-schema-types";
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
+import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
-import { AddEditRoleDto, UpdatePermissionDto } from "@dtos/AddEditRoleDto";
+import { UpdatePermissionDto } from "@shared/types/dtos/UpdatePermissionDto";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

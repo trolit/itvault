@@ -1,6 +1,6 @@
 import { WorkspaceId } from "miscellaneous-types";
 import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
-import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
+import { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {

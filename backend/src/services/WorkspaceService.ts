@@ -4,9 +4,9 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
-import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
 import { ITagRepository } from "@interfaces/repositories/ITagRepository";
 import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
+import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 @injectable()

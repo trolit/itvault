@@ -1,4 +1,4 @@
-import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
+import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {

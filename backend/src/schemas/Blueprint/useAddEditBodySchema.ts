@@ -3,7 +3,7 @@ import { object, string } from "yup";
 import { SuperSchemaElement } from "super-schema-types";
 
 import { Di } from "@enums/Di";
-import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
+import { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { setYupError } from "@helpers/yup/setError";

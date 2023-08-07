@@ -3,7 +3,7 @@ import { array, object, string } from "yup";
 import { SuperSchemaElement } from "super-schema-types";
 
 import { Di } from "@enums/Di";
-import { AddEditWorkspaceDto } from "@dtos/AddEditWorkspaceDto";
+import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 import { setYupError } from "@helpers/yup/setError";

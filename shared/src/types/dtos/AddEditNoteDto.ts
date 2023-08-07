@@ -1,3 +1,4 @@
+// @TODO rename to AddNoteDto
 export type AddEditNoteDto<T> = {
   text: string;
 

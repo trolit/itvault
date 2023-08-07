@@ -3,8 +3,8 @@ import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
-import { AddBundleDto } from "@dtos/AddBundleDto";
 import { BundleExpire } from "@enums/BundleExpire";
+import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { setYupError } from "@helpers/yup/setError";

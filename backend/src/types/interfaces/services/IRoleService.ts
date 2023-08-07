@@ -1,6 +1,6 @@
 import { Role } from "@entities/Role";
-import { AddEditRoleDto } from "@dtos/AddEditRoleDto";
 import { TransactionResult } from "types/TransactionResult";
+import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
 
 export interface IRoleService {
   create(data: AddEditRoleDto): Promise<TransactionResult<Role>>;
