@@ -5,9 +5,9 @@ import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { BundleStatus } from "@enums/BundleStatus";
-import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import { ControllerImplementation } from "miscellaneous-types";
+import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 

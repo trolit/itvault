@@ -1,4 +1,4 @@
-export const enum BundleStatus {
+export enum BundleStatus {
   Queried = "queried",
   Building = "building",
   Ready = "ready",

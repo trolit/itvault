@@ -5,8 +5,8 @@ import { RequeueControllerTypes } from "types/controllers/Bundle/RequeueControll
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { BundleStatus } from "@enums/BundleStatus";
 import { ControllerImplementation } from "miscellaneous-types";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 

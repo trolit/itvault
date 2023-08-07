@@ -7,7 +7,7 @@ import { BaseBundleConsumerHandler } from "./Base";
 
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
-import { BundleStatus } from "@enums/BundleStatus";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import { IDateService } from "@interfaces/services/IDateService";
 import { IFileService } from "@interfaces/services/IFileService";
