@@ -59,7 +59,7 @@ export class StatusController extends BaseController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const mappedUserData = this.mapper.mapOneToDto(user, LoggedUserMapper);
+    const mappedUserData = this.mapper.map(user, LoggedUserMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedUserData);
   }

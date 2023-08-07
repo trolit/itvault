@@ -67,7 +67,7 @@ export class StoreController extends BaseController {
       viewBuilderName: SignUpMailViewBuilder.name,
     });
 
-    const mappedResult = this.mapper.mapOneToDto(user, UserMapper);
+    const mappedResult = this.mapper.map(user, UserMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

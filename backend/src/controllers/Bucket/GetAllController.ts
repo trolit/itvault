@@ -53,7 +53,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, BucketMapper);
+    const mappedResult = this.mapper.map(result, BucketMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }

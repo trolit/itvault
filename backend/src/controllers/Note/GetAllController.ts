@@ -80,7 +80,7 @@ export class GetAllController extends BaseController {
       ),
     });
 
-    const mappedResult = this.mapper.mapToDto(result, NoteMapper);
+    const mappedResult = this.mapper.map(result, NoteMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

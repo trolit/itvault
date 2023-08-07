@@ -79,7 +79,7 @@ export class StoreController extends BaseController {
       bundle,
     });
 
-    const result = this.mapper.mapOneToDto(bundle, BundleMapper);
+    const result = this.mapper.map(bundle, BundleMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, result);
   }

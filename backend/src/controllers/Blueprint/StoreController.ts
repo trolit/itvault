@@ -49,7 +49,7 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    const result = this.mapper.mapOneToDto(blueprint, BlueprintMapper);
+    const result = this.mapper.map(blueprint, BlueprintMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, result);
   }

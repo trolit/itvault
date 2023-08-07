@@ -48,7 +48,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, VariantMapper);
+    const mappedResult = this.mapper.map(result, VariantMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

@@ -47,7 +47,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, BlueprintMapper);
+    const mappedResult = this.mapper.map(result, BlueprintMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

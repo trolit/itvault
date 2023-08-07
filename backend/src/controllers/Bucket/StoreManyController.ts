@@ -46,7 +46,7 @@ export class StoreManyController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.mapToDto(result.value, BucketMapper);
+    const mappedResult = this.mapper.map(result.value, BucketMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

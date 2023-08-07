@@ -53,7 +53,7 @@ export class StoreController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.mapToDto(result.value, FileMapper);
+    const mappedResult = this.mapper.map(result.value, FileMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }

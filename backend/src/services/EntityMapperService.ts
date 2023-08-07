@@ -3,17 +3,18 @@ import { BaseMapper } from "@mappers/BaseMapper";
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 export class EntityMapperService implements IEntityMapperService {
-  mapOneToDto<T, Y extends BaseMapper<T>>(
-    entity: T,
-    target: new (data: T) => Y
-  ): Y {
-    return new target(entity);
-  }
+  map<T, Y extends BaseMapper<T>>(entity: T, mapper: new (data: T) => Y): Y;
 
-  mapToDto<T, Y extends BaseMapper<T>>(
-    entities: T[],
-    target: new (data: T) => Y
-  ): Y[] {
-    return entities.map(entity => new target(entity));
+  map<T, Y extends BaseMapper<T>>(entity: T[], mapper: new (data: T) => Y): Y[];
+
+  map<T, Y extends BaseMapper<T>>(
+    entity: T | T[],
+    mapper: new (data: T) => Y
+  ): Y | Y[] {
+    if (Array.isArray(entity)) {
+      return entity.map(entity => new mapper(entity));
+    }
+
+    return new mapper(entity);
   }
 }

@@ -49,7 +49,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this.mapper.mapToDto(result, UserMapper);
+    const mappedResult = this.mapper.map(result, UserMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

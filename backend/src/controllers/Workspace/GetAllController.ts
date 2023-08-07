@@ -63,7 +63,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, WorkspaceMapper);
+    const mappedResult = this.mapper.map(result, WorkspaceMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

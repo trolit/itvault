@@ -79,7 +79,7 @@ export class SignInController extends BaseController {
       secure: APP.ENV === Environment.Production,
     });
 
-    const mappedUserData = this.mapper.mapOneToDto(user, LoggedUserMapper);
+    const mappedUserData = this.mapper.map(user, LoggedUserMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedUserData);
   }

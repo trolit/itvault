@@ -44,7 +44,7 @@ export class StoreController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.mapOneToDto(result.value, WorkspaceMapper);
+    const mappedResult = this.mapper.map(result.value, WorkspaceMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

@@ -51,7 +51,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, RoleMapper);
+    const mappedResult = this.mapper.map(result, RoleMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

@@ -64,7 +64,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this.mapper.mapToDto(result, BundleMapper);
+    const mappedResult = this.mapper.map(result, BundleMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

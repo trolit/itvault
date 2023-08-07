@@ -53,7 +53,7 @@ export class StoreController extends BaseController {
       this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
     }
 
-    const mappedResult = this.mapper.mapOneToDto(variant, VariantMapper);
+    const mappedResult = this.mapper.map(variant, VariantMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }
