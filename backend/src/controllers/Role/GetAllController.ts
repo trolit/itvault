@@ -8,7 +8,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@enums/Permission";
+import { Permission } from "@shared/types/enums/Permission";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";

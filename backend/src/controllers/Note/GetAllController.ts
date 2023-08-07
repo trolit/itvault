@@ -7,7 +7,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
-import { Permission } from "@enums/Permission";
+import { Permission } from "@shared/types/enums/Permission";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";

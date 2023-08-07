@@ -1,4 +1,4 @@
-import { Permission } from "@enums/Permission";
+import { Permission } from "@shared/types/enums/Permission";
 import { PermissionDto } from "@shared/types/dtos/PermissionDto";
 
 export const isPermissionEnabled = (

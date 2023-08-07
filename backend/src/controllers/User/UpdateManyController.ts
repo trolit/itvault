@@ -4,7 +4,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@enums/Permission";
+import { Permission } from "@shared/types/enums/Permission";
 import { IUserService } from "@interfaces/services/IUserService";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";

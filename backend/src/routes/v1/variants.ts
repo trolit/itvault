@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { FILES } from "@config";
 
-import { Permission } from "@enums/Permission";
+import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";

@@ -1,4 +1,4 @@
-import { Permission } from "@enums/Permission";
+import { Permission } from "@shared/types/enums/Permission";
 import { PermissionGroup } from "@enums/PermissionGroup";
 
 export interface IPermissionDefinition {

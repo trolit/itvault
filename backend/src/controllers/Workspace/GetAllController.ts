@@ -5,7 +5,7 @@ import { GetAllControllerTypes } from "types/controllers/Workspace/GetAllControl
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@enums/Permission";
+import { Permission } from "@shared/types/enums/Permission";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
