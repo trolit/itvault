@@ -1,7 +1,7 @@
 import { CronJob } from "cron";
+import { JobConfig } from "types/JobConfig";
 
 import { IJob } from "@interfaces/IJob";
-import { JobConfig } from "miscellaneous-types";
 
 export abstract class BaseJob implements IJob {
   instance: CronJob | null = null;

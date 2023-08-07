@@ -25,15 +25,6 @@ declare module "miscellaneous-types" {
     total: number;
   };
 
-  export type JobConfig = {
-    time: string;
-    runners: { onTick: CronCommand; onComplete?: CronCommand };
-    options?: {
-      timeZone?: string;
-      runOnInit?: boolean;
-    };
-  };
-
   // *******************************************************************
 
   export type WorkspaceId = {
