@@ -1,5 +1,5 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { BlueprintMapDto } from "@mappers/BlueprintMapDto";
+import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
 export namespace StoreControllerTypes {
@@ -10,6 +10,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, Body, Query>;
 
-    export type Response = CustomResponse<BlueprintMapDto>;
+    export type Response = CustomResponse<BlueprintMapper>;
   }
 }

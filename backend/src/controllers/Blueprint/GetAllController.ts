@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { BlueprintMapDto } from "@mappers/BlueprintMapDto";
+import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { GetAllControllerTypes } from "types/controllers/Blueprint/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
@@ -47,7 +47,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, BlueprintMapDto);
+    const mappedResult = this.mapper.mapToDto(result, BlueprintMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

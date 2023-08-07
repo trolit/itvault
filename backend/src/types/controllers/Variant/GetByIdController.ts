@@ -1,5 +1,5 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { VariantMapDto } from "@mappers/VariantMapDto";
+import { VariantMapper } from "@mappers/VariantMapper";
 
 export namespace GetByIdControllerTypes {
   export namespace v1 {
@@ -12,7 +12,7 @@ export namespace GetByIdControllerTypes {
     export type Request = CustomRequest<Params, undefined, Query>;
 
     export type Response = CustomResponse<{
-      record: VariantMapDto;
+      record: VariantMapper;
 
       content: string;
     }>;

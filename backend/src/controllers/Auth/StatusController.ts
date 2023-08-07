@@ -1,7 +1,7 @@
 import type { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { LoggedUserMapDto } from "@mappers/LoggedUserMapDto";
+import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { JWT } from "@config";
@@ -59,7 +59,7 @@ export class StatusController extends BaseController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const mappedUserData = this.mapper.mapOneToDto(user, LoggedUserMapDto);
+    const mappedUserData = this.mapper.mapOneToDto(user, LoggedUserMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedUserData);
   }

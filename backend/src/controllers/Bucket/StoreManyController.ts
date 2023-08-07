@@ -1,6 +1,6 @@
 import assert from "assert";
 import { inject, injectable } from "tsyringe";
-import { BucketMapDto } from "@mappers/BucketMapDto";
+import { BucketMapper } from "@mappers/BucketMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
@@ -46,7 +46,7 @@ export class StoreManyController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.mapToDto(result.value, BucketMapDto);
+    const mappedResult = this.mapper.mapToDto(result.value, BucketMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

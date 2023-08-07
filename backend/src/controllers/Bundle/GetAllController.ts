@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { BundleMapDto } from "@mappers/BundleMapDto";
+import { BundleMapper } from "@mappers/BundleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Bundle/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -64,7 +64,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this.mapper.mapToDto(result, BundleMapDto);
+    const mappedResult = this.mapper.mapToDto(result, BundleMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

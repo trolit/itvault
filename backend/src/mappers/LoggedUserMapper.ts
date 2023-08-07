@@ -1,11 +1,11 @@
-import { BaseMapDto } from "./BaseMapDto";
+import { BaseMapper } from "./BaseMapper";
 
 import { User } from "@entities/User";
 import { PermissionDto } from "@shared/types/dtos/PermissionDto";
 import { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 
-export class LoggedUserMapDto
-  extends BaseMapDto<User>
+export class LoggedUserMapper
+  extends BaseMapper<User>
   implements ILoggedUserDto
 {
   id: number;

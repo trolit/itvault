@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { NoteMapDto } from "@mappers/NoteMapDto";
+import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { FindOptionsSelect, FindOptionsWhere } from "typeorm";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
@@ -80,7 +80,7 @@ export class GetAllController extends BaseController {
       ),
     });
 
-    const mappedResult = this.mapper.mapToDto(result, NoteMapDto);
+    const mappedResult = this.mapper.mapToDto(result, NoteMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

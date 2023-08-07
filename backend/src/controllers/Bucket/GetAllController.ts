@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { BucketMapDto } from "@mappers/BucketMapDto";
+import { BucketMapper } from "@mappers/BucketMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Bucket/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -53,7 +53,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, BucketMapDto);
+    const mappedResult = this.mapper.mapToDto(result, BucketMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }

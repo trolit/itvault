@@ -1,9 +1,9 @@
-import { BaseMapDto } from "./BaseMapDto";
+import { BaseMapper } from "./BaseMapper";
 
 import { File } from "@entities/File";
 import { IFileDto } from "@shared/types/dtos/IFileDto";
 
-export class FileMapDto extends BaseMapDto<File> implements IFileDto {
+export class FileMapper extends BaseMapper<File> implements IFileDto {
   id: number;
   originalFilename: string;
   relativePath: string;

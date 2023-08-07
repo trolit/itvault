@@ -1,6 +1,6 @@
 import assert from "assert";
 import { inject, injectable } from "tsyringe";
-import { RoleMapDto } from "@mappers/RoleMapDto";
+import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Role/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -44,7 +44,7 @@ export class StoreController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.mapOneToDto(result.value, RoleMapDto);
+    const mappedResult = this.mapper.mapOneToDto(result.value, RoleMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

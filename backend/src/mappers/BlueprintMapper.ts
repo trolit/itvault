@@ -1,10 +1,10 @@
-import { BaseMapDto } from "./BaseMapDto";
+import { BaseMapper } from "./BaseMapper";
 
 import { Blueprint } from "@entities/Blueprint";
 import { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
-export class BlueprintMapDto
-  extends BaseMapDto<Blueprint>
+export class BlueprintMapper
+  extends BaseMapper<Blueprint>
   implements IBlueprintDto
 {
   id: number;

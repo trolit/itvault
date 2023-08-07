@@ -1,4 +1,4 @@
-import { UserMapDto } from "@mappers/UserMapDto";
+import { UserMapper } from "@mappers/UserMapper";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
@@ -11,6 +11,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 
-    export type Response = CustomResponse<PaginatedResponse<UserMapDto>>;
+    export type Response = CustomResponse<PaginatedResponse<UserMapper>>;
   }
 }

@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { VariantMapDto } from "@mappers/VariantMapDto";
+import { VariantMapper } from "@mappers/VariantMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Variant/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -53,7 +53,7 @@ export class StoreController extends BaseController {
       this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
     }
 
-    const mappedResult = this.mapper.mapOneToDto(variant, VariantMapDto);
+    const mappedResult = this.mapper.mapOneToDto(variant, VariantMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

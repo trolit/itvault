@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { LoggedUserMapDto } from "@mappers/LoggedUserMapDto";
+import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
 import { DataStoreKeyType, DataStoreUser } from "data-store-types";
 import { SignInControllerTypes } from "types/controllers/Auth/SignInController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -79,7 +79,7 @@ export class SignInController extends BaseController {
       secure: APP.ENV === Environment.Production,
     });
 
-    const mappedUserData = this.mapper.mapOneToDto(user, LoggedUserMapDto);
+    const mappedUserData = this.mapper.mapOneToDto(user, LoggedUserMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedUserData);
   }

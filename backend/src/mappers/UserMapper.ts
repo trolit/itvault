@@ -1,9 +1,9 @@
-import { BaseMapDto } from "./BaseMapDto";
+import { BaseMapper } from "./BaseMapper";
 
 import { User } from "@entities/User";
 import { IUserDto } from "@shared/types/dtos/IUserDto";
 
-export class UserMapDto extends BaseMapDto<User> implements IUserDto {
+export class UserMapper extends BaseMapper<User> implements IUserDto {
   id: number;
   email: string;
   fullName: string;

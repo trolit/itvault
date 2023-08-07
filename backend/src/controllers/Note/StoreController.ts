@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { NoteMapDto } from "@mappers/NoteMapDto";
+import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Note/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -64,7 +64,7 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    const result = this.mapper.mapOneToDto(note, NoteMapDto);
+    const result = this.mapper.mapOneToDto(note, NoteMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, result);
   }

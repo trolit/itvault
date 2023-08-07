@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { BundleMapDto } from "@mappers/BundleMapDto";
+import { BundleMapper } from "@mappers/BundleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -79,7 +79,7 @@ export class StoreController extends BaseController {
       bundle,
     });
 
-    const result = this.mapper.mapOneToDto(bundle, BundleMapDto);
+    const result = this.mapper.mapOneToDto(bundle, BundleMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, result);
   }

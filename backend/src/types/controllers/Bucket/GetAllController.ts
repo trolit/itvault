@@ -1,4 +1,4 @@
-import { BucketMapDto } from "@mappers/BucketMapDto";
+import { BucketMapper } from "@mappers/BucketMapper";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
@@ -8,6 +8,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, Query>;
 
-    export type Response = CustomResponse<BucketMapDto[]>;
+    export type Response = CustomResponse<BucketMapper[]>;
   }
 }

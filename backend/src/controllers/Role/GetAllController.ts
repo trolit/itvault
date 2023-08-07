@@ -1,6 +1,6 @@
 import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
-import { RoleMapDto } from "@mappers/RoleMapDto";
+import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -51,7 +51,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, RoleMapDto);
+    const mappedResult = this.mapper.mapToDto(result, RoleMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

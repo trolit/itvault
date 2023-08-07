@@ -1,11 +1,11 @@
-import { BaseMapDto } from "./BaseMapDto";
+import { BaseMapper } from "./BaseMapper";
 
 import { Bundle } from "@entities/Bundle";
 import { IBundleDto } from "@shared/types/dtos/IBundleDto";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
-export class BundleMapDto extends BaseMapDto<Bundle> implements IBundleDto {
+export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   id: number;
   note: string;
   expire: BundleExpire;

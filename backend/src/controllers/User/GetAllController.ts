@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { UserMapDto } from "@mappers/UserMapDto";
+import { UserMapper } from "@mappers/UserMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/User/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -49,7 +49,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this.mapper.mapToDto(result, UserMapDto);
+    const mappedResult = this.mapper.mapToDto(result, UserMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

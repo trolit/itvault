@@ -1,6 +1,6 @@
 import { Like } from "typeorm";
 import { inject, injectable } from "tsyringe";
-import { TagMapDto } from "@mappers/TagMapDto";
+import { TagMapper } from "@mappers/TagMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Tag/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -46,7 +46,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, TagMapDto);
+    const mappedResult = this.mapper.mapToDto(result, TagMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

@@ -1,6 +1,6 @@
 import { FindOptionsSelect } from "typeorm";
 import { inject, injectable } from "tsyringe";
-import { NoteMapDto } from "@mappers/NoteMapDto";
+import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { GetAllNotesByIdControllerTypes } from "types/controllers/User/GetAllNotesByIdController";
@@ -91,7 +91,7 @@ export class GetAllNotesByIdController extends BaseController {
       ),
     });
 
-    const mappedResult = this.mapper.mapToDto(result, NoteMapDto);
+    const mappedResult = this.mapper.mapToDto(result, NoteMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

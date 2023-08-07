@@ -1,10 +1,10 @@
-import { BaseMapDto } from "./BaseMapDto";
+import { BaseMapper } from "./BaseMapper";
 
 import { Workspace } from "@entities/Workspace";
 import { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 
-export class WorkspaceMapDto
-  extends BaseMapDto<Workspace>
+export class WorkspaceMapper
+  extends BaseMapper<Workspace>
   implements IWorkspaceDto
 {
   id: number;

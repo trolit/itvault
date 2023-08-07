@@ -1,4 +1,4 @@
-import { UserMapDto } from "@mappers/UserMapDto";
+import { UserMapper } from "@mappers/UserMapper";
 import { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 
 export namespace StoreControllerTypes {
@@ -7,6 +7,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, Body>;
 
-    export type Response = CustomResponse<UserMapDto>;
+    export type Response = CustomResponse<UserMapper>;
   }
 }

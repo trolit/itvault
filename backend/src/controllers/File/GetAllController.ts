@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { FileMapDto } from "@mappers/FileMapDto";
+import { FileMapper } from "@mappers/FileMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -54,7 +54,7 @@ export class GetAllController extends BaseController {
       );
     }
 
-    const mappedResult = this.mapper.mapToDto(result, FileMapDto);
+    const mappedResult = this.mapper.mapToDto(result, FileMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }

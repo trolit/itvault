@@ -1,5 +1,5 @@
 import { Resource } from "@enums/Resource";
-import { NoteMapDto } from "@mappers/NoteMapDto";
+import { NoteMapper } from "@mappers/NoteMapper";
 import { AddNoteDto } from "@shared/types/dtos/AddNoteDto";
 
 export namespace StoreControllerTypes {
@@ -8,6 +8,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, Body>;
 
-    export type Response = CustomResponse<NoteMapDto>;
+    export type Response = CustomResponse<NoteMapper>;
   }
 }

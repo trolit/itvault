@@ -1,5 +1,5 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { BundleMapDto } from "@mappers/BundleMapDto";
+import { BundleMapper } from "@mappers/BundleMapper";
 import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
@@ -17,6 +17,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, Body, Query>;
 
-    export type Response = CustomResponse<BundleMapDto>;
+    export type Response = CustomResponse<BundleMapper>;
   }
 }

@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { VariantMapDto } from "@mappers/VariantMapDto";
+import { VariantMapper } from "@mappers/VariantMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Variant/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -48,7 +48,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, VariantMapDto);
+    const mappedResult = this.mapper.mapToDto(result, VariantMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

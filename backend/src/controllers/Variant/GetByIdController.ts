@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { VariantMapDto } from "@mappers/VariantMapDto";
+import { VariantMapper } from "@mappers/VariantMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetByIdControllerTypes } from "types/controllers/Variant/GetByIdController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -57,7 +57,7 @@ export class GetByIdController extends BaseController {
     }
 
     return this.finalizeRequest(response, HTTP.OK, {
-      record: this.mapper.mapOneToDto(variant, VariantMapDto),
+      record: this.mapper.mapOneToDto(variant, VariantMapper),
       content,
     });
   }

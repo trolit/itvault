@@ -1,5 +1,5 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { FileMapDto } from "@mappers/FileMapDto";
+import { FileMapper } from "@mappers/FileMapper";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
@@ -17,6 +17,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 
-    export type Response = CustomResponse<FileMapDto[]>;
+    export type Response = CustomResponse<FileMapper[]>;
   }
 }
