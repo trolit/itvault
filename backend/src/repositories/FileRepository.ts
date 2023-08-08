@@ -22,7 +22,6 @@ export class FileRepository
     super(File);
   }
 
-  // @TODO consider feature if same file is added again - create new variant instead
   async save(
     userId: number,
     workspaceId: number,
@@ -34,16 +33,33 @@ export class FileRepository
       const temporaryFilesContainer = [];
 
       for (const { key, file } of formDataFiles) {
-        temporaryFilesContainer.push(
-          this._createFileInstance(transaction, {
-            userId,
-            size: file.size,
-            filename: file.newFilename,
-            variantName: "v1",
-            workspaceId: workspaceId,
-            relativePath: key,
+        if (!file.originalFilename) {
+          continue;
+        }
+
+        const record = await transaction.manager.findOne(File, {
+          where: {
             originalFilename: file.originalFilename,
-          })
+          },
+          relations: {
+            variants: true,
+          },
+        });
+
+        temporaryFilesContainer.push(
+          this._createFileInstance(
+            transaction,
+            record || {
+              relativePath: key,
+              originalFilename: file.originalFilename,
+            },
+            {
+              userId,
+              workspaceId,
+              size: file.size,
+              filename: file.newFilename,
+            }
+          )
         );
       }
 
@@ -126,25 +142,19 @@ export class FileRepository
 
   private _createFileInstance(
     transaction: QueryRunner,
-    properties: {
+    fileData: Partial<File>,
+    additionalData: {
       size: number;
       userId: number;
       filename: string;
-      variantName: string;
       workspaceId: number;
-      relativePath: string;
-      originalFilename: string | null;
     }
   ) {
-    const {
-      size,
-      userId,
-      filename,
-      variantName,
-      workspaceId,
-      relativePath,
-      originalFilename,
-    } = properties;
+    const { size, userId, filename, workspaceId } = additionalData;
+
+    const variantName = fileData?.variants
+      ? `v${fileData.variants.length + 1}`
+      : "v1";
 
     const variant = transaction.manager.create(Variant, {
       size,
@@ -155,10 +165,15 @@ export class FileRepository
       name: variantName,
     });
 
+    let variants: Variant[] = [variant];
+
+    if (fileData?.id && fileData?.variants) {
+      variants = fileData.variants.concat([variant]);
+    }
+
     const file = transaction.manager.create(File, {
-      originalFilename: originalFilename || "",
-      relativePath,
-      variants: [variant],
+      ...fileData,
+      variants,
       workspace: {
         id: workspaceId,
       },
