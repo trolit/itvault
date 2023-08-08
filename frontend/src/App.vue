@@ -7,9 +7,9 @@
     <n-global-style />
 
     <n-loading-bar-provider>
-      <app-header v-if="withAppHeader" />
-
       <n-message-provider placement="top-left">
+        <app-header v-if="withAppHeader" />
+
         <main :class="{ 'with-app-header': withAppHeader }">
           <n-scrollbar>
             <router-view />

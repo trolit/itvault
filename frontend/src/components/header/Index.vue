@@ -16,6 +16,8 @@
 
     <div class="actions">
       <theme-selector />
+
+      <logout-button />
     </div>
   </n-page-header>
 </template>
@@ -27,8 +29,9 @@ import { ref, computed, type ComputedRef, watch } from "vue";
 
 import CustomMenu from "./Menu.vue";
 import Brand from "@/components/common/Brand.vue";
-import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
+import LogoutButton from "@/components/common/LogoutButton.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
+import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
 const themeVars = useThemeVars();
 

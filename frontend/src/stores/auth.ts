@@ -33,5 +33,11 @@ export const useAuthStore = defineStore("auth", {
         params: { version: 1 },
       });
     },
+
+    async logout() {
+      return axios.post("v1/auth/logout", null, {
+        params: { version: 1 },
+      });
+    },
   },
 });
