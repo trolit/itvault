@@ -6,7 +6,13 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@shared/*": ["../shared/src/*"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../shared/tsconfig.json"
+    }
+  ]
 }

@@ -1,10 +1,11 @@
 import { inject, injectable } from "tsyringe";
+import { UserMapper } from "@mappers/UserMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/User/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { UserMapDto } from "@dtos/mappers/UserMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
+import { User } from "@entities/User";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -49,7 +50,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this.mapper.mapToDto(result, UserMapDto);
+    const mappedResult = this.mapper.map<User>(result).to(UserMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

@@ -1,11 +1,12 @@
 import assert from "assert";
 import { inject, injectable } from "tsyringe";
+import { FileMapper } from "@mappers/FileMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/File/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { FileMapDto } from "@dtos/mappers/FileMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
+import { File } from "@entities/File";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
@@ -53,7 +54,7 @@ export class StoreController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.mapToDto(result.value, FileMapDto);
+    const mappedResult = this.mapper.map<File>(result.value).to(FileMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }

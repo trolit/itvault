@@ -1,9 +1,9 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { UpdateControllerTypes } from "types/controllers/Role/UpdateController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleService } from "@interfaces/services/IRoleService";
 
 import { BaseController } from "@controllers/BaseController";

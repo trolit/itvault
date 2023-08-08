@@ -2,10 +2,10 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@enums/Permission";
-import { ControllerImplementation } from "miscellaneous-types";
+import { Permission } from "@shared/types/enums/Permission";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
@@ -57,7 +57,7 @@ export class UpdateController extends BaseController {
 
     const isUpdated = await this._noteRepository.primitiveUpdate(
       { id },
-      { value: text }
+      { value: text, updatedAt: note.updatedAt, updatedBy: note.updatedBy }
     );
 
     if (!isUpdated?.affected) {

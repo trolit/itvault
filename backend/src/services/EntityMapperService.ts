@@ -1,18 +1,31 @@
-import { BaseMapDto } from "@dtos/mappers/BaseMapDto";
+import { BaseMapper } from "@mappers/BaseMapper";
+
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 export class EntityMapperService implements IEntityMapperService {
-  mapOneToDto<T, Y extends BaseMapDto<T>>(
-    entity: T,
-    target: new (data: T) => Y
-  ): Y {
-    return new target(entity);
-  }
+  map<T>(entity: T): {
+    to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => Y;
+  };
 
-  mapToDto<T, Y extends BaseMapDto<T>>(
-    entities: T[],
-    target: new (data: T) => Y
-  ): Y[] {
-    return entities.map(entity => new target(entity));
+  map<T>(entity: T[]): {
+    to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => Y[];
+  };
+
+  map<T>(
+    entity: T | T[]
+  ):
+    | { to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => Y }
+    | { to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => Y[] } {
+    return Array.isArray(entity)
+      ? {
+          to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => {
+            return entity.map(entity => new mapper(entity));
+          },
+        }
+      : {
+          to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => {
+            return new mapper(entity);
+          },
+        };
   }
 }

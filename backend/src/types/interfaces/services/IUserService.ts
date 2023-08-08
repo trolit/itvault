@@ -1,6 +1,6 @@
 import { User } from "@entities/User";
-import { UpdateUserDto } from "@dtos/UpdateUserDto";
 import { TransactionResult } from "types/TransactionResult";
+import { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 
 export interface IUserService {
   reflectChangesInDataStore(entitiesToUpdate: UpdateUserDto[]): Promise<void>;

@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { StoreControllerTypes } from "types/controllers/Blueprint/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
-import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -49,7 +49,7 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    const result = this.mapper.mapOneToDto(blueprint, BlueprintMapDto);
+    const result = this.mapper.map(blueprint).to(BlueprintMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, result);
   }

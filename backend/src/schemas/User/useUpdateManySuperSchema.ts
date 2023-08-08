@@ -6,8 +6,8 @@ import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyCont
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import type { Role } from "@entities/Role";
-import type { UpdateUserDto } from "@dtos/UpdateUserDto";
+import { Role } from "@entities/Role";
+import { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { setYupError } from "@helpers/yup/setError";

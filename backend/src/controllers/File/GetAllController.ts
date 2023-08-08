@@ -1,11 +1,11 @@
 import { inject, injectable } from "tsyringe";
+import { FileMapper } from "@mappers/FileMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
-import { FileMapDto } from "@dtos/mappers/FileMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -54,7 +54,7 @@ export class GetAllController extends BaseController {
       );
     }
 
-    const mappedResult = this.mapper.mapToDto(result, FileMapDto);
+    const mappedResult = this.mapper.map<File>(result).to(FileMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }

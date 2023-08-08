@@ -2,10 +2,9 @@ import { Response } from "express";
 import { injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { SoftDeleteControllerTypes } from "types/controllers/SoftDeleteController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { BaseController } from "./BaseController";
-
-import { ControllerImplementation } from "miscellaneous-types";
 
 import { getRepositoryByOriginalUrl } from "@helpers/getRepositoryByOriginalUrl";
 

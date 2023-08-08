@@ -13,8 +13,8 @@ import { Workspace } from "./Workspace";
 import { VariantToBundle } from "./VariantToBundle";
 import { BlueprintToBundle } from "./BlueprintToBundle";
 
-import { BundleStatus } from "@enums/BundleStatus";
-import { BundleExpire } from "@enums/BundleExpire";
+import { BundleExpire } from "@shared/types/enums/BundleExpire";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 
 @Entity("bundles")
 export class Bundle {

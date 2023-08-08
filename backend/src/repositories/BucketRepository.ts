@@ -5,7 +5,7 @@ import { TransactionResult } from "types/TransactionResult";
 import { BaseRepository } from "./BaseRepository";
 
 import { Bucket } from "@entities/Bucket";
-import { AddBucketDto } from "@dtos/AddBucketDto";
+import { AddBucketDto } from "@shared/types/dtos/AddBucketDto";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 @injectable()

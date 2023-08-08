@@ -1,12 +1,12 @@
-import { User } from "@entities/User";
-import { LoggedUserMapDto } from "@dtos/mappers/LoggedUserMapDto";
+import { SignInDto } from "@shared/types/dtos/SignInDto";
+import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
 
 export namespace SignInControllerTypes {
   export namespace v1 {
-    export type Body = Pick<User, "email" | "password">;
+    export type Body = SignInDto;
 
     export type Request = CustomRequest<undefined, Body>;
 
-    export type Response = CustomResponse<LoggedUserMapDto>;
+    export type Response = CustomResponse<LoggedUserMapper>;
   }
 }

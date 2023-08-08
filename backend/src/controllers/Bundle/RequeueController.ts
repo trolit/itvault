@@ -2,11 +2,11 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { RequeueControllerTypes } from "types/controllers/Bundle/RequeueController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { BundleStatus } from "@enums/BundleStatus";
-import { ControllerImplementation } from "miscellaneous-types";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 

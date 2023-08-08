@@ -1,11 +1,12 @@
 import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
 import { GetAllControllerTypes } from "types/controllers/Workspace/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@enums/Permission";
-import { ControllerImplementation } from "miscellaneous-types";
-import { WorkspaceMapDto } from "@dtos/mappers/WorkspaceMapDto";
+import { Workspace } from "@entities/Workspace";
+import { Permission } from "@shared/types/enums/Permission";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
@@ -63,7 +64,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, WorkspaceMapDto);
+    const mappedResult = this.mapper.map<Workspace>(result).to(WorkspaceMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

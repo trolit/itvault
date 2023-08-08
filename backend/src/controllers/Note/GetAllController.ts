@@ -1,13 +1,13 @@
 import { inject, injectable } from "tsyringe";
+import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { FindOptionsSelect, FindOptionsWhere } from "typeorm";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
-import { Permission } from "@enums/Permission";
-import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
+import { Permission } from "@shared/types/enums/Permission";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
@@ -80,7 +80,7 @@ export class GetAllController extends BaseController {
       ),
     });
 
-    const mappedResult = this.mapper.mapToDto(result, NoteMapDto);
+    const mappedResult = this.mapper.map<Note>(result).to(NoteMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

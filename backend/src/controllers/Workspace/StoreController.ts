@@ -1,11 +1,11 @@
 import assert from "assert";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
 import { StoreControllerTypes } from "types/controllers/Workspace/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
-import { WorkspaceMapDto } from "@dtos/mappers/WorkspaceMapDto";
 import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
 import { BaseController } from "@controllers/BaseController";
@@ -44,7 +44,7 @@ export class StoreController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.mapOneToDto(result.value, WorkspaceMapDto);
+    const mappedResult = this.mapper.map(result.value).to(WorkspaceMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

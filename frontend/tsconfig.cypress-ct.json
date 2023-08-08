@@ -10,5 +10,10 @@
   "exclude": [],
   "compilerOptions": {
     "composite": true
-  }
+  },
+  "references": [
+    {
+      "path": "../shared/tsconfig.json"
+    }
+  ]
 }

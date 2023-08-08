@@ -1,12 +1,12 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
+import { UserMapper } from "@mappers/UserMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/User/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { UserMapDto } from "@dtos/mappers/UserMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { MailConsumerHandlerData } from "consumer-handlers-types";
 import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
@@ -67,7 +67,7 @@ export class StoreController extends BaseController {
       viewBuilderName: SignUpMailViewBuilder.name,
     });
 
-    const mappedResult = this.mapper.mapOneToDto(user, UserMapDto);
+    const mappedResult = this.mapper.map(user).to(UserMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

@@ -2,6 +2,8 @@ import { number, object, string } from "yup";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 
+import { useResourceEntityTest } from "./useResourceEntityTest";
+
 import { Resource } from "@enums/Resource";
 
 import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
@@ -12,7 +14,7 @@ const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.QueryInput> =
     page: pageSchema,
     perPage: perPageSchema,
     userId: number().optional(),
-    id: number().required().integer(),
+    id: useResourceEntityTest(),
     resource: string().required().oneOf([Resource.File]),
   });
 

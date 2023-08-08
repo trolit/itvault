@@ -1,5 +1,5 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { FileMapDto } from "@dtos/mappers/FileMapDto";
+import { FileMapper } from "@mappers/FileMapper";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
@@ -7,6 +7,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, Query>;
 
-    export type Response = CustomResponse<FileMapDto[]>;
+    export type Response = CustomResponse<FileMapper[]>;
   }
 }

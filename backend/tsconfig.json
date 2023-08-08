@@ -17,7 +17,7 @@
     "paths": {
       "miscellaneous-types": ["types/miscellaneous"],
       "@jobs/*": ["jobs/*"],
-      "@dtos/*": ["types/dtos/*"],
+      "@mappers/*": ["mappers/*"],
       "@enums/*": ["types/enums/*"],
       "@interfaces/*": ["types/interfaces/*"],
       "@config": ["config/"],
@@ -34,7 +34,13 @@
       "@migrations/*": ["migrations/*"],
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"],
-      "@consumer-handlers/*": ["consumer-handlers/*"]
+      "@consumer-handlers/*": ["consumer-handlers/*"],
+      "@shared/*": ["../../shared/src/*"]
     }
-  }
+  },
+  "references": [
+    {
+      "path": "../shared/tsconfig.json"
+    }
+  ]
 }

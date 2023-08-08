@@ -1,5 +1,5 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { VariantMapDto } from "@dtos/mappers/VariantMapDto";
+import { VariantMapper } from "@mappers/VariantMapper";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
@@ -15,6 +15,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, Body, Query>;
 
-    export type Response = CustomResponse<VariantMapDto>;
+    export type Response = CustomResponse<VariantMapper>;
   }
 }

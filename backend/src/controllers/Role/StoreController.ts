@@ -1,11 +1,11 @@
 import assert from "assert";
 import { inject, injectable } from "tsyringe";
+import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Role/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IRoleService } from "@interfaces/services/IRoleService";
 
 import { BaseController } from "@controllers/BaseController";
@@ -44,7 +44,7 @@ export class StoreController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.mapOneToDto(result.value, RoleMapDto);
+    const mappedResult = this.mapper.map(result.value).to(RoleMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

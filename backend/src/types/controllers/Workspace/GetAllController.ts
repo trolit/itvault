@@ -1,5 +1,5 @@
 import { PaginatedResponse } from "miscellaneous-types";
-import { WorkspaceMapDto } from "@dtos/mappers/WorkspaceMapDto";
+import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
@@ -11,6 +11,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 
-    export type Response = CustomResponse<PaginatedResponse<WorkspaceMapDto>>;
+    export type Response = CustomResponse<PaginatedResponse<WorkspaceMapper>>;
   }
 }

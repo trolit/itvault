@@ -1,13 +1,13 @@
 import { inject, injectable } from "tsyringe";
+import { BundleMapper } from "@mappers/BundleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { AddBundleDto } from "@dtos/AddBundleDto";
-import { BundleStatus } from "@enums/BundleStatus";
-import { BundleMapDto } from "@dtos/mappers/BundleMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
+import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
@@ -79,7 +79,7 @@ export class StoreController extends BaseController {
       bundle,
     });
 
-    const result = this.mapper.mapOneToDto(bundle, BundleMapDto);
+    const result = this.mapper.map(bundle).to(BundleMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, result);
   }

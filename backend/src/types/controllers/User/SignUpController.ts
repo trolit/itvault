@@ -1,4 +1,4 @@
-import { SignUpDto } from "@dtos/SignUpDto";
+import { SignUpDto } from "@shared/types/dtos/SignUpDto";
 
 export namespace SignUpControllerTypes {
   export namespace v1 {

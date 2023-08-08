@@ -1,13 +1,13 @@
 import { FindOptionsSelect } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { GetAllNotesByIdControllerTypes } from "types/controllers/User/GetAllNotesByIdController";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
-import { Permission } from "@enums/Permission";
-import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
+import { Permission } from "@shared/types/enums/Permission";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
@@ -91,7 +91,7 @@ export class GetAllNotesByIdController extends BaseController {
       ),
     });
 
-    const mappedResult = this.mapper.mapToDto(result, NoteMapDto);
+    const mappedResult = this.mapper.map<Note>(result).to(NoteMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

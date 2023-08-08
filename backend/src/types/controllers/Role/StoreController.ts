@@ -1,5 +1,5 @@
-import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
-import { AddEditRoleDto } from "@dtos/AddEditRoleDto";
+import { RoleMapper } from "@mappers/RoleMapper";
+import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
@@ -7,6 +7,6 @@ export namespace StoreControllerTypes {
 
     export type Request = CustomRequest<undefined, Body>;
 
-    export type Response = CustomResponse<RoleMapDto | string>;
+    export type Response = CustomResponse<RoleMapper | string>;
   }
 }

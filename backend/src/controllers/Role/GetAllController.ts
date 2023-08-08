@@ -1,14 +1,15 @@
 import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@enums/Permission";
-import { RoleMapDto } from "@dtos/mappers/RoleMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
+import { Role } from "@entities/Role";
+import { Permission } from "@shared/types/enums/Permission";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
@@ -51,7 +52,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, RoleMapDto);
+    const mappedResult = this.mapper.map<Role>(result).to(RoleMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

@@ -1,12 +1,12 @@
-import { AddEditNoteDto } from "@dtos/AddEditNoteDto";
-import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
+import { Resource } from "@enums/Resource";
+import { NoteMapper } from "@mappers/NoteMapper";
 import { PaginatedResponse } from "miscellaneous-types";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    type QueryCommon = Pick<AddEditNoteDto, "id" | "resource"> & {
+    type QueryCommon = { id: string; resource: Resource } & {
       userId?: number;
     };
 
@@ -16,6 +16,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 
-    export type Response = CustomResponse<PaginatedResponse<NoteMapDto>>;
+    export type Response = CustomResponse<PaginatedResponse<NoteMapper>>;
   }
 }

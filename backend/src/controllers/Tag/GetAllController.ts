@@ -1,11 +1,12 @@
 import { Like } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { TagMapper } from "@mappers/TagMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetAllControllerTypes } from "types/controllers/Tag/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { TagMapDto } from "@dtos/mappers/TagMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
+import { Tag } from "@entities/Tag";
 import { ITagRepository } from "@interfaces/repositories/ITagRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -46,7 +47,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, TagMapDto);
+    const mappedResult = this.mapper.map<Tag>(result).to(TagMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

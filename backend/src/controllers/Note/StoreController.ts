@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
+import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { StoreControllerTypes } from "types/controllers/Note/StoreController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { NoteMapDto } from "@dtos/mappers/NoteMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
@@ -37,10 +37,13 @@ export class StoreController extends BaseController {
   ) {
     const {
       userId,
-      body: { id, text, resource },
+      body: {
+        text,
+        resource: { id, name },
+      },
     } = request;
 
-    const entityReference = resourceToEntityReference(resource, id);
+    const entityReference = resourceToEntityReference(name, id);
 
     if (!entityReference) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
@@ -61,7 +64,7 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    const result = this.mapper.mapOneToDto(note, NoteMapDto);
+    const result = this.mapper.map(note).to(NoteMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, result);
   }

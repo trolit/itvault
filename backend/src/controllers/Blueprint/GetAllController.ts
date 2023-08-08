@@ -1,10 +1,11 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { GetAllControllerTypes } from "types/controllers/Blueprint/GetAllController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
-import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
+import { Blueprint } from "@entities/Blueprint";
 import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -47,7 +48,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.mapToDto(result, BlueprintMapDto);
+    const mappedResult = this.mapper.map<Blueprint>(result).to(BlueprintMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

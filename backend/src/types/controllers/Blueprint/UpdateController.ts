@@ -1,5 +1,5 @@
 import { WorkspaceId } from "miscellaneous-types";
-import { AddEditBlueprintDto } from "@dtos/AddEditBlueprintDto";
+import { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {

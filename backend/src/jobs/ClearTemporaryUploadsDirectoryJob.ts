@@ -1,11 +1,11 @@
 import { injectable } from "tsyringe";
+import { JobConfig } from "types/JobConfig";
 
 import { APP } from "@config/index";
 
 import { BaseJob } from "./BaseJob";
 
 import { Di } from "@enums/Di";
-import { JobConfig } from "miscellaneous-types";
 import { IFileService } from "@interfaces/services/IFileService";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";

@@ -6,7 +6,7 @@ import { JWT } from "@config";
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@enums/Permission";
+import { Permission } from "@shared/types/enums/Permission";
 import { IAuthService } from "@interfaces/services/IAuthService";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";

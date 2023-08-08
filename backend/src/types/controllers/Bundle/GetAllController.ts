@@ -1,4 +1,4 @@
-import { BundleMapDto } from "@dtos/mappers/BundleMapDto";
+import { BundleMapper } from "@mappers/BundleMapper";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { PaginatedResponse, WorkspaceId } from "miscellaneous-types";
@@ -11,6 +11,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 
-    export type Response = CustomResponse<PaginatedResponse<BundleMapDto>>;
+    export type Response = CustomResponse<PaginatedResponse<BundleMapper>>;
   }
 }

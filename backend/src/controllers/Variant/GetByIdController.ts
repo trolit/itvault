@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
+import { VariantMapper } from "@mappers/VariantMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { GetByIdControllerTypes } from "types/controllers/Variant/GetByIdController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { VariantMapDto } from "@dtos/mappers/VariantMapDto";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IVariantService } from "@interfaces/services/IVariantService";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
@@ -57,7 +57,7 @@ export class GetByIdController extends BaseController {
     }
 
     return this.finalizeRequest(response, HTTP.OK, {
-      record: this.mapper.mapOneToDto(variant, VariantMapDto),
+      record: this.mapper.map(variant).to(VariantMapper),
       content,
     });
   }

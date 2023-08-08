@@ -1,4 +1,4 @@
-import { BlueprintMapDto } from "@dtos/mappers/BlueprintMapDto";
+import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { IPaginationQuery } from "@interfaces/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
@@ -12,6 +12,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 
-    export type Response = CustomResponse<PaginatedResponse<BlueprintMapDto>>;
+    export type Response = CustomResponse<PaginatedResponse<BlueprintMapper>>;
   }
 }

@@ -4,7 +4,7 @@ import { Repository, UpdateResult } from "typeorm";
 import { BaseRepository } from "./BaseRepository";
 
 import { Bundle } from "@entities/Bundle";
-import { BundleStatus } from "@enums/BundleStatus";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 @injectable()

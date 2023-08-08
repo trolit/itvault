@@ -1,10 +1,10 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { SoftDeleteControllerTypes } from "types/controllers/File/SoftDeleteController";
 
 import { Di } from "@enums/Di";
-import { ControllerImplementation } from "miscellaneous-types";
 import { IFileService } from "@interfaces/services/IFileService";
 
 import { BaseController } from "@controllers/BaseController";
