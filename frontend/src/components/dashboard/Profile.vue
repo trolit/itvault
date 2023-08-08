@@ -17,21 +17,31 @@
 
           <n-scrollbar trigger="none">
             <div class="levels">
-              <n-tag
-                v-for="({ name, enabled }, index) in permissions"
-                :type="enabled ? 'success' : 'error'"
+              <div
+                v-for="(key, index) in Object.keys(groupedPermissions)"
                 :key="index"
+                :style="{ marginRight: '12px' }"
               >
-                <template #icon>
-                  <n-icon
-                    :component="
-                      enabled ? OwnedPermissionIcon : NotOwnedPermissionIcon
-                    "
-                  />
-                </template>
+                {{ key }}
 
-                {{ name }}
-              </n-tag>
+                <n-tag
+                  v-for="(
+                    { name, enabled }, permissionIndex
+                  ) in groupedPermissions[key]"
+                  :type="enabled ? 'success' : 'error'"
+                  :key="`group-${index}-permission-${permissionIndex}`"
+                >
+                  <template #icon>
+                    <n-icon
+                      :component="
+                        enabled ? OwnedPermissionIcon : NotOwnedPermissionIcon
+                      "
+                    />
+                  </template>
+
+                  {{ name }}
+                </n-tag>
+              </div>
             </div>
           </n-scrollbar>
         </div>
@@ -99,6 +109,8 @@ import {
   NStatistic,
   NTimelineItem,
 } from "naive-ui";
+import { computed } from "vue";
+import groupBy from "lodash/groupBy";
 import {
   UserProfile as UserProfileIcon,
   Close as NotOwnedPermissionIcon,
@@ -111,4 +123,8 @@ import { useAuthStore } from "@/stores/auth";
 const {
   profile: { email, roleName, permissions },
 } = useAuthStore();
+
+const groupedPermissions = computed(() => {
+  return groupBy(permissions, value => value.group);
+});
 </script>
