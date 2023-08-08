@@ -1,29 +1,12 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
+
 import type { ILoginForm } from "@/interfaces/ILoginForm";
 
 interface IState {
-  profile: IProfile;
-}
-
-type Permission = {
-  id: number;
-  signature: string;
-  name: string;
-  enabled: boolean;
-};
-
-export interface IProfile {
-  id: number;
-
-  email: string;
-
-  fullName: string;
-
-  roleName: string;
-
-  permissions: Permission[];
+  profile: ILoggedUserDto;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -32,6 +15,7 @@ export const useAuthStore = defineStore("auth", {
       id: -1,
       email: "",
       fullName: "",
+      roleId: -1,
       roleName: "",
       permissions: [],
     },
@@ -39,13 +23,19 @@ export const useAuthStore = defineStore("auth", {
 
   actions: {
     async status() {
-      return axios.get<IProfile>("v1/auth/status", {
+      return axios.get<ILoggedUserDto>("v1/auth/status", {
         params: { version: 1 },
       });
     },
 
     async login(payload: ILoginForm) {
-      return axios.post<IProfile>("v1/auth/sign-in", payload, {
+      return axios.post<ILoggedUserDto>("v1/auth/sign-in", payload, {
+        params: { version: 1 },
+      });
+    },
+
+    async logout() {
+      return axios.post("v1/auth/logout", null, {
         params: { version: 1 },
       });
     },
