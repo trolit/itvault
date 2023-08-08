@@ -1,0 +1,35 @@
+export enum Di {
+  Redis = "Redis",
+  RabbitMQ = "RabbitMQ",
+  Publisher = "RabbitMQ Publisher",
+  MailTransporter = "MailTransporter",
+
+  AuthService = "IAuthService",
+  DateService = "IDateService",
+  MailService = "IMailService",
+  RoleService = "IRoleService",
+  UserService = "IUserService",
+  FileService = "IFileService",
+  VariantService = "IVariantService",
+  DataStoreService = "IDataStoreService",
+  WorkspaceService = "IWorkspaceService",
+  EntityMapperService = "IEntityMapperService",
+
+  TagRepository = "ITagRepository",
+  FileRepository = "IFileRepository",
+  NoteRepository = "INoteRepository",
+  RoleRepository = "IRoleRepository",
+  UserRepository = "IUserRepository",
+  BundleRepository = "IBundleRepository",
+  BucketRepository = "IBucketRepository",
+  VariantRepository = "IVariantRepository",
+  BlueprintRepository = "IBlueprintRepository",
+  WorkspaceRepository = "IWorkspaceRepository",
+
+  JobFactory = "IJobFactory",
+  ConsumerFactory = "IConsumerFactory",
+  FormidableFormFactory = "IFormidableFormFactory",
+
+  SendMailConsumerHandler = "MailConsumerHandler",
+  GenerateBundleConsumerHandler = "BundleConsumerHandler",
+}

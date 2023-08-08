@@ -1,0 +1,42 @@
+.login-page {
+  &.page {
+    margin: var(--page-margin);
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  --margin-between-elements: 20px;
+
+  .n-card {
+    max-width: 600px;
+
+    .n-card__content {
+      margin: 20px;
+
+      .brand {
+        font-size: 80px;
+
+        .extra-text {
+          display: flex;
+          font-size: 11px;
+          align-items: center;
+
+          .n-icon {
+            margin: 0 10px;
+          }
+        }
+      }
+
+      .form-wrapper {
+        margin-top: 40px;
+
+        .actions {
+          display: flex;
+          margin-top: 20px;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
