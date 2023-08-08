@@ -8,6 +8,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
+import { Role } from "@entities/Role";
 import { Permission } from "@shared/types/enums/Permission";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
@@ -51,7 +52,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.map(result, RoleMapper);
+    const mappedResult = this.mapper.map<Role>(result).to(RoleMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

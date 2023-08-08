@@ -3,18 +3,29 @@ import { BaseMapper } from "@mappers/BaseMapper";
 import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 export class EntityMapperService implements IEntityMapperService {
-  map<T, Y extends BaseMapper<T>>(entity: T, mapper: new (data: T) => Y): Y;
+  map<T>(entity: T): {
+    to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => Y;
+  };
 
-  map<T, Y extends BaseMapper<T>>(entity: T[], mapper: new (data: T) => Y): Y[];
+  map<T>(entity: T[]): {
+    to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => Y[];
+  };
 
-  map<T, Y extends BaseMapper<T>>(
-    entity: T | T[],
-    mapper: new (data: T) => Y
-  ): Y | Y[] {
-    if (Array.isArray(entity)) {
-      return entity.map(entity => new mapper(entity));
-    }
-
-    return new mapper(entity);
+  map<T>(
+    entity: T | T[]
+  ):
+    | { to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => Y }
+    | { to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => Y[] } {
+    return Array.isArray(entity)
+      ? {
+          to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => {
+            return entity.map(entity => new mapper(entity));
+          },
+        }
+      : {
+          to: <Y extends BaseMapper<T>>(mapper: new (data: T) => Y) => {
+            return new mapper(entity);
+          },
+        };
   }
 }

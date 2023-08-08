@@ -6,6 +6,7 @@ import { GetAllControllerTypes } from "types/controllers/Tag/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
+import { Tag } from "@entities/Tag";
 import { ITagRepository } from "@interfaces/repositories/ITagRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -46,7 +47,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.map(result, TagMapper);
+    const mappedResult = this.mapper.map<Tag>(result).to(TagMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

@@ -5,6 +5,7 @@ import { GetAllControllerTypes } from "types/controllers/User/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
+import { User } from "@entities/User";
 import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -49,7 +50,7 @@ export class GetAllController extends BaseController {
       withDeleted: true,
     });
 
-    const mappedResult = this.mapper.map(result, UserMapper);
+    const mappedResult = this.mapper.map<User>(result).to(UserMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

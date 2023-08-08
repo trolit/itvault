@@ -64,7 +64,7 @@ export class StoreController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    const result = this.mapper.map(note, NoteMapper);
+    const result = this.mapper.map(note).to(NoteMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, result);
   }

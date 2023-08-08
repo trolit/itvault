@@ -6,6 +6,7 @@ import { StoreControllerTypes } from "types/controllers/File/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
+import { File } from "@entities/File";
 import { IFileService } from "@interfaces/services/IFileService";
 import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
@@ -53,7 +54,7 @@ export class StoreController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.map(result.value, FileMapper);
+    const mappedResult = this.mapper.map<File>(result.value).to(FileMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }

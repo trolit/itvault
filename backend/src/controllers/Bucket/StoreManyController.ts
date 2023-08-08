@@ -6,6 +6,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
 
 import { Di } from "@enums/Di";
+import { Bucket } from "@entities/Bucket";
 import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -46,7 +47,7 @@ export class StoreManyController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.map(result.value, BucketMapper);
+    const mappedResult = this.mapper.map<Bucket>(result.value).to(BucketMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

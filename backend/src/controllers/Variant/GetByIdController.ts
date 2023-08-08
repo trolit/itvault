@@ -57,7 +57,7 @@ export class GetByIdController extends BaseController {
     }
 
     return this.finalizeRequest(response, HTTP.OK, {
-      record: this.mapper.map(variant, VariantMapper),
+      record: this.mapper.map(variant).to(VariantMapper),
       content,
     });
   }

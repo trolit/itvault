@@ -44,7 +44,7 @@ export class StoreController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.map(result.value, RoleMapper);
+    const mappedResult = this.mapper.map(result.value).to(RoleMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

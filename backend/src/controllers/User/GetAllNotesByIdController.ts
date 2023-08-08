@@ -91,7 +91,7 @@ export class GetAllNotesByIdController extends BaseController {
       ),
     });
 
-    const mappedResult = this.mapper.map(result, NoteMapper);
+    const mappedResult = this.mapper.map<Note>(result).to(NoteMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

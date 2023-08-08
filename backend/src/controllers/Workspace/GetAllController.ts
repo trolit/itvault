@@ -5,6 +5,7 @@ import { GetAllControllerTypes } from "types/controllers/Workspace/GetAllControl
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
+import { Workspace } from "@entities/Workspace";
 import { Permission } from "@shared/types/enums/Permission";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
@@ -63,7 +64,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.map(result, WorkspaceMapper);
+    const mappedResult = this.mapper.map<Workspace>(result).to(WorkspaceMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,

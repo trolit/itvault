@@ -5,6 +5,7 @@ import { GetAllControllerTypes } from "types/controllers/Variant/GetAllControlle
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
+import { Variant } from "@entities/Variant";
 import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
 import { BaseController } from "@controllers/BaseController";
@@ -48,7 +49,7 @@ export class GetAllController extends BaseController {
       },
     });
 
-    const mappedResult = this.mapper.map(result, VariantMapper);
+    const mappedResult = this.mapper.map<Variant>(result).to(VariantMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result: mappedResult,
