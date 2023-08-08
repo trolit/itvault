@@ -57,7 +57,10 @@ export const validateRequestWith = <P, B, Q>(
         });
 
         // overwrites body with sanitized result
-        request[superKey as keyof SuperKeys] = parsedData;
+        request[superKey as keyof SuperKeys] =
+          superKey === "query"
+            ? { version: requestedVersion, ...parsedData }
+            : parsedData;
       } catch (error) {
         return response.status(HTTP.BAD_REQUEST).send({
           [superKey]: formatError(error),
