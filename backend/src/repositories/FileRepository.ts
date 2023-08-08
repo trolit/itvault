@@ -126,25 +126,20 @@ export class FileRepository
 
   private _createFileInstance(
     transaction: QueryRunner,
-    properties: {
+    fileData: Partial<File>,
+    additionalData: {
       size: number;
       userId: number;
       filename: string;
-      variantName: string;
       workspaceId: number;
       relativePath: string;
-      originalFilename: string | null;
     }
   ) {
-    const {
-      size,
-      userId,
-      filename,
-      variantName,
-      workspaceId,
-      relativePath,
-      originalFilename,
-    } = properties;
+    const { size, userId, filename, workspaceId } = additionalData;
+
+    const variantName = fileData?.variants
+      ? `v${fileData.variants.length + 1}`
+      : "v1";
 
     const variant = transaction.manager.create(Variant, {
       size,
@@ -155,10 +150,15 @@ export class FileRepository
       name: variantName,
     });
 
+    let variants: Variant[] = [variant];
+
+    if (fileData?.id && fileData?.variants) {
+      variants = fileData.variants.concat([variant]);
+    }
+
     const file = transaction.manager.create(File, {
-      originalFilename: originalFilename || "",
-      relativePath,
-      variants: [variant],
+      ...fileData,
+      variants,
       workspace: {
         id: workspaceId,
       },
