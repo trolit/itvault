@@ -22,7 +22,6 @@ export class FileRepository
     super(File);
   }
 
-  // @TODO consider feature if same file is added again - create new variant instead
   async save(
     userId: number,
     workspaceId: number,
@@ -34,16 +33,33 @@ export class FileRepository
       const temporaryFilesContainer = [];
 
       for (const { key, file } of formDataFiles) {
-        temporaryFilesContainer.push(
-          this._createFileInstance(transaction, {
-            userId,
-            size: file.size,
-            filename: file.newFilename,
-            variantName: "v1",
-            workspaceId: workspaceId,
-            relativePath: key,
+        if (!file.originalFilename) {
+          continue;
+        }
+
+        const record = await transaction.manager.findOne(File, {
+          where: {
             originalFilename: file.originalFilename,
-          })
+          },
+          relations: {
+            variants: true,
+          },
+        });
+
+        temporaryFilesContainer.push(
+          this._createFileInstance(
+            transaction,
+            record || {
+              relativePath: key,
+              originalFilename: file.originalFilename,
+            },
+            {
+              userId,
+              workspaceId,
+              size: file.size,
+              filename: file.newFilename,
+            }
+          )
         );
       }
 
@@ -132,7 +148,6 @@ export class FileRepository
       userId: number;
       filename: string;
       workspaceId: number;
-      relativePath: string;
     }
   ) {
     const { size, userId, filename, workspaceId } = additionalData;
