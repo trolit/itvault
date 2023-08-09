@@ -1,6 +1,6 @@
 import { Response } from "express";
-import { IBaseController } from "types/IBaseController";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IBaseController } from "types/controllers/IBaseController";
 import { IEntityMapperService } from "types/services/IEntityMapperService";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 

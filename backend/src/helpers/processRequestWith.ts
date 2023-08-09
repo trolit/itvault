@@ -1,6 +1,6 @@
 import { Response } from "express";
 import { InjectionToken } from "tsyringe";
-import { IBaseController } from "types/IBaseController";
+import { IBaseController } from "types/controllers/IBaseController";
 
 import { getInstanceOf } from "./getInstanceOf";
 
