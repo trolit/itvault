@@ -1,8 +1,7 @@
-import { IMailViewBuilder } from "types/IMailViewBuilder";
+import { IMailViewBuilder } from "types/mail/IMailViewBuilder";
+import { SignUpMailViewBuilder as VB } from "types/mail/SignUpMailViewBuilder";
 
 import { APP } from "@config";
-
-import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";
 
 import { buildUrl } from "@helpers/buildUrl";
 

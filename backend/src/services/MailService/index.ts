@@ -5,7 +5,7 @@ import { Transporter } from "nodemailer";
 import camelCase from "lodash/camelCase";
 import { inject, injectable } from "tsyringe";
 import { Options } from "nodemailer/lib/mailer";
-import { IMailViewBuilder } from "types/IMailViewBuilder";
+import { IMailViewBuilder } from "types/mail/IMailViewBuilder";
 import { IMailService } from "types/services/IMailService";
 
 import { Di } from "@enums/Di";

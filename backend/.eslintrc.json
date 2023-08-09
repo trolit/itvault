@@ -51,14 +51,7 @@
 
             "same-directory": ["./**"],
 
-            "types": [
-              "consumer-handlers-types",
-              "mail-view-builders-types",
-              "@dtos/**",
-              "@shared/**",
-              "@enums/**",
-              "@entities/**"
-            ],
+            "types": ["@dtos/**", "@shared/**", "@enums/**", "@entities/**"],
 
             "tools": [
               "@helpers/**",
