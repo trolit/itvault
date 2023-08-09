@@ -15,7 +15,6 @@
     "strict": true,
     "baseUrl": "src",
     "paths": {
-      "miscellaneous-types": ["types/miscellaneous"],
       "@jobs/*": ["jobs/*"],
       "@mappers/*": ["mappers/*"],
       "@enums/*": ["types/enums/*"],

@@ -1,4 +1,5 @@
-import { WorkspaceId } from "miscellaneous-types";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
+
 import { VariantMapper } from "@mappers/VariantMapper";
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 

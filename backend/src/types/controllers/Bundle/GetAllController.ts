@@ -1,4 +1,5 @@
-import { WorkspaceId } from "miscellaneous-types";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
+
 import { BundleMapper } from "@mappers/BundleMapper";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { IPaginationOptions } from "types/IPaginationOptions";
