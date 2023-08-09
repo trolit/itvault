@@ -1,3 +1,4 @@
+import { ClassType } from "types/ClassType";
 import { IBaseRepository } from "types/repositories/IBaseRepository";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 import {
@@ -12,8 +13,6 @@ import {
 
 import { dataSource } from "@config/data-source";
 
-import { Type } from "miscellaneous-types";
-
 export class BaseRepository<T extends { id: number | string }>
   implements IBaseRepository<T>
 {
@@ -21,7 +20,7 @@ export class BaseRepository<T extends { id: number | string }>
 
   public useTransaction: () => Promise<QueryRunner>;
 
-  constructor(entity: Type<T>) {
+  constructor(entity: ClassType<T>) {
     this.database = dataSource.getRepository(entity);
 
     this.useTransaction = async () => {

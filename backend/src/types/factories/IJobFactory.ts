@@ -1,6 +1,6 @@
 import { BaseJob } from "@jobs/BaseJob";
-import { Type } from "miscellaneous-types";
+import { ClassType } from "types/ClassType";
 
 export interface IJobFactory {
-  create<T extends BaseJob>(Job: Type<T>): BaseJob;
+  create<T extends BaseJob>(Job: ClassType<T>): BaseJob;
 }
