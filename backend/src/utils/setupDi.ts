@@ -3,8 +3,6 @@ import path from "path";
 import Redis from "ioredis/built/Redis";
 import { Transporter } from "nodemailer";
 import { container, DependencyContainer } from "tsyringe";
-import { MailConsumerHandler } from "consumer-handlers/MailConsumerHandler";
-import { LocalBundleConsumerHandler } from "consumer-handlers/BundleConsumerHandler/Local";
 
 import { FILES } from "@config/index";
 
@@ -12,6 +10,8 @@ import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
 import { LocalFileService } from "@services/FileService/LocalFileService";
+import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
+import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
 export const setupDi = (
   redis: Redis,
