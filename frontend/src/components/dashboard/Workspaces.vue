@@ -33,12 +33,6 @@
         <require-permission :permission="Permission.CreateWorkspace">
           <n-button ghost type="info"> New workspace </n-button>
         </require-permission>
-
-        <router-link to="/">
-          <n-button dashed type="success" :disabled="!data.length">
-            Open workspace
-          </n-button>
-        </router-link>
       </div>
     </template>
   </ref-card>
