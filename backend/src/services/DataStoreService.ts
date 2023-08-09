@@ -1,6 +1,6 @@
 import { Redis } from "ioredis";
+import { DataStore } from "types/DataStore";
 import { inject, injectable } from "tsyringe";
-import { DataStoreKey } from "data-store-types";
 import { IDataStoreService } from "types/services/IDataStoreService";
 
 import { Di } from "@enums/Di";
@@ -15,7 +15,7 @@ export class DataStoreService implements IDataStoreService {
   ) {}
 
   createHash<T extends Record<keyof T, string>>(
-    key: DataStoreKey,
+    key: DataStore.Key,
     value: T,
     options?: { withTTL: { seconds: number } }
   ): Promise<[error: Error | null, result: unknown][] | null> {
@@ -34,24 +34,24 @@ export class DataStoreService implements IDataStoreService {
     return pipeline.exec();
   }
 
-  getHashField<T>(key: DataStoreKey, field: keyof T): Promise<string | null> {
+  getHashField<T>(key: DataStore.Key, field: keyof T): Promise<string | null> {
     return this._redis.hget(composeDataStoreKey(key), <string>field);
   }
 
   async updateHashField<T>(
-    key: DataStoreKey,
+    key: DataStore.Key,
     field: keyof T,
     value: string
   ): Promise<number> {
     return this._redis.hfupdate(composeDataStoreKey(key), <string>field, value);
   }
 
-  async deleteHash(key: DataStoreKey): Promise<number> {
+  async deleteHash(key: DataStore.Key): Promise<number> {
     return this._redis.hdel2(composeDataStoreKey(key));
   }
 
   async set<T>(
-    key: DataStoreKey,
+    key: DataStore.Key,
     value: T,
     options?: { withTTL: { seconds: number } }
   ): Promise<string | null> {
@@ -71,7 +71,7 @@ export class DataStoreService implements IDataStoreService {
     return this._redis.set(dataStoreKey, valueAsString);
   }
 
-  async get<T>(key: DataStoreKey): Promise<T | null> {
+  async get<T>(key: DataStore.Key): Promise<T | null> {
     const dataKey = composeDataStoreKey(key);
 
     const value = await this._redis.get(dataKey);
@@ -83,18 +83,18 @@ export class DataStoreService implements IDataStoreService {
     return <T>JSON.parse(value);
   }
 
-  ttl(key: DataStoreKey): Promise<number> {
+  ttl(key: DataStore.Key): Promise<number> {
     const dataKey = composeDataStoreKey(key);
 
     return this._redis.ttl(dataKey);
   }
 
-  delete(key: DataStoreKey): Promise<number> {
+  delete(key: DataStore.Key): Promise<number> {
     return this._redis.del(composeDataStoreKey(key));
   }
 
   async update<T>(
-    key: DataStoreKey,
+    key: DataStore.Key,
     callback: (updatedValue: T) => T
   ): Promise<string | null> {
     const value = await this.get<T>(key);

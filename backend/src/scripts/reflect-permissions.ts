@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import "module-alias/register";
-import { DataStoreKeyType, DataStoreRole } from "data-store-types";
+import { DataStore } from "types/DataStore";
 
 import { dataSource } from "@config/data-source";
 import { ALL_PERMISSIONS } from "@config/permissions";
@@ -99,9 +99,9 @@ async function reflectChangesInRedis(roles: Role[]) {
   const mutli = instance.multi();
 
   for (const { id, permissionToRole } of roles) {
-    const dataStoreKey = composeDataStoreKey([id, DataStoreKeyType.Role]);
+    const dataStoreKey = composeDataStoreKey([id, DataStore.KeyType.Role]);
 
-    const value: DataStoreRole = {
+    const value: DataStore.Role = {
       id,
       permissions: permissionToRole.map(({ enabled, permission }) => ({
         ...permission,

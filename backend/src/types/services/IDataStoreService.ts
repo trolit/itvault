@@ -1,36 +1,36 @@
-import { DataStoreKey } from "data-store-types";
+import { DataStore } from "types/DataStore";
 
 export interface IDataStoreService {
   createHash<T extends Record<keyof T, string>>(
-    key: DataStoreKey,
+    key: DataStore.Key,
     value: T,
     options?: { withTTL: { seconds: number } }
   ): Promise<[error: Error | null, result: unknown][] | null>;
 
-  getHashField<T>(key: DataStoreKey, field: keyof T): Promise<string | null>;
+  getHashField<T>(key: DataStore.Key, field: keyof T): Promise<string | null>;
 
   updateHashField<T>(
-    key: DataStoreKey,
+    key: DataStore.Key,
     field: keyof T,
     value: string
   ): Promise<number>;
 
-  deleteHash(key: DataStoreKey): Promise<number>;
+  deleteHash(key: DataStore.Key): Promise<number>;
 
   set<T>(
-    key: DataStoreKey,
+    key: DataStore.Key,
     value: T,
     options?: { withTTL: { seconds: number } }
   ): Promise<string | null>;
 
-  get<T>(key: DataStoreKey): Promise<T | null>;
+  get<T>(key: DataStore.Key): Promise<T | null>;
 
-  ttl(key: DataStoreKey): Promise<number>;
+  ttl(key: DataStore.Key): Promise<number>;
 
-  delete(key: DataStoreKey): Promise<number>;
+  delete(key: DataStore.Key): Promise<number>;
 
   update<T>(
-    key: DataStoreKey,
+    key: DataStore.Key,
     callback: (updatedValue: T) => T
   ): Promise<string | null>;
 }

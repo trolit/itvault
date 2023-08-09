@@ -69,7 +69,7 @@
           "type": {}
         },
         "groups": [
-          ["data-store-types", "super-schema", "builtin", "external"],
+          ["super-schema", "builtin", "external"],
           ["config"],
           ["same-directory"],
           "types",

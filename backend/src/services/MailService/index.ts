@@ -1,12 +1,12 @@
 import path from "path";
 import fs from "fs-extra";
 import mustache from "mustache";
-import { Transporter } from "nodemailer";
 import camelCase from "lodash/camelCase";
+import { Transporter } from "nodemailer";
 import { inject, injectable } from "tsyringe";
 import { Options } from "nodemailer/lib/mailer";
-import { IMailViewBuilder } from "types/mail/IMailViewBuilder";
 import { IMailService } from "types/services/IMailService";
+import { IMailViewBuilder } from "types/mail/IMailViewBuilder";
 
 import { Di } from "@enums/Di";
 

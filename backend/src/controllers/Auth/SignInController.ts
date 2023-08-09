@@ -1,11 +1,11 @@
 import bcrypt from "bcrypt";
+import { DataStore } from "types/DataStore";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
 import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
-import { DataStoreKeyType, DataStoreUser } from "data-store-types";
-import { IDataStoreService } from "types/services/IDataStoreService";
 import { IUserRepository } from "types/repositories/IUserRepository";
+import { IDataStoreService } from "types/services/IDataStoreService";
 import { SignInControllerTypes } from "types/controllers/Auth/SignInController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
@@ -63,8 +63,8 @@ export class SignInController extends BaseController {
     const token = this._authService.signIn({ email, id: user.id });
 
     try {
-      await this._dataStoreService.createHash<DataStoreUser>(
-        [user.id, DataStoreKeyType.AuthenticatedUser],
+      await this._dataStoreService.createHash<DataStore.User>(
+        [user.id, DataStore.KeyType.AuthenticatedUser],
         { id: user.id.toString(), roleId: user.role.id.toString() },
         { withTTL: { seconds: JWT.TOKEN_LIFETIME_IN_SECONDS } }
       );

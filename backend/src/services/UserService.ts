@@ -1,16 +1,12 @@
 import assert from "assert";
 import { In } from "typeorm";
+import { DataStore } from "types/DataStore";
 import { inject, injectable } from "tsyringe";
 import { IUserService } from "types/services/IUserService";
 import { TransactionResult } from "types/TransactionResult";
-import { IDataStoreService } from "types/services/IDataStoreService";
 import { IUserRepository } from "types/repositories/IUserRepository";
+import { IDataStoreService } from "types/services/IDataStoreService";
 import { TransactionError } from "types/custom-errors/TransactionError";
-import {
-  DataStoreKey,
-  DataStoreUser,
-  DataStoreKeyType,
-} from "data-store-types";
 
 import { Di } from "@enums/Di";
 import { User } from "@entities/User";
@@ -34,7 +30,7 @@ export class UserService implements IUserService {
     for (const entityToUpdate of entitiesToUpdate) {
       const { id, data } = entityToUpdate;
 
-      const key: DataStoreKey = [id, DataStoreKeyType.AuthenticatedUser];
+      const key: DataStore.Key = [id, DataStore.KeyType.AuthenticatedUser];
 
       if (data.isActive !== undefined && !data.isActive) {
         this._dataStoreService.deleteHash(key);
@@ -43,7 +39,7 @@ export class UserService implements IUserService {
       }
 
       if (data.roleId) {
-        this._dataStoreService.updateHashField<DataStoreUser>(
+        this._dataStoreService.updateHashField<DataStore.User>(
           key,
           "roleId",
           data.roleId.toString()

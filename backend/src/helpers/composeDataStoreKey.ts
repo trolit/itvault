@@ -1,6 +1,6 @@
-import { DataStoreKey } from "data-store-types";
+import { DataStore } from "types/DataStore";
 
-export const composeDataStoreKey = (key: DataStoreKey) => {
+export const composeDataStoreKey = (key: DataStore.Key) => {
   const [identifier, keyType] = key;
 
   const value =
