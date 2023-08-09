@@ -2,10 +2,10 @@ import crypto from "crypto";
 import { injectable, inject } from "tsyringe";
 import { IFileService } from "types/services/IFileService";
 import { IDateService } from "types/services/IDateService";
-import { IBaseConsumerHandler } from "types/IBaseConsumerHandler";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
+import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandler";
 import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsumerHandlerData";
 
 import { FILES } from "@config";
@@ -14,8 +14,8 @@ import { BaseBundleConsumerHandler } from "./Base";
 
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
-import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
+import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 @injectable()
 export class LocalBundleConsumerHandler

@@ -1,6 +1,6 @@
 import { Channel, Connection } from "amqplib";
-import { IBaseConsumerHandler } from "types/IBaseConsumerHandler";
 import { IConsumerFactory } from "types/factories/IConsumerFactory";
+import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandler";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
