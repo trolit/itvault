@@ -29,6 +29,8 @@ export const useWorkspacesStore = defineStore("workspace", {
       );
 
       this.workspaces = data;
+
+      return data;
     },
   },
 });
