@@ -1,9 +1,9 @@
 import { object, string } from "yup";
+import { IVariantRepository } from "types/repositories/IVariantRepository";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { PatchNameControllerTypes } from "types/controllers/Variant/PatchNameController";
 
 import { Di } from "@enums/Di";
-import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

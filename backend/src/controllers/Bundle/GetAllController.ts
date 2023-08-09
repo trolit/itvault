@@ -1,12 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { BundleMapper } from "@mappers/BundleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { GetAllControllerTypes } from "types/controllers/Bundle/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
-import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

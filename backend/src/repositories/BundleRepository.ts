@@ -1,11 +1,11 @@
 import { injectable } from "tsyringe";
 import { Repository, UpdateResult } from "typeorm";
+import { IBundleRepository } from "types/repositories/IBundleRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { Bundle } from "@entities/Bundle";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
-import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 @injectable()
 export class BundleRepository

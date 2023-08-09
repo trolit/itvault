@@ -1,11 +1,11 @@
 import { array, number, object, string } from "yup";
+import { IFileRepository } from "types/repositories/IFileRepository";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
 import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

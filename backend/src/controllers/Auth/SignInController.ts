@@ -1,8 +1,11 @@
 import bcrypt from "bcrypt";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IAuthService } from "types/services/IAuthService";
 import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
 import { DataStoreKeyType, DataStoreUser } from "data-store-types";
+import { IDataStoreService } from "types/services/IDataStoreService";
+import { IUserRepository } from "types/repositories/IUserRepository";
 import { SignInControllerTypes } from "types/controllers/Auth/SignInController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
@@ -10,9 +13,6 @@ import { APP, JWT } from "@config";
 
 import { Di } from "@enums/Di";
 import { Environment } from "@enums/Environment";
-import { IAuthService } from "@interfaces/services/IAuthService";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 import { BaseController } from "@controllers/BaseController";
 

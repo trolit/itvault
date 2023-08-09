@@ -1,10 +1,10 @@
 import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IUserRepository } from "types/repositories/IUserRepository";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

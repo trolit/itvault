@@ -1,13 +1,13 @@
 import { inject, injectable } from "tsyringe";
 import { TransactionResult } from "types/TransactionResult";
+import { ITagRepository } from "types/repositories/ITagRepository";
+import { IWorkspaceService } from "types/services/IWorkspaceService";
 import { TransactionError } from "types/custom-errors/TransactionError";
+import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
-import { ITagRepository } from "@interfaces/repositories/ITagRepository";
-import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
-import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 @injectable()
 export class WorkspaceService implements IWorkspaceService {

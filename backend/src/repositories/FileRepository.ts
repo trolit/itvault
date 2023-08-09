@@ -1,6 +1,8 @@
 import { injectable } from "tsyringe";
+import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 import { QueryRunner, Repository, Like, Not } from "typeorm";
+import { IFileRepository } from "types/repositories/IFileRepository";
 
 import { FILES } from "@config";
 
@@ -8,8 +10,6 @@ import { BaseRepository } from "./BaseRepository";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
-import { IFormDataFile } from "@interfaces/IFormDataFile";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 @injectable()
 export class FileRepository

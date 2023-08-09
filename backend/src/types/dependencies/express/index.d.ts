@@ -2,7 +2,7 @@ import formidable from "formidable";
 import { Permission } from "@shared/types/enums/Permission";
 import { Request, Response, ParsedQs } from "express";
 
-import { IFormDataFile } from "@interfaces/IFormDataFile";
+import { IFormDataFile } from "types/IFormDataFile";
 
 // to make the file a module and avoid the TypeScript error
 export {};

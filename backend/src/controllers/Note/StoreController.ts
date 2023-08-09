@@ -1,11 +1,11 @@
 import { inject, injectable } from "tsyringe";
 import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { INoteRepository } from "types/repositories/INoteRepository";
 import { StoreControllerTypes } from "types/controllers/Note/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 

@@ -1,10 +1,10 @@
 import { Redis } from "ioredis";
 import { DataStoreKeyType, DataStoreRole } from "data-store-types";
+import { IRoleRepository } from "types/repositories/IRoleRepository";
 
 import { REDIS } from "@config";
 
 import { Di } from "@enums/Di";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";

@@ -1,12 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { UserMapper } from "@mappers/UserMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IUserRepository } from "types/repositories/IUserRepository";
 import { GetAllControllerTypes } from "types/controllers/User/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { User } from "@entities/User";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

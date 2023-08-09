@@ -1,6 +1,7 @@
 import { inject, injectable } from "tsyringe";
 import { BundleMapper } from "@mappers/BundleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
@@ -9,7 +10,6 @@ import { Queue } from "@enums/Queue";
 import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleConsumerHandlerData } from "consumer-handlers-types";
-import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 import { sendToQueue } from "@helpers/sendToQueue";
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";

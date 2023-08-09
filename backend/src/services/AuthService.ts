@@ -1,7 +1,9 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { IAuthService } from "types/services/IAuthService";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
+import { IDataStoreService } from "types/services/IDataStoreService";
 import {
   DataStoreRole,
   DataStoreUser,
@@ -11,8 +13,6 @@ import {
 import { JWT } from "@config";
 
 import { Di } from "@enums/Di";
-import { IAuthService } from "@interfaces/services/IAuthService";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 @injectable()
 export class AuthService implements IAuthService {

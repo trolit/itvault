@@ -2,6 +2,7 @@ import { FindOptionsSelect } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { INoteRepository } from "types/repositories/INoteRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { GetAllNotesByIdControllerTypes } from "types/controllers/User/GetAllNotesByIdController";
 
@@ -9,7 +10,6 @@ import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
-import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

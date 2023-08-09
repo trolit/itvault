@@ -1,6 +1,6 @@
 import { Variant } from "@entities/Variant";
 import { IBaseRepository } from "./IBaseRepository";
-import { IFormDataFile } from "@interfaces/IFormDataFile";
+import { IFormDataFile } from "types/IFormDataFile";
 
 export interface IVariantRepository extends IBaseRepository<Variant> {
   save(

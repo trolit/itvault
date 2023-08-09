@@ -1,6 +1,6 @@
 import { Variant } from "@entities/Variant";
 import { IBaseFileService } from "./IBaseFileService";
-import { IFormDataFile } from "@interfaces/IFormDataFile";
+import { IFormDataFile } from "types/IFormDataFile";
 
 export interface IFileService extends IBaseFileService {
   moveFilesFromTemporaryDir(

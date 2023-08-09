@@ -1,3 +1,4 @@
+import { IBaseRepository } from "types/repositories/IBaseRepository";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 import {
   Repository,
@@ -12,7 +13,6 @@ import {
 import { dataSource } from "@config/data-source";
 
 import { Type } from "miscellaneous-types";
-import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 export class BaseRepository<T extends { id: number | string }>
   implements IBaseRepository<T>

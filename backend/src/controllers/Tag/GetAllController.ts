@@ -2,12 +2,12 @@ import { Like } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { TagMapper } from "@mappers/TagMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { ITagRepository } from "types/repositories/ITagRepository";
 import { GetAllControllerTypes } from "types/controllers/Tag/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { Tag } from "@entities/Tag";
-import { ITagRepository } from "@interfaces/repositories/ITagRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

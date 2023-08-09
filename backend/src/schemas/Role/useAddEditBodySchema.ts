@@ -1,11 +1,11 @@
 import { array, boolean, object, string } from "yup";
 import { SuperSchemaElement } from "super-schema-types";
+import { IRoleRepository } from "types/repositories/IRoleRepository";
 
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
 import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 import { UpdatePermissionDto } from "@shared/types/dtos/UpdatePermissionDto";
 
 import { setYupError } from "@helpers/yup/setError";

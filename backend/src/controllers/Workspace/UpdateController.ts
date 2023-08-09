@@ -1,10 +1,10 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IWorkspaceService } from "types/services/IWorkspaceService";
 import { UpdateControllerTypes } from "types/controllers/Workspace/UpdateController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
 import { BaseController } from "@controllers/BaseController";
 

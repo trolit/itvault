@@ -1,8 +1,8 @@
 import { CronJob } from "cron";
 import { BaseJob } from "@jobs/BaseJob";
+import { IJobFactory } from "types/factories/IJobFactory";
 
 import { Type } from "miscellaneous-types";
-import { IJobFactory } from "@interfaces/factories/IJobFactory";
 
 export class JobFactory implements IJobFactory {
   create<T extends BaseJob>(Job: Type<T>): BaseJob {

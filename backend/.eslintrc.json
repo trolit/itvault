@@ -58,8 +58,7 @@
               "@dtos/**",
               "@shared/**",
               "@enums/**",
-              "@entities/**",
-              "@interfaces/**"
+              "@entities/**"
             ],
 
             "tools": [

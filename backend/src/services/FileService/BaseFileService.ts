@@ -1,10 +1,10 @@
 import { TransactionResult } from "types/TransactionResult";
+import { IBaseFileService } from "types/services/IBaseFileService";
+import { IFileRepository } from "types/repositories/IFileRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
-import { IBaseFileService } from "@interfaces/services/IBaseFileService";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}

@@ -2,12 +2,12 @@ import { In } from "typeorm";
 import uniqBy from "lodash/uniqBy";
 import { array, number, object } from "yup";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
 
 import { Di } from "@enums/Di";
 import { BucketContent } from "@shared/types/BucketContent";
 import { AddBucketDto } from "@shared/types/dtos/AddBucketDto";
-import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

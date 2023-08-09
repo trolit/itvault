@@ -1,9 +1,9 @@
 import { object, string } from "yup";
+import { IFileRepository } from "types/repositories/IFileRepository";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { PatchFilenameControllerTypes } from "types/controllers/File/PatchFilenameController";
 
 import { Di } from "@enums/Di";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

@@ -1,13 +1,13 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { INoteRepository } from "types/repositories/INoteRepository";
 import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
-import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

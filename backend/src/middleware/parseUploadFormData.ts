@@ -1,13 +1,13 @@
 import { Schema } from "yup";
 import IncomingForm from "formidable/Formidable";
+import { IFormDataFile } from "types/IFormDataFile";
 import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
+import { IFormidableFormFactory } from "types/factories/IFormidableFormFactory";
 
 import { APP } from "@config/index";
 
 import { Di } from "@enums/Di";
-import { IFormDataFile } from "@interfaces/IFormDataFile";
-import { IFormidableFormFactory } from "@interfaces/factories/IFormidableFormFactory";
 
 import { formatError } from "@helpers/yup/formatError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

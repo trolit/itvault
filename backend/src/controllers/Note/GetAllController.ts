@@ -2,6 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { FindOptionsSelect, FindOptionsWhere } from "typeorm";
+import { INoteRepository } from "types/repositories/INoteRepository";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
@@ -9,7 +10,6 @@ import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
-import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
 

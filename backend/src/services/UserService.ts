@@ -1,7 +1,10 @@
 import assert from "assert";
 import { In } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { IUserService } from "types/services/IUserService";
 import { TransactionResult } from "types/TransactionResult";
+import { IDataStoreService } from "types/services/IDataStoreService";
+import { IUserRepository } from "types/repositories/IUserRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 import {
   DataStoreKey,
@@ -13,9 +16,6 @@ import { Di } from "@enums/Di";
 import { User } from "@entities/User";
 import { Role } from "@entities/Role";
 import { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
-import { IUserService } from "@interfaces/services/IUserService";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 

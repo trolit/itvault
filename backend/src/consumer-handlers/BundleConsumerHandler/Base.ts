@@ -1,16 +1,16 @@
 import path from "path";
 import JSZip from "jszip";
 import { In } from "typeorm";
+import { IFileService } from "types/services/IFileService";
+import { IFileRepository } from "types/repositories/IFileRepository";
+import { IBundleRepository } from "types/repositories/IBundleRepository";
+import { IBucketRepository } from "types/repositories/IBucketRepository";
 
 import { FILES } from "@config/index";
 
 import { Bucket } from "@entities/Bucket";
 import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
-import { IFileService } from "@interfaces/services/IFileService";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
-import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 export abstract class BaseBundleConsumerHandler {
   constructor(

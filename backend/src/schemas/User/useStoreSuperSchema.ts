@@ -1,11 +1,11 @@
 import { object, string } from "yup";
+import { IUserRepository } from "types/repositories/IUserRepository";
 import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { StoreControllerTypes } from "types/controllers/User/StoreController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

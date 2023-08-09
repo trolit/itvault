@@ -1,8 +1,8 @@
 import path from "path";
 import fs from "fs-extra";
+import { IJobFactory } from "types/factories/IJobFactory";
 
 import { Di } from "@enums/Di";
-import { IJobFactory } from "@interfaces/factories/IJobFactory";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

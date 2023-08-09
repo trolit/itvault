@@ -2,13 +2,13 @@ import bcrypt from "bcrypt";
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IUserRepository } from "types/repositories/IUserRepository";
 import { SignUpControllerTypes } from "types/controllers/User/SignUpController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { BCRYPT } from "@config";
 
 import { Di } from "@enums/Di";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

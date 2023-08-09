@@ -1,10 +1,10 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { IRoleRepository } from "types/repositories/IRoleRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { Role } from "@entities/Role";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 @injectable()
 export class RoleRepository

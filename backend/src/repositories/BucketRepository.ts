@@ -1,12 +1,12 @@
 import { injectable } from "tsyringe";
 import { In, Repository } from "typeorm";
 import { TransactionResult } from "types/TransactionResult";
+import { IBucketRepository } from "types/repositories/IBucketRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { Bucket } from "@entities/Bucket";
 import { AddBucketDto } from "@shared/types/dtos/AddBucketDto";
-import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
 
 @injectable()
 export class BucketRepository
