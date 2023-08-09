@@ -1,6 +1,6 @@
 <template>
   <template v-if="isEnabled()">
-    <slot name="data" />
+    <slot></slot>
   </template>
 </template>
 
