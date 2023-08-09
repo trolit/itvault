@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { JobConfig } from "types/JobConfig";
+import { JobConfig } from "types/jobs/JobConfig";
 import { IFileService } from "types/services/IFileService";
 
 import { APP } from "@config/index";
