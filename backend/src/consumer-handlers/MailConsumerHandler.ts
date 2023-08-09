@@ -1,9 +1,9 @@
 import { injectable, inject } from "tsyringe";
 import { IMailService } from "types/services/IMailService";
 import { IBaseConsumerHandler } from "types/IBaseConsumerHandler";
+import { MailConsumerHandlerData } from "types/consumer-handlers/MailConsumerHandlerData";
 
 import { Di } from "@enums/Di";
-import { MailConsumerHandlerData } from "consumer-handlers-types";
 
 @injectable()
 export class MailConsumerHandler

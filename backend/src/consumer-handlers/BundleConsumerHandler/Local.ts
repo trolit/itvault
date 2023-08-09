@@ -6,6 +6,7 @@ import { IBaseConsumerHandler } from "types/IBaseConsumerHandler";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
+import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsumerHandlerData";
 
 import { FILES } from "@config";
 
@@ -13,9 +14,8 @@ import { BaseBundleConsumerHandler } from "./Base";
 
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
-import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
-import { BundleConsumerHandlerData } from "consumer-handlers-types";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 
 @injectable()
 export class LocalBundleConsumerHandler
