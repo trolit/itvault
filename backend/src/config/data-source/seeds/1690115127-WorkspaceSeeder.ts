@@ -3,6 +3,7 @@ import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { TEST_WORKSPACE_2, TEST_WORKSPACE_1 } from "./common";
 
+import { Tag } from "@entities/Tag";
 import { Workspace } from "@entities/Workspace";
 
 export default class WorkspaceSeeder implements Seeder {
@@ -12,12 +13,28 @@ export default class WorkspaceSeeder implements Seeder {
   ) {
     const workspaceFactory = factoryManager.get(Workspace);
 
-    await workspaceFactory.save({
+    const workspaceRepository = dataSource.getRepository(Workspace);
+
+    const tagRepository = dataSource.getRepository(Tag);
+
+    const tags = await tagRepository.find({ take: 3 });
+
+    const workspace1 = await workspaceFactory.save({
       name: TEST_WORKSPACE_1.name,
     });
 
-    await workspaceFactory.save({
+    await workspaceRepository.update(
+      { id: workspace1.id },
+      { tagToWorkspace: tags.map(tag => ({ tag, workspace: workspace1 })) }
+    );
+
+    const workspace2 = await workspaceFactory.save({
       name: TEST_WORKSPACE_2.name,
     });
+
+    await workspaceRepository.update(
+      { id: workspace2.id },
+      { tagToWorkspace: tags.map(tag => ({ tag, workspace: workspace2 })) }
+    );
   }
 }
