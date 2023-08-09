@@ -1,6 +1,6 @@
 import { object, string } from "yup";
 import sanitizeHtml from "sanitize-html";
-import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 import { StoreControllerTypes } from "types/controllers/Note/StoreController";
 
 import { useResourceEntityTest } from "./useResourceEntityTest";
@@ -9,7 +9,7 @@ import { Resource } from "@enums/Resource";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
+const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
   text: string()
     .required()
     .transform(value => sanitizeHtml(value)),
@@ -19,7 +19,7 @@ const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
   }),
 });
 
-export const useStoreSuperSchema: SuperSchemaRunner<
+export const useStoreSuperSchema: SuperSchema.Runner<
   void,
   StoreControllerTypes.v1.Body,
   void

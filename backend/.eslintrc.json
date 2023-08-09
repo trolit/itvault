@@ -70,7 +70,7 @@
           "type": {}
         },
         "groups": [
-          ["super-schema", "builtin", "external"],
+          ["builtin", "external"],
           ["config"],
           ["same-directory"],
           "types",

@@ -1,5 +1,5 @@
 import { object } from "yup";
-import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 import { UpdateControllerTypes } from "types/controllers/Role/UpdateController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
@@ -14,7 +14,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const paramsSchema: SuperSchemaElement<UpdateControllerTypes.v1.Params> =
+const paramsSchema: SuperSchema.Fragment<UpdateControllerTypes.v1.Params> =
   object({
     id: useIdNumberSchema(Di.RoleRepository).test((value, ctx) => {
       if (value === HEAD_ADMIN_ROLE_ID) {
@@ -27,7 +27,7 @@ const paramsSchema: SuperSchemaElement<UpdateControllerTypes.v1.Params> =
     }),
   });
 
-export const useUpdateSuperSchema: SuperSchemaRunner<
+export const useUpdateSuperSchema: SuperSchema.Runner<
   UpdateControllerTypes.v1.Params,
   UpdateControllerTypes.v1.Body,
   void

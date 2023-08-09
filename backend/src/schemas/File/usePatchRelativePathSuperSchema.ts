@@ -1,5 +1,5 @@
 import { object, string } from "yup";
-import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 import { PatchRelativePathControllerTypes } from "types/controllers/File/PatchRelativePathController";
 
 import { FILES } from "@config";
@@ -12,17 +12,17 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const paramsSchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Params> =
+const paramsSchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Params> =
   object({
     id: useIdNumberSchema(Di.FileRepository),
   });
 
-const querySchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Query> =
+const querySchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Query> =
   object({
     workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
   });
 
-const bodySchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Body> =
+const bodySchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Body> =
   object({
     relativePath: string()
       .trim()
@@ -53,7 +53,7 @@ const bodySchema: SuperSchemaElement<PatchRelativePathControllerTypes.v1.Body> =
       }),
   });
 
-export const usePatchRelativePathSuperSchema: SuperSchemaRunner<
+export const usePatchRelativePathSuperSchema: SuperSchema.Runner<
   PatchRelativePathControllerTypes.v1.Params,
   PatchRelativePathControllerTypes.v1.Body,
   PatchRelativePathControllerTypes.v1.Query

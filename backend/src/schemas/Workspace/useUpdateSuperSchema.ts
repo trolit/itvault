@@ -1,5 +1,5 @@
 import { object } from "yup";
-import { SuperSchemaElement, SuperSchemaRunner } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 import { UpdateControllerTypes } from "types/controllers/Workspace/UpdateController";
 
 import { useAddEditBodySchema } from "./useAddEditBodySchema";
@@ -9,12 +9,12 @@ import { Di } from "@enums/Di";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const paramsSchema: SuperSchemaElement<UpdateControllerTypes.v1.Params> =
+const paramsSchema: SuperSchema.Fragment<UpdateControllerTypes.v1.Params> =
   object({
     id: useIdNumberSchema(Di.WorkspaceRepository),
   });
 
-export const useUpdateSuperSchema: SuperSchemaRunner<
+export const useUpdateSuperSchema: SuperSchema.Runner<
   UpdateControllerTypes.v1.Params,
   UpdateControllerTypes.v1.Body,
   void

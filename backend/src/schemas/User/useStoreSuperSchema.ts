@@ -1,6 +1,6 @@
 import { object, string } from "yup";
+import { SuperSchema } from "types/SuperSchema";
 import { IUserRepository } from "types/repositories/IUserRepository";
-import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { StoreControllerTypes } from "types/controllers/User/StoreController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
@@ -14,7 +14,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
+const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
   email: string()
     .email()
     .max(254)
@@ -54,7 +54,7 @@ const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
   }),
 });
 
-export const useStoreSuperSchema: SuperSchemaRunner<
+export const useStoreSuperSchema: SuperSchema.Runner<
   void,
   StoreControllerTypes.v1.Body,
   void

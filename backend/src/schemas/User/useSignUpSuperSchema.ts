@@ -1,5 +1,5 @@
 import { number, object, string } from "yup";
-import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 import { SignUpControllerTypes } from "types/controllers/User/SignUpController";
 
 import { setYupError } from "@helpers/yup/setError";
@@ -7,7 +7,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const bodySchema: SuperSchemaElement<SignUpControllerTypes.v1.Body> = object({
+const bodySchema: SuperSchema.Fragment<SignUpControllerTypes.v1.Body> = object({
   id: number().required().integer(),
 
   email: string()
@@ -37,7 +37,7 @@ const bodySchema: SuperSchemaElement<SignUpControllerTypes.v1.Body> = object({
     ),
 });
 
-export const useSignUpSuperSchema: SuperSchemaRunner<
+export const useSignUpSuperSchema: SuperSchema.Runner<
   void,
   SignUpControllerTypes.v1.Body,
   void

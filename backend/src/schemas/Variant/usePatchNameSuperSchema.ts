@@ -1,6 +1,6 @@
 import { object, string } from "yup";
+import { SuperSchema } from "types/SuperSchema";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
-import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
 import { PatchNameControllerTypes } from "types/controllers/Variant/PatchNameController";
 
 import { Di } from "@enums/Di";
@@ -13,12 +13,12 @@ import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const paramsSchema: SuperSchemaElement<PatchNameControllerTypes.v1.Params> =
+const paramsSchema: SuperSchema.Fragment<PatchNameControllerTypes.v1.Params> =
   object({
     id: useIdStringSchema(Di.VariantRepository),
   });
 
-const querySchema: SuperSchemaElement<PatchNameControllerTypes.v1.Query> =
+const querySchema: SuperSchema.Fragment<PatchNameControllerTypes.v1.Query> =
   object({
     workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
 
@@ -27,7 +27,9 @@ const querySchema: SuperSchemaElement<PatchNameControllerTypes.v1.Query> =
 
 const useBodySchema: (
   fileId: number
-) => SuperSchemaElement<PatchNameControllerTypes.v1.Body> = (fileId: number) =>
+) => SuperSchema.Fragment<PatchNameControllerTypes.v1.Body> = (
+  fileId: number
+) =>
   object({
     name: string()
       .trim()
@@ -56,7 +58,7 @@ const useBodySchema: (
       }),
   });
 
-export const usePatchNameSuperSchema: SuperSchemaRunner<
+export const usePatchNameSuperSchema: SuperSchema.Runner<
   PatchNameControllerTypes.v1.Params,
   PatchNameControllerTypes.v1.Body,
   PatchNameControllerTypes.v1.Query

@@ -1,12 +1,12 @@
 import { Schema } from "yup";
+import { SuperSchema } from "types/SuperSchema";
 import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { SuperKeys, SuperSchema, SuperSchemaRunner } from "super-schema-types";
 
 import { formatError } from "@helpers/yup/formatError";
 
 export const validateRequestWith = <P, B, Q>(
-  superSchemaRunners: Record<string, SuperSchemaRunner<P, B, Q>>
+  superSchemaRunners: Record<string, SuperSchema.Runner<P, B, Q>>
 ) => {
   return async (
     request: CustomRequest<P, B, Q>,
@@ -40,7 +40,7 @@ export const validateRequestWith = <P, B, Q>(
     });
 
     for (const key in superSchema) {
-      const schema = <Schema>superSchema[key as keyof SuperSchema];
+      const schema = <Schema>superSchema[key as keyof SuperSchema.Definition];
 
       if (!schema) {
         return response
@@ -48,7 +48,7 @@ export const validateRequestWith = <P, B, Q>(
           .send(`Failed to load '${key}' schema!`);
       }
 
-      const superKey = key as keyof SuperKeys;
+      const superKey = key as keyof SuperSchema.Keys;
 
       try {
         const parsedData = await schema.validate(request[superKey], {
@@ -57,7 +57,7 @@ export const validateRequestWith = <P, B, Q>(
         });
 
         // overwrites body with sanitized result
-        request[superKey as keyof SuperKeys] =
+        request[superKey as keyof SuperSchema.Keys] =
           superKey === "query"
             ? { version: requestedVersion, ...parsedData }
             : parsedData;

@@ -1,7 +1,7 @@
 import { In } from "typeorm";
 import uniqBy from "lodash/uniqBy";
 import { array, number, object } from "yup";
-import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
 
@@ -16,7 +16,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const valueSchema: SuperSchemaElement<AddBucketDto> = object({
+const valueSchema: SuperSchema.Fragment<AddBucketDto> = object({
   value: object<BucketContent>().test(
     "has-valid-buckets",
     setYupError(CUSTOM_MESSAGES.BUCKETS.INVALID_CONFIGURATION),
@@ -39,8 +39,8 @@ const valueSchema: SuperSchemaElement<AddBucketDto> = object({
   blueprintId: number().required(),
 });
 
-const bodySchema: SuperSchemaElement<StoreManyControllerTypes.v1.Body> = object(
-  {
+const bodySchema: SuperSchema.Fragment<StoreManyControllerTypes.v1.Body> =
+  object({
     values: array()
       .of(valueSchema)
       .required()
@@ -82,10 +82,9 @@ const bodySchema: SuperSchemaElement<StoreManyControllerTypes.v1.Body> = object(
       ),
 
     variantId: useIdStringSchema(Di.VariantRepository),
-  }
-);
+  });
 
-export const useStoreManySuperSchema: SuperSchemaRunner<
+export const useStoreManySuperSchema: SuperSchema.Runner<
   void,
   StoreManyControllerTypes.v1.Body,
   void

@@ -1,6 +1,6 @@
 import uniq from "lodash/uniq";
 import { array, object, string } from "yup";
-import { SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
@@ -12,7 +12,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 export const useAddEditBodySchema: (
   id?: number
-) => SuperSchemaElement<AddEditWorkspaceDto> = (id?: number) =>
+) => SuperSchema.Fragment<AddEditWorkspaceDto> = (id?: number) =>
   object({
     name: string()
       .required()
