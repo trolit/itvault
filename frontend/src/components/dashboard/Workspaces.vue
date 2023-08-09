@@ -30,8 +30,9 @@
       </n-data-table>
 
       <div class="actions">
-        <!-- @TODO only available to accounts with certain rights -->
-        <n-button ghost type="info"> New workspace </n-button>
+        <require-permission :permission="Permission.CreateWorkspace">
+          <n-button ghost type="info"> New workspace </n-button>
+        </require-permission>
 
         <router-link to="/">
           <n-button dashed type="success" :disabled="!data.length">
@@ -54,7 +55,9 @@ import { NDataTable, NButton, NInput, NIcon, NEmpty, NTag } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
 import { useWorkspacesStore } from "@/stores/workspace";
+import { Permission } from "@shared/types/enums/Permission";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
+import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const isLoading = ref(true);
 
