@@ -1,5 +1,5 @@
 import { TagMapper } from "@mappers/TagMapper";
-import { PaginatedResponse } from "miscellaneous-types";
+import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {

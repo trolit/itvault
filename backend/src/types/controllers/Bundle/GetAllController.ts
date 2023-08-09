@@ -1,7 +1,8 @@
+import { WorkspaceId } from "miscellaneous-types";
 import { BundleMapper } from "@mappers/BundleMapper";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
-import { PaginatedResponse, WorkspaceId } from "miscellaneous-types";
+import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {

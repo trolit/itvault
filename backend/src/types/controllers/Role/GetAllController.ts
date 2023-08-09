@@ -1,5 +1,5 @@
 import { RoleMapper } from "@mappers/RoleMapper";
-import { PaginatedResponse } from "miscellaneous-types";
+import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 

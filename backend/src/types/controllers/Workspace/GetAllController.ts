@@ -1,7 +1,7 @@
-import { PaginatedResponse } from "miscellaneous-types";
 import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
