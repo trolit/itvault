@@ -32,7 +32,6 @@
       "@migrations/*": ["migrations/*"],
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"],
-      "@consumer-handlers/*": ["consumer-handlers/*"],
       "@shared/*": ["../../shared/src/*"]
     }
   },

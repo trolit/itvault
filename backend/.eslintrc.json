@@ -59,8 +59,7 @@
               "@repositories/**",
               "@middleware/**",
               "@services/**",
-              "@utils/**",
-              "@consumer-handlers/**"
+              "@utils/**"
             ],
 
             "schemas": ["@schemas/**"],
