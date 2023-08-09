@@ -45,8 +45,8 @@ import {
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
 import { h, ref, type Ref, computed, reactive } from "vue";
-import type { DataTableColumns, PaginationProps } from "naive-ui";
 import { NDataTable, NButton, NInput, NIcon, NEmpty, NTag } from "naive-ui";
+import type { DataTableColumns, PaginationProps, useMessage } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
 import { useWorkspacesStore } from "@/stores/workspace";
@@ -98,6 +98,8 @@ const pagination: PaginationProps = reactive({
 });
 
 const workspacesStore = useWorkspacesStore();
+
+const message = useMessage();
 
 await getAll();
 
@@ -164,6 +166,8 @@ async function getAll() {
     );
   } catch (error) {
     console.log(error);
+
+    message.error("There was an error when trying to load workspaces.");
   } finally {
     isLoading.value = false;
   }
