@@ -1,6 +1,6 @@
 import { UserMapper } from "@mappers/UserMapper";
 import { PaginatedResponse } from "miscellaneous-types";
-import { IPaginationQuery } from "@interfaces/IPaginationQuery";
+import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export namespace GetAllControllerTypes {

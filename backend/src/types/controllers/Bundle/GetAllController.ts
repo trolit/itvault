@@ -1,5 +1,5 @@
 import { BundleMapper } from "@mappers/BundleMapper";
-import { IPaginationQuery } from "@interfaces/IPaginationQuery";
+import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 import { PaginatedResponse, WorkspaceId } from "miscellaneous-types";
 
