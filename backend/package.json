@@ -31,7 +31,6 @@
     "@jobs": "dist/jobs",
     "@mappers": "dist/mappers",
     "@enums": "dist/types/enums",
-    "@interfaces": "dist/types/interfaces",
     "@utils": "dist/utils",
     "@config": "dist/config",
     "@routes": "dist/routes",

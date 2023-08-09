@@ -1,14 +1,14 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { RequeueControllerTypes } from "types/controllers/Bundle/RequeueController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
+import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsumerHandlerData";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
-import { BundleConsumerHandlerData } from "consumer-handlers-types";
-import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 import { sendToQueue } from "@helpers/sendToQueue";
 

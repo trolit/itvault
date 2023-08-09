@@ -1,10 +1,10 @@
 import uniq from "lodash/uniq";
 import { array, object, string } from "yup";
-import { SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
+import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
 import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
-import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -12,7 +12,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 export const useAddEditBodySchema: (
   id?: number
-) => SuperSchemaElement<AddEditWorkspaceDto> = (id?: number) =>
+) => SuperSchema.Fragment<AddEditWorkspaceDto> = (id?: number) =>
   object({
     name: string()
       .required()

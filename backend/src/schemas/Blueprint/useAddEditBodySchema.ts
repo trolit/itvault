@@ -1,10 +1,10 @@
 import { Not } from "typeorm";
 import { object, string } from "yup";
-import { SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
+import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 
 import { Di } from "@enums/Di";
 import { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
-import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -13,7 +13,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 export const useAddEditBodySchema: (
   workspaceId: number,
   id?: number
-) => SuperSchemaElement<AddEditBlueprintDto> = (
+) => SuperSchema.Fragment<AddEditBlueprintDto> = (
   workspaceId: number,
   id?: number
 ) => {

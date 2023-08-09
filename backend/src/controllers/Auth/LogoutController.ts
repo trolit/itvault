@@ -1,12 +1,12 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IAuthService } from "types/services/IAuthService";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { JWT } from "@config";
 
 import { Di } from "@enums/Di";
-import { IAuthService } from "@interfaces/services/IAuthService";
 
 import { BaseController } from "@controllers/BaseController";
 

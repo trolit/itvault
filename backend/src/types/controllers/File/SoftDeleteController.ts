@@ -1,4 +1,4 @@
-import { WorkspaceId } from "miscellaneous-types";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 export namespace SoftDeleteControllerTypes {
   export namespace v1 {

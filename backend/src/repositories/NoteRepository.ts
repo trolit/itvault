@@ -1,10 +1,10 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { INoteRepository } from "types/repositories/INoteRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { Note } from "@entities/Note";
-import { INoteRepository } from "@interfaces/repositories/INoteRepository";
 
 @injectable()
 export class NoteRepository

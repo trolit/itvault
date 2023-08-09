@@ -1,13 +1,13 @@
 import { inject, injectable } from "tsyringe";
+import { IRoleService } from "types/services/IRoleService";
 import { TransactionResult } from "types/TransactionResult";
+import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { Permission } from "@entities/Permission";
-import { IRoleService } from "@interfaces/services/IRoleService";
 import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 import { UpdatePermissionDto } from "@shared/types/dtos/UpdatePermissionDto";
 
 @injectable()

@@ -1,10 +1,10 @@
 import { injectable } from "tsyringe";
 import { Like, QueryRunner, Repository } from "typeorm";
+import { ITagRepository } from "types/repositories/ITagRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { Tag } from "@entities/Tag";
-import { ITagRepository } from "@interfaces/repositories/ITagRepository";
 
 @injectable()
 export class TagRepository

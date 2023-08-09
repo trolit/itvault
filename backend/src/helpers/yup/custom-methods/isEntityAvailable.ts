@@ -1,4 +1,5 @@
 import { FindOptionsWhere } from "typeorm";
+import { IBaseRepository } from "types/repositories/IBaseRepository";
 import {
   number,
   string,
@@ -8,8 +9,6 @@ import {
   NumberSchema,
   StringSchema,
 } from "yup";
-
-import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

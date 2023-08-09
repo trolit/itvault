@@ -2,6 +2,7 @@ import { Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
@@ -11,7 +12,6 @@ import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

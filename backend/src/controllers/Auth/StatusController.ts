@@ -1,14 +1,14 @@
 import type { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IAuthService } from "types/services/IAuthService";
 import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
+import { IUserRepository } from "types/repositories/IUserRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { JWT } from "@config";
 
 import { Di } from "@enums/Di";
-import { IAuthService } from "@interfaces/services/IAuthService";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

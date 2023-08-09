@@ -2,14 +2,14 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { UserMapper } from "@mappers/UserMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IUserRepository } from "types/repositories/IUserRepository";
 import { StoreControllerTypes } from "types/controllers/User/StoreController";
+import { SignUpMailViewBuilder as VB } from "types/mail/SignUpMailViewBuilder";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
+import { MailConsumerHandlerData } from "types/consumer-handlers/MailConsumerHandlerData";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { MailConsumerHandlerData } from "consumer-handlers-types";
-import { SignUpMailViewBuilder as VB } from "mail-view-builders-types";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 import { sendToQueue } from "@helpers/sendToQueue";
 import { generateCode } from "@helpers/generateCode";

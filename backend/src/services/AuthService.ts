@@ -1,18 +1,14 @@
 import { Response } from "express";
+import { DataStore } from "types/DataStore";
 import { inject, injectable } from "tsyringe";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { IAuthService } from "types/services/IAuthService";
 import type { SignOptions, VerifyErrors } from "jsonwebtoken";
-import {
-  DataStoreRole,
-  DataStoreUser,
-  DataStoreKeyType,
-} from "data-store-types";
+import { IDataStoreService } from "types/services/IDataStoreService";
 
 import { JWT } from "@config";
 
 import { Di } from "@enums/Di";
-import { IAuthService } from "@interfaces/services/IAuthService";
-import { IDataStoreService } from "@interfaces/services/IDataStoreService";
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -37,7 +33,7 @@ export class AuthService implements IAuthService {
 
     const result = await this._dataStoreService.delete([
       decodedToken.id,
-      DataStoreKeyType.AuthenticatedUser,
+      DataStore.KeyType.AuthenticatedUser,
     ]);
 
     if (result) {
@@ -79,9 +75,9 @@ export class AuthService implements IAuthService {
     };
   }
 
-  async getSignedUserRole(userId: number): Promise<DataStoreRole | null> {
-    const roleId = await this._dataStoreService.getHashField<DataStoreUser>(
-      [userId, DataStoreKeyType.AuthenticatedUser],
+  async getSignedUserRole(userId: number): Promise<DataStore.Role | null> {
+    const roleId = await this._dataStoreService.getHashField<DataStore.User>(
+      [userId, DataStore.KeyType.AuthenticatedUser],
       "roleId"
     );
 
@@ -89,9 +85,9 @@ export class AuthService implements IAuthService {
       return null;
     }
 
-    const role = await this._dataStoreService.get<DataStoreRole>([
+    const role = await this._dataStoreService.get<DataStore.Role>([
       roleId,
-      DataStoreKeyType.Role,
+      DataStore.KeyType.Role,
     ]);
 
     if (!role) {

@@ -1,11 +1,11 @@
+import { SuperSchema } from "types/SuperSchema";
 import { array, number, object, string } from "yup";
-import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { IFileRepository } from "types/repositories/IFileRepository";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
 import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -15,16 +15,18 @@ import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromColle
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const querySchema: SuperSchemaElement<StoreControllerTypes.v1.Query> = object({
-  workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
-});
+const querySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Query> = object(
+  {
+    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+  }
+);
 
-const valueSchema: SuperSchemaElement<AddBundleDto> = object({
+const valueSchema: SuperSchema.Fragment<AddBundleDto> = object({
   blueprintId: number().integer().required(),
   variantIds: array().of(string().required()).required(),
 });
 
-const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
+const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
   note: string().optional(),
   values: array()
     .of(valueSchema)
@@ -57,7 +59,7 @@ const bodySchema: SuperSchemaElement<StoreControllerTypes.v1.Body> = object({
   expiration: string().required().oneOf(Object.values(BundleExpire)),
 });
 
-export const useStoreSuperSchema: SuperSchemaRunner<
+export const useStoreSuperSchema: SuperSchema.Runner<
   void,
   StoreControllerTypes.v1.Body,
   StoreControllerTypes.v1.Query

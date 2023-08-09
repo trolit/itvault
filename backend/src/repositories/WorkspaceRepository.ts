@@ -1,10 +1,10 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { Workspace } from "@entities/Workspace";
-import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
 
 @injectable()
 export class WorkspaceRepository

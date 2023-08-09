@@ -1,10 +1,10 @@
 import { Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IBaseController } from "types/controllers/IBaseController";
+import { IEntityMapperService } from "types/services/IEntityMapperService";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { IBaseController } from "@interfaces/IBaseController";
-import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

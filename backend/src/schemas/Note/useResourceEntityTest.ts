@@ -1,7 +1,6 @@
 import { string } from "yup";
 import isInteger from "lodash/isInteger";
-
-import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
+import { IBaseRepository } from "types/repositories/IBaseRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

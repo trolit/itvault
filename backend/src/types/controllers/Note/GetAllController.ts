@@ -2,7 +2,7 @@ import { Resource } from "@enums/Resource";
 import { NoteMapper } from "@mappers/NoteMapper";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+import { IPaginationOptions } from "types/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {

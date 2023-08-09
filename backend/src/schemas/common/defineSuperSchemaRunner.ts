@@ -1,8 +1,9 @@
-import { SuperCommonParam, SuperSchema } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 
-// @TODO refactor to allow to specify for which endpoint version super schema is defined
 export const defineSuperSchemaRunner = <P, B, Q>(
   superSchemaRunner: (
-    common: SuperCommonParam<P, B, Q>
-  ) => SuperSchema<P, B, Q> | Promise<SuperSchema<P, B, Q>>
+    common: SuperSchema.CommonParam<P, B, Q>
+  ) =>
+    | SuperSchema.Definition<P, B, Q>
+    | Promise<SuperSchema.Definition<P, B, Q>>
 ) => superSchemaRunner;

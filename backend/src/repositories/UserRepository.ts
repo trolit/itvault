@@ -1,10 +1,10 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { IUserRepository } from "types/repositories/IUserRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { User } from "@entities/User";
-import { IUserRepository } from "@interfaces/repositories/IUserRepository";
 
 @injectable()
 export class UserRepository

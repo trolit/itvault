@@ -2,13 +2,13 @@ import assert from "assert";
 import { inject, injectable } from "tsyringe";
 import { FileMapper } from "@mappers/FileMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IFileService } from "types/services/IFileService";
+import { IFileRepository } from "types/repositories/IFileRepository";
 import { StoreControllerTypes } from "types/controllers/File/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
-import { IFileService } from "@interfaces/services/IFileService";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

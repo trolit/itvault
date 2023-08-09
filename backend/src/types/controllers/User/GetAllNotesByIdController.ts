@@ -1,7 +1,7 @@
 import { NoteMapper } from "@mappers/NoteMapper";
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+import { IPaginationOptions } from "types/IPaginationOptions";
 
 export namespace GetAllNotesByIdControllerTypes {
   export namespace v1 {

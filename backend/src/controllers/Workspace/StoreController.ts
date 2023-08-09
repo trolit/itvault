@@ -2,11 +2,11 @@ import assert from "assert";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
+import { IWorkspaceService } from "types/services/IWorkspaceService";
 import { StoreControllerTypes } from "types/controllers/Workspace/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { IWorkspaceService } from "@interfaces/services/IWorkspaceService";
 
 import { BaseController } from "@controllers/BaseController";
 

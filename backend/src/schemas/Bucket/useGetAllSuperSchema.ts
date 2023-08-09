@@ -1,5 +1,5 @@
 import { object } from "yup";
-import { SuperSchemaElement, SuperSchemaRunner } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 import { GetAllControllerTypes } from "types/controllers/Bucket/GetAllController";
 
 import { Di } from "@enums/Di";
@@ -7,11 +7,12 @@ import { Di } from "@enums/Di";
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const querySchema: SuperSchemaElement<GetAllControllerTypes.v1.Query> = object({
-  variantId: useIdStringSchema(Di.VariantRepository),
-});
+const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.Query> =
+  object({
+    variantId: useIdStringSchema(Di.VariantRepository),
+  });
 
-export const useGetAllSuperSchema: SuperSchemaRunner<
+export const useGetAllSuperSchema: SuperSchema.Runner<
   void,
   void,
   GetAllControllerTypes.v1.Query

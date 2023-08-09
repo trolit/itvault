@@ -2,13 +2,13 @@ import path from "path";
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { DownloadControllerTypes } from "types/controllers/Bundle/DownloadController";
 
 import { FILES } from "@config/index";
 
 import { Di } from "@enums/Di";
-import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

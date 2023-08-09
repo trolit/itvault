@@ -1,11 +1,11 @@
 import path from "path";
 import fs from "fs-extra";
 import { injectable } from "tsyringe";
+import { IVariantService } from "types/services/IVariantService";
 
 import { FILES } from "@config";
 
 import { Variant } from "@entities/Variant";
-import { IVariantService } from "@interfaces/services/IVariantService";
 
 @injectable()
 export class VariantService implements IVariantService {

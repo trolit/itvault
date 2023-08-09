@@ -5,10 +5,10 @@ import camelCase from "lodash/camelCase";
 import { Transporter } from "nodemailer";
 import { inject, injectable } from "tsyringe";
 import { Options } from "nodemailer/lib/mailer";
+import { IMailService } from "types/services/IMailService";
+import { IMailViewBuilder } from "types/mail/IMailViewBuilder";
 
 import { Di } from "@enums/Di";
-import { IMailViewBuilder } from "@interfaces/IMailViewBuilder";
-import { IMailService } from "@interfaces/services/IMailService";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

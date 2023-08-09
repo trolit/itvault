@@ -1,6 +1,5 @@
 import { BaseMapper } from "@mappers/BaseMapper";
-
-import { IEntityMapperService } from "@interfaces/services/IEntityMapperService";
+import { IEntityMapperService } from "types/services/IEntityMapperService";
 
 export class EntityMapperService implements IEntityMapperService {
   map<T>(entity: T): {

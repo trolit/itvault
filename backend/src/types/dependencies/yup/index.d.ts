@@ -1,6 +1,6 @@
 import yup from "yup";
 import { DeepPartial, FindOptionsWhere } from "typeorm";
-import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
+import { IBaseRepository } from "types/repositories/IBaseRepository";
 
 import { Di } from "@enums/Di";
 

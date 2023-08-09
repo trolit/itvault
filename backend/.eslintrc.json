@@ -51,16 +51,7 @@
 
             "same-directory": ["./**"],
 
-            "types": [
-              "consumer-handlers-types",
-              "mail-view-builders-types",
-              "miscellaneous-types",
-              "@dtos/**",
-              "@shared/**",
-              "@enums/**",
-              "@entities/**",
-              "@interfaces/**"
-            ],
+            "types": ["@dtos/**", "@shared/**", "@enums/**", "@entities/**"],
 
             "tools": [
               "@helpers/**",
@@ -79,7 +70,7 @@
           "type": {}
         },
         "groups": [
-          ["data-store-types", "super-schema", "builtin", "external"],
+          ["builtin", "external"],
           ["config"],
           ["same-directory"],
           "types",

@@ -1,7 +1,6 @@
 import { Response } from "express";
+import { DataStore } from "types/DataStore";
 import { JwtPayload, SignOptions, VerifyTokenResult } from "jsonwebtoken";
-
-import { DataStoreRole } from "data-store-types";
 
 export interface IAuthService {
   signIn(payload: JwtPayload, options?: SignOptions): string;
@@ -10,5 +9,5 @@ export interface IAuthService {
 
   verifyToken(token: string): VerifyTokenResult;
 
-  getSignedUserRole(userId: number): Promise<DataStoreRole | null>;
+  getSignedUserRole(userId: number): Promise<DataStore.Role | null>;
 }

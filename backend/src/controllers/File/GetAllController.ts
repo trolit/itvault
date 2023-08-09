@@ -1,12 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { FileMapper } from "@mappers/FileMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IFileRepository } from "types/repositories/IFileRepository";
 import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

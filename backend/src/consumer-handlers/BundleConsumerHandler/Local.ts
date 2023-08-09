@@ -1,5 +1,12 @@
 import crypto from "crypto";
 import { injectable, inject } from "tsyringe";
+import { IFileService } from "types/services/IFileService";
+import { IDateService } from "types/services/IDateService";
+import { IFileRepository } from "types/repositories/IFileRepository";
+import { IBundleRepository } from "types/repositories/IBundleRepository";
+import { IBucketRepository } from "types/repositories/IBucketRepository";
+import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandler";
+import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsumerHandlerData";
 
 import { FILES } from "@config";
 
@@ -9,13 +16,6 @@ import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
-import { IDateService } from "@interfaces/services/IDateService";
-import { IFileService } from "@interfaces/services/IFileService";
-import { BundleConsumerHandlerData } from "consumer-handlers-types";
-import { IBaseConsumerHandler } from "@interfaces/IBaseConsumerHandler";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
-import { IBucketRepository } from "@interfaces/repositories/IBucketRepository";
-import { IBundleRepository } from "@interfaces/repositories/IBundleRepository";
 
 @injectable()
 export class LocalBundleConsumerHandler

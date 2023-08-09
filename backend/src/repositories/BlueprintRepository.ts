@@ -1,10 +1,10 @@
 import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
+import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { Blueprint } from "@entities/Blueprint";
-import { IBlueprintRepository } from "@interfaces/repositories/IBlueprintRepository";
 
 @injectable()
 export class BlueprintRepository

@@ -2,11 +2,11 @@ import assert from "assert";
 import { inject, injectable } from "tsyringe";
 import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IRoleService } from "types/services/IRoleService";
 import { StoreControllerTypes } from "types/controllers/Role/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { IRoleService } from "@interfaces/services/IRoleService";
 
 import { BaseController } from "@controllers/BaseController";
 

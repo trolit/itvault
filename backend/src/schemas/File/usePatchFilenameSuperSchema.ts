@@ -1,9 +1,9 @@
 import { object, string } from "yup";
-import { SuperSchemaRunner, SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
+import { IFileRepository } from "types/repositories/IFileRepository";
 import { PatchFilenameControllerTypes } from "types/controllers/File/PatchFilenameController";
 
 import { Di } from "@enums/Di";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -12,12 +12,12 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const paramsSchema: SuperSchemaElement<PatchFilenameControllerTypes.v1.Params> =
+const paramsSchema: SuperSchema.Fragment<PatchFilenameControllerTypes.v1.Params> =
   object({
     id: useIdNumberSchema(Di.FileRepository),
   });
 
-const querySchema: SuperSchemaElement<PatchFilenameControllerTypes.v1.Query> =
+const querySchema: SuperSchema.Fragment<PatchFilenameControllerTypes.v1.Query> =
   object({
     workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
   });
@@ -25,7 +25,7 @@ const querySchema: SuperSchemaElement<PatchFilenameControllerTypes.v1.Query> =
 const useBodySchema: (
   fileId: number,
   workspaceId: number
-) => SuperSchemaElement<PatchFilenameControllerTypes.v1.Body> = (
+) => SuperSchema.Fragment<PatchFilenameControllerTypes.v1.Body> = (
   fileId: number,
   workspaceId: number
 ) =>
@@ -70,7 +70,7 @@ const useBodySchema: (
       }),
   });
 
-export const usePatchFilenameSuperSchema: SuperSchemaRunner<
+export const usePatchFilenameSuperSchema: SuperSchema.Runner<
   PatchFilenameControllerTypes.v1.Params,
   PatchFilenameControllerTypes.v1.Body,
   PatchFilenameControllerTypes.v1.Query

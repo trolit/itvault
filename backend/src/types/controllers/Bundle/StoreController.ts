@@ -1,4 +1,5 @@
-import { WorkspaceId } from "miscellaneous-types";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
+
 import { BundleMapper } from "@mappers/BundleMapper";
 import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";

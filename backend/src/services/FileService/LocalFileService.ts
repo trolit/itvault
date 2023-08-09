@@ -1,6 +1,8 @@
 import path from "path";
 import fs from "fs-extra";
 import { inject, injectable } from "tsyringe";
+import { IFormDataFile } from "types/IFormDataFile";
+import { IFileRepository } from "types/repositories/IFileRepository";
 
 import { FILES } from "@config";
 
@@ -8,8 +10,6 @@ import { BaseFileService } from "./BaseFileService";
 
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
-import { IFormDataFile } from "@interfaces/IFormDataFile";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 @injectable()
 export class LocalFileService extends BaseFileService {

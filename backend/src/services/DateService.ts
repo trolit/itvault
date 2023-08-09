@@ -1,7 +1,6 @@
 import { injectable } from "tsyringe";
 import dayjs, { ManipulateType } from "dayjs";
-
-import { IDateService } from "@interfaces/services/IDateService";
+import { IDateService } from "types/services/IDateService";
 
 @injectable()
 export class DateService implements IDateService {

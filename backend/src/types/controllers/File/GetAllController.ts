@@ -1,7 +1,8 @@
-import { WorkspaceId } from "miscellaneous-types";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
+
 import { FileMapper } from "@mappers/FileMapper";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
+import { IPaginationOptions } from "types/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {

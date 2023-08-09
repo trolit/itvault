@@ -1,7 +1,7 @@
 import type { NextFunction, Response } from "express";
+import { IPaginationOptions } from "types/IPaginationOptions";
 
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
-import { IPaginationOptions } from "@interfaces/IPaginationOptions";
 
 export const transformPagination = <
   P,

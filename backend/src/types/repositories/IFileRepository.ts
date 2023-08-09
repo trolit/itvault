@@ -1,6 +1,6 @@
 import { File } from "@entities/File";
 import { IBaseRepository } from "./IBaseRepository";
-import { IFormDataFile } from "@interfaces/IFormDataFile";
+import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 
 export interface IFileRepository extends IBaseRepository<File> {

@@ -1,18 +1,18 @@
+import { SuperSchema } from "types/SuperSchema";
 import { array, boolean, object, string } from "yup";
-import { SuperSchemaElement } from "super-schema-types";
+import { IRoleRepository } from "types/repositories/IRoleRepository";
 
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
 import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 import { UpdatePermissionDto } from "@shared/types/dtos/UpdatePermissionDto";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
-const permissionSchema: SuperSchemaElement<UpdatePermissionDto> = object({
+const permissionSchema: SuperSchema.Fragment<UpdatePermissionDto> = object({
   signature: string().required(),
 
   enabled: boolean().required(),
@@ -20,7 +20,7 @@ const permissionSchema: SuperSchemaElement<UpdatePermissionDto> = object({
 
 export const useAddEditBodySchema: (
   id?: number
-) => SuperSchemaElement<AddEditRoleDto> = (id?: number) =>
+) => SuperSchema.Fragment<AddEditRoleDto> = (id?: number) =>
   object({
     name: string()
       .required()

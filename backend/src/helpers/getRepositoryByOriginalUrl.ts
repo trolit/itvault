@@ -1,9 +1,8 @@
 import { capitalize } from "lodash";
 import { container } from "tsyringe";
+import { IBaseRepository } from "types/repositories/IBaseRepository";
 
 import { getInstanceOf } from "./getInstanceOf";
-
-import { IBaseRepository } from "@interfaces/repositories/IBaseRepository";
 
 export const getRepositoryByOriginalUrl = <T>(originalUrl: string) => {
   // @NOTE e.g. /api/v1/notes/1?version=1

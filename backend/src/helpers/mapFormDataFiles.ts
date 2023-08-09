@@ -1,6 +1,5 @@
 import formidable from "formidable";
-
-import { IFormDataFile } from "@interfaces/IFormDataFile";
+import { IFormDataFile } from "types/IFormDataFile";
 
 export const mapFormDataFiles = (files: formidable.Files): IFormDataFile[] => {
   const result = [];

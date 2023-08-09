@@ -1,9 +1,9 @@
 import { object, string } from "yup";
-import { SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
+import { IVariantRepository } from "types/repositories/IVariantRepository";
 import { StoreControllerTypes } from "types/controllers/Variant/StoreController";
 
 import { Di } from "@enums/Di";
-import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -12,7 +12,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 
-export const storeSchema: SuperSchemaElement<StoreControllerTypes.v1.Body> =
+export const storeSchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> =
   object({
     name: string()
       .required()

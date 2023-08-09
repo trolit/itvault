@@ -1,13 +1,13 @@
+import { DataStore } from "types/DataStore";
 import type { NextFunction, Response } from "express";
-import { DataStorePermission } from "data-store-types";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IAuthService } from "types/services/IAuthService";
 
 import { JWT } from "@config";
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
-import { IAuthService } from "@interfaces/services/IAuthService";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
@@ -62,7 +62,7 @@ function analyzeTokenFromRequest<P, B, Q>(
 
 function assignPermissionsToRequest<P, B, Q>(
   request: CustomRequest<P, B, Q>,
-  rolePermissions: DataStorePermission[]
+  rolePermissions: DataStore.Permission[]
 ) {
   const requestPermissions: Partial<{ [key in Permission]: boolean }> = {};
 

@@ -1,6 +1,7 @@
 import { In } from "typeorm";
+import { SuperSchema } from "types/SuperSchema";
 import { array, boolean, number, object } from "yup";
-import { SuperSchemaElement, SuperSchemaRunner } from "super-schema-types";
+import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
@@ -8,7 +9,6 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -20,7 +20,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 const useSingleValueSchema: (
   userId: number,
   roles: Role[]
-) => SuperSchemaElement<UpdateUserDto> = (userId, roles) =>
+) => SuperSchema.Fragment<UpdateUserDto> = (userId, roles) =>
   object({
     id: number()
       .integer()
@@ -71,7 +71,7 @@ const useSingleValueSchema: (
 const useBodySchema: (
   userId: number,
   body: UpdateManyControllerTypes.v1.Body
-) => Promise<SuperSchemaElement<UpdateManyControllerTypes.v1.Body>> = async (
+) => Promise<SuperSchema.Fragment<UpdateManyControllerTypes.v1.Body>> = async (
   userId,
   body
 ) => {
@@ -86,7 +86,7 @@ const useBodySchema: (
   });
 };
 
-export const useUpdateManySuperSchema: SuperSchemaRunner<
+export const useUpdateManySuperSchema: SuperSchema.Runner<
   void,
   UpdateManyControllerTypes.v1.Body,
   void

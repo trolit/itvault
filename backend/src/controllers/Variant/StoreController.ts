@@ -1,12 +1,12 @@
 import { inject, injectable } from "tsyringe";
 import { VariantMapper } from "@mappers/VariantMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IFileService } from "types/services/IFileService";
+import { IVariantRepository } from "types/repositories/IVariantRepository";
 import { StoreControllerTypes } from "types/controllers/Variant/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { IFileService } from "@interfaces/services/IFileService";
-import { IVariantRepository } from "@interfaces/repositories/IVariantRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

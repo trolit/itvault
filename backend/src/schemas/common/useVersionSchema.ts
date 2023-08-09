@@ -1,12 +1,12 @@
 import { object, string } from "yup";
-import { SuperSchemaElement } from "super-schema-types";
+import { SuperSchema } from "types/SuperSchema";
 
 import { setYupError } from "@helpers/yup/setError";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 export const useVersionSchema: (
   versions: string[]
-) => SuperSchemaElement<{ version: string }> = (versions: string[]) =>
+) => SuperSchema.Fragment<{ version: string }> = (versions: string[]) =>
   object({
     version: string()
       .required()

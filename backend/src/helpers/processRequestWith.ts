@@ -1,9 +1,8 @@
 import { Response } from "express";
 import { InjectionToken } from "tsyringe";
+import { IBaseController } from "types/controllers/IBaseController";
 
 import { getInstanceOf } from "./getInstanceOf";
-
-import { IBaseController } from "@interfaces/IBaseController";
 
 export const processRequestWith =
   <T, P, B, Q>(Controller: InjectionToken<T>) =>

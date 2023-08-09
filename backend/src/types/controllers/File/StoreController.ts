@@ -1,4 +1,5 @@
-import { WorkspaceId } from "miscellaneous-types";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
+
 import { FileMapper } from "@mappers/FileMapper";
 
 export namespace StoreControllerTypes {

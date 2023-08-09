@@ -1,11 +1,11 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IFileRepository } from "types/repositories/IFileRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { PatchRelativePathControllerTypes } from "types/controllers/File/PatchRelativePathController";
 
 import { Di } from "@enums/Di";
-import { IFileRepository } from "@interfaces/repositories/IFileRepository";
 
 import { BaseController } from "@controllers/BaseController";
 

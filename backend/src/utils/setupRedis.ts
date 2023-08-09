@@ -1,10 +1,10 @@
 import { Redis } from "ioredis";
-import { DataStoreKeyType, DataStoreRole } from "data-store-types";
+import { DataStore } from "types/DataStore";
+import { IRoleRepository } from "types/repositories/IRoleRepository";
 
 import { REDIS } from "@config";
 
 import { Di } from "@enums/Di";
-import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
@@ -65,9 +65,9 @@ export const setupRedis = () => {
       const mutli = redis.multi();
 
       for (const { id, permissionToRole } of roles) {
-        const dataStoreKey = composeDataStoreKey([id, DataStoreKeyType.Role]);
+        const dataStoreKey = composeDataStoreKey([id, DataStore.KeyType.Role]);
 
-        const value: DataStoreRole = {
+        const value: DataStore.Role = {
           id,
           permissions: permissionToRole.map(({ enabled, permission }) => ({
             ...permission,

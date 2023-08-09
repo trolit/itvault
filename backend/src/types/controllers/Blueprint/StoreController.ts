@@ -1,4 +1,5 @@
-import { WorkspaceId } from "miscellaneous-types";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
+
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
