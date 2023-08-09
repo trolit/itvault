@@ -15,13 +15,15 @@
 
       <!-- @TODO show pagination if there are at least 2 pages -->
       <n-data-table
-        v-model:checked-row-keys="checkedRowKeys"
-        :data="data"
+        remote
         flex-height
-        :multiple="false"
+        :data="data"
         :columns="columns"
+        :loading="isLoading"
+        :row-props="rowProps"
         :pagination="pagination"
-        :row-key="(rowData: RowData) => rowData.id"
+        :row-key="(row: IWorkspaceDto) => row.id"
+        @update:page="getAll"
       >
         <template #empty>
           <n-empty description="No workspaces found." />
@@ -29,14 +31,9 @@
       </n-data-table>
 
       <div class="actions">
-        <!-- @TODO only available to accounts with certain rights -->
-        <n-button ghost type="info"> New workspace </n-button>
-
-        <router-link to="/">
-          <n-button dashed type="success" :disabled="!data.length">
-            Open workspace
-          </n-button>
-        </router-link>
+        <require-permission :permission="Permission.CreateWorkspace">
+          <n-button ghost type="info"> New workspace </n-button>
+        </require-permission>
       </div>
     </template>
   </ref-card>
@@ -47,25 +44,94 @@ import {
   Search as SearchIcon,
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
-import { h, ref, type Ref } from "vue";
+import { h, ref, type Ref, computed, reactive } from "vue";
+import {
+  NDataTable,
+  NButton,
+  NInput,
+  NIcon,
+  NEmpty,
+  NTag,
+  useMessage,
+} from "naive-ui";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
-import type { RowKey } from "naive-ui/es/data-table/src/interface";
-import { NDataTable, NButton, NInput, NIcon, NEmpty, NTag } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
+import { useWorkspacesStore } from "@/stores/workspace";
+import { Permission } from "@shared/types/enums/Permission";
+import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
+import RequirePermission from "@/components/common/RequirePermission.vue";
+import type {
+  CreateRowProps,
+  RowData,
+} from "naive-ui/es/data-table/src/interface";
 
-type RowData = {
-  id: number;
-  name: string;
-  tags: string[];
+const isLoading = ref(true);
+
+const defaultPagination = {
+  page: 1,
+  pageCount: 0,
+  pageSize: 10,
 };
 
-const columns: Ref<DataTableColumns<RowData>> = ref<DataTableColumns<RowData>>([
-  {
-    type: "selection",
-    multiple: false,
-  },
+const pagination: PaginationProps = reactive({
+  ...defaultPagination,
+  showSizePicker: true,
+  pageSizes: [10, 20, 40],
+  onChange: (page: number) => {
+    pagination.page = page;
 
+    getAll();
+  },
+  onUpdatePageSize: (pageSize: number) => {
+    pagination.pageSize = pageSize;
+    pagination.page = 1;
+
+    getAll();
+  },
+  prefix({ pageSize, itemCount }) {
+    return !pageSize || !itemCount
+      ? null
+      : h(
+          NTag,
+          {},
+          {
+            default: () =>
+              `Showing ${
+                itemCount < pageSize ? itemCount : pageSize
+              } out of ${itemCount}`,
+          }
+        );
+  },
+});
+
+const workspacesStore = useWorkspacesStore();
+
+const message = useMessage();
+
+await getAll();
+
+const data = computed((): IWorkspaceDto[] => {
+  const {
+    workspaces: { result },
+  } = workspacesStore;
+
+  return result || [];
+});
+
+const rowProps: CreateRowProps = (row: RowData) => {
+  return {
+    style: "{cursor: 'pointer'}",
+    onclick: () => {
+      // @TODO redirect to workspace
+      console.log(row);
+    },
+  };
+};
+
+const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
+  DataTableColumns<IWorkspaceDto>
+>([
   {
     title: "Name",
     key: "name",
@@ -92,24 +158,26 @@ const columns: Ref<DataTableColumns<RowData>> = ref<DataTableColumns<RowData>>([
   },
 ]);
 
-const data: Ref<RowData[]> = ref([
-  {
-    id: 0,
-    name: "test workspace-1",
-    tags: ["test", "workspace", "first-workspace"],
-  },
-  {
-    id: 1,
-    name: "test workspace-2",
-    tags: ["second-workspace"],
-  },
-]);
+async function getAll() {
+  isLoading.value = true;
 
-const checkedRowKeys: Ref<RowKey[]> = ref([]);
+  try {
+    const { total } = await workspacesStore.getAll({
+      page: pagination.page || defaultPagination.page,
+      perPage: pagination.pageSize || defaultPagination.pageSize,
+    });
 
-const pagination: PaginationProps = {
-  page: 1,
-  pageSize: 10,
-  size: "small",
-};
+    pagination.itemCount = total;
+
+    pagination.pageCount = Math.ceil(
+      total / (pagination.pageSize || defaultPagination.pageSize)
+    );
+  } catch (error) {
+    console.log(error);
+
+    message.error("There was an error when trying to load workspaces.");
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>

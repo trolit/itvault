@@ -2,8 +2,7 @@ import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 
 import { Permission } from "@shared/types/enums/Permission";
-
-import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
+import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 export const requirePermissions = <P, B, Q>(
   context: Permission[] | ((request: CustomRequest<P, B, Q>) => boolean)

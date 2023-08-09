@@ -140,7 +140,7 @@
                 .actions {
                   display: flex;
                   margin-top: 20px;
-                  justify-content: space-between;
+                  justify-content: center;
                 }
 
                 .n-data-table {

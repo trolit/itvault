@@ -10,9 +10,8 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { Permission } from "@shared/types/enums/Permission";
+import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 import { IRoleRepository } from "@interfaces/repositories/IRoleRepository";
-
-import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 

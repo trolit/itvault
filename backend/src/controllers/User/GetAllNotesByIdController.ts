@@ -8,9 +8,8 @@ import { GetAllNotesByIdControllerTypes } from "types/controllers/User/GetAllNot
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
 import { Permission } from "@shared/types/enums/Permission";
+import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 import { INoteRepository } from "@interfaces/repositories/INoteRepository";
-
-import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 
