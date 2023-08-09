@@ -20,6 +20,7 @@
         :data="data"
         :columns="columns"
         :loading="isLoading"
+        :row-props="rowProps"
         :pagination="pagination"
         :row-key="(row: IWorkspaceDto) => row.id"
         @update:page="getAll"
@@ -52,6 +53,10 @@ import { useWorkspacesStore } from "@/stores/workspace";
 import { Permission } from "@shared/types/enums/Permission";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import type {
+  CreateRowProps,
+  RowData,
+} from "naive-ui/es/data-table/src/interface";
 
 const isLoading = ref(true);
 
@@ -103,6 +108,16 @@ const data = computed((): IWorkspaceDto[] => {
 
   return result || [];
 });
+
+const rowProps: CreateRowProps = (row: RowData) => {
+  return {
+    style: "{cursor: 'pointer'}",
+    onclick: () => {
+      // @TODO redirect to workspace
+      console.log(row);
+    },
+  };
+};
 
 const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   DataTableColumns<IWorkspaceDto>
