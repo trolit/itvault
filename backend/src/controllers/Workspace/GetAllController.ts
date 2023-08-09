@@ -7,9 +7,8 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
 import { Permission } from "@shared/types/enums/Permission";
+import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 import { IWorkspaceRepository } from "@interfaces/repositories/IWorkspaceRepository";
-
-import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 

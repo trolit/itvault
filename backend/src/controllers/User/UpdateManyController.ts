@@ -6,8 +6,7 @@ import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyCont
 import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
 import { IUserService } from "@interfaces/services/IUserService";
-
-import { isPermissionEnabled } from "@helpers/isPermissionEnabled";
+import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 
