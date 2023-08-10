@@ -25,19 +25,19 @@ export default class WorkspaceSeeder implements Seeder {
       slug: kebabCase(TEST_WORKSPACE_1.name),
     });
 
-    await workspaceRepository.update(
-      { id: workspace1.id },
-      { tagToWorkspace: tags.map(tag => ({ tag, workspace: workspace1 })) }
-    );
+    await workspaceRepository.save({
+      ...workspace1,
+      tagToWorkspace: tags.map(tag => ({ tag })),
+    });
 
     const workspace2 = await workspaceFactory.save({
       name: TEST_WORKSPACE_2.name,
       slug: kebabCase(TEST_WORKSPACE_2.name),
     });
 
-    await workspaceRepository.update(
-      { id: workspace2.id },
-      { tagToWorkspace: tags.map(tag => ({ tag, workspace: workspace2 })) }
-    );
+    await workspaceRepository.save({
+      ...workspace2,
+      tagToWorkspace: tags.map(tag => ({ tag })),
+    });
   }
 }
