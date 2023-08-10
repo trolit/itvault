@@ -1,4 +1,5 @@
 import { DataSource } from "typeorm";
+import kebabCase from "lodash/kebabCase";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { TEST_WORKSPACE_2, TEST_WORKSPACE_1 } from "./common";
@@ -21,6 +22,7 @@ export default class WorkspaceSeeder implements Seeder {
 
     const workspace1 = await workspaceFactory.save({
       name: TEST_WORKSPACE_1.name,
+      slug: kebabCase(TEST_WORKSPACE_1.name),
     });
 
     await workspaceRepository.update(
@@ -30,6 +32,7 @@ export default class WorkspaceSeeder implements Seeder {
 
     const workspace2 = await workspaceFactory.save({
       name: TEST_WORKSPACE_2.name,
+      slug: kebabCase(TEST_WORKSPACE_2.name),
     });
 
     await workspaceRepository.update(
