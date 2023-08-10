@@ -3,5 +3,27 @@
 
   .n-layout {
     height: 100%;
+
+    .n-layout-sider {
+      height: inherit;
+
+      .n-scrollbar-container {
+        height: inherit;
+
+        .n-scrollbar-content {
+          height: inherit;
+          overflow: unset;
+          display: block !important;
+
+          .blueprints {
+            height: 40%;
+          }
+
+          .files {
+            height: 60%;
+          }
+        }
+      }
+    }
   }
 }
