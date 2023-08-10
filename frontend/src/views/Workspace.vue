@@ -1,7 +1,5 @@
 <template>
   <main>
-    <custom-header />
-
     <body-layout>
       <template #sidebar>
         <sidebar />
@@ -15,7 +13,19 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeMount } from "vue";
+import { useRoute } from "vue-router";
+
 import BodyLayout from "@/components/BodyLayout.vue";
 import Sidebar from "@/components/sidebar/Index.vue";
-import CustomHeader from "@/components/header/Index.vue";
+
+const route = useRoute();
+
+onBeforeMount(() => {
+  const {
+    params: { slug },
+  } = route;
+
+  console.log(slug);
+});
 </script>
