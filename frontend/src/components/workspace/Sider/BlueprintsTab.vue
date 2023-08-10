@@ -18,7 +18,7 @@
     </div>
 
     <n-scrollbar>
-      <n-list clickable hoverable>
+      <n-list v-if="!isLoading" clickable hoverable>
         <n-list-item v-for="(blueprint, index) in items" :key="index">
           <div class="wrapper">
             <div class="content">
@@ -34,6 +34,10 @@
           </div>
         </n-list-item>
       </n-list>
+
+      <div v-else class="spinner">
+        <n-spin />
+      </div>
     </n-scrollbar>
 
     <div class="footer">
@@ -45,6 +49,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import {
   Add as AddIcon,
   Reset as ResetIcon,
@@ -52,6 +57,7 @@ import {
   Information as InformationIcon,
 } from "@vicons/carbon";
 import {
+  NSpin,
   NList,
   NIcon,
   NInput,
@@ -63,119 +69,10 @@ import {
 
 import { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
+const page = ref(1);
+const isLoading = ref(true);
+
 const items: IBlueprintDto = [
-  {
-    id: 1,
-    name: "This is my blueprint",
-    color: "#7D91FF",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 2,
-    name: "This is my blueprint 2",
-    color: "red",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 1,
-    name: "This is my blueprint",
-    color: "#7D91FF",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 2,
-    name: "This is my blueprint 2",
-    color: "red",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 1,
-    name: "This is my blueprint",
-    color: "#7D91FF",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 2,
-    name: "This is my blueprint 2",
-    color: "red",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 1,
-    name: "This is my blueprint",
-    color: "#7D91FF",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 2,
-    name: "This is my blueprint 2",
-    color: "red",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 1,
-    name: "This is my blueprint",
-    color: "#7D91FF",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 2,
-    name: "This is my blueprint 2",
-    color: "red",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 1,
-    name: "This is my blueprint",
-    color: "#7D91FF",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 2,
-    name: "This is my blueprint 2",
-    color: "red",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 1,
-    name: "This is my blueprint",
-    color: "#7D91FF",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 2,
-    name: "This is my blueprint 2",
-    color: "red",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 1,
-    name: "This is my blueprint",
-    color: "#7D91FF",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 2,
-    name: "This is my blueprint 2",
-    color: "red",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
   {
     id: 1,
     name: "This is my blueprint",

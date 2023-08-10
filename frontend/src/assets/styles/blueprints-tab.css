@@ -23,6 +23,13 @@
     min-height: var(--blueprints-scrollbar-section-height);
     max-height: var(--blueprints-scrollbar-section-height);
 
+    .spinner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--blueprints-scrollbar-section-height);
+    }
+
     .n-list {
       padding: 10px 0;
 
