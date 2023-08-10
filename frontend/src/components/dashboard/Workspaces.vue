@@ -17,7 +17,7 @@
       <n-data-table
         remote
         flex-height
-        :data="items"
+        :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
         :row-props="rowProps"
@@ -108,8 +108,6 @@ const pagination: PaginationProps = reactive({
 
 const workspacesStore = useWorkspacesStore();
 
-const { items, total, getAll: fetch } = workspacesStore;
-
 const message = useMessage();
 
 onBeforeMount(async () => {
@@ -159,8 +157,10 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
 async function getWorkspaces() {
   isLoading.value = true;
 
+  const { total } = workspacesStore;
+
   try {
-    await fetch({
+    await workspacesStore.getAll({
       page: pagination.page || defaultPagination.page,
       perPage: pagination.pageSize || defaultPagination.pageSize,
     });
