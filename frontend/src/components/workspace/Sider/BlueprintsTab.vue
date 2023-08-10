@@ -19,7 +19,10 @@
 
     <n-scrollbar>
       <n-list v-if="!isLoading" clickable hoverable>
-        <n-list-item v-for="(blueprint, index) in items" :key="index">
+        <n-list-item
+          v-for="(blueprint, index) in blueprintsStore.items"
+          :key="index"
+        >
           <div class="wrapper">
             <div class="content">
               <div
@@ -40,16 +43,17 @@
       </div>
     </n-scrollbar>
 
-    <div class="footer">
+    <div v-if="!isLoading" class="footer">
       <n-icon :component="InformationIcon" size="16" />
 
-      <small> Loaded 15 out of 200 </small>
+      <small>
+        {{ statusText }}
+      </small>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import {
   Add as AddIcon,
   Reset as ResetIcon,
@@ -66,26 +70,32 @@ import {
   NScrollbar,
   NTag,
 } from "naive-ui";
+import { onMounted, ref, computed } from "vue";
 
-import { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import { useBlueprintsStore } from "@/stores/blueprint";
 
 const page = ref(1);
-const isLoading = ref(true);
+const isLoading = ref(false);
 
-const items: IBlueprintDto = [
-  {
-    id: 1,
-    name: "This is my blueprint",
-    color: "#7D91FF",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-  {
-    id: 2,
-    name: "This is my blueprint 2",
-    color: "red",
-    createdAt: "113213213-32132",
-    updatedAt: "12313",
-  },
-];
+const blueprintsStore = useBlueprintsStore();
+
+onMounted(() => {
+  getBlueprints();
+});
+
+const statusText = computed((): string => {
+  return `Loaded ${blueprintsStore.items.length} out of ${blueprintsStore.total}`;
+});
+
+async function getBlueprints() {
+  isLoading.value = true;
+
+  try {
+    await blueprintsStore.getAll({ page: page.value });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>
