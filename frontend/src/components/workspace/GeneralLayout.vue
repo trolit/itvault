@@ -3,8 +3,8 @@
     <n-layout-sider
       show-trigger
       :width="340"
-      collapse-mode="width"
-      :collapsed-width="32"
+      :collapsed-width="12"
+      collapse-mode="transform"
       :native-scrollbar="false"
       :inverted="inverted"
       :collapsed="isCollapsed"
