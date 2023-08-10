@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="blueprints">
     <div class="header">
       <n-tag type="info"> Blueprints </n-tag>
 

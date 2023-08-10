@@ -12,17 +12,17 @@
       @expand="isCollapsed = false"
       @collapse="isCollapsed = true"
     >
-      <div class="blueprints">
+      <div class="blueprints-wrapper">
         <slot name="blueprints"></slot>
       </div>
 
-      <div class="files">
+      <div class="files-wrapper">
         <slot name="files"></slot>
       </div>
     </n-layout-sider>
 
-    <div class="content">
-      <slot name="content"></slot>
+    <div class="main-content-wrapper">
+      <slot name="main-content"></slot>
     </div>
   </n-layout>
 </template>

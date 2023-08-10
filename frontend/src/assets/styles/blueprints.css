@@ -1,27 +1,34 @@
-.blueprints {
+.blueprints-wrapper {
+  height: 100%;
   padding: 9px;
 
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+  .blueprints {
+    height: 100%;
 
-  .n-card {
-    .n-list {
-      .wrapper {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-        .content {
+    .n-card {
+      height: 100%;
+
+      .n-list {
+        .wrapper {
           display: flex;
           align-items: center;
+          justify-content: space-between;
 
-          .thumbnail {
-            width: 15px;
-            height: 15px;
-            margin-right: 5px;
+          .content {
+            display: flex;
+            align-items: center;
+
+            .thumbnail {
+              width: 15px;
+              height: 15px;
+              margin-right: 5px;
+            }
           }
         }
       }

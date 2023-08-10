@@ -4,11 +4,13 @@
     <loading-page v-if="isLoading" :is-failed="isFailed" />
 
     <general-layout v-else-if="!isFailed">
-      <template #blueprints> Blueprints </template>
+      <template #blueprints>
+        <blueprints />
+      </template>
 
       <template #files> Files </template>
 
-      <template #content> Content </template>
+      <template #main-content> Content </template>
     </general-layout>
   </div>
 </template>
@@ -21,6 +23,7 @@ import { useWorkspacesStore } from "@/stores/workspace";
 
 import LoadingPage from "@/components/common/LoadingPage.vue";
 import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
+import Blueprints from "@/components/workspace/sider/blueprints/Index.vue";
 
 const route = useRoute();
 

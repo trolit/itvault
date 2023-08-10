@@ -17,11 +17,11 @@
           overflow: unset;
           display: block !important;
 
-          .blueprints {
+          .blueprints-wrapper {
             height: 40%;
           }
 
-          .files {
+          .files-wrapper {
             height: 60%;
           }
         }
