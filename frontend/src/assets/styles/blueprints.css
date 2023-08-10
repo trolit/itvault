@@ -1,0 +1,30 @@
+.blueprints {
+  padding: 9px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .n-card {
+    .n-list {
+      .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .content {
+          display: flex;
+          align-items: center;
+
+          .thumbnail {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+  }
+}
