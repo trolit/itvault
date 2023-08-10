@@ -27,6 +27,10 @@ export const useAddEditBodySchema: (
           where: { id: id || undefined, name: value },
         });
 
+        if (id && workspace) {
+          return true;
+        }
+
         if (workspace) {
           return ctx.createError({
             message: setYupError(CUSTOM_MESSAGES.GENERAL.ALREADY_TAKEN, "name"),
