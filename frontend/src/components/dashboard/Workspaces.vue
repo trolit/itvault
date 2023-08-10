@@ -44,6 +44,7 @@ import {
   Search as SearchIcon,
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
+import { useRouter } from "vue-router";
 import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
 import {
   NDataTable,
@@ -59,9 +60,12 @@ import type { DataTableColumns, PaginationProps } from "naive-ui";
 import RefCard from "./RefCard.vue";
 import { useWorkspacesStore } from "@/stores/workspace";
 import { Permission } from "@shared/types/enums/Permission";
+import { ROUTE_WORKSPACE_NAME } from "@/assets/constants/routes";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
+
+const router = useRouter();
 
 const isLoading = ref(true);
 
@@ -118,7 +122,7 @@ const rowProps: CreateRowProps<IWorkspaceDto> = (row: IWorkspaceDto) => {
     onclick: () => {
       workspacesStore.setActiveItem(row);
 
-      // @TODO push router
+      router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
     },
   };
 };
