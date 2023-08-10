@@ -5,6 +5,15 @@
 
   .sider {
     .n-tabs {
+      .n-tabs-tab--active,
+      .n-tabs-tab:hover {
+        color: var(--primary-color);
+      }
+
+      .n-tabs-bar {
+        background-color: var(--primary-color);
+      }
+
       .n-tabs-nav {
         height: var(--workspace-sider-tabs-height);
       }
