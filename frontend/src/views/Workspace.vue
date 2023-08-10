@@ -1,15 +1,15 @@
 <template>
   <div class="workspace-page page">
+    <!-- @TODO allow to pass custom message -->
     <loading-page v-if="isLoading" :is-failed="isFailed" />
-    <!-- <body-layout>
-      <template #sidebar>
-        <sidebar />
-      </template>
 
-      <template #content>
-        <router-view name="content" />
-      </template>
-    </body-layout> -->
+    <general-layout v-else-if="!isFailed">
+      <template #blueprints> Blueprints </template>
+
+      <template #files> Files </template>
+
+      <template #content> Content </template>
+    </general-layout>
   </div>
 </template>
 
@@ -20,12 +20,13 @@ import { onBeforeMount, ref } from "vue";
 import { useWorkspacesStore } from "@/stores/workspace";
 
 import LoadingPage from "@/components/common/LoadingPage.vue";
+import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
 
 const route = useRoute();
 
 const workspacesStore = useWorkspacesStore();
 
-const isLoading = ref(true);
+const isLoading = ref(false);
 const isFailed = ref(false);
 
 onBeforeMount(async () => {
