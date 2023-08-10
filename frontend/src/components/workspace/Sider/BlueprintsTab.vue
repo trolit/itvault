@@ -28,7 +28,7 @@
               <div
                 class="thumbnail"
                 :style="{ backgroundColor: blueprint.color }"
-              ></div>
+              />
 
               <n-tag size="tiny">{{ blueprint.color }}</n-tag>
             </div>
