@@ -1,6 +1,7 @@
 <template>
-  <main>
-    <body-layout>
+  <div class="workspace-page page">
+    <loading-page :is-loading="isLoading" :is-failed="isFailed" />
+    <!-- <body-layout>
       <template #sidebar>
         <sidebar />
       </template>
@@ -8,24 +9,48 @@
       <template #content>
         <router-view name="content" />
       </template>
-    </body-layout>
-  </main>
+    </body-layout> -->
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount } from "vue";
 import { useRoute } from "vue-router";
+import { onBeforeMount, ref } from "vue";
+import { useWorkspacesStore } from "@/stores/workspace";
 
-import BodyLayout from "@/components/BodyLayout.vue";
-import Sidebar from "@/components/sidebar/Index.vue";
+import LoadingPage from "@/components/common/LoadingPage.vue";
+import { AxiosError } from "axios";
 
 const route = useRoute();
 
-onBeforeMount(() => {
+const workspacesStore = useWorkspacesStore();
+
+const isLoading = ref(true);
+const isFailed = ref(false);
+
+onBeforeMount(async () => {
   const {
     params: { slug },
   } = route;
 
-  console.log(slug);
+  const { activeItem } = workspacesStore;
+
+  if (activeItem.id) {
+    return;
+  }
+
+  isLoading.value = true;
+
+  try {
+    await workspacesStore.getBySlug(slug as string);
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.log(error.response?.statusText);
+    }
+
+    isFailed.value = true;
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
