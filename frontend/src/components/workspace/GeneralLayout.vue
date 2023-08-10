@@ -4,7 +4,7 @@
       bordered
       show-trigger
       :width="340"
-      :collapsed-width="12"
+      :collapsed-width="8"
       collapse-mode="transform"
       :native-scrollbar="false"
       :inverted="inverted"
