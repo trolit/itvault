@@ -1,8 +1,8 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import { useWorkspacesStore } from "./workspace";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
-import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
@@ -18,9 +18,13 @@ export const useBlueprintsStore = defineStore("blueprint", {
   }),
 
   actions: {
-    async getAll(options: IPaginationQuery & { workspaceId: number }) {
+    async getAll(options: { page: number }) {
+      const workspacesStore = useWorkspacesStore();
+
       const params = {
         version: 1,
+        perPage: 15,
+        workspaceId: workspacesStore.activeItem.id,
         ...options,
       };
 
