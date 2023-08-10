@@ -44,7 +44,7 @@ import {
   Search as SearchIcon,
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
-import { h, ref, type Ref, computed, reactive } from "vue";
+import { h, ref, type Ref, computed, reactive, onBeforeMount } from "vue";
 import {
   NDataTable,
   NButton,
@@ -109,7 +109,9 @@ const workspacesStore = useWorkspacesStore();
 
 const message = useMessage();
 
-await getAll();
+onBeforeMount(async () => {
+  await getAll();
+});
 
 const data = computed((): IWorkspaceDto[] => {
   const {
