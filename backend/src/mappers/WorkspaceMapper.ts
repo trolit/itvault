@@ -9,9 +9,13 @@ export class WorkspaceMapper
 {
   id: number;
   name: string;
+  slug: string;
   tags: string[];
 
-  constructor(data: Workspace, keys: (keyof Workspace)[] = ["id", "name"]) {
+  constructor(
+    data: Workspace,
+    keys: (keyof Workspace)[] = ["id", "name", "slug"]
+  ) {
     super(data, keys);
 
     this.tags = data.tagToWorkspace.map(({ tag: { value } }) => value);
