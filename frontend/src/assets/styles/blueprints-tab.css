@@ -1,4 +1,4 @@
-.blueprints-wrapper {
+.blueprints-tab {
   height: 100%;
   padding: 9px;
 
@@ -37,6 +37,15 @@
             }
           }
         }
+      }
+
+      .n-card__footer {
+        padding: 0;
+        height: 40px;
+        display: flex;
+        column-gap: 5px;
+        align-items: center;
+        justify-content: center;
       }
     }
   }

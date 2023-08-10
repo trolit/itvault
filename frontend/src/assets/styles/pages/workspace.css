@@ -1,4 +1,4 @@
-@import "../blueprints.css";
+@import "../blueprints-tab.css";
 
 .workspace-page {
   height: calc(100vh - var(--header-height)) !important;
