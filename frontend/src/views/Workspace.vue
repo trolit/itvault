@@ -1,6 +1,6 @@
 <template>
   <div class="workspace-page page">
-    <loading-page :is-loading="isLoading" :is-failed="isFailed" />
+    <loading-page v-if="isLoading" :is-failed="isFailed" />
     <!-- <body-layout>
       <template #sidebar>
         <sidebar />
