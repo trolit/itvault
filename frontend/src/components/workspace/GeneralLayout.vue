@@ -1,6 +1,7 @@
 <template>
   <n-layout has-sider>
     <n-layout-sider
+      bordered
       show-trigger
       :width="340"
       :collapsed-width="12"
