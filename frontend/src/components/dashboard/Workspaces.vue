@@ -17,13 +17,13 @@
       <n-data-table
         remote
         flex-height
-        :data="data"
+        :data="items"
         :columns="columns"
         :loading="isLoading"
         :row-props="rowProps"
         :pagination="pagination"
         :row-key="(row: IWorkspaceDto) => row.id"
-        @update:page="getAll"
+        @update:page="getWorkspaces"
       >
         <template #empty>
           <n-empty description="No workspaces found." />
@@ -44,7 +44,7 @@ import {
   Search as SearchIcon,
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
-import { h, ref, type Ref, computed, reactive, onBeforeMount } from "vue";
+import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
 import {
   NDataTable,
   NButton,
@@ -81,13 +81,13 @@ const pagination: PaginationProps = reactive({
   onChange: (page: number) => {
     pagination.page = page;
 
-    getAll();
+    getWorkspaces();
   },
   onUpdatePageSize: (pageSize: number) => {
     pagination.pageSize = pageSize;
     pagination.page = 1;
 
-    getAll();
+    getWorkspaces();
   },
   prefix({ pageSize, itemCount }) {
     return !pageSize || !itemCount
@@ -105,20 +105,12 @@ const pagination: PaginationProps = reactive({
   },
 });
 
-const workspacesStore = useWorkspacesStore();
+const { items, total, getAll: fetch } = useWorkspacesStore();
 
 const message = useMessage();
 
 onBeforeMount(async () => {
-  await getAll();
-});
-
-const data = computed((): IWorkspaceDto[] => {
-  const {
-    workspaces: { result },
-  } = workspacesStore;
-
-  return result || [];
+  await getWorkspaces();
 });
 
 const rowProps: CreateRowProps = (row: RowData) => {
@@ -160,11 +152,11 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   },
 ]);
 
-async function getAll() {
+async function getWorkspaces() {
   isLoading.value = true;
 
   try {
-    const { total } = await workspacesStore.getAll({
+    await fetch({
       page: pagination.page || defaultPagination.page,
       perPage: pagination.pageSize || defaultPagination.pageSize,
     });
