@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { NSpin, NAlert } from "naive-ui";
 
+// @TODO allow to pass response codes and show message depending on status code
 defineProps({
   isFailed: {
     type: Boolean,
