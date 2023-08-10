@@ -35,9 +35,11 @@ export const useBlueprintsStore = defineStore("blueprint", {
         }
       );
 
-      this.items = data.result;
+      const { total, result } = data;
 
-      this.total = data.total;
+      this.items = Array.prototype.concat(this.items, result);
+
+      this.total = total;
 
       return data;
     },
