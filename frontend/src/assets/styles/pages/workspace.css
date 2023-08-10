@@ -3,6 +3,18 @@
 .workspace-page {
   height: calc(100vh - var(--header-height)) !important;
 
+  .sider {
+    .n-tabs {
+      .n-tabs-nav {
+        height: var(--workspace-sider-tabs-height);
+      }
+
+      .n-tab-pane {
+        padding-top: 0;
+      }
+    }
+  }
+
   .n-layout {
     height: 100%;
 

@@ -1,52 +1,55 @@
 .blueprints-tab {
   height: 100%;
-  padding: 9px;
 
-  .blueprints {
-    height: 100%;
+  --blueprints-header-height: 0.1;
+  --blueprints-list-height: 0.83;
+  --blueprints-footer-height: 0.07;
 
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+  .header {
+    display: flex;
+    padding: 0 10px;
+    column-gap: 10px;
+    align-items: center;
+    height: calc(
+      var(--workspace-sider-content-height) * var(--blueprints-header-height)
+    );
+  }
 
-    .n-card {
-      .n-card__content {
-        padding: 0;
+  .n-scrollbar {
+    max-height: calc(
+      var(--workspace-sider-content-height) * var(--blueprints-list-height)
+    );
 
-        .n-scrollbar {
-          max-height: var(--workspace-blueprints-section-height);
+    .n-list {
+      padding: 10px 0;
 
-          .n-list {
-            .wrapper {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
+      .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-              .content {
-                display: flex;
-                align-items: center;
+        .content {
+          display: flex;
+          align-items: center;
 
-                .thumbnail {
-                  width: 15px;
-                  height: 15px;
-                  margin-right: 5px;
-                }
-              }
-            }
+          .thumbnail {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
           }
         }
       }
-
-      .n-card__footer {
-        padding: 0;
-        height: 40px;
-        display: flex;
-        column-gap: 5px;
-        align-items: center;
-        justify-content: center;
-      }
     }
+  }
+
+  .footer {
+    padding: 0;
+    display: flex;
+    column-gap: 5px;
+    align-items: center;
+    justify-content: center;
+    height: calc(
+      var(--workspace-sider-content-height) * var(--blueprints-footer-height)
+    );
   }
 }

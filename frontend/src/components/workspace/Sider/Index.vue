@@ -10,10 +10,10 @@
       <n-tab-pane
         :name="key"
         :tab="text"
-        v-for="({ key, text }, index) in tabs"
+        v-for="({ key, text, tab }, index) in tabs"
         :key="index"
       >
-        aha
+        <component :is="tab" />
       </n-tab-pane>
     </n-tabs>
   </div>
@@ -22,14 +22,18 @@
 <script setup lang="ts">
 import { NTabs, NTabPane } from "naive-ui";
 
+import BlueprintsTab from "./BlueprintsTab.vue";
+
 const tabs = [
   {
     key: "blueprints",
     text: "Blueprints",
+    tab: BlueprintsTab,
   },
   {
     key: "files",
     text: "Files",
+    tab: "",
   },
 ];
 
