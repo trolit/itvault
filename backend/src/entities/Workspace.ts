@@ -12,7 +12,10 @@ export class Workspace extends Base {
   @Column({
     unique: true,
   })
-  name!: string;
+  name: string;
+
+  @Column()
+  slug: string;
 
   @OneToMany(
     () => UserToWorkspace,
