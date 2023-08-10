@@ -39,7 +39,7 @@ export class GetBySlugController extends BaseController {
     const {
       userId,
       permissions,
-      query: { slug },
+      params: { slug },
     } = request;
 
     const workspace = await this._workspaceRepository.getOne({
