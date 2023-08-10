@@ -11,12 +11,14 @@ import {
   ROUTE_LOGIN_NAME,
   ROUTE_UPDATES_NAME,
   ROUTE_DASHBOARD_NAME,
+  ROUTE_WORKSPACE_NAME,
 } from "@/assets/constants/routes";
 import Guest from "@/views/Guest.vue";
 import Guide from "@/views/Guide.vue";
 import Login from "@/views/Login.vue";
 import Updates from "@/views/Updates.vue";
 import Dashboard from "@/views/Dashboard.vue";
+import Workspace from "@/views/Workspace.vue";
 import { useAuthStore } from "@/stores/auth";
 import { localStorageManager } from "@/helpers/localStorageManager";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
@@ -52,6 +54,16 @@ const router = createRouter({
       path: `/${ROUTE_DASHBOARD_NAME}`,
       name: ROUTE_DASHBOARD_NAME,
       component: Dashboard,
+      props: {},
+      meta: {
+        requiresAuth: true,
+      },
+    },
+
+    {
+      path: `/${ROUTE_WORKSPACE_NAME}/:slug`,
+      name: ROUTE_WORKSPACE_NAME,
+      component: Workspace,
       props: {},
       meta: {
         requiresAuth: true,

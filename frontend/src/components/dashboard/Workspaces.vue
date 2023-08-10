@@ -17,13 +17,13 @@
       <n-data-table
         remote
         flex-height
-        :data="data"
+        :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
         :row-props="rowProps"
         :pagination="pagination"
         :row-key="(row: IWorkspaceDto) => row.id"
-        @update:page="getAll"
+        @update:page="getWorkspaces"
       >
         <template #empty>
           <n-empty description="No workspaces found." />
@@ -44,7 +44,8 @@ import {
   Search as SearchIcon,
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
-import { h, ref, type Ref, computed, reactive } from "vue";
+import { useRouter } from "vue-router";
+import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
 import {
   NDataTable,
   NButton,
@@ -59,12 +60,12 @@ import type { DataTableColumns, PaginationProps } from "naive-ui";
 import RefCard from "./RefCard.vue";
 import { useWorkspacesStore } from "@/stores/workspace";
 import { Permission } from "@shared/types/enums/Permission";
+import { ROUTE_WORKSPACE_NAME } from "@/assets/constants/routes";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
-import type {
-  CreateRowProps,
-  RowData,
-} from "naive-ui/es/data-table/src/interface";
+import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
+
+const router = useRouter();
 
 const isLoading = ref(true);
 
@@ -81,13 +82,13 @@ const pagination: PaginationProps = reactive({
   onChange: (page: number) => {
     pagination.page = page;
 
-    getAll();
+    getWorkspaces();
   },
   onUpdatePageSize: (pageSize: number) => {
     pagination.pageSize = pageSize;
     pagination.page = 1;
 
-    getAll();
+    getWorkspaces();
   },
   prefix({ pageSize, itemCount }) {
     return !pageSize || !itemCount
@@ -109,22 +110,17 @@ const workspacesStore = useWorkspacesStore();
 
 const message = useMessage();
 
-await getAll();
-
-const data = computed((): IWorkspaceDto[] => {
-  const {
-    workspaces: { result },
-  } = workspacesStore;
-
-  return result || [];
+onBeforeMount(async () => {
+  await getWorkspaces();
 });
 
-const rowProps: CreateRowProps = (row: RowData) => {
+const rowProps: CreateRowProps<IWorkspaceDto> = (row: IWorkspaceDto) => {
   return {
     style: "{cursor: 'pointer'}",
     onclick: () => {
-      // @TODO redirect to workspace
-      console.log(row);
+      workspacesStore.setActiveItem(row);
+
+      router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
     },
   };
 };
@@ -158,11 +154,13 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   },
 ]);
 
-async function getAll() {
+async function getWorkspaces() {
   isLoading.value = true;
 
+  const { total } = workspacesStore;
+
   try {
-    const { total } = await workspacesStore.getAll({
+    await workspacesStore.getAll({
       page: pagination.page || defaultPagination.page,
       perPage: pagination.pageSize || defaultPagination.pageSize,
     });

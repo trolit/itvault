@@ -12,7 +12,7 @@
       <brand />
     </router-link>
 
-    <custom-menu />
+    <location />
 
     <div class="actions">
       <theme-selector />
@@ -27,8 +27,8 @@ import { NPageHeader, useThemeVars } from "naive-ui";
 import { useRoute, type RouteRecordName } from "vue-router";
 import { ref, computed, type ComputedRef, watch } from "vue";
 
-import CustomMenu from "./Menu.vue";
 import Brand from "@/components/common/Brand.vue";
+import Location from "@/components/header/Location.vue";
 import LogoutButton from "@/components/common/LogoutButton.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";

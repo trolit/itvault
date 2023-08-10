@@ -1,0 +1,7 @@
+.workspace-page {
+  height: calc(100vh - var(--header-height)) !important;
+
+  .n-layout {
+    height: 100%;
+  }
+}

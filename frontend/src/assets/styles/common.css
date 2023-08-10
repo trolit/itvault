@@ -1,0 +1,17 @@
+.loading-page {
+  height: 100%;
+
+  .wrapper {
+    text-align: center;
+
+    .state-error {
+      display: flex;
+      margin-top: 30px;
+      justify-content: center;
+
+      .n-alert {
+        max-width: 500px;
+      }
+    }
+  }
+}

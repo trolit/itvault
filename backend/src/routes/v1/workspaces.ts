@@ -6,7 +6,6 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useGetBySlugSchema } from "@schemas/Workspace/useGetBySlugSchema";
 import { useStoreSuperSchema } from "@schemas/Workspace/useStoreSuperSchema";
@@ -34,7 +33,6 @@ workspacesRouter.get(
 
 workspacesRouter.get(
   "/:slug",
-  requireWorkspaceAccess,
   validateRequestWith({ [v1_0]: useGetBySlugSchema }),
   processRequestWith(GetBySlugController)
 );

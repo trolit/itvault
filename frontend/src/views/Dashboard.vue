@@ -12,9 +12,7 @@
       </n-grid-item>
 
       <n-grid-item class="workspaces-card-wrapper" span="2">
-        <Suspense>
-          <workspaces-card />
-        </Suspense>
+        <workspaces-card />
       </n-grid-item>
 
       <n-grid-item class="other-cards-wrapper" span="3">

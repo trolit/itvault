@@ -6,15 +6,39 @@ import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
-  workspaces: PaginatedResponse<IWorkspaceDto>;
+  total: number;
+
+  items: IWorkspaceDto[];
+
+  activeItem: IWorkspaceDto;
 }
 
 export const useWorkspacesStore = defineStore("workspace", {
   state: (): IState => ({
-    workspaces: { result: [], total: -1 },
+    total: 0,
+    items: [],
+    activeItem: { id: 0, name: "", slug: "", tags: [] },
   }),
 
   actions: {
+    setActiveItem(item: IWorkspaceDto) {
+      this.activeItem = item;
+    },
+
+    async getBySlug(slug: string) {
+      const params = {
+        version: 1,
+      };
+
+      const { data } = await axios.get<IWorkspaceDto>(`v1/workspaces/${slug}`, {
+        params,
+      });
+
+      this.activeItem = data;
+
+      return data;
+    },
+
     async getAll(query: IPaginationQuery) {
       const params = {
         version: 1,
@@ -28,7 +52,9 @@ export const useWorkspacesStore = defineStore("workspace", {
         }
       );
 
-      this.workspaces = data;
+      this.items = data.result;
+
+      this.total = data.total;
 
       return data;
     },
