@@ -21,6 +21,24 @@ export const useWorkspacesStore = defineStore("workspace", {
   }),
 
   actions: {
+    setActiveItem(item: IWorkspaceDto) {
+      this.activeItem = item;
+    },
+
+    async getBySlug(slug: string) {
+      const params = {
+        version: 1,
+      };
+
+      const { data } = await axios.get<IWorkspaceDto>(`v1/workspaces/${slug}`, {
+        params,
+      });
+
+      this.activeItem = data;
+
+      return data;
+    },
+
     async getAll(query: IPaginationQuery) {
       const params = {
         version: 1,
