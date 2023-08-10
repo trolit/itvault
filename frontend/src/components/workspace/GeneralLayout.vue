@@ -2,7 +2,7 @@
   <n-layout has-sider>
     <n-layout-sider
       show-trigger
-      :width="440"
+      :width="340"
       collapse-mode="width"
       :collapsed-width="32"
       :native-scrollbar="false"
