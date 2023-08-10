@@ -80,7 +80,9 @@ const isLoading = ref(false);
 const blueprintsStore = useBlueprintsStore();
 
 onMounted(() => {
-  getBlueprints();
+  if (blueprintsStore.total === 0) {
+    getBlueprints();
+  }
 });
 
 const statusText = computed((): string => {
