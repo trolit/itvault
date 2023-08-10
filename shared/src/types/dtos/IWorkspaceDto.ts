@@ -3,5 +3,7 @@ export interface IWorkspaceDto {
 
   name: string;
 
+  slug: string;
+
   tags: string[];
 }
