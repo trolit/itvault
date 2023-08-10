@@ -14,12 +14,12 @@
 </template>
 
 <script setup lang="ts">
+import { AxiosError } from "axios";
 import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { useWorkspacesStore } from "@/stores/workspace";
 
 import LoadingPage from "@/components/common/LoadingPage.vue";
-import { AxiosError } from "axios";
 
 const route = useRoute();
 
@@ -44,8 +44,9 @@ onBeforeMount(async () => {
   try {
     await workspacesStore.getBySlug(slug as string);
   } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response?.statusText);
+    // @TODO create API errors handler/parser
+    if (error instanceof AxiosError && error.response) {
+      console.log(error.response.statusText);
     }
 
     isFailed.value = true;
