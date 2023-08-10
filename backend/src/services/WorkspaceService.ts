@@ -1,3 +1,4 @@
+import kebabCase from "lodash/kebabCase";
 import { inject, injectable } from "tsyringe";
 import { TransactionResult } from "types/TransactionResult";
 import { ITagRepository } from "types/repositories/ITagRepository";
@@ -33,6 +34,7 @@ export class WorkspaceService implements IWorkspaceService {
 
       const workspace = await transaction.manager.save(Workspace, {
         name,
+        slug: kebabCase(name),
         tagToWorkspace: tagEntities.map(tagEntity => ({ tag: tagEntity })),
       });
 
@@ -76,6 +78,7 @@ export class WorkspaceService implements IWorkspaceService {
       const updatedWorkspace = await transaction.manager.save(Workspace, {
         ...currentWorkspace,
         name,
+        slug: kebabCase(name),
         tagToWorkspace: tagEntities.map(tagEntity => ({ tag: tagEntity })),
       });
 
