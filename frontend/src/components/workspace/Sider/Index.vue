@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { NTabs, NTabPane } from "naive-ui";
 
+import FilesTab from "./FilesTab.vue";
 import BlueprintsTab from "./BlueprintsTab.vue";
 
 const tabs = [
@@ -33,7 +34,7 @@ const tabs = [
   {
     key: "files",
     text: "Files",
-    tab: "",
+    tab: FilesTab,
   },
 ];
 
