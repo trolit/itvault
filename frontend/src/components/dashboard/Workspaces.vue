@@ -61,10 +61,7 @@ import { useWorkspacesStore } from "@/stores/workspace";
 import { Permission } from "@shared/types/enums/Permission";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
-import type {
-  CreateRowProps,
-  RowData,
-} from "naive-ui/es/data-table/src/interface";
+import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
 
 const isLoading = ref(true);
 
@@ -105,7 +102,9 @@ const pagination: PaginationProps = reactive({
   },
 });
 
-const { items, total, getAll: fetch } = useWorkspacesStore();
+const workspacesStore = useWorkspacesStore();
+
+const { items, total, getAll: fetch } = workspacesStore;
 
 const message = useMessage();
 
@@ -113,12 +112,13 @@ onBeforeMount(async () => {
   await getWorkspaces();
 });
 
-const rowProps: CreateRowProps = (row: RowData) => {
+const rowProps: CreateRowProps<IWorkspaceDto> = (row: IWorkspaceDto) => {
   return {
     style: "{cursor: 'pointer'}",
     onclick: () => {
-      // @TODO redirect to workspace
-      console.log(row);
+      workspacesStore.setActiveItem(row);
+
+      // @TODO push router
     },
   };
 };
