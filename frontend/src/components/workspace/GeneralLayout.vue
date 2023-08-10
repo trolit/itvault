@@ -12,12 +12,8 @@
       @expand="isCollapsed = false"
       @collapse="isCollapsed = true"
     >
-      <div class="blueprints-wrapper">
-        <slot name="blueprints"></slot>
-      </div>
-
-      <div class="files-wrapper">
-        <slot name="files"></slot>
+      <div class="sider">
+        <slot name="sider"></slot>
       </div>
     </n-layout-sider>
 

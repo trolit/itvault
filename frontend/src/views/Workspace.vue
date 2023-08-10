@@ -4,11 +4,9 @@
     <loading-page v-if="isLoading" :is-failed="isFailed" />
 
     <general-layout v-else-if="!isFailed">
-      <template #blueprints>
-        <blueprints />
+      <template #sider>
+        <sider />
       </template>
-
-      <template #files> Files </template>
 
       <template #main-content> Content </template>
     </general-layout>
@@ -21,6 +19,7 @@ import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { useWorkspacesStore } from "@/stores/workspace";
 
+import Sider from "@/components/workspace/Sider/Index.vue";
 import LoadingPage from "@/components/common/LoadingPage.vue";
 import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
 import Blueprints from "@/components/workspace/blueprints/Index.vue";
