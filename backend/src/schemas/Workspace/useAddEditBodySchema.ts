@@ -15,7 +15,9 @@ export const useAddEditBodySchema: (
 ) => SuperSchema.Fragment<AddEditWorkspaceDto> = (id?: number) =>
   object({
     name: string()
+      .trim()
       .required()
+      .matches(/^[a-zA-Z0-9- ]*$/)
       .test(async (value, ctx) => {
         const workspaceRepository = getInstanceOf<IWorkspaceRepository>(
           Di.WorkspaceRepository
