@@ -12,22 +12,28 @@
     }
 
     .n-card {
-      height: 100%;
+      .n-card__content {
+        padding: 0;
 
-      .n-list {
-        .wrapper {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
+        .n-scrollbar {
+          max-height: var(--workspace-blueprints-section-height);
 
-          .content {
-            display: flex;
-            align-items: center;
+          .n-list {
+            .wrapper {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
 
-            .thumbnail {
-              width: 15px;
-              height: 15px;
-              margin-right: 5px;
+              .content {
+                display: flex;
+                align-items: center;
+
+                .thumbnail {
+                  width: 15px;
+                  height: 15px;
+                  margin-right: 5px;
+                }
+              }
             }
           }
         }

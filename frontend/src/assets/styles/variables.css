@@ -3,4 +3,6 @@
   --header-height: 50px;
   --sidebar-top-panel-height: 60px;
   --sidebar-bottom-panel-height: 30px;
+  --workspace-blueprints-section-height: calc(50vh - var(--header-height));
+  --workspace-files-section-height: calc(50vh - var(--header-height));
 }
