@@ -22,7 +22,6 @@ import { useWorkspacesStore } from "@/stores/workspace";
 import Sider from "@/components/workspace/Sider/Index.vue";
 import LoadingPage from "@/components/common/LoadingPage.vue";
 import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
-import Blueprints from "@/components/workspace/blueprints/Index.vue";
 
 const route = useRoute();
 
