@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class CreateDirectoriesTableAndItsRelations1691785926540 implements MigrationInterface {
-    name = 'CreateDirectoriesTableAndItsRelations1691785926540'
+export class CreateDirectoriesTableAndItsRelations1691787785923 implements MigrationInterface {
+    name = 'CreateDirectoriesTableAndItsRelations1691787785923'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`ALTER TABLE \`files\` CHANGE \`relativePath\` \`directoryId\` varchar(255) NOT NULL DEFAULT '.'`);
