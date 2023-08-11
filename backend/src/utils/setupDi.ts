@@ -88,12 +88,7 @@ function registerDependenciesByInterfaces(config: {
     interfacesDirname,
   } = config;
 
-  const dependencyInterfacePath = path.join(
-    "dist",
-    "types",
-    "interfaces",
-    interfacesDirname
-  );
+  const dependencyInterfacePath = path.join("dist", "types", interfacesDirname);
 
   const dir = path.join("dist", dirname);
 
