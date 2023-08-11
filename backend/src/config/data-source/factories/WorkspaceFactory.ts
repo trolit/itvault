@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import kebabCase from "lodash/kebabCase";
 import { setSeederFactory } from "typeorm-extension";
 
 import { Workspace } from "@entities/Workspace";
@@ -6,7 +7,11 @@ import { Workspace } from "@entities/Workspace";
 export default setSeederFactory(Workspace, () => {
   const workspace = new Workspace();
 
-  workspace.name = faker.word.verb();
+  const name = faker.word.verb({ length: { min: 1, max: 3 } });
+
+  workspace.name = name;
+
+  workspace.slug = kebabCase(name);
 
   return workspace;
 });
