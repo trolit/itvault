@@ -16,7 +16,7 @@
         type="info"
         size="small"
         dashed
-        @click="drawerStore.setActiveDrawer(Drawer.AddEditBlueprint)"
+        @click="toggleAddEditBlueprintDrawer"
       >
         <n-icon :component="AddIcon" :size="25" />
       </n-button>
@@ -27,6 +27,7 @@
         <n-list-item
           v-for="(blueprint, index) in blueprintsStore.items"
           :key="index"
+          @click="toggleAddEditBlueprintDrawer"
         >
           <div class="wrapper">
             <div class="content">
@@ -96,6 +97,10 @@ onMounted(() => {
 const statusText = computed((): string => {
   return `Loaded ${blueprintsStore.items.length} out of ${blueprintsStore.total}`;
 });
+
+function toggleAddEditBlueprintDrawer() {
+  drawerStore.setActiveDrawer(Drawer.AddEditBlueprint);
+}
 
 // @TODO handle infinite scroll
 async function getBlueprints() {
