@@ -4,7 +4,7 @@
       bordered
       show-trigger
       :width="340"
-      :collapsed-width="12"
+      :collapsed-width="8"
       collapse-mode="transform"
       :native-scrollbar="false"
       :inverted="inverted"
@@ -12,14 +12,14 @@
       @expand="isCollapsed = false"
       @collapse="isCollapsed = true"
     >
-      <slot name="blueprints"></slot>
-
-      <slot name="files"></slot>
+      <div class="sider">
+        <slot name="sider"></slot>
+      </div>
     </n-layout-sider>
 
-    <n-layout>
-      <slot name="content"></slot>
-    </n-layout>
+    <div class="main-content-wrapper">
+      <slot name="main-content"></slot>
+    </div>
   </n-layout>
 </template>
 

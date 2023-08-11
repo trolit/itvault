@@ -1,6 +1,12 @@
 :root {
   --page-margin: 20px;
-  --header-height: 50px;
+  --header-height: 60px;
+  --primary-color: #8895ff;
   --sidebar-top-panel-height: 60px;
   --sidebar-bottom-panel-height: 30px;
+
+  --workspace-sider-tabs-height: 50px;
+  --workspace-sider-content-height: calc(
+    100vh - var(--header-height) - var(--workspace-sider-tabs-height)
+  );
 }
