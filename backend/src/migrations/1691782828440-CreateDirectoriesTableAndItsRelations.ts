@@ -1,0 +1,29 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class CreateDirectoriesTableAndItsRelations1691782828440 implements MigrationInterface {
+    name = 'CreateDirectoriesTableAndItsRelations1691782828440'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE \`files\` CHANGE \`relativePath\` \`directoryId\` varchar(255) NOT NULL DEFAULT '.'`);
+        await queryRunner.query(`CREATE TABLE \`directories\` (\`id\` int NOT NULL AUTO_INCREMENT, \`relativePath\` varchar(255) NOT NULL, UNIQUE INDEX \`IDX_18fa2cd883b0c64bb61b71248f\` (\`relativePath\`), PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`CREATE TABLE \`directories_workspaces\` (\`id\` int NOT NULL AUTO_INCREMENT, \`directoryId\` int NULL, \`workspaceId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`);
+        await queryRunner.query(`ALTER TABLE \`files\` DROP COLUMN \`directoryId\``);
+        await queryRunner.query(`ALTER TABLE \`files\` ADD \`directoryId\` int NULL`);
+        await queryRunner.query(`ALTER TABLE \`directories_workspaces\` ADD CONSTRAINT \`FK_fd2e1260812b0cba1b0d28a0709\` FOREIGN KEY (\`directoryId\`) REFERENCES \`directories\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE \`directories_workspaces\` ADD CONSTRAINT \`FK_8b4cd795e9c53671a26d3fa1980\` FOREIGN KEY (\`workspaceId\`) REFERENCES \`workspaces\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
+        await queryRunner.query(`ALTER TABLE \`files\` ADD CONSTRAINT \`FK_b6c20a0ad410e90398cba624358\` FOREIGN KEY (\`directoryId\`) REFERENCES \`directories\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE \`files\` DROP FOREIGN KEY \`FK_b6c20a0ad410e90398cba624358\``);
+        await queryRunner.query(`ALTER TABLE \`directories_workspaces\` DROP FOREIGN KEY \`FK_8b4cd795e9c53671a26d3fa1980\``);
+        await queryRunner.query(`ALTER TABLE \`directories_workspaces\` DROP FOREIGN KEY \`FK_fd2e1260812b0cba1b0d28a0709\``);
+        await queryRunner.query(`ALTER TABLE \`files\` DROP COLUMN \`directoryId\``);
+        await queryRunner.query(`ALTER TABLE \`files\` ADD \`directoryId\` varchar(255) NOT NULL DEFAULT '.'`);
+        await queryRunner.query(`DROP TABLE \`directories_workspaces\``);
+        await queryRunner.query(`DROP INDEX \`IDX_18fa2cd883b0c64bb61b71248f\` ON \`directories\``);
+        await queryRunner.query(`DROP TABLE \`directories\``);
+        await queryRunner.query(`ALTER TABLE \`files\` CHANGE \`directoryId\` \`relativePath\` varchar(255) NOT NULL DEFAULT '.'`);
+    }
+
+}
