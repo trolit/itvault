@@ -2,6 +2,7 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IFileRepository } from "types/repositories/IFileRepository";
+import { IDirectoryRepository } from "types/repositories/IDirectoryRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { PatchRelativePathControllerTypes } from "types/controllers/File/PatchRelativePathController";
 
@@ -15,7 +16,9 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class PatchRelativePathController extends BaseController {
   constructor(
     @inject(Di.FileRepository)
-    private _fileRepository: IFileRepository
+    private _fileRepository: IFileRepository,
+    @inject(Di.DirectoryRepository)
+    private _directoryRepository: IDirectoryRepository
   ) {
     super();
   }
@@ -38,12 +41,23 @@ export class PatchRelativePathController extends BaseController {
       body: { relativePath },
     } = request;
 
-    await this._fileRepository.primitiveUpdate(
-      {
-        id,
+    const directory = await this._directoryRepository.getOne({
+      where: {
+        relativePath,
+        files: {
+          id,
+        },
       },
-      { relativePath }
-    );
+    });
+
+    if (directory) {
+      await this._fileRepository.primitiveUpdate(
+        {
+          id,
+        },
+        { directory }
+      );
+    }
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
