@@ -10,7 +10,7 @@
     :mask-closable="false"
     @update:show="onShowUpdate"
   >
-    <n-drawer-content title="Stoner" closable>
+    <n-drawer-content title="Add/Edit blueprint" closable>
       This is add-edit-blueprint drawer
     </n-drawer-content>
   </n-drawer>
