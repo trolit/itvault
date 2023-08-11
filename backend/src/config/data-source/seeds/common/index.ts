@@ -1,3 +1,5 @@
+import { ObjectLiteral, Repository } from "typeorm";
+
 import { HEAD_ADMIN_ROLE, ALL_EDITABLE_ROLES } from "@config/default-roles";
 
 export const DOMAIN = "itvault.dev";
@@ -29,4 +31,16 @@ export const TEST_WORKSPACE_2 = {
 
 function generateEmailByRoleName(name: string) {
   return `${name.toLowerCase().replace(/ /g, ".")}@${DOMAIN}`;
+}
+
+export function getRandomRecords<T extends ObjectLiteral>(
+  repository: Repository<T>,
+  amount = 1
+) {
+  return repository
+    .createQueryBuilder()
+    .select()
+    .orderBy("RANDOM()")
+    .take(amount)
+    .getMany();
 }
