@@ -1,10 +1,8 @@
 import { injectable } from "tsyringe";
+import { QueryRunner, Repository } from "typeorm";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
-import { QueryRunner, Repository, Like, Not } from "typeorm";
 import { IFileRepository } from "types/repositories/IFileRepository";
-
-import { FILES } from "@config";
 
 import { BaseRepository } from "./BaseRepository";
 
@@ -102,15 +100,10 @@ export class FileRepository
     workspaceId: number,
     relativePath: string
   ): Promise<File[]> {
-    const relativePathQuery =
-      relativePath === FILES.ROOT
-        ? Not(Like(`${FILES.ROOT}/%/%`))
-        : relativePath;
-
     return this.database.find({
       where: {
         directory: {
-          relativePath: relativePathQuery,
+          relativePath,
         },
         workspace: {
           id: workspaceId,
