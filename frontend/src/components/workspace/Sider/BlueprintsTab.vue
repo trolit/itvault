@@ -12,7 +12,12 @@
         </template>
       </n-input>
 
-      <n-button type="info" size="small" dashed>
+      <n-button
+        type="info"
+        size="small"
+        dashed
+        @click="drawerStore.setActiveDrawer(Drawer.AddEditBlueprint)"
+      >
         <n-icon :component="AddIcon" :size="25" />
       </n-button>
     </div>
@@ -72,11 +77,14 @@ import {
 } from "naive-ui";
 import { onMounted, ref, computed } from "vue";
 
+import { Drawer } from "@/types/Drawer";
+import { useDrawerStore } from "@/stores/drawer";
 import { useBlueprintsStore } from "@/stores/blueprint";
 
 const page = ref(1);
 const isLoading = ref(false);
 
+const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();
 
 onMounted(() => {

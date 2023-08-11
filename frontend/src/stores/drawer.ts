@@ -12,6 +12,10 @@ export const useDrawerStore = defineStore("drawer", {
   }),
 
   actions: {
+    isDrawerActive(drawer: Drawer) {
+      return this.activeDrawer && this.activeDrawer === drawer;
+    },
+
     setActiveDrawer(drawer: Drawer | null) {
       if (drawer === this.activeDrawer) {
         this.activeDrawer = null;
