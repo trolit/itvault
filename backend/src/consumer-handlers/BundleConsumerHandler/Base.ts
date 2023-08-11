@@ -32,6 +32,7 @@ export abstract class BaseBundleConsumerHandler {
       },
       relations: {
         variants: true,
+        directory: true,
       },
     });
   }
@@ -133,6 +134,7 @@ export abstract class BaseBundleConsumerHandler {
       }
 
       const {
+        directory: { relativePath },
         variants: [variant],
       } = file;
 
@@ -158,9 +160,9 @@ export abstract class BaseBundleConsumerHandler {
       const data = this._generateData(fileContent, buckets);
 
       const absolutePath =
-        file.relativePath === FILES.ROOT
+        relativePath === FILES.ROOT
           ? file.originalFilename
-          : file.relativePath.slice(2); // @NOTE e.g. ./src -> src
+          : relativePath.slice(2); // @NOTE e.g. ./src -> src
 
       jszip.file(path.join(absolutePath, file.originalFilename), data);
     }
