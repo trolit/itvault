@@ -6,7 +6,6 @@ import { Bundle } from "./Bundle";
 import { Blueprint } from "./Blueprint";
 import { TagToWorkspace } from "./TagToWorkspace";
 import { UserToWorkspace } from "./UserToWorkspace";
-import { DirectoryToWorkspace } from "./DirectoryToWorkspace";
 
 @Entity("workspaces")
 export class Workspace extends Base {
@@ -39,13 +38,4 @@ export class Workspace extends Base {
     cascade: ["insert", "update"],
   })
   tagToWorkspace: TagToWorkspace[];
-
-  @OneToMany(
-    () => DirectoryToWorkspace,
-    directoryToWorkspace => directoryToWorkspace.workspace,
-    {
-      cascade: ["insert", "update"],
-    }
-  )
-  directoryToWorkspace: DirectoryToWorkspace[];
 }
