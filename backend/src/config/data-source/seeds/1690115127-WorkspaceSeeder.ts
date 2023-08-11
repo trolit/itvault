@@ -39,5 +39,7 @@ export default class WorkspaceSeeder implements Seeder {
       ...workspace2,
       tagToWorkspace: tags.map(tag => ({ tag })),
     });
+
+    await workspaceFactory.saveMany(15);
   }
 }
