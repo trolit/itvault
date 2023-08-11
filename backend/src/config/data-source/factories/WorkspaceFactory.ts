@@ -7,7 +7,7 @@ import { Workspace } from "@entities/Workspace";
 export default setSeederFactory(Workspace, () => {
   const workspace = new Workspace();
 
-  const name = faker.word.verb({ length: { min: 1, max: 3 } });
+  const name = faker.word.verb({ length: { min: 2, max: 5 } });
 
   workspace.name = name;
 
