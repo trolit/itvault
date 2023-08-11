@@ -40,7 +40,7 @@ export function getRandomRecords<T extends ObjectLiteral>(
   return repository
     .createQueryBuilder()
     .select()
-    .orderBy("RANDOM()")
+    .orderBy("RAND()")
     .take(amount)
     .getMany();
 }
