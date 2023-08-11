@@ -8,7 +8,7 @@
         <sider />
       </template>
 
-      <template #main-content> Content </template>
+      <template #main-content> <main-content /> </template>
     </general-layout>
   </div>
 </template>
@@ -22,6 +22,7 @@ import { useWorkspacesStore } from "@/stores/workspace";
 import Sider from "@/components/workspace/Sider/Index.vue";
 import LoadingPage from "@/components/common/LoadingPage.vue";
 import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
+import MainContent from "@/components/workspace/MainContent/Index.vue";
 
 const route = useRoute();
 
