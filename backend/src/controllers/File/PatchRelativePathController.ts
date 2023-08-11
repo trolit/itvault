@@ -44,9 +44,6 @@ export class PatchRelativePathController extends BaseController {
     const directory = await this._directoryRepository.getOne({
       where: {
         relativePath,
-        files: {
-          id,
-        },
       },
     });
 
