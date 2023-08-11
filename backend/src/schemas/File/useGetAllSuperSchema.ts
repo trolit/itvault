@@ -8,7 +8,6 @@ import { setYupError } from "@helpers/yup/setError";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
-import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const requireOneOfError = setYupError(
@@ -17,13 +16,9 @@ const requireOneOfError = setYupError(
   "relativePath"
 );
 
-const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
+const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.Query> =
   object().shape(
     {
-      page: pageSchema,
-
-      perPage: perPageSchema,
-
       blueprintId: number()
         .optional()
         .when("relativePath", {
@@ -48,7 +43,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
 export const useGetAllSuperSchema: SuperSchema.Runner<
   void,
   void,
-  GetAllControllerTypes.v1.QueryInput
+  GetAllControllerTypes.v1.Query
 > = defineSuperSchemaRunner(() => {
   return {
     query: querySchema,
