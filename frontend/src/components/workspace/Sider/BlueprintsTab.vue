@@ -89,6 +89,7 @@ const statusText = computed((): string => {
   return `Loaded ${blueprintsStore.items.length} out of ${blueprintsStore.total}`;
 });
 
+// @TODO handle infinite scroll
 async function getBlueprints() {
   isLoading.value = true;
 
