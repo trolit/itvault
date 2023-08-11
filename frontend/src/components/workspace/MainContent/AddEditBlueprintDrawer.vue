@@ -1,11 +1,14 @@
 <template>
   <n-drawer
-    :show="props.isActive"
+    :show="isActive"
     :width="502"
     placement="right"
+    to="#main-content"
     :show-mask="false"
+    :trap-focus="false"
+    :block-scroll="false"
     :mask-closable="false"
-    @update:show="$emit('update:is-active', false)"
+    @update:show="onShowUpdate"
   >
     <n-drawer-content title="Stoner" closable>
       This is add-edit-blueprint drawer
@@ -14,14 +17,19 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { NDrawer, NDrawerContent } from "naive-ui";
 
-const props = defineProps({
-  isActive: {
-    type: Boolean,
-    required: true,
-  },
+import { Drawer } from "@/types/Drawer";
+import { useDrawerStore } from "@/stores/drawer";
+
+const drawerStore = useDrawerStore();
+
+const isActive = computed((): boolean => {
+  return drawerStore.isDrawerActive(Drawer.AddEditBlueprint);
 });
 
-defineEmits(["update:is-active"]);
+const onShowUpdate = () => {
+  drawerStore.setActiveDrawer(null);
+};
 </script>
