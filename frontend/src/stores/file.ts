@@ -35,10 +35,10 @@ export const useFilesStore = defineStore("files", {
       }
 
       if (relativePath) {
-        (params as any)["relativePath"] = blueprintId;
+        (params as any)["relativePath"] = relativePath;
       }
 
-      const { data } = await axios.get<IFileDto[]>("v1/blueprints", {
+      const { data } = await axios.get<IFileDto[]>("v1/files", {
         params,
       });
 
