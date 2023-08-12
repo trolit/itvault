@@ -36,13 +36,13 @@ const workspacesStore = useWorkspacesStore();
 
 onBeforeMount(async () => {
   if (workspacesStore.tree.length === 0) {
-    await loadTree();
+    await initTree();
 
     return;
   }
 });
 
-async function loadTree() {
+async function initTree() {
   isLoading.value = true;
 
   try {
