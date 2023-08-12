@@ -1,12 +1,12 @@
 <template>
   <div class="files-tab">
     <div class="header">
-      <n-button type="info" size="small" dashed>
+      <n-button type="warning" size="small">
         <n-icon :component="ResetIcon" :size="20" />
       </n-button>
 
       <!-- @TODO create common component -->
-      <n-input clearable show-count placeholder="Type name or color">
+      <n-input clearable show-count placeholder="Type name">
         <template #prefix>
           <n-icon :component="SearchIcon" />
         </template>
@@ -82,7 +82,7 @@ const updatePrefixOnToggle = (
 const nodeProps = ({ option }: { option: TreeOption }) => {
   return {
     onClick() {
-      if (!option.children && !option.disabled) {
+      if (!option.children) {
         console.log(option);
       }
     },
