@@ -62,6 +62,7 @@ export class GetTreeController extends BaseController {
     }
 
     const mappedFiles = this.mapper.map<File>(files).to(FileMapper);
+
     const mappedDirectories = this.mapper
       .map<Directory>(directories)
       .to(DirectoryMapper);
