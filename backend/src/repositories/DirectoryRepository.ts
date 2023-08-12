@@ -23,7 +23,7 @@ export class DirectoryRepository
     const relativePathQuery =
       relativePath === FILES.ROOT
         ? Not(Like(`${FILES.ROOT}/%/%`))
-        : relativePath;
+        : Like(`${relativePath}_%`);
 
     return this.database.find({
       where: {
