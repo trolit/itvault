@@ -19,8 +19,10 @@
         block-line
         expand-on-click
         :data="data"
+        check-strategy="child"
         :node-props="nodeProps"
-        :on-update:expanded-keys="updatePrefixWithExpaned"
+        :on-load="onDirectoryLoad"
+        :on-update:expanded-keys="updatePrefixOnToggle"
       />
 
       <div v-else class="spinner">
@@ -31,16 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import { h, onMounted, ref, computed } from "vue";
-import {
-  NTree,
-  NIcon,
-  NInput,
-  NButton,
-  NScrollbar,
-  NSpin,
-  TreeOption,
-} from "naive-ui";
+import type { TreeOption } from "naive-ui";
+import { h, onMounted, ref, reactive } from "vue";
+import { NTree, NIcon, NInput, NButton, NScrollbar, NSpin } from "naive-ui";
 
 import {
   Reset as ResetIcon,
@@ -49,18 +44,21 @@ import {
   Folder as OpenedFolderIcon,
   FolderOff as ClosedFolderIcon,
 } from "@vicons/carbon";
-import { useFilesStore } from "@/stores/file";
+import { useWorkspacesStore } from "@/stores/workspace";
+import type { IFileDto } from "@shared/types/dtos/IFileDto";
+import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 
 const isLoading = ref(false);
-const filesStore = useFilesStore();
+const data: TreeOption[] = reactive([]);
+const workspacesStore = useWorkspacesStore();
 
 onMounted(() => {
-  if (filesStore.items.length === 0) {
-    getFilesByRelativePath();
+  if (workspacesStore.tree.length === 0) {
+    initializeTree();
   }
 });
 
-const updatePrefixWithExpaned = (
+const updatePrefixOnToggle = (
   _keys: Array<string | number>,
   _option: Array<TreeOption | null>,
   meta: {
@@ -68,21 +66,17 @@ const updatePrefixWithExpaned = (
     action: "expand" | "collapse" | "filter";
   }
 ) => {
-  if (!meta.node) return;
-  switch (meta.action) {
-    case "expand":
-      meta.node.prefix = () =>
-        h(NIcon, null, {
-          default: () => h(OpenedFolderIcon),
-        });
-      break;
-    case "collapse":
-      meta.node.prefix = () =>
-        h(NIcon, null, {
-          default: () => h(ClosedFolderIcon),
-        });
-      break;
+  const { node, action } = meta;
+
+  if (!node) {
+    return;
   }
+
+  node.prefix = () =>
+    h(NIcon, null, {
+      default: () =>
+        h(action === "expand" ? ClosedFolderIcon : OpenedFolderIcon),
+    });
 };
 
 const nodeProps = ({ option }: { option: TreeOption }) => {
@@ -95,67 +89,111 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
   };
 };
 
-const data = computed((): TreeOption[] => {
-  const { items } = filesStore;
+function createFolderEntry(folder: IDirectoryDto) {
+  const { id, relativePath } = folder;
+  const [, ...relativePathExceptRoot] = relativePath.split("/");
+  const label = relativePathExceptRoot.pop();
 
+  const folderToAdd: TreeOption = {
+    key: `folder-${id}`,
+    label,
+    isLeaf: false,
+    prefix: () =>
+      h(NIcon, null, {
+        default: () => h(OpenedFolderIcon),
+      }),
+  };
+
+  return folderToAdd;
+}
+
+function createFileEntry(file: IFileDto) {
+  const { id, relativePath } = file;
+
+  const fileToAdd: TreeOption = {
+    key: `file-${id}-directory-${relativePath}`,
+    label: file.originalFilename,
+    isLeaf: true,
+    children: undefined,
+    prefix: () =>
+      h(NIcon, null, {
+        default: () => h(FileIcon),
+      }),
+  };
+
+  return fileToAdd;
+}
+
+function convertApiResponseToTreeData(result: (IDirectoryDto & IFileDto)[]) {
+  return result.map(value =>
+    value?.originalFilename ? createFileEntry(value) : createFolderEntry(value)
+  );
+}
+
+function initializeTreeData(tree: (IDirectoryDto & IFileDto)[]) {
   const uniqueRelativePaths = [
-    ...new Set(items.map(({ relativePath }) => relativePath)),
+    ...new Set(tree.map(({ relativePath }) => relativePath)),
   ];
 
-  const result: TreeOption[] = [];
-
   for (const relativePath of uniqueRelativePaths) {
+    const values = tree.filter(value => value.relativePath === relativePath);
+
+    data.push(...convertApiResponseToTreeData(values));
+  }
+}
+
+async function onDirectoryLoad(node: TreeOption) {
+  const { key } = node;
+
+  const onFail = () => {
+    node.isLeaf = false;
+    node.children = [];
+    return Promise.resolve(false);
+  };
+
+  if (!key) {
+    return onFail();
   }
 
-  return [];
-});
+  const id = key.toString().split("-").pop();
 
-// const data = [
-//   {
-//     key: "Folder",
-//     label: "Folder",
-//     prefix: () =>
-//       h(NIcon, null, {
-//         default: () => h(ClosedFolderIcon),
-//       }),
-//     children: [
-//       {
-//         key: "Empty",
-//         label: "Empty",
-//         disabled: true,
-//         prefix: () =>
-//           h(NIcon, null, {
-//             default: () => h(ClosedFolderIcon),
-//           }),
-//       },
-//       {
-//         key: "MyFiles",
-//         label: "MyFiles",
-//         prefix: () =>
-//           h(NIcon, null, {
-//             default: () => h(ClosedFolderIcon),
-//           }),
-//         children: [
-//           {
-//             label: "template.txt",
-//             key: "template.txt",
-//             prefix: () =>
-//               h(NIcon, null, {
-//                 default: () => h(FileIcon),
-//               }),
-//           },
-//         ],
-//       },
-//     ],
-//   },
-// ];
+  if (!id) {
+    return onFail();
+  }
 
-// @TODO handle infinite scroll
-async function getFilesByRelativePath() {
+  const parsedId = parseInt(id);
+
+  const { tree } = workspacesStore;
+
+  const folder = tree.find(element => element.id === parsedId);
+
+  if (!folder) {
+    return onFail();
+  }
+
+  try {
+    const result = await workspacesStore.getTree({
+      relativePath: folder.relativePath,
+    });
+
+    node.isLeaf = false;
+    node.children = convertApiResponseToTreeData(result);
+
+    return Promise.resolve();
+  } catch (error) {
+    console.log(error);
+
+    return onFail();
+  }
+}
+
+async function initializeTree() {
   isLoading.value = true;
 
   try {
-    await filesStore.getAllBy({ relativePath: "." });
+    const result = await workspacesStore.getTree({ relativePath: "." });
+
+    initializeTreeData(result);
   } catch (error) {
     console.log(error);
   } finally {
