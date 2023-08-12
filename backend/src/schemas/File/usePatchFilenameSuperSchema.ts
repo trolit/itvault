@@ -39,7 +39,10 @@ const useBodySchema: (
           Di.FileRepository
         );
 
-        const file = await fileRepository.getById(fileId);
+        const file = await fileRepository.getOne({
+          where: { id: fileId },
+          relations: { directory: true },
+        });
 
         if (!file) {
           return ctx.createError({
@@ -47,13 +50,17 @@ const useBodySchema: (
           });
         }
 
+        const { relativePath } = file.directory;
+
         const fileWithSimiliarName = await fileRepository.getOne({
           where: {
             originalFilename: value,
             workspace: {
               id: workspaceId,
             },
-            relativePath: file.relativePath,
+            directory: {
+              relativePath,
+            },
           },
         });
 
@@ -61,7 +68,7 @@ const useBodySchema: (
           return ctx.createError({
             message: setYupError(
               CUSTOM_MESSAGES.FILE.DUPLICATE_FILE,
-              fileWithSimiliarName.relativePath
+              relativePath
             ),
           });
         }
