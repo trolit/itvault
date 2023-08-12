@@ -78,6 +78,8 @@ export const useWorkspacesStore = defineStore("workspace", {
         }
       );
 
+      this.tree = Array.prototype.concat(this.tree, data);
+
       return data;
     },
   },
