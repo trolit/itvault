@@ -33,6 +33,7 @@
 </template>
 
 <script setup lang="ts">
+import sortBy from "lodash/sortBy";
 import type { TreeOption } from "naive-ui";
 import { h, onMounted, ref, reactive } from "vue";
 import { NTree, NIcon, NInput, NButton, NScrollbar, NSpin } from "naive-ui";
@@ -55,7 +56,11 @@ const workspacesStore = useWorkspacesStore();
 onMounted(() => {
   if (workspacesStore.tree.length === 0) {
     initializeTree();
+
+    return;
   }
+
+  restoreTreeData(workspacesStore.tree);
 });
 
 const updatePrefixOnToggle = (
@@ -108,10 +113,10 @@ function createFolderEntry(folder: IDirectoryDto) {
 }
 
 function createFileEntry(file: IFileDto) {
-  const { id, relativePath } = file;
+  const { id } = file;
 
   const fileToAdd: TreeOption = {
-    key: `file-${id}-directory-${relativePath}`,
+    key: `file-${id}`,
     label: file.originalFilename,
     isLeaf: true,
     children: undefined,
@@ -124,21 +129,81 @@ function createFileEntry(file: IFileDto) {
   return fileToAdd;
 }
 
-function convertApiResponseToTreeData(result: (IDirectoryDto & IFileDto)[]) {
-  return result.map(value =>
-    value?.originalFilename ? createFileEntry(value) : createFolderEntry(value)
-  );
-}
-
-function initializeTreeData(tree: (IDirectoryDto & IFileDto)[]) {
+function getUniqueRelativePaths(tree: (IDirectoryDto & IFileDto)[]) {
   const uniqueRelativePaths = [
     ...new Set(tree.map(({ relativePath }) => relativePath)),
   ];
 
+  return sortBy(uniqueRelativePaths);
+}
+
+function restoreTreeData(tree: (IDirectoryDto & IFileDto)[]) {
+  const uniqueRelativePaths = getUniqueRelativePaths(tree);
+
+  for (const relativePath of uniqueRelativePaths) {
+    const splitRelativePath = relativePath.split("/");
+
+    const values = tree.filter(value => value.relativePath === relativePath);
+
+    const isRoot = relativePath === ".";
+
+    for (const value of values) {
+      const isFile = !!value?.originalFilename;
+
+      const treeOptionToAdd = isFile
+        ? createFileEntry(value)
+        : createFolderEntry(value);
+
+      if (!isFile) {
+        const hasAnyFile = tree.some(
+          value =>
+            value.relativePath === relativePath && !!value?.originalFilename
+        );
+
+        treeOptionToAdd.children = hasAnyFile ? [] : undefined;
+      }
+
+      if (isRoot || (!isFile && splitRelativePath.length === 2)) {
+        console.log(value);
+
+        data.push(treeOptionToAdd);
+
+        continue;
+      }
+
+      const [, ...splitRelativePathExceptRoot] = splitRelativePath;
+
+      if (!isFile) {
+        // take out "leaf" dir because we need to create it
+        splitRelativePathExceptRoot.pop();
+      }
+
+      let target: TreeOption[] | TreeOption | undefined;
+
+      for (const pathPart of splitRelativePath) {
+        target = data.find(({ label }) => label === pathPart)?.children;
+      }
+
+      if (target && Array.isArray(target)) {
+        target.push(treeOptionToAdd);
+      }
+    }
+  }
+}
+
+function initializeTreeData(tree: (IDirectoryDto & IFileDto)[]) {
+  const uniqueRelativePaths = getUniqueRelativePaths(tree);
+
   for (const relativePath of uniqueRelativePaths) {
     const values = tree.filter(value => value.relativePath === relativePath);
 
-    data.push(...convertApiResponseToTreeData(values));
+    for (const value of values) {
+      const treeOptionToAdd = value?.originalFilename
+        ? createFileEntry(value)
+        : createFolderEntry(value);
+
+      data.push(treeOptionToAdd);
+    }
   }
 }
 
@@ -177,7 +242,11 @@ async function onDirectoryLoad(node: TreeOption) {
     });
 
     node.isLeaf = false;
-    node.children = convertApiResponseToTreeData(result);
+    node.children = result.map(value =>
+      value?.originalFilename
+        ? createFileEntry(value)
+        : createFolderEntry(value)
+    );
 
     return Promise.resolve();
   } catch (error) {
