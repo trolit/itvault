@@ -33,6 +33,10 @@
 </template>
 
 <script setup lang="ts">
+// @TODO HANDLE INITIAL (EMPTY) STATE UPLOAD!
+// @TODO HANDLE DRAG (RELATIVE PATH CHANGE)
+// @TODO HANDLE FILENAME CHANGE
+
 import sortBy from "lodash/sortBy";
 import type { TreeOption } from "naive-ui";
 import { h, onMounted, ref, reactive } from "vue";
