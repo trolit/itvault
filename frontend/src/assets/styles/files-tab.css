@@ -13,12 +13,11 @@
     column-gap: 10px;
     align-items: center;
     height: calc(
-      var(--workspace-sider-content-height) * var(--blueprints-header-height)
+      var(--workspace-sider-content-height) * var(--files-header-height)
     );
   }
 
   .n-scrollbar {
-    border: 1px solid red;
     min-height: var(--files-tree-scrollbar-section-height);
     max-height: var(--files-tree-scrollbar-section-height);
 
