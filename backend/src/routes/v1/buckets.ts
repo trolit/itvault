@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { Permission } from "@shared/types/enums/Permission";
 
@@ -21,7 +22,9 @@ const {
   ALL_VERSION_DEFINITIONS: { v1_0 },
 } = BaseController;
 
-bucketsRouter.use(requireWorkspaceAccess);
+bucketsRouter.use(
+  requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
+);
 bucketsRouter.use(IsWorkspaceAvailable);
 
 bucketsRouter.get(

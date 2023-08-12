@@ -21,7 +21,7 @@ export default class BlueprintSeeder implements Seeder {
 
     const blueprintRepository = dataSource.getRepository(Blueprint);
 
-    for (let index = 0; index < 3; index++) {
+    for (let index = 0; index < 20; index++) {
       await blueprintRepository.save({
         name: `Blueprint ${index + 1}`,
         color: faker.color.rgb({ format: "hex", casing: "upper" }),

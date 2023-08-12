@@ -1,10 +1,8 @@
 import { injectable } from "tsyringe";
+import { QueryRunner, Repository } from "typeorm";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
-import { QueryRunner, Repository, Like, Not } from "typeorm";
 import { IFileRepository } from "types/repositories/IFileRepository";
-
-import { FILES } from "@config";
 
 import { BaseRepository } from "./BaseRepository";
 
@@ -43,6 +41,7 @@ export class FileRepository
           },
           relations: {
             variants: true,
+            directory: true,
           },
         });
 
@@ -50,13 +49,13 @@ export class FileRepository
           this._createFileInstance(
             transaction,
             record || {
-              relativePath: key,
               originalFilename: file.originalFilename,
             },
             {
               userId,
               workspaceId,
               size: file.size,
+              relativePath: key,
               filename: file.newFilename,
             }
           )
@@ -101,14 +100,11 @@ export class FileRepository
     workspaceId: number,
     relativePath: string
   ): Promise<File[]> {
-    const relativePathQuery =
-      relativePath === FILES.ROOT
-        ? Not(Like(`${FILES.ROOT}/%/%`))
-        : relativePath;
-
     return this.database.find({
       where: {
-        relativePath: relativePathQuery,
+        directory: {
+          relativePath,
+        },
         workspace: {
           id: workspaceId,
         },
@@ -148,9 +144,11 @@ export class FileRepository
       userId: number;
       filename: string;
       workspaceId: number;
+      relativePath: string;
     }
   ) {
-    const { size, userId, filename, workspaceId } = additionalData;
+    const { size, userId, filename, workspaceId, relativePath } =
+      additionalData;
 
     const variantName = fileData?.variants
       ? `v${fileData.variants.length + 1}`
@@ -178,6 +176,8 @@ export class FileRepository
         id: workspaceId,
       },
     });
+
+    file.directory.relativePath = relativePath;
 
     return file;
   }

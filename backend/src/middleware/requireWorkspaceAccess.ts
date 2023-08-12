@@ -8,22 +8,19 @@ import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-interface IQuery {
-  workspaceId: number;
-}
-
-export const requireWorkspaceAccess = (() => {
+export const requireWorkspaceAccess = <T>(
+  id: (request: CustomRequest<T, unknown, T>) => number
+) => {
   return async (
-    request: CustomRequest<unknown, unknown, IQuery>,
+    request: CustomRequest<T, unknown, T>,
     response: Response,
     next: NextFunction
   ) => {
     const userRepository = getInstanceOf<IUserRepository>(Di.UserRepository);
 
-    const {
-      userId,
-      query: { workspaceId },
-    } = request;
+    const { userId } = request;
+
+    const workspaceId = id(request);
 
     if (!userId || !workspaceId) {
       return response.status(HTTP.FORBIDDEN).send();
@@ -50,4 +47,4 @@ export const requireWorkspaceAccess = (() => {
 
     next();
   };
-})();
+};

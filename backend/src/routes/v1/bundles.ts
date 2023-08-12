@@ -1,13 +1,14 @@
 import { Router } from "express";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { transformPagination } from "@middleware/transformPagination";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useRequeueSchema } from "@schemas/Bundle/useRequeueSchema";
 import { useStoreSuperSchema } from "@schemas/Bundle/useStoreSuperSchema";
@@ -25,7 +26,9 @@ const {
   ALL_VERSION_DEFINITIONS: { v1_0 },
 } = BaseController;
 
-bundlesRouter.use(requireWorkspaceAccess);
+bundlesRouter.use(
+  requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
+);
 
 bundlesRouter.get(
   "",
