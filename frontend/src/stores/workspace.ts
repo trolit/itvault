@@ -1,6 +1,8 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import type { IFileDto } from "@shared/types/dtos/IFileDto";
+import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
@@ -11,10 +13,13 @@ interface IState {
   items: IWorkspaceDto[];
 
   activeItem: IWorkspaceDto;
+
+  tree: (IDirectoryDto & IFileDto)[];
 }
 
 export const useWorkspacesStore = defineStore("workspace", {
   state: (): IState => ({
+    tree: [],
     total: 0,
     items: [],
     activeItem: { id: 0, name: "", slug: "", tags: [] },
@@ -55,6 +60,23 @@ export const useWorkspacesStore = defineStore("workspace", {
       this.items = data.result;
 
       this.total = data.total;
+
+      return data;
+    },
+
+    // @TODO add option to query tree by blueprintId
+    async getTree(options: { relativePath: string }) {
+      const params = {
+        version: 1,
+        ...options,
+      };
+
+      const { data } = await axios.get<(IFileDto & IDirectoryDto)[]>(
+        `v1/workspaces/${this.activeItem.id}/tree`,
+        {
+          params,
+        }
+      );
 
       return data;
     },
