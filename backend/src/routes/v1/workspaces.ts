@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { NumberId } from "types/NumberId";
 
 import { Permission } from "@shared/types/enums/Permission";
 
@@ -6,6 +7,7 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useGetBySlugSchema } from "@schemas/Workspace/useGetBySlugSchema";
 import { useStoreSuperSchema } from "@schemas/Workspace/useStoreSuperSchema";
@@ -41,6 +43,7 @@ workspacesRouter.get(
 
 workspacesRouter.get(
   "/:id/tree",
+  requireWorkspaceAccess<NumberId>(({ params }) => params.id),
   validateRequestWith({ [v1_0]: useGetTreeSuperSchema }),
   processRequestWith(GetTreeController)
 );

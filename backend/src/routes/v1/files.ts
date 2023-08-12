@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { FILES } from "@config";
 
@@ -9,8 +10,8 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
 import { useSoftDeleteSuperSchema } from "@schemas/File/useSoftDeleteSuperSchema";
@@ -30,7 +31,9 @@ const {
   ALL_VERSION_DEFINITIONS: { v1_0 },
 } = BaseController;
 
-filesRouter.use(requireWorkspaceAccess);
+filesRouter.use(
+  requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
+);
 
 filesRouter.get(
   "",

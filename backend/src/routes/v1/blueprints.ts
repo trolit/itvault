@@ -1,23 +1,24 @@
 import { Router } from "express";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Blueprint/useStoreSuperSchema";
-import { useUpdateSuperSchema } from "@schemas/Blueprint/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
+import { useUpdateSuperSchema } from "@schemas/Blueprint/useUpdateSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { StoreController } from "@controllers/Blueprint/StoreController";
-import { GetAllController } from "@controllers/Blueprint/GetAllController";
+import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { UpdateController } from "@controllers/Blueprint/UpdateController";
+import { GetAllController } from "@controllers/Blueprint/GetAllController";
 
 const blueprintsRouter = Router();
 
@@ -25,7 +26,9 @@ const {
   ALL_VERSION_DEFINITIONS: { v1_0 },
 } = BaseController;
 
-blueprintsRouter.use(requireWorkspaceAccess);
+blueprintsRouter.use(
+  requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
+);
 
 blueprintsRouter.get(
   "",
