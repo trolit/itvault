@@ -24,12 +24,14 @@ import {
   Folder as OpenedFolderIcon,
   FolderOff as ClosedFolderIcon,
 } from "@vicons/carbon";
+import { useFilesStore } from "@/stores/file";
 import { useWorkspacesStore } from "@/stores/workspace";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 
+const filesStore = useFilesStore();
 const treeData: TreeOption[] = reactive([]);
 const workspacesStore = useWorkspacesStore();
 
@@ -91,7 +93,7 @@ function restoreTreeData(tree: (IDirectoryDto & IFileDto)[]) {
 
     const values = tree.filter(value => value.relativePath === relativePath);
 
-    const isRoot = relativePath === ".";
+    const isRoot = relativePath === filesStore.ROOT;
 
     for (const value of values) {
       const isFile = !!value?.originalFilename;

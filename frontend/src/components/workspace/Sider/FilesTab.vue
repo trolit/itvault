@@ -28,10 +28,12 @@ import { onBeforeMount, ref } from "vue";
 import { NIcon, NInput, NButton, NScrollbar, NSpin } from "naive-ui";
 import { Reset as ResetIcon, Search as SearchIcon } from "@vicons/carbon";
 
+import { useFilesStore } from "@/stores/file";
 import FileHierarchy from "./FileHierarchy.vue";
 import { useWorkspacesStore } from "@/stores/workspace";
 
 const isLoading = ref(false);
+const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
 onBeforeMount(async () => {
@@ -46,7 +48,7 @@ async function initTree() {
   isLoading.value = true;
 
   try {
-    await workspacesStore.getTree({ relativePath: "." });
+    await workspacesStore.getTree({ relativePath: filesStore.ROOT });
   } catch (error) {
     console.log(error);
   } finally {
