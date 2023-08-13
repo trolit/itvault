@@ -9,7 +9,6 @@ export class FileMapper extends BaseMapper<File> implements IFileDto {
   relativePath: string;
   createdAt: string;
   updatedAt: string;
-  blueprintId: number;
 
   constructor(
     data: File,
