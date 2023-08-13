@@ -7,7 +7,7 @@
 
       <!-- @TODO scroll -->
       <template #default>
-        <div v-if="variantStore.activeItem">aha</div>
+        <variant-viewer v-if="variantStore.activeItem" />
 
         <empty v-else title="Select variant to display file content." />
       </template>
@@ -27,6 +27,7 @@ import { NCard } from "naive-ui";
 import CardHeader from "./CardHeader.vue";
 import Empty from "@/components/common/Empty.vue";
 import { useVariantsStore } from "@/store/variants";
+import VariantViewer from "./VariantViewer/Index.vue";
 
 const variantStore = useVariantsStore();
 </script>
