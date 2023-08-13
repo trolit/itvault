@@ -3,13 +3,20 @@
   <div class="card-header">
     <div class="timeline-wrapper" style="overflow: auto">
       <n-timeline v-if="!isLoading" horizontal>
-        <n-timeline-item>
+        <n-timeline-item
+          v-for="({ name, createdAt, size }, index) in variantsStore.items"
+          :key="index"
+        >
           <template #default>
-            <n-button>v1</n-button>
+            <n-button>{{ name }}</n-button>
 
             <div>
-              <small>2023-02-12</small>
+              <small>{{ formatDate(createdAt) }}</small>
             </div>
+
+            <n-gradient-text type="warning" :size="12">
+              ({{ size.value }}{{ size.unit }})
+            </n-gradient-text>
           </template>
         </n-timeline-item>
 
@@ -34,9 +41,17 @@
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
 import { Add as AddIcon } from "@vicons/carbon";
-import { NButton, NTimeline, NTimelineItem, NIcon, NSpin } from "naive-ui";
+import {
+  NButton,
+  NTimeline,
+  NTimelineItem,
+  NIcon,
+  NSpin,
+  NGradientText,
+} from "naive-ui";
 
 import { useVariantsStore } from "@/store/variants";
+import formatDate from "@/helpers/dayjs/formatDate";
 
 const isLoading = ref(false);
 const variantsStore = useVariantsStore();

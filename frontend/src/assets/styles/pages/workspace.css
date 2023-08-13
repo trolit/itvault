@@ -55,6 +55,10 @@
 
             .timeline-wrapper {
               flex: 0.8;
+
+              .n-timeline-item-content {
+                text-align: center;
+              }
             }
 
             .actions {
