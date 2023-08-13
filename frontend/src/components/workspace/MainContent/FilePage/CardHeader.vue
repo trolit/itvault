@@ -9,7 +9,7 @@
           :key="index"
         >
           <template #default>
-            <n-button @click="variantsStore.setActiveItem(id)">
+            <n-button @click="variantsStore.newVariantTab(id)">
               {{ name }}
             </n-button>
 

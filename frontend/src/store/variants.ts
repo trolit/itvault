@@ -8,13 +8,13 @@ import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 interface IState {
   items: IVariantDto[];
 
-  activeItem: IVariantDto | null;
+  variantTabs: { instance: IVariantDto; content: string }[];
 }
 
 export const useVariantsStore = defineStore("variants", {
   state: (): IState => ({
     items: [],
-    activeItem: null,
+    variantTabs: [],
   }),
 
   actions: {
@@ -37,15 +37,27 @@ export const useVariantsStore = defineStore("variants", {
       return data;
     },
 
-    setActiveItem(id: string) {
-      if (this?.activeItem?.id === id) {
+    newVariantTab(id: string) {
+      const tab = this.variantTabs.find(tab => tab.instance.id === id);
+
+      if (tab) {
         return;
       }
 
-      const item = this.items.find(item => item.id === id);
+      const instance = this.items.find(item => item.id === id);
 
-      if (item) {
-        this.activeItem = item;
+      if (instance) {
+        this.variantTabs.push({ instance, content: "" });
+      }
+    },
+
+    closeVariantTab(id: string) {
+      const tabIndex = this.variantTabs.findIndex(
+        tab => tab.instance.id === id
+      );
+
+      if (~tabIndex) {
+        this.variantTabs.splice(tabIndex, 1);
       }
     },
   },
