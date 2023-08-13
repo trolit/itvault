@@ -1,27 +1,58 @@
 <template>
   <div class="variant-viewer">
-    <div class="line-numbers">
-      <span v-for="index in numberOfLines" :key="index"></span>
-    </div>
+    <n-tabs
+      closable
+      type="card"
+      v-model:value="activeTab"
+      @close="variantsStore.closeVariantTab"
+    >
+      <n-tab-pane
+        v-for="{ key, tab, content } in panels"
+        :key="key"
+        :tab="tab"
+        :name="key"
+      >
+        <div class="line-numbers">
+          <span v-for="index in getNumberOfLines(content)" :key="index"></span>
+        </div>
 
-    <text-render />
+        <component :is="renderText(content)" />
+      </n-tab-pane>
+    </n-tabs>
   </div>
 </template>
 
 <script setup lang="ts">
-import { h, ref, computed, type VNode } from "vue";
+import { NTabs, NTabPane } from "naive-ui";
+import { h, ref, computed } from "vue";
 
-const text = ref("test1 test2\ntest3\nelo");
+import { useVariantsStore } from "@/store/variants";
 
-const numberOfLines = computed((): number => {
-  return text.value.split("\n").length;
+const variantsStore = useVariantsStore();
+
+const activeTab = ref(variantsStore.variantTabs[0].instance.id);
+
+/** */
+
+const panels = computed(() => {
+  const { variantTabs } = variantsStore;
+
+  return variantTabs.map(({ instance, content }) => ({
+    key: instance.id,
+    tab: instance.name,
+    content: "test1 test2\ntest3\ntest5", // @TODO
+  }));
 });
 
-const textRender = computed((): VNode => {
-  const splitText = text.value.toString().split("\n");
+function getNumberOfLines(text: string) {
+  return text.split("\n").length;
+}
+
+function renderText(text: string) {
+  const splitText = text.toString().split("\n");
 
   const children = splitText.map(part => h("div", part));
 
   return h("div", { class: "text-render" }, children);
-});
+}
 </script>

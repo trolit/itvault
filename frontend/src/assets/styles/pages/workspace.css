@@ -78,25 +78,28 @@
 
           .variant-viewer {
             height: 100%;
-            display: flex;
 
-            .line-numbers {
-              flex: 0.02;
-              text-align: center;
+            .n-tab-pane {
+              display: flex;
 
-              span {
-                counter-increment: linenumber;
+              .line-numbers {
+                flex: 0.02;
+                text-align: center;
 
-                &::before {
-                  content: counter(linenumber);
-                  display: block;
-                  color: #506882;
+                span {
+                  counter-increment: linenumber;
+
+                  &::before {
+                    content: counter(linenumber);
+                    display: block;
+                    color: #506882;
+                  }
                 }
               }
-            }
 
-            .text-render {
-              flex: 0.98;
+              .text-render {
+                flex: 0.98;
+              }
             }
           }
         }

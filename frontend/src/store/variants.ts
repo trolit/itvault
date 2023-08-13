@@ -50,5 +50,15 @@ export const useVariantsStore = defineStore("variants", {
         this.variantTabs.push({ instance, content: "" });
       }
     },
+
+    closeVariantTab(id: string) {
+      const tabIndex = this.variantTabs.findIndex(
+        tab => tab.instance.id === id
+      );
+
+      if (~tabIndex) {
+        this.variantTabs.splice(tabIndex, 1);
+      }
+    },
   },
 });
