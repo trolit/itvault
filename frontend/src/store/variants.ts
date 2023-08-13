@@ -7,11 +7,14 @@ import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
 interface IState {
   items: IVariantDto[];
+
+  activeItem: IVariantDto | null;
 }
 
 export const useVariantsStore = defineStore("variants", {
   state: (): IState => ({
     items: [],
+    activeItem: null,
   }),
 
   actions: {
@@ -32,6 +35,18 @@ export const useVariantsStore = defineStore("variants", {
       this.items = data;
 
       return data;
+    },
+
+    setActiveItem(id: string) {
+      if (this?.activeItem?.id === id) {
+        return;
+      }
+
+      const item = this.items.find(item => item.id === id);
+
+      if (item) {
+        this.activeItem = item;
+      }
     },
   },
 });

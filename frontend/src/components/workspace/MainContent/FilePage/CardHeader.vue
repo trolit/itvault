@@ -4,11 +4,13 @@
     <div class="timeline-wrapper" style="overflow: auto">
       <n-timeline v-if="!isLoading" horizontal>
         <n-timeline-item
-          v-for="({ name, createdAt, size }, index) in variantsStore.items"
+          v-for="({ id, name, createdAt, size }, index) in variantsStore.items"
           :key="index"
         >
           <template #default>
-            <n-button>{{ name }}</n-button>
+            <n-button @click="variantsStore.setActiveItem(id)">
+              {{ name }}
+            </n-button>
 
             <div>
               <small>{{ formatDate(createdAt) }}</small>
