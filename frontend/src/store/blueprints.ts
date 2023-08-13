@@ -1,7 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import { useWorkspacesStore } from "./workspace";
+import { useWorkspacesStore } from "./workspaces";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
