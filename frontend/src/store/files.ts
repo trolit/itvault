@@ -26,7 +26,7 @@ export const useFilesStore = defineStore("files", {
       return this.tabs.find(tab => tab.file.id === this.activeTabId);
     },
 
-    newFileTab(file: IFileDto) {
+    setActiveTab(file: IFileDto) {
       const tab = this.tabs.find(tab => tab.file.id === file.id);
 
       this.activeTabId = file.id;
