@@ -70,6 +70,7 @@
         }
 
         .n-card__content {
+          padding: 0;
           height: calc(
             var(--workspace-main-content-height) *
               var(--file-page-card-content-height)
