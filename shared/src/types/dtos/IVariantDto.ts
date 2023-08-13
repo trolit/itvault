@@ -5,7 +5,7 @@ export interface IVariantDto {
 
   filename: string;
 
-  createdBy: string;
+  createdAt: string;
 
   size: { value: number; unit: string };
 }

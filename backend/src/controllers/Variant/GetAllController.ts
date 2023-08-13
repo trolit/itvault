@@ -38,7 +38,7 @@ export class GetAllController extends BaseController {
       query: { fileId, workspaceId },
     } = request;
 
-    const [result, total] = await this._variantRepository.getAll({
+    const [result] = await this._variantRepository.getAll({
       where: {
         file: {
           id: fileId,
@@ -51,9 +51,6 @@ export class GetAllController extends BaseController {
 
     const mappedResult = this.mapper.map<Variant>(result).to(VariantMapper);
 
-    return this.finalizeRequest(response, HTTP.OK, {
-      result: mappedResult,
-      total,
-    });
+    return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }
 }

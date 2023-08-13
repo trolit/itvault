@@ -1,6 +1,6 @@
 <template>
   <div id="main-content">
-    <empty title="Nothing to display 😢">
+    <empty v-if="!hasSomethingToDisplay" title="Nothing to display 😢">
       <template #extra>
         <n-grid :x-gap="100" :cols="2">
           <n-grid-item v-for="(item, index) in gridItems" :key="index">
@@ -14,17 +14,23 @@
       </template>
     </empty>
 
+    <file-page v-else-if="filesStore.activeItem" />
+
     <add-edit-blueprint-drawer />
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { NGrid, NGridItem, NIcon } from "naive-ui";
 import { Term as OptionIcon } from "@vicons/carbon";
 
+import FilePage from "./FilePage/Index.vue";
+import { useFilesStore } from "@/store/files";
+import Empty from "@/components/common/Empty.vue";
 import AddEditBlueprintDrawer from "./AddEditBlueprintDrawer.vue";
 
-import Empty from "@/components/common/Empty.vue";
+const filesStore = useFilesStore();
 
 const gridItems = [
   {
@@ -36,4 +42,8 @@ const gridItems = [
     text: "Select bundle to view configuration.",
   },
 ];
+
+const hasSomethingToDisplay = computed<boolean>((): boolean => {
+  return !!filesStore.activeItem;
+});
 </script>

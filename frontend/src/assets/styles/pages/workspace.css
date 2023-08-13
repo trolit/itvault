@@ -31,6 +31,53 @@
     .empty-section {
       height: var(--workspace-main-content-height);
     }
+
+    .file-page {
+      height: var(--workspace-main-content-height);
+
+      --file-page-card-header-height: 0.2;
+      --file-page-card-content-height: 0.8;
+
+      .n-card {
+        height: 100%;
+
+        .n-card-header {
+          padding: 0;
+
+          .card-header {
+            display: flex;
+            padding: 0 10px;
+            align-items: center;
+            justify-content: space-between;
+            height: calc(
+              var(--workspace-main-content-height) *
+                var(--file-page-card-header-height)
+            );
+
+            .timeline-wrapper {
+              flex: 0.8;
+
+              .n-timeline-item-content {
+                text-align: left;
+              }
+            }
+
+            .actions {
+              flex: 0.2;
+              text-align: right;
+            }
+          }
+        }
+
+        .n-card__content {
+          padding: 0;
+          height: calc(
+            var(--workspace-main-content-height) *
+              var(--file-page-card-content-height)
+          );
+        }
+      }
+    }
   }
 
   .n-layout {
