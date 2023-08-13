@@ -53,17 +53,19 @@ import {
   NGradientText,
 } from "naive-ui";
 
+import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 import formatDate from "@/helpers/dayjs/formatDate";
+import { usePreferencesStore } from "@/store/preferences";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
-import { Drawer } from "@/types/Drawer";
 
 const isLoading = ref(false);
 const filesStore = useFilesStore();
 const drawerStore = useDrawerStore();
 const variantsStore = useVariantsStore();
+const preferencesStore = usePreferencesStore();
 
 onBeforeMount(async () => {
   await fetchVariants();
@@ -92,6 +94,10 @@ const variants = computed((): IVariantDto[] => {
 });
 
 function toggleNotesDrawer() {
+  if (preferencesStore.isSiderCollapsed) {
+    preferencesStore.toggleSider();
+  }
+
   drawerStore.setActiveDrawer(Drawer.Notes);
 }
 </script>
