@@ -1,5 +1,5 @@
 <template>
-  <div class="sider">
+  <div id="sider" class="sider">
     <n-tabs
       animated
       type="line"
@@ -16,6 +16,8 @@
         <component :is="tab" />
       </n-tab-pane>
     </n-tabs>
+
+    <notes-drawer />
   </div>
 </template>
 
@@ -24,6 +26,7 @@ import { NTabs, NTabPane } from "naive-ui";
 
 import FilesTab from "./FilesTab.vue";
 import BundlesTab from "./BundlesTab.vue";
+import NotesDrawer from "./NotesDrawer.vue";
 import BlueprintsTab from "./BlueprintsTab.vue";
 
 const tabs = [

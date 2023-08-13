@@ -8,6 +8,4 @@ export interface IFileDto {
   createdAt: string;
 
   updatedAt: string;
-
-  blueprintId: number;
 }

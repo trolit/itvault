@@ -1,27 +1,54 @@
 import { defineStore } from "pinia";
 
-import { useBundlesStore } from "./bundles";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
+import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
 interface IState {
   ROOT: string;
 
-  activeItem: IFileDto | null;
+  activeTabId: number;
+
+  tabs: {
+    file: IFileDto;
+    activeVariantId: string;
+    variants: { value: IVariantDto; content: string; isVisible: boolean }[];
+  }[];
 }
 
 export const useFilesStore = defineStore("files", {
   state: (): IState => ({
+    tabs: [],
     ROOT: ".",
-    activeItem: null,
+    activeTabId: 0,
   }),
 
   actions: {
-    setActiveItem(activeItem: IFileDto) {
-      this.activeItem = activeItem;
+    getActiveTab() {
+      return this.tabs.find(tab => tab.file.id === this.activeTabId);
+    },
 
-      const bundlesStore = useBundlesStore();
+    setActiveTab(file: IFileDto) {
+      const tab = this.tabs.find(tab => tab.file.id === file.id);
 
-      bundlesStore.activeItem = null;
+      this.activeTabId = file.id;
+
+      if (tab) {
+        return;
+      }
+
+      this.tabs.push({ file, variants: [], activeVariantId: "" });
+    },
+
+    closeTab(id: number) {
+      const tabIndex = this.tabs.findIndex(tab => tab.file.id === id);
+
+      if (~tabIndex) {
+        this.tabs.splice(tabIndex, 1);
+
+        if (this.tabs.length) {
+          this.activeTabId = this.tabs[0].file.id;
+        }
+      }
     },
   },
 });

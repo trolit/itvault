@@ -5,9 +5,16 @@
   --sidebar-top-panel-height: 60px;
   --sidebar-bottom-panel-height: 30px;
 
+  /* WORKSPACE - SIDER*/
   --workspace-sider-tabs-height: 50px;
   --workspace-sider-content-height: calc(
     100vh - var(--header-height) - var(--workspace-sider-tabs-height)
   );
-  --workspace-main-content-height: calc(100vh - var(--header-height));
+
+  /* WORKSPACE - MAIN CONTENT */
+  --workspace-main-content-files-tabs-height: 40px;
+  --workspace-main-content-files-height: calc(
+    100vh - var(--header-height) -
+      var(--workspace-main-content-files-tabs-height)
+  );
 }

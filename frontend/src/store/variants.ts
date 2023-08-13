@@ -5,26 +5,25 @@ import { useFilesStore } from "./files";
 import { useWorkspacesStore } from "./workspaces";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
-interface IState {
-  items: IVariantDto[];
-
-  variantTabs: { instance: IVariantDto; content: string }[];
-}
+interface IState {}
 
 export const useVariantsStore = defineStore("variants", {
-  state: (): IState => ({
-    items: [],
-    variantTabs: [],
-  }),
+  state: (): IState => ({}),
 
   actions: {
     async getAll() {
       const filesStore = useFilesStore();
       const workspacesStore = useWorkspacesStore();
 
+      const tab = filesStore.getActiveTab();
+
+      if (!tab || tab.variants.length) {
+        return;
+      }
+
       const params = {
         version: 1,
-        fileId: filesStore?.activeItem?.id,
+        fileId: tab?.file?.id,
         workspaceId: workspacesStore?.activeItem?.id,
       };
 
@@ -32,33 +31,52 @@ export const useVariantsStore = defineStore("variants", {
         params,
       });
 
-      this.items = data;
+      tab.variants = data.map(variant => ({
+        value: variant,
+        content: "",
+        isVisible: false,
+      }));
 
       return data;
     },
 
-    newVariantTab(id: string) {
-      const tab = this.variantTabs.find(tab => tab.instance.id === id);
+    setActiveTab(id: string) {
+      const filesStore = useFilesStore();
 
-      if (tab) {
+      const tab = filesStore.getActiveTab();
+
+      if (!tab) {
         return;
       }
 
-      const instance = this.items.find(item => item.id === id);
+      const variantTab = tab.variants.find(variant => variant.value.id === id);
 
-      if (instance) {
-        this.variantTabs.push({ instance, content: "" });
+      if (variantTab) {
+        tab.activeVariantId = id;
+        variantTab.isVisible = false;
       }
     },
 
-    closeVariantTab(id: string) {
-      const tabIndex = this.variantTabs.findIndex(
-        tab => tab.instance.id === id
-      );
+    closeTab(id: string) {
+      const filesStore = useFilesStore();
 
-      if (~tabIndex) {
-        this.variantTabs.splice(tabIndex, 1);
+      const tab = filesStore.getActiveTab();
+
+      if (!tab) {
+        return;
       }
+
+      const variantTab = tab.variants.find(variant => variant.value.id === id);
+
+      if (!variantTab) {
+        return;
+      }
+
+      if (tab.activeVariantId === id) {
+        tab.activeVariantId = "";
+      }
+
+      variantTab.isVisible = false;
     },
   },
 });

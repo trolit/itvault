@@ -18,29 +18,35 @@
       .n-tabs-nav {
         height: var(--workspace-sider-tabs-height);
       }
-
-      .n-tab-pane {
-        padding-top: 0;
-      }
     }
   }
 
   .main-content-wrapper {
     width: 100%;
 
+    --file-page-card-header-height: 120px;
+    --content-height: calc(
+      var(--workspace-main-content-files-height) -
+        var(--file-page-card-header-height)
+    );
+    --file-page-variants-tab-height: 50px;
+
     .empty-section {
-      height: var(--workspace-main-content-height);
+      height: calc(100vh - var(--header-height));
     }
 
     .file-page {
-      height: var(--workspace-main-content-height);
+      .empty-section {
+        height: var(--content-height);
+      }
 
-      --file-page-card-header-height: 0.2;
-      --file-page-card-content-height: 0.8;
+      .n-tabs {
+        .n-tabs-nav {
+          height: var(--workspace-main-content-files-tabs-height);
+        }
+      }
 
       .n-card {
-        height: 100%;
-
         .n-card-header {
           padding: 0;
 
@@ -49,10 +55,7 @@
             padding: 0 10px;
             align-items: center;
             justify-content: space-between;
-            height: calc(
-              var(--workspace-main-content-height) *
-                var(--file-page-card-header-height)
-            );
+            height: var(--file-page-card-header-height);
 
             .timeline-wrapper {
               flex: 0.8;
@@ -71,34 +74,41 @@
 
         .n-card__content {
           padding: 0;
-          height: calc(
-            var(--workspace-main-content-height) *
-              var(--file-page-card-content-height)
-          );
 
           .variant-viewer {
             height: 100%;
 
-            .n-tab-pane {
-              display: flex;
-
-              .line-numbers {
-                flex: 0.02;
-                text-align: center;
-
-                span {
-                  counter-increment: linenumber;
-
-                  &::before {
-                    content: counter(linenumber);
-                    display: block;
-                    color: #506882;
-                  }
-                }
+            .n-tabs {
+              .n-tabs-nav {
+                height: var(--file-page-variants-tab-height);
               }
 
-              .text-render {
-                flex: 0.98;
+              .n-tab-pane {
+                height: calc(
+                  var(--workspace-main-content-files-height) -
+                    var(--file-page-card-header-height) -
+                    var(--file-page-variants-tab-height)
+                );
+                display: flex;
+
+                .line-numbers {
+                  flex: 0.02;
+                  text-align: center;
+
+                  span {
+                    counter-increment: linenumber;
+
+                    &::before {
+                      content: counter(linenumber);
+                      display: block;
+                      color: #506882;
+                    }
+                  }
+                }
+
+                .text-render {
+                  flex: 0.98;
+                }
               }
             }
           }
