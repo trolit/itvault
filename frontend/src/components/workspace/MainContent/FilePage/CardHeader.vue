@@ -36,7 +36,7 @@
     </div>
 
     <div class="actions">
-      <n-button>Notes</n-button>
+      <n-button @click="toggleNotesDrawer">Notes</n-button>
     </div>
   </div>
 </template>
@@ -53,13 +53,16 @@ import {
   NGradientText,
 } from "naive-ui";
 
+import { useDrawerStore } from "@/store/drawer";
 import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 import formatDate from "@/helpers/dayjs/formatDate";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
+import { Drawer } from "@/types/Drawer";
 
 const isLoading = ref(false);
 const filesStore = useFilesStore();
+const drawerStore = useDrawerStore();
 const variantsStore = useVariantsStore();
 
 onBeforeMount(async () => {
@@ -87,4 +90,8 @@ const variants = computed((): IVariantDto[] => {
 
   return tab.variants.map(({ value }) => value);
 });
+
+function toggleNotesDrawer() {
+  drawerStore.setActiveDrawer(Drawer.Notes);
+}
 </script>
