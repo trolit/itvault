@@ -70,8 +70,30 @@ const updatePrefixOnToggle = (
 const nodeProps = ({ option }: { option: TreeOption }) => {
   return {
     onClick() {
-      if (!option.children) {
-        console.log(option);
+      if (!option.children && option.isLeaf) {
+        const { key } = option;
+
+        if (!key) {
+          return;
+        }
+
+        const id = key.toString().split("-").pop();
+
+        if (!id) {
+          return;
+        }
+
+        const parsedId = parseInt(id);
+
+        const file = workspacesStore.tree.find(
+          element => element.id === parsedId && !!element?.originalFilename
+        );
+
+        if (!file) {
+          return;
+        }
+
+        filesStore.setActiveItem(file);
       }
     },
   };
