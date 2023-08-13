@@ -1,7 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import { useWorkspacesStore } from "./workspace";
+import { useWorkspacesStore } from "./workspaces";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
@@ -11,7 +11,7 @@ interface IState {
   items: IBlueprintDto[];
 }
 
-export const useBlueprintsStore = defineStore("blueprint", {
+export const useBlueprintsStore = defineStore("blueprints", {
   state: (): IState => ({
     total: 0,
     items: [],

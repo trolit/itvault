@@ -24,8 +24,8 @@ import {
   Folder as OpenedFolderIcon,
   FolderOff as ClosedFolderIcon,
 } from "@vicons/carbon";
-import { useFilesStore } from "@/stores/file";
-import { useWorkspacesStore } from "@/stores/workspace";
+import { useFilesStore } from "@/store/files";
+import { useWorkspacesStore } from "@/store/workspaces";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";

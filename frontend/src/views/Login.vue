@@ -23,7 +23,7 @@ import { useRouter } from "vue-router";
 import { NCard, NDivider } from "naive-ui";
 import { DotMark as DotMarkIcon } from "@vicons/carbon";
 
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/store/auth";
 import Icon from "@/components/common/Icon.vue";
 import Brand from "@/components/common/Brand.vue";
 import LoginForm from "@/components/login/Form.vue";

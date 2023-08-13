@@ -17,7 +17,7 @@ interface IState {
   tree: (IDirectoryDto & IFileDto)[];
 }
 
-export const useWorkspacesStore = defineStore("workspace", {
+export const useWorkspacesStore = defineStore("workspaces", {
   state: (): IState => ({
     tree: [],
     total: 0,

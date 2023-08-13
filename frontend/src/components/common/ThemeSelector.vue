@@ -27,7 +27,7 @@ import {
   THEME_LIGHT,
   THEME_DARK_DIMMED,
 } from "@/assets/constants/themes";
-import { usePreferencesStore } from "@/stores/preferences";
+import { usePreferencesStore } from "@/store/preferences";
 import type { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 const preferencesStore = usePreferencesStore();

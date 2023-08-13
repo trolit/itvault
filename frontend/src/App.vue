@@ -43,7 +43,7 @@ import { RouterView, useRoute } from "vue-router";
 import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
 
 import AppHeader from "@/components/header/Index.vue";
-import { usePreferencesStore } from "@/stores/preferences";
+import { usePreferencesStore } from "@/store/preferences";
 import { darkDimmedTheme } from "@/custom-themes/DarkDimmed";
 import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
 import { ROUTE_GUEST_NAME, ROUTE_LOGIN_NAME } from "./assets/constants/routes";

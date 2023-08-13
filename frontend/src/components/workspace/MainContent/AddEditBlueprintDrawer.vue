@@ -21,7 +21,7 @@ import { computed } from "vue";
 import { NDrawer, NDrawerContent } from "naive-ui";
 
 import { Drawer } from "@/types/Drawer";
-import { useDrawerStore } from "@/stores/drawer";
+import { useDrawerStore } from "@/store/drawer";
 
 const drawerStore = useDrawerStore();
 

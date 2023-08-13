@@ -79,8 +79,8 @@ import {
 import { onMounted, ref, computed } from "vue";
 
 import { Drawer } from "@/types/Drawer";
-import { useDrawerStore } from "@/stores/drawer";
-import { useBlueprintsStore } from "@/stores/blueprint";
+import { useDrawerStore } from "@/store/drawer";
+import { useBlueprintsStore } from "@/store/blueprints";
 
 const page = ref(1);
 const isLoading = ref(false);

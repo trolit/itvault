@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/store/auth";
 import type { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 

@@ -17,7 +17,7 @@
 import { AxiosError } from "axios";
 import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
-import { useWorkspacesStore } from "@/stores/workspace";
+import { useWorkspacesStore } from "@/store/workspaces";
 
 import Sider from "@/components/workspace/Sider/Index.vue";
 import LoadingPage from "@/components/common/LoadingPage.vue";
