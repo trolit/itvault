@@ -41,7 +41,7 @@ import { useForm, useField } from "vee-validate";
 import { object, string, type SchemaOf } from "yup";
 import { NInput, NForm, NFormItem, NButton, useMessage } from "naive-ui";
 
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/store/auth";
 import type { ILoginForm } from "@/interfaces/ILoginForm";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
@@ -92,3 +92,4 @@ const onSubmit = handleSubmit.withControlled(async values => {
   }
 });
 </script>
+@/store/auth

@@ -58,7 +58,7 @@ import {
 import type { DataTableColumns, PaginationProps } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
-import { useWorkspacesStore } from "@/stores/workspace";
+import { useWorkspacesStore } from "@/store/workspace";
 import { Permission } from "@shared/types/enums/Permission";
 import { ROUTE_WORKSPACE_NAME } from "@/assets/constants/routes";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
@@ -179,3 +179,4 @@ async function getWorkspaces() {
   }
 }
 </script>
+@/store/workspace

@@ -15,8 +15,8 @@
 import { NTag } from "naive-ui";
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import { useAuthStore } from "@/stores/auth";
-import { useWorkspacesStore } from "@/stores/workspace";
+import { useAuthStore } from "@/store/auth";
+import { useWorkspacesStore } from "@/store/workspace";
 import { ROUTE_WORKSPACE_NAME } from "@/assets/constants/routes";
 
 const route = useRoute();
@@ -36,3 +36,4 @@ const activeWorkspace = computed(() => {
   return workspacesStore.activeItem;
 });
 </script>
+@/store/auth@/store/workspace

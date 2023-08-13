@@ -19,7 +19,7 @@ import Login from "@/views/Login.vue";
 import Updates from "@/views/Updates.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Workspace from "@/views/Workspace.vue";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/store/auth";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

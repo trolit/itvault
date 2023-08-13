@@ -118,7 +118,7 @@ import {
 } from "@vicons/carbon";
 
 import RefCard from "./RefCard.vue";
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/store/auth";
 
 const {
   profile: { email, roleName, permissions },
@@ -128,3 +128,4 @@ const groupedPermissions = computed(() => {
   return groupBy(permissions, value => value.group);
 });
 </script>
+@/store/auth

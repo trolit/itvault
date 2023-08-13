@@ -11,7 +11,7 @@ interface IState {
   items: IBlueprintDto[];
 }
 
-export const useBlueprintsStore = defineStore("blueprint", {
+export const useBlueprintsStore = defineStore("blueprints", {
   state: (): IState => ({
     total: 0,
     items: [],

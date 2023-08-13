@@ -28,9 +28,9 @@ import { onBeforeMount, ref } from "vue";
 import { NIcon, NInput, NButton, NScrollbar, NSpin } from "naive-ui";
 import { Reset as ResetIcon, Search as SearchIcon } from "@vicons/carbon";
 
-import { useFilesStore } from "@/stores/file";
+import { useFilesStore } from "@/store/file";
 import FileHierarchy from "./FileHierarchy.vue";
-import { useWorkspacesStore } from "@/stores/workspace";
+import { useWorkspacesStore } from "@/store/workspace";
 
 const isLoading = ref(false);
 const filesStore = useFilesStore();
@@ -56,3 +56,4 @@ async function initTree() {
   }
 }
 </script>
+@/store/file@/store/workspace

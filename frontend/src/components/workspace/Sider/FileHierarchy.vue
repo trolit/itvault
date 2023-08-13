@@ -24,8 +24,8 @@ import {
   Folder as OpenedFolderIcon,
   FolderOff as ClosedFolderIcon,
 } from "@vicons/carbon";
-import { useFilesStore } from "@/stores/file";
-import { useWorkspacesStore } from "@/stores/workspace";
+import { useFilesStore } from "@/store/file";
+import { useWorkspacesStore } from "@/store/workspace";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
@@ -188,3 +188,4 @@ async function onLoadMore(node: TreeOption, relativePath: string) {
   }
 }
 </script>
+@/store/file@/store/workspace

@@ -19,7 +19,7 @@ import { useRouter } from "vue-router";
 import { NTooltip, NIcon, NButton } from "naive-ui";
 import { FlashOff as LogoutIcon } from "@vicons/carbon";
 
-import { useAuthStore } from "@/stores/auth";
+import { useAuthStore } from "@/store/auth";
 import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
 
 const router = useRouter();
@@ -46,3 +46,4 @@ const onLogout = async () => {
   }
 };
 </script>
+@/store/auth
