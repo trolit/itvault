@@ -7,7 +7,7 @@
 
       <!-- @TODO scroll -->
       <template #default>
-        <variant-viewer v-if="variantStore.activeItem" />
+        <variant-viewer v-if="variantStore.variantTabs.length" />
 
         <empty v-else title="Select variant to display file content." />
       </template>
