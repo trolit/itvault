@@ -31,6 +31,14 @@
     .empty-section {
       height: var(--workspace-main-content-height);
     }
+
+    .file-page {
+      height: var(--workspace-main-content-height);
+
+      .n-card {
+        height: 100%;
+      }
+    }
   }
 
   .n-layout {
