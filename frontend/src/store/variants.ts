@@ -8,6 +8,7 @@ import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 interface IState {
   items: IVariantDto[];
 
+  // @DEPRECATED
   variantTabs: { instance: IVariantDto; content: string }[];
 }
 
@@ -22,9 +23,11 @@ export const useVariantsStore = defineStore("variants", {
       const filesStore = useFilesStore();
       const workspacesStore = useWorkspacesStore();
 
+      const tab = filesStore.getActiveTab();
+
       const params = {
         version: 1,
-        fileId: filesStore?.activeItem?.id,
+        fileId: tab?.file?.id,
         workspaceId: workspacesStore?.activeItem?.id,
       };
 

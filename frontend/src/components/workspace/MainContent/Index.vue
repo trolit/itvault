@@ -1,6 +1,6 @@
 <template>
   <div id="main-content">
-    <empty v-if="!hasSomethingToDisplay" title="Nothing to display 😢">
+    <empty v-if="nothingSelected" title="Nothing to display 😢">
       <template #extra>
         <n-grid :x-gap="100" :cols="2">
           <n-grid-item v-for="(item, index) in gridItems" :key="index">
@@ -14,7 +14,7 @@
       </template>
     </empty>
 
-    <file-page v-else-if="filesStore.activeItem" />
+    <file-page v-else-if="filesStore.tabs.length" />
 
     <add-edit-blueprint-drawer />
   </div>
@@ -43,7 +43,7 @@ const gridItems = [
   },
 ];
 
-const hasSomethingToDisplay = computed<boolean>((): boolean => {
-  return !!filesStore.activeItem;
+const nothingSelected = computed<boolean>((): boolean => {
+  return !filesStore.tabs.length;
 });
 </script>
