@@ -7,7 +7,7 @@ export class VariantMapper extends BaseMapper<Variant> implements IVariantDto {
   id: string;
   name: string;
   filename: string;
-  createdBy: string;
+  createdAt: string;
   size: { value: number; unit: string };
 
   constructor(
@@ -16,8 +16,8 @@ export class VariantMapper extends BaseMapper<Variant> implements IVariantDto {
   ) {
     super(data, keys);
 
-    if (data.createdBy) {
-      this.createdBy = data.createdBy.fullName;
+    if (data.createdAt) {
+      this.createdAt = data.createdAt.toISOString();
     }
 
     this.size = {
