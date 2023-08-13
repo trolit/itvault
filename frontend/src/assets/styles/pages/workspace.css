@@ -36,6 +36,10 @@
     }
 
     .file-page {
+      .empty-section {
+        height: var(--content-height);
+      }
+
       .n-tabs {
         .n-tabs-nav {
           height: var(--workspace-main-content-files-tabs-height);
