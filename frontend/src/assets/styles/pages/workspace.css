@@ -75,6 +75,30 @@
             var(--workspace-main-content-height) *
               var(--file-page-card-content-height)
           );
+
+          .variant-viewer {
+            height: 100%;
+            display: flex;
+
+            .line-numbers {
+              flex: 0.02;
+              text-align: center;
+
+              span {
+                counter-increment: linenumber;
+
+                &::before {
+                  content: counter(linenumber);
+                  display: block;
+                  color: #506882;
+                }
+              }
+            }
+
+            .n-input {
+              flex: 0.98;
+            }
+          }
         }
       }
     }
