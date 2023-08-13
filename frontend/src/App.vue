@@ -79,4 +79,3 @@ const withAppHeader: ComputedRef<boolean> = computed(
     ![ROUTE_LOGIN_NAME, ROUTE_GUEST_NAME].includes(route.name)
 );
 </script>
-@/store/preferences

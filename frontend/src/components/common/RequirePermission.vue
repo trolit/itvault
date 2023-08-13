@@ -24,4 +24,3 @@ function isEnabled() {
   return isPermissionEnabled(props.permission as Permission, permissions);
 }
 </script>
-@/store/auth

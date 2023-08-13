@@ -92,4 +92,3 @@ const onSubmit = handleSubmit.withControlled(async values => {
   }
 });
 </script>
-@/store/auth

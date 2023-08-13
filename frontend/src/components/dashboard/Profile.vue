@@ -128,4 +128,3 @@ const groupedPermissions = computed(() => {
   return groupBy(permissions, value => value.group);
 });
 </script>
-@/store/auth

@@ -52,4 +52,3 @@ function setTheme(theme: string): void {
   preferencesStore.setTheme(theme);
 }
 </script>
-@/store/preferences

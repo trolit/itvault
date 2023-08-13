@@ -43,4 +43,3 @@ onMounted(async () => {
   }
 });
 </script>
-@/store/auth

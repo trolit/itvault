@@ -33,4 +33,3 @@ const onShowUpdate = () => {
   drawerStore.setActiveDrawer(null);
 };
 </script>
-@/store/drawer

@@ -46,4 +46,3 @@ const onLogout = async () => {
   }
 };
 </script>
-@/store/auth
