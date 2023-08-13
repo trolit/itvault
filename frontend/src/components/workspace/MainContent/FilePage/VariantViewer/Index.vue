@@ -4,12 +4,12 @@
       <span v-for="index in numberOfLines" :key="index"></span>
     </div>
 
-    <text-to-render />
+    <text-render />
   </div>
 </template>
 
 <script setup lang="ts">
-import { h, ref, computed } from "vue";
+import { h, ref, computed, type VNode } from "vue";
 
 const text = ref("test1 test2\ntest3\nelo");
 
@@ -17,9 +17,11 @@ const numberOfLines = computed((): number => {
   return text.value.split("\n").length;
 });
 
-const textToRender = h(
-  "div", // type
-  { id: "foo", class: "bar", innerHTML: text }, // props
-  []
-);
+const textRender = computed((): VNode => {
+  const splitText = text.value.toString().split("\n");
+
+  const children = splitText.map(part => h("div", part));
+
+  return h("div", { class: "text-render" }, children);
+});
 </script>
