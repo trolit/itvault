@@ -23,6 +23,7 @@
 import { NTabs, NTabPane } from "naive-ui";
 
 import FilesTab from "./FilesTab.vue";
+import BundlesTab from "./BundlesTab.vue";
 import BlueprintsTab from "./BlueprintsTab.vue";
 
 const tabs = [
@@ -35,6 +36,11 @@ const tabs = [
     key: "files",
     text: "Files",
     tab: FilesTab,
+  },
+  {
+    key: "bundles",
+    text: "Bundles",
+    tab: BundlesTab,
   },
 ];
 
