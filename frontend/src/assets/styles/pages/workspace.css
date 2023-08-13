@@ -32,7 +32,7 @@
     --file-page-variants-tab-height: 50px;
 
     .empty-section {
-      height: var(--content-height);
+      height: calc(100vh - var(--header-height));
     }
 
     .file-page {
