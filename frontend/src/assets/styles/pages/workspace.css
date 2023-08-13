@@ -24,19 +24,24 @@
   .main-content-wrapper {
     width: 100%;
 
+    --file-page-card-header-height: 120px;
+    --content-height: calc(
+      var(--workspace-main-content-files-height) -
+        var(--file-page-card-header-height)
+    );
+
     .empty-section {
-      height: var(--workspace-main-content-height);
+      height: var(--content-height);
     }
 
     .file-page {
-      height: var(--workspace-main-content-height);
-
-      --file-page-card-header-height: 0.2;
-      --file-page-card-content-height: 0.8;
+      .n-tabs {
+        .n-tabs-nav {
+          height: var(--workspace-main-content-files-tabs-height);
+        }
+      }
 
       .n-card {
-        height: 100%;
-
         .n-card-header {
           padding: 0;
 
@@ -45,10 +50,7 @@
             padding: 0 10px;
             align-items: center;
             justify-content: space-between;
-            height: calc(
-              var(--workspace-main-content-height) *
-                var(--file-page-card-header-height)
-            );
+            height: var(--file-page-card-header-height);
 
             .timeline-wrapper {
               flex: 0.8;
@@ -67,10 +69,7 @@
 
         .n-card__content {
           padding: 0;
-          height: calc(
-            var(--workspace-main-content-height) *
-              var(--file-page-card-content-height)
-          );
+          height: var(--content-height);
 
           .variant-viewer {
             height: 100%;

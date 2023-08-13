@@ -12,7 +12,7 @@
         :tab="file.originalFilename"
         :name="file.id"
       >
-        <n-card :segmented="{ content: true }">
+        <n-card :bordered="false">
           <template #header>
             <card-header />
           </template>
