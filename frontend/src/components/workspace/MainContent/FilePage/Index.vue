@@ -6,7 +6,11 @@
       </template>
 
       <!-- @TODO scroll -->
-      <template #default> CONTENT @TBA </template>
+      <template #default>
+        <div v-if="variantStore.activeItem">aha</div>
+
+        <empty v-else title="Select variant to display file content." />
+      </template>
     </n-card>
 
     <!-- @TODO variant header section -->
@@ -21,4 +25,8 @@
 import { NCard } from "naive-ui";
 
 import CardHeader from "./CardHeader.vue";
+import Empty from "@/components/common/Empty.vue";
+import { useVariantsStore } from "@/store/variants";
+
+const variantStore = useVariantsStore();
 </script>
