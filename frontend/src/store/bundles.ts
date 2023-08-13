@@ -1,24 +1,9 @@
 import { defineStore } from "pinia";
 
-import { useFilesStore } from "./files";
-import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-
-interface IState {
-  activeItem: IBundleDto | null;
-}
+interface IState {}
 
 export const useBundlesStore = defineStore("bundles", {
-  state: (): IState => ({
-    activeItem: null,
-  }),
+  state: (): IState => ({}),
 
-  actions: {
-    setActiveItem(activeItem: IBundleDto) {
-      this.activeItem = activeItem;
-
-      const filesStore = useFilesStore();
-
-      filesStore.activeItem = null;
-    },
-  },
+  actions: {},
 });

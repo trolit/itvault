@@ -6,15 +6,12 @@ import { useWorkspacesStore } from "./workspaces";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
 interface IState {
-  items: IVariantDto[];
-
   // @DEPRECATED
   variantTabs: { instance: IVariantDto; content: string }[];
 }
 
 export const useVariantsStore = defineStore("variants", {
   state: (): IState => ({
-    items: [],
     variantTabs: [],
   }),
 
@@ -24,6 +21,10 @@ export const useVariantsStore = defineStore("variants", {
       const workspacesStore = useWorkspacesStore();
 
       const tab = filesStore.getActiveTab();
+
+      if (!tab || tab.variants.length) {
+        return;
+      }
 
       const params = {
         version: 1,
@@ -35,7 +36,10 @@ export const useVariantsStore = defineStore("variants", {
         params,
       });
 
-      this.items = data;
+      tab.variants = data.map(variant => ({
+        value: variant,
+        content: "",
+      }));
 
       return data;
     },
