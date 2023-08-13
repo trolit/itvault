@@ -1,10 +1,12 @@
 <template>
+  <!-- @close="variantsStore.closeVariantTab" -->
   <div class="variant-viewer">
     <n-tabs
       closable
       type="card"
-      v-model:value="activeTab"
-      @close="variantsStore.closeVariantTab"
+      :value="props.activeTab"
+      @close="variantsStore.closeTab"
+      @update:value="variantsStore.setActiveTab"
     >
       <n-tab-pane
         v-for="{ key, tab, content } in panels"
@@ -23,25 +25,38 @@
 </template>
 
 <script setup lang="ts">
+import { h, computed } from "vue";
 import { NTabs, NTabPane } from "naive-ui";
-import { h, ref, computed } from "vue";
 
+import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 
+const filesStore = useFilesStore();
 const variantsStore = useVariantsStore();
 
-const activeTab = ref(variantsStore.variantTabs[0].instance.id);
+const props = defineProps({
+  activeTab: {
+    type: String,
+    required: true,
+  },
+});
 
 /** */
 
 const panels = computed(() => {
-  const { variantTabs } = variantsStore;
+  const tab = filesStore.getActiveTab();
 
-  return variantTabs.map(({ instance, content }) => ({
-    key: instance.id,
-    tab: instance.name,
-    content: "test1 test2\ntest3\ntest5", // @TODO
-  }));
+  if (!tab) {
+    return [];
+  }
+
+  return tab.variants
+    .filter(variant => !variant.isVisible)
+    .map(({ value, content }) => ({
+      key: value.id,
+      tab: value.name,
+      content: `test1 test2\ntest3\n${tab.file.originalFilename}`, // @TODO
+    }));
 });
 
 function getNumberOfLines(text: string) {

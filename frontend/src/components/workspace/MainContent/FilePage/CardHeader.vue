@@ -5,11 +5,11 @@
     <div class="timeline-wrapper" style="overflow: auto">
       <n-timeline v-if="!isLoading" horizontal>
         <n-timeline-item
-          v-for="({ id, name, createdAt, size }, index) in variantsStore.items"
+          v-for="({ id, name, createdAt, size }, index) in variants"
           :key="index"
         >
           <template #default>
-            <n-button @click="variantsStore.newVariantTab(id)">
+            <n-button @click="variantsStore.setActiveTab(id)">
               {{ name }}
             </n-button>
 
@@ -42,21 +42,24 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { Add as AddIcon } from "@vicons/carbon";
 import {
+  NIcon,
+  NSpin,
   NButton,
   NTimeline,
   NTimelineItem,
-  NIcon,
-  NSpin,
   NGradientText,
 } from "naive-ui";
 
+import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 import formatDate from "@/helpers/dayjs/formatDate";
+import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
 const isLoading = ref(false);
+const filesStore = useFilesStore();
 const variantsStore = useVariantsStore();
 
 onBeforeMount(async () => {
@@ -74,4 +77,14 @@ async function fetchVariants() {
     isLoading.value = false;
   }
 }
+
+const variants = computed((): IVariantDto[] => {
+  const tab = filesStore.getActiveTab();
+
+  if (!tab) {
+    return [];
+  }
+
+  return tab.variants.map(({ value }) => value);
+});
 </script>

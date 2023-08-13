@@ -10,15 +10,16 @@ interface IState {
 
   tabs: {
     file: IFileDto;
-    variants: { value: IVariantDto; content: string }[];
+    activeVariantId: string;
+    variants: { value: IVariantDto; content: string; isVisible: boolean }[];
   }[];
 }
 
 export const useFilesStore = defineStore("files", {
   state: (): IState => ({
+    tabs: [],
     ROOT: ".",
     activeTabId: 0,
-    tabs: [],
   }),
 
   actions: {
@@ -35,13 +36,17 @@ export const useFilesStore = defineStore("files", {
         return;
       }
 
-      this.tabs.push({ file, variants: [] });
+      this.tabs.push({ file, variants: [], activeVariantId: "" });
     },
 
-    closeFileTab(id: number) {
+    closeTab(id: number) {
       const tabIndex = this.tabs.findIndex(tab => tab.file.id === id);
 
       if (~tabIndex) {
+        if (this.tabs[tabIndex].file.id === id) {
+          this.activeTabId = 0;
+        }
+
         this.tabs.splice(tabIndex, 1);
       }
     },
