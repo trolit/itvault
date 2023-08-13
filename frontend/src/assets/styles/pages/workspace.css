@@ -25,6 +25,14 @@
     }
   }
 
+  .main-content-wrapper {
+    width: 100%;
+
+    .empty-section {
+      height: var(--workspace-main-content-height);
+    }
+  }
+
   .n-layout {
     height: 100%;
 
