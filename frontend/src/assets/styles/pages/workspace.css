@@ -29,6 +29,7 @@
       var(--workspace-main-content-files-height) -
         var(--file-page-card-header-height)
     );
+    --file-page-variants-tab-height: 50px;
 
     .empty-section {
       height: var(--content-height);
@@ -69,31 +70,41 @@
 
         .n-card__content {
           padding: 0;
-          height: var(--content-height);
 
           .variant-viewer {
             height: 100%;
 
-            .n-tab-pane {
-              display: flex;
-
-              .line-numbers {
-                flex: 0.02;
-                text-align: center;
-
-                span {
-                  counter-increment: linenumber;
-
-                  &::before {
-                    content: counter(linenumber);
-                    display: block;
-                    color: #506882;
-                  }
-                }
+            .n-tabs {
+              .n-tabs-nav {
+                height: var(--file-page-variants-tab-height);
               }
 
-              .text-render {
-                flex: 0.98;
+              .n-tab-pane {
+                height: calc(
+                  var(--workspace-main-content-files-height) -
+                    var(--file-page-card-header-height) -
+                    var(--file-page-variants-tab-height)
+                );
+                display: flex;
+
+                .line-numbers {
+                  flex: 0.02;
+                  text-align: center;
+
+                  span {
+                    counter-increment: linenumber;
+
+                    &::before {
+                      content: counter(linenumber);
+                      display: block;
+                      color: #506882;
+                    }
+                  }
+                }
+
+                .text-render {
+                  flex: 0.98;
+                }
               }
             }
           }

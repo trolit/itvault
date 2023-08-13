@@ -43,10 +43,7 @@ export const useFilesStore = defineStore("files", {
       const tabIndex = this.tabs.findIndex(tab => tab.file.id === id);
 
       if (~tabIndex) {
-        if (this.tabs[tabIndex].file.id === id) {
-          this.activeTabId = 0;
-        }
-
+        this.activeTabId = 0;
         this.tabs.splice(tabIndex, 1);
       }
     },
