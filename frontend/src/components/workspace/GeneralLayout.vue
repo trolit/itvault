@@ -2,7 +2,7 @@
   <n-layout has-sider>
     <n-layout-sider
       bordered
-      show-trigger
+      :show-trigger="!isNotesDrawerActive"
       :width="340"
       :collapsed-width="8"
       collapse-mode="transform"
@@ -24,9 +24,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { NLayout, NLayoutSider } from "naive-ui";
+
+import { Drawer } from "@/types/Drawer";
+import { useDrawerStore } from "@/store/drawer";
 
 const inverted = ref(false);
 const isCollapsed = ref(false);
+const drawerStore = useDrawerStore();
+
+const isNotesDrawerActive = computed((): boolean => {
+  return drawerStore.isDrawerActive(Drawer.Notes) || false;
+});
 </script>
