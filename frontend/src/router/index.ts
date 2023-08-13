@@ -20,8 +20,6 @@ import Updates from "@/views/Updates.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Workspace from "@/views/Workspace.vue";
 import { useAuthStore } from "@/stores/auth";
-import { localStorageManager } from "@/helpers/localStorageManager";
-import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -85,15 +83,6 @@ router.beforeEach(
 
       try {
         await authStore.status();
-
-        // @TODO adjust status request to return user data (instead of storing it in local storage)
-        const profileData = localStorageManager.load<ILoggedUserDto>("profile");
-
-        if (!profileData) {
-          throw "Seems to be logged in but missing profile data! Try to relogin.";
-        }
-
-        authStore.profile = profileData;
 
         next();
       } catch (error) {

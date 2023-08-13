@@ -109,6 +109,9 @@ export class FileRepository
           id: workspaceId,
         },
       },
+      relations: {
+        directory: true,
+      },
     });
   }
 

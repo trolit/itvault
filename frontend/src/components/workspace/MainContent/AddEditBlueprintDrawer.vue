@@ -26,7 +26,7 @@ import { useDrawerStore } from "@/stores/drawer";
 const drawerStore = useDrawerStore();
 
 const isActive = computed((): boolean => {
-  return drawerStore.isDrawerActive(Drawer.AddEditBlueprint);
+  return drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false;
 });
 
 const onShowUpdate = () => {
