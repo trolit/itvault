@@ -3,7 +3,7 @@
     <n-tabs
       closable
       type="card"
-      v-model:value="filesStore.activeTab"
+      v-model:value="filesStore.activeTabId"
       @close="filesStore.closeFileTab"
     >
       <n-tab-pane
