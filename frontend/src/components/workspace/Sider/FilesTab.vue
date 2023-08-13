@@ -30,7 +30,7 @@ import { Reset as ResetIcon, Search as SearchIcon } from "@vicons/carbon";
 
 import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
-import { useWorkspacesStore } from "@/store/workspace";
+import { useWorkspacesStore } from "@/store/workspaces";
 
 const isLoading = ref(false);
 const filesStore = useFilesStore();
