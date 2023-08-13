@@ -1,4 +1,5 @@
 <template>
+  <!-- @TODO notes drawer -->
   <!-- @TODO overflow: auto for timeline! -->
   <div class="card-header">
     <div class="timeline-wrapper" style="overflow: auto">
