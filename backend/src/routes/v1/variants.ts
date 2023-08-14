@@ -10,8 +10,8 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { storeSchema } from "@schemas/Variant/storeSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
@@ -19,10 +19,10 @@ import { usePatchNameSuperSchema } from "@schemas/Variant/usePatchNameSuperSchem
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Variant/StoreController";
-import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
-import { GetByIdController } from "@controllers/Variant/GetByIdController";
+import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { PatchNameController } from "@controllers/Variant/PatchNameController";
+import { GetContentByIdController } from "@controllers/Variant/GetContentByIdController";
 
 const variantsRouter = Router();
 
@@ -41,9 +41,9 @@ variantsRouter.get(
 );
 
 variantsRouter.get(
-  "/:id",
-  requireEndpointVersion(GetByIdController.ALL_VERSIONS),
-  processRequestWith(GetByIdController)
+  "/:id/content",
+  requireEndpointVersion(GetContentByIdController.ALL_VERSIONS),
+  processRequestWith(GetContentByIdController)
 );
 
 variantsRouter.post(
