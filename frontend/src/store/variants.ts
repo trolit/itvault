@@ -92,15 +92,7 @@ export const useVariantsStore = defineStore("variants", {
         params,
       });
 
-      const tab = filesStore.getActiveTab();
-
-      if (!tab) {
-        return "";
-      }
-
-      const variant = tab.variants.find(
-        variant => variant.value.id === tab.activeVariantId
-      );
+      const variant = filesStore.getActiveVariantTab();
 
       if (!variant) {
         return "";
