@@ -88,12 +88,9 @@ export const useVariantsStore = defineStore("variants", {
         workspaceId: workspacesStore?.activeItem?.id,
       };
 
-      const { data } = await axios.get<{ content: string }>(
-        `v1/variants/${id}`,
-        {
-          params,
-        }
-      );
+      const { data } = await axios.get<string>(`v1/variants/${id}/content`, {
+        params,
+      });
 
       const tab = filesStore.getActiveTab();
 
@@ -109,9 +106,9 @@ export const useVariantsStore = defineStore("variants", {
         return "";
       }
 
-      variant.content = data.content;
+      variant.content = data;
 
-      return data.content;
+      return data;
     },
   },
 });
