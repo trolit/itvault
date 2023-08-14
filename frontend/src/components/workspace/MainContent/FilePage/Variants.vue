@@ -50,6 +50,6 @@ const variants = computed(() => {
 const AsyncVariantViewer = defineAsyncComponent({
   loader: () => import("./VariantViewer/Index.vue"),
   loadingComponent: NSpin,
-  delay: 0,
+  delay: 100,
 });
 </script>
