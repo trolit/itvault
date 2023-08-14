@@ -17,16 +17,37 @@
     <n-card>
       {{ note.value }}
     </n-card>
+
+    <template #footer>
+      <!-- @TODO update note -->
+      <require-permission
+        :permission="Permission.DeleteAnyNote"
+        :or="loggedUserId === note.createdBy.id"
+      >
+        <n-button type="warning" size="small" secondary>Update</n-button>
+      </require-permission>
+
+      <!-- @TODO delete note -->
+      <require-permission
+        :permission="Permission.DeleteAnyNote"
+        :or="loggedUserId === note.createdBy.id"
+      >
+        <n-button type="error" size="small" secondary>Delete</n-button>
+      </require-permission>
+    </template>
   </n-thing>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { NThing, NTag, NCard } from "naive-ui";
 import type { PropType } from "vue";
+import { NThing, NTag, NCard, NButton } from "naive-ui";
 
+import { useAuthStore } from "@/store/auth";
 import formatDate from "@/helpers/dayjs/formatDate";
+import { Permission } from "@shared/types/enums/Permission";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
+import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const props = defineProps({
   note: {
@@ -35,7 +56,11 @@ const props = defineProps({
   },
 });
 
+const authStore = useAuthStore();
+
 const note = computed(() => {
   return props.note;
 });
+
+const loggedUserId = computed(authStore.loggedUserId);
 </script>

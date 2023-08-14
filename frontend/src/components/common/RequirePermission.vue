@@ -1,5 +1,5 @@
 <template>
-  <template v-if="isEnabled()">
+  <template v-if="isEnabled() || props.or">
     <slot></slot>
   </template>
 </template>
@@ -13,6 +13,12 @@ const props = defineProps({
   permission: {
     type: String,
     required: true,
+  },
+
+  or: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 

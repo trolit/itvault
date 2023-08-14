@@ -23,6 +23,12 @@
         font-size: 12px;
         filter: brightness(50%);
       }
+
+      .n-thing-main__footer {
+        display: flex;
+        column-gap: 10px;
+        justify-content: flex-end;
+      }
     }
   }
 }
