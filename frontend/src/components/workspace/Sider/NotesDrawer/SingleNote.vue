@@ -3,18 +3,27 @@
   <n-thing content-indented class="single-note">
     <template #header>
       <!-- @TODO view user notes request -->
-      <component
-        :is="
+      <n-popover
+        v-if="
           isPermissionEnabled(
             Permission.ViewUserNotes,
             authStore.profile.permissions
           )
-            ? NButton
-            : 'span'
         "
+        placement="right"
+        trigger="click"
       >
+        <template #trigger>
+          <n-button size="small">
+            {{ note.createdBy.fullName }}
+          </n-button>
+        </template>
+        <div class="large-text">Oops!</div>
+      </n-popover>
+
+      <span v-else>
         {{ note.createdBy.fullName }}
-      </component>
+      </span>
     </template>
 
     <template #header-extra>
@@ -55,7 +64,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { PropType } from "vue";
-import { NThing, NTag, NCard, NButton } from "naive-ui";
+import { NThing, NTag, NCard, NButton, NPopover } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import formatDate from "@/helpers/dayjs/formatDate";
