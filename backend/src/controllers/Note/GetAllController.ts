@@ -42,6 +42,7 @@ export class GetAllController extends BaseController {
       createdAt: true,
       updatedAt: true,
       createdBy: {
+        id: true,
         fullName: true,
         role: {
           name: true,

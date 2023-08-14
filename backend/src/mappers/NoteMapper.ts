@@ -9,7 +9,7 @@ export class NoteMapper extends BaseMapper<Note> implements INoteDto {
   createdAt: string;
   updatedBy: string;
   isDeleted: boolean;
-  createdBy: { fullName: string; role: string };
+  createdBy: { id: number; fullName: string; role: string };
 
   constructor(
     data: Note,
@@ -20,6 +20,7 @@ export class NoteMapper extends BaseMapper<Note> implements INoteDto {
     const { createdBy, updatedBy, deletedAt } = data;
 
     this.createdBy = {
+      id: createdBy.id,
       fullName: createdBy.fullName,
       role: createdBy.role.name,
     };
