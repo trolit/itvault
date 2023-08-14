@@ -1,29 +1,5 @@
-@import "../blueprints-tab.css";
-@import "../files-tab.css";
-
 .workspace-page {
-  height: calc(100vh - var(--header-height)) !important;
-
-  .sider {
-    .n-tabs {
-      .n-tabs-tab--active,
-      .n-tabs-tab:hover {
-        color: var(--primary-color);
-      }
-
-      .n-tabs-bar {
-        background-color: var(--primary-color);
-      }
-
-      .n-tabs-nav {
-        height: var(--workspace-sider-tabs-height);
-      }
-    }
-  }
-
   .main-content-wrapper {
-    width: 100%;
-
     --file-page-card-header-height: 120px;
     --content-height: calc(
       var(--workspace-main-content-files-height) -
@@ -111,32 +87,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    }
-  }
-
-  .n-layout {
-    height: 100%;
-
-    .n-layout-sider {
-      height: inherit;
-
-      .n-scrollbar-container {
-        height: inherit;
-
-        .n-scrollbar-content {
-          height: inherit;
-          overflow: unset;
-          display: block !important;
-
-          .blueprints-wrapper {
-            height: 40%;
-          }
-
-          .files-wrapper {
-            height: 60%;
           }
         }
       }
