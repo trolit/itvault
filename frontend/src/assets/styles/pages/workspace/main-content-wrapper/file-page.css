@@ -1,11 +1,12 @@
 .workspace-page {
   .main-content-wrapper {
     --file-page-card-header-height: 120px;
+    --file-page-variants-tab-height: 50px;
+
     --content-height: calc(
       var(--workspace-main-content-files-height) -
         var(--file-page-card-header-height)
     );
-    --file-page-variants-tab-height: 50px;
 
     .empty-section {
       height: calc(100vh - var(--header-height));
