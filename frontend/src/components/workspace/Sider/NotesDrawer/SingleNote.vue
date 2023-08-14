@@ -8,7 +8,7 @@
     </template>
 
     <template #description>
-      <n-tag size="small">
+      <n-tag size="small" type="info">
         {{ note.createdBy.role }}
       </n-tag>
     </template>
