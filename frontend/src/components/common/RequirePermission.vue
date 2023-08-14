@@ -22,11 +22,12 @@ const props = defineProps({
   },
 });
 
-const {
-  profile: { permissions },
-} = useAuthStore();
+const authStore = useAuthStore();
 
 function isEnabled() {
-  return isPermissionEnabled(props.permission as Permission, permissions);
+  return isPermissionEnabled(
+    props.permission as Permission,
+    authStore.profile.permissions
+  );
 }
 </script>
