@@ -3,10 +3,11 @@
     .files-tab {
       height: 100%;
 
-      --files-header-height: 60px;
+      --files-header-height: 0.1;
+      --files-tree-height: 0.9;
 
       --files-tree-scrollbar-section-height: calc(
-        var(--workspace-sider-content-height) - var(--files-header-height)
+        var(--workspace-sider-content-height) * var(--files-tree-height)
       );
 
       .header {
@@ -14,7 +15,9 @@
         padding: 0 10px;
         column-gap: 10px;
         align-items: center;
-        height: var(--files-header-height);
+        height: calc(
+          var(--workspace-sider-content-height) * var(--files-header-height)
+        );
       }
 
       .n-scrollbar {
