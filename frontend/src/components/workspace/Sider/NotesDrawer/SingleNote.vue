@@ -14,4 +14,14 @@
 
 <script setup lang="ts">
 import { NThing } from "naive-ui";
+import type { PropType } from "vue";
+
+import type { INoteDto } from "@shared/types/dtos/INoteDto";
+
+const props = defineProps({
+  note: {
+    type: Object as PropType<INoteDto>,
+    required: true,
+  },
+});
 </script>
