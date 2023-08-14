@@ -12,7 +12,11 @@
     @update:show="onShowUpdate"
   >
     <n-drawer-content title="Notes" closable>
-      <n-list :show-divider="false">
+      <div v-if="isLoading" class="spin-wrapper">
+        <n-spin />
+      </div>
+
+      <n-list v-else :show-divider="false">
         <n-list-item v-for="note in notes" :key="`note-${note.id}`">
           <single-note :note="note" />
         </n-list-item>
@@ -35,6 +39,7 @@
 import { computed, ref, watch } from "vue";
 import {
   NList,
+  NSpin,
   NDrawer,
   NListItem,
   NPagination,
@@ -47,7 +52,7 @@ import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
 
-const isLoading = ref(false);
+const isLoading = ref(true);
 const page = ref(1);
 const perPage = ref(5);
 

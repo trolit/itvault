@@ -2,6 +2,13 @@
   &.n-drawer {
     .n-drawer-body-content-wrapper {
       padding: 0 10px;
+
+      .spin-wrapper {
+        display: flex;
+        height: inherit;
+        align-items: center;
+        justify-content: center;
+      }
     }
 
     .n-drawer-footer {
