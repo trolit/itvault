@@ -21,7 +21,7 @@ export default class NoteSeeder implements Seeder {
 
       const value = faker.lorem.words(20);
 
-      noteRepository.save({
+      await noteRepository.save({
         value,
         createdBy: user,
         updatedBy: user,
