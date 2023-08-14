@@ -56,6 +56,7 @@ export class GetByIdController extends BaseController {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
+    // @TODO change to "GetContentByIdController"
     return this.finalizeRequest(response, HTTP.OK, {
       record: this.mapper.map(variant).to(VariantMapper),
       content,
