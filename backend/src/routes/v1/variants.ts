@@ -41,7 +41,7 @@ variantsRouter.get(
 );
 
 variantsRouter.get(
-  "/:variantId",
+  "/:id",
   requireEndpointVersion(GetByIdController.ALL_VERSIONS),
   processRequestWith(GetByIdController)
 );

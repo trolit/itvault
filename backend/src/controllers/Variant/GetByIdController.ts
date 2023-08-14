@@ -37,11 +37,11 @@ export class GetByIdController extends BaseController {
     response: GetByIdControllerTypes.v1.Response
   ) {
     const {
+      params: { id },
       query: { workspaceId },
-      params: { variantId },
     } = request;
 
-    const variant = await this._variantRepository.getById(variantId);
+    const variant = await this._variantRepository.getById(id);
 
     if (!variant) {
       return response.status(HTTP.NOT_FOUND).send();
