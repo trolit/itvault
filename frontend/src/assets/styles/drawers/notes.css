@@ -1,0 +1,14 @@
+.notes-drawer {
+  &.n-drawer {
+    .n-drawer-body-content-wrapper {
+      padding: 0 10px;
+    }
+
+    .n-thing-main {
+      .n-thing-header__extra {
+        font-size: 12px;
+        filter: brightness(50%);
+      }
+    }
+  }
+}

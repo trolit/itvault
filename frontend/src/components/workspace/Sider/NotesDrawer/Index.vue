@@ -8,18 +8,13 @@
     :trap-focus="false"
     :block-scroll="false"
     :mask-closable="false"
+    class="notes-drawer"
     @update:show="onShowUpdate"
   >
     <n-drawer-content title="Notes" closable>
-      This is notes drawer
-
-      <n-list>
-        <n-list-item>
-          <single-note
-            v-for="note in notes"
-            :key="`note-${note.id}`"
-            :note="note"
-          />
+      <n-list :show-divider="false">
+        <n-list-item v-for="note in notes" :key="`note-${note.id}`">
+          <single-note :note="note" />
         </n-list-item>
       </n-list>
     </n-drawer-content>
@@ -27,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { NDrawer, NDrawerContent, NList, NListItem } from "naive-ui";
 
 import { Drawer } from "@/types/Drawer";
@@ -35,6 +30,8 @@ import SingleNote from "./SingleNote.vue";
 import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
+
+const isLoading = ref(false);
 
 const notesStore = useNotesStore();
 const filesStore = useFilesStore();
@@ -54,18 +51,19 @@ const onShowUpdate = () => {
   drawerStore.setActiveDrawer(null);
 };
 
-watch(
-  () => isActive,
-  async () => {
-    if (!isActive.value) {
-      return;
-    }
-
-    try {
-      await notesStore.getAll({ page: 1, perPage: 5, resource: "File" });
-    } catch (error) {
-      console.log(error);
-    }
+watch(isActive, async () => {
+  if (!isActive.value) {
+    return;
   }
-);
+
+  isLoading.value = true;
+
+  try {
+    await notesStore.getAll({ page: 1, perPage: 5, resource: "File" });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
