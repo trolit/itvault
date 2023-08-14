@@ -43,6 +43,9 @@ export class GetAllController extends BaseController {
       updatedAt: true,
       createdBy: {
         fullName: true,
+        role: {
+          name: true,
+        },
       },
       updatedBy: {
         fullName: true,
@@ -70,8 +73,13 @@ export class GetAllController extends BaseController {
       skip,
       take,
       where,
+      order: {
+        createdAt: "desc",
+      },
       relations: {
-        createdBy: true,
+        createdBy: {
+          role: true,
+        },
         updatedBy: true,
       },
       withDeleted: isPermissionEnabled(

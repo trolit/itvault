@@ -5,7 +5,7 @@ export interface INoteDto {
 
   createdAt: string;
 
-  createdBy: string;
+  createdBy: { fullName: string; role: string };
 
   updatedBy: string;
 
