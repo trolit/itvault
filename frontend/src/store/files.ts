@@ -11,8 +11,8 @@ interface IState {
 
   tabs: {
     file: IFileDto;
-    notes: INoteDto[];
     activeVariantId: string;
+    notes: { values: INoteDto[]; total: number };
     variants: { value: IVariantDto; content: string; isVisible: boolean }[];
   }[];
 }
@@ -50,7 +50,12 @@ export const useFilesStore = defineStore("files", {
         return;
       }
 
-      this.tabs.push({ file, variants: [], notes: [], activeVariantId: "" });
+      this.tabs.push({
+        file,
+        variants: [],
+        notes: { values: [], total: 0 },
+        activeVariantId: "",
+      });
     },
 
     closeTab(id: number) {
