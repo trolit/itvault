@@ -1,7 +1,21 @@
 <template>
   <!-- @TODO show some indicator if message is removed or not (display only if permission is enabled)-->
   <n-thing content-indented class="single-note">
-    <template #header> {{ note.createdBy.fullName }} </template>
+    <template #header>
+      <!-- @TODO view user notes request -->
+      <component
+        :is="
+          isPermissionEnabled(
+            Permission.ViewUserNotes,
+            authStore.profile.permissions
+          )
+            ? NButton
+            : 'span'
+        "
+      >
+        {{ note.createdBy.fullName }}
+      </component>
+    </template>
 
     <template #header-extra>
       {{ formatDate(note.createdAt, "YYYY-MM-DD HH:mm") }}
@@ -48,6 +62,7 @@ import formatDate from "@/helpers/dayjs/formatDate";
 import { Permission } from "@shared/types/enums/Permission";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 const props = defineProps({
   note: {
