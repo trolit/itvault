@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 
+import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
@@ -11,6 +12,7 @@ interface IState {
   tabs: {
     file: IFileDto;
     activeVariantId: string;
+    notes: { values: INoteDto[]; total: number };
     variants: { value: IVariantDto; content: string; isVisible: boolean }[];
   }[];
 }
@@ -48,7 +50,12 @@ export const useFilesStore = defineStore("files", {
         return;
       }
 
-      this.tabs.push({ file, variants: [], activeVariantId: "" });
+      this.tabs.push({
+        file,
+        variants: [],
+        notes: { values: [], total: 0 },
+        activeVariantId: "",
+      });
     },
 
     closeTab(id: number) {

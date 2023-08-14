@@ -1,0 +1,34 @@
+.notes-drawer {
+  &.n-drawer {
+    .n-drawer-body-content-wrapper {
+      padding: 0 10px;
+
+      .spin-wrapper {
+        display: flex;
+        height: inherit;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .n-drawer-footer {
+      padding: 0;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .n-thing-main {
+      .n-thing-header__extra {
+        font-size: 12px;
+        filter: brightness(50%);
+      }
+
+      .n-thing-main__footer {
+        display: flex;
+        column-gap: 10px;
+        justify-content: flex-end;
+      }
+    }
+  }
+}

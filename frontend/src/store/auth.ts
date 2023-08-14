@@ -22,6 +22,10 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   actions: {
+    loggedUserId() {
+      return this.profile.id;
+    },
+
     async status() {
       const { data } = await axios.get<ILoggedUserDto>("v1/auth/status", {
         params: { version: 1 },

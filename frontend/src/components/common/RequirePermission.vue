@@ -1,5 +1,5 @@
 <template>
-  <template v-if="isEnabled()">
+  <template v-if="isEnabled() || props.or">
     <slot></slot>
   </template>
 </template>
@@ -14,13 +14,20 @@ const props = defineProps({
     type: String,
     required: true,
   },
+
+  or: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
-const {
-  profile: { permissions },
-} = useAuthStore();
+const authStore = useAuthStore();
 
 function isEnabled() {
-  return isPermissionEnabled(props.permission as Permission, permissions);
+  return isPermissionEnabled(
+    props.permission as Permission,
+    authStore.profile.permissions
+  );
 }
 </script>
