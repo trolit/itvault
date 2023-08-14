@@ -78,5 +78,29 @@ export const useVariantsStore = defineStore("variants", {
 
       variantTab.isVisible = false;
     },
+
+    async getContentById(id: string) {
+      const filesStore = useFilesStore();
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore?.activeItem?.id,
+      };
+
+      const { data } = await axios.get<string>(`v1/variants/${id}/content`, {
+        params,
+      });
+
+      const variant = filesStore.getActiveVariantTab();
+
+      if (!variant) {
+        return "";
+      }
+
+      variant.content = data;
+
+      return data;
+    },
   },
 });

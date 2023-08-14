@@ -1,70 +1,53 @@
 <template>
-  <!-- @close="variantsStore.closeVariantTab" -->
   <div class="variant-viewer">
-    <n-tabs
-      closable
-      type="card"
-      :value="props.activeTab"
-      @close="variantsStore.closeTab"
-      @update:value="variantsStore.setActiveTab"
-    >
-      <n-tab-pane
-        v-for="{ key, tab, content } in panels"
-        :key="key"
-        :tab="tab"
-        :name="key"
-      >
-        <div class="line-numbers">
-          <span v-for="index in getNumberOfLines(content)" :key="index"></span>
-        </div>
+    <div class="line-numbers">
+      <span v-for="index in numberOfLines" :key="index"></span>
+    </div>
 
-        <component :is="renderText(content)" />
-      </n-tab-pane>
-    </n-tabs>
+    <component :is="renderText(text)" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { h, computed } from "vue";
-import { NTabs, NTabPane } from "naive-ui";
+import { h, onBeforeMount, ref, computed } from "vue";
 
-import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 
-const filesStore = useFilesStore();
+const text = ref("");
 const variantsStore = useVariantsStore();
 
 const props = defineProps({
-  activeTab: {
+  content: {
+    type: String,
+    required: true,
+  },
+
+  identifier: {
     type: String,
     required: true,
   },
 });
 
-/** */
-
-const panels = computed(() => {
-  const tab = filesStore.getActiveTab();
-
-  if (!tab) {
-    return [];
+onBeforeMount(async () => {
+  if (!props.content) {
+    try {
+      text.value = await variantsStore.getContentById(props.identifier);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  return tab.variants
-    .filter(variant => !variant.isVisible)
-    .map(({ value, content }) => ({
-      key: value.id,
-      tab: value.name,
-      content: `test1 test2\ntest3\n${tab.file.originalFilename}`, // @TODO
-    }));
+  text.value = props.content;
 });
 
-function getNumberOfLines(text: string) {
-  return text.split("\n").length;
-}
+const numberOfLines = computed((): number => {
+  return text.value.split("\n").length;
+});
 
-function renderText(text: string) {
-  const splitText = text.toString().split("\n");
+function renderText(content: string) {
+  let value = content;
+
+  const splitText = value.toString().split("\n");
 
   const children = splitText.map(part => h("div", part));
 

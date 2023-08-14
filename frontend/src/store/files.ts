@@ -27,6 +27,18 @@ export const useFilesStore = defineStore("files", {
       return this.tabs.find(tab => tab.file.id === this.activeTabId);
     },
 
+    getActiveVariantTab() {
+      const tab = this.getActiveTab();
+
+      if (!tab) {
+        return;
+      }
+
+      return tab.variants.find(
+        variant => variant.value.id === tab.activeVariantId
+      );
+    },
+
     setActiveTab(file: IFileDto) {
       const tab = this.tabs.find(tab => tab.file.id === file.id);
 

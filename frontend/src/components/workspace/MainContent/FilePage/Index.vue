@@ -19,7 +19,7 @@
 
           <!-- @TODO scroll -->
           <template #default>
-            <variant-viewer v-if="variantTab" :active-tab="variantTab" />
+            <variants v-if="variantTab" :active-tab="variantTab" />
 
             <empty v-else title="No variant selected." />
           </template>
@@ -33,10 +33,10 @@
 import { computed } from "vue";
 import { NCard, NTabs, NTabPane } from "naive-ui";
 
+import Variants from "./Variants.vue";
 import CardHeader from "./CardHeader.vue";
 import { useFilesStore } from "@/store/files";
 import Empty from "@/components/common/Empty.vue";
-import VariantViewer from "./VariantViewer/Index.vue";
 
 const filesStore = useFilesStore();
 
