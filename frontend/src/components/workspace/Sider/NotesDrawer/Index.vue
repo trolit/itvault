@@ -18,7 +18,10 @@
 
       <n-list v-else :show-divider="false">
         <n-list-item v-for="note in notes" :key="`note-${note.id}`">
-          <single-note :note="note" />
+          <single-note
+            :note="note"
+            @toggle-user-comments-modal="onToggleUserCommentsModal"
+          />
         </n-list-item>
       </n-list>
 
@@ -31,6 +34,12 @@
           :page-slot="6"
         />
       </template>
+
+      <user-comments-modal
+        v-model:show="isUserCommentsModalVisible"
+        :id="userId"
+        :full-name="userFullName"
+      />
     </n-drawer-content>
   </n-drawer>
 </template>
@@ -51,10 +60,14 @@ import SingleNote from "./SingleNote.vue";
 import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
+import UserCommentsModal from "./UserCommentsModal.vue";
 
-const isLoading = ref(true);
 const page = ref(1);
 const perPage = ref(5);
+const userId = ref(0);
+const isLoading = ref(true);
+const userFullName = ref("");
+const isUserCommentsModalVisible = ref(false);
 
 const notesStore = useNotesStore();
 const filesStore = useFilesStore();
@@ -89,4 +102,11 @@ watch(isActive, async () => {
     isLoading.value = false;
   }
 });
+
+function onToggleUserCommentsModal(id: number, fullName: string) {
+  userId.value = id;
+  userFullName.value = fullName;
+
+  isUserCommentsModalVisible.value = true;
+}
 </script>

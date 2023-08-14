@@ -2,27 +2,24 @@
   <!-- @TODO show some indicator if message is removed or not (display only if permission is enabled)-->
   <n-thing content-indented class="single-note">
     <template #header>
-      <!-- @TODO view user notes request -->
-      <n-popover
+      <!-- @TODO view user notes -->
+      <n-button
         v-if="
           isPermissionEnabled(
             Permission.ViewUserNotes,
             authStore.profile.permissions
           )
         "
-        placement="right"
-        trigger="click"
+        size="small"
+        @click="
+          emits('toggle-user-comments-modal', createdBy.id, createdBy.fullName)
+        "
       >
-        <template #trigger>
-          <n-button size="small">
-            {{ note.createdBy.fullName }}
-          </n-button>
-        </template>
-        <div class="large-text">Oops!</div>
-      </n-popover>
+        {{ createdBy.fullName }}
+      </n-button>
 
       <span v-else>
-        {{ note.createdBy.fullName }}
+        {{ createdBy.fullName }}
       </span>
     </template>
 
@@ -32,7 +29,7 @@
 
     <template #description>
       <n-tag size="small" type="info">
-        {{ note.createdBy.role }}
+        {{ createdBy.role }}
       </n-tag>
     </template>
 
@@ -45,7 +42,7 @@
       <!-- @TODO update note -->
       <require-permission
         :permission="Permission.DeleteAnyNote"
-        :or="loggedUserId === note.createdBy.id"
+        :or="loggedUserId === createdBy.id"
       >
         <n-button type="warning" size="small" secondary>Update</n-button>
       </require-permission>
@@ -53,7 +50,7 @@
       <!-- @TODO delete note -->
       <require-permission
         :permission="Permission.DeleteAnyNote"
-        :or="loggedUserId === note.createdBy.id"
+        :or="loggedUserId === createdBy.id"
       >
         <n-button type="error" size="small" secondary>Delete</n-button>
       </require-permission>
@@ -64,7 +61,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import type { PropType } from "vue";
-import { NThing, NTag, NCard, NButton, NPopover } from "naive-ui";
+import { NThing, NTag, NCard, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import formatDate from "@/helpers/dayjs/formatDate";
@@ -73,6 +70,8 @@ import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
+const authStore = useAuthStore();
+
 const props = defineProps({
   note: {
     type: Object as PropType<INoteDto>,
@@ -80,11 +79,13 @@ const props = defineProps({
   },
 });
 
-const authStore = useAuthStore();
+const emits = defineEmits(["toggle-user-comments-modal"]);
 
 const note = computed(() => {
   return props.note;
 });
 
 const loggedUserId = computed(authStore.loggedUserId);
+
+const createdBy = computed(() => props.note.createdBy);
 </script>
