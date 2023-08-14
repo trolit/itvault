@@ -23,7 +23,7 @@ export const useNotesStore = defineStore("notes", {
 
       const params = {
         version: 1,
-        fileId: tab?.file?.id,
+        id: tab?.file?.id,
         ...options,
       };
 
