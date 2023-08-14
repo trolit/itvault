@@ -1,0 +1,46 @@
+@import "./sider/files-tab.css";
+@import "./sider/blueprints-tab.css";
+@import "./main-content-wrapper/file-page.css";
+
+.workspace-page {
+  height: calc(100vh - var(--header-height)) !important;
+
+  .sider {
+    .n-tabs {
+      .n-tabs-tab--active,
+      .n-tabs-tab:hover {
+        color: var(--primary-color);
+      }
+
+      .n-tabs-bar {
+        background-color: var(--primary-color);
+      }
+
+      .n-tabs-nav {
+        height: var(--workspace-sider-tabs-height);
+      }
+    }
+  }
+
+  .main-content-wrapper {
+    width: 100%;
+  }
+
+  .n-layout {
+    height: 100%;
+
+    .n-layout-sider {
+      height: inherit;
+
+      .n-scrollbar-container {
+        height: inherit;
+
+        .n-scrollbar-content {
+          height: inherit;
+          overflow: unset;
+          display: block !important;
+        }
+      }
+    }
+  }
+}
