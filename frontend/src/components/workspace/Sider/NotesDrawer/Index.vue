@@ -17,13 +17,29 @@
           <single-note :note="note" />
         </n-list-item>
       </n-list>
+
+      <template #footer>
+        <!-- @TODO implement pagination -->
+        <n-pagination
+          v-model:page="page"
+          v-model:page-size="perPage"
+          :page-count="9"
+          :page-slot="6"
+        />
+      </template>
     </n-drawer-content>
   </n-drawer>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { NDrawer, NDrawerContent, NList, NListItem } from "naive-ui";
+import {
+  NList,
+  NDrawer,
+  NListItem,
+  NPagination,
+  NDrawerContent,
+} from "naive-ui";
 
 import { Drawer } from "@/types/Drawer";
 import SingleNote from "./SingleNote.vue";
@@ -32,6 +48,8 @@ import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
 
 const isLoading = ref(false);
+const page = ref(1);
+const perPage = ref(5);
 
 const notesStore = useNotesStore();
 const filesStore = useFilesStore();

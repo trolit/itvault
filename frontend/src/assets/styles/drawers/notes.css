@@ -4,6 +4,13 @@
       padding: 0 10px;
     }
 
+    .n-drawer-footer {
+      padding: 0;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+    }
+
     .n-thing-main {
       .n-thing-header__extra {
         font-size: 12px;
