@@ -1,6 +1,6 @@
-@import "./workspace/sider/files-tab.css";
-@import "./workspace/sider/blueprints-tab.css";
-@import "./workspace/main-content-wrapper/file-page.css";
+@import "./sider/files-tab.css";
+@import "./sider/blueprints-tab.css";
+@import "./main-content-wrapper/file-page.css";
 
 .workspace-page {
   height: calc(100vh - var(--header-height)) !important;
