@@ -78,5 +78,40 @@ export const useVariantsStore = defineStore("variants", {
 
       variantTab.isVisible = false;
     },
+
+    async getContentById(id: string) {
+      const filesStore = useFilesStore();
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore?.activeItem?.id,
+      };
+
+      const { data } = await axios.get<{ content: string }>(
+        `v1/variants/${id}`,
+        {
+          params,
+        }
+      );
+
+      const tab = filesStore.getActiveTab();
+
+      if (!tab) {
+        return "";
+      }
+
+      const variant = tab.variants.find(
+        variant => variant.value.id === tab.activeVariantId
+      );
+
+      if (!variant) {
+        return "";
+      }
+
+      variant.content = data.content;
+
+      return data.content;
+    },
   },
 });

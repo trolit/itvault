@@ -5,7 +5,7 @@ import { VariantMapper } from "@mappers/VariantMapper";
 export namespace GetByIdControllerTypes {
   export namespace v1 {
     type Params = {
-      variantId: string;
+      id: string;
     };
 
     type Query = WorkspaceId;
