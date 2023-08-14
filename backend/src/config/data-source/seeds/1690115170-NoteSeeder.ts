@@ -25,7 +25,7 @@ export default class NoteSeeder implements Seeder {
 
         const value = faker.lorem.words(20);
 
-        const deletedAt = sample([new Date(), undefined]);
+        const deletedAt = sample([new Date(), undefined, undefined, undefined]);
 
         await noteRepository.save({
           value,
