@@ -3,10 +3,10 @@ import { inject, injectable } from "tsyringe";
 import { BucketMapper } from "@mappers/BucketMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
+import { StoreControllerTypes } from "types/controllers/Bucket/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Bucket } from "@entities/Bucket";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -31,14 +31,18 @@ export class StoreManyController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: StoreManyControllerTypes.v1.Request,
-    response: StoreManyControllerTypes.v1.Response
+    request: StoreControllerTypes.v1.Request,
+    response: StoreControllerTypes.v1.Response
   ) {
     const {
-      body: { values, variantId },
+      body: { blueprintId, variantId, value },
     } = request;
 
-    const result = await this._bucketRepository.save(variantId, values);
+    const result = await this._bucketRepository.save(
+      value,
+      blueprintId,
+      variantId
+    );
 
     if (!result.isSuccess) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
@@ -46,7 +50,7 @@ export class StoreManyController extends BaseController {
 
     assert(result.value);
 
-    const mappedResult = this.mapper.map<Bucket>(result.value).to(BucketMapper);
+    const mappedResult = this.mapper.map(result.value).to(BucketMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }

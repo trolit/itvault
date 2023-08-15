@@ -14,7 +14,7 @@ import { useStoreManySuperSchema } from "@schemas/Bucket/useStoreManySuperSchema
 
 import { BaseController } from "@controllers/BaseController";
 import { GetAllController } from "@controllers/Bucket/GetAllController";
-import { StoreManyController } from "@controllers/Bucket/StoreManyController";
+import { StoreManyController } from "@controllers/Bucket/StoreController";
 
 const bucketsRouter = Router();
 
