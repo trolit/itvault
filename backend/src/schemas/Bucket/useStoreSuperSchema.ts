@@ -1,37 +1,23 @@
-import { object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
+import { array, lazy, object, string } from "yup";
 import { StoreControllerTypes } from "types/controllers/Bucket/StoreController";
 
 import { Di } from "@enums/Di";
-import { BucketContent } from "@shared/types/BucketContent";
-
-import { setYupError } from "@helpers/yup/setError";
-import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
-  value: object<BucketContent>().test(
-    "has-valid-buckets",
-    setYupError(CUSTOM_MESSAGES.BUCKETS.INVALID_CONFIGURATION),
-    (data: BucketContent) => {
-      for (const [key, value] of Object.entries(data)) {
-        const parsedKey = parseInt(key);
+  value: lazy(data => {
+    let schema = {};
 
-        if (!parsedKey) {
-          return false;
-        }
+    Object.keys(data).map(key => {
+      schema = { ...schema, [key]: array().of(string()).min(1) };
+    });
 
-        if (value.some(text => typeof text !== "string")) {
-          return false;
-        }
-      }
-
-      return true;
-    }
-  ),
+    return object(schema).required();
+  }),
   variantId: useIdStringSchema(Di.VariantRepository),
   blueprintId: useIdNumberSchema(Di.BlueprintRepository),
 });
