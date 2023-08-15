@@ -10,12 +10,13 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { storeSchema } from "@schemas/Variant/storeSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 import { usePatchNameSuperSchema } from "@schemas/Variant/usePatchNameSuperSchema";
+import { useGetAllBlueprintsSchema } from "@schemas/Variant/useGetAllBlueprintsSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Variant/StoreController";
@@ -23,6 +24,7 @@ import { GetAllController } from "@controllers/Variant/GetAllController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { PatchNameController } from "@controllers/Variant/PatchNameController";
 import { GetContentByIdController } from "@controllers/Variant/GetContentByIdController";
+import { GetAllBlueprintsController } from "@controllers/Variant/GetAllBlueprintsController";
 
 const variantsRouter = Router();
 
@@ -44,6 +46,12 @@ variantsRouter.get(
   "/:id/content",
   requireEndpointVersion(GetContentByIdController.ALL_VERSIONS),
   processRequestWith(GetContentByIdController)
+);
+
+variantsRouter.get(
+  "/:id/blueprints",
+  validateRequestWith({ [v1_0]: useGetAllBlueprintsSchema }),
+  processRequestWith(GetAllBlueprintsController)
 );
 
 variantsRouter.post(

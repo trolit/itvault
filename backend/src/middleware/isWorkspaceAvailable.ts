@@ -17,6 +17,7 @@ export const IsWorkspaceAvailable = (() => {
       query: { workspaceId },
     } = request;
 
+    // @TODO implement it as yup schema (like requireEndpointVersion)
     if (!workspaceId) {
       return response.status(HTTP.BAD_REQUEST).send();
     }

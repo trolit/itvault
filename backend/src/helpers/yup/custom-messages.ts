@@ -21,8 +21,6 @@ export const CUSTOM_MESSAGES = {
 
   BUCKETS: {
     INVALID_CONFIGURATION: "Buckets configuration is invalid!",
-    NO_BLUEPRINTS_SHARING:
-      "Buckets can't share blueprints. Use one bucket per one blueprint.",
   },
 
   FILE: {
