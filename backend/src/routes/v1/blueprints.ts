@@ -1,17 +1,18 @@
 import { Router } from "express";
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
+import { Blueprint } from "@entities/Blueprint";
 import { Permission } from "@shared/types/enums/Permission";
 
+import { transformFilters } from "@middleware/transformFilters";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { transformPagination } from "@middleware/transformPagination";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useStoreSuperSchema } from "@schemas/Blueprint/useStoreSuperSchema";
-import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Blueprint/useUpdateSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
@@ -32,8 +33,11 @@ blueprintsRouter.use(
 
 blueprintsRouter.get(
   "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  requireEndpointVersion(GetAllController.ALL_VERSIONS, {
+    stripUnknown: false,
+  }),
   transformPagination(),
+  transformFilters(Blueprint.FILTERABLE_FIELDS),
   processRequestWith(GetAllController)
 );
 
