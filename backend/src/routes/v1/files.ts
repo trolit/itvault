@@ -13,14 +13,12 @@ import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
-import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
 import { useSoftDeleteSuperSchema } from "@schemas/File/useSoftDeleteSuperSchema";
 import { usePatchFilenameSuperSchema } from "@schemas/File/usePatchFilenameSuperSchema";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/File/StoreController";
-import { GetAllController } from "@controllers/File/GetAllController";
 import { SoftDeleteController } from "@controllers/File/SoftDeleteController";
 import { PatchFilenameController } from "@controllers/File/PatchFilenameController";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
@@ -33,12 +31,6 @@ const {
 
 filesRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
-);
-
-filesRouter.get(
-  "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
-  processRequestWith(GetAllController)
 );
 
 filesRouter.post(
