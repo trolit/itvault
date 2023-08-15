@@ -1,6 +1,6 @@
 import { SuperSchema } from "types/SuperSchema";
 import { array, lazy, number, object, string } from "yup";
-import { StoreControllerTypes } from "types/controllers/Bucket/StoreController";
+import { UpsertControllerTypes } from "types/controllers/Bucket/UpsertController";
 
 import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
@@ -11,15 +11,14 @@ import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 // @NOTE - workspace availability is checked within `requireWorkspaceAccess` middleware!!
-const querySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Query> = object(
-  {
+const querySchema: SuperSchema.Fragment<UpsertControllerTypes.v1.Query> =
+  object({
     workspaceId: number().required(),
-  }
-);
+  });
 
 const useBodySchema: (
   workspaceId: number
-) => SuperSchema.Fragment<StoreControllerTypes.v1.Body> = (
+) => SuperSchema.Fragment<UpsertControllerTypes.v1.Body> = (
   workspaceId: number
 ) =>
   object({
@@ -42,10 +41,10 @@ const useBodySchema: (
     }),
   });
 
-export const useStoreSuperSchema: SuperSchema.Runner<
+export const useUpsertSuperSchema: SuperSchema.Runner<
   void,
-  StoreControllerTypes.v1.Body,
-  StoreControllerTypes.v1.Query
+  UpsertControllerTypes.v1.Body,
+  UpsertControllerTypes.v1.Query
 > = defineSuperSchemaRunner(({ request }) => {
   const {
     query: { workspaceId },

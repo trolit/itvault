@@ -9,11 +9,11 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
-import { useStoreSuperSchema } from "@schemas/Bucket/useStoreSuperSchema";
+import { useUpsertSuperSchema } from "@schemas/Bucket/useUpsertSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Bucket/useGetAllSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { StoreController } from "@controllers/Bucket/StoreController";
+import { UpsertController } from "@controllers/Bucket/UpsertController";
 import { GetAllController } from "@controllers/Bucket/GetAllController";
 
 const bucketsRouter = Router();
@@ -36,8 +36,8 @@ bucketsRouter.get(
 bucketsRouter.post(
   "",
   requirePermissions([Permission.ManageVariantColoring]),
-  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
-  processRequestWith(StoreController)
+  validateRequestWith({ [v1_0]: useUpsertSuperSchema }),
+  processRequestWith(UpsertController)
 );
 
 export = bucketsRouter;

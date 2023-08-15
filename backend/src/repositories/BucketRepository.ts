@@ -23,7 +23,7 @@ export class BucketRepository
     value: BucketContent,
     blueprintId: number,
     variantId: string
-  ): Promise<TransactionResult<Bucket>> {
+  ): Promise<TransactionResult<{ bucket: Bucket; isUpdate: boolean }>> {
     const transaction = await this.useTransaction();
 
     try {
@@ -46,7 +46,7 @@ export class BucketRepository
 
       await transaction.commitTransaction();
 
-      return TransactionResult.success(bucket);
+      return TransactionResult.success({ bucket, isUpdate: !!currentState });
     } catch (error) {
       await transaction.rollbackTransaction();
 

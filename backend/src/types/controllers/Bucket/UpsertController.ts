@@ -2,7 +2,7 @@ import { WorkspaceId } from "../WorkspaceId";
 import { BucketMapper } from "@mappers/BucketMapper";
 import { AddBucketDto } from "@shared/types/dtos/AddBucketDto";
 
-export namespace StoreControllerTypes {
+export namespace UpsertControllerTypes {
   export namespace v1 {
     export type Query = WorkspaceId;
 

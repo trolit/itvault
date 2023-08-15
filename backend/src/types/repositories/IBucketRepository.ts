@@ -8,5 +8,5 @@ export interface IBucketRepository extends IBaseRepository<Bucket> {
     value: BucketContent,
     blueprintId: number,
     variantId: string
-  ): Promise<TransactionResult<Bucket>>;
+  ): Promise<TransactionResult<{ bucket: Bucket; isUpdate: boolean }>>;
 }
