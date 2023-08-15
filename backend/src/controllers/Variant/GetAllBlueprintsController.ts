@@ -13,7 +13,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class GetContentByIdController extends BaseController {
+export class GetAllBlueprintsController extends BaseController {
   constructor(
     @inject(Di.BlueprintRepository)
     private _blueprintRepository: IBlueprintRepository
