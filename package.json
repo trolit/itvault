@@ -1,8 +1,0 @@
-{
-  "name": "itvault",
-  "version": "1.0.0",
-  "description": "",
-  "workspaces": [
-    "shared/*"
-  ]
-}
