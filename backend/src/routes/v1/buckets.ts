@@ -9,8 +9,8 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
+import { useStoreSuperSchema } from "@schemas/Bucket/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Bucket/useGetAllSuperSchema";
-import { useStoreManySuperSchema } from "@schemas/Bucket/useStoreManySuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { GetAllController } from "@controllers/Bucket/GetAllController";
@@ -36,7 +36,7 @@ bucketsRouter.get(
 bucketsRouter.post(
   "",
   requirePermissions([Permission.ManageVariantColoring]),
-  validateRequestWith({ [v1_0]: useStoreManySuperSchema }),
+  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
   processRequestWith(StoreManyController)
 );
 
