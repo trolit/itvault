@@ -34,4 +34,6 @@ export class Blueprint extends Base {
     { cascade: true }
   )
   blueprintToBundle: BlueprintToBundle[];
+
+  static FILTERABLE_FIELDS = ["name", "color", "buckets.variant.id"];
 }
