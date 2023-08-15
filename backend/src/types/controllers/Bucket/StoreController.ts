@@ -1,16 +1,14 @@
 import { BucketMapper } from "@mappers/BucketMapper";
 import { AddBucketDto } from "@shared/types/dtos/AddBucketDto";
 
-export namespace StoreManyControllerTypes {
+export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = {
-      values: AddBucketDto[];
-
+    export type Body = AddBucketDto & {
       variantId: string;
     };
 
     export type Request = CustomRequest<undefined, Body>;
 
-    export type Response = CustomResponse<BucketMapper[] | string>;
+    export type Response = CustomResponse<BucketMapper | string>;
   }
 }

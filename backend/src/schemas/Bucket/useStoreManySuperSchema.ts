@@ -3,7 +3,7 @@ import uniqBy from "lodash/uniqBy";
 import { array, number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
-import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
+import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreController";
 
 import { Di } from "@enums/Di";
 import { BucketContent } from "@shared/types/BucketContent";

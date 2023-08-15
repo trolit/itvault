@@ -4,7 +4,6 @@ import { BucketMapper } from "@mappers/BucketMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
-import { StoreManyControllerTypes } from "types/controllers/Bucket/StoreManyController";
 
 import { Di } from "@enums/Di";
 import { Bucket } from "@entities/Bucket";
