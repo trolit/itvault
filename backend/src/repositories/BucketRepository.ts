@@ -27,14 +27,18 @@ export class BucketRepository
     const transaction = await this.useTransaction();
 
     try {
-      await transaction.manager.delete(Bucket, {
-        variant: { id: variantId },
-        blueprint: {
-          id: blueprintId,
-        },
-      });
+      const currentState =
+        (await transaction.manager.findOne(Bucket, {
+          where: {
+            variant: { id: variantId },
+            blueprint: {
+              id: blueprintId,
+            },
+          },
+        })) || undefined;
 
       const bucket = await transaction.manager.save(Bucket, {
+        ...currentState,
         value,
         blueprint: { id: blueprintId },
         variant: { id: variantId },
