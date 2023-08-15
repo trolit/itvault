@@ -13,8 +13,8 @@ import { useStoreSuperSchema } from "@schemas/Bucket/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Bucket/useGetAllSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
+import { StoreController } from "@controllers/Bucket/StoreController";
 import { GetAllController } from "@controllers/Bucket/GetAllController";
-import { StoreManyController } from "@controllers/Bucket/StoreController";
 
 const bucketsRouter = Router();
 
@@ -37,7 +37,7 @@ bucketsRouter.post(
   "",
   requirePermissions([Permission.ManageVariantColoring]),
   validateRequestWith({ [v1_0]: useStoreSuperSchema }),
-  processRequestWith(StoreManyController)
+  processRequestWith(StoreController)
 );
 
 export = bucketsRouter;
