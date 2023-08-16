@@ -16,7 +16,7 @@ import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { storeSchema } from "@schemas/Variant/storeSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 import { usePatchNameSuperSchema } from "@schemas/Variant/usePatchNameSuperSchema";
-import { useGetAllBlueprintsSchema } from "@schemas/Variant/useGetAllBlueprintsSchema";
+import { useGetAllBlueprintsSuperSchema } from "@schemas/Variant/useGetAllBlueprintsSuperSchema";
 import { useGetAllBucketsByBlueprintIdSuperSchema } from "@schemas/Variant/useGetAllBucketsByBlueprintIdSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
@@ -52,7 +52,7 @@ variantsRouter.get(
 
 variantsRouter.get(
   "/:id/blueprints",
-  validateRequestWith({ [v1_0]: useGetAllBlueprintsSchema }),
+  validateRequestWith({ [v1_0]: useGetAllBlueprintsSuperSchema }),
   processRequestWith(GetAllBlueprintsController)
 );
 

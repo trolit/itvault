@@ -18,7 +18,7 @@ const querySchema: SuperSchema.Fragment<GetAllBlueprintsControllerTypes.v1.Query
     workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
   });
 
-export const useGetAllBlueprintsSchema: SuperSchema.Runner<
+export const useGetAllBlueprintsSuperSchema: SuperSchema.Runner<
   GetAllBlueprintsControllerTypes.v1.Params,
   void,
   GetAllBlueprintsControllerTypes.v1.Query
