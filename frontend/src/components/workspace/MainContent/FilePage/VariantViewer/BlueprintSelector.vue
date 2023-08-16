@@ -1,18 +1,29 @@
 <template>
-  <n-popselect v-model:value="value" :options="options">
+  <n-popselect :value="selectData.activeItem" :options="selectData.options">
     <n-button size="small">pick blueprint</n-button>
   </n-popselect>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed } from "vue";
 import { NButton, NPopselect } from "naive-ui";
 
-const value = ref("");
-const options = [
-  {
-    label: "e",
-    value: "a",
-  },
-];
+import { useFilesStore } from "@/store/files";
+
+const filesStore = useFilesStore();
+
+const selectData = computed(() => {
+  const tab = filesStore.getActiveVariantTab();
+
+  if (!tab) {
+    return { activeItem: 0, options: [] };
+  }
+
+  const { activeBlueprintId, blueprints } = tab;
+
+  return {
+    activeItem: activeBlueprintId,
+    options: blueprints.map(({ id, name }) => ({ label: name, value: id })),
+  };
+});
 </script>

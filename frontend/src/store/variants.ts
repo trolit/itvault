@@ -66,6 +66,7 @@ export const useVariantsStore = defineStore("variants", {
       tab.variants = data.map(variant => ({
         value: variant,
         content: "",
+        activeBlueprintId: 0,
         blueprints: [],
         isVisible: false,
       }));

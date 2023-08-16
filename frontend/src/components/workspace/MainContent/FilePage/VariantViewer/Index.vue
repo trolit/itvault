@@ -18,36 +18,40 @@
 
 <script setup lang="ts">
 import { NCard, NScrollbar, NButton } from "naive-ui";
-import { h, onBeforeMount, ref, computed } from "vue";
+import { h, onBeforeMount, ref, computed, type PropType } from "vue";
 
 import { useVariantsStore } from "@/store/variants";
+import type { VariantTab } from "@/types/VariantTab";
 import BlueprintSelector from "./BlueprintSelector.vue";
 
 const text = ref("");
 const variantsStore = useVariantsStore();
 
 const props = defineProps({
-  content: {
-    type: String,
-    required: true,
-  },
-
-  identifier: {
-    type: String,
+  variant: {
+    type: Object as PropType<VariantTab>,
     required: true,
   },
 });
 
 onBeforeMount(async () => {
-  if (!props.content) {
+  const { variant } = props;
+
+  if (!variant.content) {
+    const {
+      value: { id },
+    } = variant;
+
     try {
-      text.value = await variantsStore.getContentById(props.identifier);
+      text.value = await variantsStore.getContentById(id);
+
+      await variantsStore.getBlueprints();
     } catch (error) {
       console.log(error);
     }
   }
 
-  text.value = props.content;
+  text.value = variant.content;
 });
 
 const numberOfLines = computed((): number => {
