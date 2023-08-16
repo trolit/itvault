@@ -6,12 +6,30 @@
     @update:value="onBlueprintChange"
   >
     <n-button size="small">{{ data.name || "pick blueprint" }}</n-button>
+
+    <!-- @TODO GetByIdController for Blueprint -->
+    <template #action>
+      or assign unused blueprint
+
+      <div
+        :style="{
+          display: 'flex',
+          columnGap: '15px',
+          marginTop: '10px',
+          alignItems: 'center',
+        }"
+      >
+        <n-input />
+
+        <n-button size="small">assign</n-button>
+      </div>
+    </template>
   </n-popselect>
 </template>
 
 <script setup lang="ts">
 import { computed, h } from "vue";
-import { NButton, NPopselect, NTag } from "naive-ui";
+import { NButton, NPopselect, NTag, NInput } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
 import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
