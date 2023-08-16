@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 import { useFilesStore } from "./files";
 import { useWorkspacesStore } from "./workspaces";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 interface IState {}
 
@@ -11,6 +12,37 @@ export const useVariantsStore = defineStore("variants", {
   state: (): IState => ({}),
 
   actions: {
+    async getBlueprints() {
+      const filesStore = useFilesStore();
+      const workspaceStore = useWorkspacesStore();
+
+      const variantTab = filesStore.getActiveVariantTab();
+
+      if (!variantTab) {
+        return;
+      }
+
+      const {
+        value: { id },
+      } = variantTab;
+
+      const params = {
+        version: 1,
+        workspaceId: workspaceStore?.activeItem?.id,
+      };
+
+      const { data } = await axios.get<IBlueprintDto[]>(
+        `v1/variants/${id}/blueprints`,
+        {
+          params,
+        }
+      );
+
+      variantTab.blueprints = data;
+
+      return data;
+    },
+
     async getAll() {
       const filesStore = useFilesStore();
       const workspacesStore = useWorkspacesStore();
@@ -34,6 +66,7 @@ export const useVariantsStore = defineStore("variants", {
       tab.variants = data.map(variant => ({
         value: variant,
         content: "",
+        blueprints: [],
         isVisible: false,
       }));
 

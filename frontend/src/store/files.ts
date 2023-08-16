@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 interface IState {
   ROOT: string;
@@ -13,7 +14,12 @@ interface IState {
     file: IFileDto;
     activeVariantId: string;
     notes: { values: INoteDto[]; total: number };
-    variants: { value: IVariantDto; content: string; isVisible: boolean }[];
+    variants: {
+      value: IVariantDto;
+      content: string;
+      isVisible: boolean;
+      blueprints: IBlueprintDto[];
+    }[];
   }[];
 }
 
