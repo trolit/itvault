@@ -10,21 +10,23 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { storeSchema } from "@schemas/Variant/storeSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 import { usePatchNameSuperSchema } from "@schemas/Variant/usePatchNameSuperSchema";
 import { useGetAllBlueprintsSchema } from "@schemas/Variant/useGetAllBlueprintsSchema";
+import { useGetAllBucketsByBlueprintIdSuperSchema } from "@schemas/Variant/useGetAllBucketsByBlueprintIdSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Variant/StoreController";
-import { GetAllController } from "@controllers/Variant/GetAllController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
+import { GetAllController } from "@controllers/Variant/GetAllController";
 import { PatchNameController } from "@controllers/Variant/PatchNameController";
 import { GetContentByIdController } from "@controllers/Variant/GetContentByIdController";
 import { GetAllBlueprintsController } from "@controllers/Variant/GetAllBlueprintsController";
+import { GetAllBucketsByBlueprintIdController } from "@controllers/Variant/GetAllBucketsByBlueprintIdController";
 
 const variantsRouter = Router();
 
@@ -52,6 +54,12 @@ variantsRouter.get(
   "/:id/blueprints",
   validateRequestWith({ [v1_0]: useGetAllBlueprintsSchema }),
   processRequestWith(GetAllBlueprintsController)
+);
+
+variantsRouter.get(
+  "/:id/buckets",
+  validateRequestWith({ [v1_0]: useGetAllBucketsByBlueprintIdSuperSchema }),
+  processRequestWith(GetAllBucketsByBlueprintIdController)
 );
 
 variantsRouter.post(
