@@ -1,7 +1,7 @@
 <template>
   <div class="variant-viewer">
     <n-card class="header" :bordered="false">
-      <blueprint-selector />
+      <blueprint-pop-select />
 
       <n-button type="info" ghost>Save</n-button>
     </n-card>
@@ -22,7 +22,7 @@ import { h, onBeforeMount, ref, computed, type PropType } from "vue";
 
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
-import BlueprintSelector from "./BlueprintSelector.vue";
+import BlueprintPopSelect from "./BlueprintPopSelect.vue";
 
 const text = ref("");
 const variantsStore = useVariantsStore();
