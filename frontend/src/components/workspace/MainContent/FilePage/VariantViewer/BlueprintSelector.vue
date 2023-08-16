@@ -1,11 +1,11 @@
 <template>
   <n-popselect
-    :value="selectData.id"
-    :options="selectData.options"
+    :value="data.id"
+    :options="data.options"
     :render-label="renderLabel"
     @update:value="updateActiveBlueprintId"
   >
-    <n-button size="small">{{ selectData.name || "pick blueprint" }}</n-button>
+    <n-button size="small">{{ data.name || "pick blueprint" }}</n-button>
   </n-popselect>
 </template>
 
@@ -18,7 +18,7 @@ import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
 
 const filesStore = useFilesStore();
 
-const selectData = computed(() => {
+const data = computed(() => {
   const tab = filesStore.getActiveVariantTab();
 
   if (!tab) {
