@@ -8,12 +8,12 @@
       @update:value="variantsStore.setActiveTab"
     >
       <n-tab-pane
-        v-for="{ value, content } in variants"
-        :key="value.id"
-        :tab="value.name"
-        :name="value.id"
+        v-for="variant in variants"
+        :key="variant.value.id"
+        :tab="variant.value.name"
+        :name="variant.value.id"
       >
-        <async-variant-viewer :content="content" :identifier="value.id" />
+        <async-variant-viewer :variant="variant" />
       </n-tab-pane>
     </n-tabs>
   </div>

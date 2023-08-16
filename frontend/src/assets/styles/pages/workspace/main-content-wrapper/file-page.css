@@ -1,11 +1,19 @@
 .workspace-page {
   .main-content-wrapper {
     --file-page-card-header-height: 120px;
-    --file-page-variants-tab-height: 50px;
+    --file-page-variants-tab-height: 45px;
+    --file-page-variant-header-height: 50px;
 
-    --content-height: calc(
+    --no-variant-selected-height: calc(
       var(--workspace-main-content-files-height) -
         var(--file-page-card-header-height)
+    );
+
+    --variant-source-code-height: calc(
+      var(--workspace-main-content-files-height) -
+        var(--file-page-card-header-height) -
+        var(--file-page-variants-tab-height) -
+        var(--file-page-variant-header-height)
     );
 
     .empty-section {
@@ -14,7 +22,7 @@
 
     .file-page {
       .empty-section {
-        height: var(--content-height);
+        height: var(--no-variant-selected-height);
       }
 
       .n-tabs {
@@ -59,34 +67,47 @@
               }
 
               .n-tab-pane {
-                height: calc(
-                  var(--workspace-main-content-files-height) -
-                    var(--file-page-card-header-height) -
-                    var(--file-page-variants-tab-height)
-                );
-
                 .variant-viewer {
                   height: 100%;
                   width: 100%;
-                  display: flex;
 
-                  .line-numbers {
-                    flex: 0.02;
-                    text-align: center;
+                  .header {
+                    padding: 10px 8px 0px 8px;
+                    height: var(--file-page-variant-header-height);
 
-                    span {
-                      counter-increment: linenumber;
-
-                      &::before {
-                        content: counter(linenumber);
-                        display: block;
-                        color: #506882;
-                      }
+                    .n-card__content {
+                      display: flex;
+                      justify-content: space-between;
                     }
                   }
 
-                  .text-render {
-                    flex: 0.98;
+                  .n-scrollbar {
+                    display: flex;
+                    min-height: var(--variant-source-code-height);
+                    max-height: var(--variant-source-code-height);
+
+                    .n-scrollbar-content {
+                      padding: 15px 5px 0 5px;
+
+                      .line-numbers {
+                        flex: 0.02;
+                        text-align: center;
+
+                        span {
+                          counter-increment: linenumber;
+
+                          &::before {
+                            content: counter(linenumber);
+                            display: block;
+                            color: #506882;
+                          }
+                        }
+                      }
+
+                      .text-render {
+                        flex: 0.98;
+                      }
+                    }
                   }
                 }
               }

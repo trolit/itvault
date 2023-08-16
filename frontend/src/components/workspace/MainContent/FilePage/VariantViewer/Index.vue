@@ -1,43 +1,57 @@
 <template>
   <div class="variant-viewer">
-    <div class="line-numbers">
-      <span v-for="index in numberOfLines" :key="index"></span>
-    </div>
+    <n-card class="header" :bordered="false">
+      <blueprint-pop-select />
 
-    <component :is="renderText(text)" />
+      <n-button type="info" ghost>Save</n-button>
+    </n-card>
+
+    <n-scrollbar>
+      <div class="line-numbers">
+        <span v-for="index in numberOfLines" :key="index"></span>
+      </div>
+
+      <component :is="renderText(text)" />
+    </n-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
-import { h, onBeforeMount, ref, computed } from "vue";
+import { NCard, NScrollbar, NButton } from "naive-ui";
+import { h, onBeforeMount, ref, computed, type PropType } from "vue";
 
 import { useVariantsStore } from "@/store/variants";
+import type { VariantTab } from "@/types/VariantTab";
+import BlueprintPopSelect from "./BlueprintPopSelect.vue";
 
 const text = ref("");
 const variantsStore = useVariantsStore();
 
 const props = defineProps({
-  content: {
-    type: String,
-    required: true,
-  },
-
-  identifier: {
-    type: String,
+  variant: {
+    type: Object as PropType<VariantTab>,
     required: true,
   },
 });
 
 onBeforeMount(async () => {
-  if (!props.content) {
+  const { variant } = props;
+
+  if (!variant.content) {
+    const {
+      value: { id },
+    } = variant;
+
     try {
-      text.value = await variantsStore.getContentById(props.identifier);
+      text.value = await variantsStore.getContentById(id);
+
+      await variantsStore.getBlueprints();
     } catch (error) {
       console.log(error);
     }
   }
 
-  text.value = props.content;
+  text.value = variant.content;
 });
 
 const numberOfLines = computed((): number => {
