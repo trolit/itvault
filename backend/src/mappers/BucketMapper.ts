@@ -12,7 +12,9 @@ export class BucketMapper extends BaseMapper<Bucket> implements IBucketDto {
   constructor(data: Bucket, keys: (keyof Bucket)[] = ["id", "value"]) {
     super(data, keys);
 
-    this.blueprintId = data.blueprint.id;
+    if (data.blueprint) {
+      this.blueprintId = data.blueprint.id;
+    }
 
     return this;
   }

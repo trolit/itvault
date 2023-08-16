@@ -2,8 +2,8 @@ import { inject, injectable } from "tsyringe";
 import { BucketMapper } from "@mappers/BucketMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
-import { GetAllControllerTypes } from "types/controllers/Bucket/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
+import { GetAllBucketsByBlueprintIdControllerTypes } from "types/controllers/Variant/GetAllBucketsByBlueprintIdController";
 
 import { Di } from "@enums/Di";
 import { Bucket } from "@entities/Bucket";
@@ -12,9 +12,8 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-// @DEPRECATED --------- !!!
 @injectable()
-export class GetAllController extends BaseController {
+export class GetAllBucketsByBlueprintIdController extends BaseController {
   constructor(
     @inject(Di.BucketRepository)
     private _bucketRepository: IBucketRepository
@@ -32,31 +31,30 @@ export class GetAllController extends BaseController {
   static ALL_VERSIONS = [v1_0];
 
   async v1(
-    request: GetAllControllerTypes.v1.Request,
-    response: GetAllControllerTypes.v1.Response
+    request: GetAllBucketsByBlueprintIdControllerTypes.v1.Request,
+    response: GetAllBucketsByBlueprintIdControllerTypes.v1.Response
   ) {
     const {
-      query: { variantId },
+      params: { id },
+      query: { workspaceId, blueprintId },
     } = request;
 
-    const [result] = await this._bucketRepository.getAll({
-      select: {
-        blueprint: {
-          id: true,
-        },
-      },
+    const [buckets] = await this._bucketRepository.getAll({
       where: {
-        variant: {
-          id: variantId,
+        blueprint: {
+          id: blueprintId,
+          workspace: {
+            id: workspaceId,
+          },
         },
-      },
-      relations: {
-        blueprint: true,
+        variant: {
+          id,
+        },
       },
     });
 
-    const mappedResult = this.mapper.map<Bucket>(result).to(BucketMapper);
+    const mappedBuckets = this.mapper.map<Bucket>(buckets).to(BucketMapper);
 
-    return this.finalizeRequest(response, HTTP.OK, mappedResult);
+    return this.finalizeRequest(response, HTTP.OK, mappedBuckets);
   }
 }
