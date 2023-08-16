@@ -7,22 +7,26 @@
   >
     <n-button size="small">{{ data.name || "pick blueprint" }}</n-button>
 
-    <!-- @TODO GetByIdController for Blueprint -->
+    <!-- @TODO fetch blueprints matching input (+ allow to pick) -->
     <template #action>
-      or assign unused blueprint
-
       <div
         :style="{
           display: 'flex',
           columnGap: '15px',
-          marginTop: '10px',
+          marginBottom: '5px',
           alignItems: 'center',
         }"
       >
-        <n-input />
+        <n-input clearable placeholder="Type name or color" />
 
-        <n-button size="small">assign</n-button>
+        <n-button size="small" disabled>assign</n-button>
       </div>
+
+      <small class="flex align-items-center">
+        This gives only 5 suggestions. Use
+        <n-button size="tiny" quaternary type="info">blueprints</n-button> tab
+        to view more.
+      </small>
     </template>
   </n-popselect>
 </template>
@@ -63,13 +67,17 @@ const data = computed(() => {
 function renderLabel(option: SelectBaseOption & { color: string }) {
   const { label, color } = option;
 
-  return h("div", { style: { display: "flex", columnGap: "10px" } }, [
-    h("div", {
-      style: { backgroundColor: color, width: "20px", height: "20px" },
-    }),
-    h(NTag, { size: "small" }, color),
-    h("span", label?.toString()),
-  ]);
+  return h(
+    "div",
+    { class: "flex align-items-center", style: { columnGap: "5px" } },
+    [
+      h("div", {
+        style: { backgroundColor: color, width: "15px", height: "15px" },
+      }),
+      h(NTag, { size: "small" }, color),
+      h("span", label?.toString()),
+    ]
+  );
 }
 
 function onBlueprintChange(id: number) {
