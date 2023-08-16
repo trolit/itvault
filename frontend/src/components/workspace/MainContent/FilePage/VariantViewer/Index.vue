@@ -1,17 +1,27 @@
 <template>
   <div class="variant-viewer">
-    <div class="line-numbers">
-      <span v-for="index in numberOfLines" :key="index"></span>
-    </div>
+    <n-card class="header" :bordered="false">
+      <blueprint-selector />
 
-    <component :is="renderText(text)" />
+      <n-button type="info" ghost>Save</n-button>
+    </n-card>
+
+    <n-scrollbar>
+      <div class="line-numbers">
+        <span v-for="index in numberOfLines" :key="index"></span>
+      </div>
+
+      <component :is="renderText(text)" />
+    </n-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
+import { NCard, NScrollbar, NButton } from "naive-ui";
 import { h, onBeforeMount, ref, computed } from "vue";
 
 import { useVariantsStore } from "@/store/variants";
+import BlueprintSelector from "./BlueprintSelector.vue";
 
 const text = ref("");
 const variantsStore = useVariantsStore();
