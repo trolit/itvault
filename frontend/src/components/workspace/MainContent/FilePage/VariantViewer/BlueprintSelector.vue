@@ -3,7 +3,7 @@
     :value="data.id"
     :options="data.options"
     :render-label="renderLabel"
-    @update:value="updateActiveBlueprintId"
+    @update:value="onBlueprintChange"
   >
     <n-button size="small">{{ data.name || "pick blueprint" }}</n-button>
   </n-popselect>
@@ -54,7 +54,7 @@ function renderLabel(option: SelectBaseOption & { color: string }) {
   ]);
 }
 
-function updateActiveBlueprintId(id: number) {
+function onBlueprintChange(id: number) {
   const variantTab = filesStore.getActiveVariantTab();
 
   if (!variantTab) {
