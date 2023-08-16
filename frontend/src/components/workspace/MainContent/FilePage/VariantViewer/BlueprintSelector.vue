@@ -1,14 +1,20 @@
 <template>
-  <n-popselect :value="selectData.activeItem" :options="selectData.options">
-    <n-button size="small">pick blueprint</n-button>
+  <n-popselect
+    :value="selectData.id"
+    :options="selectData.options"
+    :render-label="renderLabel"
+    @update:value="updateActiveBlueprintId"
+  >
+    <n-button size="small">{{ selectData.name || "pick blueprint" }}</n-button>
   </n-popselect>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { NButton, NPopselect } from "naive-ui";
+import { computed, h } from "vue";
+import { NButton, NPopselect, NTag } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
+import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
 
 const filesStore = useFilesStore();
 
@@ -16,14 +22,45 @@ const selectData = computed(() => {
   const tab = filesStore.getActiveVariantTab();
 
   if (!tab) {
-    return { activeItem: 0, options: [] };
+    return { id: 0, options: [] };
   }
 
   const { activeBlueprintId, blueprints } = tab;
 
+  const activeBlueprint = blueprints.find(
+    blueprint => blueprint.id === activeBlueprintId
+  );
+
   return {
-    activeItem: activeBlueprintId,
-    options: blueprints.map(({ id, name }) => ({ label: name, value: id })),
+    id: activeBlueprintId,
+    name: activeBlueprint?.name,
+    options: blueprints.map(({ id, name, color }) => ({
+      label: name,
+      value: id,
+      color: color,
+    })),
   };
 });
+
+function renderLabel(option: SelectBaseOption & { color: string }) {
+  const { label, color } = option;
+
+  return h("div", { style: { display: "flex", columnGap: "10px" } }, [
+    h("div", {
+      style: { backgroundColor: color, width: "20px", height: "20px" },
+    }),
+    h(NTag, { size: "small" }, color),
+    h("span", label?.toString()),
+  ]);
+}
+
+function updateActiveBlueprintId(id: number) {
+  const variantTab = filesStore.getActiveVariantTab();
+
+  if (!variantTab) {
+    return;
+  }
+
+  variantTab.activeBlueprintId = id;
+}
 </script>
