@@ -12,6 +12,7 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
+// @DEPRECATED --------- !!!
 @injectable()
 export class GetAllController extends BaseController {
   constructor(
