@@ -43,6 +43,8 @@ import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
 const filesStore = useFilesStore();
 const variantsStore = useVariantsStore();
 
+const emit = defineEmits(["fetch-bucket"]);
+
 const data = computed(() => {
   const tab = filesStore.getActiveVariantTab();
 
@@ -106,10 +108,14 @@ async function onBlueprintChange(id: number) {
     return;
   }
 
+  emit("fetch-bucket", true);
+
   try {
     await variantsStore.getBucketById(variantTab.value.id);
   } catch (error) {
     console.log(error);
+  } finally {
+    emit("fetch-bucket", false);
   }
 }
 </script>

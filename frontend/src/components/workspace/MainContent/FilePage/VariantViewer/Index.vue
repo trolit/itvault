@@ -1,7 +1,7 @@
 <template>
   <div class="variant-viewer">
     <n-card class="header" :bordered="false">
-      <blueprint-pop-select />
+      <blueprint-pop-select @fetch-bucket="isLoading = $event" />
 
       <n-button type="info" ghost>Save</n-button>
     </n-card>
