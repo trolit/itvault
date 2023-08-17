@@ -57,10 +57,10 @@ import {
 
 import { Drawer } from "@/types/Drawer";
 import SingleNote from "./SingleNote.vue";
-import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
 import UserCommentsModal from "./UserCommentsModal.vue";
+import { useWorkspacesStore } from "@/store/workspaces";
 
 const page = ref(1);
 const perPage = ref(5);
@@ -70,17 +70,17 @@ const userFullName = ref("");
 const isUserCommentsModalVisible = ref(false);
 
 const notesStore = useNotesStore();
-const filesStore = useFilesStore();
 const drawerStore = useDrawerStore();
+const workspacesStore = useWorkspacesStore();
 
 const isActive = computed((): boolean => {
   return drawerStore.isDrawerActive(Drawer.Notes) || false;
 });
 
 const notes = computed(() => {
-  const tab = filesStore.getActiveTab();
+  const tab = workspacesStore.activeFileTabValue;
 
-  return tab ? tab.notes.values : [];
+  return tab ? tab.notes.data : [];
 });
 
 const onShowUpdate = () => {
