@@ -50,6 +50,9 @@ export class GetBucketController extends BaseController {
           id,
         },
       },
+      relations: {
+        blueprint: true,
+      },
     });
 
     if (!bucket) {
