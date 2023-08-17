@@ -4,7 +4,7 @@
       closable
       type="card"
       :value="props.activeTab"
-      @close="variantsStore.closeTab"
+      @close="workspacesStore.closeVariantTab"
       @update:value="workspacesStore.setVariantTab"
     >
       <n-tab-pane
@@ -23,10 +23,8 @@
 import { computed, defineAsyncComponent } from "vue";
 import { NTabs, NTabPane, NSpin } from "naive-ui";
 
-import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
 
-const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
 const props = defineProps({
