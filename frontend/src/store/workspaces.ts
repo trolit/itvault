@@ -4,21 +4,19 @@ import { defineStore } from "pinia";
 import type { VariantTab } from "@/types/VariantTab";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
+import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
+import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
-import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
-import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 
 interface IState {
   total: number;
   items: IWorkspaceDto[];
   activeItem: IWorkspaceDto;
   tree: (IDirectoryDto & IFileDto)[];
-
-  // @TODO REFACTOR!!!!
 
   activeFileTab: number; // @NOTE id of file
   tabs: {
