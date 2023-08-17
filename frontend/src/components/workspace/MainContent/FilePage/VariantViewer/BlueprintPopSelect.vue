@@ -2,6 +2,7 @@
   <n-popselect
     :value="data.id"
     :options="data.options"
+    :render-label="renderLabel"
     @update:value="onBlueprintChange"
   >
     <n-button size="small">{{ data.name || "pick blueprint" }}</n-button>
@@ -76,7 +77,13 @@ function renderLabel(option: SelectBaseOption & { color: string }) {
       h("div", {
         style: { backgroundColor: color, width: "15px", height: "15px" },
       }),
-      h(NTag, { size: "small" }, color),
+      h(
+        NTag,
+        { size: "small" },
+        {
+          default: () => color,
+        }
+      ),
       h("span", label?.toString()),
     ]
   );
