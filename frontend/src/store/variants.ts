@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 
 import { useFilesStore } from "./files";
 import { useWorkspacesStore } from "./workspaces";
+import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
@@ -136,6 +137,43 @@ export const useVariantsStore = defineStore("variants", {
       }
 
       variant.content = data;
+
+      return data;
+    },
+
+    async getBucketById(id: string) {
+      const filesStore = useFilesStore();
+      const workspacesStore = useWorkspacesStore();
+
+      const variant = filesStore.getActiveVariantTab();
+
+      if (!variant) {
+        return {};
+      }
+
+      const activeBlueprint = variant.blueprints.find(
+        blueprint => blueprint.id === variant.activeBlueprintId
+      );
+
+      if (!activeBlueprint) {
+        return {};
+      }
+
+      if (activeBlueprint && activeBlueprint.bucket.id) {
+        return activeBlueprint.bucket.id;
+      }
+
+      const params = {
+        version: 1,
+        blueprintId: activeBlueprint.bucket.id,
+        workspaceId: workspacesStore?.activeItem?.id,
+      };
+
+      const { data } = await axios.get<IBucketDto>(`v1/variants/${id}/bucket`, {
+        params,
+      });
+
+      activeBlueprint.bucket = data;
 
       return data;
     },
