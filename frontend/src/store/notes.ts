@@ -1,10 +1,10 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import { useFilesStore } from "./files";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import { useWorkspacesStore } from "./workspaces";
 
 interface IState {}
 
@@ -13,17 +13,17 @@ export const useNotesStore = defineStore("notes", {
 
   actions: {
     async getAll(options: IPaginationQuery & { resource: string }) {
-      const filesStore = useFilesStore();
+      const workspaceStore = useWorkspacesStore();
 
-      const tab = filesStore.getActiveTab();
+      const fileTab = workspaceStore.activeFileTabValue;
 
-      if (!tab || tab.notes.values.length) {
+      if (!fileTab || fileTab.notes.data.length) {
         return;
       }
 
       const params = {
         version: 1,
-        id: tab?.file?.id,
+        id: workspaceStore.activeFileTab,
         ...options,
       };
 
@@ -34,7 +34,7 @@ export const useNotesStore = defineStore("notes", {
         }
       );
 
-      tab.notes = { values: data.result, total: data.total };
+      fileTab.notes = { data: data.result, total: data.total };
 
       return data;
     },
