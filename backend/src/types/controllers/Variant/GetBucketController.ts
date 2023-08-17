@@ -1,7 +1,7 @@
 import { BucketMapper } from "@mappers/BucketMapper";
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
-export namespace GetAllBucketsByBlueprintIdControllerTypes {
+export namespace GetBucketControllerTypes {
   export namespace v1 {
     export type Params = { id: string };
 
@@ -9,6 +9,6 @@ export namespace GetAllBucketsByBlueprintIdControllerTypes {
 
     export type Request = CustomRequest<Params, undefined, Query>;
 
-    export type Response = CustomResponse<BucketMapper[]>;
+    export type Response = CustomResponse<BucketMapper>;
   }
 }
