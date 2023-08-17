@@ -8,6 +8,9 @@ import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
+import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 
 interface IState {
   total: number;
@@ -85,6 +88,45 @@ export const useWorkspacesStore = defineStore("workspaces", {
           this.activeFileTab = this.tabs[0].file.id;
         }
       }
+    },
+
+    setVariantTabBlueprints(blueprints: IBlueprintDto[]) {
+      if (!this.activeVariantTabValue) {
+        return;
+      }
+
+      this.activeVariantTabValue.blueprints = blueprints;
+    },
+
+    setVariantTabContent(content: string) {
+      if (!this.activeVariantTabValue) {
+        return;
+      }
+
+      this.activeVariantTabValue.content = content;
+    },
+
+    setVariantTabBucket(bucket: IBucketDto) {
+      if (!this.activeVariantTabValue) {
+        return;
+      }
+
+      this.activeVariantTabValue.buckets.push(bucket);
+    },
+
+    createVariantTabs(variants: IVariantDto[]) {
+      if (!this.activeFileTabValue) {
+        return;
+      }
+
+      this.activeFileTabValue.variantTabs = variants.map(variant => ({
+        variant,
+        content: "",
+        activeBlueprint: 0,
+        blueprints: [],
+        isVisible: false,
+        buckets: [],
+      }));
     },
 
     setVariantTab(id: string) {
