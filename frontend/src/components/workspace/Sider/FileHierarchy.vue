@@ -93,7 +93,7 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
           return;
         }
 
-        filesStore.setActiveTab(file);
+        workspacesStore.setFileTab(file);
       }
     },
   };
