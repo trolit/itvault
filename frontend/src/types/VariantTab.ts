@@ -3,13 +3,15 @@ import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 export type VariantTab = {
-  value: IVariantDto;
+  variant: IVariantDto;
 
   content: string;
 
   isVisible: boolean;
 
-  activeBlueprintId: number;
+  activeBlueprint: number; // @NOTE id of blueprint
 
-  blueprints: (IBlueprintDto & { bucket: IBucketDto })[];
+  blueprints: IBlueprintDto[];
+
+  buckets: IBucketDto[];
 };
