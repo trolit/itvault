@@ -1,8 +1,8 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import type { FileTab } from "@/types/FileTab";
 import type { VariantTab } from "@/types/VariantTab";
-import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
@@ -19,12 +19,8 @@ interface IState {
   tree: (IDirectoryDto & IFileDto)[];
 
   activeFileTab: number; // @NOTE id of file
-  tabs: {
-    file: IFileDto;
-    activeVariantTab: string; // @NOTE id of variant
-    notes: { data: INoteDto[]; total: number };
-    variantTabs: VariantTab[];
-  }[];
+
+  tabs: FileTab[];
 }
 
 export const useWorkspacesStore = defineStore("workspaces", {
