@@ -5,15 +5,15 @@
       type="card"
       :value="props.activeTab"
       @close="variantsStore.closeTab"
-      @update:value="variantsStore.setActiveTab"
+      @update:value="workspacesStore.setVariantTab"
     >
       <n-tab-pane
-        v-for="variant in variants"
-        :key="variant.value.id"
-        :tab="variant.value.name"
-        :name="variant.value.id"
+        v-for="tab in variantTabs"
+        :key="tab.variant.id"
+        :tab="tab.variant.name"
+        :name="tab.variant.id"
       >
-        <async-variant-viewer :variant="variant" />
+        <async-variant-viewer :variant-tab="tab" />
       </n-tab-pane>
     </n-tabs>
   </div>
@@ -23,11 +23,11 @@
 import { computed, defineAsyncComponent } from "vue";
 import { NTabs, NTabPane, NSpin } from "naive-ui";
 
-import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
+import { useWorkspacesStore } from "@/store/workspaces";
 
-const filesStore = useFilesStore();
 const variantsStore = useVariantsStore();
+const workspacesStore = useWorkspacesStore();
 
 const props = defineProps({
   activeTab: {
@@ -36,14 +36,14 @@ const props = defineProps({
   },
 });
 
-const variants = computed(() => {
-  const tab = filesStore.getActiveTab();
+const variantTabs = computed(() => {
+  const tab = workspacesStore.activeFileTabValue;
 
   if (!tab) {
     return [];
   }
 
-  return tab.variants;
+  return tab.variantTabs;
 });
 
 // @TODO better error informing + loading component
