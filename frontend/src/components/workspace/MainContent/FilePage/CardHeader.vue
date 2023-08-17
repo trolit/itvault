@@ -67,22 +67,6 @@ const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 const preferencesStore = usePreferencesStore();
 
-onBeforeMount(async () => {
-  await fetchVariants();
-});
-
-async function fetchVariants() {
-  isLoading.value = true;
-
-  try {
-    await variantsStore.getAll();
-  } catch (error) {
-    console.log(error);
-  } finally {
-    isLoading.value = false;
-  }
-}
-
 const variants = computed((): IVariantDto[] => {
   const tab = workspacesStore.activeFileTabValue;
 
@@ -91,6 +75,20 @@ const variants = computed((): IVariantDto[] => {
   }
 
   return tab.variantTabs.map(({ variant }) => variant);
+});
+
+onBeforeMount(async () => {
+  if (!variants.value.length) {
+    isLoading.value = true;
+
+    try {
+      await variantsStore.getAll();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 });
 
 function toggleNotesDrawer() {
