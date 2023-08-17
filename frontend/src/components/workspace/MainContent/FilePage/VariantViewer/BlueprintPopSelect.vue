@@ -33,12 +33,17 @@
 
 <script setup lang="ts">
 import { computed, h } from "vue";
+import isEmpty from "lodash/isEmpty";
 import { NButton, NPopselect, NTag, NInput } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
+import { useVariantsStore } from "@/store/variants";
 import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
 
 const filesStore = useFilesStore();
+const variantsStore = useVariantsStore();
+
+const emit = defineEmits(["fetch-bucket"]);
 
 const data = computed(() => {
   const tab = filesStore.getActiveVariantTab();
@@ -74,13 +79,19 @@ function renderLabel(option: SelectBaseOption & { color: string }) {
       h("div", {
         style: { backgroundColor: color, width: "15px", height: "15px" },
       }),
-      h(NTag, { size: "small" }, color),
+      h(
+        NTag,
+        { size: "small" },
+        {
+          default: () => color,
+        }
+      ),
       h("span", label?.toString()),
     ]
   );
 }
 
-function onBlueprintChange(id: number) {
+async function onBlueprintChange(id: number) {
   const variantTab = filesStore.getActiveVariantTab();
 
   if (!variantTab) {
@@ -88,5 +99,23 @@ function onBlueprintChange(id: number) {
   }
 
   variantTab.activeBlueprintId = id;
+
+  const activeBlueprint = variantTab.blueprints.find(
+    blueprint => blueprint.id === id
+  );
+
+  if (!activeBlueprint || !isEmpty(activeBlueprint.bucket.value)) {
+    return;
+  }
+
+  emit("fetch-bucket", true);
+
+  try {
+    await variantsStore.getBucketById(variantTab.value.id);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    emit("fetch-bucket", false);
+  }
 }
 </script>
