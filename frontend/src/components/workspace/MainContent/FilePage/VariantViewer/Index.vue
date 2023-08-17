@@ -36,26 +36,26 @@ const isLoading = ref(false);
 const variantsStore = useVariantsStore();
 
 const props = defineProps({
-  variant: {
+  variantTab: {
     type: Object as PropType<VariantTab>,
     required: true,
   },
 });
 
 onBeforeMount(async () => {
-  const { variant } = props;
+  const { variantTab } = props;
 
-  if (!variant.content) {
+  if (!variantTab.content) {
     const {
-      value: { id },
-    } = variant;
+      variant: { id },
+    } = variantTab;
 
     isLoading.value = true;
 
     try {
       text.value = await variantsStore.getContentById(id);
 
-      await variantsStore.getBlueprints();
+      await variantsStore.getBlueprintsById(id);
     } catch (error) {
       console.log(error);
     } finally {
@@ -63,7 +63,7 @@ onBeforeMount(async () => {
     }
   }
 
-  text.value = variant.content;
+  text.value = variantTab.content;
 });
 
 const numberOfLines = computed((): number => {
