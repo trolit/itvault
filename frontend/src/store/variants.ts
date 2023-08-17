@@ -38,7 +38,10 @@ export const useVariantsStore = defineStore("variants", {
         }
       );
 
-      variantTab.blueprints = data;
+      variantTab.blueprints = data.map(value => ({
+        ...value,
+        bucket: { id: 0, blueprintId: value.id, value: {} },
+      }));
 
       return data;
     },
