@@ -7,17 +7,24 @@
     </n-card>
 
     <n-scrollbar>
-      <div class="line-numbers">
-        <span v-for="index in numberOfLines" :key="index"></span>
+      <div v-if="!isLoading" class="content">
+        <div class="line-numbers">
+          <span v-for="index in numberOfLines" :key="index"></span>
+        </div>
+
+        <component :is="renderText(text)" />
       </div>
 
-      <component :is="renderText(text)" />
+      <!-- @TODO make common "wrapped" spinner component -->
+      <div v-else>
+        <n-spin />
+      </div>
     </n-scrollbar>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NCard, NScrollbar, NButton } from "naive-ui";
+import { NCard, NScrollbar, NButton, NSpin } from "naive-ui";
 import { h, onBeforeMount, ref, computed, type PropType } from "vue";
 
 import { useVariantsStore } from "@/store/variants";
@@ -25,6 +32,7 @@ import type { VariantTab } from "@/types/VariantTab";
 import BlueprintPopSelect from "./BlueprintPopSelect.vue";
 
 const text = ref("");
+const isLoading = ref(false);
 const variantsStore = useVariantsStore();
 
 const props = defineProps({
@@ -42,12 +50,16 @@ onBeforeMount(async () => {
       value: { id },
     } = variant;
 
+    isLoading.value = true;
+
     try {
       text.value = await variantsStore.getContentById(id);
 
       await variantsStore.getBlueprints();
     } catch (error) {
       console.log(error);
+    } finally {
+      isLoading.value = false;
     }
   }
 

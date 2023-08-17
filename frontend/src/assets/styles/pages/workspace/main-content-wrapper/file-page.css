@@ -82,30 +82,33 @@
                   }
 
                   .n-scrollbar {
-                    display: flex;
                     min-height: var(--variant-source-code-height);
                     max-height: var(--variant-source-code-height);
 
                     .n-scrollbar-content {
-                      padding: 15px 5px 0 5px;
+                      .content {
+                        width: 100%;
+                        display: flex;
+                        height: var(--variant-source-code-height);
 
-                      .line-numbers {
-                        flex: 0.02;
-                        text-align: center;
+                        .line-numbers {
+                          flex: 0.02;
+                          text-align: center;
 
-                        span {
-                          counter-increment: linenumber;
+                          span {
+                            counter-increment: linenumber;
 
-                          &::before {
-                            content: counter(linenumber);
-                            display: block;
-                            color: #506882;
+                            &::before {
+                              content: counter(linenumber);
+                              display: block;
+                              color: #506882;
+                            }
                           }
                         }
-                      }
 
-                      .text-render {
-                        flex: 0.98;
+                        .text-render {
+                          flex: 0.98;
+                        }
                       }
                     }
                   }
