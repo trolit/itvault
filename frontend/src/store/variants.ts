@@ -151,6 +151,16 @@ export const useVariantsStore = defineStore("variants", {
         return {};
       }
 
+      const params = {
+        version: 1,
+        blueprintId: variant.activeBlueprintId,
+        workspaceId: workspacesStore?.activeItem?.id,
+      };
+
+      const { data } = await axios.get<IBucketDto>(`v1/variants/${id}/bucket`, {
+        params,
+      });
+
       const activeBlueprint = variant.blueprints.find(
         blueprint => blueprint.id === variant.activeBlueprintId
       );
@@ -158,20 +168,6 @@ export const useVariantsStore = defineStore("variants", {
       if (!activeBlueprint) {
         return {};
       }
-
-      if (activeBlueprint && activeBlueprint.bucket.id) {
-        return activeBlueprint.bucket.id;
-      }
-
-      const params = {
-        version: 1,
-        blueprintId: activeBlueprint.bucket.id,
-        workspaceId: workspacesStore?.activeItem?.id,
-      };
-
-      const { data } = await axios.get<IBucketDto>(`v1/variants/${id}/bucket`, {
-        params,
-      });
 
       activeBlueprint.bucket = data;
 
