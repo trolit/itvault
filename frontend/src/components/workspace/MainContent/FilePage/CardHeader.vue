@@ -9,7 +9,7 @@
           :key="index"
         >
           <template #default>
-            <n-button @click="variantsStore.setActiveTab(id)">
+            <n-button @click="workspacesStore.setVariantTab(id)">
               {{ name }}
             </n-button>
 
@@ -55,42 +55,40 @@ import {
 
 import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
-import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 import formatDate from "@/helpers/dayjs/formatDate";
+import { useWorkspacesStore } from "@/store/workspaces";
 import { usePreferencesStore } from "@/store/preferences";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
 const isLoading = ref(false);
-const filesStore = useFilesStore();
 const drawerStore = useDrawerStore();
 const variantsStore = useVariantsStore();
+const workspacesStore = useWorkspacesStore();
 const preferencesStore = usePreferencesStore();
 
-onBeforeMount(async () => {
-  await fetchVariants();
-});
-
-async function fetchVariants() {
-  isLoading.value = true;
-
-  try {
-    await variantsStore.getAll();
-  } catch (error) {
-    console.log(error);
-  } finally {
-    isLoading.value = false;
-  }
-}
-
 const variants = computed((): IVariantDto[] => {
-  const tab = filesStore.getActiveTab();
+  const tab = workspacesStore.activeFileTabValue;
 
   if (!tab) {
     return [];
   }
 
-  return tab.variants.map(({ value }) => value);
+  return tab.variantTabs.map(({ variant }) => variant);
+});
+
+onBeforeMount(async () => {
+  if (!variants.value.length) {
+    isLoading.value = true;
+
+    try {
+      await variantsStore.getAll();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
 });
 
 function toggleNotesDrawer() {

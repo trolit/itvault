@@ -14,7 +14,7 @@
       </template>
     </empty>
 
-    <file-page v-else-if="filesStore.tabs.length" />
+    <file-page v-else-if="workspacesStore.tabs.length" />
 
     <add-edit-blueprint-drawer />
   </div>
@@ -26,11 +26,11 @@ import { NGrid, NGridItem, NIcon } from "naive-ui";
 import { Term as OptionIcon } from "@vicons/carbon";
 
 import FilePage from "./FilePage/Index.vue";
-import { useFilesStore } from "@/store/files";
 import Empty from "@/components/common/Empty.vue";
+import { useWorkspacesStore } from "@/store/workspaces";
 import AddEditBlueprintDrawer from "./AddEditBlueprintDrawer.vue";
 
-const filesStore = useFilesStore();
+const workspacesStore = useWorkspacesStore();
 
 const gridItems = [
   {
@@ -44,6 +44,6 @@ const gridItems = [
 ];
 
 const nothingSelected = computed<boolean>((): boolean => {
-  return !filesStore.tabs.length;
+  return !workspacesStore.tabs.length;
 });
 </script>

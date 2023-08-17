@@ -3,11 +3,11 @@
     <n-tabs
       closable
       type="card"
-      v-model:value="filesStore.activeTabId"
-      @close="filesStore.closeTab"
+      v-model:value="workspacesStore.activeFileTab"
+      @close="workspacesStore.closeFileTab"
     >
       <n-tab-pane
-        v-for="{ file } in filesStore.tabs"
+        v-for="{ file } in workspacesStore.tabs"
         :key="file.id"
         :tab="file.originalFilename"
         :name="file.id"
@@ -35,18 +35,18 @@ import { NCard, NTabs, NTabPane } from "naive-ui";
 
 import Variants from "./Variants.vue";
 import CardHeader from "./CardHeader.vue";
-import { useFilesStore } from "@/store/files";
 import Empty from "@/components/common/Empty.vue";
+import { useWorkspacesStore } from "@/store/workspaces";
 
-const filesStore = useFilesStore();
+const workspacesStore = useWorkspacesStore();
 
 const variantTab = computed((): string => {
-  const tab = filesStore.getActiveTab();
+  const tab = workspacesStore.activeFileTabValue;
 
   if (!tab) {
     return "";
   }
 
-  return tab.activeVariantId;
+  return tab.activeVariantTab;
 });
 </script>
