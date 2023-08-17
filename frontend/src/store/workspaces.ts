@@ -53,6 +53,28 @@ export const useWorkspacesStore = defineStore("workspaces", {
         variantTab => variantTab.variant.id === fileTab.activeVariantTab
       );
     },
+    activeBlueprint(): IBlueprintDto | undefined {
+      const variantTab = this.activeVariantTabValue;
+
+      if (!variantTab) {
+        return;
+      }
+
+      return variantTab.blueprints.find(
+        blueprint => blueprint.id === variantTab.activeBlueprint
+      );
+    },
+    activeBucket(): IBucketDto | undefined {
+      const variantTab = this.activeVariantTabValue;
+
+      if (!variantTab) {
+        return;
+      }
+
+      return variantTab.buckets.find(
+        bucket => bucket.blueprintId === variantTab.activeBlueprint
+      );
+    },
   },
 
   actions: {
@@ -96,6 +118,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
 
       this.activeVariantTabValue.blueprints = blueprints;
+    },
+
+    setVariantTabActiveBlueprint(id: number) {
+      if (!this.activeVariantTabValue) {
+        return;
+      }
+
+      this.activeVariantTabValue.activeBlueprint = id;
     },
 
     setVariantTabContent(content: string) {

@@ -33,34 +33,29 @@
 
 <script setup lang="ts">
 import { computed, h } from "vue";
-import isEmpty from "lodash/isEmpty";
 import { NButton, NPopselect, NTag, NInput } from "naive-ui";
 
-import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
+import { useWorkspacesStore } from "@/store/workspaces";
 
-const filesStore = useFilesStore();
 const variantsStore = useVariantsStore();
+const workspacesStore = useWorkspacesStore();
 
 const emit = defineEmits(["fetch-bucket"]);
 
 const data = computed(() => {
-  const tab = filesStore.getActiveVariantTab();
+  const variantTab = workspacesStore.activeVariantTabValue;
 
-  if (!tab) {
+  if (!variantTab) {
     return { id: 0, options: [] };
   }
 
-  const { activeBlueprintId, blueprints } = tab;
-
-  const activeBlueprint = blueprints.find(
-    blueprint => blueprint.id === activeBlueprintId
-  );
+  const { activeBlueprint: id, blueprints } = variantTab;
 
   return {
-    id: activeBlueprintId,
-    name: activeBlueprint?.name,
+    id,
+    name: workspacesStore.activeBlueprint?.name,
     options: blueprints.map(({ id, name, color }) => ({
       label: name,
       value: id,
@@ -92,30 +87,20 @@ function renderLabel(option: SelectBaseOption & { color: string }) {
 }
 
 async function onBlueprintChange(id: number) {
-  const variantTab = filesStore.getActiveVariantTab();
+  workspacesStore.setVariantTabActiveBlueprint(id);
 
-  if (!variantTab) {
-    return;
-  }
+  const variantId = workspacesStore.activeFileTabValue?.activeVariantTab;
 
-  variantTab.activeBlueprintId = id;
+  if (!workspacesStore.activeBucket?.value && variantId) {
+    emit("fetch-bucket", true);
 
-  const activeBlueprint = variantTab.blueprints.find(
-    blueprint => blueprint.id === id
-  );
-
-  if (!activeBlueprint || !isEmpty(activeBlueprint.bucket.value)) {
-    return;
-  }
-
-  emit("fetch-bucket", true);
-
-  try {
-    await variantsStore.getBucketById(variantTab.value.id);
-  } catch (error) {
-    console.log(error);
-  } finally {
-    emit("fetch-bucket", false);
+    try {
+      await variantsStore.getBucketById(variantId);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      emit("fetch-bucket", false);
+    }
   }
 }
 </script>
