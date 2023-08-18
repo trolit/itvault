@@ -13,12 +13,16 @@ import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { useRequeueSchema } from "@schemas/Bundle/useRequeueSchema";
 import { useStoreSuperSchema } from "@schemas/Bundle/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Bundle/useGetAllSuperSchema";
+import { useGetFilesSuperSchema } from "@schemas/Bundle/useGetFilesSuperSchema";
+import { useGetBlueprintsSuperSchema } from "@schemas/Bundle/useGetBlueprintsSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Bundle/StoreController";
 import { GetAllController } from "@controllers/Bundle/GetAllController";
 import { RequeueController } from "@controllers/Bundle/RequeueController";
+import { GetFilesController } from "@controllers/Bundle/GetFilesController";
 import { DownloadController } from "@controllers/Bundle/DownloadController";
+import { GetBlueprintsController } from "@controllers/Bundle/GetBlueprintsController";
 
 const bundlesRouter = Router();
 
@@ -29,6 +33,8 @@ const {
 bundlesRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );
+
+// @TODO is workspace available middleware (instead of check in super schema)
 
 bundlesRouter.get(
   "",
@@ -42,6 +48,18 @@ bundlesRouter.get(
   requirePermissions([Permission.DownloadBundle]),
   requireEndpointVersion(DownloadController.ALL_VERSIONS),
   processRequestWith(DownloadController)
+);
+
+bundlesRouter.get(
+  "/:id/blueprints",
+  validateRequestWith({ [v1_0]: useGetBlueprintsSuperSchema }),
+  processRequestWith(GetBlueprintsController)
+);
+
+bundlesRouter.get(
+  "/:id/files",
+  validateRequestWith({ [v1_0]: useGetFilesSuperSchema }),
+  processRequestWith(GetFilesController)
 );
 
 bundlesRouter.post(

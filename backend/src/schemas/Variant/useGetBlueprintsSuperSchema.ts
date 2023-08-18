@@ -1,6 +1,6 @@
 import { object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
-import { GetAllBlueprintsControllerTypes } from "types/controllers/Variant/GetAllBlueprintsController";
+import { GetBlueprintsControllerTypes } from "types/controllers/Variant/GetBlueprintsController";
 
 import { Di } from "@enums/Di";
 
@@ -8,20 +8,20 @@ import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const paramsSchema: SuperSchema.Fragment<GetAllBlueprintsControllerTypes.v1.Params> =
+const paramsSchema: SuperSchema.Fragment<GetBlueprintsControllerTypes.v1.Params> =
   object({
     id: useIdStringSchema(Di.VariantRepository),
   });
 
-const querySchema: SuperSchema.Fragment<GetAllBlueprintsControllerTypes.v1.Query> =
+const querySchema: SuperSchema.Fragment<GetBlueprintsControllerTypes.v1.Query> =
   object({
     workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
   });
 
-export const useGetAllBlueprintsSuperSchema: SuperSchema.Runner<
-  GetAllBlueprintsControllerTypes.v1.Params,
+export const useGetBlueprintsSuperSchema: SuperSchema.Runner<
+  GetBlueprintsControllerTypes.v1.Params,
   void,
-  GetAllBlueprintsControllerTypes.v1.Query
+  GetBlueprintsControllerTypes.v1.Query
 > = defineSuperSchemaRunner(() => {
   return {
     params: paramsSchema,

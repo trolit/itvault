@@ -1,7 +1,7 @@
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
-export namespace GetAllBlueprintsControllerTypes {
+export namespace GetBlueprintsControllerTypes {
   export namespace v1 {
     export type Params = { id: string };
 
