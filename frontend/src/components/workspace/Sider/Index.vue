@@ -27,10 +27,10 @@
 import { NTabs, NTabPane } from "naive-ui";
 
 import FilesTab from "./FilesTab/Index.vue";
-import BundleDrawer from "./BundleDrawer.vue";
 import BundlesTab from "./BundlesTab/Index.vue";
 import BlueprintsTab from "./BlueprintsTab.vue";
 import NotesDrawer from "./NotesDrawer/Index.vue";
+import BundleDrawer from "./BundleDrawer/Index.vue";
 
 const tabs = [
   {
