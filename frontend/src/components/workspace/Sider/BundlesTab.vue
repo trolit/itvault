@@ -43,14 +43,14 @@ import {
 } from "@vicons/carbon";
 import { computed, onMounted, ref } from "vue";
 import {
+  NSpin,
+  NList,
   NIcon,
   NInput,
-  NButton,
-  NSpin,
-  NScrollbar,
   NEmpty,
-  NList,
+  NButton,
   NListItem,
+  NScrollbar,
 } from "naive-ui";
 
 import SingleBundle from "./SingleBundle.vue";

@@ -28,6 +28,17 @@
           justify-content: center;
           height: var(--bundle-scrollbar-section-height);
         }
+
+        .n-list {
+          padding: 10px 0;
+
+          .single-bundle {
+            .n-thing-main__footer {
+              display: flex;
+              justify-content: space-between;
+            }
+          }
+        }
       }
     }
   }
