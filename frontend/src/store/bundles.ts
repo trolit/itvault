@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 
 import { useWorkspacesStore } from "./workspaces";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
@@ -20,17 +19,18 @@ export const useBundlesStore = defineStore("bundles", {
   }),
 
   actions: {
-    async getAll(query: IPaginationQuery) {
+    async getAll(options: { page: number }) {
       const workspacesStore = useWorkspacesStore();
 
       const params = {
         version: 1,
+        perPage: 10,
         workspaceId: workspacesStore.activeItem.id,
-        ...query,
+        ...options,
       };
 
       const { data } = await axios.get<PaginatedResponse<IBundleDto>>(
-        "v1/workspaces",
+        "v1/bundles",
         {
           params,
         }

@@ -33,8 +33,30 @@ import {
   Reset as ResetIcon,
   Search as SearchIcon,
 } from "@vicons/carbon";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { NIcon, NInput, NButton, NSpin, NScrollbar } from "naive-ui";
 
+import { useBundlesStore } from "@/store/bundles";
+
+const page = ref(1);
 const isLoading = ref(false);
+const bundlesStore = useBundlesStore();
+
+onMounted(() => {
+  if (bundlesStore.total === 0) {
+    getBundles();
+  }
+});
+
+async function getBundles() {
+  isLoading.value = true;
+
+  try {
+    await bundlesStore.getAll({ page: page.value });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>
