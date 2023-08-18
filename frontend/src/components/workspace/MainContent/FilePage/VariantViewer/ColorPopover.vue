@@ -6,8 +6,8 @@
       </span>
     </template>
 
-    <n-button size="small" type="error" ghost>
-      <n-icon :component="DeleteIcon" />
+    <n-button size="medium" type="error" secondary circle>
+      <n-icon :size="20" :component="DeleteIcon" />
     </n-button>
   </n-popover>
 </template>
