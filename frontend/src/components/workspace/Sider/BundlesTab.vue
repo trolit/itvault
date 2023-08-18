@@ -1,7 +1,7 @@
 <template>
   <div class="bundles-tab">
     <div class="header">
-      <n-button type="info" size="small" dashed>
+      <n-button type="warning" size="small">
         <n-icon :component="ResetIcon" :size="20" />
       </n-button>
 
