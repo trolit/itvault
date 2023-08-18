@@ -57,5 +57,5 @@ const expiresAt = computed(() => props.bundle.expiresAt);
 
 const parsedExpiresAt = dayjs(expiresAt.value);
 
-let percentage = Math.ceil(100 - now.valueOf() / parsedExpiresAt.valueOf());
+let percentage = 100 - Math.ceil(now.valueOf() / parsedExpiresAt.valueOf());
 </script>
