@@ -29,8 +29,8 @@ import { NIcon, NInput, NButton, NScrollbar, NSpin } from "naive-ui";
 import { Reset as ResetIcon, Search as SearchIcon } from "@vicons/carbon";
 
 import { useFilesStore } from "@/store/files";
-import FileHierarchy from "./FileHierarchy.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
+import FileHierarchy from "@/components/workspace/Sider/FileHierarchy.vue";
 
 const isLoading = ref(false);
 const filesStore = useFilesStore();

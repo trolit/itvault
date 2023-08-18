@@ -7,6 +7,7 @@ import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   id: number;
+  filename?: string;
   note: string;
   expire: BundleExpire;
   expiresAt: string;
@@ -14,13 +15,14 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   size: number;
   blueprints: { name: string; isDeleted: boolean }[];
   variants: { file: string; version: string; isDeleted: boolean }[];
-  createdBy: { fullName: string };
+  createdBy: { id: number; fullName: string };
 
   constructor(
     data: Bundle,
     keys: (keyof Bundle)[] = [
       "id",
       "note",
+      "filename",
       "expire",
       "expiresAt",
       "status",
@@ -39,7 +41,7 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
 
     if (data.variantToBundle) {
       this.variants = data.variantToBundle.map(({ variant }) => ({
-        file: variant.file.originalFilename,
+        file: variant.file ? variant.file.originalFilename : "",
         version: variant.name,
         isDeleted: !!variant.deletedAt,
       }));

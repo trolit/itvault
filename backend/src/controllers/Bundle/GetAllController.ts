@@ -43,6 +43,7 @@ export class GetAllController extends BaseController {
       take,
       select: {
         createdBy: {
+          id: true,
           fullName: true,
         },
       },

@@ -4,6 +4,8 @@ import { BundleStatus } from "../enums/BundleStatus";
 export interface IBundleDto {
   id: number;
 
+  filename?: string;
+
   note: string;
 
   expire: BundleExpire;
@@ -19,6 +21,8 @@ export interface IBundleDto {
   variants: { file: string; version: string; isDeleted: boolean }[];
 
   createdBy: {
+    id: number;
+
     fullName: string;
   };
 }
