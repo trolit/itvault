@@ -4,6 +4,8 @@ import { BundleStatus } from "../enums/BundleStatus";
 export interface IBundleDto {
   id: number;
 
+  filename: string;
+
   note: string;
 
   expire: BundleExpire;
