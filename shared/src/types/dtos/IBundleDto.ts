@@ -16,10 +16,6 @@ export interface IBundleDto {
 
   size: number;
 
-  blueprints: { name: string; isDeleted: boolean }[];
-
-  variants: { file: string; version: string; isDeleted: boolean }[];
-
   createdBy: {
     id: number;
 

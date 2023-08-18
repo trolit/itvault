@@ -13,8 +13,6 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   expiresAt: string;
   status: BundleStatus;
   size: number;
-  blueprints: { name: string; isDeleted: boolean }[];
-  variants: { file: string; version: string; isDeleted: boolean }[];
   createdBy: { id: number; fullName: string };
 
   constructor(
@@ -31,23 +29,6 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
     ]
   ) {
     super(data, keys);
-
-    // @TODO ONLY RETURN in "SHOW" MODE
-    if (data.blueprintToBundle) {
-      this.blueprints = data.blueprintToBundle.map(({ blueprint }) => ({
-        name: blueprint.name,
-        isDeleted: !!blueprint.deletedAt,
-      }));
-    }
-
-    // @TODO ONLY RETURN in "SHOW" MODE
-    if (data.variantToBundle) {
-      this.variants = data.variantToBundle.map(({ variant }) => ({
-        file: variant.file ? variant.file.originalFilename : "",
-        version: variant.name,
-        isDeleted: !!variant.deletedAt,
-      }));
-    }
 
     return this;
   }
