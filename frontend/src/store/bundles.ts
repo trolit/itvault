@@ -1,9 +1,46 @@
+import axios from "axios";
 import { defineStore } from "pinia";
 
-interface IState {}
+import { useWorkspacesStore } from "./workspaces";
+import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
+import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
+import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+
+interface IState {
+  total: number;
+  items: IBundleDto[];
+  activeItemId: number;
+}
 
 export const useBundlesStore = defineStore("bundles", {
-  state: (): IState => ({}),
+  state: (): IState => ({
+    total: 0,
+    items: [],
+    activeItemId: 0,
+  }),
 
-  actions: {},
+  actions: {
+    async getAll(query: IPaginationQuery) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+        ...query,
+      };
+
+      const { data } = await axios.get<PaginatedResponse<IBundleDto>>(
+        "v1/workspaces",
+        {
+          params,
+        }
+      );
+
+      this.items = data.result;
+
+      this.total = data.total;
+
+      return data;
+    },
+  },
 });
