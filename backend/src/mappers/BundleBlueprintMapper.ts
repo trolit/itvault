@@ -8,9 +8,10 @@ export class BundleBlueprintMapper
   implements IBundleBlueprintDto
 {
   name: string;
+  color: string;
   isDeleted: boolean;
 
-  constructor(data: Blueprint, keys: (keyof Blueprint)[] = ["name"]) {
+  constructor(data: Blueprint, keys: (keyof Blueprint)[] = ["name", "color"]) {
     super(data, keys);
 
     this.isDeleted = !!data.deletedAt;
