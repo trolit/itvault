@@ -1,8 +1,6 @@
 .workspace-page {
   .sider {
     .bundles-tab {
-      border: 1px solid red;
-
       --bundles-header-height: 0.1;
       --bundles-content-height: 0.9;
 
