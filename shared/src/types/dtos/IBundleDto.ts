@@ -23,8 +23,4 @@ export interface IBundleDto {
 
     fullName: string;
   };
-
-  blueprints: IBundleBlueprintDto[];
-
-  files: IBundleFileDto[];
 }
