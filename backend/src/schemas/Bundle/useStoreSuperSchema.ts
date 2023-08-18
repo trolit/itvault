@@ -44,6 +44,8 @@ const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
         uniqueVariantIds
       );
 
+      // @TODO validate if amount of provided variantIds MATCH amount of files that are arranged with that blueprint!
+
       if (file) {
         return ctx.createError({
           message: setYupError(
