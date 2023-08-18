@@ -22,7 +22,11 @@
         <n-empty v-if="!items.length" />
 
         <n-list clickable hoverable v-else>
-          <n-list-item v-for="item in items" :key="item.id">
+          <n-list-item
+            v-for="item in items"
+            :key="item.id"
+            @click="drawerStore.setActiveDrawer(Drawer.Bundle)"
+          >
             <single-bundle :item="item" />
           </n-list-item>
         </n-list>
@@ -53,11 +57,14 @@ import {
   NScrollbar,
 } from "naive-ui";
 
+import { Drawer } from "@/types/Drawer";
 import SingleBundle from "./SingleBundle.vue";
+import { useDrawerStore } from "@/store/drawer";
 import { useBundlesStore } from "@/store/bundles";
 
 const page = ref(1);
 const isLoading = ref(false);
+const drawerStore = useDrawerStore();
 const bundlesStore = useBundlesStore();
 
 onMounted(() => {
