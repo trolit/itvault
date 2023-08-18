@@ -1,7 +1,5 @@
-import { IBundleFileDto } from "./IBundleFileDto";
 import { BundleExpire } from "../enums/BundleExpire";
 import { BundleStatus } from "../enums/BundleStatus";
-import { IBundleBlueprintDto } from "./IBundleBlueprintDto";
 
 export interface IBundleDto {
   id: number;
@@ -23,4 +21,6 @@ export interface IBundleDto {
 
     fullName: string;
   };
+
+  createdAt: string;
 }

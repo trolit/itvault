@@ -15,6 +15,7 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   // @TODO { value, unit }
   size: number;
   createdBy: { id: number; fullName: string };
+  createdAt: string;
 
   constructor(
     data: Bundle,
@@ -30,6 +31,8 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
     ]
   ) {
     super(data, keys);
+
+    this.createdAt = data.createdAt.toISOString();
 
     return this;
   }
