@@ -16,8 +16,8 @@ import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { storeSchema } from "@schemas/Variant/storeSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 import { usePatchNameSuperSchema } from "@schemas/Variant/usePatchNameSuperSchema";
+import { useGetBlueprintsSuperSchema } from "@schemas/Variant/useGetBlueprintsSuperSchema";
 import { useGetBucketControllerSuperSchema } from "@schemas/Variant/useGetBucketController";
-import { useGetAllBlueprintsSuperSchema } from "@schemas/Variant/useGetAllBlueprintsSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Variant/StoreController";
@@ -25,8 +25,8 @@ import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
 import { GetBucketController } from "@controllers/Variant/GetBucketController";
 import { PatchNameController } from "@controllers/Variant/PatchNameController";
+import { GetBlueprintsController } from "@controllers/Variant/GetBlueprintsController";
 import { GetContentByIdController } from "@controllers/Variant/GetContentByIdController";
-import { GetAllBlueprintsController } from "@controllers/Variant/GetAllBlueprintsController";
 
 const variantsRouter = Router();
 
@@ -52,8 +52,8 @@ variantsRouter.get(
 
 variantsRouter.get(
   "/:id/blueprints",
-  validateRequestWith({ [v1_0]: useGetAllBlueprintsSuperSchema }),
-  processRequestWith(GetAllBlueprintsController)
+  validateRequestWith({ [v1_0]: useGetBlueprintsSuperSchema }),
+  processRequestWith(GetBlueprintsController)
 );
 
 variantsRouter.get(
