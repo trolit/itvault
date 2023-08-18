@@ -10,6 +10,8 @@
             :size="25"
             :component="isBundleGenerationFailed ? WarningIcon : TimerIcon"
           />
+
+          {{ item.status }}
         </n-tag>
 
         <n-gradient-text v-else type="info" :size="14">
