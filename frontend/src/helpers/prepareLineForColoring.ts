@@ -1,37 +1,49 @@
+import type { LinePart } from "@/types/LinePart";
+import type { ColorLocation } from "@/types/ColorLocation";
+
 export default (
+  lineIndex: number,
   line: string,
   iterations: number,
-  colors: { from: number; to: number }[]
+  colorLocations: ColorLocation[]
 ) => {
   const lineLength = line.length;
 
   let colorIndex = 0;
   let carriageIndex = 0;
-  const parsedText: { text: string; isColored: boolean }[] = [];
+  const lineParts: LinePart[] = [];
 
-  const saveLine = (from: number, to: number, isColored = false) => {
-    parsedText.push({ text: line.slice(from, to), isColored });
+  const saveLine = (
+    from: number,
+    to: number,
+    location: ColorLocation | null
+  ) => {
+    lineParts.push({
+      lineIndex,
+      text: line.slice(from, to),
+      colorLocation: location,
+    });
   };
 
   for (let iteration = 0; iteration < iterations; iteration++) {
-    const color = colors[colorIndex];
+    const location = colorLocations[colorIndex];
 
-    if (!color) {
+    if (!location) {
       if (carriageIndex !== lineLength) {
-        saveLine(carriageIndex, lineLength);
+        saveLine(carriageIndex, lineLength, null);
       }
 
       break;
     }
 
-    const { from, to } = color;
+    const { from, to } = location;
 
     if (iteration === 0) {
       const isFromZero = carriageIndex === from;
 
       const value = isFromZero ? to + 1 : from;
 
-      saveLine(carriageIndex, value, to === value - 1);
+      saveLine(carriageIndex, value, to === value - 1 ? location : null);
       isFromZero ? colorIndex++ : colorIndex;
       carriageIndex = value;
 
@@ -39,14 +51,14 @@ export default (
     }
 
     if (carriageIndex !== from) {
-      saveLine(carriageIndex, from);
+      saveLine(carriageIndex, from, null);
       carriageIndex = from;
 
       continue;
     }
 
     if (carriageIndex === from) {
-      saveLine(carriageIndex, to + 1, true);
+      saveLine(carriageIndex, to + 1, location);
       carriageIndex = to + 1;
       colorIndex++;
 
@@ -54,5 +66,5 @@ export default (
     }
   }
 
-  return parsedText;
+  return lineParts;
 };
