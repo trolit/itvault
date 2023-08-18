@@ -2,12 +2,15 @@
   <n-thing content-indented class="single-bundle">
     <template #header>
       <div>
-        <n-alert
+        <n-tag
           v-if="!isReady"
-          :type="!isReady && isBundleGenerationFailed ? 'error' : 'warning'"
+          :type="isBundleGenerationFailed ? 'error' : 'warning'"
         >
-          {{ alertMessage }}
-        </n-alert>
+          <n-icon
+            :size="25"
+            :component="isBundleGenerationFailed ? WarningIcon : TimerIcon"
+          />
+        </n-tag>
 
         <n-gradient-text v-else type="info" :size="14">
           Bundle #{{ item.id }} ({{ item.size }}B)
@@ -54,9 +57,13 @@
 </template>
 
 <script setup lang="ts">
+import {
+  DeliveryParcel as TimerIcon,
+  WarningAltFilled as WarningIcon,
+} from "@vicons/carbon";
 import { computed, type PropType } from "vue";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-import { NThing, NButton, NTag, NGradientText, NAlert, NCard } from "naive-ui";
+import { NThing, NButton, NTag, NGradientText, NCard, NIcon } from "naive-ui";
 
 import formatDate from "@/helpers/dayjs/formatDate";
 import { Permission } from "@shared/types/enums/Permission";
@@ -76,12 +83,5 @@ const isReady = computed(() => item.value.status === BundleStatus.Ready);
 
 const isBundleGenerationFailed = computed(
   () => item.value.status === BundleStatus.Failed
-);
-
-// @TODO adjust error message - depending on isPermissionEnabled
-const alertMessage = computed(() =>
-  isBundleGenerationFailed.value
-    ? "Some issue occured when trying to generate bundle. "
-    : `Bundle status: '${item.value.status}'`
 );
 </script>
