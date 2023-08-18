@@ -3,7 +3,7 @@ import { BaseMapper } from "./BaseMapper";
 import { Variant } from "@entities/Variant";
 import { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 
-export class BundleVariantMapper
+export class BundleFileMapper
   extends BaseMapper<Variant>
   implements IBundleFileDto
 {
