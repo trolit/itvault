@@ -51,11 +51,17 @@ const props = defineProps({
   },
 });
 
-const now = dayjs();
-
 const expiresAt = computed(() => props.bundle.expiresAt);
+
+const now = dayjs();
 
 const parsedExpiresAt = dayjs(expiresAt.value);
 
-let percentage = 100 - Math.ceil(now.valueOf() / parsedExpiresAt.valueOf());
+const nowTimestamp = now.valueOf();
+const parsedExpiresAtTimestamp = parsedExpiresAt.valueOf();
+
+const leftTime = parsedExpiresAtTimestamp - nowTimestamp;
+
+let percentage =
+  leftTime < 0 ? 0 : 100 - (leftTime / parsedExpiresAtTimestamp) * 100;
 </script>
