@@ -12,6 +12,7 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   expire: BundleExpire;
   expiresAt: string;
   status: BundleStatus;
+  // @TODO { value, unit }
   size: number;
   createdBy: { id: number; fullName: string };
 
