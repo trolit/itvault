@@ -15,7 +15,7 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   size: number;
   blueprints: { name: string; isDeleted: boolean }[];
   variants: { file: string; version: string; isDeleted: boolean }[];
-  createdBy: { fullName: string };
+  createdBy: { id: number; fullName: string };
 
   constructor(
     data: Bundle,

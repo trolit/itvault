@@ -21,6 +21,8 @@ export interface IBundleDto {
   variants: { file: string; version: string; isDeleted: boolean }[];
 
   createdBy: {
+    id: number;
+
     fullName: string;
   };
 }
