@@ -18,7 +18,15 @@
     </div>
 
     <n-scrollbar>
-      <div v-if="!isLoading">@TBA</div>
+      <div v-if="!isLoading">
+        <n-empty v-if="!items.length" />
+
+        <n-list v-else>
+          <n-list-item v-for="item in items" :key="item.id">
+            <single-bundle />
+          </n-list-item>
+        </n-list>
+      </div>
 
       <div v-else class="spinner">
         <n-spin />
@@ -33,9 +41,19 @@ import {
   Reset as ResetIcon,
   Search as SearchIcon,
 } from "@vicons/carbon";
-import { onMounted, ref } from "vue";
-import { NIcon, NInput, NButton, NSpin, NScrollbar } from "naive-ui";
+import { computed, onMounted, ref } from "vue";
+import {
+  NIcon,
+  NInput,
+  NButton,
+  NSpin,
+  NScrollbar,
+  NEmpty,
+  NList,
+  NListItem,
+} from "naive-ui";
 
+import SingleBundle from "./SingleBundle.vue";
 import { useBundlesStore } from "@/store/bundles";
 
 const page = ref(1);
@@ -59,4 +77,6 @@ async function getBundles() {
     isLoading.value = false;
   }
 }
+
+const items = computed(() => bundlesStore.items);
 </script>
