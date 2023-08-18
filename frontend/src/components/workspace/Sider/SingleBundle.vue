@@ -28,18 +28,29 @@
     </n-card>
 
     <template #footer>
-      <!-- @TODO -->
+      <!-- @TODO delete action + permission (+allow to delete for bundle owners (?)) -->
       <n-button type="error" ghost size="small">delete</n-button>
 
-      <!-- @TODO -->
-      <n-button v-if="isBundleGenerationFailed" type="info" ghost size="small">
-        requeue
-      </n-button>
+      <!-- @TODO allow to requeue bundle for bundle owners (?) -->
+      <require-permission :permission="Permission.RequeueBundle">
+        <!-- @TODO -->
+        <n-button
+          v-if="isBundleGenerationFailed"
+          type="info"
+          ghost
+          size="small"
+        >
+          requeue
+        </n-button>
+      </require-permission>
 
-      <!-- @TODO -->
-      <n-button v-if="isReady" type="success" ghost size="small">
-        download
-      </n-button>
+      <!-- @TODO  -->
+      <require-permission :permission="Permission.DownloadBundle">
+        <!-- @TODO -->
+        <n-button v-if="isReady" type="success" ghost size="small">
+          download
+        </n-button>
+      </require-permission>
     </template>
   </n-thing>
 </template>
@@ -50,7 +61,9 @@ import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
 import { NThing, NButton, NTag, NGradientText, NAlert, NCard } from "naive-ui";
 
 import formatDate from "@/helpers/dayjs/formatDate";
+import { Permission } from "@shared/types/enums/Permission";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
+import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const props = defineProps({
   item: {
