@@ -3,6 +3,7 @@
   <n-thing content-indented class="single-note">
     <template #header>
       <!-- @TODO view user notes -->
+      <!-- @TODO extract to common component to use elsewhere -->
       <n-button
         v-if="
           isPermissionEnabled(
