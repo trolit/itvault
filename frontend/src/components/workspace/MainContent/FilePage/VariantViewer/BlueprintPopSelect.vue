@@ -1,5 +1,6 @@
 <template>
   <n-popselect
+    cancelable
     :value="data.id"
     :options="data.options"
     :render-label="renderLabel"
@@ -90,6 +91,10 @@ async function onBlueprintChange(id: number) {
   workspacesStore.setVariantTabActiveBlueprint(id);
 
   const variantId = workspacesStore.activeFileTabValue?.activeVariantTab;
+
+  if (!id) {
+    return;
+  }
 
   if (!workspacesStore.activeBucket?.value && variantId) {
     emit("fetch-bucket", true);

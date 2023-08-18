@@ -27,13 +27,21 @@
 import { NCard, NScrollbar, NButton, NSpin } from "naive-ui";
 import { h, onBeforeMount, ref, computed, type PropType } from "vue";
 
+import ColorPopover from "./ColorPopover.vue";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
+import { useWorkspacesStore } from "@/store/workspaces";
 import BlueprintPopSelect from "./BlueprintPopSelect.vue";
+import decodeLineColoring from "@/helpers/decodeLineColoring";
+import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
+import type { BucketContent } from "@shared/types/BucketContent";
+import prepareLineForColoring from "@/helpers/prepareLineForColoring";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const text = ref("");
 const isLoading = ref(false);
 const variantsStore = useVariantsStore();
+const workspacesStore = useWorkspacesStore();
 
 const props = defineProps({
   variantTab: {
@@ -73,10 +81,48 @@ const numberOfLines = computed((): number => {
 function renderText(content: string) {
   let value = content;
 
+  const bucket = workspacesStore.activeBucket;
+  const blueprint = workspacesStore.activeBlueprint;
+
   const splitText = value.toString().split("\n");
 
-  const children = splitText.map(part => h("div", part));
+  const children = splitText.map((line, index) =>
+    bucket && blueprint
+      ? parseLineWithBucket(index, line, bucket, blueprint)
+      : h("div", line)
+  );
 
   return h("div", { class: "text-render" }, children);
+}
+
+function parseLineWithBucket(
+  index: number,
+  line: string,
+  bucket: IBucketDto,
+  blueprint: IBlueprintDto
+) {
+  const { value } = bucket;
+  const { color } = blueprint;
+
+  const key = Object.keys(value).find(key => parseInt(key) === index);
+
+  if (!key) {
+    return h("div", line);
+  }
+
+  const coloring = value[index as keyof BucketContent];
+
+  const { iterations, mappedColors } = decodeLineColoring(line, coloring);
+
+  const preparedLine = prepareLineForColoring(
+    index,
+    line,
+    iterations,
+    mappedColors
+  );
+
+  return preparedLine.map(part =>
+    part.colorLocation ? h(ColorPopover, { color, part }) : h("span", part.text)
+  );
 }
 </script>
