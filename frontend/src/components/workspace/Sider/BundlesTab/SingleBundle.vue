@@ -9,8 +9,8 @@
           {{ alertMessage }}
         </n-alert>
 
-        <n-gradient-text v-else type="warning" :size="18">
-          (128B)
+        <n-gradient-text v-else type="info" :size="14">
+          Bundle #{{ item.id }} ({{ item.size }}B)
         </n-gradient-text>
       </div>
     </template>
@@ -19,8 +19,6 @@
       <n-tag v-if="isReady" size="small">
         expires {{ formatDate(item.expiresAt, "DD-MM-YYYY HH:mm") }}
       </n-tag>
-
-      <n-tag size="small">owner: {{ item.createdBy.fullName }}</n-tag>
     </template>
 
     <n-card>
