@@ -66,5 +66,50 @@ export const useBundlesStore = defineStore("bundles", {
 
       drawerStore.setActiveDrawer(Drawer.Bundle);
     },
+
+    async getBlueprints() {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      const { data } = await axios.get<IBundleBlueprintDto[]>(
+        `v1/bundles/${this.activeItemId}/blueprints`,
+        {
+          params,
+        }
+      );
+
+      if (this.activeBundle) {
+        this.activeBundle.blueprints = data;
+      }
+
+      return data;
+    },
+
+    async getFiles(blueprintId: number) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        blueprintId,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      const { data } = await axios.get<IBundleFileDto[]>(
+        `v1/bundles/${this.activeItemId}/files`,
+        {
+          params,
+        }
+      );
+
+      if (this.activeBundle) {
+        this.activeBundle.files = data;
+      }
+
+      return data;
+    },
   },
 });
