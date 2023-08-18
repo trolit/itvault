@@ -39,7 +39,7 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
 
     if (data.variantToBundle) {
       this.variants = data.variantToBundle.map(({ variant }) => ({
-        file: variant.file.originalFilename,
+        file: variant.file ? variant.file.originalFilename : "",
         version: variant.name,
         isDeleted: !!variant.deletedAt,
       }));
