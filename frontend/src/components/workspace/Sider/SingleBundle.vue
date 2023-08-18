@@ -28,12 +28,15 @@
     </n-card>
 
     <template #footer>
+      <!-- @TODO -->
       <n-button type="error" ghost size="small">delete</n-button>
 
+      <!-- @TODO -->
       <n-button v-if="isBundleGenerationFailed" type="info" ghost size="small">
         requeue
       </n-button>
 
+      <!-- @TODO -->
       <n-button v-if="isReady" type="success" ghost size="small">
         download
       </n-button>
