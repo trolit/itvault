@@ -7,7 +7,7 @@ import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   id: number;
-  filename: string;
+  filename?: string;
   note: string;
   expire: BundleExpire;
   expiresAt: string;

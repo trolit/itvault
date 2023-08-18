@@ -4,7 +4,7 @@ import { BundleStatus } from "../enums/BundleStatus";
 export interface IBundleDto {
   id: number;
 
-  filename: string;
+  filename?: string;
 
   note: string;
 
