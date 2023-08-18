@@ -1,4 +1,4 @@
-export interface IBundleVariantDto {
+export interface IBundleFileDto {
   file: string;
 
   version: string;
