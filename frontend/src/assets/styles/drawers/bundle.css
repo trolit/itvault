@@ -1,35 +1,41 @@
 .bundle-drawer {
-  .bundle-blueprint {
-    .n-card-header__main {
-      display: flex;
+  .n-drawer-body {
+    .n-drawer-body-content-wrapper {
+      padding: 10px 10px;
 
-      .thumbnail {
-        width: 25px;
-        height: 25px;
-        margin-right: 5px;
-        border-radius: 15px;
-      }
-    }
-
-    .load-files-button {
-      width: 100%;
-    }
-
-    .files {
-      display: flex;
-      row-gap: 15px;
-      flex-direction: column;
-
-      .file-card {
-        .tags {
+      .blueprint {
+        .n-card-header__main {
           display: flex;
-          margin-top: 5px;
-          justify-content: space-between;
+
+          .thumbnail {
+            width: 25px;
+            height: 25px;
+            margin-right: 5px;
+            border-radius: 15px;
+          }
         }
 
-        &:hover {
-          cursor: pointer;
-          border: 1px dashed gray;
+        .load-files-button {
+          width: 100%;
+        }
+
+        .files {
+          display: flex;
+          row-gap: 15px;
+          flex-direction: column;
+
+          .file-card {
+            .tags {
+              display: flex;
+              margin-top: 5px;
+              justify-content: space-between;
+            }
+
+            &:hover {
+              cursor: pointer;
+              border: 1px dashed gray;
+            }
+          }
         }
       }
     }

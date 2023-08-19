@@ -1,5 +1,5 @@
 <template>
-  <div class="bundle-blueprint">
+  <div class="blueprint">
     <n-tag v-if="value.isDeleted" type="error">
       This blueprint was removed
     </n-tag>
@@ -30,7 +30,7 @@
         load files
       </n-button>
 
-      <div class="files" v-else>
+      <div v-else class="files">
         <n-card
           v-for="file in value.files"
           :key="file.fileId"
