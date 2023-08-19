@@ -30,10 +30,17 @@
         }
 
         .n-list {
+          display: flex;
+          row-gap: 15px;
           padding: 10px 0;
+          flex-direction: column;
 
           .n-list-item {
             padding: 0 10px;
+
+            &:hover {
+              cursor: pointer;
+            }
 
             .single-bundle {
               .n-thing-header {
