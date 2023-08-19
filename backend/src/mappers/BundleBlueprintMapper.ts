@@ -7,6 +7,7 @@ export class BundleBlueprintMapper
   extends BaseMapper<Blueprint>
   implements IBundleBlueprintDto
 {
+  id: number;
   name: string;
   color: string;
   isDeleted: boolean;
