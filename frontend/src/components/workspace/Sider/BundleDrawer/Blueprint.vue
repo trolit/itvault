@@ -1,9 +1,5 @@
 <template>
   <div class="blueprint">
-    <n-tag v-if="value.isDeleted" type="error">
-      This blueprint was removed
-    </n-tag>
-
     <n-card :title="value.name" :bordered="false">
       <template #header>
         <div class="thumbnail" :style="{ backgroundColor: value.color }" />
@@ -15,36 +11,42 @@
         {{ value.name }}
       </template>
 
-      <n-button
-        v-if="!value.files.length"
-        text
-        :loading="isLoading"
-        :disabled="isLoading"
-        class="load-files-button"
-        @click="fetchFiles"
-      >
-        <template #icon>
-          <n-icon :size="20" :component="PreviewIcon" />
-        </template>
+      <n-tag v-if="value.isDeleted" type="error">
+        <strong>Note:</strong> This blueprint is not available
+      </n-tag>
 
-        load files
-      </n-button>
-
-      <div v-else class="files">
-        <n-card
-          v-for="file in value.files"
-          :key="file.fileId"
-          class="file-card"
+      <template v-else>
+        <n-button
+          v-if="!value.files.length"
+          text
+          :loading="isLoading"
+          :disabled="isLoading"
+          class="load-files-button"
+          @click="fetchFiles"
         >
-          <em>{{ file.name }}</em>
+          <template #icon>
+            <n-icon :size="20" :component="PreviewIcon" />
+          </template>
 
-          <div class="tags">
-            <n-tag type="info">{{ file.version }}</n-tag>
+          load files
+        </n-button>
 
-            <n-tag v-if="file.isDeleted" type="error">removed</n-tag>
-          </div>
-        </n-card>
-      </div>
+        <div v-else class="files">
+          <n-card
+            v-for="file in value.files"
+            :key="file.fileId"
+            class="file-card"
+          >
+            <em>{{ file.name }}</em>
+
+            <div class="tags">
+              <n-tag type="info">{{ file.version }}</n-tag>
+
+              <n-tag v-if="file.isDeleted" type="error">removed</n-tag>
+            </div>
+          </n-card>
+        </div>
+      </template>
     </n-card>
   </div>
 </template>
