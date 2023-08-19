@@ -113,6 +113,10 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.setFileTab(file);
 
       this.setVariantTab(variantId);
+
+      setTimeout(() => {
+        this.setVariantTabActiveBlueprint(blueprintId);
+      }, 500);
     },
 
     closeFileTab(id: number) {
