@@ -1,7 +1,7 @@
 <template>
   <div class="blueprints-tab">
     <div class="header">
-      <n-button type="info" size="small" dashed>
+      <n-button type="warning" size="small">
         <n-icon :component="ResetIcon" :size="20" />
       </n-button>
 
@@ -12,12 +12,7 @@
         </template>
       </n-input>
 
-      <n-button
-        type="info"
-        size="small"
-        dashed
-        @click="toggleAddEditBlueprintDrawer"
-      >
+      <n-button size="small" @click="toggleAddEditBlueprintDrawer">
         <n-icon :component="AddIcon" :size="25" />
       </n-button>
     </div>

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import { useFilesStore } from "./files";
 import type { FileTab } from "@/types/FileTab";
 import type { VariantTab } from "@/types/VariantTab";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
@@ -10,13 +11,14 @@ import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
+import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
   total: number;
   items: IWorkspaceDto[];
   activeItem: IWorkspaceDto;
-  tree: (IDirectoryDto & IFileDto)[];
+  tree: (IDirectoryDto | IFileDto)[];
 
   activeFileTab: number; // @NOTE id of file
 
@@ -93,6 +95,30 @@ export const useWorkspacesStore = defineStore("workspaces", {
       });
     },
 
+    async setFileTabFromBundle(
+      bundleFile: IBundleFileDto,
+      blueprintId: number
+    ) {
+      const { fileId, variantId } = bundleFile;
+
+      const fileTab = this.tabs.find(tab => tab.file.id === fileId);
+      let file = fileTab?.file;
+
+      if (!file) {
+        const filesStore = useFilesStore();
+
+        file = await filesStore.getById(fileId);
+      }
+
+      this.setFileTab(file);
+
+      this.setVariantTab(variantId);
+
+      setTimeout(() => {
+        this.setVariantTabActiveBlueprint(blueprintId);
+      }, 500);
+    },
+
     closeFileTab(id: number) {
       // @NOTE consider adding "isHidden" flag (like with variant tab)
       const tabIndex = this.tabs.findIndex(tab => tab.file.id === id);
@@ -162,13 +188,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
         variantTab => variantTab.variant.id === id
       );
 
-      if (!variantTab) {
-        return;
+      if (variantTab) {
+        variantTab.isVisible = false;
       }
 
       this.activeFileTabValue.activeVariantTab = id;
-
-      variantTab.isVisible = false;
     },
 
     closeVariantTab(id: string) {

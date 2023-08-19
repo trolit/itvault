@@ -36,6 +36,7 @@
             v-for="file in value.files"
             :key="file.fileId"
             class="file-card"
+            @click="openFile(file)"
           >
             <em>{{ file.name }}</em>
 
@@ -53,11 +54,13 @@
 
 <script setup lang="ts">
 import { ref, type PropType } from "vue";
-import { NCard, NTag, NButton, NIcon } from "naive-ui";
 import { Magnify as PreviewIcon } from "@vicons/carbon";
+import { NCard, NTag, NButton, NIcon, useLoadingBar } from "naive-ui";
 
 import { useBundlesStore } from "@/store/bundles";
+import { useWorkspacesStore } from "@/store/workspaces";
 import type { BundleBlueprint } from "@/types/BundleBlueprint";
+import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 
 const props = defineProps({
   value: {
@@ -67,7 +70,9 @@ const props = defineProps({
 });
 
 const isLoading = ref(false);
+const loadingBar = useLoadingBar();
 const bundlesStore = useBundlesStore();
+const workspacesStore = useWorkspacesStore();
 
 async function fetchFiles() {
   isLoading.value = true;
@@ -78,6 +83,20 @@ async function fetchFiles() {
     console.log(error);
   } finally {
     isLoading.value = false;
+  }
+}
+
+async function openFile(file: IBundleFileDto) {
+  loadingBar.start();
+
+  try {
+    await workspacesStore.setFileTabFromBundle(file, props.value.id);
+
+    loadingBar.finish();
+  } catch (error) {
+    console.log(error);
+
+    loadingBar.error();
   }
 }
 </script>

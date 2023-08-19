@@ -12,7 +12,7 @@
         </template>
       </n-input>
 
-      <n-button type="info" size="small" dashed>
+      <n-button size="small">
         <n-icon :component="AddIcon" :size="25" />
       </n-button>
     </div>
@@ -21,7 +21,7 @@
       <div v-if="!isLoading">
         <n-empty v-if="!items.length" />
 
-        <n-list v-else>
+        <n-list :show-divider="false" v-else>
           <n-list-item
             v-for="item in items"
             :key="item.id"

@@ -86,3 +86,13 @@
     }
   }
 }
+
+.bundle-status {
+  padding: 5px;
+
+  .n-tag__content {
+    display: flex;
+    column-gap: 5px;
+    align-items: center;
+  }
+}

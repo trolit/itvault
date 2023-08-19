@@ -36,7 +36,12 @@
     </div>
 
     <div class="actions">
-      <n-button @click="toggleNotesDrawer">Notes</n-button>
+      <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
+        Notes
+        <span v-if="isBundleDrawerActive">
+          &nbsp; - not available in bundle preview
+        </span>
+      </n-button>
     </div>
   </div>
 </template>
@@ -75,6 +80,10 @@ const variants = computed((): IVariantDto[] => {
   }
 
   return tab.variantTabs.map(({ variant }) => variant);
+});
+
+const isBundleDrawerActive = computed(() => {
+  return drawerStore.isDrawerActive(Drawer.Bundle) || false;
 });
 
 onBeforeMount(async () => {
