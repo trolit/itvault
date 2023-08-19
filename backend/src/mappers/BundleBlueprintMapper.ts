@@ -11,7 +11,10 @@ export class BundleBlueprintMapper
   color: string;
   isDeleted: boolean;
 
-  constructor(data: Blueprint, keys: (keyof Blueprint)[] = ["name", "color"]) {
+  constructor(
+    data: Blueprint,
+    keys: (keyof Blueprint)[] = ["id", "name", "color"]
+  ) {
     super(data, keys);
 
     this.isDeleted = !!data.deletedAt;
