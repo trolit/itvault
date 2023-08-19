@@ -46,6 +46,9 @@ export class GetByIdController extends BaseController {
           id: workspaceId,
         },
       },
+      relations: {
+        directory: true,
+      },
     });
 
     if (!file) {
