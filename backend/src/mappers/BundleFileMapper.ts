@@ -9,7 +9,7 @@ export class BundleFileMapper
 {
   fileId: number;
   variantId: string;
-  file: string;
+  name: string;
   version: string;
   isDeleted: boolean;
 
@@ -18,7 +18,7 @@ export class BundleFileMapper
 
     if (data.file) {
       this.fileId = data.file.id;
-      this.file = data.file?.originalFilename;
+      this.name = data.file?.originalFilename;
     }
 
     this.variantId = data.id;

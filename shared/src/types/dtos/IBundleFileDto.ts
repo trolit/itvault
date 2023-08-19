@@ -3,7 +3,7 @@ export interface IBundleFileDto {
 
   variantId: string;
 
-  file: string;
+  name: string;
 
   version: string;
 
