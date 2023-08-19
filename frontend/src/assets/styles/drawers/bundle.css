@@ -1,0 +1,14 @@
+.bundle-drawer {
+  .bundle-blueprint {
+    .n-card-header__main {
+      display: flex;
+
+      .thumbnail {
+        width: 25px;
+        height: 25px;
+        margin-right: 5px;
+        border-radius: 15px;
+      }
+    }
+  }
+}
