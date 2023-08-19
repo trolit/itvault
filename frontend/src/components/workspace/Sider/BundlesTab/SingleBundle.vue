@@ -1,23 +1,9 @@
 <template>
   <n-thing content-indented class="single-bundle">
     <template #header>
-      <div>
-        <n-tag
-          v-if="!isReady"
-          :type="isBundleGenerationFailed ? 'error' : 'warning'"
-        >
-          <n-icon
-            :size="25"
-            :component="isBundleGenerationFailed ? WarningIcon : TimerIcon"
-          />
+      <div>Bundle #{{ item.id }}</div>
 
-          {{ item.status }}
-        </n-tag>
-
-        <n-gradient-text v-else type="info" :size="14">
-          Bundle #{{ item.id }} ({{ item.size }}B)
-        </n-gradient-text>
-      </div>
+      <bundle-status :value="item.status" />
     </template>
 
     <template #description>
@@ -59,17 +45,14 @@
 </template>
 
 <script setup lang="ts">
-import {
-  DeliveryParcel as TimerIcon,
-  WarningAltFilled as WarningIcon,
-} from "@vicons/carbon";
 import { computed, type PropType } from "vue";
+import { NThing, NButton, NTag, NCard } from "naive-ui";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-import { NThing, NButton, NTag, NGradientText, NCard, NIcon } from "naive-ui";
 
+import BundleStatus from "./BundleStatus.vue";
 import formatDate from "@/helpers/dayjs/formatDate";
 import { Permission } from "@shared/types/enums/Permission";
-import { BundleStatus } from "@shared/types/enums/BundleStatus";
+import { BundleStatus as BundleStatusEnum } from "@shared/types/enums/BundleStatus";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const props = defineProps({
@@ -81,9 +64,9 @@ const props = defineProps({
 
 const item = computed(() => props.item);
 
-const isReady = computed(() => item.value.status === BundleStatus.Ready);
+const isReady = computed(() => item.value.status === BundleStatusEnum.Ready);
 
 const isBundleGenerationFailed = computed(
-  () => item.value.status === BundleStatus.Failed
+  () => item.value.status === BundleStatusEnum.Failed
 );
 </script>

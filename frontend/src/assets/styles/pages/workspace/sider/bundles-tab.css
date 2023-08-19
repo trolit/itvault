@@ -36,6 +36,15 @@
             padding: 0 10px;
 
             .single-bundle {
+              .n-thing-header {
+                .n-thing-header__title {
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                }
+              }
+
               .n-thing-main__footer {
                 display: flex;
                 justify-content: space-between;
