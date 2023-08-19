@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 
 import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "./drawer";
+import type { Bundle } from "@/types/Bundle";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
 import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
@@ -11,10 +12,7 @@ import type { IBundleBlueprintDto } from "@shared/types/dtos/IBundleBlueprintDto
 
 interface IState {
   total: number;
-  items: (IBundleDto & {
-    blueprints: IBundleBlueprintDto[];
-    files: IBundleFileDto[];
-  })[];
+  items: Bundle[];
   activeItemId: number;
 }
 
@@ -83,7 +81,10 @@ export const useBundlesStore = defineStore("bundles", {
       );
 
       if (this.activeBundle) {
-        this.activeBundle.blueprints = data;
+        this.activeBundle.blueprints = data.map(element => ({
+          ...element,
+          files: [],
+        }));
       }
 
       return data;
@@ -105,8 +106,16 @@ export const useBundlesStore = defineStore("bundles", {
         }
       );
 
-      if (this.activeBundle) {
-        this.activeBundle.files = data;
+      if (!this.activeBundle) {
+        return data;
+      }
+
+      const blueprint = this.activeBundle.blueprints.find(
+        blueprint => blueprint.id === blueprintId
+      );
+
+      if (blueprint) {
+        blueprint.files = data;
       }
 
       return data;
