@@ -1,13 +1,18 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import { Drawer } from "@/types/Drawer";
+import { useDrawerStore } from "./drawer";
+import type { Bundle } from "@/types/Bundle";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
+import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { IBundleBlueprintDto } from "@shared/types/dtos/IBundleBlueprintDto";
 
 interface IState {
   total: number;
-  items: IBundleDto[];
+  items: Bundle[];
   activeItemId: number;
 }
 
@@ -17,6 +22,11 @@ export const useBundlesStore = defineStore("bundles", {
     items: [],
     activeItemId: 0,
   }),
+
+  getters: {
+    activeBundle: state =>
+      state.items.find(item => item.id === state.activeItemId),
+  },
 
   actions: {
     async getAll(options: { page: number }) {
@@ -36,9 +46,77 @@ export const useBundlesStore = defineStore("bundles", {
         }
       );
 
-      this.items = data.result;
+      this.items = data.result.map(element => ({
+        ...element,
+        blueprints: [],
+        files: [],
+      }));
 
       this.total = data.total;
+
+      return data;
+    },
+
+    showDetailsDrawer(id: number) {
+      const drawerStore = useDrawerStore();
+
+      this.activeItemId = id;
+
+      drawerStore.setActiveDrawer(Drawer.Bundle);
+    },
+
+    async getBlueprints() {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      const { data } = await axios.get<IBundleBlueprintDto[]>(
+        `v1/bundles/${this.activeItemId}/blueprints`,
+        {
+          params,
+        }
+      );
+
+      if (this.activeBundle) {
+        this.activeBundle.blueprints = data.map(element => ({
+          ...element,
+          files: [],
+        }));
+      }
+
+      return data;
+    },
+
+    async getFiles(blueprintId: number) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        blueprintId,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      const { data } = await axios.get<IBundleFileDto[]>(
+        `v1/bundles/${this.activeItemId}/files`,
+        {
+          params,
+        }
+      );
+
+      if (!this.activeBundle) {
+        return data;
+      }
+
+      const blueprint = this.activeBundle.blueprints.find(
+        blueprint => blueprint.id === blueprintId
+      );
+
+      if (blueprint) {
+        blueprint.files = data;
+      }
 
       return data;
     },

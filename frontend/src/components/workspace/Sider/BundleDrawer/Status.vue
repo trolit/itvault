@@ -1,0 +1,66 @@
+<template>
+  <n-thing>
+    <template #avatar>
+      <n-avatar>
+        <n-icon :component="InfoIcon" />
+      </n-avatar>
+    </template>
+
+    <template #header> Status </template>
+
+    <template #description>
+      <span v-if="bundle.expire === BundleExpire.Never">
+        This bundle never expires.
+      </span>
+
+      Bundle expires at
+      <n-tag type="warning" :bordered="false" size="small">
+        {{ formatDate(expiresAt, "DD-MM-YYYY HH:mm") }}
+      </n-tag>
+      <div>
+        (in
+        <n-countdown :duration="getDifferenceToNow(expiresAt)" />
+        hours)
+
+        <n-progress
+          type="line"
+          status="warning"
+          :percentage="percentage"
+          :show-indicator="false"
+        />
+      </div>
+    </template>
+  </n-thing>
+</template>
+
+<script setup lang="ts">
+import dayjs from "dayjs";
+import { computed, type PropType } from "vue";
+import { Information as InfoIcon } from "@vicons/carbon";
+import { NThing, NIcon, NTag, NAvatar, NProgress, NCountdown } from "naive-ui";
+
+import formatDate from "@/helpers/dayjs/formatDate";
+import { BundleExpire } from "@shared/types/enums/BundleExpire";
+import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
+import getDifferenceToNow from "@/helpers/dayjs/getDifferenceToNow";
+
+const props = defineProps({
+  bundle: {
+    type: Object as PropType<IBundleDto>,
+    required: true,
+  },
+});
+
+const expiresAt = computed(() => props.bundle.expiresAt);
+const createdAt = computed(() => props.bundle.createdAt);
+
+const now = dayjs();
+const parsedCreatedAt = dayjs(createdAt.value);
+const parsedExpiresAt = dayjs(expiresAt.value);
+
+const leftTime = parsedExpiresAt.diff(now, "milliseconds");
+const totalTime = parsedExpiresAt.diff(parsedCreatedAt, "milliseconds");
+const percentageChange = (leftTime / totalTime) * 100;
+
+const percentage = percentageChange < 0 ? 0 : percentageChange;
+</script>

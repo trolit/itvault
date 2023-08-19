@@ -21,4 +21,6 @@ export interface IBundleDto {
 
     fullName: string;
   };
+
+  createdAt: string;
 }

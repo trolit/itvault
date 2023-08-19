@@ -36,10 +36,6 @@
             padding: 0 10px;
 
             .single-bundle {
-              .n-thing-header__title {
-                width: 100%;
-              }
-
               .n-thing-main__footer {
                 display: flex;
                 justify-content: space-between;

@@ -21,8 +21,12 @@
       <div v-if="!isLoading">
         <n-empty v-if="!items.length" />
 
-        <n-list clickable hoverable v-else>
-          <n-list-item v-for="item in items" :key="item.id">
+        <n-list v-else>
+          <n-list-item
+            v-for="item in items"
+            :key="item.id"
+            @click="bundlesStore.showDetailsDrawer(item.id)"
+          >
             <single-bundle :item="item" />
           </n-list-item>
         </n-list>

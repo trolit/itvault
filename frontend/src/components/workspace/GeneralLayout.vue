@@ -2,7 +2,7 @@
   <n-layout has-sider>
     <n-layout-sider
       bordered
-      :show-trigger="!isNotesDrawerActive"
+      :show-trigger="!isNotesDrawerActive && !isBundleDrawerActive"
       :width="340"
       :collapsed-width="8"
       collapse-mode="transform"
@@ -35,7 +35,11 @@ const inverted = ref(false);
 const drawerStore = useDrawerStore();
 const preferencesStore = usePreferencesStore();
 
-const isNotesDrawerActive = computed((): boolean => {
+const isNotesDrawerActive = computed(() => {
   return drawerStore.isDrawerActive(Drawer.Notes) || false;
+});
+
+const isBundleDrawerActive = computed(() => {
+  return drawerStore.isDrawerActive(Drawer.Bundle) || false;
 });
 </script>

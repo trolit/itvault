@@ -1,5 +1,9 @@
 export interface IBundleFileDto {
-  file: string;
+  fileId: number;
+
+  variantId: string;
+
+  name: string;
 
   version: string;
 

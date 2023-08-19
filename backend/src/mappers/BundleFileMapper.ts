@@ -7,7 +7,9 @@ export class BundleFileMapper
   extends BaseMapper<Variant>
   implements IBundleFileDto
 {
-  file: string;
+  fileId: number;
+  variantId: string;
+  name: string;
   version: string;
   isDeleted: boolean;
 
@@ -15,11 +17,12 @@ export class BundleFileMapper
     super(data, keys);
 
     if (data.file) {
-      this.file = data.file?.originalFilename;
+      this.fileId = data.file.id;
+      this.name = data.file?.originalFilename;
     }
 
+    this.variantId = data.id;
     this.version = data.name;
-
     this.isDeleted = !!data.deletedAt;
 
     return this;
