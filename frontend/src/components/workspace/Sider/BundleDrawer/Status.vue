@@ -9,17 +9,17 @@
     <template #header> Status </template>
 
     <template #description>
-      <span v-if="bundle.expiresAt === BundleExpire.Never">
+      <span v-if="bundle.expire === BundleExpire.Never">
         This bundle never expires.
       </span>
 
       Bundle expires at
       <n-tag type="warning" :bordered="false" size="small">
-        {{ formatDate(bundle.expiresAt, "DD-MM-YYYY HH:mm") }}
+        {{ formatDate(expiresAt, "DD-MM-YYYY HH:mm") }}
       </n-tag>
       <div>
         (in
-        <n-countdown :duration="getDifferenceToNow(bundle.expiresAt)" />
+        <n-countdown :duration="getDifferenceToNow(expiresAt)" />
         hours)
 
         <n-progress
@@ -52,16 +52,15 @@ const props = defineProps({
 });
 
 const expiresAt = computed(() => props.bundle.expiresAt);
+const createdAt = computed(() => props.bundle.createdAt);
 
 const now = dayjs();
-
+const parsedCreatedAt = dayjs(createdAt.value);
 const parsedExpiresAt = dayjs(expiresAt.value);
 
-const nowTimestamp = now.valueOf();
-const parsedExpiresAtTimestamp = parsedExpiresAt.valueOf();
+const leftTime = parsedExpiresAt.diff(now, "milliseconds");
+const totalTime = parsedExpiresAt.diff(parsedCreatedAt, "milliseconds");
+const percentageChange = (leftTime / totalTime) * 100;
 
-const leftTime = parsedExpiresAtTimestamp - nowTimestamp;
-
-let percentage =
-  leftTime < 0 ? 0 : 100 - (leftTime / parsedExpiresAtTimestamp) * 100;
+const percentage = percentageChange < 0 ? 0 : percentageChange;
 </script>
