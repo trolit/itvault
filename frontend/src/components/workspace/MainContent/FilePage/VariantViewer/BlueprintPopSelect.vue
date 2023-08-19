@@ -4,7 +4,7 @@
     :value="data.id"
     :options="data.options"
     :render-label="renderLabel"
-    @update:value="onBlueprintChange"
+    @update:value="workspacesStore.setVariantTabActiveBlueprint($event)"
   >
     <n-button size="small">{{ data.name || "pick blueprint" }}</n-button>
 
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h } from "vue";
+import { computed, h, watch } from "vue";
 import { NButton, NPopselect, NTag, NInput } from "naive-ui";
 
 import { useVariantsStore } from "@/store/variants";
@@ -87,12 +87,11 @@ function renderLabel(option: SelectBaseOption & { color: string }) {
   );
 }
 
-async function onBlueprintChange(id: number) {
-  workspacesStore.setVariantTabActiveBlueprint(id);
-
+watch(data, async () => {
+  const blueprintId = data.value.id;
   const variantId = workspacesStore.activeFileTabValue?.activeVariantTab;
 
-  if (!id) {
+  if (!blueprintId) {
     return;
   }
 
@@ -107,5 +106,5 @@ async function onBlueprintChange(id: number) {
       emit("fetch-bucket", false);
     }
   }
-}
+});
 </script>
