@@ -21,17 +21,7 @@
 
         <n-divider />
 
-        <n-thing>
-          <template #avatar>
-            <n-avatar>
-              <n-icon :component="InfoIcon" />
-            </n-avatar>
-          </template>
-
-          <template #header> Blueprints </template>
-
-          <template #description> Expand to view files </template>
-        </n-thing>
+        <blueprints :blueprints="bundle.blueprints" />
       </div>
     </n-drawer-content>
   </n-drawer>
@@ -39,19 +29,12 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { Information as InfoIcon } from "@vicons/carbon";
-import {
-  NIcon,
-  NThing,
-  NAvatar,
-  NDrawer,
-  NDivider,
-  NDrawerContent,
-} from "naive-ui";
+import { NDrawer, NDivider, NDrawerContent } from "naive-ui";
 
 import Owner from "./Owner.vue";
 import Status from "./Status.vue";
 import { Drawer } from "@/types/Drawer";
+import Blueprints from "./Blueprints.vue";
 import { useDrawerStore } from "@/store/drawer";
 import { useBundlesStore } from "@/store/bundles";
 
