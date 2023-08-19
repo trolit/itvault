@@ -11,7 +11,7 @@
     <n-spin v-if="isLoading" />
 
     <div v-else>
-      <bundle-blueprint
+      <blueprint
         v-for="blueprint in blueprints"
         :key="blueprint.id"
         :value="blueprint"
@@ -25,13 +25,13 @@ import { ref, type PropType, onMounted } from "vue";
 import { NSpin, NIcon, NThing, NAvatar } from "naive-ui";
 import { PaintBrush as BlueprintIcon } from "@vicons/carbon";
 
+import Blueprint from "./Blueprint.vue";
 import { useBundlesStore } from "@/store/bundles";
-import BundleBlueprint from "./BundleBlueprint.vue";
-import type { IBundleBlueprintDto } from "@shared/types/dtos/IBundleBlueprintDto";
+import type { BundleBlueprint } from "@/types/BundleBlueprint";
 
 const props = defineProps({
   blueprints: {
-    type: Object as PropType<IBundleBlueprintDto[]>,
+    type: Object as PropType<BundleBlueprint[]>,
     required: true,
   },
 });

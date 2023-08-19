@@ -14,5 +14,24 @@
     .load-files-button {
       width: 100%;
     }
+
+    .files {
+      display: flex;
+      row-gap: 15px;
+      flex-direction: column;
+
+      .file-card {
+        .tags {
+          display: flex;
+          margin-top: 5px;
+          justify-content: space-between;
+        }
+
+        &:hover {
+          cursor: pointer;
+          border: 1px dashed gray;
+        }
+      }
+    }
   }
 }
