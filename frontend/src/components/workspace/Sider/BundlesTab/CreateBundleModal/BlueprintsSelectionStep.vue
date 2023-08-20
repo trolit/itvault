@@ -1,5 +1,5 @@
 <template>
-  <div>Blueprints (selection)</div>
+  <div class="blueprints-step">Blueprints (selection)</div>
 </template>
 
 <script setup lang="ts"></script>

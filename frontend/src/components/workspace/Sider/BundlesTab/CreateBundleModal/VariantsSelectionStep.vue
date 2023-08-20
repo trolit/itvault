@@ -1,5 +1,5 @@
 <template>
-  <div>Variants (selection)</div>
+  <div class="variants-step">Variants (selection)</div>
 </template>
 
 <script setup lang="ts"></script>

@@ -1,5 +1,5 @@
 <template>
-  <div>Form</div>
+  <div class="form-step">Form</div>
 </template>
 
 <script setup lang="ts"></script>
