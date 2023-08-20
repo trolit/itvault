@@ -18,7 +18,14 @@
     </n-space>
 
     <n-scrollbar class="content-scrollbar">
-      <component :is="currentStep" />
+      <n-spin v-if="isLoading" />
+
+      <component
+        v-else
+        :is="currentStep"
+        :form-data="formData"
+        @is-loading="isLoading = $event"
+      />
     </n-scrollbar>
 
     <div class="actions">
@@ -34,32 +41,53 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { NModal, NSpace, NSteps, NStep, NButton, NScrollbar } from "naive-ui";
+import cloneDeep from "lodash/cloneDeep";
+import { ref, computed, type Ref } from "vue";
+import {
+  NSpin,
+  NModal,
+  NSpace,
+  NSteps,
+  NStep,
+  NButton,
+  NScrollbar,
+} from "naive-ui";
 
 import FormStep from "./FormStep.vue";
+import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
+import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+
+const defaultFormData: AddBundleDto = {
+  values: [],
+  expiration: BundleExpire.OneDay,
+};
 
 const current = ref(1);
+const isLoading = ref(false);
+const formData: Ref<AddBundleDto> = ref(cloneDeep(defaultFormData));
 
 const steps = [
   {
-    title: "Blueprints",
-    description: "Select blueprints that you would like to include in bundle.",
+    title: "Select blueprints",
+    description: "Choose blueprints that bundle should include.",
     value: BlueprintsSelectionStep,
+    props: {},
   },
 
   {
-    title: "Variants",
-    description: "Pick file variants.",
+    title: "Select variants",
+    description: "Select file variants.",
     value: VariantsSelectionStep,
+    props: {},
   },
 
   {
-    title: "Form",
-    description: "Complete basic information about bundle.",
+    title: "Complete bundle information",
+    description: "Provide basic information about bundle.",
     value: FormStep,
+    props: {},
   },
 ];
 
