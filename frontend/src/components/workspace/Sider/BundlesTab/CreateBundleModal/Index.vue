@@ -7,7 +7,7 @@
   >
     <n-space vertical class="steps-wrapper">
       <!-- @TODO implement status (to cover validation) -->
-      <n-steps :current="current">
+      <n-steps :current="current" size="small">
         <n-step
           v-for="(step, index) in steps"
           :key="index"
