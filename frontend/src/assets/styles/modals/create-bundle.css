@@ -38,11 +38,41 @@
       .selected-items {
         flex: 0.2;
 
-        .header {
+        .n-tag {
           margin: 0;
+          width: 100%;
+          margin-bottom: 10px;
+          text-align: center;
           height: var(
             --create-bundle-modal-blueprints-step-selected-header-height
           );
+        }
+
+        .n-scrollbar {
+          max-height: calc(
+            var(--create-bundle-modal-step-content-height) -
+              var(--create-bundle-modal-blueprints-step-selected-header-height) -
+              10px
+          );
+
+          .n-scrollbar-content {
+            display: flex;
+            row-gap: 15px;
+            flex-direction: column;
+
+            .n-card {
+              .n-card__content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .thumbnail {
+                  width: 25px;
+                  height: 25px;
+                }
+              }
+            }
+          }
         }
 
         .n-scrollbar {
@@ -67,6 +97,12 @@
             padding: 20px 0;
 
             .n-card {
+              cursor: pointer;
+
+              &.selected {
+                border: 1px solid lime;
+              }
+
               .n-card__content {
                 display: flex;
                 justify-content: space-between;

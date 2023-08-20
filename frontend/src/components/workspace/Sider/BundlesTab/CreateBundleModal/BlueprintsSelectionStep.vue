@@ -1,9 +1,31 @@
 <template>
   <div class="blueprints-step">
     <div class="selected-items">
-      <n-h3 class="header">Currently selected</n-h3>
+      <n-tag :bordered="false" type="info">
+        Currently selected ({{ selectedBlueprints.length }})
+      </n-tag>
 
-      <n-scrollbar> 113 </n-scrollbar>
+      <n-scrollbar>
+        <n-card v-for="blueprint in selectedBlueprints" :key="blueprint.id">
+          <div
+            class="thumbnail"
+            :style="{ backgroundColor: blueprint.color }"
+          />
+
+          {{ blueprint.name }}
+
+          <n-button
+            quaternary
+            circle
+            type="error"
+            @click="$emit('deselect-blueprint', blueprint.id)"
+          >
+            <template #icon>
+              <n-icon :component="DeleteIcon" />
+            </template>
+          </n-button>
+        </n-card>
+      </n-scrollbar>
     </div>
 
     <n-divider vertical />
@@ -20,7 +42,12 @@
           :y-gap="35"
         >
           <n-grid-item v-for="blueprint in blueprints" :key="blueprint.id">
-            <n-card>
+            <n-card
+              @click="$emit('select-blueprint', blueprint)"
+              :class="{
+                selected: isBlueprintSelected(blueprint.id),
+              }"
+            >
               {{ blueprint.name }}
 
               <div
@@ -38,6 +65,7 @@
 </template>
 
 <script setup lang="ts">
+import { Delete as DeleteIcon } from "@vicons/carbon";
 import {
   ref,
   type PropType,
@@ -49,7 +77,9 @@ import {
 import {
   NCard,
   NGrid,
-  NH3,
+  NTag,
+  NIcon,
+  NButton,
   NDivider,
   NSpin,
   NGridItem,
@@ -68,20 +98,25 @@ const isLoading = ref(false);
 const blueprintsStore = useBlueprintsStore();
 const blueprints: Ref<IBlueprintDto[]> = ref([]);
 
-defineProps({
+const props = defineProps({
   formData: {
     type: Object as PropType<AddBundleDto>,
     required: true,
   },
+
+  selectedBlueprints: {
+    type: Object as PropType<IBlueprintDto[]>,
+    required: true,
+  },
 });
+
+defineEmits(["select-blueprint", "deselect-blueprint"]);
 
 onBeforeMount(async () => {
   await fetchBlueprints();
 });
 
 async function fetchBlueprints() {
-  console.log("wtf");
-
   isLoading.value = true;
 
   try {
@@ -95,6 +130,12 @@ async function fetchBlueprints() {
   } finally {
     isLoading.value = false;
   }
+}
+
+function isBlueprintSelected(id: number) {
+  return props.selectedBlueprints.some(
+    selectedBlueprint => selectedBlueprint.id === id
+  );
 }
 
 const pageCount = computed(() => Math.ceil(total.value / perPage));

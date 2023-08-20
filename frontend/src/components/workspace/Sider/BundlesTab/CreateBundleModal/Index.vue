@@ -17,7 +17,12 @@
       </n-steps>
     </n-space>
 
-    <component :is="currentStep" :form-data="formData" />
+    <component
+      :is="currentStep.value"
+      :form-data="formData"
+      v-on="currentStep.events"
+      v-bind="currentStep.props"
+    />
 
     <div class="actions">
       <n-button @click="current--" :disabled="current === 1">
@@ -41,6 +46,7 @@ import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
 import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const defaultFormData: AddBundleDto = {
   values: [],
@@ -48,6 +54,7 @@ const defaultFormData: AddBundleDto = {
 };
 
 const current = ref(1);
+const selectedBlueprints: Ref<IBlueprintDto[]> = ref([]);
 const formData: Ref<AddBundleDto> = ref(cloneDeep(defaultFormData));
 
 const steps = [
@@ -55,7 +62,13 @@ const steps = [
     title: "Select blueprints",
     description: "Choose blueprints that bundle should include.",
     value: BlueprintsSelectionStep,
-    props: {},
+    props: {
+      selectedBlueprints: selectedBlueprints.value,
+    },
+    events: {
+      "select-blueprint": onBlueprintSelect,
+      "deselect-blueprint": onBlueprintDeselect,
+    },
   },
 
   {
@@ -63,6 +76,7 @@ const steps = [
     description: "Select file variants.",
     value: VariantsSelectionStep,
     props: {},
+    events: {},
   },
 
   {
@@ -70,12 +84,39 @@ const steps = [
     description: "Provide basic information about bundle.",
     value: FormStep,
     props: {},
+    events: {},
   },
 ];
 
 const currentStep = computed(
   () =>
-    steps.find((step, index) => index + 1 === current.value)?.value ||
+    steps.find((step, index) => index + 1 === current.value) ||
     BlueprintsSelectionStep
 );
+
+function onBlueprintSelect(blueprintToAdd: IBlueprintDto) {
+  const blueprintIndex = selectedBlueprints.value.findIndex(
+    element => element.id === blueprintToAdd.id
+  );
+
+  if (~blueprintIndex) {
+    selectedBlueprints.value.splice(blueprintIndex, 1);
+
+    return;
+  }
+
+  selectedBlueprints.value.push(blueprintToAdd);
+}
+
+function onBlueprintDeselect(id: number) {
+  const blueprintIndex = selectedBlueprints.value.findIndex(
+    element => element.id === id
+  );
+
+  if (~blueprintIndex) {
+    selectedBlueprints.value.splice(blueprintIndex, 1);
+
+    return;
+  }
+}
 </script>
