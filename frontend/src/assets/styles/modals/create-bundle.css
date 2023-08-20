@@ -9,6 +9,9 @@
       var(--create-bundle-modal-actions-height)
   );
 
+  --create-bundle-modal-blueprints-step-selected-header-height: 30px;
+  --create-bundle-modal-blueprints-step-pagination-height: 35px;
+
   width: 80%;
   height: var(--create-bundle-modal-height);
 
@@ -25,9 +28,65 @@
       }
     }
 
-    .content-scrollbar {
-      min-height: var(--create-bundle-modal-step-content-height);
-      max-height: var(--create-bundle-modal-step-content-height);
+    .blueprints-step {
+      display: flex;
+
+      .n-divider {
+        height: var(--create-bundle-modal-step-content-height);
+      }
+
+      .selected-items {
+        flex: 0.2;
+
+        .header {
+          margin: 0;
+          height: var(
+            --create-bundle-modal-blueprints-step-selected-header-height
+          );
+        }
+
+        .n-scrollbar {
+          min-height: calc(
+            var(--create-bundle-modal-step-content-height) -
+              var(--create-bundle-modal-blueprints-step-selected-header-height)
+          );
+        }
+      }
+
+      .items {
+        flex: 0.8;
+
+        .n-scrollbar {
+          max-height: calc(
+            var(--create-bundle-modal-step-content-height) -
+              var(--create-bundle-modal-blueprints-step-pagination-height)
+          );
+          padding-right: 15px;
+
+          .n-grid {
+            padding: 20px 0;
+
+            .n-card {
+              .n-card__content {
+                display: flex;
+                justify-content: space-between;
+
+                .thumbnail {
+                  width: 25px;
+                  height: 25px;
+                }
+              }
+            }
+          }
+        }
+
+        .n-pagination {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: var(--create-bundle-modal-blueprints-step-pagination-height);
+        }
+      }
     }
 
     .actions {

@@ -17,16 +17,7 @@
       </n-steps>
     </n-space>
 
-    <n-scrollbar class="content-scrollbar">
-      <n-spin v-if="isLoading" />
-
-      <component
-        v-else
-        :is="currentStep"
-        :form-data="formData"
-        @is-loading="isLoading = $event"
-      />
-    </n-scrollbar>
+    <component :is="currentStep" :form-data="formData" />
 
     <div class="actions">
       <n-button @click="current--" :disabled="current === 1">
@@ -43,15 +34,7 @@
 <script setup lang="ts">
 import cloneDeep from "lodash/cloneDeep";
 import { ref, computed, type Ref } from "vue";
-import {
-  NSpin,
-  NModal,
-  NSpace,
-  NSteps,
-  NStep,
-  NButton,
-  NScrollbar,
-} from "naive-ui";
+import { NModal, NSpace, NSteps, NStep, NButton } from "naive-ui";
 
 import FormStep from "./FormStep.vue";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
@@ -65,7 +48,6 @@ const defaultFormData: AddBundleDto = {
 };
 
 const current = ref(1);
-const isLoading = ref(false);
 const formData: Ref<AddBundleDto> = ref(cloneDeep(defaultFormData));
 
 const steps = [
