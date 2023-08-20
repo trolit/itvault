@@ -1,0 +1,37 @@
+@import "./blueprints-step.css";
+
+.create-bundle-modal {
+  --create-bundle-modal-height: 90vh;
+  --create-bundle-modal-header-height: 50px;
+  --create-bundle-modal-steps-height: 80px;
+  --create-bundle-modal-actions-height: 50px;
+
+  --create-bundle-modal-step-content-height: calc(
+    var(--create-bundle-modal-height) - var(--create-bundle-modal-header-height) -
+      var(--create-bundle-modal-steps-height) -
+      var(--create-bundle-modal-actions-height)
+  );
+
+  width: 80%;
+  height: var(--create-bundle-modal-height);
+
+  .n-card-header {
+    height: var(--create-bundle-modal-header-height);
+  }
+
+  .n-card__content {
+    .steps-wrapper {
+      .n-steps {
+        display: flex;
+        align-items: center;
+        height: var(--create-bundle-modal-steps-height);
+      }
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      height: var(--create-bundle-modal-actions-height);
+    }
+  }
+}

@@ -4,10 +4,10 @@ import { defineStore } from "pinia";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 
 interface IState {
   total: number;
-
   items: IBlueprintDto[];
 }
 
@@ -18,7 +18,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
   }),
 
   actions: {
-    async getAll(options: { page: number }) {
+    async getAllInfiniteScroll(options: { page: number }) {
       const workspacesStore = useWorkspacesStore();
 
       const params = {
@@ -40,6 +40,26 @@ export const useBlueprintsStore = defineStore("blueprints", {
       this.items = Array.prototype.concat(this.items, result);
 
       this.total = total;
+
+      return data;
+    },
+
+    // @TODO add option to find blueprints that have at least 1 file
+    async getAll(options: IPaginationQuery) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+        ...options,
+      };
+
+      const { data } = await axios.get<PaginatedResponse<IBlueprintDto>>(
+        "v1/blueprints",
+        {
+          params,
+        }
+      );
 
       return data;
     },

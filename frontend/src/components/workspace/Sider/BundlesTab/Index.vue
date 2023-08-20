@@ -12,7 +12,7 @@
         </template>
       </n-input>
 
-      <n-button size="small">
+      <n-button size="small" @click="isCreateBundleModalVisible = true">
         <n-icon :component="AddIcon" :size="25" />
       </n-button>
     </div>
@@ -36,6 +36,8 @@
         <n-spin />
       </div>
     </n-scrollbar>
+
+    <create-bundle-modal v-model:show="isCreateBundleModalVisible" />
   </div>
 </template>
 
@@ -59,10 +61,12 @@ import {
 
 import SingleBundle from "./SingleBundle.vue";
 import { useBundlesStore } from "@/store/bundles";
+import CreateBundleModal from "./CreateBundleModal/Index.vue";
 
 const page = ref(1);
 const isLoading = ref(false);
 const bundlesStore = useBundlesStore();
+const isCreateBundleModalVisible = ref(false);
 
 onMounted(() => {
   if (bundlesStore.total === 0) {
