@@ -1,0 +1,101 @@
+.create-bundle-modal {
+  .blueprints-step {
+    --create-bundle-modal-blueprints-step-selected-header-height: 30px;
+    --create-bundle-modal-blueprints-step-pagination-height: 35px;
+
+    display: flex;
+
+    .n-divider {
+      height: var(--create-bundle-modal-step-content-height);
+    }
+
+    .selected-items {
+      flex: 0.2;
+
+      .n-tag {
+        margin: 0;
+        width: 100%;
+        margin-bottom: 10px;
+        text-align: center;
+        height: var(
+          --create-bundle-modal-blueprints-step-selected-header-height
+        );
+      }
+
+      .n-scrollbar {
+        max-height: calc(
+          var(--create-bundle-modal-step-content-height) -
+            var(--create-bundle-modal-blueprints-step-selected-header-height) -
+            10px
+        );
+
+        .n-scrollbar-content {
+          display: flex;
+          row-gap: 15px;
+          flex-direction: column;
+
+          .n-card {
+            .n-card__content {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+
+              .thumbnail {
+                width: 25px;
+                height: 25px;
+              }
+            }
+          }
+        }
+      }
+
+      .n-scrollbar {
+        min-height: calc(
+          var(--create-bundle-modal-step-content-height) -
+            var(--create-bundle-modal-blueprints-step-selected-header-height)
+        );
+      }
+    }
+
+    .items {
+      flex: 0.8;
+
+      .n-scrollbar {
+        max-height: calc(
+          var(--create-bundle-modal-step-content-height) -
+            var(--create-bundle-modal-blueprints-step-pagination-height)
+        );
+        padding-right: 15px;
+
+        .n-grid {
+          padding: 20px 0;
+
+          .n-card {
+            cursor: pointer;
+
+            &.selected {
+              border: 1px solid lime;
+            }
+
+            .n-card__content {
+              display: flex;
+              justify-content: space-between;
+
+              .thumbnail {
+                width: 25px;
+                height: 25px;
+              }
+            }
+          }
+        }
+      }
+
+      .n-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--create-bundle-modal-blueprints-step-pagination-height);
+      }
+    }
+  }
+}
