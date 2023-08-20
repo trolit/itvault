@@ -29,7 +29,10 @@
         Previous
       </n-button>
 
-      <n-button @click="current++" :disabled="current === steps.length">
+      <n-button
+        @click="current++"
+        :disabled="currentStep.nextButtonCondition()"
+      >
         Next
       </n-button>
     </div>
@@ -69,6 +72,7 @@ const steps = [
       "select-blueprint": onBlueprintSelect,
       "deselect-blueprint": onBlueprintDeselect,
     },
+    nextButtonCondition: () => selectedBlueprints.value.length === 0,
   },
 
   {
@@ -77,6 +81,7 @@ const steps = [
     value: VariantsSelectionStep,
     props: {},
     events: {},
+    nextButtonCondition: () => false,
   },
 
   {
@@ -85,6 +90,7 @@ const steps = [
     value: FormStep,
     props: {},
     events: {},
+    nextButtonCondition: () => current.value === 3,
   },
 ];
 
