@@ -13,6 +13,12 @@
       flex: 0.2;
 
       .n-tag {
+        .n-tag__content {
+          display: flex;
+          column-gap: 5px;
+          align-items: center;
+        }
+
         margin: 0;
         width: 100%;
         margin-bottom: 10px;
