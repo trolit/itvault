@@ -1,7 +1,7 @@
 <template>
   <div class="blueprints-step">
     <div class="selected-items">
-      <n-tag :bordered="false" type="info">
+      <n-tag :bordered="false" type="warning">
         Currently selected ({{ selectedBlueprints.length }})
       </n-tag>
 
