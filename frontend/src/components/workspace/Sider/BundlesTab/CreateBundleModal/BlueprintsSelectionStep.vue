@@ -32,13 +32,20 @@
         </n-grid>
       </n-scrollbar>
 
-      <n-pagination v-model:page="page" :page-count="100" />
+      <n-pagination v-model:page="page" :page-count="pageCount" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType, onBeforeMount, type Ref } from "vue";
+import {
+  ref,
+  type PropType,
+  onBeforeMount,
+  type Ref,
+  computed,
+  watch,
+} from "vue";
 import {
   NCard,
   NGrid,
@@ -55,6 +62,7 @@ import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const page = ref(1);
+const perPage = 15;
 const total = ref(0);
 const isLoading = ref(false);
 const blueprintsStore = useBlueprintsStore();
@@ -72,10 +80,12 @@ onBeforeMount(async () => {
 });
 
 async function fetchBlueprints() {
+  console.log("wtf");
+
   isLoading.value = true;
 
   try {
-    const data = await blueprintsStore.getAll({ page: page.value });
+    const data = await blueprintsStore.getAll({ page: page.value, perPage });
 
     total.value = data.total;
 
@@ -86,4 +96,10 @@ async function fetchBlueprints() {
     isLoading.value = false;
   }
 }
+
+const pageCount = computed(() => Math.ceil(total.value / perPage));
+
+watch(page, () => {
+  fetchBlueprints();
+});
 </script>

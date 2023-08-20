@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 
 interface IState {
   total: number;
@@ -44,12 +45,11 @@ export const useBlueprintsStore = defineStore("blueprints", {
     },
 
     // @TODO add option to find blueprints that have at least 1 file
-    async getAll(options: { page: number }) {
+    async getAll(options: IPaginationQuery) {
       const workspacesStore = useWorkspacesStore();
 
       const params = {
         version: 1,
-        perPage: 15,
         workspaceId: workspacesStore.activeItem.id,
         ...options,
       };
