@@ -7,7 +7,6 @@ import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
   total: number;
-
   items: IBlueprintDto[];
 }
 
@@ -18,7 +17,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
   }),
 
   actions: {
-    async getAll(options: { page: number }) {
+    async getAllInfiniteScroll(options: { page: number }) {
       const workspacesStore = useWorkspacesStore();
 
       const params = {
@@ -40,6 +39,26 @@ export const useBlueprintsStore = defineStore("blueprints", {
       this.items = Array.prototype.concat(this.items, result);
 
       this.total = total;
+
+      return data;
+    },
+
+    async getAll(options: { page: number }) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        perPage: 15,
+        workspaceId: workspacesStore.activeItem.id,
+        ...options,
+      };
+
+      const { data } = await axios.get<PaginatedResponse<IBlueprintDto>>(
+        "v1/blueprints",
+        {
+          params,
+        }
+      );
 
       return data;
     },

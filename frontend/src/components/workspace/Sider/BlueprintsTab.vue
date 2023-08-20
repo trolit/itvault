@@ -102,7 +102,7 @@ async function getBlueprints() {
   isLoading.value = true;
 
   try {
-    await blueprintsStore.getAll({ page: page.value });
+    await blueprintsStore.getAllInfiniteScroll({ page: page.value });
   } catch (error) {
     console.log(error);
   } finally {
