@@ -18,7 +18,7 @@
     </n-space>
 
     <n-scrollbar class="content-scrollbar">
-      <component :is="stepValue" />
+      <component :is="currentStep" />
     </n-scrollbar>
 
     <div class="actions">
@@ -63,7 +63,9 @@ const steps = [
   },
 ];
 
-const stepValue = computed(
-  () => steps.find((step, index) => index + 1 === current.value)?.value
+const currentStep = computed(
+  () =>
+    steps.find((step, index) => index + 1 === current.value)?.value ||
+    BlueprintsSelectionStep
 );
 </script>
