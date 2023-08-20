@@ -1,8 +1,9 @@
 <template>
   <div class="blueprints-step">
     <div class="selected-items">
-      <n-tag :bordered="false" type="warning">
-        Currently selected ({{ selectedBlueprints.length }})
+      <n-tag :bordered="false" type="info">
+        <n-icon :size="20" :component="InformationIcon" /> Currently selected
+        ({{ selectedBlueprints.length }})
       </n-tag>
 
       <n-scrollbar>
@@ -65,7 +66,10 @@
 </template>
 
 <script setup lang="ts">
-import { Delete as DeleteIcon } from "@vicons/carbon";
+import {
+  Delete as DeleteIcon,
+  Information as InformationIcon,
+} from "@vicons/carbon";
 import {
   ref,
   type PropType,
