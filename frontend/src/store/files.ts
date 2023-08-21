@@ -28,5 +28,19 @@ export const useFilesStore = defineStore("files", {
 
       return data;
     },
+
+    getAll(options: { blueprintId: number }) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        ...options,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      return axios.get<IFileDto[]>(`v1/files`, {
+        params,
+      });
+    },
   },
 });
