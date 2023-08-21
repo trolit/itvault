@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
-import { FileMapper } from "@mappers/FileMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { FileVariantMapper } from "@mappers/FileVariantMapper";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -55,7 +55,7 @@ export class GetAllController extends BaseController {
       );
     }
 
-    const mappedResult = this.mapper.map<File>(result).to(FileMapper);
+    const mappedResult = this.mapper.map<File>(result).to(FileVariantMapper);
 
     return this.finalizeRequest(response, HTTP.OK, mappedResult);
   }
