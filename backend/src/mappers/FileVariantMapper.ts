@@ -31,6 +31,10 @@ export class FileVariantMapper
 
     const mapper = getInstanceOf<IEntityMapperService>(Di.EntityMapperService);
 
+    if (data.directory) {
+      this.relativePath = data.directory.relativePath;
+    }
+
     if (data.variants) {
       this.variants = mapper.map<Variant>(data.variants).to(VariantMapper);
     }

@@ -124,6 +124,9 @@ export class FileRepository
           id: true,
           name: true,
         },
+        directory: {
+          relativePath: true,
+        },
       },
       where: {
         workspace: {
@@ -135,6 +138,7 @@ export class FileRepository
       },
       relations: {
         variants: true,
+        directory: true,
       },
     });
   }
