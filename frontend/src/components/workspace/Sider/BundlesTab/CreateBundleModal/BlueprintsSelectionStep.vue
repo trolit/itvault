@@ -124,7 +124,11 @@ async function fetchBlueprints() {
   isLoading.value = true;
 
   try {
-    const data = await blueprintsStore.getAll({ page: page.value, perPage });
+    const data = await blueprintsStore.getAll({
+      page: page.value,
+      perPage,
+      inUse: 1,
+    });
 
     total.value = data.total;
 
