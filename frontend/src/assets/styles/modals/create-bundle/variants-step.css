@@ -68,23 +68,27 @@
         max-height: var(--create-bundle-modal-step-content-height);
         padding-right: 15px;
 
-        .n-grid {
-          padding: 20px 0;
+        .n-scrollbar-content {
+          height: 100%;
+
+          .wrapper {
+            display: flex;
+            row-gap: 15px;
+            flex-direction: column;
+          }
 
           .n-card {
-            cursor: pointer;
-
             &.selected {
               border: 1px solid lime;
             }
 
             .n-card__content {
               display: flex;
+              align-items: center;
               justify-content: space-between;
 
-              .thumbnail {
-                width: 25px;
-                height: 25px;
+              .name {
+                font-size: 14px;
               }
             }
           }
