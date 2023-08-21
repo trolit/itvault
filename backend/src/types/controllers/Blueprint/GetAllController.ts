@@ -1,14 +1,16 @@
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { WorkspaceId } from "types/controllers/WorkspaceId";
-import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { IPaginationOptions } from "types/IPaginationOptions";
+import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    export type QueryInput = WorkspaceId & IPaginationQuery;
+    type Common = { inUse?: number };
 
-    export type QueryOutput = WorkspaceId & IPaginationOptions;
+    export type QueryInput = WorkspaceId & IPaginationQuery & Common;
+
+    export type QueryOutput = WorkspaceId & IPaginationOptions & Common;
 
     export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 

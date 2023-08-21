@@ -1,4 +1,4 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetAllControllerTypes } from "types/controllers/Blueprint/GetAllController";
 
@@ -13,6 +13,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
     page: pageSchema,
     perPage: perPageSchema,
     workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    inUse: number().optional().default(0),
   });
 
 export const useGetAllSuperSchema: SuperSchema.Runner<
