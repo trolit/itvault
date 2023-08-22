@@ -40,28 +40,28 @@ export abstract class BaseBundleConsumerHandler {
   private _generateData(fileContent: string, buckets: Bucket[]) {
     const result: string[] = [];
 
-    fileContent.split("\n").map((line, index) => {
-      const matchedBuckets = buckets.filter(({ value }) => !!value[index]);
+    fileContent.split("\n").map((line, lineIndex) => {
+      const matchedBuckets = buckets.filter(({ value }) => !!value[lineIndex]);
 
       const allLineValues = this._getAllValuesRelatedToLine(
         matchedBuckets,
-        index
+        lineIndex
       );
 
       for (const { from, to } of allLineValues) {
         const part = line.substring(from, to + 1);
 
-        if (!result[index]) {
+        if (!result[lineIndex]) {
           result.push(part);
 
           continue;
         }
 
-        const currentValue = result[index];
+        const currentValue = result[lineIndex];
 
-        result[index] = currentValue
+        result[lineIndex] = currentValue
           .substring(0, from)
-          .concat(part, currentValue.substring(index + part.length));
+          .concat(part, currentValue.substring(lineIndex + part.length));
       }
     });
 
