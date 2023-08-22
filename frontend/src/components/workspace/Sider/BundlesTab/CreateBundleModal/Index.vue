@@ -79,7 +79,7 @@ const steps = [
 
   {
     title: "Select variants",
-    description: "Preview file variants and adjust if needed.",
+    description: "Preview file variants and adjust (if needed).",
     value: VariantsSelectionStep,
     props: {
       files: files.value,
