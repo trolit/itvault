@@ -40,32 +40,79 @@ export abstract class BaseBundleConsumerHandler {
   private _generateData(fileContent: string, buckets: Bucket[]) {
     const result: string[] = [];
 
-    fileContent.split("\n").map((line, lineIndex) => {
-      const matchedBuckets = buckets.filter(({ value }) => !!value[lineIndex]);
+    const [minLineIndex, maxLineIndex] = this._getMinMaxLines(
+      fileContent,
+      buckets
+    );
+
+    const splitFileContent = fileContent.split("\n");
+    const splitFileContentLength = splitFileContent.length;
+
+    for (let index = 0; index < splitFileContentLength; index++) {
+      const line = splitFileContent[index];
+
+      if (index >= minLineIndex && index <= maxLineIndex) {
+        result.push("");
+
+        continue;
+      }
+
+      const matchedBuckets = buckets.filter(({ value }) => !!value[index]);
 
       const allLineValues = this._getAllValuesRelatedToLine(
         matchedBuckets,
-        lineIndex
+        index
       );
 
       for (const { from, to } of allLineValues) {
         const part = line.substring(from, to + 1);
 
-        if (!result[lineIndex]) {
+        if (!result[index]) {
           result.push(part);
 
           continue;
         }
 
-        const currentValue = result[lineIndex];
+        const currentValue = result[index];
 
-        result[lineIndex] = currentValue
+        result[index] = currentValue
           .substring(0, from)
-          .concat(part, currentValue.substring(lineIndex + part.length));
+          .concat(part, currentValue.substring(index + part.length));
       }
-    });
+    }
 
     return result.join("\n");
+  }
+
+  private _getMinMaxLines(fileContent: string, buckets: Bucket[]) {
+    let minLineIndex: number | null = null;
+    let maxLineIndex = 0;
+
+    for (const bucket of buckets) {
+      const { value } = bucket;
+
+      Object.keys(value).map(key => {
+        const parsedKey = parseInt(key);
+
+        if (minLineIndex === null) {
+          minLineIndex = parsedKey;
+        }
+
+        if (parsedKey < minLineIndex) {
+          minLineIndex = parsedKey;
+        }
+
+        if (parsedKey > maxLineIndex) {
+          maxLineIndex = parsedKey;
+        }
+      });
+    }
+
+    if (minLineIndex === null) {
+      minLineIndex = 0;
+    }
+
+    return [minLineIndex, maxLineIndex];
   }
 
   private _getAllValuesRelatedToLine(
