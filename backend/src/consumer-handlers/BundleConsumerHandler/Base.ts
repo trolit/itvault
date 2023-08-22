@@ -40,7 +40,7 @@ export abstract class BaseBundleConsumerHandler {
   private _generateData(fileContent: string, buckets: Bucket[]) {
     const result: string[] = [];
 
-    const [minLineIndex, maxLineIndex] = this._getMinMaxLines(
+    const [minLineIndex, maxLineIndex] = this._getMinMaxLineIndexes(
       fileContent,
       buckets
     );
@@ -84,7 +84,7 @@ export abstract class BaseBundleConsumerHandler {
     return result.join("\n");
   }
 
-  private _getMinMaxLines(fileContent: string, buckets: Bucket[]) {
+  private _getMinMaxLineIndexes(fileContent: string, buckets: Bucket[]) {
     let minLineIndex: number | null = null;
     let maxLineIndex = 0;
 
