@@ -29,7 +29,7 @@
       <n-scrollbar trigger="none">
         <n-spin v-if="isLoading" />
 
-        <div class="wrapper" v-else>
+        <div class="wrapper" v-else-if="activeBlueprint">
           <n-card v-for="item in blueprintFiles" :key="item.id">
             <div class="name">
               {{ item.relativePath }}/{{ item.originalFilename }}
@@ -40,7 +40,7 @@
                 <n-button
                   v-for="variant in item.variants"
                   :key="variant.id"
-                  :disabled="isVariantSelected(activeBlueprint!.id, variant.id)"
+                  :disabled="isVariantSelected(activeBlueprint.id, variant.id)"
                 >
                   {{ variant.name }}
                 </n-button>
