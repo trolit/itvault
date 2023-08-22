@@ -131,8 +131,12 @@ export class FileRepository
       where: {
         workspace: {
           id: workspaceId,
-          blueprints: {
-            id: blueprintId,
+        },
+        variants: {
+          buckets: {
+            blueprint: {
+              id: blueprintId,
+            },
           },
         },
       },
