@@ -40,7 +40,21 @@ export abstract class BaseBundleConsumerHandler {
   private _generateData(fileContent: string, buckets: Bucket[]) {
     const result: string[] = [];
 
-    fileContent.split("\n").map((line, index) => {
+    const [minLineIndex, maxLineIndex] = this._getMinMaxLineIndexes(buckets);
+
+    const splitFileContent = fileContent.split("\n");
+    const splitFileContentLength = splitFileContent.length;
+
+    for (let index = 0; index < splitFileContentLength; index++) {
+      const line = splitFileContent[index];
+
+      if (!line && index >= minLineIndex && index <= maxLineIndex) {
+        // @NOTE add linebreak if it's between min and max (bucket) line
+        result.push("");
+
+        continue;
+      }
+
       const matchedBuckets = buckets.filter(({ value }) => !!value[index]);
 
       const allLineValues = this._getAllValuesRelatedToLine(
@@ -63,9 +77,40 @@ export abstract class BaseBundleConsumerHandler {
           .substring(0, from)
           .concat(part, currentValue.substring(index + part.length));
       }
-    });
+    }
 
     return result.join("\n");
+  }
+
+  private _getMinMaxLineIndexes(buckets: Bucket[]) {
+    let minLineIndex: number | null = null;
+    let maxLineIndex = 0;
+
+    for (const bucket of buckets) {
+      const { value } = bucket;
+
+      Object.keys(value).map(key => {
+        const parsedKey = parseInt(key);
+
+        if (minLineIndex === null) {
+          minLineIndex = parsedKey;
+        }
+
+        if (parsedKey < minLineIndex) {
+          minLineIndex = parsedKey;
+        }
+
+        if (parsedKey > maxLineIndex) {
+          maxLineIndex = parsedKey;
+        }
+      });
+    }
+
+    if (minLineIndex === null) {
+      minLineIndex = 0;
+    }
+
+    return [minLineIndex, maxLineIndex];
   }
 
   private _getAllValuesRelatedToLine(
