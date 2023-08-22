@@ -50,6 +50,7 @@ import VariantsSelectionStep from "./VariantsSelectionStep.vue";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
 import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
 
 const defaultFormData: AddBundleDto = {
   values: [],
@@ -57,6 +58,7 @@ const defaultFormData: AddBundleDto = {
 };
 
 const current = ref(1);
+const files: Ref<IFileVariantDto[][]> = ref([]);
 const selectedBlueprints: Ref<IBlueprintDto[]> = ref([]);
 const formData: Ref<AddBundleDto> = ref(cloneDeep(defaultFormData));
 
@@ -77,10 +79,15 @@ const steps = [
 
   {
     title: "Select variants",
-    description: "Select file variants.",
+    description: "Preview file variants and adjust (if needed).",
     value: VariantsSelectionStep,
-    props: {},
-    events: {},
+    props: {
+      files: files.value,
+      selectedBlueprints: selectedBlueprints.value,
+    },
+    events: {
+      "add-files": onFilesAdd,
+    },
     nextButtonCondition: () => false,
   },
 
@@ -106,12 +113,17 @@ function onBlueprintSelect(blueprintToAdd: IBlueprintDto) {
   );
 
   if (~blueprintIndex) {
-    selectedBlueprints.value.splice(blueprintIndex, 1);
+    onBlueprintDeselect(blueprintToAdd.id);
 
     return;
   }
 
   selectedBlueprints.value.push(blueprintToAdd);
+
+  formData.value.values.push({
+    blueprintId: blueprintToAdd.id,
+    variantIds: [],
+  });
 }
 
 function onBlueprintDeselect(id: number) {
@@ -120,9 +132,36 @@ function onBlueprintDeselect(id: number) {
   );
 
   if (~blueprintIndex) {
+    files.value.splice(blueprintIndex, 1);
+
+    const formDataIndex = formData.value.values.findIndex(
+      value => value.blueprintId === id
+    );
+
+    if (~formDataIndex) {
+      formData.value.values.splice(formDataIndex, 1);
+    }
+
     selectedBlueprints.value.splice(blueprintIndex, 1);
 
     return;
+  }
+}
+
+function onFilesAdd(blueprintId: number, filesToAdd: IFileVariantDto[]) {
+  files.value.push(filesToAdd);
+
+  const formDataValue = formData.value.values.find(
+    value => value.blueprintId === blueprintId
+  );
+
+  // @NOTE set default variantIds
+  if (formDataValue) {
+    for (const file of filesToAdd) {
+      const [firstVariant] = file.variants;
+
+      formDataValue.variantIds.push(firstVariant.id);
+    }
   }
 }
 </script>

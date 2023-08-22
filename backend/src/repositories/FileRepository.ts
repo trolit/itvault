@@ -124,17 +124,25 @@ export class FileRepository
           id: true,
           name: true,
         },
+        directory: {
+          relativePath: true,
+        },
       },
       where: {
         workspace: {
           id: workspaceId,
-          blueprints: {
-            id: blueprintId,
+        },
+        variants: {
+          buckets: {
+            blueprint: {
+              id: blueprintId,
+            },
           },
         },
       },
       relations: {
         variants: true,
+        directory: true,
       },
     });
   }

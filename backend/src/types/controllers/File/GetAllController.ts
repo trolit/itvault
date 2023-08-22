@@ -1,6 +1,6 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
-import { FileMapper } from "@mappers/FileMapper";
+import { FileVariantMapper } from "@mappers/FileVariantMapper";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
@@ -12,6 +12,6 @@ export namespace GetAllControllerTypes {
 
     export type Request = CustomRequest<undefined, undefined, Query>;
 
-    export type Response = CustomResponse<FileMapper[]>;
+    export type Response = CustomResponse<FileVariantMapper[]>;
   }
 }

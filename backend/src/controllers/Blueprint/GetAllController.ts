@@ -1,4 +1,4 @@
-import { IsNull } from "typeorm";
+import { IsNull, Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
@@ -40,9 +40,7 @@ export class GetAllController extends BaseController {
     } = request;
 
     // @TMP, consider implementing "flexible filtering" later
-    const bucketsQuery = inUse === 1 ? { buckets: { id: IsNull() } } : {};
-
-    console.log(bucketsQuery);
+    const bucketsQuery = inUse === 1 ? { buckets: { id: Not(IsNull()) } } : {};
 
     const [result, total] = await this._blueprintRepository.getAll({
       skip,

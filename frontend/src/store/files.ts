@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 
 import { useWorkspacesStore } from "./workspaces";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
+import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
 
 interface IState {
   ROOT: string;
@@ -27,6 +28,20 @@ export const useFilesStore = defineStore("files", {
       });
 
       return data;
+    },
+
+    getAll(options: { blueprintId: number }) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        ...options,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      return axios.get<IFileVariantDto[]>(`v1/files`, {
+        params,
+      });
     },
   },
 });
