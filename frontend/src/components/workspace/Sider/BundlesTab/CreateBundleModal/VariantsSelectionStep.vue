@@ -7,18 +7,24 @@
           :key="blueprint.id"
           @click="activeBlueprintIndex = index"
         >
-          <div
-            class="thumbnail"
-            :style="{ backgroundColor: blueprint.color }"
-          />
+          <div class="blueprint-info">
+            <div
+              class="thumbnail"
+              :style="{ backgroundColor: blueprint.color }"
+            />
 
-          {{ blueprint.name }}
+            {{ blueprint.name }}
 
-          <n-icon
-            v-if="activeBlueprintIndex === index"
-            :component="ViewIcon"
-            :size="20"
-          />
+            <n-icon
+              v-if="activeBlueprintIndex === index"
+              :component="ViewIcon"
+              :size="20"
+            />
+          </div>
+
+          <div v-if="!wasBlueprintPreviewed(index)" class="require-preview">
+            (requires preview)
+          </div>
         </n-card>
       </n-scrollbar>
     </div>
@@ -111,6 +117,10 @@ const blueprintFiles = computed(() => {
 
   return files || [];
 });
+
+function wasBlueprintPreviewed(blueprintIndex: number) {
+  return props.files[blueprintIndex] !== undefined;
+}
 
 function isVariantSelected(blueprintId: number, variantId: string) {
   const formDataValue = props.formData.values.find(

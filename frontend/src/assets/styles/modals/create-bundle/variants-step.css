@@ -25,13 +25,21 @@
             }
 
             .n-card__content {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
+              .blueprint-info {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
 
-              .thumbnail {
-                width: 25px;
-                height: 25px;
+                .thumbnail {
+                  width: 25px;
+                  height: 25px;
+                }
+              }
+
+              .require-preview {
+                text-align: center;
+                padding: 10px;
+                color: yellow;
               }
             }
           }
