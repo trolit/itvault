@@ -51,7 +51,8 @@ export abstract class BaseBundleConsumerHandler {
     for (let index = 0; index < splitFileContentLength; index++) {
       const line = splitFileContent[index];
 
-      if (index >= minLineIndex && index <= maxLineIndex) {
+      if (!line && index >= minLineIndex && index <= maxLineIndex) {
+        // @NOTE add linebreak if it's between min and max (bucket) line
         result.push("");
 
         continue;
