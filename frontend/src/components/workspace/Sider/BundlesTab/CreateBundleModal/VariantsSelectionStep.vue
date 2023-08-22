@@ -1,20 +1,24 @@
 <template>
   <div class="variants-step">
     <div class="selected-items">
-      <n-tag :bordered="false" type="info">
-        <n-icon :size="20" :component="InformationIcon" /> Completed ({{
-          selectedBlueprints.length
-        }})
-      </n-tag>
-
       <n-scrollbar>
-        <n-card v-for="blueprint in selectedBlueprints" :key="blueprint.id">
+        <n-card
+          v-for="(blueprint, index) in selectedBlueprints"
+          :key="blueprint.id"
+          @click="activeBlueprintIndex = index"
+        >
           <div
             class="thumbnail"
             :style="{ backgroundColor: blueprint.color }"
           />
 
           {{ blueprint.name }}
+
+          <n-icon
+            v-if="activeBlueprintIndex === index"
+            :component="ViewIcon"
+            :size="20"
+          />
         </n-card>
       </n-scrollbar>
     </div>
@@ -32,10 +36,12 @@
             </div>
 
             <div>
-              Select variant!
-
               <n-button-group>
-                <n-button v-for="variant in item.variants" :key="variant.id">
+                <n-button
+                  v-for="variant in item.variants"
+                  :key="variant.id"
+                  :disabled="isVariantSelected(activeBlueprint!.id, variant.id)"
+                >
                   {{ variant.name }}
                 </n-button>
               </n-button-group>
@@ -49,10 +55,9 @@
 
 <script setup lang="ts">
 import { ref, type PropType, computed } from "vue";
-import { Information as InformationIcon } from "@vicons/carbon";
+import { ViewFilled as ViewIcon } from "@vicons/carbon";
 import {
   NCard,
-  NTag,
   NIcon,
   NScrollbar,
   NSpin,
@@ -89,6 +94,12 @@ const props = defineProps({
 
 const emits = defineEmits(["add-files"]);
 
+const activeBlueprint = computed(() => {
+  return props.selectedBlueprints.find(
+    (blueprint, index) => index === activeBlueprintIndex.value
+  );
+});
+
 const blueprintFiles = computed(() => {
   const files = props.files.find(
     (collection, index) => index === activeBlueprintIndex.value
@@ -100,6 +111,14 @@ const blueprintFiles = computed(() => {
 
   return files || [];
 });
+
+function isVariantSelected(blueprintId: number, variantId: string) {
+  const formDataValue = props.formData.values.find(
+    value => value.blueprintId === blueprintId
+  );
+
+  return formDataValue && formDataValue.variantIds.includes(variantId);
+}
 
 async function fetchFiles() {
   const blueprint = props.selectedBlueprints.find(
@@ -115,7 +134,7 @@ async function fetchFiles() {
   try {
     const { data } = await filesStore.getAll({ blueprintId: blueprint.id });
 
-    emits("add-files", data);
+    emits("add-files", blueprint.id, data);
   } catch (error) {
     console.log(error);
   } finally {
