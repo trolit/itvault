@@ -1,6 +1,5 @@
 .create-bundle-modal {
   .variants-step {
-    --create-bundle-modal-variants-step-selected-header-height: 30px;
     --create-bundle-modal-variants-step-pagination-height: 35px;
 
     display: flex;
@@ -12,26 +11,8 @@
     .selected-items {
       flex: 0.2;
 
-      .n-tag {
-        .n-tag__content {
-          display: flex;
-          column-gap: 5px;
-          align-items: center;
-        }
-
-        margin: 0;
-        width: 100%;
-        margin-bottom: 10px;
-        text-align: center;
-        height: var(--create-bundle-modal-variants-step-selected-header-height);
-      }
-
       .n-scrollbar {
-        max-height: calc(
-          var(--create-bundle-modal-step-content-height) -
-            var(--create-bundle-modal-variants-step-selected-header-height) -
-            10px
-        );
+        max-height: calc(var(--create-bundle-modal-step-content-height) - 10px);
 
         .n-scrollbar-content {
           display: flex;
@@ -39,6 +20,10 @@
           flex-direction: column;
 
           .n-card {
+            &:hover {
+              cursor: pointer;
+            }
+
             .n-card__content {
               display: flex;
               align-items: center;
@@ -54,10 +39,7 @@
       }
 
       .n-scrollbar {
-        min-height: calc(
-          var(--create-bundle-modal-step-content-height) -
-            var(--create-bundle-modal-variants-step-selected-header-height)
-        );
+        min-height: var(--create-bundle-modal-step-content-height);
       }
     }
 
@@ -75,20 +57,20 @@
             display: flex;
             row-gap: 15px;
             flex-direction: column;
-          }
 
-          .n-card {
-            &.selected {
-              border: 1px solid lime;
-            }
+            .n-card {
+              &.selected {
+                border: 1px solid lime;
+              }
 
-            .n-card__content {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
+              .n-card__content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
 
-              .name {
-                font-size: 14px;
+                .name {
+                  font-size: 14px;
+                }
               }
             }
           }
