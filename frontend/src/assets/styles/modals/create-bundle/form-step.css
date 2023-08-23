@@ -1,0 +1,5 @@
+.create-bundle-modal {
+  .form-step {
+    height: var(--create-bundle-modal-step-content-height);
+  }
+}

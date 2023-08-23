@@ -101,6 +101,9 @@ export class FileRepository
     relativePath: string
   ): Promise<File[]> {
     return this.database.find({
+      order: {
+        originalFilename: "ASC",
+      },
       where: {
         directory: {
           relativePath,
@@ -117,6 +120,9 @@ export class FileRepository
 
   getAllByBlueprintId(workspaceId: number, blueprintId: number) {
     return this.database.find({
+      order: {
+        originalFilename: "ASC",
+      },
       select: {
         id: true,
         originalFilename: true,

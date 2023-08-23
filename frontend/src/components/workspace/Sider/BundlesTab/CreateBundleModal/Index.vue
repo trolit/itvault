@@ -4,6 +4,7 @@
     title="Generate Bundle"
     :mask-closable="false"
     class="create-bundle-modal"
+    @close="$emit('update:show', false)"
   >
     <n-space vertical class="steps-wrapper">
       <!-- @TODO implement status (to cover validation) -->
@@ -22,6 +23,7 @@
       :form-data="formData"
       v-on="currentStep.events"
       v-bind="currentStep.props"
+      @update:form-data="onFormDataUpdate"
     />
 
     <div class="actions">
@@ -30,10 +32,11 @@
       </n-button>
 
       <n-button
-        @click="current++"
-        :disabled="currentStep.nextButtonCondition()"
+        :loading="isSubmittingForm"
+        :disabled="isFinalStep ? false : currentStep.nextButtonCondition()"
+        @click="isFinalStep ? onSubmit() : current++"
       >
-        Next
+        {{ isFinalStep ? "Submit" : "Next" }}
       </n-button>
     </div>
   </n-modal>
@@ -45,6 +48,8 @@ import { ref, computed, type Ref } from "vue";
 import { NModal, NSpace, NSteps, NStep, NButton } from "naive-ui";
 
 import FormStep from "./FormStep.vue";
+import { useMessage } from "naive-ui";
+import { useBundlesStore } from "@/store/bundles";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
@@ -57,14 +62,19 @@ const defaultFormData: AddBundleDto = {
   expiration: BundleExpire.OneDay,
 };
 
+const emit = defineEmits(["update:show"]);
+
 const current = ref(1);
+const message = useMessage();
+const isSubmittingForm = ref(false);
+const bundlesStore = useBundlesStore();
 const files: Ref<IFileVariantDto[][]> = ref([]);
 const selectedBlueprints: Ref<IBlueprintDto[]> = ref([]);
 const formData: Ref<AddBundleDto> = ref(cloneDeep(defaultFormData));
 
 const steps = [
   {
-    title: "Select blueprints",
+    title: "Blueprints",
     description: "Choose blueprint(s) that bundle should include.",
     value: BlueprintsSelectionStep,
     props: {
@@ -78,7 +88,7 @@ const steps = [
   },
 
   {
-    title: "Select variants",
+    title: "Variants",
     description: "Preview file variants and adjust (if needed).",
     value: VariantsSelectionStep,
     props: {
@@ -88,11 +98,14 @@ const steps = [
     events: {
       "add-files": onFilesAdd,
     },
-    nextButtonCondition: () => false,
+    nextButtonCondition: () =>
+      selectedBlueprints.value.some(
+        (blueprint, index) => files.value[index] === undefined
+      ),
   },
 
   {
-    title: "Complete bundle information",
+    title: "Information",
     description: "Provide basic information about bundle.",
     value: FormStep,
     props: {},
@@ -106,6 +119,8 @@ const currentStep = computed(
     steps.find((step, index) => index + 1 === current.value) ||
     BlueprintsSelectionStep
 );
+
+const isFinalStep = computed(() => current.value === steps.length);
 
 function onBlueprintSelect(blueprintToAdd: IBlueprintDto) {
   const blueprintIndex = selectedBlueprints.value.findIndex(
@@ -162,6 +177,26 @@ function onFilesAdd(blueprintId: number, filesToAdd: IFileVariantDto[]) {
 
       formDataValue.variantIds.push(firstVariant.id);
     }
+  }
+}
+
+function onFormDataUpdate(value: AddBundleDto) {
+  formData.value = { ...value };
+}
+
+async function onSubmit() {
+  isSubmittingForm.value = true;
+
+  try {
+    await bundlesStore.store(formData.value);
+
+    message.success("Bundle successfully queued.");
+
+    emit("update:show", false);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isSubmittingForm.value = false;
   }
 }
 </script>
