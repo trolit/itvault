@@ -47,6 +47,31 @@ const options = [
   },
 
   {
+    label: "2 days",
+    value: BundleExpire.TwoDays,
+  },
+
+  {
+    label: "3 days",
+    value: BundleExpire.ThreeDays,
+  },
+
+  {
+    label: "1 week",
+    value: BundleExpire.OneWeek,
+  },
+
+  {
+    label: "2 weeks",
+    value: BundleExpire.TwoWeeks,
+  },
+
+  {
+    label: "1 month",
+    value: BundleExpire.OneMonth,
+  },
+
+  {
     label: "Never",
     value: BundleExpire.Never,
   },
