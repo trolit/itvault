@@ -39,6 +39,9 @@ export class GetAllController extends BaseController {
     } = request;
 
     const [result, total] = await this._bundleRepository.getAll({
+      order: {
+        createdAt: "DESC",
+      },
       skip,
       take,
       select: {
