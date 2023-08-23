@@ -31,10 +31,11 @@
       </n-button>
 
       <n-button
-        @click="current++"
+        :loading="isSubmittingForm"
         :disabled="currentStep.nextButtonCondition()"
+        @click="isFinalStep ? onSubmit : current++"
       >
-        {{ current === steps.length ? "Submit" : "Next" }}
+        {{ isFinalStep ? "Submit" : "Next" }}
       </n-button>
     </div>
   </n-modal>
@@ -46,6 +47,7 @@ import { ref, computed, type Ref } from "vue";
 import { NModal, NSpace, NSteps, NStep, NButton } from "naive-ui";
 
 import FormStep from "./FormStep.vue";
+import { useBundlesStore } from "@/store/bundles";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
@@ -59,6 +61,8 @@ const defaultFormData: AddBundleDto = {
 };
 
 const current = ref(1);
+const isSubmittingForm = ref(false);
+const bundlesStore = useBundlesStore();
 const files: Ref<IFileVariantDto[][]> = ref([]);
 const selectedBlueprints: Ref<IBlueprintDto[]> = ref([]);
 const formData: Ref<AddBundleDto> = ref(cloneDeep(defaultFormData));
@@ -107,6 +111,8 @@ const currentStep = computed(
     steps.find((step, index) => index + 1 === current.value) ||
     BlueprintsSelectionStep
 );
+
+const isFinalStep = computed(() => current.value === steps.length);
 
 function onBlueprintSelect(blueprintToAdd: IBlueprintDto) {
   const blueprintIndex = selectedBlueprints.value.findIndex(
@@ -168,5 +174,17 @@ function onFilesAdd(blueprintId: number, filesToAdd: IFileVariantDto[]) {
 
 function onFormDataUpdate(value: AddBundleDto) {
   formData.value = { ...value };
+}
+
+async function onSubmit() {
+  isSubmittingForm.value = true;
+
+  try {
+    await bundlesStore.store(formData.value);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isSubmittingForm.value = false;
+  }
 }
 </script>
