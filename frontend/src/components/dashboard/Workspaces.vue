@@ -54,6 +54,7 @@ import {
   NEmpty,
   NTag,
   useMessage,
+  useLoadingBar,
 } from "naive-ui";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
 
@@ -68,6 +69,7 @@ import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
 const router = useRouter();
 
 const isLoading = ref(true);
+const loadingBar = useLoadingBar();
 
 const defaultPagination = {
   page: 1,
@@ -117,10 +119,20 @@ onBeforeMount(async () => {
 const rowProps: CreateRowProps<IWorkspaceDto> = (row: IWorkspaceDto) => {
   return {
     style: "{cursor: 'pointer'}",
-    onclick: () => {
+    onclick: async () => {
+      loadingBar.start();
+
       workspacesStore.setActiveItem(row);
 
-      router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
+      try {
+        await router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
+
+        loadingBar.finish();
+      } catch (error) {
+        console.log(error);
+
+        loadingBar.error();
+      }
     },
   };
 };
