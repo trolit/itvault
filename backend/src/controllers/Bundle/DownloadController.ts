@@ -43,8 +43,8 @@ export class DownloadController extends BaseController {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    response.download(path.join(FILES.BASE_DOWNLOADS_PATH, bundle.filename));
-
-    return this.finalizeRequest(response, HTTP.OK);
+    return response.download(
+      path.join(FILES.BASE_DOWNLOADS_PATH, bundle.filename)
+    );
   }
 }

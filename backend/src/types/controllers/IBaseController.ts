@@ -4,5 +4,5 @@ export interface IBaseController {
   invoke<P, B, Q>(
     request: CustomRequest<P, B, Q>,
     response: Response
-  ): Promise<CustomResponse<any>>;
+  ): Promise<void | CustomResponse<any>>;
 }
