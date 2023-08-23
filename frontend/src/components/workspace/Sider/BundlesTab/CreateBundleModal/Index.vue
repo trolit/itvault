@@ -167,8 +167,6 @@ function onFilesAdd(blueprintId: number, filesToAdd: IFileVariantDto[]) {
 }
 
 function onFormDataUpdate(value: AddBundleDto) {
-  console.log("xd");
-
   formData.value = { ...value };
 }
 </script>
