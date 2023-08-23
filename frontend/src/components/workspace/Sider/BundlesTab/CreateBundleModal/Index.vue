@@ -65,7 +65,7 @@ const formData: Ref<AddBundleDto> = ref(cloneDeep(defaultFormData));
 
 const steps = [
   {
-    title: "Select blueprints",
+    title: "Blueprints",
     description: "Choose blueprint(s) that bundle should include.",
     value: BlueprintsSelectionStep,
     props: {
@@ -79,7 +79,7 @@ const steps = [
   },
 
   {
-    title: "Select variants",
+    title: "Variants",
     description: "Preview file variants and adjust (if needed).",
     value: VariantsSelectionStep,
     props: {
@@ -93,7 +93,7 @@ const steps = [
   },
 
   {
-    title: "Complete bundle information",
+    title: "Information",
     description: "Provide basic information about bundle.",
     value: FormStep,
     props: {},
