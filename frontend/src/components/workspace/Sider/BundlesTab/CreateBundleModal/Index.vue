@@ -47,6 +47,7 @@ import { ref, computed, type Ref } from "vue";
 import { NModal, NSpace, NSteps, NStep, NButton } from "naive-ui";
 
 import FormStep from "./FormStep.vue";
+import { useMessage } from "naive-ui";
 import { useBundlesStore } from "@/store/bundles";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
@@ -63,6 +64,7 @@ const defaultFormData: AddBundleDto = {
 const emit = defineEmits(["update:show"]);
 
 const current = ref(1);
+const message = useMessage();
 const isSubmittingForm = ref(false);
 const bundlesStore = useBundlesStore();
 const files: Ref<IFileVariantDto[][]> = ref([]);
@@ -183,6 +185,8 @@ async function onSubmit() {
 
   try {
     await bundlesStore.store(formData.value);
+
+    message.success("Bundle successfully queued.");
 
     emit("update:show", false);
   } catch (error) {
