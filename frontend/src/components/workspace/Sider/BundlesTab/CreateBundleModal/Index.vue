@@ -4,6 +4,7 @@
     title="Generate Bundle"
     :mask-closable="false"
     class="create-bundle-modal"
+    @close="$emit('update:show', false)"
   >
     <n-space vertical class="steps-wrapper">
       <!-- @TODO implement status (to cover validation) -->
