@@ -60,6 +60,8 @@ const defaultFormData: AddBundleDto = {
   expiration: BundleExpire.OneDay,
 };
 
+const emit = defineEmits(["update:show"]);
+
 const current = ref(1);
 const isSubmittingForm = ref(false);
 const bundlesStore = useBundlesStore();
@@ -181,6 +183,8 @@ async function onSubmit() {
 
   try {
     await bundlesStore.store(formData.value);
+
+    emit("update:show", false);
   } catch (error) {
     console.log(error);
   } finally {
