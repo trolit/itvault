@@ -43,7 +43,7 @@
             ghost
             size="small"
             :loading="isProcessingDownloadRequest"
-            @click.stop="downloadBundle(item.id)"
+            @click.stop="downloadBundle"
           >
             download
           </n-button>
@@ -84,13 +84,25 @@ const isBundleGenerationFailed = computed(
   () => item.value.status === BundleStatusEnum.Failed
 );
 
-async function downloadBundle(id: number) {
+async function downloadBundle() {
   isProcessingDownloadRequest.value = true;
 
   loadingBar.start();
 
   try {
-    await bundlesStore.download(id);
+    const data = await bundlesStore.download(props.item.id);
+
+    const url = window.URL.createObjectURL(new Blob([data]));
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.setAttribute("download", props.item.filename || "unknown.zip");
+
+    link.click();
+
+    link.remove();
 
     loadingBar.finish();
   } catch (error) {
