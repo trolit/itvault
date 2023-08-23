@@ -147,9 +147,12 @@ export const useBundlesStore = defineStore("bundles", {
         workspaceId: workspacesStore.activeItem.id,
       };
 
-      await axios.get(`v1/bundles/${id}`, {
+      const { data } = await axios.get<string>(`v1/bundles/${id}`, {
         params,
+        responseType: "arraybuffer",
       });
+
+      return data;
     },
   },
 });
