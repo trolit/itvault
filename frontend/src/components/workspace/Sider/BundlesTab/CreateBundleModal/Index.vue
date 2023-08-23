@@ -33,7 +33,7 @@
 
       <n-button
         :loading="isSubmittingForm"
-        :disabled="isFinalStep ? false : currentStep.nextButtonCondition()"
+        :disabled="isFinalStep ? false : currentStep.isNextButtonDisabled()"
         @click="isFinalStep ? onSubmit() : current++"
       >
         {{ isFinalStep ? "Submit" : "Next" }}
@@ -84,7 +84,7 @@ const steps = [
       "select-blueprint": onBlueprintSelect,
       "deselect-blueprint": onBlueprintDeselect,
     },
-    nextButtonCondition: () => selectedBlueprints.value.length === 0,
+    isNextButtonDisabled: () => selectedBlueprints.value.length === 0,
   },
 
   {
@@ -98,7 +98,7 @@ const steps = [
     events: {
       "add-files": onFilesAdd,
     },
-    nextButtonCondition: () =>
+    isNextButtonDisabled: () =>
       selectedBlueprints.value.some(
         (blueprint, index) => files.value[index] === undefined
       ),
@@ -110,7 +110,7 @@ const steps = [
     value: FormStep,
     props: {},
     events: {},
-    nextButtonCondition: () => current.value === 3,
+    isNextButtonDisabled: () => current.value === 3,
   },
 ];
 
