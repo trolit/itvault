@@ -34,7 +34,7 @@
         @click="current++"
         :disabled="currentStep.nextButtonCondition()"
       >
-        Next
+        {{ current === steps.length ? "Submit" : "Next" }}
       </n-button>
     </div>
   </n-modal>
