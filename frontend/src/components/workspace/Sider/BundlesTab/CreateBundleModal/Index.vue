@@ -97,7 +97,10 @@ const steps = [
     events: {
       "add-files": onFilesAdd,
     },
-    nextButtonCondition: () => false,
+    nextButtonCondition: () =>
+      selectedBlueprints.value.some(
+        (blueprint, index) => files.value[index] === undefined
+      ),
   },
 
   {
