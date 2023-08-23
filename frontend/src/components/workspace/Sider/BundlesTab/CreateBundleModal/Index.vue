@@ -22,6 +22,7 @@
       :form-data="formData"
       v-on="currentStep.events"
       v-bind="currentStep.props"
+      @update:form-data="onFormDataUpdate"
     />
 
     <div class="actions">
@@ -163,5 +164,11 @@ function onFilesAdd(blueprintId: number, filesToAdd: IFileVariantDto[]) {
       formDataValue.variantIds.push(firstVariant.id);
     }
   }
+}
+
+function onFormDataUpdate(value: AddBundleDto) {
+  console.log("xd");
+
+  formData.value = { ...value };
 }
 </script>
