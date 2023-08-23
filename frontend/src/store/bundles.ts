@@ -6,6 +6,7 @@ import { useDrawerStore } from "./drawer";
 import type { Bundle } from "@/types/Bundle";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
+import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { IBundleBlueprintDto } from "@shared/types/dtos/IBundleBlueprintDto";
@@ -117,6 +118,23 @@ export const useBundlesStore = defineStore("bundles", {
       if (blueprint) {
         blueprint.files = data;
       }
+
+      return data;
+    },
+
+    async store(payload: AddBundleDto) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      const { data } = await axios.post<IBundleDto>(`v1/bundles`, payload, {
+        params,
+      });
+
+      this.items.unshift({ ...data, blueprints: [] });
 
       return data;
     },
