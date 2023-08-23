@@ -32,8 +32,8 @@
 
       <n-button
         :loading="isSubmittingForm"
-        :disabled="currentStep.nextButtonCondition()"
-        @click="isFinalStep ? onSubmit : current++"
+        :disabled="isFinalStep ? false : currentStep.nextButtonCondition()"
+        @click="isFinalStep ? onSubmit() : current++"
       >
         {{ isFinalStep ? "Submit" : "Next" }}
       </n-button>
