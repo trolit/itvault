@@ -42,15 +42,22 @@ export abstract class BaseBundleConsumerHandler {
 
     const [minLineIndex, maxLineIndex] = this._getMinMaxLineIndexes(buckets);
 
+    const isSingleLineBucket = minLineIndex === maxLineIndex;
+
     const splitFileContent = fileContent.split("\n");
     const splitFileContentLength = splitFileContent.length;
 
     for (let index = 0; index < splitFileContentLength; index++) {
       const line = splitFileContent[index];
 
-      if (!line && index >= minLineIndex && index <= maxLineIndex) {
+      if (
+        !isSingleLineBucket &&
+        line === "\n" &&
+        index >= minLineIndex &&
+        index <= maxLineIndex
+      ) {
         // @NOTE add linebreak if it's between min and max (bucket) line
-        result.push("");
+        result.push("\n");
 
         continue;
       }

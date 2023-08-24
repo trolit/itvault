@@ -10,7 +10,7 @@ import { File } from "@entities/File";
 import { Note } from "@entities/Note";
 
 export default class NoteSeeder implements Seeder {
-  private _notesPerFile = 5;
+  private _notesPerFile = 10;
 
   public async run(dataSource: DataSource) {
     const fileRepository = dataSource.getRepository(File);

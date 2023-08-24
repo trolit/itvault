@@ -22,15 +22,31 @@ export async function createFile(
 }
 
 function getFileContent(extension: string) {
-  const value = random(3, 15);
+  const linesAmount = random(10, 40);
 
   const rawContent = [];
+  let wasLineBreakRecentlyAdded = false;
 
   const caller =
     extension === "js" ? faker.hacker.phrase : faker.word.adjective;
 
-  for (let index = 0; index < value; index++) {
+  for (let index = 0; index < linesAmount; index++) {
     rawContent.push(caller());
+
+    if (wasLineBreakRecentlyAdded) {
+      wasLineBreakRecentlyAdded = false;
+
+      continue;
+    }
+
+    const includeLineBreak = random(0, 3000);
+
+    if (includeLineBreak < 1000 || includeLineBreak > 2000) {
+      continue;
+    }
+
+    rawContent.push("\n");
+    wasLineBreakRecentlyAdded = true;
   }
 
   return rawContent.join("\n");

@@ -1,4 +1,9 @@
-import { ObjectLiteral, Repository } from "typeorm";
+import {
+  Brackets,
+  ObjectLiteral,
+  Repository,
+  WhereExpressionBuilder,
+} from "typeorm";
 
 import { HEAD_ADMIN_ROLE, ALL_EDITABLE_ROLES } from "@config/default-roles";
 
@@ -21,26 +26,33 @@ export const TEST_ACCOUNTS = [HEAD_ADMIN_ROLE_TEST_ACCOUNT].concat(
   }))
 );
 
-export const TEST_WORKSPACE_1 = {
-  name: "test 0001",
-};
-
-export const TEST_WORKSPACE_2 = {
-  name: "test 0010",
-};
-
 function generateEmailByRoleName(name: string) {
   return `${name.toLowerCase().replace(/ /g, ".")}@${DOMAIN}`;
 }
 
 export function getRandomRecords<T extends ObjectLiteral>(
   repository: Repository<T>,
-  amount = 1
+  amount = 1,
+  relationsToJoin?: string[],
+  whereFactory?: (qb: WhereExpressionBuilder) => WhereExpressionBuilder
 ) {
-  return repository
-    .createQueryBuilder()
-    .select()
-    .orderBy("RAND()")
-    .take(amount)
-    .getMany();
+  const queryAlias = "q";
+  const queryBuilder = repository.createQueryBuilder(queryAlias);
+
+  if (relationsToJoin) {
+    for (const relationToJoin of relationsToJoin) {
+      queryBuilder.leftJoinAndSelect(
+        `${queryAlias}.${relationToJoin}`,
+        relationToJoin
+      );
+    }
+  } else {
+    queryBuilder.select();
+  }
+
+  if (whereFactory) {
+    queryBuilder.where(new Brackets(whereFactory));
+  }
+
+  return queryBuilder.orderBy("RAND()").take(amount).getMany();
 }
