@@ -44,12 +44,15 @@
       </div>
     </n-scrollbar>
 
-    <div v-if="!isLoading" class="footer">
-      <n-icon :component="InformationIcon" size="16" />
-
-      <small>
-        {{ statusText }}
-      </small>
+    <div class="footer">
+      <n-pagination
+        :page="page"
+        size="small"
+        :item-count="blueprintsStore.total"
+        :page-size="perPage"
+        :page-slot="6"
+        @update:page="onPageChange"
+      />
     </div>
   </div>
 </template>
@@ -59,9 +62,9 @@ import {
   Add as AddIcon,
   Reset as ResetIcon,
   Search as SearchIcon,
-  Information as InformationIcon,
 } from "@vicons/carbon";
 import {
+  NTag,
   NSpin,
   NList,
   NIcon,
@@ -69,15 +72,16 @@ import {
   NButton,
   NListItem,
   NScrollbar,
-  NTag,
+  NPagination,
 } from "naive-ui";
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref } from "vue";
 
 import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
 
 const page = ref(1);
+const perPage = 11;
 const isLoading = ref(false);
 
 const drawerStore = useDrawerStore();
@@ -89,12 +93,14 @@ onMounted(() => {
   }
 });
 
-const statusText = computed((): string => {
-  return `Loaded ${blueprintsStore.items.length} out of ${blueprintsStore.total}`;
-});
-
 function toggleAddEditBlueprintDrawer() {
   drawerStore.setActiveDrawer(Drawer.AddEditBlueprint);
+}
+
+function onPageChange(newPage: number) {
+  page.value = newPage;
+
+  getBlueprints();
 }
 
 // @TODO handle infinite scroll
@@ -102,7 +108,7 @@ async function getBlueprints() {
   isLoading.value = true;
 
   try {
-    await blueprintsStore.getAllInfiniteScroll({ page: page.value });
+    await blueprintsStore.getAll({ page: page.value, perPage });
   } catch (error) {
     console.log(error);
   } finally {

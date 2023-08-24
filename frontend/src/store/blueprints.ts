@@ -18,32 +18,6 @@ export const useBlueprintsStore = defineStore("blueprints", {
   }),
 
   actions: {
-    async getAllInfiniteScroll(options: { page: number }) {
-      const workspacesStore = useWorkspacesStore();
-
-      const params = {
-        version: 1,
-        perPage: 15,
-        workspaceId: workspacesStore.activeItem.id,
-        ...options,
-      };
-
-      const { data } = await axios.get<PaginatedResponse<IBlueprintDto>>(
-        "v1/blueprints",
-        {
-          params,
-        }
-      );
-
-      const { total, result } = data;
-
-      this.items = Array.prototype.concat(this.items, result);
-
-      this.total = total;
-
-      return data;
-    },
-
     // @TODO add option to find blueprints that have at least 1 file
     async getAll(options: IPaginationQuery & { inUse?: number }) {
       const workspacesStore = useWorkspacesStore();
@@ -60,6 +34,12 @@ export const useBlueprintsStore = defineStore("blueprints", {
           params,
         }
       );
+
+      const { total, result } = data;
+
+      this.items = result;
+
+      this.total = total;
 
       return data;
     },
