@@ -5,7 +5,7 @@
         <n-icon :component="ResetIcon" :size="20" />
       </n-button>
 
-      <!-- @TODO create common component -->
+      <!-- @TODO create common component (?) -->
       <n-input clearable show-count placeholder="Type name or color">
         <template #prefix>
           <n-icon :component="SearchIcon" />
@@ -44,12 +44,15 @@
       </div>
     </n-scrollbar>
 
-    <div v-if="!isLoading" class="footer">
-      <n-icon :component="InformationIcon" size="16" />
-
-      <small>
-        {{ statusText }}
-      </small>
+    <div class="footer">
+      <n-pagination
+        size="small"
+        :page-slot="6"
+        :page="page.value"
+        :page-size="perPage"
+        :item-count="blueprintsStore.total"
+        @update:page="onPageChange"
+      />
     </div>
   </div>
 </template>
@@ -59,9 +62,9 @@ import {
   Add as AddIcon,
   Reset as ResetIcon,
   Search as SearchIcon,
-  Information as InformationIcon,
 } from "@vicons/carbon";
 import {
+  NTag,
   NSpin,
   NList,
   NIcon,
@@ -69,40 +72,50 @@ import {
   NButton,
   NListItem,
   NScrollbar,
-  NTag,
+  NPagination,
 } from "naive-ui";
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, type PropType, type Ref } from "vue";
 
 import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
 
-const page = ref(1);
+const perPage = 11;
 const isLoading = ref(false);
 
 const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();
 
-onMounted(() => {
-  if (blueprintsStore.total === 0) {
-    getBlueprints();
-  }
+const props = defineProps({
+  page: {
+    type: Object as PropType<Ref<number>>,
+    required: true,
+  },
 });
 
-const statusText = computed((): string => {
-  return `Loaded ${blueprintsStore.items.length} out of ${blueprintsStore.total}`;
+const emit = defineEmits(["update:page"]);
+
+onMounted(() => {
+  if (blueprintsStore.total === 0) {
+    getBlueprints(props.page.value);
+  }
 });
 
 function toggleAddEditBlueprintDrawer() {
   drawerStore.setActiveDrawer(Drawer.AddEditBlueprint);
 }
 
-// @TODO handle infinite scroll
-async function getBlueprints() {
+function onPageChange(newPage: number) {
+  emit("update:page", newPage);
+
+  getBlueprints(newPage);
+}
+
+async function getBlueprints(page: number) {
   isLoading.value = true;
 
   try {
-    await blueprintsStore.getAllInfiniteScroll({ page: page.value });
+    await blueprintsStore.getAll({ page, perPage });
   } catch (error) {
     console.log(error);
   } finally {

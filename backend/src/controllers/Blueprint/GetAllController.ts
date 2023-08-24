@@ -53,8 +53,6 @@ export class GetAllController extends BaseController {
       },
     });
 
-    console.log(total);
-
     const mappedResult = this.mapper.map<Blueprint>(result).to(BlueprintMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
