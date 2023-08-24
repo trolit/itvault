@@ -1,6 +1,8 @@
 import { DataSource } from "typeorm";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
+import { getRandomRecords } from "./common";
+
 import { Tag } from "@entities/Tag";
 import { Workspace } from "@entities/Workspace";
 import { TagToWorkspace } from "@entities/TagToWorkspace";
@@ -14,8 +16,8 @@ export default class WorkspaceSeeder implements Seeder {
     const tagRepository = dataSource.getRepository(Tag);
     const tagToWorkspaceRepository = dataSource.getRepository(TagToWorkspace);
 
-    for (let index = 0; index < 15; index++) {
-      const tags = await tagRepository.find({ take: 3 });
+    for (let index = 0; index < 5; index++) {
+      const tags = await getRandomRecords(tagRepository, 3);
 
       const tagToWorkspace = tags.map(tag => {
         return tagToWorkspaceRepository.create({ tag });
