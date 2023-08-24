@@ -30,19 +30,22 @@
             <single-bundle :item="item" />
           </n-list-item>
         </n-list>
-
-        <n-pagination
-          v-model:page="page"
-          :item-count="bundlesStore.total"
-          :page-size="perPage"
-          :page-slot="6"
-        />
       </div>
 
       <div v-else class="spinner">
         <n-spin />
       </div>
     </n-scrollbar>
+
+    <div class="footer">
+      <n-pagination
+        v-model:page="page"
+        size="small"
+        :item-count="bundlesStore.total"
+        :page-size="perPage"
+        :page-slot="6"
+      />
+    </div>
 
     <create-bundle-modal v-model:show="isCreateBundleModalVisible" />
   </div>

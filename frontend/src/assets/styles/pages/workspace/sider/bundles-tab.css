@@ -2,7 +2,8 @@
   .sider {
     .bundles-tab {
       --bundles-header-height: 0.1;
-      --bundles-content-height: 0.9;
+      --bundles-content-height: 0.83;
+      --bundles-footer-height: 0.07;
 
       --bundle-scrollbar-section-height: calc(
         var(--workspace-sider-content-height) * var(--bundles-content-height)
@@ -59,6 +60,15 @@
             }
           }
         }
+      }
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(
+          var(--workspace-sider-content-height) * var(--bundles-footer-height)
+        );
       }
     }
   }
