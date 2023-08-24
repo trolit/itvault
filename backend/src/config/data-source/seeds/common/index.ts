@@ -36,7 +36,8 @@ function generateEmailByRoleName(name: string) {
 export function getRandomRecords<T extends ObjectLiteral>(
   repository: Repository<T>,
   amount = 1,
-  relationsToJoin?: string[]
+  relationsToJoin?: string[],
+  where?: { query: string; parameters?: ObjectLiteral }
 ) {
   const queryBuilder = repository.createQueryBuilder();
 
@@ -46,5 +47,11 @@ export function getRandomRecords<T extends ObjectLiteral>(
     }
   }
 
-  return queryBuilder.select().orderBy("RAND()").take(amount).getMany();
+  const selectQueryBuilder = queryBuilder.select();
+
+  if (where) {
+    selectQueryBuilder.where(where.query, where.parameters);
+  }
+
+  return selectQueryBuilder.orderBy("RAND()").take(amount).getMany();
 }
