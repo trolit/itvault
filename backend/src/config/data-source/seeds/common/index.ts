@@ -1,4 +1,9 @@
-import { ObjectLiteral, Repository } from "typeorm";
+import {
+  Brackets,
+  ObjectLiteral,
+  Repository,
+  WhereExpressionBuilder,
+} from "typeorm";
 
 import { HEAD_ADMIN_ROLE, ALL_EDITABLE_ROLES } from "@config/default-roles";
 
@@ -37,14 +42,15 @@ export function getRandomRecords<T extends ObjectLiteral>(
   repository: Repository<T>,
   amount = 1,
   relationsToJoin?: string[],
-  where?: { query: string; parameters?: ObjectLiteral }
+  whereFactory?: (qb: WhereExpressionBuilder) => WhereExpressionBuilder
 ) {
-  const queryBuilder = repository.createQueryBuilder("randomQuery");
+  const queryAlias = "q";
+  const queryBuilder = repository.createQueryBuilder(queryAlias);
 
   if (relationsToJoin) {
     for (const relationToJoin of relationsToJoin) {
       queryBuilder.leftJoinAndSelect(
-        `randomQuery.${relationToJoin}`,
+        `${queryAlias}.${relationToJoin}`,
         relationToJoin
       );
     }
@@ -52,8 +58,8 @@ export function getRandomRecords<T extends ObjectLiteral>(
     queryBuilder.select();
   }
 
-  if (where) {
-    queryBuilder.where(where.query, where.parameters);
+  if (whereFactory) {
+    queryBuilder.where(new Brackets(whereFactory));
   }
 
   return queryBuilder.orderBy("RAND()").take(amount).getMany();

@@ -24,7 +24,6 @@ export default class BucketSeeder implements Seeder {
     const blueprintRepository = dataSource.getRepository(Blueprint);
     const workspaceRepository = dataSource.getRepository(Workspace);
 
-    fileRepository.createQueryBuilder().where({ whereFactory: {} });
     const workspaces = await workspaceRepository.find();
 
     for (const workspace of workspaces) {
@@ -34,10 +33,10 @@ export default class BucketSeeder implements Seeder {
         blueprintRepository,
         amountOfBlueprints,
         ["workspace"],
-        {
-          query: "workspace.id = :workspaceId",
-          parameters: { workspaceId: workspace.id },
-        }
+        qb =>
+          qb.where("workspace.id = :workspaceId", {
+            workspaceId: workspace.id,
+          })
       );
 
       const files = await fileRepository.findBy({
@@ -90,13 +89,13 @@ export default class BucketSeeder implements Seeder {
 
       const line = splitContent[row];
 
+      if (line === "\n") {
+        continue;
+      }
+
       const endIndex = random(1, line.length - 1);
 
       const part = `0-${endIndex}`;
-
-      if (value[row] === undefined || !value[row]) {
-        continue;
-      }
 
       if (value[row]) {
         value[row].push(part);
