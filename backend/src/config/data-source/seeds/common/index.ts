@@ -39,19 +39,22 @@ export function getRandomRecords<T extends ObjectLiteral>(
   relationsToJoin?: string[],
   where?: { query: string; parameters?: ObjectLiteral }
 ) {
-  const queryBuilder = repository.createQueryBuilder();
+  const queryBuilder = repository.createQueryBuilder("randomQuery");
 
   if (relationsToJoin) {
     for (const relationToJoin of relationsToJoin) {
-      queryBuilder.leftJoinAndSelect(relationToJoin, relationToJoin);
+      queryBuilder.leftJoinAndSelect(
+        `randomQuery.${relationToJoin}`,
+        relationToJoin
+      );
     }
+  } else {
+    queryBuilder.select();
   }
-
-  const selectQueryBuilder = queryBuilder.select();
 
   if (where) {
-    selectQueryBuilder.where(where.query, where.parameters);
+    queryBuilder.where(where.query, where.parameters);
   }
 
-  return selectQueryBuilder.orderBy("RAND()").take(amount).getMany();
+  return queryBuilder.orderBy("RAND()").take(amount).getMany();
 }
