@@ -19,7 +19,7 @@
 
       <template #footer>
         <!-- @TODO delete action + permission (+allow to delete for bundle owners (?)) -->
-        <n-button type="error" ghost size="small">delete</n-button>
+        <n-button type="error" ghost size="small" @click.stop>delete</n-button>
 
         <!-- @TODO allow to requeue bundle for bundle owners (?) -->
         <require-permission :permission="Permission.RequeueBundle">
