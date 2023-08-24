@@ -37,6 +37,16 @@
       </div>
     </n-scrollbar>
 
+    <div class="footer">
+      <n-pagination
+        v-model:page="page"
+        size="small"
+        :item-count="bundlesStore.total"
+        :page-size="perPage"
+        :page-slot="6"
+      />
+    </div>
+
     <create-bundle-modal v-model:show="isCreateBundleModalVisible" />
   </div>
 </template>
@@ -57,6 +67,7 @@ import {
   NButton,
   NListItem,
   NScrollbar,
+  NPagination,
 } from "naive-ui";
 
 import SingleBundle from "./SingleBundle.vue";
@@ -64,6 +75,7 @@ import { useBundlesStore } from "@/store/bundles";
 import CreateBundleModal from "./CreateBundleModal/Index.vue";
 
 const page = ref(1);
+const perPage = 10;
 const isLoading = ref(false);
 const bundlesStore = useBundlesStore();
 const isCreateBundleModalVisible = ref(false);
@@ -78,7 +90,7 @@ async function getBundles() {
   isLoading.value = true;
 
   try {
-    await bundlesStore.getAll({ page: page.value });
+    await bundlesStore.getAll({ page: page.value, perPage });
   } catch (error) {
     console.log(error);
   } finally {

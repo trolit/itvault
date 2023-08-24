@@ -7,6 +7,7 @@ import type { Bundle } from "@/types/Bundle";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
 import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { IBundleBlueprintDto } from "@shared/types/dtos/IBundleBlueprintDto";
@@ -30,12 +31,11 @@ export const useBundlesStore = defineStore("bundles", {
   },
 
   actions: {
-    async getAll(options: { page: number }) {
+    async getAll(options: IPaginationQuery) {
       const workspacesStore = useWorkspacesStore();
 
       const params = {
         version: 1,
-        perPage: 10,
         workspaceId: workspacesStore.activeItem.id,
         ...options,
       };
@@ -135,6 +135,22 @@ export const useBundlesStore = defineStore("bundles", {
       });
 
       this.items.unshift({ ...data, blueprints: [] });
+
+      return data;
+    },
+
+    async download(id: number) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      const { data } = await axios.get<string>(`v1/bundles/${id}`, {
+        params,
+        responseType: "arraybuffer",
+      });
 
       return data;
     },

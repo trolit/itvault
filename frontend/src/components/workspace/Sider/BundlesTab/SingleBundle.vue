@@ -14,12 +14,16 @@
       </template>
 
       <n-card>
-        {{ item.note }}
+        <n-ellipsis v-if="item.note" :line-clamp="2">
+          {{ item.note }}
+        </n-ellipsis>
+
+        <em v-else>No note provided</em>
       </n-card>
 
       <template #footer>
         <!-- @TODO delete action + permission (+allow to delete for bundle owners (?)) -->
-        <n-button type="error" ghost size="small">delete</n-button>
+        <n-button type="error" ghost size="small" @click.stop>delete</n-button>
 
         <!-- @TODO allow to requeue bundle for bundle owners (?) -->
         <require-permission :permission="Permission.RequeueBundle">
@@ -37,7 +41,14 @@
         <!-- @TODO  -->
         <require-permission :permission="Permission.DownloadBundle">
           <!-- @TODO -->
-          <n-button v-if="isReady" type="success" ghost size="small">
+          <n-button
+            v-if="isReady"
+            type="info"
+            ghost
+            size="small"
+            :loading="isProcessingDownloadRequest"
+            @click.stop="downloadBundle"
+          >
             download
           </n-button>
         </require-permission>
@@ -47,15 +58,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type PropType } from "vue";
-import { NThing, NButton, NTag, NCard } from "naive-ui";
+import { computed, ref, type PropType } from "vue";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
+import {
+  NTag,
+  NCard,
+  NThing,
+  NButton,
+  NEllipsis,
+  useLoadingBar,
+} from "naive-ui";
 
 import BundleStatus from "./BundleStatus.vue";
+import { useBundlesStore } from "@/store/bundles";
 import formatDate from "@/helpers/dayjs/formatDate";
 import { Permission } from "@shared/types/enums/Permission";
-import { BundleStatus as BundleStatusEnum } from "@shared/types/enums/BundleStatus";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import { BundleStatus as BundleStatusEnum } from "@shared/types/enums/BundleStatus";
+
+const loadingBar = useLoadingBar();
+const bundlesStore = useBundlesStore();
 
 const props = defineProps({
   item: {
@@ -64,11 +86,42 @@ const props = defineProps({
   },
 });
 
-const item = computed(() => props.item);
+const isProcessingDownloadRequest = ref(false);
 
+const item = computed(() => props.item);
 const isReady = computed(() => item.value.status === BundleStatusEnum.Ready);
 
 const isBundleGenerationFailed = computed(
   () => item.value.status === BundleStatusEnum.Failed
 );
+
+async function downloadBundle() {
+  isProcessingDownloadRequest.value = true;
+
+  loadingBar.start();
+
+  try {
+    const data = await bundlesStore.download(props.item.id);
+
+    const url = window.URL.createObjectURL(new Blob([data]));
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.setAttribute("download", props.item.filename || "unknown.zip");
+
+    link.click();
+
+    link.remove();
+
+    loadingBar.finish();
+  } catch (error) {
+    console.log(error);
+
+    loadingBar.error();
+  } finally {
+    isProcessingDownloadRequest.value = false;
+  }
+}
 </script>

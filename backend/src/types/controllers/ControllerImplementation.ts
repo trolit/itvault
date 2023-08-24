@@ -10,5 +10,5 @@ export type ControllerImplementation = {
   handle: (
     request: CustomRequest<any, any, any>,
     response: CustomResponse<any>
-  ) => Promise<CustomResponse<any>>;
+  ) => Promise<void | CustomResponse<any>>;
 };
