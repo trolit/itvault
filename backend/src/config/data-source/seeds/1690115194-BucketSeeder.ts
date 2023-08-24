@@ -1,13 +1,13 @@
 import path from "path";
 import fs from "fs-extra";
-import sample from "lodash/sample";
 import random from "lodash/random";
+import sample from "lodash/sample";
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
 
 import { FILES } from "@config";
 
-import { TEST_WORKSPACE_1 } from "./common";
+import { getRandomRecords } from "./common";
 
 import { File } from "@entities/File";
 import { Bucket } from "@entities/Bucket";
@@ -18,77 +18,68 @@ import { BucketContent } from "@shared/types/BucketContent";
 
 export default class BucketSeeder implements Seeder {
   public async run(dataSource: DataSource) {
+    const fileRepository = dataSource.getRepository(File);
+    const bucketRepository = dataSource.getRepository(Bucket);
+    const variantRepository = dataSource.getRepository(Variant);
+    const blueprintRepository = dataSource.getRepository(Blueprint);
     const workspaceRepository = dataSource.getRepository(Workspace);
 
-    const workspace = await workspaceRepository.findOneBy({
-      name: TEST_WORKSPACE_1.name,
-    });
+    fileRepository.createQueryBuilder().where({ whereFactory: {} });
+    const workspaces = await workspaceRepository.find();
 
-    if (!workspace) {
-      return;
-    }
+    for (const workspace of workspaces) {
+      const amountOfBlueprints = random(8, 13);
 
-    const fileRepository = dataSource.getRepository(File);
+      const blueprints = await getRandomRecords(
+        blueprintRepository,
+        amountOfBlueprints,
+        ["workspace"],
+        {
+          query: "workspace.id = :workspaceId",
+          parameters: { workspaceId: workspace.id },
+        }
+      );
 
-    const files = await fileRepository.findBy({
-      workspace: {
-        id: workspace.id,
-      },
-    });
-
-    if (!files.length) {
-      return;
-    }
-
-    const variantRepository = dataSource.getRepository(Variant);
-
-    const bucketRepository = dataSource.getRepository(Bucket);
-
-    const blueprintRepository = dataSource.getRepository(Blueprint);
-
-    const blueprints = await blueprintRepository.findBy({
-      workspace: {
-        id: workspace.id,
-      },
-    });
-
-    if (!blueprints.length) {
-      return;
-    }
-
-    for (const file of files) {
-      const variants = await variantRepository.findBy({
-        file: {
-          id: file.id,
+      const files = await fileRepository.findBy({
+        workspace: {
+          id: workspace.id,
         },
       });
 
-      for (const variant of variants) {
-        const file = await fs.readFile(
-          path.join(
-            FILES.BASE_UPLOADS_PATH,
-            `workspace-${workspace.id}`,
-            variant.filename
-          )
-        );
-
-        const content = file.toString();
-
-        const blueprint = sample(blueprints) || blueprints[0];
-
-        const splitContent = content.split("\n");
-
-        await bucketRepository.save({
-          value: this._generateValue(splitContent),
-          variant,
-          blueprint,
+      for (const file of files) {
+        const variants = await variantRepository.findBy({
+          file: {
+            id: file.id,
+          },
         });
+
+        for (const variant of variants) {
+          const file = await fs.readFile(
+            path.join(
+              FILES.BASE_UPLOADS_PATH,
+              `workspace-${workspace.id}`,
+              variant.filename
+            )
+          );
+
+          const content = file.toString();
+
+          const blueprint = sample(blueprints) || blueprints[0];
+
+          const splitContent = content.split("\n");
+
+          await bucketRepository.save({
+            value: this._generateValue(splitContent),
+            variant,
+            blueprint,
+          });
+        }
       }
     }
   }
 
   private _generateValue(splitContent: string[]) {
-    const iterations = random(1, 3);
+    const iterations = random(1, 6);
 
     const value: BucketContent = {};
 
@@ -99,9 +90,13 @@ export default class BucketSeeder implements Seeder {
 
       const line = splitContent[row];
 
-      const endIndex = random(0, line.length - 1);
+      const endIndex = random(1, line.length - 1);
 
       const part = `0-${endIndex}`;
+
+      if (value[row] === undefined || !value[row]) {
+        continue;
+      }
 
       if (value[row]) {
         value[row].push(part);
