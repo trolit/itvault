@@ -14,7 +14,11 @@
       </template>
 
       <n-card>
-        {{ item.note }}
+        <n-ellipsis v-if="item.note" :line-clamp="2">
+          {{ item.note }}
+        </n-ellipsis>
+
+        <em v-else>No note provided</em>
       </n-card>
 
       <template #footer>
@@ -56,7 +60,14 @@
 <script setup lang="ts">
 import { computed, ref, type PropType } from "vue";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-import { NThing, NButton, NTag, NCard, useLoadingBar } from "naive-ui";
+import {
+  NTag,
+  NCard,
+  NThing,
+  NButton,
+  NEllipsis,
+  useLoadingBar,
+} from "naive-ui";
 
 import BundleStatus from "./BundleStatus.vue";
 import { useBundlesStore } from "@/store/bundles";
