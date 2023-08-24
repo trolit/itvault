@@ -62,8 +62,8 @@ import BundleStatus from "./BundleStatus.vue";
 import { useBundlesStore } from "@/store/bundles";
 import formatDate from "@/helpers/dayjs/formatDate";
 import { Permission } from "@shared/types/enums/Permission";
-import { BundleStatus as BundleStatusEnum } from "@shared/types/enums/BundleStatus";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import { BundleStatus as BundleStatusEnum } from "@shared/types/enums/BundleStatus";
 
 const loadingBar = useLoadingBar();
 const bundlesStore = useBundlesStore();
