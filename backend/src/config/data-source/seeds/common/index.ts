@@ -26,14 +26,6 @@ export const TEST_ACCOUNTS = [HEAD_ADMIN_ROLE_TEST_ACCOUNT].concat(
   }))
 );
 
-export const TEST_WORKSPACE_1 = {
-  name: "test 0001",
-};
-
-export const TEST_WORKSPACE_2 = {
-  name: "test 0010",
-};
-
 function generateEmailByRoleName(name: string) {
   return `${name.toLowerCase().replace(/ /g, ".")}@${DOMAIN}`;
 }
