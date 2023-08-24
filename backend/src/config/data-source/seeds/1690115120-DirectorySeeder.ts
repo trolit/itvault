@@ -34,9 +34,19 @@ export default class DirectorySeeder implements Seeder {
     const directoryRepository = dataSource.getRepository(Directory);
 
     for (const relativePath of relativePaths) {
-      await directoryRepository.save({
-        relativePath,
-      });
+      const splitRelativePath = relativePath.split("/");
+      const splitRelativePathLength = splitRelativePath.length;
+
+      for (let index = 1; index < splitRelativePathLength; index++) {
+        const part = splitRelativePath.slice(0, index + 1);
+
+        await directoryRepository.upsert(
+          {
+            relativePath: part.join("/"),
+          },
+          { conflictPaths: ["relativePath"] }
+        );
+      }
     }
   }
 }
