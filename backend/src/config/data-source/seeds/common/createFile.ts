@@ -33,19 +33,15 @@ function getFileContent(extension: string) {
   for (let index = 0; index < linesAmount; index++) {
     rawContent.push(caller());
 
-    if (index === 0) {
+    if (wasLineBreakRecentlyAdded) {
+      wasLineBreakRecentlyAdded = false;
+
       continue;
     }
 
     const includeLineBreak = random(0, 3000);
 
     if (includeLineBreak < 1000 || includeLineBreak > 2000) {
-      continue;
-    }
-
-    if (wasLineBreakRecentlyAdded) {
-      wasLineBreakRecentlyAdded = false;
-
       continue;
     }
 
