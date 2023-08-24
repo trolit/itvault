@@ -43,7 +43,7 @@
           <!-- @TODO -->
           <n-button
             v-if="isReady"
-            type="success"
+            type="info"
             ghost
             size="small"
             :loading="isProcessingDownloadRequest"
