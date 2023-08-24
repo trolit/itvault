@@ -39,11 +39,11 @@ function getFileContent(extension: string) {
 
     const includeLineBreak = random(0, 3000);
 
-    if (
-      includeLineBreak < 1000 ||
-      includeLineBreak > 2000 ||
-      wasLineBreakRecentlyAdded
-    ) {
+    if (includeLineBreak < 1000 || includeLineBreak > 2000) {
+      continue;
+    }
+
+    if (wasLineBreakRecentlyAdded) {
       wasLineBreakRecentlyAdded = false;
 
       continue;
