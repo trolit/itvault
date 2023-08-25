@@ -39,6 +39,9 @@ export class GetAllController extends BaseController {
     } = request;
 
     const [result] = await this._variantRepository.getAll({
+      order: {
+        name: "DESC",
+      },
       where: {
         file: {
           id: fileId,
