@@ -27,7 +27,7 @@ export const CUSTOM_MESSAGES = {
     DUPLICATE_FILE:
       "There is already file with such name under given dir (%s).",
     VARIANTS_CONFLICT:
-      "File %s was selected with %s different variants. To avoid conflicts and complete action, please update your configuration to use only one variant.",
+      "File %s was selected with %s different variants. Please update your configuration to use only one variant or remove one of the blueprints.",
     ONLY_ONE_ROOT_INDICATOR: `Relative path should only contain one root indicator '${FILES.ROOT}'`,
     SHOULD_START_WITH_ROOT_INDICATOR: `Relative path should start with root indicator '${FILES.ROOT}'`,
   },

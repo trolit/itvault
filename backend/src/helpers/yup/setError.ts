@@ -4,5 +4,5 @@ export const setYupError = (
   error: string,
   ...replacements: (string | number)[]
 ) => {
-  return sprintf(error, replacements);
+  return sprintf(error, ...replacements);
 };
