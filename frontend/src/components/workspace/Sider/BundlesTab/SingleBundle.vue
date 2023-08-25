@@ -30,9 +30,10 @@
           <!-- @TODO -->
           <n-button
             v-if="isBundleGenerationFailed"
-            type="info"
+            type="warning"
             ghost
             size="small"
+            @click.stop="requeueBundle"
           >
             requeue
           </n-button>
@@ -86,6 +87,9 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["set-status"]);
+
+const isProcessingRequeueRequest = ref(false);
 const isProcessingDownloadRequest = ref(false);
 
 const item = computed(() => props.item);
@@ -94,6 +98,26 @@ const isReady = computed(() => item.value.status === BundleStatusEnum.Ready);
 const isBundleGenerationFailed = computed(
   () => item.value.status === BundleStatusEnum.Failed
 );
+
+async function requeueBundle() {
+  isProcessingRequeueRequest.value = true;
+
+  loadingBar.start();
+
+  try {
+    await bundlesStore.requeue(props.item.id);
+
+    emit("set-status", BundleStatusEnum.Queried);
+
+    loadingBar.finish();
+  } catch (error) {
+    console.log(error);
+
+    loadingBar.error();
+  } finally {
+    isProcessingRequeueRequest.value = false;
+  }
+}
 
 async function downloadBundle() {
   isProcessingDownloadRequest.value = true;

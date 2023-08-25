@@ -87,9 +87,9 @@ function renderText(content: string) {
   const splitText = value.toString().split("\n");
 
   const children = splitText.map((line, index) =>
-    bucket && blueprint
+    bucket && blueprint && line
       ? parseLineWithBucket(index, line, bucket, blueprint)
-      : h("div", line)
+      : h(line ? "div" : "br", line)
   );
 
   return h("div", { class: "text-render" }, children);
