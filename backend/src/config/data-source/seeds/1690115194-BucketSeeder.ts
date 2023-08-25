@@ -78,32 +78,61 @@ export default class BucketSeeder implements Seeder {
   }
 
   private _generateValue(splitContent: string[]) {
-    const iterations = random(1, 6);
-
     const value: BucketContent = {};
-
     const availableRows = splitContent.length - 1;
+    const iterations = random(1, splitContent.length);
+
+    const getMinNumber = (lineColoring: string[]) => {
+      let biggestMaxValue = 0;
+
+      for (const coloring of lineColoring) {
+        const [, to] = coloring.split("-");
+
+        const parsedTo = parseInt(to);
+
+        if (parsedTo > biggestMaxValue) {
+          biggestMaxValue = parsedTo;
+        }
+      }
+
+      return biggestMaxValue + random(2, 4);
+    };
 
     for (let index = 0; index < iterations; index++) {
-      const row = random(availableRows);
+      const rowIndex = random(availableRows);
 
-      const line = splitContent[row];
+      const row = splitContent[rowIndex];
 
-      if (line === "\n") {
+      if (!row || row === "\n") {
         continue;
       }
 
-      const endIndex = random(1, line.length - 1);
+      const rowLength = row.length;
+      const lineColoring = value[rowIndex];
+      const minNumber = lineColoring
+        ? getMinNumber(lineColoring)
+        : random(0, 5);
 
-      const part = `0-${endIndex}`;
+      if (minNumber >= rowLength - 4) {
+        continue;
+      }
 
-      if (value[row]) {
-        value[row].push(part);
+      const endIndex = random(minNumber, rowLength - 1);
+      const difference = endIndex - minNumber;
+
+      if (difference <= 1 || (lineColoring && minNumber >= endIndex - 3)) {
+        continue;
+      }
+
+      const part = `${minNumber}-${endIndex}`;
+
+      if (lineColoring) {
+        lineColoring.push(part);
 
         continue;
       }
 
-      value[row] = [part];
+      value[rowIndex] = [part];
     }
 
     return value;
