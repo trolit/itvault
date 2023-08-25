@@ -35,7 +35,7 @@ export default class DirectorySeeder implements Seeder {
       relativePath: FILES.ROOT,
     });
 
-    let lastDirectory: Directory = directoryRepository.create();
+    let previousDirectory: Directory = directoryRepository.create();
 
     for (const relativePath of relativePaths) {
       const splitRelativePath = relativePath.split("/");
@@ -43,29 +43,29 @@ export default class DirectorySeeder implements Seeder {
 
       for (let index = 1; index < splitRelativePathLength; index++) {
         const part = splitRelativePath.slice(0, index + 1);
-        const joinedPart = part.join("/");
+        const relativePathToSave = part.join("/");
 
         const directory = await directoryRepository.findOne({
-          where: { relativePath: joinedPart },
+          where: { relativePath: relativePathToSave },
         });
 
         if (directory) {
           directory.parentDirectory =
-            index === 1 ? rootDirectory : lastDirectory;
+            index === 1 ? rootDirectory : previousDirectory;
 
           await directoryRepository.save(directory);
 
-          lastDirectory = directory;
+          previousDirectory = directory;
 
           continue;
         }
 
         const result = await directoryRepository.save({
-          relativePath: joinedPart,
-          parentDirectory: index === 1 ? rootDirectory : lastDirectory,
+          relativePath: relativePathToSave,
+          parentDirectory: index === 1 ? rootDirectory : previousDirectory,
         });
 
-        lastDirectory = result;
+        previousDirectory = result;
       }
     }
   }
