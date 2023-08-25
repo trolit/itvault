@@ -1,3 +1,5 @@
+import { In } from "typeorm";
+import uniq from "lodash/uniq";
 import { SuperSchema } from "types/SuperSchema";
 import { array, number, object, string } from "yup";
 import { IFileRepository } from "types/repositories/IFileRepository";
@@ -40,21 +42,38 @@ const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
 
       const fileRepository = getInstanceOf<IFileRepository>(Di.FileRepository);
 
-      const file = await fileRepository.getOneWithMoreThanTwoVariants(
-        uniqueVariantIds
-      );
+      const [files] = await fileRepository.getAll({
+        where: {
+          variants: {
+            id: In(uniqueVariantIds),
+          },
+        },
+        relations: {
+          variants: true,
+        },
+      });
+
+      for (const file of files) {
+        const { variants } = file;
+
+        if (variants.length > 1) {
+          const fileUniqueVariantIds = uniq(
+            variants.map(variant => variant.id)
+          );
+
+          if (fileUniqueVariantIds.length > 1) {
+            return ctx.createError({
+              message: setYupError(
+                CUSTOM_MESSAGES.FILE.VARIANTS_CONFLICT,
+                file.originalFilename,
+                file.variants.length
+              ),
+            });
+          }
+        }
+      }
 
       // @TODO validate if amount of provided variantIds MATCH amount of files that are arranged with that blueprint!
-
-      if (file) {
-        return ctx.createError({
-          message: setYupError(
-            CUSTOM_MESSAGES.FILE.VARIANTS_CONFLICT,
-            file.originalFilename,
-            file.variants.length
-          ),
-        });
-      }
 
       return true;
     }),
