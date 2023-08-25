@@ -1,4 +1,10 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  OneToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 import { File } from "./File";
 
@@ -12,4 +18,9 @@ export class Directory {
 
   @OneToMany(() => File, file => file.directory)
   files: File[];
+
+  @OneToOne(() => Directory, directory => directory.parentDirectory, {
+    nullable: true,
+  })
+  parentDirectory: Directory;
 }
