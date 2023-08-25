@@ -130,7 +130,7 @@ export const useBundlesStore = defineStore("bundles", {
         workspaceId: workspacesStore.activeItem.id,
       };
 
-      return axios.post(`v1/bundles/${id}/requeue`, {
+      return axios.post(`v1/bundles/${id}/requeue`, null, {
         params,
       });
     },
