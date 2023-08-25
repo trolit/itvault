@@ -122,6 +122,19 @@ export const useBundlesStore = defineStore("bundles", {
       return data;
     },
 
+    requeue(id: number) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      return axios.post(`v1/bundles/${id}/requeue`, {
+        params,
+      });
+    },
+
     async store(payload: AddBundleDto) {
       const workspacesStore = useWorkspacesStore();
 
