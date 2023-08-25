@@ -27,7 +27,7 @@
             :key="item.id"
             @click="bundlesStore.showDetailsDrawer(item.id)"
           >
-            <single-bundle :item="item" />
+            <single-bundle :item="item" @set-status="item.status = $event" />
           </n-list-item>
         </n-list>
       </div>
