@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { Like, Not, Repository } from "typeorm";
+import { And, Like, Not, Repository } from "typeorm";
 import { IDirectoryRepository } from "types/repositories/IDirectoryRepository";
 
 import { FILES } from "@config";
@@ -20,19 +20,19 @@ export class DirectoryRepository
   }
 
   getAllByRelativePath(workspaceId: number, relativePath: string) {
-    const relativePathQuery =
+    const query =
       relativePath === FILES.ROOT
-        ? Not(Like(`${FILES.ROOT}/%/%`))
-        : Like(`${relativePath}_%`);
+        ? { relativePath: And(Not(Like(`${FILES.ROOT}/%/%`)), Not(FILES.ROOT)) }
+        : { parentDirectory: { relativePath } };
 
     return this.database.find({
       where: {
-        relativePath: relativePathQuery,
         files: {
           workspace: {
             id: workspaceId,
           },
         },
+        ...query,
       },
     });
   }
