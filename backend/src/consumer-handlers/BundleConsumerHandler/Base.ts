@@ -56,8 +56,8 @@ export abstract class BaseBundleConsumerHandler {
         index >= minLineIndex &&
         index <= maxLineIndex
       ) {
-        // @NOTE add linebreak if it's between min and max (bucket) line
-        result.push("\n");
+        // @NOTE add line-break if it's between min and max (bucket) line
+        result.push("");
 
         continue;
       }
