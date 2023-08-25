@@ -78,32 +78,30 @@ export default class BucketSeeder implements Seeder {
   }
 
   private _generateValue(splitContent: string[]) {
-    const iterations = random(1, 6);
-
     const value: BucketContent = {};
-
     const availableRows = splitContent.length - 1;
+    const iterations = random(1, splitContent.length);
 
     for (let index = 0; index < iterations; index++) {
-      const row = random(availableRows);
+      const rowIndex = random(availableRows);
 
-      const line = splitContent[row];
+      const row = splitContent[rowIndex];
 
-      if (line === "\n") {
+      if (row === "\n") {
         continue;
       }
 
-      const endIndex = random(1, line.length - 1);
+      const endIndex = random(2, row.length - 1);
 
       const part = `0-${endIndex}`;
 
-      if (value[row]) {
-        value[row].push(part);
+      if (value[rowIndex]) {
+        value[rowIndex].push(part);
 
         continue;
       }
 
-      value[row] = [part];
+      value[rowIndex] = [part];
     }
 
     return value;
