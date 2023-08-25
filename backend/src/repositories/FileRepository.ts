@@ -85,18 +85,6 @@ export class FileRepository
     }
   }
 
-  getOneWithMoreThanTwoVariants(variantIds: string[]): Promise<File | null> {
-    return this.database
-      .createQueryBuilder("file")
-      .leftJoinAndSelect("file.variants", "variant")
-      .where("variant.id IN (:...ids)", {
-        ids: variantIds,
-      })
-      .groupBy("variant.id")
-      .having("COUNT(variant.id) > 1")
-      .getOne();
-  }
-
   getAllByRelativePath(
     workspaceId: number,
     relativePath: string
