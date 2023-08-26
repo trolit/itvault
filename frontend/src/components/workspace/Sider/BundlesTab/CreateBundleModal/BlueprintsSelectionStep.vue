@@ -96,13 +96,6 @@ import type { BundleModalItem } from "@/types/BundleModalItem";
 import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
-const page = ref(1);
-const perPage = 15;
-const total = ref(0);
-const isLoading = ref(false);
-const blueprintsStore = useBlueprintsStore();
-const blueprints: Ref<IBlueprintDto[]> = ref([]);
-
 const props = defineProps({
   formData: {
     type: Object as PropType<AddBundleDto>,
@@ -113,17 +106,25 @@ const props = defineProps({
     type: Object as PropType<BundleModalItem[]>,
     required: true,
   },
+
+  selectedBlueprints: {
+    type: Object as PropType<IBlueprintDto[]>,
+    required: true,
+  },
 });
 
 defineEmits(["select-blueprint", "deselect-blueprint"]);
 
+const page = ref(1);
+const perPage = 15;
+const total = ref(0);
+const isLoading = ref(false);
+const blueprintsStore = useBlueprintsStore();
+const blueprints: Ref<IBlueprintDto[]> = ref([]);
+
 onBeforeMount(async () => {
   await fetchBlueprints();
 });
-
-const selectedBlueprints = computed(() =>
-  props.items.map(({ blueprint }) => blueprint)
-);
 
 const pageCount = computed(() => Math.ceil(total.value / perPage));
 
@@ -132,7 +133,7 @@ watch(page, () => {
 });
 
 function isBlueprintSelected(id: number) {
-  return selectedBlueprints.value.some(
+  return props.selectedBlueprints.some(
     selectedBlueprint => selectedBlueprint.id === id
   );
 }
