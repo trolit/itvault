@@ -106,7 +106,7 @@ const activeItemIndex = ref(0);
 const { items, selectedBlueprints } = toRefs(props);
 
 const activeItem = computed(() => {
-  return props.items[activeItemIndex.value];
+  return items.value[activeItemIndex.value];
 });
 
 watch(
