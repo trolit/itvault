@@ -77,6 +77,7 @@ import {
   computed,
   onBeforeMount,
   type PropType,
+  toRefs,
 } from "vue";
 import {
   NTag,
@@ -107,6 +108,7 @@ const page = ref(1);
 const perPage = 15;
 const total = ref(0);
 const isLoading = ref(false);
+const { selectedBlueprints } = toRefs(props);
 const blueprintsStore = useBlueprintsStore();
 const blueprints: Ref<IBlueprintDto[]> = ref([]);
 
@@ -121,7 +123,7 @@ watch(page, () => {
 });
 
 function isBlueprintSelected(id: number) {
-  return props.selectedBlueprints.some(
+  return selectedBlueprints.value.some(
     selectedBlueprint => selectedBlueprint.id === id
   );
 }
