@@ -3,11 +3,14 @@
     <div class="selected-items">
       <n-tag :bordered="false" type="info">
         <n-icon :size="20" :component="InformationIcon" /> Currently selected
-        ({{ selectedBlueprints.length }})
+        ({{ selectedBlueprints.value.length }})
       </n-tag>
 
       <n-scrollbar>
-        <n-card v-for="blueprint in selectedBlueprints" :key="blueprint.id">
+        <n-card
+          v-for="blueprint in selectedBlueprints.value"
+          :key="blueprint.id"
+        >
           <div
             class="thumbnail"
             :style="{ backgroundColor: blueprint.color }"
@@ -92,17 +95,11 @@ import {
 } from "naive-ui";
 
 import { useBlueprintsStore } from "@/store/blueprints";
-import type { BundleModalItem } from "@/types/BundleModalItem";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const props = defineProps({
-  items: {
-    type: Object as PropType<BundleModalItem[]>,
-    required: true,
-  },
-
   selectedBlueprints: {
-    type: Object as PropType<IBlueprintDto[]>,
+    type: Object as PropType<Ref<IBlueprintDto[]>>,
     required: true,
   },
 });
@@ -127,7 +124,7 @@ watch(page, () => {
 });
 
 function isBlueprintSelected(id: number) {
-  return props.selectedBlueprints.some(
+  return props.selectedBlueprints.value.some(
     selectedBlueprint => selectedBlueprint.id === id
   );
 }
