@@ -5,7 +5,7 @@
         <n-card
           v-for="(blueprint, index) in selectedBlueprints"
           :key="blueprint.id"
-          @click="activeBlueprintIndex = index"
+          @click="activeItemIndex = index"
         >
           <div class="blueprint-info">
             <div
@@ -16,13 +16,13 @@
             {{ blueprint.name }}
 
             <n-icon
-              v-if="activeBlueprintIndex === index"
+              v-if="activeItemIndex === index"
               :component="ViewIcon"
               :size="20"
             />
           </div>
 
-          <div v-if="!wasBlueprintPreviewed(index)" class="require-preview">
+          <div v-if="!wasBlueprintViewed(blueprint.id)" class="require-preview">
             (requires preview)
           </div>
         </n-card>
@@ -35,23 +35,43 @@
       <n-scrollbar trigger="none">
         <n-spin v-if="isLoading" />
 
-        <div class="wrapper" v-else-if="activeBlueprint">
-          <n-card v-for="item in blueprintFiles" :key="item.id">
-            <div class="name">
-              {{ item.relativePath }}/{{ item.originalFilename }}
-            </div>
+        <div class="wrapper" v-else>
+          <n-card v-for="file in activeItem.files" :key="file.id">
+            <template #default>
+              <div class="name">
+                {{ file.relativePath }}/{{ file.originalFilename }}
+              </div>
 
-            <div>
-              <n-button-group>
-                <n-button
-                  v-for="variant in item.variants"
-                  :key="variant.id"
-                  :disabled="isVariantSelected(activeBlueprint.id, variant.id)"
-                >
-                  {{ variant.name }}
-                </n-button>
-              </n-button-group>
-            </div>
+              <div>
+                <n-button-group>
+                  <n-button
+                    v-for="variant in file.variants"
+                    :key="variant.id"
+                    :disabled="isVariantSelected(file.id, variant.id)"
+                    @click="file.selectedVariantId = variant.id"
+                  >
+                    {{ variant.name }}
+                  </n-button>
+                </n-button-group>
+              </div>
+            </template>
+
+            <template #footer>
+              <n-alert
+                v-if="hasVariantConflict(file.id, file.selectedVariantId)"
+                type="error"
+              >
+                This variant is conflicting with variant selected in
+                <strong>{{ conflictingData.blueprint }}</strong> ({{
+                  conflictingData.variant
+                }}) 😢. To fix this issue and generate bundle please:
+
+                <ul>
+                  <li>choose same variant (if possible)</li>
+                  <li>remove one of conflicting blueprints</li>
+                </ul>
+              </n-alert>
+            </template>
           </n-card>
         </div>
       </n-scrollbar>
@@ -60,10 +80,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType, computed } from "vue";
 import { ViewFilled as ViewIcon } from "@vicons/carbon";
+import { ref, type PropType, computed, watch, toRefs } from "vue";
 import {
   NCard,
+  NAlert,
   NIcon,
   NScrollbar,
   NSpin,
@@ -73,22 +94,12 @@ import {
 } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
-import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+import type { BundleModalItem } from "@/types/BundleModalItem";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
-import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
-
-const isLoading = ref(false);
-const filesStore = useFilesStore();
-const activeBlueprintIndex = ref(0);
 
 const props = defineProps({
-  formData: {
-    type: Object as PropType<AddBundleDto>,
-    required: true,
-  },
-
-  files: {
-    type: Object as PropType<IFileVariantDto[][]>,
+  items: {
+    type: Object as PropType<BundleModalItem[]>,
     required: true,
   },
 
@@ -98,53 +109,98 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(["add-files"]);
+const emits = defineEmits(["add-files", "update:is-variant-conflict"]);
 
-const activeBlueprint = computed(() => {
-  return props.selectedBlueprints.find(
-    (blueprint, index) => index === activeBlueprintIndex.value
-  );
+const isLoading = ref(false);
+const filesStore = useFilesStore();
+const activeItemIndex = ref(0);
+const conflictingData = ref({
+  blueprint: "",
+  variant: "",
+});
+const { items, selectedBlueprints } = toRefs(props);
+
+const activeItem = computed(() => {
+  return items.value[activeItemIndex.value];
 });
 
-const blueprintFiles = computed(() => {
-  const files = props.files.find(
-    (collection, index) => index === activeBlueprintIndex.value
-  );
-
-  if (!files || !files.length) {
+watch(
+  activeItemIndex,
+  () => {
     fetchFiles();
-  }
+  },
+  { immediate: true }
+);
 
-  return files || [];
-});
-
-function wasBlueprintPreviewed(blueprintIndex: number) {
-  return props.files[blueprintIndex] !== undefined;
+function wasBlueprintViewed(id: number) {
+  return items.value.find(
+    ({ blueprint, files }) => blueprint.id === id && files.length
+  );
 }
 
-function isVariantSelected(blueprintId: number, variantId: string) {
-  const formDataValue = props.formData.values.find(
-    value => value.blueprintId === blueprintId
+function isVariantSelected(fileId: number, variantId: string) {
+  return !!activeItem.value.files.find(
+    file => file.id === fileId && file.selectedVariantId === variantId
+  );
+}
+
+function hasVariantConflict(fileId: number, selectedVariantId: string) {
+  const itemsIncludingSameFile = items.value.filter(
+    item =>
+      item.files.some(file => file.id === fileId) &&
+      item.blueprint.id !== activeItem.value.blueprint.id
   );
 
-  return formDataValue && formDataValue.variantIds.includes(variantId);
+  if (!itemsIncludingSameFile.length) {
+    emits("update:is-variant-conflict", false);
+
+    return false;
+  }
+
+  for (const item of itemsIncludingSameFile) {
+    const file = item.files.find(file => file.id === fileId);
+
+    if (!file) {
+      continue;
+    }
+
+    if (file.selectedVariantId !== selectedVariantId) {
+      const variant = file.variants.find(
+        variant => variant.id === file.selectedVariantId
+      );
+
+      conflictingData.value = {
+        blueprint: item.blueprint.name,
+        variant: variant?.name || "",
+      };
+
+      emits("update:is-variant-conflict", true);
+
+      return true;
+    }
+  }
+
+  emits("update:is-variant-conflict", false);
+
+  return false;
 }
 
 async function fetchFiles() {
-  const blueprint = props.selectedBlueprints.find(
-    (blueprint, index) => index === activeBlueprintIndex.value
-  );
+  const blueprintId = activeItem.value?.blueprint?.id;
+  const hasFiles = !!activeItem.value.files.length;
 
-  if (!blueprint) {
+  if (!blueprintId || hasFiles) {
     return;
   }
 
   isLoading.value = true;
 
   try {
-    const { data } = await filesStore.getAll({ blueprintId: blueprint.id });
+    const { data } = await filesStore.getAll({
+      blueprintId,
+    });
 
-    emits("add-files", blueprint.id, data);
+    emits("add-files", blueprintId, data);
   } catch (error) {
     console.log(error);
   } finally {

@@ -6,18 +6,18 @@
           :autosize="{
             minRows: 5,
           }"
-          :value="formData.note"
+          :value="note"
           type="textarea"
           placeholder="Bundle note"
-          @update:value="updateText"
+          @update:value="$emit('update:note', $event)"
         />
       </n-form-item>
 
       <n-form-item label="Expiration">
         <n-select
-          :value="formData.expiration"
+          :value="expiration"
           :options="options"
-          @update-value="updateExpiration"
+          @update-value="$emit('update:expiration', $event)"
         />
       </n-form-item>
     </n-form>
@@ -29,16 +29,20 @@ import type { PropType } from "vue";
 import { NInput, NSelect, NForm, NFormItem } from "naive-ui";
 
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
-import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 
-const props = defineProps({
-  formData: {
-    type: Object as PropType<AddBundleDto>,
+defineProps({
+  note: {
+    type: String,
+    required: true,
+  },
+
+  expiration: {
+    type: String as PropType<BundleExpire>,
     required: true,
   },
 });
 
-const emit = defineEmits(["update:form-data"]);
+defineEmits(["update:note", "update:expiration"]);
 
 const options = [
   {
@@ -76,12 +80,4 @@ const options = [
     value: BundleExpire.Never,
   },
 ];
-
-function updateText(note: string) {
-  emit("update:form-data", { ...props.formData, note });
-}
-
-function updateExpiration(expiration: string) {
-  emit("update:form-data", { ...props.formData, expiration });
-}
 </script>

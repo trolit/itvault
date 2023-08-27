@@ -19,7 +19,7 @@
             quaternary
             circle
             type="error"
-            @click="$emit('deselect-blueprint', blueprint.id)"
+            @click="$emit('deselect-blueprint', blueprint)"
           >
             <template #icon>
               <n-icon :component="DeleteIcon" />
@@ -72,42 +72,30 @@ import {
 } from "@vicons/carbon";
 import {
   ref,
-  type PropType,
-  onBeforeMount,
+  watch,
   type Ref,
   computed,
-  watch,
+  onBeforeMount,
+  type PropType,
+  toRefs,
 } from "vue";
 import {
+  NTag,
   NCard,
   NGrid,
-  NTag,
   NIcon,
+  NSpin,
   NButton,
   NDivider,
-  NSpin,
   NGridItem,
   NScrollbar,
   NPagination,
 } from "naive-ui";
 
 import { useBlueprintsStore } from "@/store/blueprints";
-import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
-const page = ref(1);
-const perPage = 15;
-const total = ref(0);
-const isLoading = ref(false);
-const blueprintsStore = useBlueprintsStore();
-const blueprints: Ref<IBlueprintDto[]> = ref([]);
-
 const props = defineProps({
-  formData: {
-    type: Object as PropType<AddBundleDto>,
-    required: true,
-  },
-
   selectedBlueprints: {
     type: Object as PropType<IBlueprintDto[]>,
     required: true,
@@ -116,9 +104,29 @@ const props = defineProps({
 
 defineEmits(["select-blueprint", "deselect-blueprint"]);
 
+const page = ref(1);
+const perPage = 15;
+const total = ref(0);
+const isLoading = ref(false);
+const { selectedBlueprints } = toRefs(props);
+const blueprintsStore = useBlueprintsStore();
+const blueprints: Ref<IBlueprintDto[]> = ref([]);
+
 onBeforeMount(async () => {
   await fetchBlueprints();
 });
+
+const pageCount = computed(() => Math.ceil(total.value / perPage));
+
+watch(page, () => {
+  fetchBlueprints();
+});
+
+function isBlueprintSelected(id: number) {
+  return selectedBlueprints.value.some(
+    selectedBlueprint => selectedBlueprint.id === id
+  );
+}
 
 async function fetchBlueprints() {
   isLoading.value = true;
@@ -139,16 +147,4 @@ async function fetchBlueprints() {
     isLoading.value = false;
   }
 }
-
-function isBlueprintSelected(id: number) {
-  return props.selectedBlueprints.some(
-    selectedBlueprint => selectedBlueprint.id === id
-  );
-}
-
-const pageCount = computed(() => Math.ceil(total.value / perPage));
-
-watch(page, () => {
-  fetchBlueprints();
-});
 </script>
