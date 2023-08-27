@@ -87,7 +87,7 @@ const steps = [
 
   {
     title: "Variants",
-    description: "Preview file variants and adjust (if needed).",
+    description: "Review variants.",
     value: VariantsSelectionStep,
     props: {
       items,
@@ -105,7 +105,7 @@ const steps = [
 
   {
     title: "Information",
-    description: "Provide basic information about bundle.",
+    description: "Provide basic information.",
     value: FormStep,
     props: {
       note,
