@@ -3,14 +3,11 @@
     <div class="selected-items">
       <n-tag :bordered="false" type="info">
         <n-icon :size="20" :component="InformationIcon" /> Currently selected
-        ({{ selectedBlueprints.value.length }})
+        ({{ selectedBlueprints.length }})
       </n-tag>
 
       <n-scrollbar>
-        <n-card
-          v-for="blueprint in selectedBlueprints.value"
-          :key="blueprint.id"
-        >
+        <n-card v-for="blueprint in selectedBlueprints" :key="blueprint.id">
           <div
             class="thumbnail"
             :style="{ backgroundColor: blueprint.color }"
@@ -99,7 +96,7 @@ import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const props = defineProps({
   selectedBlueprints: {
-    type: Object as PropType<Ref<IBlueprintDto[]>>,
+    type: Object as PropType<IBlueprintDto[]>,
     required: true,
   },
 });
@@ -124,7 +121,7 @@ watch(page, () => {
 });
 
 function isBlueprintSelected(id: number) {
-  return props.selectedBlueprints.value.some(
+  return props.selectedBlueprints.some(
     selectedBlueprint => selectedBlueprint.id === id
   );
 }

@@ -75,7 +75,7 @@ const steps = [
     description: "Choose blueprint(s) that bundle should include.",
     value: BlueprintsSelectionStep,
     props: {
-      selectedBlueprints: selectedBlueprints,
+      selectedBlueprints,
     },
     events: {
       "select-blueprint": onBlueprintSelect,
@@ -89,8 +89,8 @@ const steps = [
     description: "Preview file variants and adjust (if needed).",
     value: VariantsSelectionStep,
     props: {
-      items: items.value,
-      selectedBlueprints: selectedBlueprints,
+      items,
+      selectedBlueprints,
     },
     events: {
       "add-files": onFilesAdd,

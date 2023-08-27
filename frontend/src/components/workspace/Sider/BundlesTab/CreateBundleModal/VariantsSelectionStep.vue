@@ -3,7 +3,7 @@
     <div class="selected-items">
       <n-scrollbar>
         <n-card
-          v-for="(blueprint, index) in selectedBlueprints.value"
+          v-for="(blueprint, index) in selectedBlueprints"
           :key="blueprint.id"
           @click="activeItemIndex = index"
         >
@@ -69,8 +69,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType, computed, watch, type Ref } from "vue";
 import { ViewFilled as ViewIcon } from "@vicons/carbon";
+import { ref, type PropType, computed, watch } from "vue";
 import {
   NCard,
   NAlert,
@@ -93,7 +93,7 @@ const props = defineProps({
   },
 
   selectedBlueprints: {
-    type: Object as PropType<Ref<IBlueprintDto[]>>,
+    type: Object as PropType<IBlueprintDto[]>,
     required: true,
   },
 });
