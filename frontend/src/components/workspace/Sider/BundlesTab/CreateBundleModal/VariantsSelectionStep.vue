@@ -3,7 +3,7 @@
     <div class="selected-items">
       <n-scrollbar>
         <n-card
-          v-for="(blueprint, index) in selectedBlueprints"
+          v-for="(blueprint, index) in selectedBlueprints.value"
           :key="blueprint.id"
           @click="activeItemIndex = index"
         >
@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType, computed, watch } from "vue";
+import { ref, type PropType, computed, watch, type Ref } from "vue";
 import { ViewFilled as ViewIcon } from "@vicons/carbon";
 import {
   NCard,
@@ -93,7 +93,7 @@ const props = defineProps({
   },
 
   selectedBlueprints: {
-    type: Object as PropType<IBlueprintDto[]>,
+    type: Object as PropType<Ref<IBlueprintDto[]>>,
     required: true,
   },
 });
@@ -108,9 +108,13 @@ const activeItem = computed(() => {
   return props.items[activeItemIndex.value];
 });
 
-watch(activeItemIndex, () => {
-  fetchFiles();
-});
+watch(
+  activeItemIndex,
+  () => {
+    fetchFiles();
+  },
+  { immediate: true }
+);
 
 function wasBlueprintPreviewed(id: number) {
   return props.items.find(
@@ -125,14 +129,14 @@ function isVariantSelected(fileId: number, variantId: string) {
 }
 
 async function fetchFiles() {
-  isLoading.value = true;
-
   const blueprintId = activeItem.value?.blueprint?.id;
   const hasFiles = !!activeItem.value.files.length;
 
   if (!blueprintId || hasFiles) {
     return;
   }
+
+  isLoading.value = true;
 
   try {
     const { data } = await filesStore.getAll({
