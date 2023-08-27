@@ -22,10 +22,7 @@
             />
           </div>
 
-          <div
-            v-if="!wasBlueprintPreviewed(blueprint.id)"
-            class="require-preview"
-          >
+          <div v-if="!wasBlueprintViewed(blueprint.id)" class="require-preview">
             (requires preview)
           </div>
         </n-card>
@@ -60,7 +57,20 @@
             </template>
 
             <template #footer>
-              <n-alert type="error"> This file is conflicting </n-alert>
+              <n-alert
+                v-if="hasVariantConflict(file.id, file.selectedVariantId)"
+                type="error"
+              >
+                This variant is conflicting with variant selected in
+                <strong>{{ conflictingData.blueprint }}</strong> ({{
+                  conflictingData.variant
+                }}) 😢. To fix this issue and generate bundle please:
+
+                <ul>
+                  <li>choose same variant (if possible)</li>
+                  <li>remove one of conflicting blueprints</li>
+                </ul>
+              </n-alert>
             </template>
           </n-card>
         </div>
@@ -104,6 +114,10 @@ const emits = defineEmits(["add-files"]);
 const isLoading = ref(false);
 const filesStore = useFilesStore();
 const activeItemIndex = ref(0);
+const conflictingData = ref({
+  blueprint: "",
+  variant: "",
+});
 const { items, selectedBlueprints } = toRefs(props);
 
 const activeItem = computed(() => {
@@ -118,7 +132,7 @@ watch(
   { immediate: true }
 );
 
-function wasBlueprintPreviewed(id: number) {
+function wasBlueprintViewed(id: number) {
   return items.value.find(
     ({ blueprint, files }) => blueprint.id === id && files.length
   );
@@ -128,6 +142,41 @@ function isVariantSelected(fileId: number, variantId: string) {
   return !!activeItem.value.files.find(
     file => file.id === fileId && file.selectedVariantId === variantId
   );
+}
+
+function hasVariantConflict(fileId: number, selectedVariantId: string) {
+  const itemsIncludingSameFile = items.value.filter(
+    item =>
+      item.files.some(file => file.id === fileId) &&
+      item.blueprint.id !== activeItem.value.blueprint.id
+  );
+
+  if (!itemsIncludingSameFile.length) {
+    return false;
+  }
+
+  for (const item of itemsIncludingSameFile) {
+    const file = item.files.find(file => file.id === fileId);
+
+    if (!file) {
+      continue;
+    }
+
+    if (file.selectedVariantId !== selectedVariantId) {
+      const variant = file.variants.find(
+        variant => variant.id === file.selectedVariantId
+      );
+
+      conflictingData.value = {
+        blueprint: item.blueprint.name,
+        variant: variant?.name || "",
+      };
+
+      return true;
+    }
+  }
+
+  return false;
 }
 
 async function fetchFiles() {
