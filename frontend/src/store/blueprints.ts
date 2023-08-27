@@ -43,5 +43,10 @@ export const useBlueprintsStore = defineStore("blueprints", {
 
       return data;
     },
+
+    resetState() {
+      this.total = 0;
+      this.items = [];
+    },
   },
 });

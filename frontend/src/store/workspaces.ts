@@ -2,7 +2,9 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 import { useFilesStore } from "./files";
+import { useBundlesStore } from "./bundles";
 import type { FileTab } from "@/types/FileTab";
+import { useBlueprintsStore } from "./blueprints";
 import type { VariantTab } from "@/types/VariantTab";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
@@ -76,6 +78,16 @@ export const useWorkspacesStore = defineStore("workspaces", {
   actions: {
     setActiveItem(item: IWorkspaceDto) {
       this.activeItem = item;
+
+      this.tree = [];
+      this.tabs = [];
+      this.activeFileTab = 0;
+
+      const bundlesStore = useBundlesStore();
+      const blueprintsStore = useBlueprintsStore();
+
+      bundlesStore.resetState();
+      blueprintsStore.resetState();
     },
 
     setFileTab(file: IFileDto) {
