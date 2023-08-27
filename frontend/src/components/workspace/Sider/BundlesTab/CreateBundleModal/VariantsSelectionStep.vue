@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import { ViewFilled as ViewIcon } from "@vicons/carbon";
-import { ref, type PropType, computed, watch } from "vue";
+import { ref, type PropType, computed, watch, toRefs } from "vue";
 import {
   NCard,
   NAlert,
@@ -103,6 +103,7 @@ const emits = defineEmits(["add-files"]);
 const isLoading = ref(false);
 const filesStore = useFilesStore();
 const activeItemIndex = ref(0);
+const { items, selectedBlueprints } = toRefs(props);
 
 const activeItem = computed(() => {
   return props.items[activeItemIndex.value];
@@ -117,7 +118,7 @@ watch(
 );
 
 function wasBlueprintPreviewed(id: number) {
-  return props.items.find(
+  return items.value.find(
     ({ blueprint, files }) => blueprint.id === id && files.length
   );
 }
