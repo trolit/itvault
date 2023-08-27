@@ -109,7 +109,7 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(["add-files"]);
+const emits = defineEmits(["add-files", "update:is-variant-conflict"]);
 
 const isLoading = ref(false);
 const filesStore = useFilesStore();
@@ -152,6 +152,8 @@ function hasVariantConflict(fileId: number, selectedVariantId: string) {
   );
 
   if (!itemsIncludingSameFile.length) {
+    emits("update:is-variant-conflict", false);
+
     return false;
   }
 
@@ -172,9 +174,13 @@ function hasVariantConflict(fileId: number, selectedVariantId: string) {
         variant: variant?.name || "",
       };
 
+      emits("update:is-variant-conflict", true);
+
       return true;
     }
   }
+
+  emits("update:is-variant-conflict", false);
 
   return false;
 }

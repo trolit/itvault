@@ -61,6 +61,7 @@ const note = ref("");
 const current = ref(1);
 const message = useMessage();
 const isSubmittingForm = ref(false);
+const isVariantConflict = ref(false);
 const bundlesStore = useBundlesStore();
 const expiration = ref(BundleExpire.OneDay);
 const items: Ref<BundleModalItem[]> = ref([]);
@@ -94,8 +95,12 @@ const steps = [
     },
     events: {
       "add-files": onFilesAdd,
+      "update:is-variant-conflict": (value: boolean) =>
+        (isVariantConflict.value = value),
     },
-    isNextButtonDisabled: () => items.value.some(item => !item.files.length),
+    isNextButtonDisabled: () =>
+      items.value.some(item => !item.files.length) ||
+      isVariantConflict.value === true,
   },
 
   {
