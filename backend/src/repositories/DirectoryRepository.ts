@@ -1,6 +1,5 @@
 import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
-import { And, Like, Not, Repository } from "typeorm";
 import { In, Repository } from "typeorm";
 import { IDirectoryRepository } from "types/repositories/IDirectoryRepository";
 
@@ -49,10 +48,9 @@ export class DirectoryRepository
   }
 
   getAllByRelativePath(workspaceId: number, relativePath: string) {
-    const query =
-      relativePath === FILES.ROOT
-        ? { relativePath: And(Not(Like(`${FILES.ROOT}/%/%`)), Not(FILES.ROOT)) }
-        : { parentDirectory: { relativePath } };
+    if (relativePath === FILES.ROOT) {
+      return this._handleRootRelativePathRequest(workspaceId);
+    }
 
     return this.database.find({
       where: {
@@ -61,7 +59,9 @@ export class DirectoryRepository
             id: workspaceId,
           },
         },
-        ...query,
+        parentDirectory: {
+          relativePath,
+        },
       },
     });
   }
