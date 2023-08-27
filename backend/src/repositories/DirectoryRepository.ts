@@ -26,7 +26,7 @@ export class DirectoryRepository
       where: { files: { workspace: { id: workspaceId } } },
     });
 
-    // @NOTE (2) take all unique "root" children dirs
+    // @NOTE (2) take all "root" children dirs
     const rootDirectories = uniq(
       directories.map(({ relativePath }) => {
         const splitRelativePath = relativePath.split("/");
