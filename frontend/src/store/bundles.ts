@@ -167,5 +167,11 @@ export const useBundlesStore = defineStore("bundles", {
 
       return data;
     },
+
+    resetState() {
+      this.total = 0;
+      this.items = [];
+      this.activeItemId = 0;
+    },
   },
 });
