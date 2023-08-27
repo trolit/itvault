@@ -5,7 +5,7 @@
         <n-card
           v-for="(blueprint, index) in selectedBlueprints"
           :key="blueprint.id"
-          @click="activeBlueprintIndex = index"
+          @click="activeItemIndex = index"
         >
           <div class="blueprint-info">
             <div
@@ -16,13 +16,16 @@
             {{ blueprint.name }}
 
             <n-icon
-              v-if="activeBlueprintIndex === index"
+              v-if="activeItemIndex === index"
               :component="ViewIcon"
               :size="20"
             />
           </div>
 
-          <div v-if="!wasBlueprintPreviewed(index)" class="require-preview">
+          <div
+            v-if="!wasBlueprintPreviewed(blueprint.id)"
+            class="require-preview"
+          >
             (requires preview)
           </div>
         </n-card>
@@ -35,23 +38,29 @@
       <n-scrollbar trigger="none">
         <n-spin v-if="isLoading" />
 
-        <div class="wrapper" v-else-if="activeBlueprint">
-          <n-card v-for="item in blueprintFiles" :key="item.id">
-            <div class="name">
-              {{ item.relativePath }}/{{ item.originalFilename }}
-            </div>
+        <div class="wrapper" v-else>
+          <n-card v-for="file in activeItem.files" :key="file.id">
+            <template #default>
+              <div class="name">
+                {{ file.relativePath }}/{{ file.originalFilename }}
+              </div>
 
-            <div>
-              <n-button-group>
-                <n-button
-                  v-for="variant in item.variants"
-                  :key="variant.id"
-                  :disabled="isVariantSelected(activeBlueprint.id, variant.id)"
-                >
-                  {{ variant.name }}
-                </n-button>
-              </n-button-group>
-            </div>
+              <div>
+                <n-button-group>
+                  <n-button
+                    v-for="variant in file.variants"
+                    :key="variant.id"
+                    :disabled="isVariantSelected(file.id, variant.id)"
+                  >
+                    {{ variant.name }}
+                  </n-button>
+                </n-button-group>
+              </div>
+            </template>
+
+            <template #footer>
+              <n-alert type="error"> This file is conflicting </n-alert>
+            </template>
           </n-card>
         </div>
       </n-scrollbar>
@@ -60,10 +69,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type PropType, computed } from "vue";
+import { ref, type PropType, computed, watch } from "vue";
 import { ViewFilled as ViewIcon } from "@vicons/carbon";
 import {
   NCard,
+  NAlert,
   NIcon,
   NScrollbar,
   NSpin,
@@ -73,22 +83,12 @@ import {
 } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
-import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+import type { BundleModalItem } from "@/types/BundleModalItem";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
-import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
-
-const isLoading = ref(false);
-const filesStore = useFilesStore();
-const activeBlueprintIndex = ref(0);
 
 const props = defineProps({
-  formData: {
-    type: Object as PropType<AddBundleDto>,
-    required: true,
-  },
-
-  files: {
-    type: Object as PropType<IFileVariantDto[][]>,
+  items: {
+    type: Object as PropType<BundleModalItem[]>,
     required: true,
   },
 
@@ -100,51 +100,46 @@ const props = defineProps({
 
 const emits = defineEmits(["add-files"]);
 
-const activeBlueprint = computed(() => {
-  return props.selectedBlueprints.find(
-    (blueprint, index) => index === activeBlueprintIndex.value
-  );
+const isLoading = ref(false);
+const filesStore = useFilesStore();
+const activeItemIndex = ref(0);
+
+const activeItem = computed(() => {
+  return props.items[activeItemIndex.value];
 });
 
-const blueprintFiles = computed(() => {
-  const files = props.files.find(
-    (collection, index) => index === activeBlueprintIndex.value
-  );
-
-  if (!files || !files.length) {
-    fetchFiles();
-  }
-
-  return files || [];
+watch(activeItemIndex, () => {
+  fetchFiles();
 });
 
-function wasBlueprintPreviewed(blueprintIndex: number) {
-  return props.files[blueprintIndex] !== undefined;
+function wasBlueprintPreviewed(id: number) {
+  return props.items.find(
+    ({ blueprint, files }) => blueprint.id === id && files.length
+  );
 }
 
-function isVariantSelected(blueprintId: number, variantId: string) {
-  const formDataValue = props.formData.values.find(
-    value => value.blueprintId === blueprintId
+function isVariantSelected(fileId: number, variantId: string) {
+  return !!activeItem.value.files.find(
+    file => file.id === fileId && file.selectedVariantId === variantId
   );
-
-  return formDataValue && formDataValue.variantIds.includes(variantId);
 }
 
 async function fetchFiles() {
-  const blueprint = props.selectedBlueprints.find(
-    (blueprint, index) => index === activeBlueprintIndex.value
-  );
+  isLoading.value = true;
 
-  if (!blueprint) {
+  const blueprintId = activeItem.value?.blueprint?.id;
+  const hasFiles = !!activeItem.value.files.length;
+
+  if (!blueprintId || hasFiles) {
     return;
   }
 
-  isLoading.value = true;
-
   try {
-    const { data } = await filesStore.getAll({ blueprintId: blueprint.id });
+    const { data } = await filesStore.getAll({
+      blueprintId,
+    });
 
-    emits("add-files", blueprint.id, data);
+    emits("add-files", blueprintId, data);
   } catch (error) {
     console.log(error);
   } finally {
