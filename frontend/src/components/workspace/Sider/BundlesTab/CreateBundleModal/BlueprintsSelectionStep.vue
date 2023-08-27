@@ -93,15 +93,9 @@ import {
 
 import { useBlueprintsStore } from "@/store/blueprints";
 import type { BundleModalItem } from "@/types/BundleModalItem";
-import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const props = defineProps({
-  formData: {
-    type: Object as PropType<AddBundleDto>,
-    required: true,
-  },
-
   items: {
     type: Object as PropType<BundleModalItem[]>,
     required: true,
