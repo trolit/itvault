@@ -1,5 +1,6 @@
+import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
-import { And, Like, Not, Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 import { IDirectoryRepository } from "types/repositories/IDirectoryRepository";
 
 import { FILES } from "@config";
@@ -19,11 +20,37 @@ export class DirectoryRepository
     super(Directory);
   }
 
+  private async _handleRootRelativePathRequest(workspaceId: number) {
+    // @NOTE (1) fetch all workspace related directories
+    const directories = await this.database.find({
+      where: { files: { workspace: { id: workspaceId } } },
+    });
+
+    // @NOTE (2) take all "root" children dirs
+    const rootDirectories = uniq(
+      directories.map(({ relativePath }) => {
+        const splitRelativePath = relativePath.split("/");
+
+        if (splitRelativePath.length <= 2) {
+          return relativePath;
+        }
+
+        const [, rootDir] = splitRelativePath;
+
+        return `${FILES.ROOT}/${rootDir}`;
+      })
+    );
+
+    // @NOTE (3) fetch all root dirs from DB
+    return this.database.find({
+      where: { relativePath: In(rootDirectories) },
+    });
+  }
+
   getAllByRelativePath(workspaceId: number, relativePath: string) {
-    const query =
-      relativePath === FILES.ROOT
-        ? { relativePath: And(Not(Like(`${FILES.ROOT}/%/%`)), Not(FILES.ROOT)) }
-        : { parentDirectory: { relativePath } };
+    if (relativePath === FILES.ROOT) {
+      return this._handleRootRelativePathRequest(workspaceId);
+    }
 
     return this.database.find({
       where: {
@@ -32,7 +59,9 @@ export class DirectoryRepository
             id: workspaceId,
           },
         },
-        ...query,
+        parentDirectory: {
+          relativePath,
+        },
       },
     });
   }
