@@ -51,6 +51,7 @@
                     v-for="variant in file.variants"
                     :key="variant.id"
                     :disabled="isVariantSelected(file.id, variant.id)"
+                    @click="file.selectedVariantId = variant.id"
                   >
                     {{ variant.name }}
                   </n-button>
