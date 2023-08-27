@@ -27,7 +27,7 @@ export default class BucketSeeder implements Seeder {
     const workspaces = await workspaceRepository.find();
 
     for (const workspace of workspaces) {
-      const amountOfBlueprints = random(8, 13);
+      const amountOfBlueprints = random(3, 5);
 
       const blueprints = await getRandomRecords(
         blueprintRepository,
