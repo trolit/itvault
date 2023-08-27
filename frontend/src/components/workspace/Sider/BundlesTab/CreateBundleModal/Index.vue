@@ -103,8 +103,8 @@ const steps = [
     description: "Provide basic information about bundle.",
     value: FormStep,
     props: {
-      note: note.value,
-      expiration: expiration.value,
+      note,
+      expiration,
     },
     events: {
       "update:note": (value: string) => (note.value = value),
