@@ -83,7 +83,7 @@ export abstract class BaseBundleConsumerHandler {
 
         result[index] = currentValue
           .substring(0, from)
-          .concat(part, currentValue.substring(index + part.length));
+          .concat(part, currentValue.substring(part.length));
       }
     }
 
