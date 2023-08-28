@@ -3,7 +3,7 @@
     <n-tabs
       closable
       type="card"
-      :value="props.activeTab"
+      :value="activeTab"
       @close="workspacesStore.closeVariantTab"
       @update:value="workspacesStore.setVariantTab"
     >
@@ -27,7 +27,7 @@ import { useWorkspacesStore } from "@/store/workspaces";
 
 const workspacesStore = useWorkspacesStore();
 
-const props = defineProps({
+defineProps({
   activeTab: {
     type: String,
     required: true,
@@ -41,7 +41,7 @@ const variantTabs = computed(() => {
     return [];
   }
 
-  return tab.variantTabs;
+  return tab.variantTabs.filter(tab => tab.isVisible);
 });
 
 // @TODO better error informing + loading component
