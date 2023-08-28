@@ -1,9 +1,9 @@
 import path from "path";
 import fs from "fs-extra";
 import random from "lodash/random";
-import sample from "lodash/sample";
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
+import sampleSize from "lodash/sampleSize";
 
 import { FILES } from "@config";
 
@@ -27,7 +27,7 @@ export default class BucketSeeder implements Seeder {
     const workspaces = await workspaceRepository.find();
 
     for (const workspace of workspaces) {
-      const amountOfBlueprints = random(8, 13);
+      const amountOfBlueprints = random(3, 5);
 
       const blueprints = await getRandomRecords(
         blueprintRepository,
@@ -63,15 +63,17 @@ export default class BucketSeeder implements Seeder {
 
           const content = file.toString();
 
-          const blueprint = sample(blueprints) || blueprints[0];
+          const sampleBlueprints = sampleSize(blueprints, 2);
 
           const splitContent = content.split("\n");
 
-          await bucketRepository.save({
-            value: this._generateValue(splitContent),
-            variant,
-            blueprint,
-          });
+          for (const blueprint of sampleBlueprints) {
+            await bucketRepository.save({
+              value: this._generateValue(splitContent),
+              variant,
+              blueprint,
+            });
+          }
         }
       }
     }
