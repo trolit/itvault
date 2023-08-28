@@ -41,7 +41,7 @@ const variantTabs = computed(() => {
     return [];
   }
 
-  return tab.variantTabs;
+  return tab.variantTabs.filter(tab => tab.isVisible);
 });
 
 // @TODO better error informing + loading component
