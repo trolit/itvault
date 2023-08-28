@@ -57,13 +57,14 @@ export abstract class BaseBundleConsumerHandler {
         index <= maxLineIndex
       ) {
         // @NOTE add line-break if it's between min and max (bucket) line
-        result.push("");
+        result.push("\n");
 
         continue;
       }
 
       const matchedBuckets = buckets.filter(({ value }) => !!value[index]);
 
+      // @TODO verify scenario that +2 blueprints painted correctly common data (included only once)
       const allLineValues = this._getAllValuesRelatedToLine(
         matchedBuckets,
         index
