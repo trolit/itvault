@@ -200,8 +200,8 @@ export const useWorkspacesStore = defineStore("workspaces", {
         variantTab => variantTab.variant.id === id
       );
 
-      if (variantTab) {
-        variantTab.isVisible = false;
+      if (variantTab && !variantTab.isVisible) {
+        variantTab.isVisible = true;
       }
 
       this.activeFileTabValue.activeVariantTab = id;
@@ -212,19 +212,22 @@ export const useWorkspacesStore = defineStore("workspaces", {
         return;
       }
 
-      const variantTab = this.activeFileTabValue.variantTabs.find(
+      const variantTabToClose = this.activeFileTabValue.variantTabs.find(
         variantTab => variantTab.variant.id === id
       );
 
-      if (!variantTab) {
+      if (!variantTabToClose) {
         return;
       }
 
-      if (this.activeFileTabValue.activeVariantTab === id) {
-        this.activeFileTabValue.activeVariantTab = "";
-      }
+      variantTabToClose.isVisible = false;
 
-      variantTab.isVisible = false;
+      const visibleVariantTab = this.activeFileTabValue.variantTabs.find(
+        variantTab => variantTab.isVisible === true
+      );
+
+      this.activeFileTabValue.activeVariantTab =
+        visibleVariantTab?.variant.id || "";
     },
 
     async getBySlug(slug: string) {
