@@ -24,6 +24,8 @@ interface IState {
 
   activeFileTab: number; // @NOTE id of file
 
+  openTabData: { blueprintId: number; variantId: string } | null;
+
   tabs: FileTab[];
 }
 
@@ -35,6 +37,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     activeItem: { id: 0, name: "", slug: "", tags: [] },
     activeFileTab: 0,
     tabs: [],
+    openTabData: null,
   }),
 
   getters: {
