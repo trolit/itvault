@@ -24,6 +24,8 @@ interface IState {
 
   activeFileTab: number; // @NOTE id of file
 
+  openTabData: { blueprintId: number; variantId: string } | null;
+
   tabs: FileTab[];
 }
 
@@ -35,6 +37,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     activeItem: { id: 0, name: "", slug: "", tags: [] },
     activeFileTab: 0,
     tabs: [],
+    openTabData: null,
   }),
 
   getters: {
@@ -124,11 +127,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
       this.setFileTab(file);
 
-      this.setVariantTab(variantId);
-
-      setTimeout(() => {
-        this.setVariantTabActiveBlueprint(blueprintId);
-      }, 500);
+      this.openTabData = { blueprintId, variantId };
     },
 
     closeFileTab(id: number) {
@@ -150,6 +149,12 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
 
       this.activeVariantTabValue.blueprints = blueprints;
+
+      const { variant } = this.activeVariantTabValue;
+
+      if (this.openTabData && variant.id === this.openTabData.variantId) {
+        this.setVariantTabActiveBlueprint(this.openTabData.blueprintId);
+      }
     },
 
     setVariantTabActiveBlueprint(id: number) {
@@ -189,6 +194,10 @@ export const useWorkspacesStore = defineStore("workspaces", {
         isVisible: false,
         buckets: [],
       }));
+
+      if (this.openTabData) {
+        this.setVariantTab(this.openTabData.variantId);
+      }
     },
 
     setVariantTab(id: string) {
