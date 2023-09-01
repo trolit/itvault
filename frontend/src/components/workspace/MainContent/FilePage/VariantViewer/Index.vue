@@ -88,7 +88,7 @@ function renderText(content: string) {
 
   const children = splitText.map((line, index) =>
     bucket && blueprint && line
-      ? parseLineWithBucket(index, line, bucket, blueprint)
+      ? h("div", parseLineWithBucket(index, line, bucket, blueprint))
       : h(line ? "div" : "br", line)
   );
 
