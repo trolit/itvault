@@ -43,11 +43,13 @@ export class RequeueController extends BaseController {
     const bundle = await this._bundleRepository.getOne({
       select: {
         blueprintToBundle: {
+          id: true,
           blueprint: {
             id: true,
           },
         },
         variantToBundle: {
+          id: true,
           variant: {
             id: true,
           },
