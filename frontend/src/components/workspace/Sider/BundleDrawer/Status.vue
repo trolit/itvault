@@ -83,7 +83,7 @@ const status = computed((): { type: NaiveStatus; text: string } => {
     default:
       return {
         type: "error",
-        text: "Failed to build bundle 🥺. Try to requeue the operation (if available).",
+        text: "Failed to build bundle 🥺. Try to requeue the operation (if available) or contact staff.",
       };
   }
 });
