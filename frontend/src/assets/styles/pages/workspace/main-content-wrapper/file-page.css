@@ -92,7 +92,7 @@
                         height: var(--variant-source-code-height);
 
                         .line-numbers {
-                          flex: 0.02;
+                          flex: 0.05;
                           text-align: center;
 
                           span {
@@ -107,7 +107,7 @@
                         }
 
                         .text-render {
-                          flex: 0.98;
+                          flex: 0.95;
                         }
                       }
                     }
