@@ -1,5 +1,5 @@
 <template>
-  <n-thing>
+  <n-thing v-if="bundle.createdBy">
     <template #avatar>
       <n-avatar>
         <n-icon :component="UserAvatarIcon" />
