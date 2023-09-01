@@ -26,7 +26,7 @@
 
         <div>
           (in
-          <n-countdown :duration="getDifferenceToNow(expiresAt)" />
+          <n-countdown :duration="dateService.differenceToNow(expiresAt)" />
           hours)
 
           <n-progress
@@ -60,7 +60,6 @@ import { useDateService } from "@/services/useDateService";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
-import getDifferenceToNow from "@/helpers/dayjs/getDifferenceToNow";
 
 const props = defineProps({
   bundle: {
