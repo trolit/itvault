@@ -14,7 +14,7 @@
             </n-button>
 
             <div>
-              <small>{{ formatDate(createdAt) }}</small>
+              <small>{{ dateService.format(createdAt) }}</small>
             </div>
 
             <n-gradient-text type="warning" :size="12">
@@ -61,12 +61,13 @@ import {
 import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useVariantsStore } from "@/store/variants";
-import formatDate from "@/helpers/dayjs/formatDate";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { usePreferencesStore } from "@/store/preferences";
+import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
 const isLoading = ref(false);
+const dateService = useDateService();
 const drawerStore = useDrawerStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();

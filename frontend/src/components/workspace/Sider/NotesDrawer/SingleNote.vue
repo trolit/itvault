@@ -25,7 +25,7 @@
     </template>
 
     <template #header-extra>
-      {{ formatDate(note.createdAt, "YYYY-MM-DD HH:mm") }}
+      {{ dateService.format(note.createdAt, "YYYY-MM-DD HH:mm") }}
     </template>
 
     <template #description>
@@ -65,13 +65,11 @@ import type { PropType } from "vue";
 import { NThing, NTag, NCard, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
-import formatDate from "@/helpers/dayjs/formatDate";
+import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
-
-const authStore = useAuthStore();
 
 const props = defineProps({
   note: {
@@ -81,6 +79,9 @@ const props = defineProps({
 });
 
 const emits = defineEmits(["toggle-user-comments-modal"]);
+
+const authStore = useAuthStore();
+const dateService = useDateService();
 
 const note = computed(() => {
   return props.note;

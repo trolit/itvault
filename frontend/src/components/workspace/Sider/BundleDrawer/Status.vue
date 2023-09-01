@@ -21,7 +21,7 @@
         expires at
 
         <n-tag type="info" :bordered="false" size="small">
-          {{ formatDate(expiresAt, "DD-MM-YYYY HH:mm") }}
+          {{ dateService.format(expiresAt, "DD-MM-YYYY HH:mm") }}
         </n-tag>
 
         <div>
@@ -55,8 +55,8 @@ import dayjs from "dayjs";
 import { computed, type PropType } from "vue";
 import { Information as InfoIcon } from "@vicons/carbon";
 
-import formatDate from "@/helpers/dayjs/formatDate";
 import type { NaiveStatus } from "@/types/NaiveStatus";
+import { useDateService } from "@/services/useDateService";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
@@ -68,6 +68,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const dateService = useDateService();
 
 const expiresAt = computed(() => props.bundle.expiresAt);
 const createdAt = computed(() => props.bundle.createdAt);

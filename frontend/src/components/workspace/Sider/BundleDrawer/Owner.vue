@@ -10,7 +10,7 @@
 
     <template #description>
       created this bundle on
-      {{ formatDate(bundle.createdAt, "DD-MM-YYYY") }}
+      {{ dateService.format(bundle.createdAt, "DD-MM-YYYY") }}
     </template>
   </n-thing>
 </template>
@@ -21,7 +21,7 @@ import { NThing, NIcon, NAvatar } from "naive-ui";
 import { UserAvatar as UserAvatarIcon } from "@vicons/carbon";
 
 import { useAuthStore } from "@/store/auth";
-import formatDate from "@/helpers/dayjs/formatDate";
+import { useDateService } from "@/services/useDateService";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
 
 const props = defineProps({
@@ -32,6 +32,7 @@ const props = defineProps({
 });
 
 const authStore = useAuthStore();
+const dateService = useDateService();
 
 const fullName = computed(() => {
   if (props.bundle.createdBy) {
