@@ -52,12 +52,13 @@ export abstract class BaseBundleConsumerHandler {
 
       if (
         !isSingleLineBucket &&
-        line === "\n" &&
+        !line &&
         index >= minLineIndex &&
         index <= maxLineIndex
       ) {
-        // @NOTE add line-break if it's between min and max (bucket) line
-        result.push("\n");
+        // @NOTE add line-break [as empty string] if it's between min and max (bucket) line
+        // @NOTE consider if line-break should be limited to 1 between content (?)
+        result.push("");
 
         continue;
       }
