@@ -7,10 +7,8 @@
         <status :value="item.status" />
       </template>
 
-      <template #description>
-        <n-tag v-if="isReady" size="small">
-          expires {{ formatDate(item.expiresAt, "DD-MM-YYYY HH:mm") }}
-        </n-tag>
+      <template v-if="isReady" #description>
+        <small>expires {{ dateService.fromNow(item.expiresAt) }}</small>
       </template>
 
       <n-card>
@@ -61,23 +59,17 @@
 <script setup lang="ts">
 import { computed, ref, type PropType } from "vue";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-import {
-  NTag,
-  NCard,
-  NThing,
-  NButton,
-  NEllipsis,
-  useLoadingBar,
-} from "naive-ui";
+import { NCard, NThing, NButton, NEllipsis, useLoadingBar } from "naive-ui";
 
 import Status from "./Status.vue";
 import { useBundlesStore } from "@/store/bundles";
-import formatDate from "@/helpers/dayjs/formatDate";
+import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import { BundleStatus as BundleStatusEnum } from "@shared/types/enums/BundleStatus";
 
 const loadingBar = useLoadingBar();
+const dateService = useDateService();
 const bundlesStore = useBundlesStore();
 
 const props = defineProps({
