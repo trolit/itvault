@@ -42,18 +42,18 @@
 </template>
 
 <script setup lang="ts">
-import dayjs from "dayjs";
-import { computed, type PropType } from "vue";
-import { Information as InfoIcon } from "@vicons/carbon";
 import {
-  NThing,
-  NIcon,
   NTag,
+  NIcon,
+  NAlert,
+  NThing,
   NAvatar,
   NProgress,
   NCountdown,
-  NAlert,
 } from "naive-ui";
+import dayjs from "dayjs";
+import { computed, type PropType } from "vue";
+import { Information as InfoIcon } from "@vicons/carbon";
 
 import formatDate from "@/helpers/dayjs/formatDate";
 import type { NaiveStatus } from "@/types/NaiveStatus";
