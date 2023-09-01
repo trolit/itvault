@@ -10,39 +10,56 @@
 
     <template #description>
       <span v-if="bundle.expire === BundleExpire.Never">
-        This bundle never expires.
+        <n-alert type="info">This bundle never expires.</n-alert>
       </span>
 
-      Bundle expires at
-      <n-tag type="warning" :bordered="false" size="small">
-        {{ formatDate(expiresAt, "DD-MM-YYYY HH:mm") }}
-      </n-tag>
-      <div>
-        (in
-        <n-countdown :duration="getDifferenceToNow(expiresAt)" />
-        hours)
+      <span v-else-if="bundle.status !== BundleStatus.Ready">
+        <n-alert :type="status.type"> {{ status.text }}</n-alert>
+      </span>
 
-        <n-progress
-          type="line"
-          status="warning"
-          :percentage="percentage"
-          :show-indicator="false"
-        />
-      </div>
+      <span v-else>
+        expires at
+
+        <n-tag type="info" :bordered="false" size="small">
+          {{ dateService.format(expiresAt, "DD-MM-YYYY HH:mm") }}
+        </n-tag>
+
+        <div>
+          (in
+          <n-countdown :duration="dateService.differenceToNow(expiresAt)" />
+          hours)
+
+          <n-progress
+            type="line"
+            status="info"
+            :percentage="percentage"
+            :show-indicator="true"
+          />
+        </div>
+      </span>
     </template>
   </n-thing>
 </template>
 
 <script setup lang="ts">
+import {
+  NTag,
+  NIcon,
+  NAlert,
+  NThing,
+  NAvatar,
+  NProgress,
+  NCountdown,
+} from "naive-ui";
 import dayjs from "dayjs";
 import { computed, type PropType } from "vue";
 import { Information as InfoIcon } from "@vicons/carbon";
-import { NThing, NIcon, NTag, NAvatar, NProgress, NCountdown } from "naive-ui";
 
-import formatDate from "@/helpers/dayjs/formatDate";
+import type { NaiveStatus } from "@/types/NaiveStatus";
+import { useDateService } from "@/services/useDateService";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-import getDifferenceToNow from "@/helpers/dayjs/getDifferenceToNow";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 
 const props = defineProps({
   bundle: {
@@ -51,8 +68,25 @@ const props = defineProps({
   },
 });
 
+const dateService = useDateService();
+
 const expiresAt = computed(() => props.bundle.expiresAt);
 const createdAt = computed(() => props.bundle.createdAt);
+const status = computed((): { type: NaiveStatus; text: string } => {
+  switch (props.bundle.status) {
+    case BundleStatus.Queried:
+    case BundleStatus.Building:
+      return {
+        type: "info",
+        text: `This bundle is being processed and is not ready yet (status: ${props.bundle.status})`,
+      };
+    default:
+      return {
+        type: "error",
+        text: "Failed to build bundle 🥺. Try to requeue the operation (if available) or contact staff.",
+      };
+  }
+});
 
 const now = dayjs();
 const parsedCreatedAt = dayjs(createdAt.value);

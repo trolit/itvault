@@ -33,6 +33,7 @@ import BlueprintsTab from "./BlueprintsTab.vue";
 import NotesDrawer from "./NotesDrawer/Index.vue";
 import BundleDrawer from "./BundleDrawer/Index.vue";
 
+const bundlePage = ref(1);
 const blueprintPage = ref(1);
 
 const tabs = [
@@ -58,8 +59,12 @@ const tabs = [
     key: "bundles",
     text: "Bundles",
     tab: BundlesTab,
-    props: {},
-    events: {},
+    props: {
+      page: bundlePage,
+    },
+    events: {
+      "update:page": (value: number) => (bundlePage.value = value),
+    },
   },
 ];
 

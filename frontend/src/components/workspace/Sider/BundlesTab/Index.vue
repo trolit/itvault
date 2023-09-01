@@ -44,6 +44,7 @@
         :item-count="bundlesStore.total"
         :page-size="perPage"
         :page-slot="6"
+        @update:page="onPageChange"
       />
     </div>
 
@@ -52,12 +53,6 @@
 </template>
 
 <script setup lang="ts">
-import {
-  Add as AddIcon,
-  Reset as ResetIcon,
-  Search as SearchIcon,
-} from "@vicons/carbon";
-import { computed, onMounted, ref } from "vue";
 import {
   NSpin,
   NList,
@@ -69,28 +64,49 @@ import {
   NScrollbar,
   NPagination,
 } from "naive-ui";
+import {
+  Add as AddIcon,
+  Reset as ResetIcon,
+  Search as SearchIcon,
+} from "@vicons/carbon";
+import { computed, onMounted, ref, type PropType, toRefs } from "vue";
 
 import SingleBundle from "./SingleBundle.vue";
 import { useBundlesStore } from "@/store/bundles";
 import CreateBundleModal from "./CreateBundleModal/Index.vue";
 
-const page = ref(1);
+const props = defineProps({
+  page: {
+    type: Object as PropType<number>,
+    required: true,
+  },
+});
+
+const emit = defineEmits(["update:page"]);
+
 const perPage = 10;
 const isLoading = ref(false);
+const { page } = toRefs(props);
 const bundlesStore = useBundlesStore();
 const isCreateBundleModalVisible = ref(false);
 
 onMounted(() => {
   if (bundlesStore.total === 0) {
-    getBundles();
+    getBundles(page.value);
   }
 });
 
-async function getBundles() {
+function onPageChange(newPage: number) {
+  emit("update:page", newPage);
+
+  getBundles(newPage);
+}
+
+async function getBundles(page: number) {
   isLoading.value = true;
 
   try {
-    await bundlesStore.getAll({ page: page.value, perPage });
+    await bundlesStore.getAll({ page, perPage });
   } catch (error) {
     console.log(error);
   } finally {

@@ -6,27 +6,39 @@
       </n-avatar>
     </template>
 
-    <template #header> {{ bundle.createdBy.fullName }} </template>
+    <template #header> {{ fullName }} </template>
 
     <template #description>
       created this bundle on
-      {{ formatDate(bundle.createdAt, "DD-MM-YYYY") }}
+      {{ dateService.format(bundle.createdAt, "DD-MM-YYYY") }}
     </template>
   </n-thing>
 </template>
 
 <script setup lang="ts">
+import { computed, type PropType } from "vue";
 import { NThing, NIcon, NAvatar } from "naive-ui";
 import { UserAvatar as UserAvatarIcon } from "@vicons/carbon";
 
-import formatDate from "@/helpers/dayjs/formatDate";
-import type { PropType } from "vue";
+import { useAuthStore } from "@/store/auth";
+import { useDateService } from "@/services/useDateService";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
 
-defineProps({
+const props = defineProps({
   bundle: {
     type: Object as PropType<IBundleDto>,
     required: true,
   },
+});
+
+const authStore = useAuthStore();
+const dateService = useDateService();
+
+const fullName = computed(() => {
+  if (props.bundle.createdBy) {
+    return props.bundle.createdBy.fullName;
+  }
+
+  return authStore.profile.fullName;
 });
 </script>
