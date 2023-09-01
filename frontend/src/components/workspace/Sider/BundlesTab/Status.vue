@@ -1,6 +1,6 @@
 <template>
   <n-tag size="small" :type="status.type" class="bundle-status">
-    <n-icon :size="20" :component="status.icon" />
+    <n-icon :size="30" :component="status.icon" />
 
     {{ status.text }}
   </n-tag>
@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import {
-  Package as ReadyStatusIcon,
+  Document as ReadyStatusIcon,
   Cube as BuildingStatusIcon,
   DataError as ErrorStatusIcon,
   Unknown as UnknownStatusIcon,

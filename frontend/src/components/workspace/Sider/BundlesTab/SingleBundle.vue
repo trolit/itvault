@@ -4,7 +4,7 @@
       <template #header>
         <div>Bundle #{{ item.id }}</div>
 
-        <bundle-status :value="item.status" />
+        <status :value="item.status" />
       </template>
 
       <template #description>
@@ -70,7 +70,7 @@ import {
   useLoadingBar,
 } from "naive-ui";
 
-import BundleStatus from "./BundleStatus.vue";
+import Status from "./Status.vue";
 import { useBundlesStore } from "@/store/bundles";
 import formatDate from "@/helpers/dayjs/formatDate";
 import { Permission } from "@shared/types/enums/Permission";
