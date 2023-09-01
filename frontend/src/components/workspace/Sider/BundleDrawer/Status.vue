@@ -18,10 +18,12 @@
       </span>
 
       <span v-else>
-        Bundle expires at
-        <n-tag type="warning" :bordered="false" size="small">
+        expires at
+
+        <n-tag type="info" :bordered="false" size="small">
           {{ formatDate(expiresAt, "DD-MM-YYYY HH:mm") }}
         </n-tag>
+
         <div>
           (in
           <n-countdown :duration="getDifferenceToNow(expiresAt)" />
@@ -29,9 +31,9 @@
 
           <n-progress
             type="line"
-            status="warning"
+            status="info"
             :percentage="percentage"
-            :show-indicator="false"
+            :show-indicator="true"
           />
         </div>
       </span>
