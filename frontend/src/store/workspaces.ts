@@ -137,9 +137,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       if (~tabIndex) {
         this.tabs.splice(tabIndex, 1);
 
-        if (this.tabs.length) {
-          this.activeFileId = this.tabs[0].file.id;
-        }
+        this.activeFileId = this.tabs.length ? this.tabs[0].file.id : 0;
       }
     },
 
