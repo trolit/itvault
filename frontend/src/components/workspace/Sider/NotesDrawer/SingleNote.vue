@@ -25,7 +25,7 @@
     </template>
 
     <template #header-extra>
-      {{ dateService.format(note.createdAt, "YYYY-MM-DD HH:mm") }}
+      {{ dateService.fromNow(note.createdAt) }}
     </template>
 
     <template #description>
