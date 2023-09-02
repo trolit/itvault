@@ -23,7 +23,7 @@ export const useNotesStore = defineStore("notes", {
 
       const params = {
         version: 1,
-        id: workspaceStore.activeFileTab,
+        id: workspaceStore.activeFileId,
         ...options,
       };
 

@@ -22,7 +22,7 @@ interface IState {
   activeItem: IWorkspaceDto;
   tree: (IDirectoryDto | IFileDto)[];
 
-  activeFileTab: number; // @NOTE id of file
+  activeFileId: number; // @NOTE id of file
 
   openTabData: { blueprintId: number; variantId: string } | null;
 
@@ -35,14 +35,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
     total: 0,
     items: [],
     activeItem: { id: 0, name: "", slug: "", tags: [] },
-    activeFileTab: 0,
+    activeFileId: 0,
     tabs: [],
     openTabData: null,
   }),
 
   getters: {
     activeFileTabValue: state =>
-      state.tabs.find(tab => tab.file.id === state.activeFileTab),
+      state.tabs.find(tab => tab.file.id === state.activeFileId),
     activeVariantTabValue(): VariantTab | undefined {
       const fileTab = this.activeFileTabValue;
 
@@ -84,7 +84,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
       this.tree = [];
       this.tabs = [];
-      this.activeFileTab = 0;
+      this.activeFileId = 0;
 
       const bundlesStore = useBundlesStore();
       const blueprintsStore = useBlueprintsStore();
@@ -96,7 +96,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     setFileTab(file: IFileDto) {
       const tab = this.tabs.find(tab => tab.file.id === file.id);
 
-      this.activeFileTab = file.id;
+      this.activeFileId = file.id;
 
       if (tab) {
         return;
@@ -138,7 +138,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         this.tabs.splice(tabIndex, 1);
 
         if (this.tabs.length) {
-          this.activeFileTab = this.tabs[0].file.id;
+          this.activeFileId = this.tabs[0].file.id;
         }
       }
     },

@@ -15,11 +15,11 @@ export const useVariantsStore = defineStore("variants", {
     async getAll() {
       const workspacesStore = useWorkspacesStore();
 
-      const { activeFileTab, activeItem } = workspacesStore;
+      const { activeFileId, activeItem } = workspacesStore;
 
       const params = {
         version: 1,
-        fileId: activeFileTab,
+        fileId: activeFileId,
         workspaceId: activeItem.id,
       };
 
