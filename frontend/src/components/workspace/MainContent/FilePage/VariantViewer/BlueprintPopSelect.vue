@@ -46,17 +46,17 @@ const workspacesStore = useWorkspacesStore();
 const emit = defineEmits(["fetch-bucket"]);
 
 const data = computed(() => {
-  const variantTab = workspacesStore.activeVariantTabValue;
+  const variantTab = workspacesStore.activeVariantTab;
 
   if (!variantTab) {
     return { id: 0, options: [] };
   }
 
-  const { activeBlueprint: id, blueprints } = variantTab;
+  const { activeBlueprintId: id, blueprints } = variantTab;
 
   return {
     id,
-    name: workspacesStore.activeBlueprint?.name,
+    name: workspacesStore.activeBlueprintId?.name,
     options: blueprints.map(({ id, name, color }) => ({
       label: name,
       value: id,
@@ -89,7 +89,7 @@ function renderLabel(option: SelectBaseOption & { color: string }) {
 
 watch(data, async () => {
   const blueprintId = data.value.id;
-  const variantId = workspacesStore.activeFileTabValue?.activeVariantTab;
+  const variantId = workspacesStore.activeFileTab?.activeVariantId;
 
   if (!blueprintId) {
     return;

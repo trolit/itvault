@@ -3,7 +3,7 @@
     <n-tabs
       closable
       type="card"
-      v-model:value="workspacesStore.activeFileTab"
+      v-model:value="workspacesStore.activeFileId"
       @close="workspacesStore.closeFileTab"
     >
       <n-tab-pane
@@ -41,12 +41,12 @@ import { useWorkspacesStore } from "@/store/workspaces";
 const workspacesStore = useWorkspacesStore();
 
 const variantTab = computed((): string => {
-  const tab = workspacesStore.activeFileTabValue;
+  const tab = workspacesStore.activeFileTab;
 
   if (!tab) {
     return "";
   }
 
-  return tab.activeVariantTab;
+  return tab.activeVariantId;
 });
 </script>

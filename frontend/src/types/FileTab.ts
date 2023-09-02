@@ -5,9 +5,9 @@ import type { INoteDto } from "@shared/types/dtos/INoteDto";
 export type FileTab = {
   file: IFileDto;
 
-  activeVariantTab: string; // @NOTE id of variant
+  activeVariantId: string;
 
-  notes: { data: INoteDto[]; total: number };
+  notes: { page: number; data: INoteDto[]; total: number };
 
   variantTabs: VariantTab[];
 };

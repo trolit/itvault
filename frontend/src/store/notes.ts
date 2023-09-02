@@ -15,15 +15,15 @@ export const useNotesStore = defineStore("notes", {
     async getAll(options: IPaginationQuery & { resource: string }) {
       const workspaceStore = useWorkspacesStore();
 
-      const fileTab = workspaceStore.activeFileTabValue;
+      const fileTab = workspaceStore.activeFileTab;
 
-      if (!fileTab || fileTab.notes.data.length) {
+      if (!fileTab) {
         return;
       }
 
       const params = {
         version: 1,
-        id: workspaceStore.activeFileTab,
+        id: workspaceStore.activeFileId,
         ...options,
       };
 
@@ -34,7 +34,8 @@ export const useNotesStore = defineStore("notes", {
         }
       );
 
-      fileTab.notes = { data: data.result, total: data.total };
+      fileTab.notes.total = data.total;
+      fileTab.notes.data = data.result;
 
       return data;
     },

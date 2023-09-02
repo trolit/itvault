@@ -22,7 +22,7 @@ interface IState {
   activeItem: IWorkspaceDto;
   tree: (IDirectoryDto | IFileDto)[];
 
-  activeFileTab: number; // @NOTE id of file
+  activeFileId: number;
 
   openTabData: { blueprintId: number; variantId: string } | null;
 
@@ -35,45 +35,45 @@ export const useWorkspacesStore = defineStore("workspaces", {
     total: 0,
     items: [],
     activeItem: { id: 0, name: "", slug: "", tags: [] },
-    activeFileTab: 0,
+    activeFileId: 0,
     tabs: [],
     openTabData: null,
   }),
 
   getters: {
-    activeFileTabValue: state =>
-      state.tabs.find(tab => tab.file.id === state.activeFileTab),
-    activeVariantTabValue(): VariantTab | undefined {
-      const fileTab = this.activeFileTabValue;
+    activeFileTab: state =>
+      state.tabs.find(tab => tab.file.id === state.activeFileId),
+    activeVariantTab(): VariantTab | undefined {
+      const fileTab = this.activeFileTab;
 
       if (!fileTab) {
         return;
       }
 
       return fileTab.variantTabs.find(
-        variantTab => variantTab.variant.id === fileTab.activeVariantTab
+        variantTab => variantTab.variant.id === fileTab.activeVariantId
       );
     },
-    activeBlueprint(): IBlueprintDto | undefined {
-      const variantTab = this.activeVariantTabValue;
+    activeBlueprintId(): IBlueprintDto | undefined {
+      const variantTab = this.activeVariantTab;
 
       if (!variantTab) {
         return;
       }
 
       return variantTab.blueprints.find(
-        blueprint => blueprint.id === variantTab.activeBlueprint
+        blueprint => blueprint.id === variantTab.activeBlueprintId
       );
     },
     activeBucket(): IBucketDto | undefined {
-      const variantTab = this.activeVariantTabValue;
+      const variantTab = this.activeVariantTab;
 
       if (!variantTab) {
         return;
       }
 
       return variantTab.buckets.find(
-        bucket => bucket.blueprintId === variantTab.activeBlueprint
+        bucket => bucket.blueprintId === variantTab.activeBlueprintId
       );
     },
   },
@@ -84,7 +84,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
       this.tree = [];
       this.tabs = [];
-      this.activeFileTab = 0;
+      this.activeFileId = 0;
 
       const bundlesStore = useBundlesStore();
       const blueprintsStore = useBlueprintsStore();
@@ -96,7 +96,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     setFileTab(file: IFileDto) {
       const tab = this.tabs.find(tab => tab.file.id === file.id);
 
-      this.activeFileTab = file.id;
+      this.activeFileId = file.id;
 
       if (tab) {
         return;
@@ -105,8 +105,8 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.tabs.push({
         file,
         variantTabs: [],
-        activeVariantTab: "",
-        notes: { data: [], total: 0 },
+        activeVariantId: "",
+        notes: { page: 1, data: [], total: 0 },
       });
     },
 
@@ -137,20 +137,18 @@ export const useWorkspacesStore = defineStore("workspaces", {
       if (~tabIndex) {
         this.tabs.splice(tabIndex, 1);
 
-        if (this.tabs.length) {
-          this.activeFileTab = this.tabs[0].file.id;
-        }
+        this.activeFileId = this.tabs.length ? this.tabs[0].file.id : 0;
       }
     },
 
     setVariantTabBlueprints(blueprints: IBlueprintDto[]) {
-      if (!this.activeVariantTabValue) {
+      if (!this.activeVariantTab) {
         return;
       }
 
-      this.activeVariantTabValue.blueprints = blueprints;
+      this.activeVariantTab.blueprints = blueprints;
 
-      const { variant } = this.activeVariantTabValue;
+      const { variant } = this.activeVariantTab;
 
       if (this.openTabData && variant.id === this.openTabData.variantId) {
         this.setVariantTabActiveBlueprint(this.openTabData.blueprintId);
@@ -158,38 +156,38 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     setVariantTabActiveBlueprint(id: number) {
-      if (!this.activeVariantTabValue) {
+      if (!this.activeVariantTab) {
         return;
       }
 
-      this.activeVariantTabValue.activeBlueprint = id;
+      this.activeVariantTab.activeBlueprintId = id;
     },
 
     setVariantTabContent(content: string) {
-      if (!this.activeVariantTabValue) {
+      if (!this.activeVariantTab) {
         return;
       }
 
-      this.activeVariantTabValue.content = content;
+      this.activeVariantTab.content = content;
     },
 
     setVariantTabBucket(bucket: IBucketDto) {
-      if (!this.activeVariantTabValue) {
+      if (!this.activeVariantTab) {
         return;
       }
 
-      this.activeVariantTabValue.buckets.push(bucket);
+      this.activeVariantTab.buckets.push(bucket);
     },
 
     createVariantTabs(variants: IVariantDto[]) {
-      if (!this.activeFileTabValue) {
+      if (!this.activeFileTab) {
         return;
       }
 
-      this.activeFileTabValue.variantTabs = variants.map(variant => ({
+      this.activeFileTab.variantTabs = variants.map(variant => ({
         variant,
         content: "",
-        activeBlueprint: 0,
+        activeBlueprintId: 0,
         blueprints: [],
         isVisible: false,
         buckets: [],
@@ -201,11 +199,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     setVariantTab(id: string) {
-      if (!this.activeFileTabValue) {
+      if (!this.activeFileTab) {
         return;
       }
 
-      const variantTab = this.activeFileTabValue.variantTabs.find(
+      const variantTab = this.activeFileTab.variantTabs.find(
         variantTab => variantTab.variant.id === id
       );
 
@@ -213,15 +211,15 @@ export const useWorkspacesStore = defineStore("workspaces", {
         variantTab.isVisible = true;
       }
 
-      this.activeFileTabValue.activeVariantTab = id;
+      this.activeFileTab.activeVariantId = id;
     },
 
     closeVariantTab(id: string) {
-      if (!this.activeFileTabValue) {
+      if (!this.activeFileTab) {
         return;
       }
 
-      const variantTabToClose = this.activeFileTabValue.variantTabs.find(
+      const variantTabToClose = this.activeFileTab.variantTabs.find(
         variantTab => variantTab.variant.id === id
       );
 
@@ -231,12 +229,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
       variantTabToClose.isVisible = false;
 
-      const visibleVariantTab = this.activeFileTabValue.variantTabs.find(
+      const visibleVariantTab = this.activeFileTab.variantTabs.find(
         variantTab => variantTab.isVisible === true
       );
 
-      this.activeFileTabValue.activeVariantTab =
-        visibleVariantTab?.variant.id || "";
+      this.activeFileTab.activeVariantId = visibleVariantTab?.variant.id || "";
     },
 
     async getBySlug(slug: string) {

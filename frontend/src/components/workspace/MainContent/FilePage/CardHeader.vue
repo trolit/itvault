@@ -74,7 +74,7 @@ const workspacesStore = useWorkspacesStore();
 const preferencesStore = usePreferencesStore();
 
 const variants = computed((): IVariantDto[] => {
-  const tab = workspacesStore.activeFileTabValue;
+  const tab = workspacesStore.activeFileTab;
 
   if (!tab) {
     return [];

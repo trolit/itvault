@@ -82,7 +82,7 @@ function renderText(content: string) {
   let value = content;
 
   const bucket = workspacesStore.activeBucket;
-  const blueprint = workspacesStore.activeBlueprint;
+  const blueprint = workspacesStore.activeBlueprintId;
 
   const splitText = value.toString().split("\n");
 

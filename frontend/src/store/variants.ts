@@ -15,11 +15,11 @@ export const useVariantsStore = defineStore("variants", {
     async getAll() {
       const workspacesStore = useWorkspacesStore();
 
-      const { activeFileTab, activeItem } = workspacesStore;
+      const { activeFileId, activeItem } = workspacesStore;
 
       const params = {
         version: 1,
-        fileId: activeFileTab,
+        fileId: activeFileId,
         workspaceId: activeItem.id,
       };
 
@@ -72,7 +72,7 @@ export const useVariantsStore = defineStore("variants", {
     async getBucketById(id: string) {
       const workspacesStore = useWorkspacesStore();
 
-      const variantTab = workspacesStore.activeVariantTabValue;
+      const variantTab = workspacesStore.activeVariantTab;
 
       if (!variantTab) {
         return;
@@ -80,7 +80,7 @@ export const useVariantsStore = defineStore("variants", {
 
       const params = {
         version: 1,
-        blueprintId: variantTab.activeBlueprint,
+        blueprintId: variantTab.activeBlueprintId,
         workspaceId: workspacesStore.activeItem.id,
       };
 
