@@ -106,7 +106,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         file,
         variantTabs: [],
         activeVariantId: "",
-        notes: { data: [], total: 0 },
+        notes: { page: 1, data: [], total: 0 },
       });
     },
 

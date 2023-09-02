@@ -7,7 +7,7 @@ export type FileTab = {
 
   activeVariantId: string;
 
-  notes: { page: number; value: INoteDto[]; total: number };
+  notes: { page: number; data: INoteDto[]; total: number };
 
   variantTabs: VariantTab[];
 };

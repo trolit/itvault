@@ -35,7 +35,7 @@ export const useNotesStore = defineStore("notes", {
       );
 
       fileTab.notes.total = data.total;
-      fileTab.notes.value = data.result;
+      fileTab.notes.data = data.result;
 
       return data;
     },
