@@ -43,7 +43,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
   getters: {
     activeFileTab: state =>
       state.tabs.find(tab => tab.file.id === state.activeFileId),
-    activeVariantTabValue(): VariantTab | undefined {
+    activeVariantTab(): VariantTab | undefined {
       const fileTab = this.activeFileTab;
 
       if (!fileTab) {
@@ -55,7 +55,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       );
     },
     activeBlueprint(): IBlueprintDto | undefined {
-      const variantTab = this.activeVariantTabValue;
+      const variantTab = this.activeVariantTab;
 
       if (!variantTab) {
         return;
@@ -66,7 +66,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       );
     },
     activeBucket(): IBucketDto | undefined {
-      const variantTab = this.activeVariantTabValue;
+      const variantTab = this.activeVariantTab;
 
       if (!variantTab) {
         return;
@@ -144,13 +144,13 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     setVariantTabBlueprints(blueprints: IBlueprintDto[]) {
-      if (!this.activeVariantTabValue) {
+      if (!this.activeVariantTab) {
         return;
       }
 
-      this.activeVariantTabValue.blueprints = blueprints;
+      this.activeVariantTab.blueprints = blueprints;
 
-      const { variant } = this.activeVariantTabValue;
+      const { variant } = this.activeVariantTab;
 
       if (this.openTabData && variant.id === this.openTabData.variantId) {
         this.setVariantTabActiveBlueprint(this.openTabData.blueprintId);
@@ -158,27 +158,27 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     setVariantTabActiveBlueprint(id: number) {
-      if (!this.activeVariantTabValue) {
+      if (!this.activeVariantTab) {
         return;
       }
 
-      this.activeVariantTabValue.activeBlueprint = id;
+      this.activeVariantTab.activeBlueprint = id;
     },
 
     setVariantTabContent(content: string) {
-      if (!this.activeVariantTabValue) {
+      if (!this.activeVariantTab) {
         return;
       }
 
-      this.activeVariantTabValue.content = content;
+      this.activeVariantTab.content = content;
     },
 
     setVariantTabBucket(bucket: IBucketDto) {
-      if (!this.activeVariantTabValue) {
+      if (!this.activeVariantTab) {
         return;
       }
 
-      this.activeVariantTabValue.buckets.push(bucket);
+      this.activeVariantTab.buckets.push(bucket);
     },
 
     createVariantTabs(variants: IVariantDto[]) {

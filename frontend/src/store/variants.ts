@@ -72,7 +72,7 @@ export const useVariantsStore = defineStore("variants", {
     async getBucketById(id: string) {
       const workspacesStore = useWorkspacesStore();
 
-      const variantTab = workspacesStore.activeVariantTabValue;
+      const variantTab = workspacesStore.activeVariantTab;
 
       if (!variantTab) {
         return;

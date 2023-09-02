@@ -46,7 +46,7 @@ const workspacesStore = useWorkspacesStore();
 const emit = defineEmits(["fetch-bucket"]);
 
 const data = computed(() => {
-  const variantTab = workspacesStore.activeVariantTabValue;
+  const variantTab = workspacesStore.activeVariantTab;
 
   if (!variantTab) {
     return { id: 0, options: [] };
