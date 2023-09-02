@@ -24,6 +24,7 @@ import {
   Folder as OpenedFolderIcon,
   FolderOff as ClosedFolderIcon,
 } from "@vicons/carbon";
+import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
 import { useWorkspacesStore } from "@/store/workspaces";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
@@ -37,7 +38,7 @@ const workspacesStore = useWorkspacesStore();
 
 const props = defineProps({
   data: {
-    type: Array as PropType<(IFileDto & IDirectoryDto)[]>,
+    type: Array as PropType<(IFileDto | IDirectoryDto)[]>,
     required: true,
   },
 });
@@ -85,21 +86,19 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
 
         const parsedId = parseInt(id);
 
-        const file = workspacesStore.tree.find(
-          element => element.id === parsedId && !!element?.originalFilename
+        const treeElement = workspacesStore.tree.find(
+          element => element.id === parsedId
         );
 
-        if (!file) {
-          return;
+        if (treeElement && isFile(treeElement)) {
+          workspacesStore.setFileTab(treeElement);
         }
-
-        workspacesStore.setFileTab(file);
       }
     },
   };
 };
 
-function getUniqueRelativePaths(tree: (IDirectoryDto & IFileDto)[]) {
+function getUniqueRelativePaths(tree: (IDirectoryDto | IFileDto)[]) {
   const uniqueRelativePaths = [
     ...new Set(tree.map(({ relativePath }) => relativePath)),
   ];
@@ -107,7 +106,7 @@ function getUniqueRelativePaths(tree: (IDirectoryDto & IFileDto)[]) {
   return sortBy(uniqueRelativePaths);
 }
 
-function restoreTreeData(tree: (IDirectoryDto & IFileDto)[]) {
+function restoreTreeData(tree: (IDirectoryDto | IFileDto)[]) {
   const uniqueRelativePaths = getUniqueRelativePaths(tree);
 
   for (const relativePath of uniqueRelativePaths) {
@@ -118,22 +117,21 @@ function restoreTreeData(tree: (IDirectoryDto & IFileDto)[]) {
     const isRoot = relativePath === filesStore.ROOT;
 
     for (const value of values) {
-      const isFile = !!value?.originalFilename;
+      const isValueFile = isFile(value);
 
-      const treeOptionToAdd = isFile
+      const treeOptionToAdd = isValueFile
         ? createFileTreeOption(value)
         : createFolderTreeOption(value);
 
-      if (!isFile) {
+      if (!isValueFile) {
         const hasAnyFile = tree.some(
-          value =>
-            value.relativePath === relativePath && !!value?.originalFilename
+          value => value.relativePath === relativePath && isFile(value)
         );
 
         treeOptionToAdd.children = hasAnyFile ? [] : undefined;
       }
 
-      if (isRoot || (!isFile && splitRelativePath.length === 2)) {
+      if (isRoot || (!isValueFile && splitRelativePath.length === 2)) {
         treeData.push(treeOptionToAdd);
 
         continue;
@@ -141,7 +139,7 @@ function restoreTreeData(tree: (IDirectoryDto & IFileDto)[]) {
 
       const [, ...splitRelativePathExceptRoot] = splitRelativePath;
 
-      if (!isFile) {
+      if (!isValueFile) {
         // take out "leaf" dir because we need to create it
         splitRelativePathExceptRoot.pop();
       }
