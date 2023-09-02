@@ -14,7 +14,11 @@
     <n-drawer-content title="Notes" closable>
       <!-- @TODO handle empty case -->
 
-      <n-list v-if="notes.total" :show-divider="false">
+      <div v-if="isLoading" class="spin-wrapper">
+        <n-spin />
+      </div>
+
+      <n-list v-else-if="notes.total" :show-divider="false">
         <n-list-item v-for="note in notes.data" :key="`note-${note.id}`">
           <single-note
             :note="note"
@@ -22,10 +26,6 @@
           />
         </n-list-item>
       </n-list>
-
-      <div v-else-if="isLoading" class="spin-wrapper">
-        <n-spin />
-      </div>
 
       <template #footer>
         <n-pagination
@@ -64,7 +64,7 @@ import { useDrawerStore } from "@/store/drawer";
 import UserCommentsModal from "./UserCommentsModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 
-const perPage = 10;
+const perPage = 5;
 const userId = ref(0);
 const isLoading = ref(true);
 const userFullName = ref("");
