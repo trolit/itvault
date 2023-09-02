@@ -12,13 +12,19 @@
     @update:show="onShowUpdate"
   >
     <n-drawer-content title="Notes" closable>
-      <!-- @TODO handle empty case -->
-
       <div v-if="isLoading" class="spin-wrapper">
         <n-spin />
       </div>
 
-      <n-list v-else-if="notes.total" :show-divider="false">
+      <n-result
+        v-else-if="!notes.data.length"
+        size="small"
+        status="info"
+        title="Empty"
+        description="No comments to display"
+      />
+
+      <n-list v-else-if="notes.data.length" :show-divider="false">
         <n-list-item v-for="note in notes.data" :key="`note-${note.id}`">
           <single-note
             :note="note"
@@ -51,6 +57,7 @@ import {
   NList,
   NSpin,
   NDrawer,
+  NResult,
   NListItem,
   NPagination,
   NDrawerContent,
@@ -64,15 +71,15 @@ import { useDrawerStore } from "@/store/drawer";
 import UserCommentsModal from "./UserCommentsModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 
+const notesStore = useNotesStore();
+const drawerStore = useDrawerStore();
+const workspacesStore = useWorkspacesStore();
+
 const perPage = 5;
 const userId = ref(0);
 const isLoading = ref(true);
 const userFullName = ref("");
 const isUserCommentsModalVisible = ref(false);
-
-const notesStore = useNotesStore();
-const drawerStore = useDrawerStore();
-const workspacesStore = useWorkspacesStore();
 
 const isActive = computed((): boolean => {
   return drawerStore.isDrawerActive(Drawer.Notes) || false;
