@@ -35,6 +35,8 @@
 
       <template #footer>
         <n-pagination
+          v-if="!isLoading"
+          size="small"
           :page="notes.page"
           :page-size="perPage"
           :item-count="notes.total"
