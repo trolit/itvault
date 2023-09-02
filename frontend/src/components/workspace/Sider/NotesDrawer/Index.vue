@@ -47,7 +47,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
 import {
   NList,
   NSpin,
@@ -56,6 +55,7 @@ import {
   NPagination,
   NDrawerContent,
 } from "naive-ui";
+import { computed, ref, watch } from "vue";
 
 import { Drawer } from "@/types/Drawer";
 import SingleNote from "./SingleNote.vue";
