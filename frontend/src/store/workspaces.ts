@@ -22,7 +22,7 @@ interface IState {
   activeItem: IWorkspaceDto;
   tree: (IDirectoryDto | IFileDto)[];
 
-  activeFileId: number; // @NOTE id of file
+  activeFileId: number;
 
   openTabData: { blueprintId: number; variantId: string } | null;
 
