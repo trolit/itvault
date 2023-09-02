@@ -12,12 +12,10 @@
     @update:show="onShowUpdate"
   >
     <n-drawer-content title="Notes" closable>
-      <div v-if="isLoading" class="spin-wrapper">
-        <n-spin />
-      </div>
+      <!-- @TODO handle empty case -->
 
-      <n-list v-else :show-divider="false">
-        <n-list-item v-for="note in notes" :key="`note-${note.id}`">
+      <n-list v-if="notes.total" :show-divider="false">
+        <n-list-item v-for="note in notes.data" :key="`note-${note.id}`">
           <single-note
             :note="note"
             @toggle-user-comments-modal="onToggleUserCommentsModal"
@@ -25,13 +23,17 @@
         </n-list-item>
       </n-list>
 
+      <div v-else-if="isLoading" class="spin-wrapper">
+        <n-spin />
+      </div>
+
       <template #footer>
-        <!-- @TODO implement pagination -->
         <n-pagination
-          v-model:page="page"
-          v-model:page-size="perPage"
-          :page-count="9"
+          :page="notes.page"
+          :page-size="perPage"
+          :item-count="notes.total"
           :page-slot="6"
+          @update:page="onPageChange"
         />
       </template>
 
@@ -62,8 +64,7 @@ import { useDrawerStore } from "@/store/drawer";
 import UserCommentsModal from "./UserCommentsModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 
-const page = ref(1);
-const perPage = ref(5);
+const perPage = 10;
 const userId = ref(0);
 const isLoading = ref(true);
 const userFullName = ref("");
@@ -80,7 +81,7 @@ const isActive = computed((): boolean => {
 const notes = computed(() => {
   const tab = workspacesStore.activeFileTab;
 
-  return tab ? tab.notes.data : [];
+  return tab ? tab.notes : { page: 1, total: 0, data: [] };
 });
 
 const onShowUpdate = () => {
@@ -92,21 +93,39 @@ watch(isActive, async () => {
     return;
   }
 
-  isLoading.value = true;
-
-  try {
-    await notesStore.getAll({ page: 1, perPage: 5, resource: "File" });
-  } catch (error) {
-    console.log(error);
-  } finally {
-    isLoading.value = false;
+  if (!notes.value.data.length) {
+    fetchNotes();
   }
 });
+
+function onPageChange(newPage: number) {
+  if (workspacesStore.activeFileTab) {
+    workspacesStore.activeFileTab.notes.page = newPage;
+
+    fetchNotes();
+  }
+}
 
 function onToggleUserCommentsModal(id: number, fullName: string) {
   userId.value = id;
   userFullName.value = fullName;
 
   isUserCommentsModalVisible.value = true;
+}
+
+async function fetchNotes() {
+  isLoading.value = true;
+
+  try {
+    await notesStore.getAll({
+      page: notes.value.page,
+      perPage,
+      resource: "File",
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
