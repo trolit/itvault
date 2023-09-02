@@ -47,6 +47,6 @@ const variantTab = computed((): string => {
     return "";
   }
 
-  return tab.activeVariantTab;
+  return tab.activeVariantId;
 });
 </script>

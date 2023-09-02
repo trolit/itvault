@@ -51,7 +51,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
 
       return fileTab.variantTabs.find(
-        variantTab => variantTab.variant.id === fileTab.activeVariantTab
+        variantTab => variantTab.variant.id === fileTab.activeVariantId
       );
     },
     activeBlueprint(): IBlueprintDto | undefined {
@@ -105,7 +105,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.tabs.push({
         file,
         variantTabs: [],
-        activeVariantTab: "",
+        activeVariantId: "",
         notes: { data: [], total: 0 },
       });
     },
@@ -213,7 +213,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         variantTab.isVisible = true;
       }
 
-      this.activeFileTab.activeVariantTab = id;
+      this.activeFileTab.activeVariantId = id;
     },
 
     closeVariantTab(id: string) {
@@ -235,7 +235,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         variantTab => variantTab.isVisible === true
       );
 
-      this.activeFileTab.activeVariantTab = visibleVariantTab?.variant.id || "";
+      this.activeFileTab.activeVariantId = visibleVariantTab?.variant.id || "";
     },
 
     async getBySlug(slug: string) {

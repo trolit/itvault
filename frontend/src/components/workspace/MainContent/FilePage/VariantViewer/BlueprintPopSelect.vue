@@ -89,7 +89,7 @@ function renderLabel(option: SelectBaseOption & { color: string }) {
 
 watch(data, async () => {
   const blueprintId = data.value.id;
-  const variantId = workspacesStore.activeFileTab?.activeVariantTab;
+  const variantId = workspacesStore.activeFileTab?.activeVariantId;
 
   if (!blueprintId) {
     return;
