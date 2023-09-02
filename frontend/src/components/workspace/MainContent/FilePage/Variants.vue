@@ -35,7 +35,7 @@ defineProps({
 });
 
 const variantTabs = computed(() => {
-  const tab = workspacesStore.activeFileTabValue;
+  const tab = workspacesStore.activeFileTab;
 
   if (!tab) {
     return [];

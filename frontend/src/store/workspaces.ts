@@ -41,10 +41,10 @@ export const useWorkspacesStore = defineStore("workspaces", {
   }),
 
   getters: {
-    activeFileTabValue: state =>
+    activeFileTab: state =>
       state.tabs.find(tab => tab.file.id === state.activeFileId),
     activeVariantTabValue(): VariantTab | undefined {
-      const fileTab = this.activeFileTabValue;
+      const fileTab = this.activeFileTab;
 
       if (!fileTab) {
         return;
@@ -182,11 +182,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     createVariantTabs(variants: IVariantDto[]) {
-      if (!this.activeFileTabValue) {
+      if (!this.activeFileTab) {
         return;
       }
 
-      this.activeFileTabValue.variantTabs = variants.map(variant => ({
+      this.activeFileTab.variantTabs = variants.map(variant => ({
         variant,
         content: "",
         activeBlueprint: 0,
@@ -201,11 +201,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     setVariantTab(id: string) {
-      if (!this.activeFileTabValue) {
+      if (!this.activeFileTab) {
         return;
       }
 
-      const variantTab = this.activeFileTabValue.variantTabs.find(
+      const variantTab = this.activeFileTab.variantTabs.find(
         variantTab => variantTab.variant.id === id
       );
 
@@ -213,15 +213,15 @@ export const useWorkspacesStore = defineStore("workspaces", {
         variantTab.isVisible = true;
       }
 
-      this.activeFileTabValue.activeVariantTab = id;
+      this.activeFileTab.activeVariantTab = id;
     },
 
     closeVariantTab(id: string) {
-      if (!this.activeFileTabValue) {
+      if (!this.activeFileTab) {
         return;
       }
 
-      const variantTabToClose = this.activeFileTabValue.variantTabs.find(
+      const variantTabToClose = this.activeFileTab.variantTabs.find(
         variantTab => variantTab.variant.id === id
       );
 
@@ -231,12 +231,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
       variantTabToClose.isVisible = false;
 
-      const visibleVariantTab = this.activeFileTabValue.variantTabs.find(
+      const visibleVariantTab = this.activeFileTab.variantTabs.find(
         variantTab => variantTab.isVisible === true
       );
 
-      this.activeFileTabValue.activeVariantTab =
-        visibleVariantTab?.variant.id || "";
+      this.activeFileTab.activeVariantTab = visibleVariantTab?.variant.id || "";
     },
 
     async getBySlug(slug: string) {

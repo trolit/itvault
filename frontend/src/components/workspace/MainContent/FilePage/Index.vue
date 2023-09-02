@@ -41,7 +41,7 @@ import { useWorkspacesStore } from "@/store/workspaces";
 const workspacesStore = useWorkspacesStore();
 
 const variantTab = computed((): string => {
-  const tab = workspacesStore.activeFileTabValue;
+  const tab = workspacesStore.activeFileTab;
 
   if (!tab) {
     return "";

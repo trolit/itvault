@@ -78,7 +78,7 @@ const isActive = computed((): boolean => {
 });
 
 const notes = computed(() => {
-  const tab = workspacesStore.activeFileTabValue;
+  const tab = workspacesStore.activeFileTab;
 
   return tab ? tab.notes.data : [];
 });

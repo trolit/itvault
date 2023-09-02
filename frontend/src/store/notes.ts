@@ -15,7 +15,7 @@ export const useNotesStore = defineStore("notes", {
     async getAll(options: IPaginationQuery & { resource: string }) {
       const workspaceStore = useWorkspacesStore();
 
-      const fileTab = workspaceStore.activeFileTabValue;
+      const fileTab = workspaceStore.activeFileTab;
 
       if (!fileTab || fileTab.notes.data.length) {
         return;
