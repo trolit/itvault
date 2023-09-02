@@ -17,7 +17,7 @@ export const useNotesStore = defineStore("notes", {
 
       const fileTab = workspaceStore.activeFileTab;
 
-      if (!fileTab || fileTab.notes.data.length) {
+      if (!fileTab) {
         return;
       }
 
@@ -34,7 +34,8 @@ export const useNotesStore = defineStore("notes", {
         }
       );
 
-      fileTab.notes = { data: data.result, total: data.total };
+      fileTab.notes.total = data.total;
+      fileTab.notes.value = data.result;
 
       return data;
     },
