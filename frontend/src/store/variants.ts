@@ -80,7 +80,7 @@ export const useVariantsStore = defineStore("variants", {
 
       const params = {
         version: 1,
-        blueprintId: variantTab.activeBlueprint,
+        blueprintId: variantTab.activeBlueprintId,
         workspaceId: workspacesStore.activeItem.id,
       };
 

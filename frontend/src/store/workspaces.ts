@@ -54,7 +54,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         variantTab => variantTab.variant.id === fileTab.activeVariantId
       );
     },
-    activeBlueprint(): IBlueprintDto | undefined {
+    activeBlueprintId(): IBlueprintDto | undefined {
       const variantTab = this.activeVariantTab;
 
       if (!variantTab) {
@@ -62,7 +62,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
 
       return variantTab.blueprints.find(
-        blueprint => blueprint.id === variantTab.activeBlueprint
+        blueprint => blueprint.id === variantTab.activeBlueprintId
       );
     },
     activeBucket(): IBucketDto | undefined {
@@ -73,7 +73,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
 
       return variantTab.buckets.find(
-        bucket => bucket.blueprintId === variantTab.activeBlueprint
+        bucket => bucket.blueprintId === variantTab.activeBlueprintId
       );
     },
   },
@@ -162,7 +162,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         return;
       }
 
-      this.activeVariantTab.activeBlueprint = id;
+      this.activeVariantTab.activeBlueprintId = id;
     },
 
     setVariantTabContent(content: string) {
@@ -189,7 +189,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.activeFileTab.variantTabs = variants.map(variant => ({
         variant,
         content: "",
-        activeBlueprint: 0,
+        activeBlueprintId: 0,
         blueprints: [],
         isVisible: false,
         buckets: [],

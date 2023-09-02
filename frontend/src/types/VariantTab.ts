@@ -9,7 +9,7 @@ export type VariantTab = {
 
   isVisible: boolean;
 
-  activeBlueprint: number; // @NOTE id of blueprint
+  activeBlueprintId: number;
 
   blueprints: IBlueprintDto[];
 

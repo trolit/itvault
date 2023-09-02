@@ -52,11 +52,11 @@ const data = computed(() => {
     return { id: 0, options: [] };
   }
 
-  const { activeBlueprint: id, blueprints } = variantTab;
+  const { activeBlueprintId: id, blueprints } = variantTab;
 
   return {
     id,
-    name: workspacesStore.activeBlueprint?.name,
+    name: workspacesStore.activeBlueprintId?.name,
     options: blueprints.map(({ id, name, color }) => ({
       label: name,
       value: id,
