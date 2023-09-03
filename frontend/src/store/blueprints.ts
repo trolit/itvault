@@ -60,7 +60,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
     },
 
     async update(payload: AddEditBlueprintDto) {
-      if (!this.itemToEdit || this.itemToEdit.id) {
+      if (!this.itemToEdit || !this.itemToEdit.id) {
         return;
       }
 
