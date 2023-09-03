@@ -62,7 +62,12 @@
                 : Permission.CreateBlueprint
             "
           >
-            <n-button secondary type="success" @click="onSubmit">
+            <n-button
+              secondary
+              type="success"
+              @click="onSubmit"
+              :loading="isLoading"
+            >
               {{ isEditMode ? "Update" : "Create" }}
             </n-button>
           </require-permission>
@@ -80,12 +85,13 @@ import {
   NButton,
   NDrawer,
   NFormItem,
+  useMessage,
   NColorPicker,
   NDrawerContent,
 } from "naive-ui";
 import { storeToRefs } from "pinia";
-import { computed, watch } from "vue";
 import cloneDeep from "lodash/cloneDeep";
+import { computed, ref, watch } from "vue";
 import { object, string, Schema } from "yup";
 import { useForm, useField } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
@@ -99,10 +105,12 @@ import RequirePermission from "@/components/common/RequirePermission.vue";
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
 import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
+const message = useMessage();
 const authStore = useAuthStore();
 const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();
 
+const isLoading = ref(false);
 const { itemToEdit } = storeToRefs(blueprintsStore);
 
 const defaultFormData: AddEditBlueprintDto = {
@@ -159,7 +167,34 @@ const onShowUpdate = () => {
   drawerStore.setActiveDrawer(null);
 };
 
-const onSubmit = handleSubmit.withControlled(() => {
-  console.log("123");
+const onSubmit = handleSubmit.withControlled(async formData => {
+  if (isLoading.value) {
+    return;
+  }
+
+  isLoading.value = true;
+
+  const isEdit = cloneDeep(isEditMode.value);
+
+  try {
+    isEdit
+      ? await blueprintsStore.update(formData)
+      : await blueprintsStore.store(formData);
+
+    if (!isEdit) {
+      blueprintsStore.getAll({
+        page: 1,
+        perPage: blueprintsStore.BLUEPRINTS_TAB_ITEMS_PER_PAGE,
+      });
+    }
+
+    message.success(`Blueprint successfully ${isEdit ? "updated" : "added"}.`);
+
+    onShowUpdate();
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
