@@ -133,6 +133,7 @@ const canAddOrEditBlueprint = authStore.hasAtLeastOnePermission([
   Permission.UpdateBlueprint,
 ]);
 
+// @TODO consider name & description limits
 const schema = toTypedSchema<Schema<AddEditBlueprintDto>>(
   object({
     name: string().required(),
