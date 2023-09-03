@@ -50,7 +50,8 @@
       </n-form>
 
       <template #footer>
-        <n-space justify="space-between" class="w-100">
+        <n-space justify="space-between" class="w-100" align="center">
+          <!-- @TODO handle delete [blueprint] operation -->
           <require-permission :permission="Permission.DeleteBlueprint">
             <n-button secondary type="error"> Delete </n-button>
           </require-permission>
@@ -67,6 +68,7 @@
               type="success"
               @click="onSubmit"
               :loading="isLoading"
+              :disabled="isInitialState"
             >
               {{ isEditMode ? "Update" : "Create" }}
             </n-button>
@@ -91,7 +93,7 @@ import {
 } from "naive-ui";
 import { storeToRefs } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, type Ref } from "vue";
 import { object, string, Schema } from "yup";
 import { useForm, useField } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
@@ -119,6 +121,10 @@ const defaultFormData: AddEditBlueprintDto = {
   description: "",
 };
 
+const initialFormData: Ref<Partial<AddEditBlueprintDto>> = ref(
+  cloneDeep(defaultFormData)
+);
+
 const canAddOrEditBlueprint = authStore.hasAtLeastOnePermission([
   Permission.CreateBlueprint,
   Permission.UpdateBlueprint,
@@ -132,7 +138,13 @@ const schema = toTypedSchema<Schema<AddEditBlueprintDto>>(
   })
 );
 
-const { errors, setValues, meta, handleSubmit } = useForm({
+const {
+  errors,
+  setValues,
+  meta,
+  handleSubmit,
+  values: currentFormData,
+} = useForm({
   validationSchema: schema,
 });
 
@@ -146,6 +158,11 @@ const title = computed(() => {
   return `${blueprintsStore.itemToEdit ? "Edit" : "Add"} blueprint`;
 });
 
+const isInitialState = computed(
+  () =>
+    JSON.stringify(initialFormData.value) === JSON.stringify(currentFormData)
+);
+
 const isActive = computed(
   () => drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false
 );
@@ -157,10 +174,14 @@ watch(isActive, async () => {
   }
 
   setValues(cloneDeep(blueprintsStore.itemToEdit || defaultFormData));
+
+  initialFormData.value = cloneDeep(currentFormData);
 });
 
 watch(itemToEdit, () => {
   setValues(cloneDeep(blueprintsStore.itemToEdit || defaultFormData));
+
+  initialFormData.value = cloneDeep(currentFormData);
 });
 
 const onShowUpdate = () => {
