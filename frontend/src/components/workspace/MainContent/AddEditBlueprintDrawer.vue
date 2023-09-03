@@ -12,26 +12,37 @@
   >
     <n-drawer-content :title="title" closable>
       <n-form size="large" :disabled="!canAddOrEditBlueprint">
-        <n-form-item label="Name">
-          <n-input
-            v-model:value="formData.name"
-            type="text"
-            placeholder="Name"
-          />
+        <n-form-item
+          label="Name"
+          :required="true"
+          :feedback="getError('name')"
+          :validation-status="hasError('name')"
+        >
+          <n-input v-model:value="name" type="text" placeholder="Name" />
         </n-form-item>
 
-        <n-form-item label="Note">
+        <n-form-item
+          label="Note"
+          :required="true"
+          :feedback="getError('description')"
+          :validation-status="hasError('description')"
+        >
           <n-input
-            v-model:value="formData.description"
+            v-model:value="description"
             type="textarea"
             placeholder="Description"
             :resizable="true"
           />
         </n-form-item>
 
-        <n-form-item label="Color">
+        <n-form-item
+          label="Color"
+          :required="true"
+          :feedback="getError('color')"
+          :validation-status="hasError('color')"
+        >
           <n-color-picker
-            v-model:value="formData.color"
+            v-model:value="color"
             :show-alpha="false"
             :modes="['hex']"
           />
@@ -51,7 +62,7 @@
                 : Permission.CreateBlueprint
             "
           >
-            <n-button secondary type="success">
+            <n-button secondary type="success" @click="onSubmit">
               {{ isEditMode ? "Update" : "Create" }}
             </n-button>
           </require-permission>
@@ -73,8 +84,11 @@ import {
   NDrawerContent,
 } from "naive-ui";
 import { storeToRefs } from "pinia";
+import { computed, watch } from "vue";
 import cloneDeep from "lodash/cloneDeep";
-import { computed, ref, watch, type Ref } from "vue";
+import { object, string, Schema } from "yup";
+import { useForm, useField } from "vee-validate";
+import { toTypedSchema } from "@vee-validate/yup";
 
 import { Drawer } from "@/types/Drawer";
 import { useAuthStore } from "@/store/auth";
@@ -82,6 +96,7 @@ import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
 import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
 const authStore = useAuthStore();
@@ -96,11 +111,28 @@ const defaultFormData: AddEditBlueprintDto = {
   description: "",
 };
 
-const formData: Ref<AddEditBlueprintDto> = ref(cloneDeep(defaultFormData));
 const canAddOrEditBlueprint = authStore.hasAtLeastOnePermission([
   Permission.CreateBlueprint,
   Permission.UpdateBlueprint,
 ]);
+
+const schema = toTypedSchema<Schema<AddEditBlueprintDto>>(
+  object({
+    name: string().required(),
+    color: string().required(),
+    description: string().required(),
+  })
+);
+
+const { errors, setValues, meta, handleSubmit } = useForm({
+  validationSchema: schema,
+});
+
+const { value: name } = useField<string>("name");
+const { value: color } = useField<string>("color");
+const { value: description } = useField<string>("description");
+
+const { getError, hasError } = useVeeValidateHelpers(meta, errors);
 
 const title = computed(() => {
   return `${blueprintsStore.itemToEdit ? "Edit" : "Add"} blueprint`;
@@ -116,14 +148,18 @@ watch(isActive, async () => {
     return;
   }
 
-  formData.value = cloneDeep(blueprintsStore.itemToEdit || defaultFormData);
+  setValues(cloneDeep(blueprintsStore.itemToEdit || defaultFormData));
 });
 
 watch(itemToEdit, () => {
-  formData.value = cloneDeep(blueprintsStore.itemToEdit || defaultFormData);
+  setValues(cloneDeep(blueprintsStore.itemToEdit || defaultFormData));
 });
 
 const onShowUpdate = () => {
   drawerStore.setActiveDrawer(null);
 };
+
+const onSubmit = handleSubmit.withControlled(() => {
+  console.log("123");
+});
 </script>
