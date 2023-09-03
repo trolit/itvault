@@ -61,7 +61,7 @@ export const useAddEditBodySchema: (
           const blueprint = await blueprintRepository.getOne({
             where: {
               id: idQuery,
-              name: value,
+              color: value,
               workspace: {
                 id: workspaceId,
               },
