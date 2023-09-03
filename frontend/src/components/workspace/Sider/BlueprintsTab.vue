@@ -12,9 +12,11 @@
         </template>
       </n-input>
 
-      <n-button size="small" @click="toggleAddEditBlueprintDrawer()">
-        <n-icon :component="AddIcon" :size="25" />
-      </n-button>
+      <require-permission :permission="Permission.CreateBlueprint">
+        <n-button size="small" @click="toggleAddEditBlueprintDrawer()">
+          <n-icon :component="AddIcon" :size="25" />
+        </n-button>
+      </require-permission>
     </div>
 
     <n-scrollbar>
@@ -80,13 +82,15 @@ import { onMounted, ref, type PropType, type Ref } from "vue";
 import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
+import { Permission } from "@shared/types/enums/Permission";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
-
-const perPage = 11;
-const isLoading = ref(false);
+import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();
+
+const perPage = 11;
+const isLoading = ref(false);
 
 const props = defineProps({
   page: {
