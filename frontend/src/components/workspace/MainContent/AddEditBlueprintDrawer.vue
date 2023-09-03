@@ -22,7 +22,7 @@
         </n-form-item>
 
         <n-form-item
-          label="Note"
+          label="Description"
           :required="true"
           :feedback="getError('description')"
           :validation-status="hasError('description')"
