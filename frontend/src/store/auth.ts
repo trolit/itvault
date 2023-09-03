@@ -4,6 +4,8 @@ import { defineStore } from "pinia";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 
 import type { ILoginForm } from "@/interfaces/ILoginForm";
+import type { Permission } from "@shared/types/enums/Permission";
+import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 interface IState {
   profile: ILoggedUserDto;
@@ -22,8 +24,19 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   actions: {
+    // @TODO move to getters
     loggedUserId() {
       return this.profile.id;
+    },
+
+    hasPermission(permission: Permission) {
+      return isPermissionEnabled(permission, this.profile.permissions);
+    },
+
+    hasAtLeastOnePermission(permissions: Permission[]) {
+      return permissions.some(permission =>
+        isPermissionEnabled(permission, this.profile.permissions)
+      );
     },
 
     async status() {

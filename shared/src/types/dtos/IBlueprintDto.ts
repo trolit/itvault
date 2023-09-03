@@ -3,6 +3,8 @@ export interface IBlueprintDto {
 
   name: string;
 
+  description: string;
+
   color: string;
 
   createdAt: string;

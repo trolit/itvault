@@ -9,6 +9,7 @@ export class BlueprintMapper
 {
   id: number;
   name: string;
+  description: string;
   color: string;
   createdAt: string;
   updatedAt: string;
@@ -18,6 +19,7 @@ export class BlueprintMapper
     keys: (keyof Blueprint)[] = [
       "id",
       "name",
+      "description",
       "color",
       "createdAt",
       "updatedAt",

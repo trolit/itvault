@@ -12,9 +12,11 @@
         </template>
       </n-input>
 
-      <n-button size="small" @click="toggleAddEditBlueprintDrawer">
-        <n-icon :component="AddIcon" :size="25" />
-      </n-button>
+      <require-permission :permission="Permission.CreateBlueprint">
+        <n-button size="small" @click="toggleAddEditBlueprintDrawer()">
+          <n-icon :component="AddIcon" :size="25" />
+        </n-button>
+      </require-permission>
     </div>
 
     <n-scrollbar>
@@ -22,7 +24,7 @@
         <n-list-item
           v-for="(blueprint, index) in blueprintsStore.items"
           :key="index"
-          @click="toggleAddEditBlueprintDrawer"
+          @click="toggleAddEditBlueprintDrawer(blueprint)"
         >
           <div class="wrapper">
             <div class="content">
@@ -63,6 +65,7 @@ import {
   Reset as ResetIcon,
   Search as SearchIcon,
 } from "@vicons/carbon";
+import cloneDeep from "lodash/cloneDeep";
 import {
   NTag,
   NSpin,
@@ -79,12 +82,15 @@ import { onMounted, ref, type PropType, type Ref } from "vue";
 import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
-
-const perPage = 11;
-const isLoading = ref(false);
+import { Permission } from "@shared/types/enums/Permission";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();
+
+const perPage = 11;
+const isLoading = ref(false);
 
 const props = defineProps({
   page: {
@@ -101,7 +107,20 @@ onMounted(() => {
   }
 });
 
-function toggleAddEditBlueprintDrawer() {
+function toggleAddEditBlueprintDrawer(newItemToEdit?: IBlueprintDto) {
+  const isSameItemToEdit = !!(
+    blueprintsStore.itemToEdit?.id === newItemToEdit?.id
+  );
+
+  blueprintsStore.itemToEdit = newItemToEdit ? cloneDeep(newItemToEdit) : null;
+
+  if (
+    !isSameItemToEdit &&
+    drawerStore.isDrawerActive(Drawer.AddEditBlueprint)
+  ) {
+    return;
+  }
+
   drawerStore.setActiveDrawer(Drawer.AddEditBlueprint);
 }
 

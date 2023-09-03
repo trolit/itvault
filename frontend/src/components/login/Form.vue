@@ -36,9 +36,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { object, string } from "yup";
 import { useRouter } from "vue-router";
 import { useForm, useField } from "vee-validate";
-import { object, string, type SchemaOf } from "yup";
 import { NInput, NForm, NFormItem, NButton, useMessage } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
@@ -47,27 +47,19 @@ import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
 
 const router = useRouter();
-
 const message = useMessage();
-
 const authStore = useAuthStore();
-
-const schema: SchemaOf<ILoginForm> = object({
-  email: string().required().email(),
-  password: string().required(),
-});
-
 const { errors, handleSubmit, meta } = useForm({
-  validationSchema: schema,
+  validationSchema: object({
+    email: string().required().email(),
+    password: string().required(),
+  }),
 });
-
+const { value: email } = useField<string>("email");
+const { value: password } = useField<string>("password");
 const { getError, hasError } = useVeeValidateHelpers(meta, errors);
 
-const { value: email } = useField<string>("email");
-
-const { value: password } = useField<string>("password");
-
-let isLoading = ref(false);
+const isLoading = ref(false);
 
 const onSubmit = handleSubmit.withControlled(async values => {
   if (isLoading.value) {
@@ -81,6 +73,7 @@ const onSubmit = handleSubmit.withControlled(async values => {
 
     router.push({ name: ROUTE_DASHBOARD_NAME });
   } catch (error) {
+    // @TODO handle server errors
     console.error(error);
 
     // @NOTE consider custom message
