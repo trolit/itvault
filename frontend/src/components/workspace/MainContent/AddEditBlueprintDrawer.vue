@@ -38,11 +38,13 @@
         </n-form-item>
       </n-form>
 
-      <div class="actions">
-        <n-button secondary size="large" type="error"> Delete </n-button>
+      <template #footer>
+        <n-space justify="space-between" class="w-100">
+          <n-button secondary type="error"> Delete </n-button>
 
-        <n-button secondary size="large" type="success"> Save </n-button>
-      </div>
+          <n-button secondary type="success"> Save </n-button>
+        </n-space>
+      </template>
     </n-drawer-content>
   </n-drawer>
 </template>
@@ -51,6 +53,7 @@
 import {
   NForm,
   NInput,
+  NSpace,
   NButton,
   NDrawer,
   NFormItem,
