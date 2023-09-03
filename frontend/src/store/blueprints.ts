@@ -9,12 +9,14 @@ import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 interface IState {
   total: number;
   items: IBlueprintDto[];
+  itemToEdit: IBlueprintDto | null;
 }
 
 export const useBlueprintsStore = defineStore("blueprints", {
   state: (): IState => ({
     total: 0,
     items: [],
+    itemToEdit: null,
   }),
 
   actions: {
