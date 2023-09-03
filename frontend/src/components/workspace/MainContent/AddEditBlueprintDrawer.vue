@@ -40,7 +40,9 @@
 
       <template #footer>
         <n-space justify="space-between" class="w-100">
-          <n-button secondary type="error"> Delete </n-button>
+          <require-permission :permission="Permission.DeleteBlueprint">
+            <n-button secondary type="error"> Delete </n-button>
+          </require-permission>
 
           <n-button secondary type="success"> Save </n-button>
         </n-space>
@@ -67,6 +69,8 @@ import { computed, ref, watch, type Ref } from "vue";
 import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
+import { Permission } from "@shared/types/enums/Permission";
+import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
 const drawerStore = useDrawerStore();
