@@ -52,7 +52,10 @@
       <template #footer>
         <n-space justify="space-between" class="w-100" align="center">
           <!-- @TODO handle delete [blueprint] operation -->
-          <require-permission :permission="Permission.DeleteBlueprint">
+          <require-permission
+            v-if="isEditMode"
+            :permission="Permission.DeleteBlueprint"
+          >
             <n-button secondary type="error"> Delete </n-button>
           </require-permission>
 
