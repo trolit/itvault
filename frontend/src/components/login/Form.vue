@@ -73,6 +73,7 @@ const onSubmit = handleSubmit.withControlled(async values => {
 
     router.push({ name: ROUTE_DASHBOARD_NAME });
   } catch (error) {
+    // @TODO handle server errors
     console.error(error);
 
     // @NOTE consider custom message
