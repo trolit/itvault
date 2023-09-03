@@ -11,7 +11,7 @@
     @update:show="onShowUpdate"
   >
     <n-drawer-content :title="title" closable>
-      <n-form size="large">
+      <n-form size="large" :disabled="!canAddOrEditBlueprint">
         <n-form-item label="Name">
           <n-input
             v-model:value="formData.name"
@@ -44,7 +44,17 @@
             <n-button secondary type="error"> Delete </n-button>
           </require-permission>
 
-          <n-button secondary type="success"> Save </n-button>
+          <require-permission
+            :permission="
+              isEditMode
+                ? Permission.UpdateBlueprint
+                : Permission.CreateBlueprint
+            "
+          >
+            <n-button secondary type="success">
+              {{ isEditMode ? "Update" : "Create" }}
+            </n-button>
+          </require-permission>
         </n-space>
       </template>
     </n-drawer-content>
@@ -67,14 +77,18 @@ import cloneDeep from "lodash/cloneDeep";
 import { computed, ref, watch, type Ref } from "vue";
 
 import { Drawer } from "@/types/Drawer";
+import { useAuthStore } from "@/store/auth";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
+const authStore = useAuthStore();
 const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();
+
+const { itemToEdit } = storeToRefs(blueprintsStore);
 
 const defaultFormData: AddEditBlueprintDto = {
   name: "",
@@ -83,16 +97,19 @@ const defaultFormData: AddEditBlueprintDto = {
 };
 
 const formData: Ref<AddEditBlueprintDto> = ref(cloneDeep(defaultFormData));
-
-const { itemToEdit } = storeToRefs(blueprintsStore);
+const canAddOrEditBlueprint = authStore.hasAtLeastOnePermission([
+  Permission.CreateBlueprint,
+  Permission.UpdateBlueprint,
+]);
 
 const title = computed(() => {
   return `${blueprintsStore.itemToEdit ? "Edit" : "Add"} blueprint`;
 });
 
-const isActive = computed((): boolean => {
-  return drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false;
-});
+const isActive = computed(
+  () => drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false
+);
+const isEditMode = computed(() => !!blueprintsStore.itemToEdit);
 
 watch(isActive, async () => {
   if (!isActive.value) {
