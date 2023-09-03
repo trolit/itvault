@@ -7,6 +7,8 @@ export const useDateService = () => ({
   format: (date: string, template = "YYYY-MM-DD") =>
     dayjs(date).format(template),
 
+  now: () => dayjs(),
+
   fromNow: (date: string) => dayjs(date).fromNow(),
 
   toNow: (date: string) => dayjs(date).toNow(),
