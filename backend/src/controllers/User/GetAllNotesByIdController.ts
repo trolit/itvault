@@ -68,18 +68,11 @@ export class GetAllNotesByIdController extends BaseController {
       skip,
       take: GetAllNotesByIdController.ITEMS_PER_PAGE,
       select: this._select,
-      where: [
-        {
-          createdBy: {
-            id,
-          },
+      where: {
+        createdBy: {
+          id,
         },
-        {
-          updatedBy: {
-            id,
-          },
-        },
-      ],
+      },
       relations: {
         createdBy: true,
         updatedBy: true,
