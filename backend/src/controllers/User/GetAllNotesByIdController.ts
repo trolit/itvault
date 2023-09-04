@@ -44,6 +44,9 @@ export class GetAllNotesByIdController extends BaseController {
       createdBy: {
         id: true,
         fullName: true,
+        role: {
+          name: true,
+        },
       },
       updatedBy: {
         id: true,
@@ -76,7 +79,9 @@ export class GetAllNotesByIdController extends BaseController {
         },
       },
       relations: {
-        createdBy: true,
+        createdBy: {
+          role: true,
+        },
         updatedBy: true,
       },
       withDeleted: isPermissionEnabled(
