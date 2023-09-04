@@ -43,7 +43,7 @@ export class GetAllController extends BaseController {
       query: { skip, take },
     } = request;
 
-    const [result, total] = await this._roleRepository.getAll({
+    const [result, total] = await this._roleRepository.getAllAndCount({
       skip,
       take,
       where: {

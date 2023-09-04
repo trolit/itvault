@@ -38,7 +38,7 @@ export class GetAllController extends BaseController {
       query: { skip, take },
     } = request;
 
-    const [result, total] = await this._userRepository.getAll({
+    const [result, total] = await this._userRepository.getAllAndCount({
       skip,
       take,
       order: {

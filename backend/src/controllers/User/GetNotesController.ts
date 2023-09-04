@@ -69,7 +69,7 @@ export class GetNotesController extends BaseController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const [result, total] = await this._noteRepository.getAll({
+    const [result, total] = await this._noteRepository.getAllAndCount({
       skip,
       take: GetNotesController.ITEMS_PER_PAGE,
       select: this._select,

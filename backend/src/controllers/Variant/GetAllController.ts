@@ -38,7 +38,7 @@ export class GetAllController extends BaseController {
       query: { fileId, workspaceId },
     } = request;
 
-    const [result] = await this._variantRepository.getAll({
+    const [result] = await this._variantRepository.getAllAndCount({
       order: {
         name: "DESC",
       },

@@ -69,7 +69,7 @@ export class GetAllController extends BaseController {
       ...entityReference,
     };
 
-    const [result, total] = await this._noteRepository.getAll({
+    const [result, total] = await this._noteRepository.getAllAndCount({
       select: this._select,
       skip,
       take,

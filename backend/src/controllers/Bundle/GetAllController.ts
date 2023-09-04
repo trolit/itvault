@@ -38,7 +38,7 @@ export class GetAllController extends BaseController {
       query: { skip, take, workspaceId },
     } = request;
 
-    const [result, total] = await this._bundleRepository.getAll({
+    const [result, total] = await this._bundleRepository.getAllAndCount({
       order: {
         createdAt: "DESC",
       },

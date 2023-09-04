@@ -39,7 +39,7 @@ export class GetAllController extends BaseController {
       query: { search },
     } = request;
 
-    const [result, total] = await this._tagRepository.getAll({
+    const [result, total] = await this._tagRepository.getAllAndCount({
       skip: 0,
       take: 5,
       where: {

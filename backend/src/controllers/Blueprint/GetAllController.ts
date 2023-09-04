@@ -42,7 +42,7 @@ export class GetAllController extends BaseController {
     // @TMP, consider implementing "flexible filtering" later
     const bucketsQuery = inUse === 1 ? { buckets: { id: Not(IsNull()) } } : {};
 
-    const [result, total] = await this._blueprintRepository.getAll({
+    const [result, total] = await this._blueprintRepository.getAllAndCount({
       skip,
       take,
       where: {

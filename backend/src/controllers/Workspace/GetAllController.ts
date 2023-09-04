@@ -42,7 +42,7 @@ export class GetAllController extends BaseController {
       query: { skip, take },
     } = request;
 
-    const [result, total] = await this._workspaceRepository.getAll({
+    const [result, total] = await this._workspaceRepository.getAllAndCount({
       skip,
       take,
       order: {

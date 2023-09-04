@@ -107,7 +107,7 @@ async function getRolesFromValue(value: UpdateUserDto[]): Promise<Role[]> {
   if (uniqueRoleIds.length) {
     const roleRepository = getInstanceOf<IRoleRepository>(Di.RoleRepository);
 
-    const [roles] = await roleRepository.getAll({
+    const [roles] = await roleRepository.getAllAndCount({
       where: {
         id: In(uniqueRoleIds),
       },

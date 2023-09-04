@@ -11,7 +11,7 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 export interface IBaseRepository<T> {
   createEntity(properties?: DeepPartial<T>): T;
 
-  getAll(options: FindManyOptions<T>): Promise<[T[], number]>;
+  getAllAndCount(options: FindManyOptions<T>): Promise<[T[], number]>;
 
   getOne(options: FindOneOptions<T>): Promise<T | null>;
 
