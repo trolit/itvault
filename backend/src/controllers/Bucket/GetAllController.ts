@@ -39,7 +39,7 @@ export class GetAllController extends BaseController {
       query: { variantId },
     } = request;
 
-    const [result] = await this._bucketRepository.getAllAndCount({
+    const result = await this._bucketRepository.getAll({
       select: {
         blueprint: {
           id: true,

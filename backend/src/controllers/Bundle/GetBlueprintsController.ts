@@ -39,7 +39,7 @@ export class GetBlueprintsController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const [blueprints] = await this._blueprintRepository.getAllAndCount({
+    const blueprints = await this._blueprintRepository.getAll({
       where: {
         workspace: {
           id: workspaceId,

@@ -192,7 +192,7 @@ export abstract class BaseBundleConsumerHandler {
         variants: [variant],
       } = file;
 
-      const [buckets] = await this.bucketRepository.getAllAndCount({
+      const buckets = await this.bucketRepository.getAll({
         where: {
           blueprint: {
             id: In(blueprintIds),
