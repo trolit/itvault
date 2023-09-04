@@ -42,9 +42,11 @@ export class GetAllNotesByIdController extends BaseController {
       createdAt: true,
       updatedAt: true,
       createdBy: {
+        id: true,
         fullName: true,
       },
       updatedBy: {
+        id: true,
         fullName: true,
       },
     };
