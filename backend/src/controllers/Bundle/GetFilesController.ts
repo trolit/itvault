@@ -39,7 +39,7 @@ export class GetFilesController extends BaseController {
       query: { workspaceId, blueprintId },
     } = request;
 
-    const [variants] = await this._variantRepository.getAll({
+    const variants = await this._variantRepository.getAll({
       where: {
         buckets: {
           blueprint: {

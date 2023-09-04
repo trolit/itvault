@@ -21,7 +21,7 @@ export abstract class BaseBundleConsumerHandler {
   ) {}
 
   private _getFiles(workspaceId: number, variantIds: string[]) {
-    return this.fileRepository.getAll({
+    return this.fileRepository.getAllAndCount({
       where: {
         workspace: {
           id: workspaceId,
@@ -192,7 +192,7 @@ export abstract class BaseBundleConsumerHandler {
         variants: [variant],
       } = file;
 
-      const [buckets] = await this.bucketRepository.getAll({
+      const buckets = await this.bucketRepository.getAll({
         where: {
           blueprint: {
             id: In(blueprintIds),

@@ -42,7 +42,7 @@ const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
 
       const fileRepository = getInstanceOf<IFileRepository>(Di.FileRepository);
 
-      const [files] = await fileRepository.getAll({
+      const files = await fileRepository.getAll({
         where: {
           variants: {
             id: In(uniqueVariantIds),

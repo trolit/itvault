@@ -3,8 +3,8 @@ import { inject, injectable } from "tsyringe";
 import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { INoteRepository } from "types/repositories/INoteRepository";
+import { GetNotesControllerTypes } from "types/controllers/User/GetNotesController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
-import { GetAllNotesByIdControllerTypes } from "types/controllers/User/GetAllNotesByIdController";
 
 import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
@@ -16,7 +16,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class GetAllNotesByIdController extends BaseController {
+export class GetNotesController extends BaseController {
   constructor(
     @inject(Di.NoteRepository)
     private _noteRepository: INoteRepository
@@ -42,17 +42,22 @@ export class GetAllNotesByIdController extends BaseController {
       createdAt: true,
       updatedAt: true,
       createdBy: {
+        id: true,
         fullName: true,
+        role: {
+          name: true,
+        },
       },
       updatedBy: {
+        id: true,
         fullName: true,
       },
     };
   }
 
   async v1(
-    request: GetAllNotesByIdControllerTypes.v1.Request,
-    response: GetAllNotesByIdControllerTypes.v1.Response
+    request: GetNotesControllerTypes.v1.Request,
+    response: GetNotesControllerTypes.v1.Response
   ) {
     const {
       permissions,
@@ -64,24 +69,19 @@ export class GetAllNotesByIdController extends BaseController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
-    const [result, total] = await this._noteRepository.getAll({
+    const [result, total] = await this._noteRepository.getAllAndCount({
       skip,
-      take: GetAllNotesByIdController.ITEMS_PER_PAGE,
+      take: GetNotesController.ITEMS_PER_PAGE,
       select: this._select,
-      where: [
-        {
-          createdBy: {
-            id,
-          },
+      where: {
+        createdBy: {
+          id,
         },
-        {
-          updatedBy: {
-            id,
-          },
-        },
-      ],
+      },
       relations: {
-        createdBy: true,
+        createdBy: {
+          role: true,
+        },
         updatedBy: true,
       },
       withDeleted: isPermissionEnabled(
