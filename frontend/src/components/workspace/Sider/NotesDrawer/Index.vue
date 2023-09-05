@@ -45,8 +45,8 @@
         />
       </template>
 
-      <user-comments-modal
-        v-model:show="isUserCommentsModalVisible"
+      <user-notes-modal
+        v-model:show="isUserNotesModalVisible"
         :id="userId"
         :full-name="userFullName"
       />
@@ -70,7 +70,7 @@ import { Drawer } from "@/types/Drawer";
 import SingleNote from "./SingleNote.vue";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
-import UserCommentsModal from "./UserCommentsModal.vue";
+import UserNotesModal from "./UserNotesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 
 const notesStore = useNotesStore();
@@ -81,7 +81,7 @@ const perPage = 5;
 const userId = ref(0);
 const isLoading = ref(true);
 const userFullName = ref("");
-const isUserCommentsModalVisible = ref(false);
+const isUserNotesModalVisible = ref(false);
 
 const isActive = computed((): boolean => {
   return drawerStore.isDrawerActive(Drawer.Notes) || false;
@@ -119,7 +119,7 @@ function onToggleUserCommentsModal(id: number, fullName: string) {
   userId.value = id;
   userFullName.value = fullName;
 
-  isUserCommentsModalVisible.value = true;
+  isUserNotesModalVisible.value = true;
 }
 
 async function fetchNotes() {
