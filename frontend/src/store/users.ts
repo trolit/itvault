@@ -16,6 +16,10 @@ export const useUsersStore = defineStore("users", {
 
   actions: {
     async getNotes(page: number, userId: number) {
+      if (page === 1) {
+        this.notes = { total: 0, result: [] };
+      }
+
       const { data } = await axios.get<PaginatedResponse<INoteDto>>(
         `v1/users/${userId}/notes`,
         {
@@ -25,14 +29,10 @@ export const useUsersStore = defineStore("users", {
 
       const { result, total } = data;
 
-      if (data.result.some(note => note.createdBy.id === userId)) {
-        this.notes.result = Array.prototype.concat(
-          cloneDeep(this.notes.result),
-          result
-        );
-      } else {
-        this.notes.result = result;
-      }
+      this.notes.result = Array.prototype.concat(
+        cloneDeep(this.notes.result),
+        result
+      );
 
       this.notes.total = total;
     },
