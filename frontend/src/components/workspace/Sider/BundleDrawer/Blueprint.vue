@@ -54,11 +54,13 @@
 
 <script setup lang="ts">
 import { ref, type PropType } from "vue";
+import { NCard, NTag, NButton, NIcon } from "naive-ui";
 import { Magnify as PreviewIcon } from "@vicons/carbon";
-import { NCard, NTag, NButton, NIcon, useLoadingBar } from "naive-ui";
 
 import { useBundlesStore } from "@/store/bundles";
+import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { LoadingState } from "@/types/enums/LoadingState";
 import type { BundleBlueprint } from "@/types/BundleBlueprint";
 import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 
@@ -70,7 +72,7 @@ const props = defineProps({
 });
 
 const isLoading = ref(false);
-const loadingBar = useLoadingBar();
+const generalStore = useGeneralStore();
 const bundlesStore = useBundlesStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -87,16 +89,16 @@ async function fetchFiles() {
 }
 
 async function openFile(file: IBundleFileDto) {
-  loadingBar.start();
+  generalStore.setLoadingState(LoadingState.Start);
 
   try {
     await workspacesStore.setFileTabFromBundle(file, props.value.id);
 
-    loadingBar.finish();
+    generalStore.setLoadingState(LoadingState.Finish);
   } catch (error) {
     console.log(error);
 
-    loadingBar.error();
+    generalStore.setLoadingState(LoadingState.Error);
   }
 }
 </script>
