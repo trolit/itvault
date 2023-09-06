@@ -1,5 +1,5 @@
 <template>
-  <n-page-header class="app-header" :style="{ borderBottom }">
+  <n-page-header class="app-header">
     <brand v-if="isInDashboardView" />
 
     <router-link
@@ -39,10 +39,6 @@ let isBrandHovered = ref<boolean>(false);
 
 const textColor = computed<string>((): string => {
   return themeVars.value.primaryColor;
-});
-
-const borderBottom = computed<string>((): string => {
-  return `1px solid ${themeVars.value.borderColor}`;
 });
 
 const route = useRoute();
