@@ -97,3 +97,8 @@ body {
 .w-100 {
   width: 100%;
 }
+
+.align-center {
+  display: flex;
+  align-items: center;
+}

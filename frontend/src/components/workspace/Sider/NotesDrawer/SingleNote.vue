@@ -42,11 +42,20 @@
     <template #footer>
       <!-- @TODO update note -->
       <require-permission
+        v-if="loggedUserId !== createdBy.id"
         :permission="Permission.DeleteAnyNote"
-        :or="loggedUserId === createdBy.id"
       >
-        <n-button type="warning" size="small" secondary>Update</n-button>
+        <n-button type="info" size="small" secondary> Update (any) </n-button>
       </require-permission>
+
+      <n-button
+        v-if="loggedUserId === createdBy.id"
+        type="warning"
+        size="small"
+        secondary
+      >
+        Update
+      </n-button>
 
       <!-- @TODO delete note -->
       <require-permission
