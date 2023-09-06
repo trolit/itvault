@@ -8,9 +8,9 @@
       collapse-mode="transform"
       :native-scrollbar="false"
       :inverted="inverted"
-      :collapsed="preferencesStore.isSiderCollapsed"
-      @expand="preferencesStore.toggleSider"
-      @collapse="preferencesStore.toggleSider"
+      :collapsed="generalStore.isSiderCollapsed"
+      @expand="generalStore.toggleSider"
+      @collapse="generalStore.toggleSider"
     >
       <div class="sider">
         <slot name="sider"></slot>
@@ -29,11 +29,11 @@ import { NLayout, NLayoutSider } from "naive-ui";
 
 import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
-import { usePreferencesStore } from "@/store/preferences";
+import { useGeneralStore } from "@/store/general";
 
 const inverted = ref(false);
 const drawerStore = useDrawerStore();
-const preferencesStore = usePreferencesStore();
+const generalStore = useGeneralStore();
 
 const isNotesDrawerActive = computed(() => {
   return drawerStore.isDrawerActive(Drawer.Notes) || false;

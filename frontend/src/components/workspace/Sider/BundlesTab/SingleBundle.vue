@@ -59,18 +59,16 @@
 <script setup lang="ts">
 import { computed, ref, type PropType } from "vue";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-import { NCard, NThing, NButton, NEllipsis, useLoadingBar } from "naive-ui";
+import { NCard, NThing, NButton, NEllipsis } from "naive-ui";
 
 import Status from "./Status.vue";
+import { useGeneralStore } from "@/store/general";
 import { useBundlesStore } from "@/store/bundles";
+import { LoadingState } from "@/types/enums/LoadingState";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import { BundleStatus as BundleStatusEnum } from "@shared/types/enums/BundleStatus";
-
-const loadingBar = useLoadingBar();
-const dateService = useDateService();
-const bundlesStore = useBundlesStore();
 
 const props = defineProps({
   item: {
@@ -80,6 +78,12 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["set-status"]);
+
+const dateService = useDateService();
+const bundlesStore = useBundlesStore();
+const generalStore = useGeneralStore();
+
+const { setLoadingState } = generalStore;
 
 const isProcessingRequeueRequest = ref(false);
 const isProcessingDownloadRequest = ref(false);
@@ -94,18 +98,18 @@ const isBundleGenerationFailed = computed(
 async function requeueBundle() {
   isProcessingRequeueRequest.value = true;
 
-  loadingBar.start();
+  setLoadingState(LoadingState.Start);
 
   try {
     await bundlesStore.requeue(props.item.id);
 
     emit("set-status", BundleStatusEnum.Queried);
 
-    loadingBar.finish();
+    setLoadingState(LoadingState.Finish);
   } catch (error) {
     console.log(error);
 
-    loadingBar.error();
+    setLoadingState(LoadingState.Error);
   } finally {
     isProcessingRequeueRequest.value = false;
   }
@@ -114,7 +118,7 @@ async function requeueBundle() {
 async function downloadBundle() {
   isProcessingDownloadRequest.value = true;
 
-  loadingBar.start();
+  setLoadingState(LoadingState.Start);
 
   try {
     const data = await bundlesStore.download(props.item.id);
@@ -131,11 +135,11 @@ async function downloadBundle() {
 
     link.remove();
 
-    loadingBar.finish();
+    setLoadingState(LoadingState.Finish);
   } catch (error) {
     console.log(error);
 
-    loadingBar.error();
+    setLoadingState(LoadingState.Error);
   } finally {
     isProcessingDownloadRequest.value = false;
   }

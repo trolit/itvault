@@ -10,11 +10,7 @@
       <n-message-provider placement="top-left">
         <app-header v-if="withAppHeader" />
 
-        <main :class="{ 'with-app-header': withAppHeader }">
-          <n-scrollbar>
-            <router-view />
-          </n-scrollbar>
-        </main>
+        <app-main :with-app-header="withAppHeader" />
       </n-message-provider>
     </n-loading-bar-provider>
   </n-config-provider>
@@ -31,27 +27,27 @@
 
 import {
   darkTheme,
-  NScrollbar,
   NGlobalStyle,
   NConfigProvider,
   NMessageProvider,
   NLoadingBarProvider,
   type GlobalThemeOverrides,
 } from "naive-ui";
+import { useRoute } from "vue-router";
 import { computed, type ComputedRef } from "vue";
-import { RouterView, useRoute } from "vue-router";
 import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
 
+import AppMain from "@/components/Main.vue";
+import { useGeneralStore } from "@/store/general";
 import AppHeader from "@/components/header/Index.vue";
-import { usePreferencesStore } from "@/store/preferences";
 import { darkDimmedTheme } from "@/custom-themes/DarkDimmed";
 import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
 import { ROUTE_GUEST_NAME, ROUTE_LOGIN_NAME } from "./assets/constants/routes";
 
-const preferencesStore = usePreferencesStore();
+const generalStore = useGeneralStore();
 
 const theme = computed((): BuiltInGlobalTheme | null => {
-  switch (preferencesStore.theme) {
+  switch (generalStore.theme) {
     case THEME_DARK:
       return darkTheme;
 
@@ -61,7 +57,7 @@ const theme = computed((): BuiltInGlobalTheme | null => {
 });
 
 const themeOverrides = computed((): GlobalThemeOverrides | null => {
-  switch (preferencesStore.theme) {
+  switch (generalStore.theme) {
     case THEME_DARK_DIMMED:
       return darkDimmedTheme;
 
