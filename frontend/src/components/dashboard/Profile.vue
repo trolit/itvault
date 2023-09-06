@@ -1,13 +1,21 @@
 <template>
   <ref-card :icon="UserProfileIcon" :title="email">
     <template #content>
-      <div class="statistics">
-        <n-statistic label="Workspaces"> 10 </n-statistic>
+      <n-descriptions
+        label-placement="top"
+        class="text-center"
+        label-align="center"
+        :label-style="{ fontWeight: 700, paddingBottom: '10px' }"
+      >
+        <n-descriptions-item label="Owner">
+          {{ fullName }}
+        </n-descriptions-item>
 
-        <n-statistic label="Account type">
+        <n-descriptions-item label="Workspaces"> 10 </n-descriptions-item>
+        <n-descriptions-item label="Account type">
           <n-tag type="info"> {{ roleName }} </n-tag>
-        </n-statistic>
-      </div>
+        </n-descriptions-item>
+      </n-descriptions>
 
       <n-divider />
 
@@ -107,7 +115,9 @@ import {
   NTimeline,
   NScrollbar,
   NStatistic,
+  NDescriptions,
   NTimelineItem,
+  NDescriptionsItem,
 } from "naive-ui";
 import { computed } from "vue";
 import groupBy from "lodash/groupBy";
@@ -121,7 +131,7 @@ import RefCard from "./RefCard.vue";
 import { useAuthStore } from "@/store/auth";
 
 const {
-  profile: { email, roleName, permissions },
+  profile: { email, roleName, permissions, fullName },
 } = useAuthStore();
 
 const groupedPermissions = computed(() => {
