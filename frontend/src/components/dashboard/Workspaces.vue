@@ -41,21 +41,20 @@
 
 <script setup lang="ts">
 import {
+  NTag,
+  NIcon,
+  NInput,
+  NEmpty,
+  NButton,
+  NDataTable,
+  useMessage,
+} from "naive-ui";
+import {
   Search as SearchIcon,
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
 import { useRouter } from "vue-router";
 import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
-import {
-  NDataTable,
-  NButton,
-  NInput,
-  NIcon,
-  NEmpty,
-  NTag,
-  useMessage,
-  useLoadingBar,
-} from "naive-ui";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
@@ -69,7 +68,6 @@ import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
 const router = useRouter();
 
 const isLoading = ref(true);
-const loadingBar = useLoadingBar();
 
 const defaultPagination = {
   page: 1,
@@ -119,20 +117,10 @@ onBeforeMount(async () => {
 const rowProps: CreateRowProps<IWorkspaceDto> = (row: IWorkspaceDto) => {
   return {
     style: "{cursor: 'pointer'}",
-    onclick: async () => {
-      loadingBar.start();
-
+    onclick: () => {
       workspacesStore.setActiveItem(row);
 
-      try {
-        await router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
-
-        loadingBar.finish();
-      } catch (error) {
-        console.log(error);
-
-        loadingBar.error();
-      }
+      router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
     },
   };
 };
