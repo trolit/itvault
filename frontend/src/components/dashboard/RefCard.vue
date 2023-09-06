@@ -3,9 +3,7 @@
     <n-thing>
       <template #avatar>
         <n-avatar>
-          <n-icon>
-            <component :is="icon" />
-          </n-icon>
+          <n-icon :component="icon" />
         </n-avatar>
       </template>
 
