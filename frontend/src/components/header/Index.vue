@@ -4,7 +4,7 @@
 
     <router-link
       v-else
-      :to="ROUTE_DASHBOARD_NAME"
+      :to="`/${ROUTE_DASHBOARD_NAME}`"
       :style="{ color: isBrandHovered ? textColor : 'inherit' }"
       @mouseenter="isBrandHovered = true"
       @mouseleave="isBrandHovered = false"
