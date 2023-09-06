@@ -62,7 +62,7 @@ import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
-import { usePreferencesStore } from "@/store/preferences";
+import { useGeneralStore } from "@/store/general";
 import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
@@ -71,7 +71,7 @@ const dateService = useDateService();
 const drawerStore = useDrawerStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
-const preferencesStore = usePreferencesStore();
+const generalStore = useGeneralStore();
 
 const variants = computed((): IVariantDto[] => {
   const tab = workspacesStore.activeFileTab;
@@ -102,8 +102,8 @@ onBeforeMount(async () => {
 });
 
 function toggleNotesDrawer() {
-  if (preferencesStore.isSiderCollapsed) {
-    preferencesStore.toggleSider();
+  if (generalStore.isSiderCollapsed) {
+    generalStore.toggleSider();
   }
 
   drawerStore.setActiveDrawer(Drawer.Notes);

@@ -9,7 +9,7 @@ interface IState {
   loadingState: LoadingState;
 }
 
-export const usePreferencesStore = defineStore("preferences", {
+export const useGeneralStore = defineStore("general", {
   state: (): IState => ({
     theme: THEME_DARK,
     isSiderCollapsed: false,

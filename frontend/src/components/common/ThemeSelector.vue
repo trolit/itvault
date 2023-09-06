@@ -27,10 +27,10 @@ import {
   THEME_LIGHT,
   THEME_DARK_DIMMED,
 } from "@/assets/constants/themes";
-import { usePreferencesStore } from "@/store/preferences";
+import { useGeneralStore } from "@/store/general";
 import type { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
-const preferencesStore = usePreferencesStore();
+const generalStore = useGeneralStore();
 
 const options: Ref<SelectMixedOption[]> = ref([
   {
@@ -45,10 +45,10 @@ const options: Ref<SelectMixedOption[]> = ref([
 ]);
 
 const theme: ComputedRef<string> = computed((): string => {
-  return preferencesStore.theme;
+  return generalStore.theme;
 });
 
 function setTheme(theme: string): void {
-  preferencesStore.setTheme(theme);
+  generalStore.setTheme(theme);
 }
 </script>

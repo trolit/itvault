@@ -11,7 +11,7 @@ import { watch } from "vue";
 import { storeToRefs } from "pinia";
 import { NScrollbar, useLoadingBar } from "naive-ui";
 
-import { usePreferencesStore } from "@/store/preferences";
+import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
 
 defineProps({
@@ -22,9 +22,9 @@ defineProps({
 });
 
 const loadingBar = useLoadingBar();
-const preferencesStore = usePreferencesStore();
+const generalStore = useGeneralStore();
 
-const { loadingState } = storeToRefs(preferencesStore);
+const { loadingState } = storeToRefs(generalStore);
 
 watch(loadingState, () => {
   switch (loadingState.value) {

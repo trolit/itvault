@@ -4,7 +4,7 @@ import {
   type NavigationGuardNext,
   type RouteLocationNormalized,
 } from "vue-router";
-import { usePreferencesStore } from "@/store/preferences";
+import { useGeneralStore } from "@/store/general";
 
 import {
   ROUTE_GUEST_NAME,
@@ -78,9 +78,9 @@ router.beforeEach(
     from: RouteLocationNormalized,
     next: NavigationGuardNext
   ) => {
-    const preferencesStore = usePreferencesStore();
+    const generalStore = useGeneralStore();
 
-    preferencesStore.setLoadingState(LoadingState.Start);
+    generalStore.setLoadingState(LoadingState.Start);
 
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
@@ -90,13 +90,13 @@ router.beforeEach(
       try {
         await authStore.status();
 
-        preferencesStore.setLoadingState(LoadingState.Finish);
+        generalStore.setLoadingState(LoadingState.Finish);
 
         next();
       } catch (error) {
         console.error(error);
 
-        preferencesStore.setLoadingState(LoadingState.Error);
+        generalStore.setLoadingState(LoadingState.Error);
 
         next(ROUTE_LOGIN_NAME);
       }
@@ -104,7 +104,7 @@ router.beforeEach(
       return;
     }
 
-    preferencesStore.setLoadingState(LoadingState.Finish);
+    generalStore.setLoadingState(LoadingState.Finish);
 
     next();
   }
