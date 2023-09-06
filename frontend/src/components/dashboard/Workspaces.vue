@@ -90,20 +90,6 @@ const pagination: PaginationProps = reactive({
 
     getWorkspaces();
   },
-  prefix({ pageSize, itemCount }) {
-    return !pageSize || !itemCount
-      ? null
-      : h(
-          NTag,
-          {},
-          {
-            default: () =>
-              `Showing ${
-                itemCount < pageSize ? itemCount : pageSize
-              } out of ${itemCount}`,
-          }
-        );
-  },
 });
 
 const workspacesStore = useWorkspacesStore();
