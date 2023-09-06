@@ -10,11 +10,7 @@
       <n-message-provider placement="top-left">
         <app-header v-if="withAppHeader" />
 
-        <main :class="{ 'with-app-header': withAppHeader }">
-          <n-scrollbar>
-            <router-view />
-          </n-scrollbar>
-        </main>
+        <app-main :with-app-header="withAppHeader" />
       </n-message-provider>
     </n-loading-bar-provider>
   </n-config-provider>
@@ -31,17 +27,17 @@
 
 import {
   darkTheme,
-  NScrollbar,
   NGlobalStyle,
   NConfigProvider,
   NMessageProvider,
   NLoadingBarProvider,
   type GlobalThemeOverrides,
 } from "naive-ui";
+import { useRoute } from "vue-router";
 import { computed, type ComputedRef } from "vue";
-import { RouterView, useRoute } from "vue-router";
 import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
 
+import AppMain from "@/components/Main.vue";
 import AppHeader from "@/components/header/Index.vue";
 import { usePreferencesStore } from "@/store/preferences";
 import { darkDimmedTheme } from "@/custom-themes/DarkDimmed";
