@@ -71,34 +71,6 @@
                 content="warning content"
                 time="2018-04-03 20:46"
               />
-
-              <n-timeline-item
-                title="Info"
-                content="info content"
-                time="2018-04-03 20:46"
-                line-type="dashed"
-              />
-
-              <n-timeline-item
-                title="Info"
-                content="info content"
-                time="2018-04-03 20:46"
-                line-type="dashed"
-              />
-
-              <n-timeline-item
-                title="Info"
-                content="info content"
-                time="2018-04-03 20:46"
-                line-type="dashed"
-              />
-
-              <n-timeline-item
-                title="Info"
-                content="info content"
-                time="2018-04-03 20:46"
-                line-type="dashed"
-              />
             </n-timeline>
           </n-scrollbar>
         </div>
@@ -114,7 +86,6 @@ import {
   NDivider,
   NTimeline,
   NScrollbar,
-  NStatistic,
   NDescriptions,
   NTimelineItem,
   NDescriptionsItem,
