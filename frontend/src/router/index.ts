@@ -4,6 +4,7 @@ import {
   type NavigationGuardNext,
   type RouteLocationNormalized,
 } from "vue-router";
+import { usePreferencesStore } from "@/store/preferences";
 
 import {
   ROUTE_GUEST_NAME,
@@ -20,6 +21,7 @@ import Updates from "@/views/Updates.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Workspace from "@/views/Workspace.vue";
 import { useAuthStore } from "@/store/auth";
+import { LoadingState } from "@/types/enums/LoadingState";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -76,6 +78,10 @@ router.beforeEach(
     from: RouteLocationNormalized,
     next: NavigationGuardNext
   ) => {
+    const preferencesStore = usePreferencesStore();
+
+    preferencesStore.setLoadingState(LoadingState.Start);
+
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
     if (requiresAuth) {
@@ -84,15 +90,21 @@ router.beforeEach(
       try {
         await authStore.status();
 
+        preferencesStore.setLoadingState(LoadingState.Finish);
+
         next();
       } catch (error) {
         console.error(error);
+
+        preferencesStore.setLoadingState(LoadingState.Error);
 
         next(ROUTE_LOGIN_NAME);
       }
 
       return;
     }
+
+    preferencesStore.setLoadingState(LoadingState.Finish);
 
     next();
   }
