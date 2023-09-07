@@ -22,8 +22,8 @@
 import { NButton, NPopselect } from "naive-ui";
 import { computed, type ComputedRef } from "vue";
 
-import { ALL_THEMES } from "@/assets/constants/themes";
 import { useGeneralStore } from "@/store/general";
+import { ALL_THEMES } from "@/assets/constants/themes";
 import type { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 const generalStore = useGeneralStore();
