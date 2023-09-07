@@ -15,7 +15,15 @@
     <location />
 
     <div class="actions">
-      <theme-selector />
+      <theme-selector>
+        <template #default>
+          <n-button text :focusable="false" class="theme-selector">
+            <n-icon :component="RainDropIcon" :size="20" />
+          </n-button>
+        </template>
+      </theme-selector>
+
+      <profile-menu />
 
       <logout-button />
     </div>
@@ -23,10 +31,12 @@
 </template>
 
 <script setup lang="ts">
-import { NPageHeader, useThemeVars } from "naive-ui";
+import { RainDrop as RainDropIcon } from "@vicons/carbon";
 import { useRoute, type RouteRecordName } from "vue-router";
 import { ref, computed, type ComputedRef, watch } from "vue";
+import { NPageHeader, useThemeVars, NButton, NIcon } from "naive-ui";
 
+import ProfileMenu from "./ProfileMenu.vue";
 import Brand from "@/components/common/Brand.vue";
 import Location from "@/components/header/Location.vue";
 import LogoutButton from "@/components/common/LogoutButton.vue";
