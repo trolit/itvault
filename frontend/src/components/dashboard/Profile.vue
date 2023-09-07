@@ -23,7 +23,7 @@
 
       <n-divider dashed />
 
-      <div class="title">Permissions</div>
+      <h4>Permissions</h4>
 
       <n-scrollbar trigger="none">
         <n-space>
