@@ -1,0 +1,108 @@
+<template>
+  <n-dropdown
+    trigger="hover"
+    :options="options"
+    :width="250"
+    @select="handleSelect"
+  >
+    <n-button>{{ authStore.profile.email }}</n-button>
+  </n-dropdown>
+</template>
+
+<script setup lang="ts">
+import { h, ref } from "vue";
+import { useRouter } from "vue-router";
+import { UserProfile as UserProfileIcon } from "@vicons/carbon";
+import { NAvatar, NDropdown, NText, NButton, NIcon, NTag } from "naive-ui";
+
+import { useAuthStore } from "@/store/auth";
+import { useGeneralStore } from "@/store/general";
+import { LoadingState } from "@/types/enums/LoadingState";
+import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
+
+const router = useRouter();
+const authStore = useAuthStore();
+const generalStore = useGeneralStore();
+
+function renderCustomHeader() {
+  return h(
+    "div",
+    {
+      style: "display: flex; align-items: center; padding: 8px 12px;",
+    },
+    [
+      h(
+        NAvatar,
+        {
+          round: true,
+          style: "margin-right: 12px;",
+        },
+        { default: () => h(NIcon, { component: UserProfileIcon }) }
+      ),
+      h("div", null, [
+        h("div", null, [
+          h(NText, { depth: 2 }, { default: () => authStore.profile.fullName }),
+        ]),
+        h("div", { style: "font-size: 12px;" }, [
+          h(NText, { depth: 3 }, { default: () => authStore.profile.email }),
+        ]),
+        h("div", { style: "font-size: 12px;" }, [
+          h(
+            NTag,
+            { type: "info", size: "small", style: { marginTop: "5px" } },
+            { default: () => authStore.profile.roleName }
+          ),
+        ]),
+      ]),
+    ]
+  );
+}
+
+const options = ref([
+  {
+    key: "header",
+    type: "render",
+    render: renderCustomHeader,
+  },
+  {
+    key: "header-divider",
+    type: "divider",
+  },
+  {
+    label: "Profile",
+    key: "profile",
+    disabled: true,
+  },
+  {
+    label: "Settings",
+    key: "settings",
+    disabled: true,
+  },
+  {
+    label: "Logout",
+    key: "logout",
+  },
+]);
+
+function handleSelect(key: string) {
+  if (key === "logout") {
+    logout();
+  }
+}
+
+async function logout() {
+  generalStore.setLoadingState(LoadingState.Start);
+
+  try {
+    await authStore.logout();
+
+    generalStore.setLoadingState(LoadingState.Finish);
+
+    router.push({ name: ROUTE_LOGIN_NAME });
+  } catch (error) {
+    console.error(error);
+
+    generalStore.setLoadingState(LoadingState.Error);
+  }
+}
+</script>
