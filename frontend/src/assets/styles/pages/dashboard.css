@@ -88,6 +88,8 @@
       }
 
       .permissions-grid {
+        width: 100%;
+
         .label {
           display: flex;
           text-align: left;
@@ -95,8 +97,11 @@
           justify-content: flex-start;
         }
 
-        .n-empty {
-          margin-top: 10px;
+        .empty-wrapper {
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
       }
     }

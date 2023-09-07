@@ -53,7 +53,9 @@
                   </n-tag>
                 </n-space>
 
-                <n-empty v-else size="small" description="Empty" />
+                <div v-else class="empty-wrapper">
+                  <n-empty size="small" description="Empty" />
+                </div>
               </n-grid-item>
 
               <n-grid-item>
@@ -70,7 +72,9 @@
                   </n-tag>
                 </n-space>
 
-                <n-empty v-else size="small" description="Empty" />
+                <div v-else class="empty-wrapper">
+                  <n-empty size="small" description="Empty" />
+                </div>
               </n-grid-item>
             </n-grid>
           </n-card>
