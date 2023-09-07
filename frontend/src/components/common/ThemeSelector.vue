@@ -20,29 +20,17 @@
 
 <script setup lang="ts">
 import { NButton, NPopselect } from "naive-ui";
-import { ref, computed, type ComputedRef, type Ref } from "vue";
+import { computed, type ComputedRef } from "vue";
 
-import {
-  THEME_DARK,
-  THEME_LIGHT,
-  THEME_DARK_DIMMED,
-} from "@/assets/constants/themes";
+import { ALL_THEMES } from "@/assets/constants/themes";
 import { useGeneralStore } from "@/store/general";
 import type { SelectMixedOption } from "naive-ui/es/select/src/interface";
 
 const generalStore = useGeneralStore();
 
-const options: Ref<SelectMixedOption[]> = ref([
-  {
-    value: THEME_DARK,
-  },
-  {
-    value: THEME_LIGHT,
-  },
-  {
-    value: THEME_DARK_DIMMED,
-  },
-]);
+const options: SelectMixedOption[] = ALL_THEMES.map(theme => ({
+  value: theme,
+}));
 
 const theme: ComputedRef<string> = computed((): string => {
   return generalStore.theme;
