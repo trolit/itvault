@@ -166,32 +166,30 @@ const { value: description } = useField<string>("description");
 
 const { getError, hasError } = useVeeValidateHelpers(meta, errors);
 
-const title = computed(() => {
-  return `${blueprintsStore.itemToEdit ? "Edit" : "Add"} blueprint`;
-});
-
-const isInitialState = computed(
-  () =>
-    JSON.stringify(initialFormData.value) === JSON.stringify(currentFormData)
-);
-
 const isActive = computed(
   () => drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false
 );
 const isEditMode = computed(() => !!blueprintsStore.itemToEdit);
+const title = computed(() => {
+  return `${isEditMode.value ? "Edit" : "Add"} blueprint`;
+});
+const isInitialState = computed(
+  () =>
+    JSON.stringify(initialFormData.value) === JSON.stringify(currentFormData)
+);
 
 watch(isActive, async () => {
   if (!isActive.value) {
     return;
   }
 
-  setValues(cloneDeep(blueprintsStore.itemToEdit || defaultFormData));
+  setValues(cloneDeep(itemToEdit.value || defaultFormData));
 
   initialFormData.value = cloneDeep(currentFormData);
 });
 
 watch(itemToEdit, () => {
-  setValues(cloneDeep(blueprintsStore.itemToEdit || defaultFormData));
+  setValues(cloneDeep(itemToEdit.value || defaultFormData));
 
   initialFormData.value = cloneDeep(currentFormData);
 });
