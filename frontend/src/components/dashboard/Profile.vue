@@ -31,10 +31,12 @@
             <n-grid x-gap="12" :cols="3" class="permissions-grid">
               <n-grid-item class="label">
                 <div>
-                  {{ group.name }}
+                  <n-text>{{ group.name }}</n-text>
 
                   <div>
-                    <small>total = {{ group.total }}</small>
+                    <small>
+                      <n-text depth="3"> total = {{ group.total }} </n-text>
+                    </small>
                   </div>
                 </div>
               </n-grid-item>
@@ -87,12 +89,13 @@
 <script setup lang="ts">
 import {
   NTag,
-  NSpace,
+  NText,
   NCard,
   NGrid,
   NEmpty,
-  NGridItem,
+  NSpace,
   NDivider,
+  NGridItem,
   NScrollbar,
   NDescriptions,
   NDescriptionsItem,
