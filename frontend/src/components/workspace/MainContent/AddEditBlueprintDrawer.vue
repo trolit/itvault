@@ -62,7 +62,9 @@
                 </n-button>
               </template>
 
-              Are you sure you want to delete this blueprint?
+              Are you sure that you want to remove this blueprint? Bundles with
+              that blueprint will persist but users won't be able to discover
+              blueprint usage in files.
             </n-popconfirm>
           </require-permission>
 
