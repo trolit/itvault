@@ -37,6 +37,7 @@ body {
 
 .app-header {
   display: flex;
+  align-items: center;
   height: calc(var(--header-height));
 
   .n-page-header-content {
