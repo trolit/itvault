@@ -7,7 +7,6 @@
           class="text-center"
           label-align="center"
           :label-style="{
-            fontWeight: 700,
             paddingBottom: '10px',
           }"
         >
@@ -24,41 +23,59 @@
 
       <n-divider dashed />
 
-      <div class="scrollable-data">
-        <div class="access">
-          <div class="title">Your permissions</div>
+      <div class="title">Permissions</div>
 
-          <n-scrollbar trigger="none">
-            <div class="levels">
-              <div
-                v-for="(key, index) in Object.keys(groupedPermissions)"
-                :key="index"
-                :style="{ marginRight: '12px' }"
-              >
-                {{ key }}
+      <n-scrollbar trigger="none">
+        <n-space>
+          <n-card v-for="(group, index) in groupedPermissions" :key="index">
+            <n-grid x-gap="12" :cols="3" class="permissions-grid">
+              <n-grid-item class="label">
+                <div>
+                  {{ group.name }}
 
-                <n-tag
-                  v-for="(
-                    { name, enabled }, permissionIndex
-                  ) in groupedPermissions[key]"
-                  :type="enabled ? 'success' : 'error'"
-                  :key="`group-${index}-permission-${permissionIndex}`"
-                >
-                  <template #icon>
-                    <n-icon
-                      :component="
-                        enabled ? OwnedPermissionIcon : NotOwnedPermissionIcon
-                      "
-                    />
-                  </template>
+                  <div>
+                    <small>total = {{ group.total }}</small>
+                  </div>
+                </div>
+              </n-grid-item>
 
-                  {{ name }}
-                </n-tag>
-              </div>
-            </div>
-          </n-scrollbar>
-        </div>
-      </div>
+              <n-grid-item>
+                <div>Enabled ({{ group.enabled.length }})</div>
+
+                <n-space v-if="group.enabled.length">
+                  <n-tag
+                    v-for="({ name }, permissionIndex) in group.enabled"
+                    size="small"
+                    type="success"
+                    :key="`${group}-${index}-permission-${permissionIndex}`"
+                  >
+                    {{ name }}
+                  </n-tag>
+                </n-space>
+
+                <n-empty v-else size="small" description="Empty" />
+              </n-grid-item>
+
+              <n-grid-item>
+                <div>Disabled ({{ group.disabled.length }})</div>
+
+                <n-space v-if="group.disabled.length">
+                  <n-tag
+                    v-for="({ name }, permissionIndex) in group.disabled"
+                    size="small"
+                    type="error"
+                    :key="`${group}-${index}-permission-${permissionIndex}`"
+                  >
+                    {{ name }}
+                  </n-tag>
+                </n-space>
+
+                <n-empty v-else size="small" description="Empty" />
+              </n-grid-item>
+            </n-grid>
+          </n-card>
+        </n-space>
+      </n-scrollbar>
     </template>
   </ref-card>
 </template>
@@ -66,20 +83,18 @@
 <script setup lang="ts">
 import {
   NTag,
-  NIcon,
   NSpace,
+  NCard,
+  NGrid,
+  NEmpty,
+  NGridItem,
   NDivider,
   NScrollbar,
   NDescriptions,
   NDescriptionsItem,
 } from "naive-ui";
 import { computed } from "vue";
-import groupBy from "lodash/groupBy";
-import {
-  UserProfile as UserProfileIcon,
-  Close as NotOwnedPermissionIcon,
-  Checkmark as OwnedPermissionIcon,
-} from "@vicons/carbon";
+import { UserProfile as UserProfileIcon } from "@vicons/carbon";
 
 import RefCard from "./RefCard.vue";
 import { useAuthStore } from "@/store/auth";
@@ -89,6 +104,19 @@ const {
 } = useAuthStore();
 
 const groupedPermissions = computed(() => {
-  return groupBy(permissions, value => value.group);
+  const groups = [...new Set(permissions.map(({ group }) => group))].sort();
+
+  return groups.map(group => {
+    const groupPermissions = permissions.filter(
+      permission => permission.group === group
+    );
+
+    return {
+      name: group,
+      total: groupPermissions.length,
+      enabled: groupPermissions.filter(permission => permission.enabled),
+      disabled: groupPermissions.filter(permission => !permission.enabled),
+    };
+  });
 });
 </script>

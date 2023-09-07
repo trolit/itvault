@@ -82,41 +82,21 @@
 
     .profile-card-wrapper {
       .n-card {
-        .content {
-          .scrollable-data {
-            display: flex;
+        .n-scrollbar {
+          max-height: 300px;
+        }
+      }
 
-            .access,
-            .timeline {
-              flex: 1;
+      .permissions-grid {
+        .label {
+          display: flex;
+          text-align: left;
+          align-items: center;
+          justify-content: flex-start;
+        }
 
-              .n-scrollbar {
-                max-height: 300px;
-              }
-
-              .title {
-                margin-bottom: 10px;
-                font-size: 15px;
-              }
-            }
-
-            .access {
-              height: 100%;
-              padding: 0 20px;
-
-              .levels {
-                row-gap: 10px;
-                display: flex;
-                flex-wrap: wrap;
-
-                .n-tag {
-                  width: 100%;
-                  font-size: 12px;
-                  margin-right: 15px;
-                }
-              }
-            }
-          }
+        .n-empty {
+          margin-top: 10px;
         }
       }
     }
