@@ -8,7 +8,7 @@
     :trap-focus="false"
     :block-scroll="false"
     :mask-closable="false"
-    @update:show="onShowUpdate"
+    @update:show="dismissDrawer"
   >
     <n-drawer-content :title="title" closable>
       <n-form size="large" :disabled="!canAddOrEditBlueprint">
@@ -51,12 +51,19 @@
 
       <template #footer>
         <n-space justify="space-between" class="w-100" align="center">
-          <!-- @TODO handle delete [blueprint] operation -->
           <require-permission
             v-if="isEditMode"
             :permission="Permission.DeleteBlueprint"
           >
-            <n-button secondary type="error"> Delete </n-button>
+            <n-popconfirm @positive-click="deleteBlueprint">
+              <template #trigger>
+                <n-button secondary type="error" :loading="isLoading">
+                  Delete
+                </n-button>
+              </template>
+
+              Are you sure you want to delete this blueprint?
+            </n-popconfirm>
           </require-permission>
 
           <require-permission
@@ -91,15 +98,16 @@ import {
   NDrawer,
   NFormItem,
   useMessage,
+  NPopconfirm,
   NColorPicker,
   NDrawerContent,
 } from "naive-ui";
 import { storeToRefs } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
-import { computed, ref, watch, type Ref } from "vue";
 import { object, string, Schema } from "yup";
 import { useForm, useField } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
+import { computed, ref, watch, type Ref } from "vue";
 
 import { Drawer } from "@/types/Drawer";
 import { useAuthStore } from "@/store/auth";
@@ -188,7 +196,7 @@ watch(itemToEdit, () => {
   initialFormData.value = cloneDeep(currentFormData);
 });
 
-const onShowUpdate = () => {
+const dismissDrawer = () => {
   drawerStore.setActiveDrawer(null);
 };
 
@@ -215,11 +223,31 @@ const onSubmit = handleSubmit.withControlled(async formData => {
 
     message.success(`Blueprint successfully ${isEdit ? "updated" : "added"}.`);
 
-    onShowUpdate();
+    dismissDrawer();
   } catch (error) {
     console.error(error);
   } finally {
     isLoading.value = false;
   }
 });
+
+async function deleteBlueprint() {
+  if (!itemToEdit.value) {
+    return;
+  }
+
+  isLoading.value = true;
+
+  try {
+    await blueprintsStore.delete(itemToEdit.value.id);
+
+    itemToEdit.value = null;
+
+    dismissDrawer();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>
