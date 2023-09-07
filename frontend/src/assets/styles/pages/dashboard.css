@@ -83,7 +83,7 @@
     .profile-card-wrapper {
       .n-card {
         .n-scrollbar {
-          max-height: 300px;
+          max-height: calc(100vh * 0.5);
         }
       }
 
