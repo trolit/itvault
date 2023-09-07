@@ -24,8 +24,6 @@
       </theme-selector>
 
       <profile-menu />
-
-      <logout-button />
     </div>
   </n-page-header>
 </template>
@@ -39,7 +37,6 @@ import { NPageHeader, useThemeVars, NButton, NIcon } from "naive-ui";
 import ProfileMenu from "./ProfileMenu.vue";
 import Brand from "@/components/common/Brand.vue";
 import Location from "@/components/header/Location.vue";
-import LogoutButton from "@/components/common/LogoutButton.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
