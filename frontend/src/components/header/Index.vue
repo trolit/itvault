@@ -18,7 +18,7 @@
       <theme-selector>
         <template #default>
           <n-button text :focusable="false" class="theme-selector">
-            <n-icon :component="RainDropIcon" :size="20" />
+            <n-icon :component="RainDropIcon" :size="25" />
           </n-button>
         </template>
       </theme-selector>
