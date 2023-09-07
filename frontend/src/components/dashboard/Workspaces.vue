@@ -19,10 +19,8 @@
         </template>
       </n-input>
 
-      <!-- @TODO show pagination if there are at least 2 pages -->
       <n-data-table
         remote
-        flex-height
         :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
@@ -66,12 +64,13 @@ import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
 
 const router = useRouter();
+const message = useMessage();
+const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(true);
 
 const defaultPagination = {
   page: 1,
-  pageCount: 0,
   pageSize: 10,
 };
 
@@ -92,12 +91,8 @@ const pagination: PaginationProps = reactive({
   },
 });
 
-const workspacesStore = useWorkspacesStore();
-
-const message = useMessage();
-
 onBeforeMount(async () => {
-  await getWorkspaces();
+  getWorkspaces();
 });
 
 const rowProps: CreateRowProps<IWorkspaceDto> = (row: IWorkspaceDto) => {
@@ -152,10 +147,6 @@ async function getWorkspaces() {
     });
 
     pagination.itemCount = total;
-
-    pagination.pageCount = Math.ceil(
-      total / (pagination.pageSize || defaultPagination.pageSize)
-    );
   } catch (error) {
     console.log(error);
 
