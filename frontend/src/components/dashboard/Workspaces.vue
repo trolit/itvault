@@ -1,5 +1,11 @@
 <template>
   <ref-card :icon="WorkspacesIcon" title="Workspaces">
+    <template #header-extra>
+      <require-permission :permission="Permission.CreateWorkspace">
+        <n-button type="info"> New workspace </n-button>
+      </require-permission>
+    </template>
+
     <template #content>
       <!-- @TODO show input only when there are at least 3 pages -->
       <n-input
@@ -13,10 +19,8 @@
         </template>
       </n-input>
 
-      <!-- @TODO show pagination if there are at least 2 pages -->
       <n-data-table
         remote
-        flex-height
         :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
@@ -29,12 +33,6 @@
           <n-empty description="No workspaces found." />
         </template>
       </n-data-table>
-
-      <div class="actions">
-        <require-permission :permission="Permission.CreateWorkspace">
-          <n-button ghost type="info"> New workspace </n-button>
-        </require-permission>
-      </div>
     </template>
   </ref-card>
 </template>
@@ -66,12 +64,13 @@ import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
 
 const router = useRouter();
+const message = useMessage();
+const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(true);
 
 const defaultPagination = {
   page: 1,
-  pageCount: 0,
   pageSize: 10,
 };
 
@@ -90,28 +89,10 @@ const pagination: PaginationProps = reactive({
 
     getWorkspaces();
   },
-  prefix({ pageSize, itemCount }) {
-    return !pageSize || !itemCount
-      ? null
-      : h(
-          NTag,
-          {},
-          {
-            default: () =>
-              `Showing ${
-                itemCount < pageSize ? itemCount : pageSize
-              } out of ${itemCount}`,
-          }
-        );
-  },
 });
 
-const workspacesStore = useWorkspacesStore();
-
-const message = useMessage();
-
 onBeforeMount(async () => {
-  await getWorkspaces();
+  getWorkspaces();
 });
 
 const rowProps: CreateRowProps<IWorkspaceDto> = (row: IWorkspaceDto) => {
@@ -166,10 +147,6 @@ async function getWorkspaces() {
     });
 
     pagination.itemCount = total;
-
-    pagination.pageCount = Math.ceil(
-      total / (pagination.pageSize || defaultPagination.pageSize)
-    );
   } catch (error) {
     console.log(error);
 

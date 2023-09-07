@@ -3,9 +3,7 @@
     <n-thing>
       <template #avatar>
         <n-avatar>
-          <n-icon>
-            <component :is="icon" />
-          </n-icon>
+          <n-icon :component="icon" />
         </n-avatar>
       </template>
 
@@ -13,6 +11,10 @@
         <span class="title">
           {{ title }}
         </span>
+      </template>
+
+      <template #header-extra>
+        <slot name="header-extra" />
       </template>
 
       <div class="content">
@@ -23,8 +25,9 @@
 
           <div class="actions">
             <router-link :to="to">
-              <n-button type="info" dashed>
+              <n-button type="info">
                 Open
+
                 <n-icon :size="15">
                   <arrow-up-right-icon />
                 </n-icon>

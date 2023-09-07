@@ -1,5 +1,5 @@
 <template>
-  <n-page-header class="app-header" :style="{ borderBottom }">
+  <n-page-header class="app-header">
     <brand v-if="isInDashboardView" />
 
     <router-link
@@ -15,21 +15,28 @@
     <location />
 
     <div class="actions">
-      <theme-selector />
+      <theme-selector>
+        <template #default>
+          <n-button text :focusable="false" class="theme-selector">
+            <n-icon :component="RainDropIcon" :size="25" />
+          </n-button>
+        </template>
+      </theme-selector>
 
-      <logout-button />
+      <profile-dropdown />
     </div>
   </n-page-header>
 </template>
 
 <script setup lang="ts">
-import { NPageHeader, useThemeVars } from "naive-ui";
+import { RainDrop as RainDropIcon } from "@vicons/carbon";
 import { useRoute, type RouteRecordName } from "vue-router";
 import { ref, computed, type ComputedRef, watch } from "vue";
+import { NPageHeader, useThemeVars, NButton, NIcon } from "naive-ui";
 
 import Brand from "@/components/common/Brand.vue";
+import ProfileDropdown from "./ProfileDropdown.vue";
 import Location from "@/components/header/Location.vue";
-import LogoutButton from "@/components/common/LogoutButton.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
@@ -39,10 +46,6 @@ let isBrandHovered = ref<boolean>(false);
 
 const textColor = computed<string>((): string => {
   return themeVars.value.primaryColor;
-});
-
-const borderBottom = computed<string>((): string => {
-  return `1px solid ${themeVars.value.borderColor}`;
 });
 
 const route = useRoute();
