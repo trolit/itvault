@@ -1,5 +1,11 @@
 <template>
   <ref-card :icon="WorkspacesIcon" title="Workspaces">
+    <template #header-extra>
+      <require-permission :permission="Permission.CreateWorkspace">
+        <n-button type="info"> New workspace </n-button>
+      </require-permission>
+    </template>
+
     <template #content>
       <!-- @TODO show input only when there are at least 3 pages -->
       <n-input
@@ -29,12 +35,6 @@
           <n-empty description="No workspaces found." />
         </template>
       </n-data-table>
-
-      <div class="actions">
-        <require-permission :permission="Permission.CreateWorkspace">
-          <n-button ghost type="info"> New workspace </n-button>
-        </require-permission>
-      </div>
     </template>
   </ref-card>
 </template>

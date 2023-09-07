@@ -13,6 +13,10 @@
         </span>
       </template>
 
+      <template #header-extra>
+        <slot name="header-extra" />
+      </template>
+
       <div class="content">
         <slot name="content">
           <div class="description">
