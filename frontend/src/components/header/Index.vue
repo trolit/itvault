@@ -23,7 +23,7 @@
         </template>
       </theme-selector>
 
-      <profile-menu />
+      <profile-dropdown />
     </div>
   </n-page-header>
 </template>
@@ -34,8 +34,8 @@ import { useRoute, type RouteRecordName } from "vue-router";
 import { ref, computed, type ComputedRef, watch } from "vue";
 import { NPageHeader, useThemeVars, NButton, NIcon } from "naive-ui";
 
-import ProfileMenu from "./ProfileMenu.vue";
 import Brand from "@/components/common/Brand.vue";
+import ProfileDropdown from "./ProfileDropdown.vue";
 import Location from "@/components/header/Location.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
