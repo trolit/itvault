@@ -28,14 +28,14 @@ function renderCustomHeader() {
   return h(
     "div",
     {
-      style: "display: flex; align-items: center; padding: 8px 12px;",
+      style: { display: "flex", alignItems: "center", padding: "8px 12px" },
     },
     [
       h(
         NAvatar,
         {
           round: true,
-          style: "margin-right: 12px;",
+          style: { marginRight: "12px" },
         },
         { default: () => h(NIcon, { component: UserProfileIcon }) }
       ),
@@ -43,10 +43,10 @@ function renderCustomHeader() {
         h("div", null, [
           h(NText, { depth: 2 }, { default: () => authStore.profile.fullName }),
         ]),
-        h("div", { style: "font-size: 12px;" }, [
+        h("div", { style: { fontSize: "12px" } }, [
           h(NText, { depth: 3 }, { default: () => authStore.profile.email }),
         ]),
-        h("div", { style: "font-size: 12px;" }, [
+        h("div", { style: { fontSize: "10px" } }, [
           h(
             NTag,
             { type: "info", size: "small", style: { marginTop: "5px" } },
