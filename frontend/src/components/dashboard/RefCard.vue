@@ -25,8 +25,9 @@
 
           <div class="actions">
             <router-link :to="to">
-              <n-button type="info" dashed>
+              <n-button type="info">
                 Open
+
                 <n-icon :size="15">
                   <arrow-up-right-icon />
                 </n-icon>
