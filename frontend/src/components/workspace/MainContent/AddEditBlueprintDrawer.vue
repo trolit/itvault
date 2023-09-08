@@ -148,12 +148,12 @@ const initialFormData: Ref<Partial<AddEditBlueprintDto>> = ref(
 
 const {
   fields,
-  currentFormData,
-  handleSubmit,
   getError,
-  resetForm,
   hasError,
+  resetForm,
   setFormData,
+  handleSubmit,
+  currentFormData,
 } = defineForm<AddEditBlueprintDto>(
   defaultFormData,
   object({
