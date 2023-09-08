@@ -11,7 +11,15 @@
     @update:show="dismissDrawer"
   >
     <n-drawer-content :title="title" closable>
-      <n-form size="large" :disabled="!canAddOrEditBlueprint">
+      <n-form
+        size="large"
+        :disabled="
+          !authStore.hasAtLeastOnePermission([
+            Permission.CreateBlueprint,
+            Permission.UpdateBlueprint,
+          ])
+        "
+      >
         <n-form-item
           label="Name"
           :required="true"
@@ -138,11 +146,6 @@ const initialFormData: Ref<Partial<AddEditBlueprintDto>> = ref(
   cloneDeep(defaultFormData)
 );
 
-const canAddOrEditBlueprint = authStore.hasAtLeastOnePermission([
-  Permission.CreateBlueprint,
-  Permission.UpdateBlueprint,
-]);
-
 const {
   fields,
   currentFormData,
@@ -260,6 +263,8 @@ async function deleteBlueprint() {
     await blueprintsStore.delete(itemToEdit.value.id);
 
     itemToEdit.value = null;
+
+    message.success(`Blueprint removed.`);
 
     dismissDrawer();
   } catch (error) {
