@@ -104,17 +104,19 @@ import {
   NColorPicker,
   NDrawerContent,
 } from "naive-ui";
+import { ref, type Ref } from "vue";
 import { storeToRefs } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 import { object, string, Schema } from "yup";
 import { useForm, useField } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
-import { computed, ref, watch, type Ref } from "vue";
 
 import { Drawer } from "@/types/Drawer";
 import { useAuthStore } from "@/store/auth";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
+import { defineComputed } from "@/helpers/defineComputed";
+import { defineWatchers } from "@/helpers/defineWatchers";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
@@ -153,9 +155,9 @@ const schema = toTypedSchema<Schema<AddEditBlueprintDto>>(
 );
 
 const {
+  meta,
   errors,
   setValues,
-  meta,
   handleSubmit,
   values: currentFormData,
 } = useForm({
@@ -168,32 +170,48 @@ const { value: description } = useField<string>("description");
 
 const { getError, hasError } = useVeeValidateHelpers(meta, errors);
 
-const isActive = computed(
-  () => drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false
-);
-const isEditMode = computed(() => !!blueprintsStore.itemToEdit);
-const title = computed(() => {
-  return `${isEditMode.value ? "Edit" : "Add"} blueprint`;
-});
-const isInitialState = computed(
-  () =>
-    JSON.stringify(initialFormData.value) === JSON.stringify(currentFormData)
-);
+const { isActive, title, isEditMode, isInitialState } = defineComputed({
+  isActive() {
+    return drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false;
+  },
 
-watch(isActive, async () => {
-  if (!isActive.value) {
-    return;
-  }
+  isEditMode() {
+    return !!blueprintsStore.itemToEdit;
+  },
 
-  setValues(cloneDeep(itemToEdit.value || defaultFormData));
+  title(): string {
+    return `${isEditMode.value ? "Edit" : "Add"} blueprint`;
+  },
 
-  initialFormData.value = cloneDeep(currentFormData);
+  isInitialState() {
+    return (
+      JSON.stringify(initialFormData.value) === JSON.stringify(currentFormData)
+    );
+  },
 });
 
-watch(itemToEdit, () => {
-  setValues(cloneDeep(itemToEdit.value || defaultFormData));
+defineWatchers({
+  isActive: {
+    source: isActive,
+    handler(value: boolean) {
+      if (!value) {
+        return;
+      }
 
-  initialFormData.value = cloneDeep(currentFormData);
+      setValues(cloneDeep(itemToEdit.value || defaultFormData));
+
+      initialFormData.value = cloneDeep(currentFormData);
+    },
+  },
+
+  itemToEdit: {
+    source: itemToEdit,
+    handler() {
+      setValues(cloneDeep(itemToEdit.value || defaultFormData));
+
+      initialFormData.value = cloneDeep(currentFormData);
+    },
+  },
 });
 
 const dismissDrawer = () => {
