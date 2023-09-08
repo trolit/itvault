@@ -11,7 +11,15 @@
     @update:show="dismissDrawer"
   >
     <n-drawer-content :title="title" closable>
-      <n-form size="large" :disabled="!canAddOrEditBlueprint">
+      <n-form
+        size="large"
+        :disabled="
+          !authStore.hasAtLeastOnePermission([
+            Permission.CreateBlueprint,
+            Permission.UpdateBlueprint,
+          ])
+        "
+      >
         <n-form-item
           label="Name"
           :required="true"
@@ -106,20 +114,18 @@ import {
 } from "naive-ui";
 import { ref, type Ref } from "vue";
 import { storeToRefs } from "pinia";
+import { object, string } from "yup";
 import cloneDeep from "lodash/cloneDeep";
-import { object, string, Schema } from "yup";
-import { useForm, useField } from "vee-validate";
-import { toTypedSchema } from "@vee-validate/yup";
 
 import { Drawer } from "@/types/Drawer";
 import { useAuthStore } from "@/store/auth";
 import { useDrawerStore } from "@/store/drawer";
+import { defineForm } from "@/helpers/defineForm";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
-import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
 import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
 const message = useMessage();
@@ -140,13 +146,16 @@ const initialFormData: Ref<Partial<AddEditBlueprintDto>> = ref(
   cloneDeep(defaultFormData)
 );
 
-const canAddOrEditBlueprint = authStore.hasAtLeastOnePermission([
-  Permission.CreateBlueprint,
-  Permission.UpdateBlueprint,
-]);
-
-// @TODO consider name & description limits
-const schema = toTypedSchema<Schema<AddEditBlueprintDto>>(
+const {
+  fields,
+  getError,
+  hasError,
+  resetForm,
+  setFormData,
+  handleSubmit,
+  currentFormData,
+} = defineForm<AddEditBlueprintDto>(
+  defaultFormData,
   object({
     name: string().required(),
     color: string().required(),
@@ -155,20 +164,10 @@ const schema = toTypedSchema<Schema<AddEditBlueprintDto>>(
 );
 
 const {
-  meta,
-  errors,
-  setValues,
-  handleSubmit,
-  values: currentFormData,
-} = useForm({
-  validationSchema: schema,
-});
-
-const { value: name } = useField<string>("name");
-const { value: color } = useField<string>("color");
-const { value: description } = useField<string>("description");
-
-const { getError, hasError } = useVeeValidateHelpers(meta, errors);
+  name: { value: name },
+  color: { value: color },
+  description: { value: description },
+} = fields;
 
 const { isActive, title, isEditMode, isInitialState } = defineComputed({
   isActive() {
@@ -198,7 +197,9 @@ defineWatchers({
         return;
       }
 
-      setValues(cloneDeep(itemToEdit.value || defaultFormData));
+      resetForm();
+
+      setFormData(cloneDeep(itemToEdit.value || defaultFormData));
 
       initialFormData.value = cloneDeep(currentFormData);
     },
@@ -207,7 +208,9 @@ defineWatchers({
   itemToEdit: {
     source: itemToEdit,
     handler() {
-      setValues(cloneDeep(itemToEdit.value || defaultFormData));
+      resetForm();
+
+      setFormData(cloneDeep(itemToEdit.value || defaultFormData));
 
       initialFormData.value = cloneDeep(currentFormData);
     },
@@ -260,6 +263,8 @@ async function deleteBlueprint() {
     await blueprintsStore.delete(itemToEdit.value.id);
 
     itemToEdit.value = null;
+
+    message.success(`Blueprint removed.`);
 
     dismissDrawer();
   } catch (error) {
