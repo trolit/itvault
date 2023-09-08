@@ -6,6 +6,8 @@ import {
   type WatchStopHandle,
 } from "vue";
 
+// @NOTE Immediate does not react on options change
+// @NOTE Find out if it's possible to detect handler param types (implicitly)
 type WatcherDefinition<T, Immediate extends Readonly<boolean> = false> = {
   source: WatchSource<T>;
   handler: WatchCallback<T, Immediate extends true ? T | undefined : T>;
