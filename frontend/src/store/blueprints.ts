@@ -59,6 +59,20 @@ export const useBlueprintsStore = defineStore("blueprints", {
       });
     },
 
+    async delete(id: number) {
+      const workspacesStore = useWorkspacesStore();
+
+      await axios.delete(`v1/blueprints/${id}`, {
+        params: { version: 1, workspaceId: workspacesStore.activeItem.id },
+      });
+
+      const blueprintIndex = this.items.findIndex(item => item.id === id);
+
+      if (~blueprintIndex) {
+        this.items.splice(blueprintIndex, 1);
+      }
+    },
+
     async update(payload: AddEditBlueprintDto) {
       if (!this.itemToEdit || !this.itemToEdit.id) {
         return;

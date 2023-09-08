@@ -8,7 +8,7 @@
     :trap-focus="false"
     :block-scroll="false"
     :mask-closable="false"
-    @update:show="onShowUpdate"
+    @update:show="dismissDrawer"
   >
     <n-drawer-content :title="title" closable>
       <n-form size="large" :disabled="!canAddOrEditBlueprint">
@@ -51,12 +51,21 @@
 
       <template #footer>
         <n-space justify="space-between" class="w-100" align="center">
-          <!-- @TODO handle delete [blueprint] operation -->
           <require-permission
             v-if="isEditMode"
             :permission="Permission.DeleteBlueprint"
           >
-            <n-button secondary type="error"> Delete </n-button>
+            <n-popconfirm @positive-click="deleteBlueprint">
+              <template #trigger>
+                <n-button secondary type="error" :loading="isLoading">
+                  Delete
+                </n-button>
+              </template>
+
+              Are you sure that you want to remove this blueprint? Bundles with
+              that blueprint will persist but users won't be able to discover
+              blueprint usage in files.
+            </n-popconfirm>
           </require-permission>
 
           <require-permission
@@ -91,12 +100,13 @@ import {
   NDrawer,
   NFormItem,
   useMessage,
+  NPopconfirm,
   NColorPicker,
   NDrawerContent,
 } from "naive-ui";
+import { ref, type Ref } from "vue";
 import { storeToRefs } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
-import { computed, ref, watch, type Ref } from "vue";
 import { object, string, Schema } from "yup";
 import { useForm, useField } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/yup";
@@ -105,6 +115,8 @@ import { Drawer } from "@/types/Drawer";
 import { useAuthStore } from "@/store/auth";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
+import { defineComputed } from "@/helpers/defineComputed";
+import { defineWatchers } from "@/helpers/defineWatchers";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
@@ -143,9 +155,9 @@ const schema = toTypedSchema<Schema<AddEditBlueprintDto>>(
 );
 
 const {
+  meta,
   errors,
   setValues,
-  meta,
   handleSubmit,
   values: currentFormData,
 } = useForm({
@@ -158,37 +170,51 @@ const { value: description } = useField<string>("description");
 
 const { getError, hasError } = useVeeValidateHelpers(meta, errors);
 
-const title = computed(() => {
-  return `${blueprintsStore.itemToEdit ? "Edit" : "Add"} blueprint`;
+const { isActive, title, isEditMode, isInitialState } = defineComputed({
+  isActive() {
+    return drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false;
+  },
+
+  isEditMode() {
+    return !!blueprintsStore.itemToEdit;
+  },
+
+  title(): string {
+    return `${isEditMode.value ? "Edit" : "Add"} blueprint`;
+  },
+
+  isInitialState() {
+    return (
+      JSON.stringify(initialFormData.value) === JSON.stringify(currentFormData)
+    );
+  },
 });
 
-const isInitialState = computed(
-  () =>
-    JSON.stringify(initialFormData.value) === JSON.stringify(currentFormData)
-);
+defineWatchers({
+  isActive: {
+    source: isActive,
+    handler(value: boolean) {
+      if (!value) {
+        return;
+      }
 
-const isActive = computed(
-  () => drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false
-);
-const isEditMode = computed(() => !!blueprintsStore.itemToEdit);
+      setValues(cloneDeep(itemToEdit.value || defaultFormData));
 
-watch(isActive, async () => {
-  if (!isActive.value) {
-    return;
-  }
+      initialFormData.value = cloneDeep(currentFormData);
+    },
+  },
 
-  setValues(cloneDeep(blueprintsStore.itemToEdit || defaultFormData));
+  itemToEdit: {
+    source: itemToEdit,
+    handler() {
+      setValues(cloneDeep(itemToEdit.value || defaultFormData));
 
-  initialFormData.value = cloneDeep(currentFormData);
+      initialFormData.value = cloneDeep(currentFormData);
+    },
+  },
 });
 
-watch(itemToEdit, () => {
-  setValues(cloneDeep(blueprintsStore.itemToEdit || defaultFormData));
-
-  initialFormData.value = cloneDeep(currentFormData);
-});
-
-const onShowUpdate = () => {
+const dismissDrawer = () => {
   drawerStore.setActiveDrawer(null);
 };
 
@@ -215,11 +241,31 @@ const onSubmit = handleSubmit.withControlled(async formData => {
 
     message.success(`Blueprint successfully ${isEdit ? "updated" : "added"}.`);
 
-    onShowUpdate();
+    dismissDrawer();
   } catch (error) {
     console.error(error);
   } finally {
     isLoading.value = false;
   }
 });
+
+async function deleteBlueprint() {
+  if (!itemToEdit.value) {
+    return;
+  }
+
+  isLoading.value = true;
+
+  try {
+    await blueprintsStore.delete(itemToEdit.value.id);
+
+    itemToEdit.value = null;
+
+    dismissDrawer();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>
