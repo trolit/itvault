@@ -182,6 +182,7 @@ async function getWorkspaces() {
   }
 }
 
+// @NOTE consider extracting to helper (?)
 function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
   const isSameItemToEdit = !!(
     workspacesStore.itemToEdit?.id === newItemToEdit?.id
