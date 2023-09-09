@@ -148,7 +148,9 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
         NButton,
         {
           size: "small",
-          onClick: () => {
+          onClick: event => {
+            event.stopPropagation();
+
             workspacesStore.itemToEdit = cloneDeep(row);
 
             if (!drawerStore.isDrawerActive(Drawer.AddEditWorkspace)) {
