@@ -2,7 +2,7 @@
   <ref-card :icon="WorkspacesIcon" title="Workspaces">
     <template #header-extra>
       <require-permission :permission="Permission.CreateWorkspace">
-        <n-button type="info" @click="toggleAddEditWorkspaceDrawer">
+        <n-button type="info" @click="toggleAddEditWorkspaceDrawer()">
           New workspace
         </n-button>
       </require-permission>
@@ -136,6 +136,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
           }
         );
       });
+
       return tags;
     },
   },
@@ -151,11 +152,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
           onClick: event => {
             event.stopPropagation();
 
-            workspacesStore.itemToEdit = cloneDeep(row);
-
-            if (!drawerStore.isDrawerActive(Drawer.AddEditWorkspace)) {
-              drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
-            }
+            toggleAddEditWorkspaceDrawer(row);
           },
         },
         { default: () => "Edit" }
@@ -185,8 +182,19 @@ async function getWorkspaces() {
   }
 }
 
-function toggleAddEditWorkspaceDrawer() {
-  workspacesStore.itemToEdit = null;
+function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
+  const isSameItemToEdit = !!(
+    workspacesStore.itemToEdit?.id === newItemToEdit?.id
+  );
+
+  workspacesStore.itemToEdit = newItemToEdit ? cloneDeep(newItemToEdit) : null;
+
+  if (
+    !isSameItemToEdit &&
+    drawerStore.isDrawerActive(Drawer.AddEditWorkspace)
+  ) {
+    return;
+  }
 
   drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
 }
