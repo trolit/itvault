@@ -2,8 +2,7 @@
   <n-drawer
     :show="isActive"
     :width="502"
-    placement="right"
-    to="#main-content"
+    placement="left"
     :show-mask="false"
     :trap-focus="false"
     :block-scroll="false"

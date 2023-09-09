@@ -2,7 +2,9 @@
   <ref-card :icon="WorkspacesIcon" title="Workspaces">
     <template #header-extra>
       <require-permission :permission="Permission.CreateWorkspace">
-        <n-button type="info"> New workspace </n-button>
+        <n-button type="info" @click="toggleAddEditWorkspaceDrawer">
+          New workspace
+        </n-button>
       </require-permission>
     </template>
 
@@ -56,6 +58,8 @@ import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
+import { Drawer } from "@/types/enums/Drawer";
+import { useDrawerStore } from "@/store/drawer";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { Permission } from "@shared/types/enums/Permission";
 import { ROUTE_WORKSPACE_NAME } from "@/assets/constants/routes";
@@ -65,6 +69,7 @@ import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
 
 const router = useRouter();
 const message = useMessage();
+const drawerStore = useDrawerStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(true);
@@ -154,5 +159,11 @@ async function getWorkspaces() {
   } finally {
     isLoading.value = false;
   }
+}
+
+function toggleAddEditWorkspaceDrawer() {
+  workspacesStore.itemToEdit = null;
+
+  drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
 }
 </script>
