@@ -4,6 +4,7 @@ import {
   type NavigationGuardNext,
   type RouteLocationNormalized,
 } from "vue-router";
+import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
 
 import {
@@ -78,6 +79,7 @@ router.beforeEach(
     from: RouteLocationNormalized,
     next: NavigationGuardNext
   ) => {
+    const drawerStore = useDrawerStore();
     const generalStore = useGeneralStore();
 
     generalStore.setLoadingState(LoadingState.Start);
@@ -89,6 +91,8 @@ router.beforeEach(
 
       try {
         await authStore.status();
+
+        drawerStore.setActiveDrawer(null);
 
         generalStore.setLoadingState(LoadingState.Finish);
 
@@ -103,6 +107,8 @@ router.beforeEach(
 
       return;
     }
+
+    drawerStore.setActiveDrawer(null);
 
     generalStore.setLoadingState(LoadingState.Finish);
 
