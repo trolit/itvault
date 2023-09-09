@@ -9,6 +9,8 @@ import { toTypedSchema } from "@vee-validate/yup";
 
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
 
+type FormFieldContext<T> = { [I in keyof T]: FieldContext<T[I]> };
+
 export const defineForm = <T extends GenericObject>(
   initialFormData: T,
   schema: Schema<T>
@@ -26,10 +28,7 @@ export const defineForm = <T extends GenericObject>(
     validationSchema: typedSchema,
   });
 
-  const fields: Record<keyof T, FieldContext<T[keyof T]>> = {} as Record<
-    keyof T,
-    FieldContext<T[keyof T]>
-  >;
+  const fields: FormFieldContext<T> = {} as FormFieldContext<T>;
 
   Object.keys(initialFormData).map(key => {
     const parsedKey = key as keyof T;
