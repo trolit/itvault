@@ -1,6 +1,6 @@
 import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
-import { In, Repository } from "typeorm";
+import { In, Not, Repository } from "typeorm";
 import { IDirectoryRepository } from "types/repositories/IDirectoryRepository";
 
 import { FILES } from "@config";
@@ -23,7 +23,10 @@ export class DirectoryRepository
   private async _handleRootRelativePathRequest(workspaceId: number) {
     // @NOTE (1) fetch all workspace related directories
     const directories = await this.database.find({
-      where: { files: { workspace: { id: workspaceId } } },
+      where: {
+        relativePath: Not(FILES.ROOT),
+        files: { workspace: { id: workspaceId } },
+      },
     });
 
     // @NOTE (2) take all "root" children dirs
