@@ -1,9 +1,9 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import { Drawer } from "@/types/Drawer";
 import { useDrawerStore } from "./drawer";
 import type { Bundle } from "@/types/Bundle";
+import { Drawer } from "@/types/enums/Drawer";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
 import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
