@@ -58,11 +58,11 @@ import {
   NGradientText,
 } from "naive-ui";
 
-import { Drawer } from "@/types/Drawer";
+import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
+import { useGeneralStore } from "@/store/general";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
-import { useGeneralStore } from "@/store/general";
 import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 

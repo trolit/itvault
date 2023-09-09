@@ -117,8 +117,8 @@ import { storeToRefs } from "pinia";
 import { object, string } from "yup";
 import cloneDeep from "lodash/cloneDeep";
 
-import { Drawer } from "@/types/Drawer";
 import { useAuthStore } from "@/store/auth";
+import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { defineForm } from "@/helpers/defineForm";
 import { useBlueprintsStore } from "@/store/blueprints";
