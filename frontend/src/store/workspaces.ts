@@ -20,6 +20,7 @@ interface IState {
   total: number;
   items: IWorkspaceDto[];
   activeItem: IWorkspaceDto;
+  itemToEdit: IWorkspaceDto | null;
   tree: (IDirectoryDto | IFileDto)[];
 
   activeFileId: number;
@@ -34,6 +35,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     tree: [],
     total: 0,
     items: [],
+    itemToEdit: null,
     activeItem: { id: 0, name: "", slug: "", tags: [] },
     activeFileId: 0,
     tabs: [],
