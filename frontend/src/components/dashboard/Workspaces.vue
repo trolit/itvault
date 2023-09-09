@@ -54,6 +54,7 @@ import {
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
 import { useRouter } from "vue-router";
+import cloneDeep from "lodash/cloneDeep";
 import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
 
@@ -136,6 +137,27 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
         );
       });
       return tags;
+    },
+  },
+
+  {
+    title: "Actions",
+    key: "actions",
+    render(row) {
+      return h(
+        NButton,
+        {
+          size: "small",
+          onClick: () => {
+            workspacesStore.itemToEdit = cloneDeep(row);
+
+            if (!drawerStore.isDrawerActive(Drawer.AddEditWorkspace)) {
+              drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
+            }
+          },
+        },
+        { default: () => "Edit" }
+      );
     },
   },
 ]);
