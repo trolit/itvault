@@ -42,6 +42,7 @@
             <n-button
               secondary
               type="success"
+              @click="onSubmit"
               :loading="isLoading"
               :disabled="isInitialState"
             >
@@ -62,6 +63,7 @@ import {
   NButton,
   NDrawer,
   NFormItem,
+  useMessage,
   NDynamicTags,
   NDrawerContent,
 } from "naive-ui";
@@ -80,6 +82,7 @@ import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
+const message = useMessage();
 const drawerStore = useDrawerStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -167,4 +170,35 @@ defineWatchers({
 const dismissDrawer = () => {
   drawerStore.setActiveDrawer(null);
 };
+
+const onSubmit = handleSubmit.withControlled(async formData => {
+  if (isLoading.value) {
+    return;
+  }
+
+  isLoading.value = true;
+
+  const isEdit = cloneDeep(isEditMode.value);
+
+  try {
+    // isEdit
+    //   ? await workspacesStore.update(formData)
+    //   : await workspacesStore.store(formData);
+
+    if (!isEdit) {
+      workspacesStore.getAll({
+        page: 1,
+        perPage: workspacesStore.ITEMS_PER_PAGE,
+      });
+    }
+
+    message.success(`Workspace successfully ${isEdit ? "updated" : "added"}.`);
+
+    dismissDrawer();
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>

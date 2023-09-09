@@ -78,6 +78,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         bucket => bucket.blueprintId === variantTab.activeBlueprintId
       );
     },
+    ITEMS_PER_PAGE: () => 10,
   },
 
   actions: {
