@@ -103,7 +103,7 @@ onBeforeMount(async () => {
 
 const rowProps: CreateRowProps<IWorkspaceDto> = (row: IWorkspaceDto) => {
   return {
-    style: "{cursor: 'pointer'}",
+    style: { cursor: "pointer" },
     onclick: () => {
       workspacesStore.setActiveItem(row);
 
