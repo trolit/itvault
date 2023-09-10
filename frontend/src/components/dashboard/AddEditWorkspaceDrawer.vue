@@ -181,9 +181,9 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   const isEdit = cloneDeep(isEditMode.value);
 
   try {
-    // isEdit
-    //   ? await workspacesStore.update(formData)
-    //   : await workspacesStore.store(formData);
+    isEdit
+      ? await workspacesStore.update(formData)
+      : await workspacesStore.store(formData);
 
     if (!isEdit) {
       workspacesStore.getAll({
