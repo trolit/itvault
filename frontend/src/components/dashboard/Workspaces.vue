@@ -23,6 +23,8 @@
 
       <n-data-table
         remote
+        single-column
+        :paginate-single-page="false"
         :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
@@ -129,6 +131,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
         return h(
           NTag,
           {
+            size: "small",
             type: "info",
           },
           {
