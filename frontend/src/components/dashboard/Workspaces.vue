@@ -23,10 +23,11 @@
 
       <n-data-table
         remote
+        single-column
+        :paginate-single-page="false"
         :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
-        :row-props="rowProps"
         :pagination="pagination"
         :row-key="(row: IWorkspaceDto) => row.id"
         @update:page="getWorkspaces"
@@ -48,6 +49,7 @@ import {
   NButton,
   NDataTable,
   useMessage,
+  NSpace,
 } from "naive-ui";
 import {
   Search as SearchIcon,
@@ -66,7 +68,6 @@ import { Permission } from "@shared/types/enums/Permission";
 import { ROUTE_WORKSPACE_NAME } from "@/assets/constants/routes";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
-import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
 
 const router = useRouter();
 const message = useMessage();
@@ -101,17 +102,6 @@ onBeforeMount(async () => {
   getWorkspaces();
 });
 
-const rowProps: CreateRowProps<IWorkspaceDto> = (row: IWorkspaceDto) => {
-  return {
-    style: "{cursor: 'pointer'}",
-    onclick: () => {
-      workspacesStore.setActiveItem(row);
-
-      router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
-    },
-  };
-};
-
 const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   DataTableColumns<IWorkspaceDto>
 >([
@@ -129,6 +119,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
         return h(
           NTag,
           {
+            size: "small",
             type: "info",
           },
           {
@@ -146,16 +137,38 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
     key: "actions",
     render(row) {
       return h(
-        NButton,
+        NSpace,
+        {},
         {
-          size: "small",
-          onClick: event => {
-            event.stopPropagation();
+          default: () => [
+            h(
+              NButton,
+              {
+                size: "small",
+                onClick: event => {
+                  event.stopPropagation();
 
-            toggleAddEditWorkspaceDrawer(row);
-          },
-        },
-        { default: () => "Edit" }
+                  toggleAddEditWorkspaceDrawer(row);
+                },
+              },
+              { default: () => "Edit" }
+            ),
+            h(
+              NButton,
+              {
+                size: "small",
+                onClick: event => {
+                  event.stopPropagation();
+
+                  workspacesStore.setActiveItem(row);
+
+                  router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
+                },
+              },
+              { default: () => "Open" }
+            ),
+          ],
+        }
       );
     },
   },
