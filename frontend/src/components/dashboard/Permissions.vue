@@ -1,30 +1,6 @@
 <template>
-  <ref-card :icon="UserProfileIcon" :title="email">
+  <ref-card :icon="PermissionsIcon" title="Your permissions">
     <template #content>
-      <n-space vertical size="large">
-        <n-descriptions
-          label-placement="top"
-          class="text-center"
-          label-align="center"
-          :label-style="{
-            paddingBottom: '10px',
-          }"
-        >
-          <n-descriptions-item label="Owner">
-            {{ fullName }}
-          </n-descriptions-item>
-
-          <n-descriptions-item label="Workspaces"> 10 </n-descriptions-item>
-          <n-descriptions-item label="Account type">
-            <n-tag type="info"> {{ roleName }} </n-tag>
-          </n-descriptions-item>
-        </n-descriptions>
-      </n-space>
-
-      <n-divider dashed />
-
-      <h4>Permissions</h4>
-
       <n-scrollbar trigger="none">
         <n-space>
           <n-card v-for="(group, index) in groupedPermissions" :key="index">
@@ -94,20 +70,17 @@ import {
   NGrid,
   NEmpty,
   NSpace,
-  NDivider,
   NGridItem,
   NScrollbar,
-  NDescriptions,
-  NDescriptionsItem,
 } from "naive-ui";
 import { computed } from "vue";
-import { UserProfile as UserProfileIcon } from "@vicons/carbon";
+import { ValueVariable as PermissionsIcon } from "@vicons/carbon";
 
 import RefCard from "./RefCard.vue";
 import { useAuthStore } from "@/store/auth";
 
 const {
-  profile: { email, roleName, permissions, fullName },
+  profile: { permissions },
 } = useAuthStore();
 
 const groupedPermissions = computed(() => {
