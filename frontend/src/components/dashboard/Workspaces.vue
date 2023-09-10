@@ -136,34 +136,40 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
     title: "Actions",
     key: "actions",
     render(row) {
-      return h(NSpace, {}, [
-        h(
-          NButton,
-          {
-            size: "small",
-            onClick: event => {
-              event.stopPropagation();
+      return h(
+        NSpace,
+        {},
+        {
+          default: () => [
+            h(
+              NButton,
+              {
+                size: "small",
+                onClick: event => {
+                  event.stopPropagation();
 
-              toggleAddEditWorkspaceDrawer(row);
-            },
-          },
-          { default: () => "Edit" }
-        ),
-        h(
-          NButton,
-          {
-            size: "small",
-            onClick: event => {
-              event.stopPropagation();
+                  toggleAddEditWorkspaceDrawer(row);
+                },
+              },
+              { default: () => "Edit" }
+            ),
+            h(
+              NButton,
+              {
+                size: "small",
+                onClick: event => {
+                  event.stopPropagation();
 
-              workspacesStore.setActiveItem(row);
+                  workspacesStore.setActiveItem(row);
 
-              router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
-            },
-          },
-          { default: () => "Open" }
-        ),
-      ]);
+                  router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
+                },
+              },
+              { default: () => "Open" }
+            ),
+          ],
+        }
+      );
     },
   },
 ]);
