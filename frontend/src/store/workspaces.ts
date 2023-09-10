@@ -15,6 +15,7 @@ import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
 interface IState {
   total: number;
@@ -290,6 +291,35 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.tree = Array.prototype.concat(this.tree, data);
 
       return data;
+    },
+
+    async store(payload: AddEditWorkspaceDto) {
+      return axios.post<AddEditWorkspaceDto>("v1/workspaces", payload, {
+        params: { version: 1 },
+      });
+    },
+
+    async update(payload: AddEditWorkspaceDto) {
+      if (!this.itemToEdit || !this.itemToEdit.id) {
+        return;
+      }
+
+      const id = this.itemToEdit.id;
+
+      await axios.put(`v1/workspaces/${id}`, payload, {
+        params: { version: 1 },
+      });
+
+      const updatedWorkspaceIndex = this.items.findIndex(
+        item => item.id === id
+      );
+
+      if (~updatedWorkspaceIndex) {
+        this.items.splice(updatedWorkspaceIndex, 1, {
+          ...this.itemToEdit,
+          ...payload,
+        });
+      }
     },
   },
 });
