@@ -7,8 +7,35 @@
       responsive="screen"
       cols="1 s:1 m:3 l:3 xl:3 2xl:3"
     >
-      <n-grid-item class="profile-card-wrapper" span="1">
-        <profile-card />
+      <n-grid-item class="other-cards-wrapper" span="3">
+        <n-grid
+          x-gap="20"
+          y-gap="20"
+          responsive="screen"
+          cols="1 s:1 m:3 l:3 xl:3 2xl:3"
+        >
+          <n-grid-item>
+            <welcome />
+          </n-grid-item>
+
+          <n-grid-item
+            v-for="({ title, to, icon, description, props }, index) of topCards"
+            v-bind="props"
+            class="other-card-wrapper"
+            :key="index"
+          >
+            <ref-card
+              :to="to"
+              :icon="icon"
+              :title="title"
+              :description="description"
+            />
+          </n-grid-item>
+        </n-grid>
+      </n-grid-item>
+
+      <n-grid-item class="permissions-wrapper" span="1">
+        <permissions />
       </n-grid-item>
 
       <n-grid-item class="workspaces-card-wrapper" span="2">
@@ -25,7 +52,7 @@
           <n-grid-item
             v-for="(
               { title, to, icon, description, props }, index
-            ) of otherCards"
+            ) of bottomCards"
             v-bind="props"
             class="other-card-wrapper"
             :key="index"
@@ -49,17 +76,22 @@
 import {
   Help as HelpIcon,
   Email as EmailIcon,
+  Group as UsersIcon,
+  UserRole as RolesIcon,
   UpdateNow as UpdatesIcon,
 } from "@vicons/carbon";
 import { NGrid, NGridItem } from "naive-ui";
 import { ref, shallowRef, type Component, type Ref } from "vue";
 
 import {
+  ROUTE_USERS_NAME,
   ROUTE_GUIDE_NAME,
+  ROUTE_ROLES_NAME,
   ROUTE_UPDATES_NAME,
 } from "@/assets/constants/routes";
 import RefCard from "@/components/dashboard/RefCard.vue";
-import ProfileCard from "@/components/dashboard/Profile.vue";
+import Welcome from "@/components/dashboard/Welcome.vue";
+import Permissions from "@/components/dashboard/Permissions.vue";
 import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
 import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
 
@@ -71,7 +103,23 @@ interface OtherCard {
   description: string;
 }
 
-const otherCards: Ref<OtherCard[]> = ref([
+const topCards: Ref<OtherCard[]> = ref([
+  {
+    title: "Users",
+    to: ROUTE_USERS_NAME,
+    icon: shallowRef(UsersIcon),
+    description: "Manage user(s).",
+  },
+
+  {
+    title: "Roles",
+    to: ROUTE_ROLES_NAME,
+    icon: shallowRef(RolesIcon),
+    description: "Manage role(s).",
+  },
+]);
+
+const bottomCards: Ref<OtherCard[]> = ref([
   {
     title: "Guide",
     to: ROUTE_GUIDE_NAME,
