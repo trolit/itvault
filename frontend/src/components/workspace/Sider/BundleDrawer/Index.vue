@@ -38,8 +38,8 @@ import { NDrawer, NDivider, NDrawerContent } from "naive-ui";
 import Note from "./Note.vue";
 import Owner from "./Owner.vue";
 import Status from "./Status.vue";
-import { Drawer } from "@/types/Drawer";
 import Blueprints from "./Blueprints.vue";
+import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBundlesStore } from "@/store/bundles";
 

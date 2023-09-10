@@ -79,7 +79,7 @@ import {
 } from "naive-ui";
 import { onMounted, ref, type PropType, type Ref } from "vue";
 
-import { Drawer } from "@/types/Drawer";
+import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { Permission } from "@shared/types/enums/Permission";

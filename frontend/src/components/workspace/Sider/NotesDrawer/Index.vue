@@ -66,8 +66,8 @@ import {
 } from "naive-ui";
 import { computed, ref, watch } from "vue";
 
-import { Drawer } from "@/types/Drawer";
 import SingleNote from "./SingleNote.vue";
+import { Drawer } from "@/types/enums/Drawer";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
 import UserNotesModal from "./UserNotesModal.vue";

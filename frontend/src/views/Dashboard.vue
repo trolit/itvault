@@ -40,6 +40,8 @@
         </n-grid>
       </n-grid-item>
     </n-grid>
+
+    <add-edit-workspace-drawer />
   </div>
 </template>
 
@@ -59,6 +61,7 @@ import {
 import RefCard from "@/components/dashboard/RefCard.vue";
 import ProfileCard from "@/components/dashboard/Profile.vue";
 import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
+import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
 
 interface OtherCard {
   title: string;

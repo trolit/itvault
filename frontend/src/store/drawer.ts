@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-import type { Drawer } from "@/types/Drawer";
+import type { Drawer } from "@/types/enums/Drawer";
 
 interface IState {
   activeDrawer: Drawer | null;

@@ -2,7 +2,9 @@
   <ref-card :icon="WorkspacesIcon" title="Workspaces">
     <template #header-extra>
       <require-permission :permission="Permission.CreateWorkspace">
-        <n-button type="info"> New workspace </n-button>
+        <n-button type="info" @click="toggleAddEditWorkspaceDrawer()">
+          New workspace
+        </n-button>
       </require-permission>
     </template>
 
@@ -52,10 +54,13 @@ import {
   DataCenter as WorkspacesIcon,
 } from "@vicons/carbon";
 import { useRouter } from "vue-router";
+import cloneDeep from "lodash/cloneDeep";
 import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
 
 import RefCard from "./RefCard.vue";
+import { Drawer } from "@/types/enums/Drawer";
+import { useDrawerStore } from "@/store/drawer";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { Permission } from "@shared/types/enums/Permission";
 import { ROUTE_WORKSPACE_NAME } from "@/assets/constants/routes";
@@ -65,6 +70,7 @@ import type { CreateRowProps } from "naive-ui/es/data-table/src/interface";
 
 const router = useRouter();
 const message = useMessage();
+const drawerStore = useDrawerStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(true);
@@ -130,7 +136,27 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
           }
         );
       });
+
       return tags;
+    },
+  },
+
+  {
+    title: "Actions",
+    key: "actions",
+    render(row) {
+      return h(
+        NButton,
+        {
+          size: "small",
+          onClick: event => {
+            event.stopPropagation();
+
+            toggleAddEditWorkspaceDrawer(row);
+          },
+        },
+        { default: () => "Edit" }
+      );
     },
   },
 ]);
@@ -154,5 +180,23 @@ async function getWorkspaces() {
   } finally {
     isLoading.value = false;
   }
+}
+
+// @NOTE consider extracting to helper (?)
+function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
+  const isSameItemToEdit = !!(
+    workspacesStore.itemToEdit?.id === newItemToEdit?.id
+  );
+
+  workspacesStore.itemToEdit = newItemToEdit ? cloneDeep(newItemToEdit) : null;
+
+  if (
+    !isSameItemToEdit &&
+    drawerStore.isDrawerActive(Drawer.AddEditWorkspace)
+  ) {
+    return;
+  }
+
+  drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
 }
 </script>

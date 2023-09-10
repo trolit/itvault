@@ -27,7 +27,7 @@
 import { computed, ref } from "vue";
 import { NLayout, NLayoutSider } from "naive-ui";
 
-import { Drawer } from "@/types/Drawer";
+import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
 

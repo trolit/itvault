@@ -15,11 +15,13 @@ import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
 interface IState {
   total: number;
   items: IWorkspaceDto[];
   activeItem: IWorkspaceDto;
+  itemToEdit: IWorkspaceDto | null;
   tree: (IDirectoryDto | IFileDto)[];
 
   activeFileId: number;
@@ -34,6 +36,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     tree: [],
     total: 0,
     items: [],
+    itemToEdit: null,
     activeItem: { id: 0, name: "", slug: "", tags: [] },
     activeFileId: 0,
     tabs: [],
@@ -76,6 +79,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         bucket => bucket.blueprintId === variantTab.activeBlueprintId
       );
     },
+    ITEMS_PER_PAGE: () => 10,
   },
 
   actions: {
@@ -287,6 +291,35 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.tree = Array.prototype.concat(this.tree, data);
 
       return data;
+    },
+
+    async store(payload: AddEditWorkspaceDto) {
+      return axios.post<AddEditWorkspaceDto>("v1/workspaces", payload, {
+        params: { version: 1 },
+      });
+    },
+
+    async update(payload: AddEditWorkspaceDto) {
+      if (!this.itemToEdit || !this.itemToEdit.id) {
+        return;
+      }
+
+      const id = this.itemToEdit.id;
+
+      await axios.put(`v1/workspaces/${id}`, payload, {
+        params: { version: 1 },
+      });
+
+      const updatedWorkspaceIndex = this.items.findIndex(
+        item => item.id === id
+      );
+
+      if (~updatedWorkspaceIndex) {
+        this.items.splice(updatedWorkspaceIndex, 1, {
+          ...this.itemToEdit,
+          ...payload,
+        });
+      }
     },
   },
 });

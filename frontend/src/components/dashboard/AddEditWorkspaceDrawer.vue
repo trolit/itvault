@@ -1,9 +1,8 @@
 <template>
   <n-drawer
     :show="isActive"
-    :width="502"
+    :width="352"
     placement="right"
-    to="#main-content"
     :show-mask="false"
     :trap-focus="false"
     :block-scroll="false"
@@ -11,15 +10,7 @@
     @update:show="dismissDrawer"
   >
     <n-drawer-content :title="title" closable>
-      <n-form
-        size="large"
-        :disabled="
-          !authStore.hasAtLeastOnePermission([
-            Permission.CreateBlueprint,
-            Permission.UpdateBlueprint,
-          ])
-        "
-      >
+      <n-form>
         <n-form-item
           label="Name"
           :required="true"
@@ -30,57 +21,33 @@
         </n-form-item>
 
         <n-form-item
-          label="Description"
+          label="Tags"
           :required="true"
-          :feedback="getError('description')"
-          :validation-status="hasError('description')"
+          :feedback="getError('tags')"
+          :validation-status="hasError('tags')"
         >
-          <n-input
-            v-model:value="description"
-            type="textarea"
-            placeholder="Description"
-            :resizable="true"
-          />
-        </n-form-item>
-
-        <n-form-item
-          label="Color"
-          :required="true"
-          :feedback="getError('color')"
-          :validation-status="hasError('color')"
-        >
-          <n-color-picker
-            v-model:value="color"
-            :show-alpha="false"
-            :modes="['hex']"
-          />
+          <n-dynamic-tags v-model:value="tags" />
         </n-form-item>
       </n-form>
 
+      <n-auto-complete
+        blur-after-select
+        :value="tagInput"
+        placeholder="type to find tag(s) suggestions"
+        :options="options"
+        :loading="isLoadingTags"
+        :disabled="isLoadingTags"
+        @select="onTagSelect"
+        @update:value="onTagInputChange"
+      />
+
       <template #footer>
-        <n-space justify="space-between" class="w-100" align="center">
-          <require-permission
-            v-if="isEditMode"
-            :permission="Permission.DeleteBlueprint"
-          >
-            <n-popconfirm @positive-click="deleteBlueprint">
-              <template #trigger>
-                <n-button secondary type="error" :loading="isLoading">
-                  Delete
-                </n-button>
-              </template>
-
-              Are you sure that you want to remove this blueprint? Bundles with
-              that blueprint will persist but users won't be able to discover
-              blueprint usage in files.
-            </n-popconfirm>
-          </require-permission>
-
+        <n-space justify="center" class="w-100" align="center">
           <require-permission
             :permission="
               isEditMode
-                ? Permission.UpdateBlueprint
-                : Permission.CreateBlueprint
+                ? Permission.UpdateWorkspace
+                : Permission.CreateWorkspace
             "
           >
             <n-button
@@ -108,41 +75,44 @@ import {
   NDrawer,
   NFormItem,
   useMessage,
-  NPopconfirm,
-  NColorPicker,
+  NDynamicTags,
+  NAutoComplete,
   NDrawerContent,
 } from "naive-ui";
 import { ref, type Ref } from "vue";
 import { storeToRefs } from "pinia";
-import { object, string } from "yup";
 import cloneDeep from "lodash/cloneDeep";
+import { array, object, string } from "yup";
 
-import { useAuthStore } from "@/store/auth";
+import { useTagsStore } from "@/store/tags";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { defineForm } from "@/helpers/defineForm";
-import { useBlueprintsStore } from "@/store/blueprints";
+import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
-import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
+import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
 const message = useMessage();
-const authStore = useAuthStore();
+const tagsStore = useTagsStore();
 const drawerStore = useDrawerStore();
-const blueprintsStore = useBlueprintsStore();
+const workspacesStore = useWorkspacesStore();
 
+const tagInput = ref("");
 const isLoading = ref(false);
-const { itemToEdit } = storeToRefs(blueprintsStore);
+const tagSearchTimeoutId = ref(0);
+const isLoadingTags = ref(false);
+const options: Ref<string[]> = ref([]);
+const { itemToEdit } = storeToRefs(workspacesStore);
 
-const defaultFormData: AddEditBlueprintDto = {
+const defaultFormData: AddEditWorkspaceDto = {
   name: "",
-  color: "#D0A056",
-  description: "",
+  tags: [],
 };
 
-const initialFormData: Ref<Partial<AddEditBlueprintDto>> = ref(
+const initialFormData: Ref<Partial<AddEditWorkspaceDto>> = ref(
   cloneDeep(defaultFormData)
 );
 
@@ -154,32 +124,37 @@ const {
   setFormData,
   handleSubmit,
   currentFormData,
-} = defineForm<AddEditBlueprintDto>(
+} = defineForm<AddEditWorkspaceDto>(
   defaultFormData,
   object({
     name: string().required(),
-    color: string().required(),
-    description: string().required(),
+    tags: array()
+      .of(
+        string()
+          .matches(/^[a-zA-Z0-9]*$/)
+          .required()
+      )
+      .required()
+      .min(1),
   })
 );
 
 const {
   name: { value: name },
-  color: { value: color },
-  description: { value: description },
+  tags: { value: tags },
 } = fields;
 
 const { isActive, title, isEditMode, isInitialState } = defineComputed({
   isActive() {
-    return drawerStore.isDrawerActive(Drawer.AddEditBlueprint) || false;
+    return drawerStore.isDrawerActive(Drawer.AddEditWorkspace) || false;
   },
 
   isEditMode() {
-    return !!blueprintsStore.itemToEdit;
+    return !!workspacesStore.itemToEdit;
   },
 
   title(): string {
-    return `${isEditMode.value ? "Edit" : "Add"} blueprint`;
+    return `${isEditMode.value ? "Edit" : "Add"} workspace`;
   },
 
   isInitialState() {
@@ -232,17 +207,17 @@ const onSubmit = handleSubmit.withControlled(async formData => {
 
   try {
     isEdit
-      ? await blueprintsStore.update(formData)
-      : await blueprintsStore.store(formData);
+      ? await workspacesStore.update(formData)
+      : await workspacesStore.store(formData);
 
     if (!isEdit) {
-      blueprintsStore.getAll({
+      workspacesStore.getAll({
         page: 1,
-        perPage: blueprintsStore.BLUEPRINTS_TAB_ITEMS_PER_PAGE,
+        perPage: workspacesStore.ITEMS_PER_PAGE,
       });
     }
 
-    message.success(`Blueprint successfully ${isEdit ? "updated" : "added"}.`);
+    message.success(`Workspace successfully ${isEdit ? "updated" : "added"}.`);
 
     dismissDrawer();
   } catch (error) {
@@ -252,25 +227,51 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   }
 });
 
-async function deleteBlueprint() {
-  if (!itemToEdit.value) {
+function onTagInputChange(input: string) {
+  if (options.value.includes(input)) {
     return;
   }
 
-  isLoading.value = true;
+  tagInput.value = input;
 
-  try {
-    await blueprintsStore.delete(itemToEdit.value.id);
-
-    itemToEdit.value = null;
-
-    message.success(`Blueprint removed.`);
-
-    dismissDrawer();
-  } catch (error) {
-    console.log(error);
-  } finally {
-    isLoading.value = false;
+  if (!input) {
+    return;
   }
+
+  if (tagSearchTimeoutId.value) {
+    clearTimeout(tagSearchTimeoutId.value);
+  }
+
+  tagSearchTimeoutId.value = setTimeout(async () => {
+    options.value = [];
+
+    isLoadingTags.value = true;
+
+    try {
+      const { data } = await tagsStore.getBySearch(input);
+
+      options.value = data.total ? data.result.map(item => item.value) : [];
+
+      if (!data.total) {
+        message.info(`No tags found with keyword: ${input}`);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isLoadingTags.value = false;
+    }
+  }, 250);
+}
+
+function onTagSelect(tag: string | number) {
+  if (typeof tag !== "string") {
+    return;
+  }
+
+  if (tags.value.includes(tag)) {
+    return;
+  }
+
+  tags.value.push(tag);
 }
 </script>
