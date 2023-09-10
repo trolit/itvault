@@ -128,7 +128,14 @@ const {
   defaultFormData,
   object({
     name: string().required(),
-    tags: array().of(string().required()).required().min(1),
+    tags: array()
+      .of(
+        string()
+          .matches(/^[a-zA-Z0-9]*$/)
+          .required()
+      )
+      .required()
+      .min(1),
   })
 );
 
