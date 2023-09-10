@@ -20,12 +20,12 @@
       <div class="content">
         <slot name="content">
           <div class="description">
-            {{ description }}
+            <em>{{ description }}</em>
           </div>
 
           <div class="actions">
             <router-link :to="to">
-              <n-button type="info">
+              <n-button>
                 Open
 
                 <n-icon :size="15">
