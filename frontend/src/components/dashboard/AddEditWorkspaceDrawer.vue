@@ -1,8 +1,8 @@
 <template>
   <n-drawer
     :show="isActive"
-    :width="502"
-    placement="left"
+    :width="352"
+    placement="right"
     :show-mask="false"
     :trap-focus="false"
     :block-scroll="false"
@@ -30,8 +30,19 @@
         </n-form-item>
       </n-form>
 
+      <n-auto-complete
+        blur-after-select
+        :value="tagInput"
+        placeholder="type to find tag(s) suggestions"
+        :options="options"
+        :loading="isLoadingTags"
+        :disabled="isLoadingTags"
+        @select="onTagSelect"
+        @update:value="onTagInputChange"
+      />
+
       <template #footer>
-        <n-space justify="space-between" class="w-100" align="center">
+        <n-space justify="center" class="w-100" align="center">
           <require-permission
             :permission="
               isEditMode
@@ -65,6 +76,7 @@ import {
   NFormItem,
   useMessage,
   NDynamicTags,
+  NAutoComplete,
   NDrawerContent,
 } from "naive-ui";
 import { ref, type Ref } from "vue";
@@ -72,6 +84,7 @@ import { storeToRefs } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 import { array, object, string } from "yup";
 
+import { useTagsStore } from "@/store/tags";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { defineForm } from "@/helpers/defineForm";
@@ -83,10 +96,15 @@ import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
 const message = useMessage();
+const tagsStore = useTagsStore();
 const drawerStore = useDrawerStore();
 const workspacesStore = useWorkspacesStore();
 
+const tagInput = ref("");
 const isLoading = ref(false);
+const tagSearchTimeoutId = ref(0);
+const isLoadingTags = ref(false);
+const options: Ref<string[]> = ref([]);
 const { itemToEdit } = storeToRefs(workspacesStore);
 
 const defaultFormData: AddEditWorkspaceDto = {
@@ -201,4 +219,52 @@ const onSubmit = handleSubmit.withControlled(async formData => {
     isLoading.value = false;
   }
 });
+
+function onTagInputChange(input: string) {
+  if (options.value.includes(input)) {
+    return;
+  }
+
+  tagInput.value = input;
+
+  if (!input) {
+    return;
+  }
+
+  if (tagSearchTimeoutId.value) {
+    clearTimeout(tagSearchTimeoutId.value);
+  }
+
+  tagSearchTimeoutId.value = setTimeout(async () => {
+    options.value = [];
+
+    isLoadingTags.value = true;
+
+    try {
+      const { data } = await tagsStore.getBySearch(input);
+
+      options.value = data.total ? data.result.map(item => item.value) : [];
+
+      if (!data.total) {
+        message.info(`No tags found with keyword: ${input}`);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isLoadingTags.value = false;
+    }
+  }, 250);
+}
+
+function onTagSelect(tag: string | number) {
+  if (typeof tag !== "string") {
+    return;
+  }
+
+  if (tags.value.includes(tag)) {
+    return;
+  }
+
+  tags.value.push(tag);
+}
 </script>
