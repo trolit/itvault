@@ -1,4 +1,6 @@
 <template>
+  <n-h1> Dashboard </n-h1>
+
   <n-h2>
     Welcome
     <n-gradient-text> {{ authStore.profile.fullName }} </n-gradient-text>,
@@ -21,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { NH2, NGradientText, NText, NTag } from "naive-ui";
+import { NH2, NH1, NGradientText, NText, NTag } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import { useDateService } from "@/services/useDateService";
