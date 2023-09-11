@@ -1,5 +1,5 @@
 <template>
-  <n-card size="medium" class="ref-card">
+  <n-card size="medium" class="content-card">
     <n-thing>
       <template #avatar>
         <n-avatar>

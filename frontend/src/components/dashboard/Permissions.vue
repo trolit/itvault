@@ -1,5 +1,5 @@
 <template>
-  <ref-card :icon="PermissionsIcon" title="Your permissions">
+  <content-card :icon="PermissionsIcon" title="Your permissions">
     <template #content>
       <n-scrollbar trigger="none">
         <n-space>
@@ -59,7 +59,7 @@
         </n-space>
       </n-scrollbar>
     </template>
-  </ref-card>
+  </content-card>
 </template>
 
 <script setup lang="ts">
@@ -76,7 +76,7 @@ import {
 import { computed } from "vue";
 import { ValueVariable as PermissionsIcon } from "@vicons/carbon";
 
-import RefCard from "./RefCard.vue";
+import ContentCard from "./ContentCard.vue";
 import { useAuthStore } from "@/store/auth";
 
 const {
