@@ -66,31 +66,6 @@
           </n-grid-item>
         </n-grid>
       </n-grid-item>
-
-      <n-grid-item class="other-cards-wrapper" span="3">
-        <n-grid
-          x-gap="20"
-          y-gap="20"
-          responsive="screen"
-          cols="1 s:1 m:5s l:5 xl:5 2xl:5"
-        >
-          <n-grid-item
-            v-for="(
-              { title, to, icon, description, props }, index
-            ) of bottomCards"
-            v-bind="props"
-            class="other-card-wrapper"
-            :key="index"
-          >
-            <link-card
-              :to="to"
-              :icon="icon"
-              :title="title"
-              :description="description"
-            />
-          </n-grid-item>
-        </n-grid>
-      </n-grid-item>
     </n-grid>
 
     <add-edit-workspace-drawer />
@@ -102,13 +77,8 @@ import {
   Help as HelpIcon,
   Email as EmailIcon,
   Group as UsersIcon,
-  Document as FilesIcon,
   UserRole as RolesIcon,
-  StringText as NotesIcon,
-  Version as VariantsIcon,
   UpdateNow as UpdatesIcon,
-  Concept as BlueprintsIcon,
-  DocumentDownload as BundlesIcon,
 } from "@vicons/carbon";
 import { NGrid, NGridItem } from "naive-ui";
 import { ref, shallowRef, type Component, type Ref } from "vue";
@@ -169,43 +139,6 @@ const middleCards: Ref<OtherCard[]> = ref([
     to: ROUTE_ROLES_NAME,
     icon: shallowRef(RolesIcon),
     description: "Manage vault role(s)",
-  },
-]);
-
-const bottomCards: Ref<OtherCard[]> = ref([
-  {
-    title: "Notes",
-    to: ROUTE_GUIDE_NAME,
-    icon: shallowRef(NotesIcon),
-    description: "Overview of all notes",
-  },
-
-  {
-    title: "Bundles",
-    to: ROUTE_UPDATES_NAME,
-    icon: shallowRef(BundlesIcon),
-    description: "Overview of all bundles",
-  },
-
-  {
-    title: "Blueprints",
-    to: ROUTE_UPDATES_NAME,
-    icon: shallowRef(BlueprintsIcon),
-    description: "Overview of all blueprints",
-  },
-
-  {
-    title: "Files",
-    to: ROUTE_UPDATES_NAME,
-    icon: shallowRef(FilesIcon),
-    description: "Overview of all files",
-  },
-
-  {
-    title: "Variants",
-    to: ROUTE_UPDATES_NAME,
-    icon: shallowRef(VariantsIcon),
-    description: "Overview of all variants",
   },
 ]);
 </script>
