@@ -53,7 +53,7 @@ import {
 } from "naive-ui";
 import {
   Search as SearchIcon,
-  DataCenter as WorkspacesIcon,
+  Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
 import { useRouter } from "vue-router";
 import cloneDeep from "lodash/cloneDeep";
