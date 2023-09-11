@@ -1,5 +1,5 @@
 <template>
-  <n-h1> Dashboard </n-h1>
+  <n-h1> &gt; Dashboard </n-h1>
 
   <n-h2>
     Welcome
