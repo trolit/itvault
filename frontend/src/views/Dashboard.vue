@@ -7,14 +7,14 @@
       responsive="screen"
       cols="1 s:1 m:3 l:3 xl:3 2xl:3"
     >
-      <n-grid-item class="other-cards-wrapper" span="3">
+      <n-grid-item class="other-cards-wrapper" span="5">
         <n-grid
           x-gap="20"
           y-gap="20"
           responsive="screen"
-          cols="1 s:1 m:3 l:3 xl:3 2xl:3"
+          cols="1 s:1 m:5 l:5 xl:5 2xl:5"
         >
-          <n-grid-item>
+          <n-grid-item :span="2">
             <welcome />
           </n-grid-item>
 
@@ -24,7 +24,7 @@
             class="other-card-wrapper"
             :key="index"
           >
-            <ref-card
+            <link-card
               :to="to"
               :icon="icon"
               :title="title"
@@ -47,7 +47,32 @@
           x-gap="20"
           y-gap="20"
           responsive="screen"
-          cols="1 s:1 m:3 l:3 xl:3 2xl:3"
+          cols="1 s:1 m:2 l:2 xl:2 2xl:2"
+        >
+          <n-grid-item
+            v-for="(
+              { title, to, icon, description, props }, index
+            ) of middleCards"
+            v-bind="props"
+            class="other-card-wrapper"
+            :key="index"
+          >
+            <link-card
+              :to="to"
+              :icon="icon"
+              :title="title"
+              :description="description"
+            />
+          </n-grid-item>
+        </n-grid>
+      </n-grid-item>
+
+      <n-grid-item class="other-cards-wrapper" span="3">
+        <n-grid
+          x-gap="20"
+          y-gap="20"
+          responsive="screen"
+          cols="1 s:1 m:5s l:5 xl:5 2xl:5"
         >
           <n-grid-item
             v-for="(
@@ -57,7 +82,7 @@
             class="other-card-wrapper"
             :key="index"
           >
-            <ref-card
+            <link-card
               :to="to"
               :icon="icon"
               :title="title"
@@ -77,8 +102,13 @@ import {
   Help as HelpIcon,
   Email as EmailIcon,
   Group as UsersIcon,
+  Document as FilesIcon,
   UserRole as RolesIcon,
+  StringText as NotesIcon,
+  Version as VariantsIcon,
   UpdateNow as UpdatesIcon,
+  Concept as BlueprintsIcon,
+  DocumentDownload as BundlesIcon,
 } from "@vicons/carbon";
 import { NGrid, NGridItem } from "naive-ui";
 import { ref, shallowRef, type Component, type Ref } from "vue";
@@ -89,8 +119,8 @@ import {
   ROUTE_ROLES_NAME,
   ROUTE_UPDATES_NAME,
 } from "@/assets/constants/routes";
-import RefCard from "@/components/dashboard/RefCard.vue";
 import Welcome from "@/components/dashboard/Welcome.vue";
+import LinkCard from "@/components/dashboard/LinkCard.vue";
 import Permissions from "@/components/dashboard/Permissions.vue";
 import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
 import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
@@ -105,42 +135,77 @@ interface OtherCard {
 
 const topCards: Ref<OtherCard[]> = ref([
   {
-    title: "Users",
-    to: ROUTE_USERS_NAME,
-    icon: shallowRef(UsersIcon),
-    description: "Manage user(s).",
-  },
-
-  {
-    title: "Roles",
-    to: ROUTE_ROLES_NAME,
-    icon: shallowRef(RolesIcon),
-    description: "Manage role(s).",
-  },
-]);
-
-const bottomCards: Ref<OtherCard[]> = ref([
-  {
     title: "Guide",
     to: ROUTE_GUIDE_NAME,
     icon: shallowRef(HelpIcon),
-    description:
-      "This section describes available features and how to use them.",
+    description: "Available features description",
   },
 
   {
     title: "Updates",
     to: ROUTE_UPDATES_NAME,
     icon: shallowRef(UpdatesIcon),
-    description: "Complete log of changes made to the project.",
+    description: "Changes made to the project",
   },
 
-  // @TODO Create [Contact] view
   {
     title: "Contact",
     to: ROUTE_UPDATES_NAME,
     icon: shallowRef(EmailIcon),
-    description: "Need help? Found an issue? Send us an ticket.",
+    description: "Need help? Found an issue?",
+  },
+]);
+
+const middleCards: Ref<OtherCard[]> = ref([
+  {
+    title: "Users",
+    to: ROUTE_USERS_NAME,
+    icon: shallowRef(UsersIcon),
+    description: "Manage vault user(s)",
+  },
+
+  {
+    title: "Roles",
+    to: ROUTE_ROLES_NAME,
+    icon: shallowRef(RolesIcon),
+    description: "Manage vault role(s)",
+  },
+]);
+
+const bottomCards: Ref<OtherCard[]> = ref([
+  {
+    title: "Notes",
+    to: ROUTE_GUIDE_NAME,
+    icon: shallowRef(NotesIcon),
+    description: "Overview of all notes",
+  },
+
+  {
+    title: "Bundles",
+    to: ROUTE_UPDATES_NAME,
+    icon: shallowRef(BundlesIcon),
+    description: "Overview of all bundles",
+  },
+
+  {
+    title: "Blueprints",
+    to: ROUTE_UPDATES_NAME,
+    icon: shallowRef(BlueprintsIcon),
+    description: "Overview of all blueprints",
+  },
+
+  {
+    title: "Files",
+    to: ROUTE_UPDATES_NAME,
+    icon: shallowRef(FilesIcon),
+    description: "Overview of all files",
+  },
+
+  {
+    title: "Variants",
+    to: ROUTE_UPDATES_NAME,
+    icon: shallowRef(VariantsIcon),
+    description: "Overview of all variants",
   },
 ]);
 </script>
