@@ -1,7 +1,7 @@
 <template>
   <n-drawer
     :show="isActive"
-    :width="352"
+    :width="450"
     placement="right"
     :show-mask="false"
     :trap-focus="false"

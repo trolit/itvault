@@ -7,12 +7,12 @@
     display: flex;
 
     .other-cards-wrapper,
-    .profile-card-wrapper,
+    .permissions-wrapper,
     .workspaces-card-wrapper {
       display: inherit;
     }
 
-    .profile-card-wrapper,
+    .permissions-wrapper,
     .workspaces-card-wrapper {
       min-height: 70vh;
     }
@@ -21,7 +21,7 @@
       min-height: 30vh;
     }
 
-    .ref-card {
+    .content-card {
       .n-thing {
         height: 100%;
         --header-height: 41.2px;
@@ -80,10 +80,10 @@
       }
     }
 
-    .profile-card-wrapper {
+    .permissions-wrapper {
       .n-card {
         .n-scrollbar {
-          max-height: calc(100vh * 0.5);
+          max-height: calc(100vh * 0.6);
         }
       }
 

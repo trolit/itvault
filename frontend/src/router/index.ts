@@ -11,16 +11,22 @@ import {
   ROUTE_GUEST_NAME,
   ROUTE_GUIDE_NAME,
   ROUTE_LOGIN_NAME,
+  ROUTE_ROLES_NAME,
+  ROUTE_USERS_NAME,
   ROUTE_UPDATES_NAME,
   ROUTE_DASHBOARD_NAME,
   ROUTE_WORKSPACE_NAME,
 } from "@/assets/constants/routes";
+
 import Guest from "@/views/Guest.vue";
 import Guide from "@/views/Guide.vue";
 import Login from "@/views/Login.vue";
+import Roles from "@/views/Roles.vue";
+import Users from "@/views/Users.vue";
 import Updates from "@/views/Updates.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Workspace from "@/views/Workspace.vue";
+
 import { useAuthStore } from "@/store/auth";
 import { LoadingState } from "@/types/enums/LoadingState";
 
@@ -65,6 +71,26 @@ const router = createRouter({
       path: `/${ROUTE_WORKSPACE_NAME}/:slug`,
       name: ROUTE_WORKSPACE_NAME,
       component: Workspace,
+      props: {},
+      meta: {
+        requiresAuth: true,
+      },
+    },
+
+    {
+      path: `/${ROUTE_USERS_NAME}`,
+      name: ROUTE_USERS_NAME,
+      component: Users,
+      props: {},
+      meta: {
+        requiresAuth: true,
+      },
+    },
+
+    {
+      path: `/${ROUTE_ROLES_NAME}`,
+      name: ROUTE_ROLES_NAME,
+      component: Roles,
       props: {},
       meta: {
         requiresAuth: true,

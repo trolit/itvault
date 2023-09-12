@@ -1,5 +1,5 @@
 <template>
-  <ref-card :icon="WorkspacesIcon" title="Workspaces">
+  <content-card :icon="WorkspacesIcon" title="Workspaces">
     <template #header-extra>
       <require-permission :permission="Permission.CreateWorkspace">
         <n-button type="info" @click="toggleAddEditWorkspaceDrawer()">
@@ -37,7 +37,7 @@
         </template>
       </n-data-table>
     </template>
-  </ref-card>
+  </content-card>
 </template>
 
 <script setup lang="ts">
@@ -53,14 +53,14 @@ import {
 } from "naive-ui";
 import {
   Search as SearchIcon,
-  DataCenter as WorkspacesIcon,
+  Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
 import { useRouter } from "vue-router";
 import cloneDeep from "lodash/cloneDeep";
 import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
 
-import RefCard from "./RefCard.vue";
+import ContentCard from "./ContentCard.vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useWorkspacesStore } from "@/store/workspaces";
