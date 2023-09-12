@@ -12,18 +12,30 @@
           :key="index"
           @click="toggleAddEditBlueprintDrawer(blueprint)"
         >
-          <div class="wrapper">
-            <div class="content">
+          <n-space align="center" :wrap="false" size="large">
+            <div class="color">
               <div
                 class="thumbnail"
-                :style="{ backgroundColor: blueprint.color }"
+                :style="{
+                  backgroundColor: blueprint.color,
+                }"
               />
 
               <n-tag size="tiny">{{ blueprint.color }}</n-tag>
             </div>
 
-            <small>{{ blueprint.name }}</small>
-          </div>
+            <n-space vertical size="small">
+              {{ blueprint.name }}
+
+              <small>
+                <n-text depth="3">
+                  <n-ellipsis :line-clamp="1">
+                    {{ blueprint.description }}
+                  </n-ellipsis>
+                </n-text>
+              </small>
+            </n-space>
+          </n-space>
         </n-list-item>
       </n-list>
 
@@ -51,6 +63,9 @@ import {
   NTag,
   NSpin,
   NList,
+  NText,
+  NSpace,
+  NEllipsis,
   NListItem,
   NScrollbar,
   NPagination,
