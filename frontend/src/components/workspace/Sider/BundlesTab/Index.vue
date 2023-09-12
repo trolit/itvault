@@ -57,16 +57,20 @@ import CreateBundleModal from "./CreateBundleModal/Index.vue";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 
 const props = defineProps({
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
+
   page: {
     type: Object as PropType<number>,
     required: true,
   },
 });
 
-const emit = defineEmits(["update:page"]);
+const emit = defineEmits(["update:page", "update:is-loading"]);
 
 const perPage = 10;
-const isLoading = ref(false);
 const { page } = toRefs(props);
 const bundlesStore = useBundlesStore();
 const isCreateBundleModalVisible = ref(false);
@@ -84,14 +88,14 @@ function onPageChange(newPage: number) {
 }
 
 async function getBundles(page: number) {
-  isLoading.value = true;
+  emit("update:is-loading", true);
 
   try {
     await bundlesStore.getAll({ page, perPage });
   } catch (error) {
     console.log(error);
   } finally {
-    isLoading.value = false;
+    emit("update:is-loading", false);
   }
 }
 

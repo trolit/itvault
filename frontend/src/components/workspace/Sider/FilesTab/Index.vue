@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount } from "vue";
 import { NScrollbar, NSpin } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
@@ -21,9 +21,17 @@ import FileHierarchy from "./FileHierarchy.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 
-const isLoading = ref(false);
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
+
+defineProps({
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const emit = defineEmits(["update:is-loading"]);
 
 onBeforeMount(async () => {
   if (workspacesStore.tree.length === 0) {
@@ -34,14 +42,14 @@ onBeforeMount(async () => {
 });
 
 async function initTree() {
-  isLoading.value = true;
+  emit("update:is-loading", true);
 
   try {
     await workspacesStore.getTree({ relativePath: filesStore.ROOT });
   } catch (error) {
     console.log(error);
   } finally {
-    isLoading.value = false;
+    emit("update:is-loading", false);
   }
 }
 </script>

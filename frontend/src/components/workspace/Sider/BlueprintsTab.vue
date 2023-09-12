@@ -70,7 +70,7 @@ import {
   NScrollbar,
   NPagination,
 } from "naive-ui";
-import { onMounted, ref, type PropType, type Ref } from "vue";
+import { onMounted, type PropType, type Ref } from "vue";
 
 import Toolbar from "./Toolbar.vue";
 import { Drawer } from "@/types/enums/Drawer";
@@ -81,17 +81,21 @@ import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();
 
-const perPage = 11;
-const isLoading = ref(false);
-
 const props = defineProps({
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
+
   page: {
     type: Object as PropType<Ref<number>>,
     required: true,
   },
 });
 
-const emit = defineEmits(["update:page"]);
+const emit = defineEmits(["update:page", "update:is-loading"]);
+
+const perPage = 11;
 
 onMounted(() => {
   if (blueprintsStore.total === 0) {
@@ -123,14 +127,14 @@ function onPageChange(newPage: number) {
 }
 
 async function getBlueprints(page: number) {
-  isLoading.value = true;
+  emit("update:is-loading", true);
 
   try {
     await blueprintsStore.getAll({ page, perPage });
   } catch (error) {
     console.log(error);
   } finally {
-    isLoading.value = false;
+    emit("update:is-loading", false);
   }
 }
 </script>
