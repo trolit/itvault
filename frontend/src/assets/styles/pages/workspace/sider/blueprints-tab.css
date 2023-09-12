@@ -3,7 +3,7 @@
     .blueprints-tab {
       height: 100%;
 
-      --blueprints-header-height: 0.1;
+      --blueprints-toolbar-height: 0.1;
       --blueprints-list-height: 0.83;
       --blueprints-footer-height: 0.07;
 
@@ -11,14 +11,14 @@
         var(--workspace-sider-content-height) * var(--blueprints-list-height)
       );
 
-      .header {
+      .tab-toolbar {
         display: flex;
         padding: 0 10px;
         column-gap: 10px;
         align-items: center;
         height: calc(
           var(--workspace-sider-content-height) *
-            var(--blueprints-header-height)
+            var(--blueprints-toolbar-height)
         );
       }
 

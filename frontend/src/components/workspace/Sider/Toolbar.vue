@@ -1,6 +1,6 @@
 <template>
   <n-thing>
-    <div class="header">
+    <div class="tab-toolbar">
       <n-button type="warning" size="small" @click="$emit('reset')">
         <n-icon :component="ResetIcon" :size="20" />
       </n-button>

@@ -1,17 +1,6 @@
 <template>
   <div class="files-tab">
-    <div class="header">
-      <n-button type="warning" size="small">
-        <n-icon :component="ResetIcon" :size="20" />
-      </n-button>
-
-      <!-- @TODO create common component -->
-      <n-input clearable show-count placeholder="Type name">
-        <template #prefix>
-          <n-icon :component="SearchIcon" />
-        </template>
-      </n-input>
-    </div>
+    <toolbar input-placeholder="Type name" />
 
     <n-scrollbar>
       <file-hierarchy v-if="!isLoading" :data="workspacesStore.tree" />
@@ -25,12 +14,12 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import { NIcon, NInput, NButton, NScrollbar, NSpin } from "naive-ui";
-import { Reset as ResetIcon, Search as SearchIcon } from "@vicons/carbon";
+import { NScrollbar, NSpin } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
+import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 
 const isLoading = ref(false);
 const filesStore = useFilesStore();

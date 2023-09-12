@@ -1,7 +1,7 @@
 .workspace-page {
   .sider {
     .bundles-tab {
-      --bundles-header-height: 0.1;
+      --bundles-toolbar-height: 0.1;
       --bundles-content-height: 0.83;
       --bundles-footer-height: 0.07;
 
@@ -9,13 +9,13 @@
         var(--workspace-sider-content-height) * var(--bundles-content-height)
       );
 
-      .header {
+      .tab-toolbar {
         display: flex;
         padding: 0 10px;
         column-gap: 10px;
         align-items: center;
         height: calc(
-          var(--workspace-sider-content-height) * var(--bundles-header-height)
+          var(--workspace-sider-content-height) * var(--bundles-toolbar-height)
         );
       }
 

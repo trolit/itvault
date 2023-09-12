@@ -1,25 +1,9 @@
 <template>
   <div class="blueprints-tab">
-    <n-thing>
-      <div class="header">
-        <n-button type="warning" size="small">
-          <n-icon :component="ResetIcon" :size="20" />
-        </n-button>
-
-        <!-- @TODO create common component (?) -->
-        <n-input clearable show-count placeholder="Type name or color">
-          <template #prefix>
-            <n-icon :component="SearchIcon" />
-          </template>
-        </n-input>
-
-        <require-permission :permission="Permission.CreateBlueprint">
-          <n-button size="small" @click="toggleAddEditBlueprintDrawer()">
-            <n-icon :component="AddIcon" :size="25" />
-          </n-button>
-        </require-permission>
-      </div>
-    </n-thing>
+    <toolbar
+      input-placeholder="Type name or color"
+      @add-item="toggleAddEditBlueprintDrawer"
+    />
 
     <n-scrollbar>
       <n-list v-if="!isLoading" clickable hoverable>
@@ -62,32 +46,22 @@
 </template>
 
 <script setup lang="ts">
-import {
-  Add as AddIcon,
-  Reset as ResetIcon,
-  Search as SearchIcon,
-} from "@vicons/carbon";
 import cloneDeep from "lodash/cloneDeep";
 import {
   NTag,
   NSpin,
   NList,
-  NIcon,
-  NInput,
-  NThing,
-  NButton,
   NListItem,
   NScrollbar,
   NPagination,
 } from "naive-ui";
 import { onMounted, ref, type PropType, type Ref } from "vue";
 
+import Toolbar from "./Toolbar.vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
-import { Permission } from "@shared/types/enums/Permission";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
-import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();

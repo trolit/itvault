@@ -1,21 +1,9 @@
 <template>
   <div class="bundles-tab">
-    <div class="header">
-      <n-button type="warning" size="small">
-        <n-icon :component="ResetIcon" :size="20" />
-      </n-button>
-
-      <!-- @TODO create common component -->
-      <n-input clearable show-count placeholder="Type note or status">
-        <template #prefix>
-          <n-icon :component="SearchIcon" />
-        </template>
-      </n-input>
-
-      <n-button size="small" @click="isCreateBundleModalVisible = true">
-        <n-icon :component="AddIcon" :size="25" />
-      </n-button>
-    </div>
+    <toolbar
+      input-placeholder="Type note or status"
+      @add-item="isCreateBundleModalVisible = true"
+    />
 
     <n-scrollbar>
       <div v-if="!isLoading">
@@ -56,24 +44,17 @@
 import {
   NSpin,
   NList,
-  NIcon,
-  NInput,
   NEmpty,
-  NButton,
   NListItem,
   NScrollbar,
   NPagination,
 } from "naive-ui";
-import {
-  Add as AddIcon,
-  Reset as ResetIcon,
-  Search as SearchIcon,
-} from "@vicons/carbon";
 import { computed, onMounted, ref, type PropType, toRefs } from "vue";
 
 import SingleBundle from "./SingleBundle.vue";
 import { useBundlesStore } from "@/store/bundles";
 import CreateBundleModal from "./CreateBundleModal/Index.vue";
+import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 
 const props = defineProps({
   page: {
