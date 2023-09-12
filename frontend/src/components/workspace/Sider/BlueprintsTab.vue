@@ -1,23 +1,25 @@
 <template>
   <div class="blueprints-tab">
-    <div class="header">
-      <n-button type="warning" size="small">
-        <n-icon :component="ResetIcon" :size="20" />
-      </n-button>
-
-      <!-- @TODO create common component (?) -->
-      <n-input clearable show-count placeholder="Type name or color">
-        <template #prefix>
-          <n-icon :component="SearchIcon" />
-        </template>
-      </n-input>
-
-      <require-permission :permission="Permission.CreateBlueprint">
-        <n-button size="small" @click="toggleAddEditBlueprintDrawer()">
-          <n-icon :component="AddIcon" :size="25" />
+    <n-thing>
+      <div class="header">
+        <n-button type="warning" size="small">
+          <n-icon :component="ResetIcon" :size="20" />
         </n-button>
-      </require-permission>
-    </div>
+
+        <!-- @TODO create common component (?) -->
+        <n-input clearable show-count placeholder="Type name or color">
+          <template #prefix>
+            <n-icon :component="SearchIcon" />
+          </template>
+        </n-input>
+
+        <require-permission :permission="Permission.CreateBlueprint">
+          <n-button size="small" @click="toggleAddEditBlueprintDrawer()">
+            <n-icon :component="AddIcon" :size="25" />
+          </n-button>
+        </require-permission>
+      </div>
+    </n-thing>
 
     <n-scrollbar>
       <n-list v-if="!isLoading" clickable hoverable>
@@ -72,6 +74,7 @@ import {
   NList,
   NIcon,
   NInput,
+  NThing,
   NButton,
   NListItem,
   NScrollbar,
