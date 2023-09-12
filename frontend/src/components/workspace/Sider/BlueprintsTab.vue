@@ -28,8 +28,8 @@
               {{ blueprint.name }}
 
               <small>
-                <n-text depth="3">
-                  <n-ellipsis :line-clamp="1">
+                <n-text depth="3" :style="{ whiteSpace: 'pre-wrap' }">
+                  <n-ellipsis :line-clamp="2">
                     {{ blueprint.description }}
                   </n-ellipsis>
                 </n-text>
