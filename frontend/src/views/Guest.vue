@@ -77,12 +77,12 @@ import {
   NDescriptionsItem,
 } from "naive-ui";
 import {
+  Timer as TimerIcon,
   Network4 as OpenIcon,
-  TaskStar as DataVisIcon,
-  ListChecked as CloudAppIcon,
+  TaskStar as YagniIcon,
   RainDrop as RainDropIcon,
-  DataCenter as ManageProtectionIcon,
-  Timer as AccessibilityColorIcon,
+  DataCenter as PersistCodeIcon,
+  ListChecked as ExtractOnDemandIcon,
 } from "@vicons/carbon";
 import { ref, shallowRef, type Ref } from "vue";
 
@@ -99,22 +99,22 @@ interface Feature {
 
 const features: Ref<Feature[]> = ref([
   {
-    icon: shallowRef(CloudAppIcon),
+    icon: shallowRef(ExtractOnDemandIcon),
     header: "Take chosen features on demand",
     text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
   },
   {
-    icon: shallowRef(ManageProtectionIcon),
+    icon: shallowRef(PersistCodeIcon),
     header: "Persist code knowledge",
     text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
   },
   {
-    icon: shallowRef(DataVisIcon),
+    icon: shallowRef(YagniIcon),
     header: "Boot YAGNI project",
     text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
   },
   {
-    icon: shallowRef(AccessibilityColorIcon),
+    icon: shallowRef(TimerIcon),
     header: "Save Time",
     text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
   },
