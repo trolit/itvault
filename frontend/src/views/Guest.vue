@@ -3,7 +3,7 @@
     <theme-selector>
       <template #default>
         <n-button text :focusable="false" class="theme-selector">
-          <icon :value="RainDropIcon" :size="35" />
+          <icon :value="RainDropIcon" :size="40" />
         </n-button>
       </template>
     </theme-selector>
@@ -18,7 +18,9 @@
         <n-grid responsive="screen" cols="1">
           <n-grid-item>
             <brand>
-              <template #extra-text> source code storage </template>
+              <template #extra-text>
+                save source code knowledge in vault
+              </template>
             </brand>
           </n-grid-item>
 
@@ -37,7 +39,7 @@
       </n-grid-item>
 
       <n-grid-item :span="2">
-        <n-grid responsive="screen" cols="1" :x-gap="20" :y-gap="20">
+        <n-grid responsive="screen" cols="1" :y-gap="40">
           <n-grid-item
             v-for="({ icon, header, text }, index) of features"
             :key="index"
@@ -100,23 +102,23 @@ interface Feature {
 const features: Ref<Feature[]> = ref([
   {
     icon: shallowRef(ExtractOnDemandIcon),
-    header: "Take chosen features on demand",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+    header: "Extract features on demand",
+    text: "Easily extract project's features (related source code) from the vault when needed.",
   },
   {
     icon: shallowRef(PersistCodeIcon),
     header: "Persist code knowledge",
-    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+    text: "Provide more insights on your/company codebase for all developers by storing projects in vault.",
   },
   {
     icon: shallowRef(YagniIcon),
-    header: "Boot YAGNI project",
-    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+    header: "Start project following YAGNI",
+    text: "Start cleaner project by including only logic that is needed.",
   },
   {
     icon: shallowRef(TimerIcon),
-    header: "Save Time",
-    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+    header: "Faster implementation",
+    text: "Save developer(s) time by exposing 'prescription' on how to implement specific solution into different project.",
   },
 ]);
 </script>
