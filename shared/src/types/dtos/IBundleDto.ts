@@ -14,7 +14,7 @@ export interface IBundleDto {
 
   status: BundleStatus;
 
-  size: number;
+  size: { value: number; unit: string };
 
   createdBy: {
     id: number;
