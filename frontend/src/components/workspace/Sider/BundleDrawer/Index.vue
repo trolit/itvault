@@ -17,11 +17,15 @@
 
         <n-divider />
 
-        <note :bundle="bundle" />
+        <size :bundle="bundle" />
 
         <n-divider />
 
         <status :bundle="bundle" />
+
+        <n-divider />
+
+        <note :bundle="bundle" />
 
         <n-divider />
 
@@ -36,6 +40,7 @@ import { computed } from "vue";
 import { NDrawer, NDivider, NDrawerContent } from "naive-ui";
 
 import Note from "./Note.vue";
+import Size from "./Size.vue";
 import Owner from "./Owner.vue";
 import Status from "./Status.vue";
 import Blueprints from "./Blueprints.vue";
