@@ -12,10 +12,9 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   expire: BundleExpire;
   expiresAt: string;
   status: BundleStatus;
-  // @TODO { value, unit }
-  size: number;
   createdBy: { id: number; fullName: string };
   createdAt: string;
+  size: { value: number; unit: string };
 
   constructor(
     data: Bundle,
@@ -26,13 +25,17 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
       "expire",
       "expiresAt",
       "status",
-      "size",
       "createdBy",
     ]
   ) {
     super(data, keys);
 
     this.createdAt = data.createdAt.toISOString();
+
+    this.size = {
+      value: data.size,
+      unit: "B",
+    };
 
     return this;
   }
