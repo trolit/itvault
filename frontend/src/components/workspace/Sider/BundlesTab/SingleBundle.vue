@@ -2,7 +2,7 @@
   <n-card>
     <n-thing content-indented class="single-bundle">
       <template #header>
-        <div>Bundle #{{ item.id }}</div>
+        <div>Bundle id{{ item.id }}</div>
 
         <status :value="item.status" />
       </template>
