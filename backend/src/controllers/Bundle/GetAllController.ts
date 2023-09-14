@@ -1,3 +1,4 @@
+import { MoreThanOrEqual } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { BundleMapper } from "@mappers/BundleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
@@ -7,6 +8,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
+import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -38,6 +40,12 @@ export class GetAllController extends BaseController {
       query: { skip, take, workspaceId },
     } = request;
 
+    const commonWhere = {
+      workspace: {
+        id: workspaceId,
+      },
+    };
+
     const [result, total] = await this._bundleRepository.getAllAndCount({
       order: {
         createdAt: "DESC",
@@ -50,11 +58,16 @@ export class GetAllController extends BaseController {
           fullName: true,
         },
       },
-      where: {
-        workspace: {
-          id: workspaceId,
+      where: [
+        {
+          expire: BundleExpire.Never,
+          ...commonWhere,
         },
-      },
+        {
+          expiresAt: MoreThanOrEqual(new Date()),
+          ...commonWhere,
+        },
+      ],
       relations: {
         blueprintToBundle: {
           blueprint: true,
