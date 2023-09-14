@@ -71,7 +71,7 @@ variantsRouter.post(
     {
       multiples: false,
       basePath: FILES.BASE_TEMPORARY_UPLOADS_PATH,
-      fieldsOrder: ["name", "fileId", "variantId"],
+      fieldsOrder: ["name", "fileId"],
     },
     {
       fields: storeSchema,
