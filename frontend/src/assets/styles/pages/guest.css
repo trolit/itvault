@@ -1,15 +1,16 @@
 .guest-page {
   .n-grid {
     --common-margin: 60px;
+    height: 100%;
 
     .brand {
       margin: var(--common-margin) 0;
 
       .primary-content {
-        font-size: 90px;
+        font-size: 70px;
 
         .n-icon {
-          font-size: 90px;
+          font-size: 70px;
         }
       }
 
@@ -47,9 +48,9 @@
       justify-content: left;
 
       .icon-wrapper {
-        width: 120px;
+        width: 110px;
         display: flex;
-        height: 120px;
+        height: 110px;
         position: relative;
         align-items: center;
         border-radius: 100%;
@@ -58,7 +59,7 @@
 
         .n-icon {
           color: white;
-          font-size: 80px;
+          font-size: 70px;
           position: absolute;
         }
       }
