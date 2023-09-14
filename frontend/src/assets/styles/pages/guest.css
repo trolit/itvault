@@ -1,15 +1,16 @@
 .guest-page {
   .n-grid {
     --common-margin: 60px;
+    height: 100%;
 
     .brand {
       margin: var(--common-margin) 0;
 
       .primary-content {
-        font-size: 90px;
+        font-size: 70px;
 
         .n-icon {
-          font-size: 90px;
+          font-size: 70px;
         }
       }
 
@@ -44,22 +45,21 @@
     .feature {
       display: flex;
       margin: 0 10px;
-      justify-content: center;
+      justify-content: left;
 
       .icon-wrapper {
-        width: 150px;
+        width: 110px;
         display: flex;
-        height: 150px;
-        font-size: 150px;
+        height: 110px;
         position: relative;
         align-items: center;
         border-radius: 100%;
         justify-content: center;
-        background-color: wheat;
+        background-color: #0074d8;
 
         .n-icon {
-          color: black;
-          font-size: 90px;
+          color: white;
+          font-size: 70px;
           position: absolute;
         }
       }
@@ -69,6 +69,7 @@
 
         .header {
           font-size: 25px;
+          text-decoration: underline;
         }
       }
     }
@@ -108,6 +109,7 @@
   .theme-selector {
     left: 0;
     opacity: 0.5;
+    z-index: 9999;
     position: absolute;
     top: 5px;
 

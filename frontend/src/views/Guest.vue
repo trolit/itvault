@@ -3,81 +3,68 @@
     <theme-selector>
       <template #default>
         <n-button text :focusable="false" class="theme-selector">
-          <icon :value="RainDropIcon" :size="35" />
+          <icon :value="RainDropIcon" :size="40" />
         </n-button>
       </template>
     </theme-selector>
 
     <n-grid
-      x-gap="20"
-      y-gap="20"
+      :x-gap="50"
       class="grid"
       responsive="screen"
-      cols="1 s:1 m:2 l:2 xl:2 2xl:2"
+      cols="1 s:1 m:3 l:3 xl:3 2xl:3"
     >
+      <n-grid-item :span="1">
+        <n-grid responsive="screen" cols="1">
+          <n-grid-item>
+            <brand>
+              <template #extra-text>
+                <strong>keep</strong> source code <strong>knowledge</strong>
+              </template>
+            </brand>
+          </n-grid-item>
+
+          <n-grid-item class="top-buttons">
+            <router-link :to="ROUTE_LOGIN_NAME">
+              <n-button ghost type="tertiary" :focusable="false">
+                <div class="primary-icon">
+                  <icon :value="OpenIcon" />
+                </div>
+
+                <div class="text">open</div>
+              </n-button>
+            </router-link>
+          </n-grid-item>
+        </n-grid>
+      </n-grid-item>
+
       <n-grid-item :span="2">
-        <brand>
-          <template #extra-text> smart source code storage </template>
-        </brand>
-      </n-grid-item>
+        <n-grid responsive="screen" cols="1" :y-gap="40">
+          <n-grid-item
+            v-for="({ icon, header, text }, index) of features"
+            :key="index"
+            :span="1"
+            class="feature"
+          >
+            <n-descriptions label-placement="top" :column="4">
+              <n-descriptions-item>
+                <div class="icon-wrapper">
+                  <icon :value="icon" />
+                </div>
+              </n-descriptions-item>
 
-      <n-grid-item class="top-buttons" :span="2">
-        <router-link :to="ROUTE_LOGIN_NAME">
-          <n-button ghost type="tertiary" :focusable="false">
-            <div class="primary-icon">
-              <icon :value="SignInIcon" />
-            </div>
+              <n-descriptions-item>
+                <div class="text-wrapper">
+                  <div class="header">{{ header }}</div>
 
-            <div class="text">open app</div>
-          </n-button>
-        </router-link>
-      </n-grid-item>
-
-      <n-grid-item class="label" :span="2">
-        About
-        <n-divider />
-      </n-grid-item>
-
-      <n-grid-item :span="2"> T.B.D. </n-grid-item>
-
-      <n-grid-item class="label" :span="2">
-        Features
-        <n-divider />
-      </n-grid-item>
-
-      <n-grid-item
-        v-for="({ icon, header, text }, index) of features"
-        :key="index"
-        :span="2"
-        class="feature"
-      >
-        <n-descriptions label-placement="top" :column="4">
-          <n-descriptions-item>
-            <div class="icon-wrapper">
-              <icon :value="icon" />
-            </div>
-          </n-descriptions-item>
-
-          <n-descriptions-item>
-            <div class="text-wrapper">
-              <div class="header">{{ header }}</div>
-
-              <div class="text">
-                {{ text }}
-              </div>
-            </div>
-          </n-descriptions-item>
-        </n-descriptions>
-      </n-grid-item>
-
-      <n-grid-item class="bottom-buttons" :span="2">
-        <n-button ghost type="tertiary" :focusable="false">
-          <div class="primary-icon">
-            <icon :value="EmailIcon" />
-          </div>
-
-          <div class="text">Request demo</div>
-        </n-button>
+                  <div class="text">
+                    {{ text }}
+                  </div>
+                </div>
+              </n-descriptions-item>
+            </n-descriptions>
+          </n-grid-item>
+        </n-grid>
       </n-grid-item>
     </n-grid>
   </div>
@@ -87,19 +74,17 @@
 import {
   NGrid,
   NButton,
-  NDivider,
   NGridItem,
   NDescriptions,
   NDescriptionsItem,
 } from "naive-ui";
 import {
-  Gui as SignInIcon,
-  Email as EmailIcon,
-  DataVis3 as DataVisIcon,
-  CloudApp as CloudAppIcon,
+  Timer as TimerIcon,
+  Network4 as OpenIcon,
+  TaskStar as YagniIcon,
   RainDrop as RainDropIcon,
-  ManageProtection as ManageProtectionIcon,
-  AccessibilityColor as AccessibilityColorIcon,
+  DataCenter as PersistCodeIcon,
+  ListChecked as ExtractOnDemandIcon,
 } from "@vicons/carbon";
 import { ref, shallowRef, type Ref } from "vue";
 
@@ -116,24 +101,24 @@ interface Feature {
 
 const features: Ref<Feature[]> = ref([
   {
-    icon: shallowRef(CloudAppIcon),
-    header: "Cloud",
-    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+    icon: shallowRef(ExtractOnDemandIcon),
+    header: "Extract features on demand",
+    text: "Extract project features (related source code) from vault when needed.",
   },
   {
-    icon: shallowRef(ManageProtectionIcon),
-    header: "Protected",
-    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+    icon: shallowRef(PersistCodeIcon),
+    header: "Persist code knowledge",
+    text: "Provide more insights on your/company codebase for developer(s). Reduce time needed to understand/remind how specific features are/were implemented.",
   },
   {
-    icon: shallowRef(DataVisIcon),
-    header: "Expanded privileges",
-    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+    icon: shallowRef(YagniIcon),
+    header: "Boot new project with YAGNI",
+    text: "Initialize new project without excessive code. Expand it when needed.",
   },
   {
-    icon: shallowRef(AccessibilityColorIcon),
-    header: "Accessible",
-    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+    icon: shallowRef(TimerIcon),
+    header: "Save developer(s) time",
+    text: "Use vault to allow developer(s) to instantly obtain feature related source code instead of asking others to help implement it in different project.",
   },
 ]);
 </script>
