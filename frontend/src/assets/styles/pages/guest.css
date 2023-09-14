@@ -44,7 +44,7 @@
     .feature {
       display: flex;
       margin: 0 10px;
-      justify-content: center;
+      justify-content: left;
 
       .icon-wrapper {
         width: 120px;
