@@ -23,11 +23,10 @@ export class VariantRepository
     formDataBody: {
       name: string;
       fileId: number;
-      variantId?: string;
     },
     formDataFiles: IFormDataFile[]
   ): Promise<Variant | null> {
-    const { name, fileId, variantId } = formDataBody;
+    const { name, fileId } = formDataBody;
 
     const partialEntity = this.createEntity({
       name,
@@ -38,18 +37,6 @@ export class VariantRepository
         id: userId,
       },
     });
-
-    if (variantId) {
-      const variant = await this.getById(variantId);
-
-      return variant
-        ? this.primitiveSave({
-            ...partialEntity,
-            size: variant.size,
-            filename: variant.filename,
-          })
-        : null;
-    }
 
     const [{ file }] = formDataFiles;
 

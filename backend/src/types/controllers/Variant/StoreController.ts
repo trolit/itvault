@@ -8,8 +8,6 @@ export namespace StoreControllerTypes {
       name: string;
 
       fileId: number;
-
-      variantId?: string;
     };
 
     type Query = WorkspaceId;
