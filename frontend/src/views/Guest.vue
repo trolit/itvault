@@ -69,16 +69,6 @@
           </n-descriptions-item>
         </n-descriptions>
       </n-grid-item>
-
-      <n-grid-item class="bottom-buttons" :span="2">
-        <n-button ghost type="tertiary" :focusable="false">
-          <div class="primary-icon">
-            <icon :value="EmailIcon" />
-          </div>
-
-          <div class="text">Request demo</div>
-        </n-button>
-      </n-grid-item>
     </n-grid>
   </div>
 </template>
@@ -94,7 +84,6 @@ import {
 } from "naive-ui";
 import {
   Gui as SignInIcon,
-  Email as EmailIcon,
   DataVis3 as DataVisIcon,
   CloudApp as CloudAppIcon,
   RainDrop as RainDropIcon,
