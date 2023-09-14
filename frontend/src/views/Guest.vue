@@ -9,65 +9,60 @@
     </theme-selector>
 
     <n-grid
-      x-gap="20"
-      y-gap="20"
+      :x-gap="50"
       class="grid"
       responsive="screen"
-      cols="1 s:1 m:2 l:2 xl:2 2xl:2"
+      cols="1 s:1 m:3 l:3 xl:3 2xl:3"
     >
+      <n-grid-item :span="1">
+        <n-grid responsive="screen" cols="1">
+          <n-grid-item>
+            <brand>
+              <template #extra-text> source code storage </template>
+            </brand>
+          </n-grid-item>
+
+          <n-grid-item class="top-buttons">
+            <router-link :to="ROUTE_LOGIN_NAME">
+              <n-button ghost type="tertiary" :focusable="false">
+                <div class="primary-icon">
+                  <icon :value="OpenIcon" />
+                </div>
+
+                <div class="text">open</div>
+              </n-button>
+            </router-link>
+          </n-grid-item>
+        </n-grid>
+      </n-grid-item>
+
       <n-grid-item :span="2">
-        <brand>
-          <template #extra-text> smart source code storage </template>
-        </brand>
-      </n-grid-item>
+        <n-grid responsive="screen" cols="1" :x-gap="20" :y-gap="20">
+          <n-grid-item
+            v-for="({ icon, header, text }, index) of features"
+            :key="index"
+            :span="1"
+            class="feature"
+          >
+            <n-descriptions label-placement="top" :column="4">
+              <n-descriptions-item>
+                <div class="icon-wrapper">
+                  <icon :value="icon" />
+                </div>
+              </n-descriptions-item>
 
-      <n-grid-item class="top-buttons" :span="2">
-        <router-link :to="ROUTE_LOGIN_NAME">
-          <n-button ghost type="tertiary" :focusable="false">
-            <div class="primary-icon">
-              <icon :value="SignInIcon" />
-            </div>
+              <n-descriptions-item>
+                <div class="text-wrapper">
+                  <div class="header">{{ header }}</div>
 
-            <div class="text">open app</div>
-          </n-button>
-        </router-link>
-      </n-grid-item>
-
-      <n-grid-item class="label" :span="2">
-        About
-        <n-divider />
-      </n-grid-item>
-
-      <n-grid-item :span="2"> T.B.D. </n-grid-item>
-
-      <n-grid-item class="label" :span="2">
-        Features
-        <n-divider />
-      </n-grid-item>
-
-      <n-grid-item
-        v-for="({ icon, header, text }, index) of features"
-        :key="index"
-        :span="2"
-        class="feature"
-      >
-        <n-descriptions label-placement="top" :column="4">
-          <n-descriptions-item>
-            <div class="icon-wrapper">
-              <icon :value="icon" />
-            </div>
-          </n-descriptions-item>
-
-          <n-descriptions-item>
-            <div class="text-wrapper">
-              <div class="header">{{ header }}</div>
-
-              <div class="text">
-                {{ text }}
-              </div>
-            </div>
-          </n-descriptions-item>
-        </n-descriptions>
+                  <div class="text">
+                    {{ text }}
+                  </div>
+                </div>
+              </n-descriptions-item>
+            </n-descriptions>
+          </n-grid-item>
+        </n-grid>
       </n-grid-item>
     </n-grid>
   </div>
@@ -77,18 +72,17 @@
 import {
   NGrid,
   NButton,
-  NDivider,
   NGridItem,
   NDescriptions,
   NDescriptionsItem,
 } from "naive-ui";
 import {
-  Gui as SignInIcon,
-  DataVis3 as DataVisIcon,
-  CloudApp as CloudAppIcon,
+  Network4 as OpenIcon,
+  TaskStar as DataVisIcon,
+  ListChecked as CloudAppIcon,
   RainDrop as RainDropIcon,
-  ManageProtection as ManageProtectionIcon,
-  AccessibilityColor as AccessibilityColorIcon,
+  DataCenter as ManageProtectionIcon,
+  Timer as AccessibilityColorIcon,
 } from "@vicons/carbon";
 import { ref, shallowRef, type Ref } from "vue";
 
@@ -106,22 +100,22 @@ interface Feature {
 const features: Ref<Feature[]> = ref([
   {
     icon: shallowRef(CloudAppIcon),
-    header: "Cloud",
-    text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
+    header: "Take chosen features on demand",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
   },
   {
     icon: shallowRef(ManageProtectionIcon),
-    header: "Protected",
+    header: "Persist code knowledge",
     text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
   },
   {
     icon: shallowRef(DataVisIcon),
-    header: "Expanded privileges",
+    header: "Boot YAGNI project",
     text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
   },
   {
     icon: shallowRef(AccessibilityColorIcon),
-    header: "Accessible",
+    header: "Save Time",
     text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus accumsan neque at erat interdum, et lacinia libero feugiat. Suspendisse dictum imperdiet congue. Donec elementum leo eget nulla blandit ornare vel sit amet risus.",
   },
 ]);
