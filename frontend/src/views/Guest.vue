@@ -111,12 +111,12 @@ const features: Ref<Feature[]> = ref([
   {
     icon: shallowRef(YagniIcon),
     header: "Boot new project with YAGNI",
-    text: "Initialize new project without excessive code.",
+    text: "Initialize new project without excessive code. Expand it when needed.",
   },
   {
     icon: shallowRef(TimerIcon),
     header: "Save developer(s) time",
-    text: "Use vault to instantly obtain feature related source code instead of asking other developers to help you implement it in other project.",
+    text: "Use vault to allow developer(s) to instantly obtain feature related source code instead of asking others to help implement it in different project.",
   },
 ]);
 </script>
