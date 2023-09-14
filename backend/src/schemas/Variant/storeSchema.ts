@@ -9,7 +9,6 @@ import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
-import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 
 export const storeSchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> =
@@ -48,6 +47,4 @@ export const storeSchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> =
       }),
 
     fileId: useIdNumberSchema(Di.FileRepository),
-
-    variantId: useIdStringSchema(Di.VariantRepository),
   });
