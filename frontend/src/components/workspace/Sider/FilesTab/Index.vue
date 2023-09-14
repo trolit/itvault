@@ -1,17 +1,6 @@
 <template>
   <div class="files-tab">
-    <div class="header">
-      <n-button type="warning" size="small">
-        <n-icon :component="ResetIcon" :size="20" />
-      </n-button>
-
-      <!-- @TODO create common component -->
-      <n-input clearable show-count placeholder="Type name">
-        <template #prefix>
-          <n-icon :component="SearchIcon" />
-        </template>
-      </n-input>
-    </div>
+    <toolbar input-placeholder="Type name" />
 
     <n-scrollbar>
       <file-hierarchy v-if="!isLoading" :data="workspacesStore.tree" />
@@ -24,17 +13,25 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
-import { NIcon, NInput, NButton, NScrollbar, NSpin } from "naive-ui";
-import { Reset as ResetIcon, Search as SearchIcon } from "@vicons/carbon";
+import { onBeforeMount } from "vue";
+import { NScrollbar, NSpin } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
+import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 
-const isLoading = ref(false);
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
+
+defineProps({
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const emit = defineEmits(["update:is-loading"]);
 
 onBeforeMount(async () => {
   if (workspacesStore.tree.length === 0) {
@@ -45,14 +42,14 @@ onBeforeMount(async () => {
 });
 
 async function initTree() {
-  isLoading.value = true;
+  emit("update:is-loading", true);
 
   try {
     await workspacesStore.getTree({ relativePath: filesStore.ROOT });
   } catch (error) {
     console.log(error);
   } finally {
-    isLoading.value = false;
+    emit("update:is-loading", false);
   }
 }
 </script>

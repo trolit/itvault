@@ -1,23 +1,9 @@
 <template>
   <div class="blueprints-tab">
-    <div class="header">
-      <n-button type="warning" size="small">
-        <n-icon :component="ResetIcon" :size="20" />
-      </n-button>
-
-      <!-- @TODO create common component (?) -->
-      <n-input clearable show-count placeholder="Type name or color">
-        <template #prefix>
-          <n-icon :component="SearchIcon" />
-        </template>
-      </n-input>
-
-      <require-permission :permission="Permission.CreateBlueprint">
-        <n-button size="small" @click="toggleAddEditBlueprintDrawer()">
-          <n-icon :component="AddIcon" :size="25" />
-        </n-button>
-      </require-permission>
-    </div>
+    <toolbar
+      input-placeholder="Type name or color"
+      @add-item="toggleAddEditBlueprintDrawer"
+    />
 
     <n-scrollbar>
       <n-list v-if="!isLoading" clickable hoverable>
@@ -26,18 +12,30 @@
           :key="index"
           @click="toggleAddEditBlueprintDrawer(blueprint)"
         >
-          <div class="wrapper">
-            <div class="content">
+          <n-space align="center" :wrap="false" size="large">
+            <div class="color">
               <div
                 class="thumbnail"
-                :style="{ backgroundColor: blueprint.color }"
+                :style="{
+                  backgroundColor: blueprint.color,
+                }"
               />
 
               <n-tag size="tiny">{{ blueprint.color }}</n-tag>
             </div>
 
-            <small>{{ blueprint.name }}</small>
-          </div>
+            <n-space vertical size="small">
+              {{ blueprint.name }}
+
+              <small>
+                <n-text depth="3" :style="{ whiteSpace: 'pre-wrap' }">
+                  <n-ellipsis :line-clamp="2">
+                    {{ blueprint.description }}
+                  </n-ellipsis>
+                </n-text>
+              </small>
+            </n-space>
+          </n-space>
         </n-list-item>
       </n-list>
 
@@ -60,46 +58,44 @@
 </template>
 
 <script setup lang="ts">
-import {
-  Add as AddIcon,
-  Reset as ResetIcon,
-  Search as SearchIcon,
-} from "@vicons/carbon";
 import cloneDeep from "lodash/cloneDeep";
 import {
   NTag,
   NSpin,
   NList,
-  NIcon,
-  NInput,
-  NButton,
+  NText,
+  NSpace,
+  NEllipsis,
   NListItem,
   NScrollbar,
   NPagination,
 } from "naive-ui";
-import { onMounted, ref, type PropType, type Ref } from "vue";
+import { onMounted, type PropType, type Ref } from "vue";
 
+import Toolbar from "./Toolbar.vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
-import { Permission } from "@shared/types/enums/Permission";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
-import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();
 
-const perPage = 11;
-const isLoading = ref(false);
-
 const props = defineProps({
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
+
   page: {
     type: Object as PropType<Ref<number>>,
     required: true,
   },
 });
 
-const emit = defineEmits(["update:page"]);
+const emit = defineEmits(["update:page", "update:is-loading"]);
+
+const perPage = 11;
 
 onMounted(() => {
   if (blueprintsStore.total === 0) {
@@ -131,14 +127,14 @@ function onPageChange(newPage: number) {
 }
 
 async function getBlueprints(page: number) {
-  isLoading.value = true;
+  emit("update:is-loading", true);
 
   try {
     await blueprintsStore.getAll({ page, perPage });
   } catch (error) {
     console.log(error);
   } finally {
-    isLoading.value = false;
+    emit("update:is-loading", false);
   }
 }
 </script>

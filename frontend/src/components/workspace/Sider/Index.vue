@@ -12,8 +12,15 @@
         :tab="text"
         v-for="({ key, text, tab, props, events }, index) in tabs"
         :key="index"
+        :disabled="isLoading"
       >
-        <component :is="tab" v-bind="props" v-on="events" />
+        <component
+          :is="tab"
+          v-bind="props"
+          v-on="events"
+          :is-loading="isLoading"
+          @update:is-loading="updateLoadingState"
+        />
       </n-tab-pane>
     </n-tabs>
 
@@ -35,6 +42,7 @@ import BundleDrawer from "./BundleDrawer/Index.vue";
 
 const bundlePage = ref(1);
 const blueprintPage = ref(1);
+const isLoading = ref(false);
 
 const tabs = [
   {
@@ -69,4 +77,8 @@ const tabs = [
 ];
 
 const defaultTab = "blueprints";
+
+function updateLoadingState(value: boolean) {
+  isLoading.value = value;
+}
 </script>

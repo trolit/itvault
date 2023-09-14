@@ -3,20 +3,20 @@
     .files-tab {
       height: 100%;
 
-      --files-header-height: 0.1;
+      --files-toolbar-height: 0.1;
       --files-tree-height: 0.9;
 
       --files-tree-scrollbar-section-height: calc(
         var(--workspace-sider-content-height) * var(--files-tree-height)
       );
 
-      .header {
+      .tab-toolbar {
         display: flex;
         padding: 0 10px;
         column-gap: 10px;
         align-items: center;
         height: calc(
-          var(--workspace-sider-content-height) * var(--files-header-height)
+          var(--workspace-sider-content-height) * var(--files-toolbar-height)
         );
       }
 
