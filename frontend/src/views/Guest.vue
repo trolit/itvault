@@ -18,9 +18,7 @@
         <n-grid responsive="screen" cols="1">
           <n-grid-item>
             <brand>
-              <template #extra-text>
-                save source code knowledge in vault
-              </template>
+              <template #extra-text> keep source code knowledge </template>
             </brand>
           </n-grid-item>
 
@@ -103,22 +101,22 @@ const features: Ref<Feature[]> = ref([
   {
     icon: shallowRef(ExtractOnDemandIcon),
     header: "Extract features on demand",
-    text: "Easily extract project's features (related source code) from the vault when needed.",
+    text: "Extract project features (related source code) from vault when needed.",
   },
   {
     icon: shallowRef(PersistCodeIcon),
     header: "Persist code knowledge",
-    text: "Provide more insights on your/company codebase for all developers by storing projects in vault.",
+    text: "Provide more insights on your/company codebase for developer(s). Reduce time needed to understand/remind how specific features are/were implemented.",
   },
   {
     icon: shallowRef(YagniIcon),
-    header: "Start project following YAGNI",
-    text: "Start cleaner project by including only logic that is needed.",
+    header: "Boot new project with YAGNI",
+    text: "Initialize new project without excessive code.",
   },
   {
     icon: shallowRef(TimerIcon),
-    header: "Faster implementation",
-    text: "Save developer(s) time by exposing 'prescription' on how to implement specific solution into different project.",
+    header: "Save developer(s) time",
+    text: "Use vault to instantly obtain feature related source code instead of asking other developers to help you implement it in other project.",
   },
 ]);
 </script>
