@@ -18,7 +18,9 @@
         <n-grid responsive="screen" cols="1">
           <n-grid-item>
             <brand>
-              <template #extra-text> keep source code knowledge </template>
+              <template #extra-text>
+                <strong>keep</strong> source code <strong>knowledge</strong>
+              </template>
             </brand>
           </n-grid-item>
 
