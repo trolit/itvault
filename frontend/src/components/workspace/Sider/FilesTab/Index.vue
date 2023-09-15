@@ -1,6 +1,9 @@
 <template>
   <div class="files-tab">
-    <toolbar input-placeholder="Type name" />
+    <toolbar
+      input-placeholder="Type name"
+      @add-item="isUploadFilesModalVisible = true"
+    />
 
     <n-scrollbar>
       <file-hierarchy v-if="!isLoading" :data="workspacesStore.tree" />
@@ -9,15 +12,18 @@
         <n-spin />
       </div>
     </n-scrollbar>
+
+    <upload-files-modal v-model:show="isUploadFilesModalVisible" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { NScrollbar, NSpin } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
+import UploadFilesModal from "./UploadFilesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 
@@ -32,6 +38,8 @@ defineProps({
 });
 
 const emit = defineEmits(["update:is-loading"]);
+
+const isUploadFilesModalVisible = ref(false);
 
 onBeforeMount(async () => {
   if (workspacesStore.tree.length === 0) {
