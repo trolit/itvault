@@ -4,21 +4,19 @@
     title="Upload files"
     preset="card"
     :bordered="true"
-    :style="{ width: '100vh' }"
     :mask-closable="false"
+    :style="{ width: '100vh' }"
   >
-    <n-upload
-      multiple
-      directory-dnd
-      v-model:file-list="data"
-      accept="type/text"
-      :max="30"
-    >
+    <n-h3>1. Select files 👀</n-h3>
+
+    <n-upload multiple directory-dnd v-model:file-list="data" :max="30">
       <n-upload-dragger>
         <n-space vertical>
           <n-icon size="68" :depth="3" :component="UploadIcon" />
 
-          <n-text> Click or drag files (or directories) to this area </n-text>
+          <n-text>
+            Click to select files (or drag files/directories) to this area
+          </n-text>
 
           <n-p depth="3">
             Strictly prohibit from uploading sensitive information.
@@ -27,26 +25,120 @@
       </n-upload-dragger>
     </n-upload>
 
-    <template #footer>
-      <n-button :disabled="data.length === 0">Upload</n-button>
-    </template>
+    <n-h3>2. Configure upload location 🛠️</n-h3>
+
+    <div>
+      <n-text>Where file(s) should be uploaded?</n-text>
+
+      <br />
+
+      <n-radio-group v-model:value="fileUploadDir">
+        <n-space>
+          <n-radio label="root" :value="filesStore.ROOT" />
+
+          <n-radio label="custom path" value="other" />
+        </n-space>
+      </n-radio-group>
+    </div>
+
+    <n-input-group v-if="!isRootDirectorySelected">
+      <n-input-group-label>{{ filesStore.ROOT }}</n-input-group-label>
+      <n-input-group-label>/</n-input-group-label>
+      <n-input
+        v-model:value="customPathValue"
+        type="text"
+        placeholder="src/example/path"
+      />
+    </n-input-group>
+
+    <n-h3>3. Upload 🚀</n-h3>
+
+    <n-button
+      :loading="isLoading"
+      :disabled="data.length === 0"
+      @click="upload"
+    >
+      Upload</n-button
+    >
   </n-modal>
 </template>
 
 <script setup lang="ts">
 import {
   NP,
+  NH3,
   NIcon,
   NText,
+  NInput,
   NSpace,
   NModal,
+  NRadio,
   NButton,
   NUpload,
+  NInputGroup,
+  NRadioGroup,
   NUploadDragger,
+  NInputGroupLabel,
   type UploadFileInfo,
 } from "naive-ui";
 import { ref, type Ref } from "vue";
+import { useFilesStore } from "@/store/files";
 import { Add as UploadIcon } from "@vicons/carbon";
+import { defineComputed } from "@/helpers/defineComputed";
 
+const filesStore = useFilesStore();
+
+const isLoading = ref(false);
+const customPathValue = ref("");
+const fileUploadDir = ref(filesStore.ROOT);
 const data: Ref<UploadFileInfo[]> = ref([]);
+
+const { isRootDirectorySelected } = defineComputed({
+  isRootDirectorySelected() {
+    return fileUploadDir.value === filesStore.ROOT;
+  },
+});
+
+function getBaseUploadDir() {
+  return isRootDirectorySelected.value
+    ? filesStore.ROOT
+    : `${filesStore.ROOT}/${customPathValue.value}`;
+}
+
+// @NOTE e.g. "fullPath": "/aha.txt", "fullPath": "/aha/zxde.txt"
+function upload() {
+  isLoading.value = true;
+
+  const formData = new FormData();
+
+  const baseUploadDir = getBaseUploadDir();
+
+  for (const element of data.value) {
+    const { fullPath, file } = element;
+
+    if (!fullPath || !file) {
+      continue;
+    }
+
+    const isFileInDirectory = fullPath.split("/").length > 2;
+
+    if (isFileInDirectory) {
+      const splitPathWithoutFilename = fullPath.split("/").slice(0, -1);
+
+      formData.append(
+        `${baseUploadDir}/${splitPathWithoutFilename.join("/")}`,
+        file
+      );
+
+      continue;
+    }
+
+    formData.append(baseUploadDir, file);
+  }
+
+  // @TMP
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 1000);
+}
 </script>
