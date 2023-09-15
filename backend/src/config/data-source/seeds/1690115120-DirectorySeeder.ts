@@ -34,11 +34,10 @@ export default class DirectorySeeder implements Seeder {
       relativePath: FILES.ROOT,
     });
 
-    let previousDirectory: Directory = directoryRepository.create();
-
     for (const relativePath of relativePaths) {
       const splitRelativePath = relativePath.split("/");
       const splitRelativePathLength = splitRelativePath.length;
+      let previousDirectory: Directory = directoryRepository.create();
 
       for (let index = 1; index < splitRelativePathLength; index++) {
         const part = splitRelativePath.slice(0, index + 1);
