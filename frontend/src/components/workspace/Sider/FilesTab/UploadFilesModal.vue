@@ -129,11 +129,11 @@ const { isRootDirectorySelected, isCustomPathEmpty, isCustomPathValid } =
 function getBaseUploadDir() {
   return isRootDirectorySelected.value
     ? filesStore.ROOT
-    : `${filesStore.ROOT}/${customPathValue.value}`;
+    : filesStore.ROOT.concat(`/${customPathValue.value}`);
 }
 
 // @NOTE e.g. (file) -> "fullPath": "/aha.txt" (file from dir) -> "fullPath": "/aha/zxde.txt"
-function upload() {
+async function upload() {
   isLoading.value = true;
 
   const formData = new FormData();
@@ -163,9 +163,12 @@ function upload() {
     formData.append(baseUploadDir, file);
   }
 
-  // @TMP
-  setTimeout(() => {
+  try {
+    await filesStore.store(formData);
+  } catch (error) {
+    console.log(error);
+  } finally {
     isLoading.value = false;
-  }, 1000);
+  }
 }
 </script>
