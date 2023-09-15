@@ -150,12 +150,9 @@ async function upload() {
     const isFileInDirectory = fullPath.split("/").length > 2;
 
     if (isFileInDirectory) {
-      const splitPathWithoutFilename = fullPath.split("/").slice(0, -1);
+      const filePath = fullPath.split("/").slice(1, -1);
 
-      formData.append(
-        `${baseUploadDir}/${splitPathWithoutFilename.join("/")}`,
-        file
-      );
+      formData.append(`${baseUploadDir}/${filePath.join("/")}`, file);
 
       continue;
     }
