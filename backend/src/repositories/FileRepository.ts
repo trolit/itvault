@@ -8,6 +8,7 @@ import { BaseRepository } from "./BaseRepository";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
+import { Directory } from "@entities/Directory";
 
 @injectable()
 export class FileRepository
@@ -175,15 +176,18 @@ export class FileRepository
       variants = fileData.variants.concat([variant]);
     }
 
+    const directory = transaction.manager.create(Directory, {
+      relativePath,
+    });
+
     const file = transaction.manager.create(File, {
       ...fileData,
       variants,
       workspace: {
         id: workspaceId,
       },
+      directory,
     });
-
-    file.directory.relativePath = relativePath;
 
     return file;
   }
