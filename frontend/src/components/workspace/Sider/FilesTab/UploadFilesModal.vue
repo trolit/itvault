@@ -41,21 +41,33 @@
       </n-radio-group>
     </div>
 
-    <n-input-group v-if="!isRootDirectorySelected">
-      <n-input-group-label>{{ filesStore.ROOT }}</n-input-group-label>
-      <n-input-group-label>/</n-input-group-label>
-      <n-input
-        v-model:value="customPathValue"
-        type="text"
-        placeholder="src/example/path"
-      />
-    </n-input-group>
+    <div v-if="!isRootDirectorySelected">
+      <n-input-group>
+        <n-input-group-label>{{ filesStore.ROOT }}</n-input-group-label>
+        <n-input-group-label>/</n-input-group-label>
+        <n-input
+          v-model:value="customPathValue"
+          type="text"
+          placeholder="src/example/path"
+        />
+      </n-input-group>
+
+      <small
+        v-if="!isCustomPathEmpty && !isCustomPathValid"
+        :style="{ color: '#FFCF40' }"
+      >
+        Provided path is invalid!
+      </small>
+    </div>
 
     <n-h3>3. Upload 🚀</n-h3>
 
     <n-button
       :loading="isLoading"
-      :disabled="data.length === 0"
+      :disabled="
+        data.length === 0 ||
+        (!isRootDirectorySelected && (!isCustomPathValid || isCustomPathEmpty))
+      "
       @click="upload"
     >
       Upload</n-button
@@ -93,11 +105,26 @@ const customPathValue = ref("");
 const fileUploadDir = ref(filesStore.ROOT);
 const data: Ref<UploadFileInfo[]> = ref([]);
 
-const { isRootDirectorySelected } = defineComputed({
-  isRootDirectorySelected() {
-    return fileUploadDir.value === filesStore.ROOT;
-  },
-});
+const customPathValueRegex = new RegExp(/(^[a-z0-9]+)(\/[a-z0-9-]+)*$/);
+
+const { isRootDirectorySelected, isCustomPathEmpty, isCustomPathValid } =
+  defineComputed({
+    isRootDirectorySelected() {
+      return fileUploadDir.value === filesStore.ROOT;
+    },
+
+    isCustomPathEmpty() {
+      return !customPathValue.value;
+    },
+
+    isCustomPathValid() {
+      if (isCustomPathEmpty.value) {
+        return true;
+      }
+
+      return customPathValueRegex.test(customPathValue.value);
+    },
+  });
 
 function getBaseUploadDir() {
   return isRootDirectorySelected.value
@@ -105,7 +132,7 @@ function getBaseUploadDir() {
     : `${filesStore.ROOT}/${customPathValue.value}`;
 }
 
-// @NOTE e.g. "fullPath": "/aha.txt", "fullPath": "/aha/zxde.txt"
+// @NOTE e.g. (file) -> "fullPath": "/aha.txt" (file from dir) -> "fullPath": "/aha/zxde.txt"
 function upload() {
   isLoading.value = true;
 
