@@ -9,8 +9,10 @@ const buildPath = (path: string) => FILES.ROOT.concat("/", path);
 
 const relativePaths = [
   buildPath("src"),
-  buildPath("assets"),
+  buildPath("guide"),
   buildPath("others"),
+  buildPath("assets"),
+  buildPath("examples"),
 
   buildPath("src/config"),
   buildPath("src/config/database"),
@@ -20,11 +22,8 @@ const relativePaths = [
 
   buildPath("src/models"),
   buildPath("src/helpers"),
-  buildPath("src/factories"),
-
   buildPath("src/services"),
-  buildPath("src/services/MailService"),
-  buildPath("src/services/FileService"),
+  buildPath("src/factories"),
 ];
 
 export default class DirectorySeeder implements Seeder {
