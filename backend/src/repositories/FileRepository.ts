@@ -33,13 +33,23 @@ export class FileRepository
       const temporaryFilesContainer = [];
 
       for (const { key, file } of formDataFiles) {
-        if (!file.originalFilename) {
+        const { originalFilename } = file;
+
+        if (!originalFilename) {
+          continue;
+        }
+
+        const parsedOriginalFilename = originalFilename.includes("/")
+          ? originalFilename.split("/").pop()
+          : originalFilename;
+
+        if (!parsedOriginalFilename) {
           continue;
         }
 
         const record = await transaction.manager.findOne(File, {
           where: {
-            originalFilename: file.originalFilename,
+            originalFilename: parsedOriginalFilename,
           },
           relations: {
             variants: true,
@@ -51,7 +61,7 @@ export class FileRepository
           this._createFileInstance(
             transaction,
             record || {
-              originalFilename: file.originalFilename,
+              originalFilename: parsedOriginalFilename,
             },
             {
               userId,
