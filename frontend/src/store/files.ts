@@ -43,5 +43,22 @@ export const useFilesStore = defineStore("files", {
         params,
       });
     },
+
+    async store(formData: FormData) {
+      const workspacesStore = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      const { data } = await axios.post<IFileDto[]>("v1/files", formData, {
+        params,
+      });
+
+      // @TODO include files in tab
+
+      return data;
+    },
   },
 });
