@@ -5,7 +5,7 @@ import { TransactionResult } from "types/TransactionResult";
 export interface IBaseFileService {
   softDeleteFileAndVariants(id: number): Promise<TransactionResult<void>>;
 
-  handleFilesUpload(
+  handleUpload(
     userId: number,
     workspaceId: number,
     formDataFiles: IFormDataFile[]

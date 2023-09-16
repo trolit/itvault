@@ -41,7 +41,7 @@ export class StoreController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const result = await this._fileService.handleFilesUpload(
+    const result = await this._fileService.handleUpload(
       userId,
       workspaceId,
       files

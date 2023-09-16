@@ -42,7 +42,7 @@ export abstract class BaseFileService implements IBaseFileService {
     }
   }
 
-  async handleFilesUpload(
+  async handleUpload(
     userId: number,
     workspaceId: number,
     formDataFiles: IFormDataFile[]
@@ -72,7 +72,7 @@ export abstract class BaseFileService implements IBaseFileService {
           continue;
         }
 
-        const record = await transaction.manager.findOne(File, {
+        const fileRecord = await transaction.manager.findOne(File, {
           where: {
             originalFilename,
           },
@@ -93,7 +93,7 @@ export abstract class BaseFileService implements IBaseFileService {
         filesToSave.push(
           this._buildFileRecord(
             transaction,
-            record || {
+            fileRecord || {
               originalFilename,
             },
             {
@@ -141,38 +141,37 @@ export abstract class BaseFileService implements IBaseFileService {
 
     const directories: Directory[] = [];
 
-    const uniquePaths = uniq(formDataFiles.map(file => file.key));
+    const uniqueRelativePaths = uniq(formDataFiles.map(file => file.key));
 
-    for (const path of uniquePaths) {
+    for (const relativePath of uniqueRelativePaths) {
       let directory = await manager.findOneBy(Directory, {
-        relativePath: path,
+        relativePath,
       });
 
       if (!directory) {
-        const splitPath = path.split("/");
+        const splitPath = relativePath.split("/");
         const splitPathLength = splitPath.length;
         let previousDirectory = rootDirectory;
 
         for (let index = 1; index < splitPathLength; index++) {
-          const part = splitPath.slice(0, index + 1);
-          const relativePathToSave = part.join("/");
+          const partOfPath = splitPath.slice(0, index + 1).join("/");
 
-          const element = await manager.findOneBy(Directory, {
-            relativePath: relativePathToSave,
+          const record = await manager.findOneBy(Directory, {
+            relativePath: partOfPath,
           });
 
-          if (element) {
-            element.parentDirectory = previousDirectory;
+          if (record) {
+            record.parentDirectory = previousDirectory;
 
-            await manager.save(Directory, element);
+            await manager.save(Directory, record);
 
-            previousDirectory = element;
+            previousDirectory = record;
 
             continue;
           }
 
           const result = await manager.save(Directory, {
-            relativePath: relativePathToSave,
+            relativePath: partOfPath,
             parentDirectory: previousDirectory,
           });
 
