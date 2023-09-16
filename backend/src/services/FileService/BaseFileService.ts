@@ -141,7 +141,7 @@ export abstract class BaseFileService implements IBaseFileService {
 
     const directories: Directory[] = [];
 
-    const uniquePaths = uniq(Object.keys(formDataFiles));
+    const uniquePaths = uniq(formDataFiles.map(file => file.key));
 
     for (const path of uniquePaths) {
       let directory = await manager.findOneBy(Directory, {
