@@ -3,7 +3,6 @@ import { inject, injectable } from "tsyringe";
 import { FileMapper } from "@mappers/FileMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IFileService } from "types/services/IFileService";
-import { IFileRepository } from "types/repositories/IFileRepository";
 import { StoreControllerTypes } from "types/controllers/File/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
@@ -17,8 +16,6 @@ const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
 @injectable()
 export class StoreController extends BaseController {
   constructor(
-    @inject(Di.FileRepository)
-    private _fileRepository: IFileRepository,
     @inject(Di.FileService)
     private _fileService: IFileService
   ) {
@@ -44,7 +41,11 @@ export class StoreController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const result = await this._fileRepository.save(userId, workspaceId, files);
+    const result = await this._fileService.handleUpload(
+      userId,
+      workspaceId,
+      files
+    );
 
     if (!result.isSuccess) {
       return response.status(HTTP.BAD_REQUEST).send();

@@ -9,8 +9,11 @@ const buildPath = (path: string) => FILES.ROOT.concat("/", path);
 
 const relativePaths = [
   buildPath("src"),
-  buildPath("assets"),
-  buildPath("others"),
+
+  buildPath("src/models"),
+  buildPath("src/helpers"),
+  buildPath("src/services"),
+  buildPath("src/factories"),
 
   buildPath("src/config"),
   buildPath("src/config/database"),
@@ -18,13 +21,9 @@ const relativePaths = [
   buildPath("src/config/seeders/development"),
   buildPath("src/config/seeders/production"),
 
-  buildPath("src/models"),
-  buildPath("src/helpers"),
-  buildPath("src/factories"),
-
-  buildPath("src/services"),
-  buildPath("src/services/MailService"),
-  buildPath("src/services/FileService"),
+  buildPath("assets"),
+  buildPath("examples"),
+  buildPath("documentation"),
 ];
 
 export default class DirectorySeeder implements Seeder {
@@ -35,11 +34,11 @@ export default class DirectorySeeder implements Seeder {
       relativePath: FILES.ROOT,
     });
 
-    let previousDirectory: Directory = directoryRepository.create();
-
     for (const relativePath of relativePaths) {
       const splitRelativePath = relativePath.split("/");
       const splitRelativePathLength = splitRelativePath.length;
+
+      let previousDirectory: Directory = rootDirectory;
 
       for (let index = 1; index < splitRelativePathLength; index++) {
         const part = splitRelativePath.slice(0, index + 1);
@@ -50,8 +49,7 @@ export default class DirectorySeeder implements Seeder {
         });
 
         if (directory) {
-          directory.parentDirectory =
-            index === 1 ? rootDirectory : previousDirectory;
+          directory.parentDirectory = previousDirectory;
 
           await directoryRepository.save(directory);
 
@@ -62,7 +60,7 @@ export default class DirectorySeeder implements Seeder {
 
         const result = await directoryRepository.save({
           relativePath: relativePathToSave,
-          parentDirectory: index === 1 ? rootDirectory : previousDirectory,
+          parentDirectory: previousDirectory,
         });
 
         previousDirectory = result;
