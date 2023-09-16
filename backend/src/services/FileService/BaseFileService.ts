@@ -42,7 +42,7 @@ export abstract class BaseFileService implements IBaseFileService {
     }
   }
 
-  async saveFilesAndDirectories(
+  async handleFilesUpload(
     userId: number,
     workspaceId: number,
     formDataFiles: IFormDataFile[]
