@@ -13,7 +13,10 @@
       </div>
     </n-scrollbar>
 
-    <upload-files-modal v-model:show="isUploadFilesModalVisible" />
+    <upload-files-modal
+      v-model:show="isUploadFilesModalVisible"
+      @close="isUploadFilesModalVisible = false"
+    />
   </div>
 </template>
 
