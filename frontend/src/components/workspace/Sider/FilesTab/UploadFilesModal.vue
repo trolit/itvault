@@ -7,25 +7,19 @@
     :mask-closable="false"
     :style="{ width: '100vh' }"
   >
-    <n-h3>1. Select files 👀</n-h3>
-
     <n-upload multiple directory-dnd v-model:file-list="data" :max="30">
       <n-upload-dragger>
         <n-space vertical>
           <n-icon size="68" :depth="3" :component="UploadIcon" />
 
-          <n-text>
-            Click to select files (or drag files/directories) to this area
-          </n-text>
+          <n-text> (click) or (drag) to add files to upload </n-text>
 
           <n-p depth="3">
-            Strictly prohibit from uploading sensitive information.
+            *Drag directory to maintain files structure inside that directory
           </n-p>
         </n-space>
       </n-upload-dragger>
     </n-upload>
-
-    <n-h3>2. Configure upload location 🛠️</n-h3>
 
     <div>
       <n-text>Where file(s) should be uploaded?</n-text>
@@ -60,25 +54,25 @@
       </small>
     </div>
 
-    <n-h3>3. Upload 🚀</n-h3>
-
-    <n-button
-      :loading="isLoading"
-      :disabled="
-        data.length === 0 ||
-        (!isRootDirectorySelected && (!isCustomPathValid || isCustomPathEmpty))
-      "
-      @click="upload"
-    >
-      Upload</n-button
-    >
+    <template #footer>
+      <n-button
+        :loading="isLoading"
+        :disabled="
+          data.length === 0 ||
+          (!isRootDirectorySelected &&
+            (!isCustomPathValid || isCustomPathEmpty))
+        "
+        @click="upload"
+      >
+        Upload 🚀
+      </n-button>
+    </template>
   </n-modal>
 </template>
 
 <script setup lang="ts">
 import {
   NP,
-  NH3,
   NIcon,
   NText,
   NInput,
