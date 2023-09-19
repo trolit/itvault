@@ -6,6 +6,7 @@
     check-strategy="child"
     :node-props="nodeProps"
     :on-load="onDirectoryLoad"
+    :selected-keys="selectedKeys"
     :on-update:expanded-keys="updatePrefixOnToggle"
   />
 </template>
@@ -26,11 +27,13 @@ import {
 } from "@vicons/carbon";
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
+import isDirectory from "@/helpers/isDirectory";
 import { useWorkspacesStore } from "@/store/workspaces";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
+import { defineComputed } from "@/helpers/defineComputed";
 
 const filesStore = useFilesStore();
 const treeData: TreeOption[] = reactive([]);
@@ -40,6 +43,12 @@ const props = defineProps({
   data: {
     type: Array as PropType<(IFileDto | IDirectoryDto)[]>,
     required: true,
+  },
+});
+
+const { selectedKeys } = defineComputed({
+  selectedKeys() {
+    return [`file-${workspacesStore.activeFileId}`];
   },
 });
 
@@ -179,7 +188,9 @@ async function onDirectoryLoad(node: TreeOption) {
 
   const { tree } = workspacesStore;
 
-  const folder = tree.find(element => element.id === parsedId);
+  const folder = tree.find(
+    element => element.id === parsedId && isDirectory(element)
+  );
 
   if (!folder) {
     return onEarlyFailure();
