@@ -75,6 +75,9 @@ export abstract class BaseFileService implements IBaseFileService {
         const fileRecord = await transaction.manager.findOne(File, {
           where: {
             originalFilename,
+            workspace: {
+              id: workspaceId,
+            },
           },
           relations: {
             variants: true,

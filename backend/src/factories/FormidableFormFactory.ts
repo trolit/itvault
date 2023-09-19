@@ -36,6 +36,7 @@ export class FormidableFormFactory implements IFormidableFormFactory {
 
       const withValidNamePattern = !!name && regex.test(name);
 
+      // @TODO add more mimetype rules
       const isNotImage = !!mimetype && !mimetype.includes("image");
 
       const isNameWithoutDoubleSlash = !!name && !name.includes("//");
