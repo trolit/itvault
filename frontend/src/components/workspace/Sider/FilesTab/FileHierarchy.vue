@@ -26,6 +26,7 @@ import {
 } from "@vicons/carbon";
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
+import isDirectory from "@/helpers/isDirectory";
 import { useWorkspacesStore } from "@/store/workspaces";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
@@ -179,7 +180,9 @@ async function onDirectoryLoad(node: TreeOption) {
 
   const { tree } = workspacesStore;
 
-  const folder = tree.find(element => element.id === parsedId);
+  const folder = tree.find(
+    element => element.id === parsedId && isDirectory(element)
+  );
 
   if (!folder) {
     return onEarlyFailure();
