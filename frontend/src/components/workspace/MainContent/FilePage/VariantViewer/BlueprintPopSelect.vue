@@ -6,7 +6,9 @@
     :render-label="renderLabel"
     @update:value="workspacesStore.setVariantTabActiveBlueprint($event)"
   >
-    <n-button size="small">{{ data.name || "pick blueprint" }}</n-button>
+    <n-button size="small" :loading="isLoading">
+      {{ data.name || "pick blueprint" }}
+    </n-button>
 
     <!-- @TODO fetch blueprints matching input (+ allow to pick) -->
     <template #action>
@@ -33,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, h, watch } from "vue";
+import { computed, h, ref, watch } from "vue";
 import { NButton, NPopselect, NTag, NInput } from "naive-ui";
 
 import { useVariantsStore } from "@/store/variants";
@@ -43,7 +45,7 @@ import { useWorkspacesStore } from "@/store/workspaces";
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
-const emit = defineEmits(["fetch-bucket"]);
+const isLoading = ref(false);
 
 const data = computed(() => {
   const variantTab = workspacesStore.activeVariantTab;
@@ -96,14 +98,14 @@ watch(data, async () => {
   }
 
   if (!workspacesStore.activeBucket?.value && variantId) {
-    emit("fetch-bucket", true);
+    isLoading.value = true;
 
     try {
       await variantsStore.getBucketById(variantId);
     } catch (error) {
       console.log(error);
     } finally {
-      emit("fetch-bucket", false);
+      isLoading.value = false;
     }
   }
 });
