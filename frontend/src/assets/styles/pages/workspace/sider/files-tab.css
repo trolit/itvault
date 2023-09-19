@@ -10,6 +10,14 @@
         var(--workspace-sider-content-height) * var(--files-tree-height)
       );
 
+      .file-upload-alert {
+        margin: 15px;
+
+        .n-alert-body__content {
+          margin-right: 15px;
+        }
+      }
+
       .tab-toolbar {
         display: flex;
         padding: 0 10px;

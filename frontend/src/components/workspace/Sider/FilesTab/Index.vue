@@ -6,6 +6,20 @@
     />
 
     <n-scrollbar>
+      <n-alert
+        v-show="isFileUploadAlertVisible"
+        class="file-upload-alert"
+        type="info"
+        closable
+        @close="isFileUploadAlertVisible = false"
+      >
+        Use
+        <n-button type="warning" size="tiny" disabled>
+          <n-icon :component="ResetIcon" />
+        </n-button>
+        button (or refresh page) to view uploaded files.
+      </n-alert>
+
       <file-hierarchy v-if="!isLoading" :data="workspacesStore.tree" />
 
       <div v-else class="spinner">
@@ -15,14 +29,15 @@
 
     <upload-files-modal
       v-model:show="isUploadFilesModalVisible"
-      @close="isUploadFilesModalVisible = false"
+      @on-upload="onUpload"
     />
   </div>
 </template>
 
 <script setup lang="ts">
+import { Reset as ResetIcon } from "@vicons/carbon";
 import { onBeforeMount, ref } from "vue";
-import { NScrollbar, NSpin } from "naive-ui";
+import { NScrollbar, NSpin, NAlert, NButton, NIcon } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
@@ -42,6 +57,7 @@ defineProps({
 
 const emit = defineEmits(["update:is-loading"]);
 
+const isFileUploadAlertVisible = ref(false);
 const isUploadFilesModalVisible = ref(false);
 
 onBeforeMount(async () => {
@@ -62,5 +78,11 @@ async function initTree() {
   } finally {
     emit("update:is-loading", false);
   }
+}
+
+function onUpload() {
+  isUploadFilesModalVisible.value = false;
+
+  isFileUploadAlertVisible.value = true;
 }
 </script>
