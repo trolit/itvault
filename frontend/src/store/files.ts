@@ -56,7 +56,7 @@ export const useFilesStore = defineStore("files", {
         params,
       });
 
-      // @TODO include files in tab
+      // @NOTE consider replacing upload alert (FilesTab) with manual file structure change
 
       return data;
     },
