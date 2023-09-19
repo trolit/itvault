@@ -71,6 +71,14 @@
                   height: 100%;
                   width: 100%;
 
+                  .loading,
+                  .empty-section {
+                    height: calc(
+                      var(--file-page-variant-header-height) +
+                        var(--variant-source-code-height)
+                    );
+                  }
+
                   .header {
                     padding: 10px 8px 0px 8px;
                     height: var(--file-page-variant-header-height);
@@ -89,7 +97,6 @@
                       .content {
                         width: 100%;
                         display: flex;
-                        height: var(--variant-source-code-height);
 
                         .line-numbers {
                           flex: 0.05;
