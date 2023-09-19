@@ -6,6 +6,7 @@
     check-strategy="child"
     :node-props="nodeProps"
     :on-load="onDirectoryLoad"
+    :selected-keys="selectedKeys"
     :on-update:expanded-keys="updatePrefixOnToggle"
   />
 </template>
@@ -32,6 +33,7 @@ import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
+import { defineComputed } from "@/helpers/defineComputed";
 
 const filesStore = useFilesStore();
 const treeData: TreeOption[] = reactive([]);
@@ -41,6 +43,12 @@ const props = defineProps({
   data: {
     type: Array as PropType<(IFileDto | IDirectoryDto)[]>,
     required: true,
+  },
+});
+
+const { selectedKeys } = defineComputed({
+  selectedKeys() {
+    return [`file-${workspacesStore.activeFileId}`];
   },
 });
 
