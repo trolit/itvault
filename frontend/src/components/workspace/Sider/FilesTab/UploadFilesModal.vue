@@ -99,7 +99,7 @@ const customPathValue = ref("");
 const fileUploadDir = ref(filesStore.ROOT);
 const data: Ref<UploadFileInfo[]> = ref([]);
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["on-upload"]);
 
 const customPathValueRegex = new RegExp(/(^[a-z0-9]+)(\/[a-z0-9-]+)*$/);
 
@@ -159,7 +159,7 @@ async function upload() {
   try {
     await filesStore.store(formData);
 
-    emit("close");
+    emit("on-upload");
   } catch (error) {
     console.log(error);
   } finally {
