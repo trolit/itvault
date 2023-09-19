@@ -1,25 +1,29 @@
 <template>
   <div class="variant-viewer">
-    <n-card class="header" :bordered="false">
-      <blueprint-pop-select @fetch-bucket="isLoading = $event" />
+    <template v-if="text">
+      <n-card class="header" :bordered="false">
+        <blueprint-pop-select @fetch-bucket="isLoading = $event" />
 
-      <n-button type="info" ghost>Save</n-button>
-    </n-card>
+        <n-button type="info" ghost>Save</n-button>
+      </n-card>
 
-    <n-scrollbar>
-      <div v-if="!isLoading" class="content">
-        <div class="line-numbers">
-          <span v-for="index in numberOfLines" :key="index"></span>
+      <n-scrollbar>
+        <div class="content">
+          <div class="line-numbers">
+            <span v-for="index in numberOfLines" :key="index"></span>
+          </div>
+
+          <component :is="renderText(text)" />
         </div>
+      </n-scrollbar>
+    </template>
 
-        <component :is="renderText(text)" />
-      </div>
+    <!-- @TODO make common "wrapped" spinner component -->
+    <div class="loading" v-else-if="isLoading">
+      <n-spin />
+    </div>
 
-      <!-- @TODO make common "wrapped" spinner component -->
-      <div v-else>
-        <n-spin />
-      </div>
-    </n-scrollbar>
+    <empty v-else title="Variant not found." />
   </div>
 </template>
 
@@ -28,6 +32,7 @@ import { NCard, NScrollbar, NButton, NSpin } from "naive-ui";
 import { h, onBeforeMount, ref, computed, type PropType } from "vue";
 
 import ColorPopover from "./ColorPopover.vue";
+import Empty from "@/components/common/Empty.vue";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
 import { useWorkspacesStore } from "@/store/workspaces";
