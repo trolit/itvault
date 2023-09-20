@@ -38,7 +38,7 @@
                 <!-- @TODO scroll -->
                 <variants v-if="variantTab" :active-tab="variantTab" />
 
-                <empty v-else title="No variant selected." />
+                <empty v-else title="Select variant" />
               </template>
             </n-card>
           </n-tab-pane>
