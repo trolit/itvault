@@ -17,7 +17,7 @@
         }"
         :native-scrollbar="false"
       >
-        <card-header />
+        <sider />
       </n-layout-sider>
 
       <n-layout-content>
@@ -59,8 +59,8 @@ import {
   NLayoutContent,
 } from "naive-ui";
 
+import Sider from "./Sider.vue";
 import Variants from "./Variants.vue";
-import CardHeader from "./CardHeader.vue";
 import Empty from "@/components/common/Empty.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 

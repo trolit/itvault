@@ -1,5 +1,5 @@
 <template>
-  <div class="card-header">
+  <div class="sider">
     <div class="wrapper">
       <n-divider dashed> Variants </n-divider>
 
