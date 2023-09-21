@@ -58,8 +58,8 @@ export default (
     }
 
     if (carriageIndex === from) {
-      saveLine(carriageIndex, to + 1, location);
-      carriageIndex = to + 1;
+      saveLine(carriageIndex, to, location);
+      carriageIndex = to;
       colorIndex++;
 
       continue;
