@@ -7,7 +7,7 @@
     :bordered="true"
     :mask-closable="false"
     :style="{ width: '100vh' }"
-    @close="emit('update:is-visible', false)"
+    @close="onClose"
   >
     <n-form>
       <n-form-item
@@ -134,13 +134,19 @@ const onSubmit = handleSubmit.withControlled(async value => {
 
     message.success(`Variant successfully added!`);
 
-    emit("update:is-visible", false);
+    onClose();
   } catch (error) {
     console.error(error);
   } finally {
     isLoading.value = false;
   }
 });
+
+function onClose() {
+  data.value = [];
+
+  emit("update:is-visible", false);
+}
 
 function onFileListUpdate(fileList: UploadFileInfo[]) {
   if (fileList.length === 0) {
