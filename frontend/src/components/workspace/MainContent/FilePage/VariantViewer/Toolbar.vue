@@ -1,0 +1,41 @@
+<template>
+  <n-card class="toolbar" :bordered="false">
+    <n-space>
+      <n-switch :round="false">
+        <template #checked> Write </template>
+        <template #unchecked> Read </template>
+      </n-switch>
+
+      <blueprint-pop-select />
+    </n-space>
+
+    <n-space v-if="isBucketModified" align="center">
+      <small>New changes!</small>
+
+      <n-popconfirm @positive-click="bucketsStore.resetActiveBucketValue">
+        <template #trigger>
+          <n-button type="warning" ghost> Discard </n-button>
+        </template>
+
+        Are you sure?
+      </n-popconfirm>
+
+      <n-button type="success" ghost> Save </n-button>
+    </n-space>
+  </n-card>
+</template>
+
+<script setup lang="ts">
+import { NCard, NSpace, NButton, NSwitch, NPopconfirm } from "naive-ui";
+
+import { useBucketsStore } from "@/store/buckets";
+
+defineProps({
+  isBucketModified: {
+    type: Boolean,
+    required: true,
+  },
+});
+
+const bucketsStore = useBucketsStore();
+</script>

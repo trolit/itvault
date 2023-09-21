@@ -1,30 +1,7 @@
 <template>
   <div class="variant-viewer">
     <template v-if="text">
-      <n-card class="header" :bordered="false">
-        <n-space>
-          <n-switch :round="false">
-            <template #checked> Write </template>
-            <template #unchecked> Read </template>
-          </n-switch>
-
-          <blueprint-pop-select />
-        </n-space>
-
-        <n-space v-if="isBucketModified" align="center">
-          <small>New changes</small>
-
-          <n-popconfirm @positive-click="bucketsStore.resetActiveBucketValue">
-            <template #trigger>
-              <n-button type="warning" ghost> Discard </n-button>
-            </template>
-
-            Are you sure?
-          </n-popconfirm>
-
-          <n-button type="success" ghost> Save </n-button>
-        </n-space>
-      </n-card>
+      <toolbar :is-bucket-modified="isBucketModified" />
 
       <n-scrollbar>
         <div class="content">
@@ -47,24 +24,16 @@
 </template>
 
 <script setup lang="ts">
-import {
-  NCard,
-  NSpin,
-  NSpace,
-  NButton,
-  NSwitch,
-  NScrollbar,
-  NPopconfirm,
-} from "naive-ui";
-import { h, onBeforeMount, ref, computed, type PropType } from "vue";
+import { NSpin, NScrollbar } from "naive-ui";
+import { h, onBeforeMount, ref, type PropType } from "vue";
 
+import Toolbar from "./Toolbar.vue";
 import ColorPopover from "./ColorPopover.vue";
-import { useBucketsStore } from "@/store/buckets";
 import Empty from "@/components/common/Empty.vue";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
 import { useWorkspacesStore } from "@/store/workspaces";
-import BlueprintPopSelect from "./BlueprintPopSelect.vue";
+import { defineComputed } from "@/helpers/defineComputed";
 import decodeLineColoring from "@/helpers/decodeLineColoring";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { BucketContent } from "@shared/types/BucketContent";
@@ -73,7 +42,6 @@ import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const text = ref("");
 const isLoading = ref(false);
-const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -81,6 +49,24 @@ const props = defineProps({
   variantTab: {
     type: Object as PropType<VariantTab>,
     required: true,
+  },
+});
+
+const { numberOfLines, isBucketModified } = defineComputed({
+  numberOfLines() {
+    return text.value.split("\n").length;
+  },
+
+  isBucketModified() {
+    const bucket = workspacesStore.activeBucket;
+
+    if (bucket) {
+      return (
+        JSON.stringify(bucket.initialValue) !== JSON.stringify(bucket.value)
+      );
+    }
+
+    return false;
   },
 });
 
@@ -106,20 +92,6 @@ onBeforeMount(async () => {
   }
 
   text.value = variantTab.content;
-});
-
-const numberOfLines = computed((): number => {
-  return text.value.split("\n").length;
-});
-
-const isBucketModified = computed(() => {
-  const bucket = workspacesStore.activeBucket;
-
-  if (bucket) {
-    return JSON.stringify(bucket.initialValue) !== JSON.stringify(bucket.value);
-  }
-
-  return false;
 });
 
 function renderText(content: string) {

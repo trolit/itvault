@@ -1,13 +1,13 @@
 .workspace-page {
   .main-content-wrapper {
     --file-page-variants-nav-height: 45px;
-    --file-page-variant-header-height: 50px;
+    --file-page-variant-toolbar-height: 50px;
 
     --variant-source-code-height: calc(
       var(--workspace-main-content-file-page-height) -
         var(--workspace-main-content-files-tabs-height) -
         var(--file-page-variants-nav-height) -
-        var(--file-page-variant-header-height)
+        var(--file-page-variant-toolbar-height)
     );
 
     .empty-section {
@@ -65,14 +65,14 @@
                     .loading,
                     .empty-section {
                       height: calc(
-                        var(--file-page-variant-header-height) +
+                        var(--file-page-variant-toolbar-height) +
                           var(--variant-source-code-height)
                       );
                     }
 
-                    .header {
+                    .toolbar {
                       padding: 10px 8px 0px 8px;
-                      height: var(--file-page-variant-header-height);
+                      height: var(--file-page-variant-toolbar-height);
 
                       .n-card__content {
                         display: flex;
