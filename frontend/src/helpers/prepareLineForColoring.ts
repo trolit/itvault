@@ -5,7 +5,7 @@ export default (
   lineIndex: number,
   line: string,
   iterations: number,
-  colorLocations: ColorLocation[]
+  parsedColors: ColorLocation[]
 ) => {
   const lineLength = line.length;
 
@@ -20,13 +20,13 @@ export default (
   ) => {
     lineParts.push({
       lineIndex,
+      location,
       text: line.slice(from, to),
-      colorLocation: location,
     });
   };
 
   for (let iteration = 0; iteration < iterations; iteration++) {
-    const location = colorLocations[colorIndex];
+    const location = parsedColors[colorIndex];
 
     if (!location) {
       if (carriageIndex !== lineLength) {
