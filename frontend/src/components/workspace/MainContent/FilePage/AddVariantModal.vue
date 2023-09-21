@@ -1,53 +1,154 @@
 <template>
   <n-modal
+    :show="isVisible"
     segmented
     title="New variant"
     preset="card"
     :bordered="true"
     :mask-closable="false"
     :style="{ width: '100vh' }"
+    @close="emit('update:is-visible', false)"
   >
-    Upload
+    <n-form>
+      <n-form-item
+        label="Name"
+        :required="true"
+        :feedback="getError('name')"
+        :validation-status="hasError('name')"
+      >
+        <n-input v-model:value="name" placeholder="name" />
+      </n-form-item>
+
+      <n-form-item
+        label="File"
+        :required="true"
+        :feedback="getError('file')"
+        :validation-status="hasError('file')"
+      >
+        <n-upload
+          v-model:file-list="data"
+          :disabled="isLoading"
+          @before-upload="data = []"
+          @update-file-list="onFileListUpdate"
+        >
+          <n-button>Upload file</n-button>
+        </n-upload>
+      </n-form-item>
+    </n-form>
 
     <template #footer>
       <n-button
         :loading="isLoading"
-        :disabled="data.length === 0"
-        @click="upload"
+        :disabled="data.length === 0 || !name"
+        @click="onSubmit"
       >
-        Upload 🚀
+        Submit
       </n-button>
     </template>
   </n-modal>
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from "vue";
-import { useFilesStore } from "@/store/files";
-import { NModal, NButton, type UploadFileInfo } from "naive-ui";
+import {
+  NForm,
+  NInput,
+  NModal,
+  NButton,
+  NUpload,
+  NFormItem,
+  useMessage,
+  type UploadFileInfo,
+} from "naive-ui";
+import cloneDeep from "lodash/cloneDeep";
+import { ref, toRefs, type Ref } from "vue";
+import { mixed, object, string } from "yup";
 
-const filesStore = useFilesStore();
+import { defineForm } from "@/helpers/defineForm";
+import { useVariantsStore } from "@/store/variants";
+import { defineWatchers } from "@/helpers/defineWatchers";
+import type { AddVariantForm } from "@/types/AddVariantForm";
+
+const message = useMessage();
+const variantsStore = useVariantsStore();
 
 const isLoading = ref(false);
 const data: Ref<UploadFileInfo[]> = ref([]);
+const defaultFormData: AddVariantForm = {
+  name: "",
+  file: null,
+};
 
-const emit = defineEmits(["on-upload"]);
+const props = defineProps({
+  isVisible: {
+    type: Boolean,
+    required: true,
+  },
+});
 
-async function upload() {
+const emit = defineEmits(["update:is-visible"]);
+
+const { isVisible } = toRefs(props);
+
+defineWatchers({
+  isVisible: {
+    source: isVisible,
+    handler(value: boolean) {
+      if (!value) {
+        return;
+      }
+
+      resetForm();
+
+      setFormData(cloneDeep(defaultFormData));
+    },
+  },
+});
+
+const { fields, getError, hasError, resetForm, setFormData, handleSubmit } =
+  defineForm<AddVariantForm>(
+    defaultFormData,
+    object({
+      name: string().required(),
+      file: mixed<File>().required(),
+    })
+  );
+
+const {
+  name: { value: name },
+} = fields;
+
+const onSubmit = handleSubmit.withControlled(async value => {
+  if (isLoading.value || !value.file) {
+    return;
+  }
+
   isLoading.value = true;
 
   const formData = new FormData();
 
-  // formData.append(baseUploadDir, file);
+  formData.append("name", value.name);
+  formData.append("file", value.file);
 
   try {
-    await filesStore.store(formData);
+    await variantsStore.store(formData);
 
-    emit("on-upload");
+    message.success(`Variant successfully added!`);
+
+    emit("update:is-visible", false);
   } catch (error) {
-    console.log(error);
+    console.error(error);
   } finally {
     isLoading.value = false;
   }
+});
+
+function onFileListUpdate(fileList: UploadFileInfo[]) {
+  if (fileList.length === 0) {
+    return;
+  }
+
+  const [element] = fileList;
+
+  setFormData({ name: name.value, file: element.file });
 }
 </script>
