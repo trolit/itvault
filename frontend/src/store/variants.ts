@@ -92,5 +92,24 @@ export const useVariantsStore = defineStore("variants", {
 
       return data;
     },
+
+    async store(formData: FormData) {
+      const workspacesStore = useWorkspacesStore();
+
+      formData.append("fileId", workspacesStore.activeFileId.toString());
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      const { data } = await axios.post<IVariantDto>("v1/variants", formData, {
+        params,
+      });
+
+      workspacesStore.addVariantTab(data, { unshift: true });
+
+      return data;
+    },
   },
 });
