@@ -96,9 +96,10 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
         const parsedId = parseInt(id);
 
         const treeElement = workspacesStore.tree.find(
-          element => element.id === parsedId
+          element => element.id === parsedId && isFile(element)
         );
 
+        // @TODO redundant check ^^...
         if (treeElement && isFile(treeElement)) {
           workspacesStore.setFileTab(treeElement);
         }

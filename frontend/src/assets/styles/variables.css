@@ -13,8 +13,5 @@
 
   /* WORKSPACE - MAIN CONTENT */
   --workspace-main-content-files-tabs-height: 40px;
-  --workspace-main-content-files-height: calc(
-    100vh - var(--header-height) -
-      var(--workspace-main-content-files-tabs-height)
-  );
+  --workspace-main-content-file-page-height: calc(100vh - var(--header-height));
 }

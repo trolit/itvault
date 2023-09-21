@@ -4,8 +4,16 @@
       bordered
       :show-trigger="!isNotesDrawerActive && !isBundleDrawerActive"
       :width="340"
-      :collapsed-width="8"
+      :collapsed-width="0"
       collapse-mode="transform"
+      :trigger-style="{
+        borderRadius: 0,
+        transform: 'translateX(100%) translateY(-100%)',
+      }"
+      :collapsed-trigger-style="{
+        borderRadius: 0,
+        transform: 'translateX(100%) translateY(-100%)',
+      }"
       :native-scrollbar="false"
       :inverted="inverted"
       :collapsed="generalStore.isSiderCollapsed"
