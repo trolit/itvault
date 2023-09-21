@@ -136,17 +136,17 @@ function parseLineWithBucket(
 
   const coloring = value[index as keyof BucketContent];
 
-  const { iterations, mappedColors } = decodeLineColoring(line, coloring);
+  const { iterations, parsedColors } = decodeLineColoring(line, coloring);
 
   const preparedLine = prepareLineForColoring(
     index,
     line,
     iterations,
-    mappedColors
+    parsedColors
   );
 
   return preparedLine.map(part =>
-    part.colorLocation ? h(ColorPopover, { color, part }) : h("span", part.text)
+    part.location ? h(ColorPopover, { color, part }) : h("span", part.text)
   );
 }
 </script>
