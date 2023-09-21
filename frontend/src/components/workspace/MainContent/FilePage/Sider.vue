@@ -47,7 +47,10 @@
       </div>
     </div>
 
-    <add-variant-modal v-model:show="isAddVariantModalVisible" />
+    <add-variant-modal
+      :is-visible="isAddVariantModalVisible"
+      @update:is-visible="isAddVariantModalVisible = $event"
+    />
   </div>
 </template>
 
