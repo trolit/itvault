@@ -183,19 +183,35 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.activeVariantTab.buckets.push(bucket);
     },
 
-    createVariantTabs(variants: IVariantDto[]) {
+    addVariantTab(variant: IVariantDto, options?: { unshift: boolean }) {
       if (!this.activeFileTab) {
         return;
       }
 
-      this.activeFileTab.variantTabs = variants.map(variant => ({
+      const variantTab = {
         variant,
         content: "",
         activeBlueprintId: 0,
         blueprints: [],
         isVisible: false,
         buckets: [],
-      }));
+      };
+
+      if (options?.unshift) {
+        this.activeFileTab.variantTabs.unshift(variantTab);
+
+        return;
+      }
+
+      this.activeFileTab.variantTabs.push(variantTab);
+    },
+
+    createVariantTabs(variants: IVariantDto[]) {
+      if (!this.activeFileTab) {
+        return;
+      }
+
+      variants.map(variant => this.addVariantTab(variant));
 
       if (this.openTabData) {
         this.setVariantTab(this.openTabData.variantId);
