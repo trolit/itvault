@@ -4,7 +4,7 @@
       <n-divider dashed> Variants </n-divider>
 
       <n-timeline v-if="!isLoading">
-        <n-timeline-item>
+        <n-timeline-item type="info" line-type="dashed">
           <template #default>
             <n-button
               size="small"
