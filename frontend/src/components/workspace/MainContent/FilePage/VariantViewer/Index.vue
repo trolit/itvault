@@ -11,8 +11,16 @@
           <blueprint-pop-select />
         </n-space>
 
-        <n-space v-if="isBucketModified">
-          <n-button type="warning" ghost> Discard </n-button>
+        <n-space v-if="isBucketModified" align="center">
+          <small>New changes</small>
+
+          <n-popconfirm @positive-click="bucketsStore.resetActiveBucketValue">
+            <template #trigger>
+              <n-button type="warning" ghost> Discard </n-button>
+            </template>
+
+            Are you sure?
+          </n-popconfirm>
 
           <n-button type="success" ghost> Save </n-button>
         </n-space>
@@ -39,10 +47,19 @@
 </template>
 
 <script setup lang="ts">
+import {
+  NCard,
+  NSpin,
+  NSpace,
+  NButton,
+  NSwitch,
+  NScrollbar,
+  NPopconfirm,
+} from "naive-ui";
 import { h, onBeforeMount, ref, computed, type PropType } from "vue";
-import { NCard, NScrollbar, NButton, NSpin, NSpace, NSwitch } from "naive-ui";
 
 import ColorPopover from "./ColorPopover.vue";
+import { useBucketsStore } from "@/store/buckets";
 import Empty from "@/components/common/Empty.vue";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
@@ -56,6 +73,7 @@ import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const text = ref("");
 const isLoading = ref(false);
+const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
