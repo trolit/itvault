@@ -99,6 +99,8 @@ defineWatchers({
 
       resetForm();
 
+      data.value = [];
+
       setFormData(cloneDeep(defaultFormData));
     },
   },
