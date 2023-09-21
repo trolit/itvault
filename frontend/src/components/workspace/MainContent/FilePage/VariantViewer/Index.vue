@@ -4,7 +4,9 @@
       <n-card class="header" :bordered="false">
         <blueprint-pop-select />
 
-        <n-button type="info" ghost>Save</n-button>
+        <n-button type="info" ghost :disabled="!isBucketModified">
+          Save
+        </n-button>
       </n-card>
 
       <n-scrollbar>
@@ -29,7 +31,7 @@
 
 <script setup lang="ts">
 import { NCard, NScrollbar, NButton, NSpin } from "naive-ui";
-import { h, onBeforeMount, ref, computed, type PropType } from "vue";
+import { h, onBeforeMount, ref, computed, type PropType, type Ref } from "vue";
 
 import ColorPopover from "./ColorPopover.vue";
 import Empty from "@/components/common/Empty.vue";
@@ -47,6 +49,7 @@ const text = ref("");
 const isLoading = ref(false);
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
+const bucketInitialValue: Ref<BucketContent> = ref({});
 
 const props = defineProps({
   variantTab: {
@@ -83,11 +86,27 @@ const numberOfLines = computed((): number => {
   return text.value.split("\n").length;
 });
 
+const isBucketModified = computed(() => {
+  const bucket = workspacesStore.activeBucket;
+
+  if (bucket) {
+    return (
+      JSON.stringify(bucketInitialValue.value) !== JSON.stringify(bucket.value)
+    );
+  }
+
+  return false;
+});
+
 function renderText(content: string) {
   let value = content;
 
   const bucket = workspacesStore.activeBucket;
   const blueprint = workspacesStore.activeBlueprintId;
+
+  if (bucket) {
+    bucketInitialValue.value = bucket.value;
+  }
 
   const splitText = value.toString().split("\n");
 
