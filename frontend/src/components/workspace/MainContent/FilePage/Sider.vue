@@ -6,7 +6,11 @@
       <n-timeline v-if="!isLoading">
         <n-timeline-item>
           <template #default>
-            <n-button size="small" type="success">
+            <n-button
+              size="small"
+              type="info"
+              @click="isAddVariantModalVisible = true"
+            >
               <n-icon :component="AddIcon" :size="25" />
             </n-button>
           </template>
@@ -42,6 +46,8 @@
         </n-button>
       </div>
     </div>
+
+    <add-variant-modal v-model:show="isAddVariantModalVisible" />
   </div>
 </template>
 
@@ -62,6 +68,7 @@ import { Add as AddIcon } from "@vicons/carbon";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
+import AddVariantModal from "./AddVariantModal.vue";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineWatchers } from "@/helpers/defineWatchers";
@@ -69,6 +76,7 @@ import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
 const isLoading = ref(false);
+const isAddVariantModalVisible = ref(false);
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
 const variantsStore = useVariantsStore();
