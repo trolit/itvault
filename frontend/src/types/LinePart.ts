@@ -5,5 +5,5 @@ export type LinePart = {
 
   text: string;
 
-  colorLocation: ColorLocation | null;
+  location: ColorLocation | null;
 };
