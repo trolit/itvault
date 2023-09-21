@@ -29,6 +29,7 @@
 import { NCard, NSpace, NButton, NSwitch, NPopconfirm } from "naive-ui";
 
 import { useBucketsStore } from "@/store/buckets";
+import BlueprintPopSelect from "./BlueprintPopSelect.vue";
 
 defineProps({
   isBucketModified: {
