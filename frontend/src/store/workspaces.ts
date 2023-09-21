@@ -4,6 +4,7 @@ import cloneDeep from "lodash/cloneDeep";
 
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
+import type { Bucket } from "@/types/Bucket";
 import type { FileTab } from "@/types/FileTab";
 import { useBlueprintsStore } from "./blueprints";
 import type { VariantTab } from "@/types/VariantTab";
@@ -69,7 +70,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         blueprint => blueprint.id === variantTab.activeBlueprintId
       );
     },
-    activeBucket(): IBucketDto | undefined {
+    activeBucket(): Bucket | undefined {
       const variantTab = this.activeVariantTab;
 
       if (!variantTab) {
