@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import cloneDeep from "lodash/cloneDeep";
 
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
@@ -180,7 +181,10 @@ export const useWorkspacesStore = defineStore("workspaces", {
         return;
       }
 
-      this.activeVariantTab.buckets.push(bucket);
+      this.activeVariantTab.buckets.push({
+        ...bucket,
+        initialValue: cloneDeep(bucket.value),
+      });
     },
 
     addVariantTab(variant: IVariantDto, options?: { unshift: boolean }) {
