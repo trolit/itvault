@@ -11,7 +11,7 @@
       type="error"
       secondary
       circle
-      @click="bucketsStore.removePartFromActiveBucket(part)"
+      @click="bucketsStore.removeActiveBucketPart(part)"
     >
       <n-icon :size="20" :component="DeleteIcon" />
     </n-button>

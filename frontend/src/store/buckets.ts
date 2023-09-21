@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import cloneDeep from "lodash/cloneDeep";
 
 import type { LinePart } from "@/types/LinePart";
 import { useWorkspacesStore } from "./workspaces";
@@ -9,7 +10,19 @@ export const useBucketsStore = defineStore("buckets", {
   state: (): IState => ({}),
 
   actions: {
-    removePartFromActiveBucket(part: LinePart) {
+    resetActiveBucketValue() {
+      const workspacesStore = useWorkspacesStore();
+
+      const activeBucket = workspacesStore.activeBucket;
+
+      if (!activeBucket) {
+        return;
+      }
+
+      activeBucket.value = cloneDeep(activeBucket.initialValue);
+    },
+
+    removeActiveBucketPart(part: LinePart) {
       const workspacesStore = useWorkspacesStore();
 
       const activeBucket = workspacesStore.activeBucket;
