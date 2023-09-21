@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { NCard, NScrollbar, NButton, NSpin } from "naive-ui";
-import { h, onBeforeMount, ref, computed, type PropType, type Ref } from "vue";
+import { h, onBeforeMount, ref, computed, type PropType } from "vue";
 
 import ColorPopover from "./ColorPopover.vue";
 import Empty from "@/components/common/Empty.vue";
@@ -49,7 +49,6 @@ const text = ref("");
 const isLoading = ref(false);
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
-const bucketInitialValue: Ref<BucketContent> = ref({});
 
 const props = defineProps({
   variantTab: {
@@ -90,9 +89,7 @@ const isBucketModified = computed(() => {
   const bucket = workspacesStore.activeBucket;
 
   if (bucket) {
-    return (
-      JSON.stringify(bucketInitialValue.value) !== JSON.stringify(bucket.value)
-    );
+    return JSON.stringify(bucket.initialValue) !== JSON.stringify(bucket.value);
   }
 
   return false;
@@ -103,10 +100,6 @@ function renderText(content: string) {
 
   const bucket = workspacesStore.activeBucket;
   const blueprint = workspacesStore.activeBlueprintId;
-
-  if (bucket) {
-    bucketInitialValue.value = bucket.value;
-  }
 
   const splitText = value.toString().split("\n");
 
