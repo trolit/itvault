@@ -15,7 +15,6 @@
           borderRadius: 0,
           transform: 'translateX(100%) translateY(-250%)',
         }"
-        :native-scrollbar="false"
       >
         <sider />
       </n-layout-sider>
