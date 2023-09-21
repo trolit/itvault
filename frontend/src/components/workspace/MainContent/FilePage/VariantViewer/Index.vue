@@ -2,11 +2,20 @@
   <div class="variant-viewer">
     <template v-if="text">
       <n-card class="header" :bordered="false">
-        <blueprint-pop-select />
+        <n-space>
+          <n-switch :round="false">
+            <template #checked> Write </template>
+            <template #unchecked> Read </template>
+          </n-switch>
 
-        <n-button type="info" ghost :disabled="!isBucketModified">
-          Save
-        </n-button>
+          <blueprint-pop-select />
+        </n-space>
+
+        <n-space v-if="isBucketModified">
+          <n-button type="warning" ghost> Discard </n-button>
+
+          <n-button type="success" ghost> Save </n-button>
+        </n-space>
       </n-card>
 
       <n-scrollbar>
@@ -30,8 +39,8 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NScrollbar, NButton, NSpin } from "naive-ui";
 import { h, onBeforeMount, ref, computed, type PropType } from "vue";
+import { NCard, NScrollbar, NButton, NSpin, NSpace, NSwitch } from "naive-ui";
 
 import ColorPopover from "./ColorPopover.vue";
 import Empty from "@/components/common/Empty.vue";
