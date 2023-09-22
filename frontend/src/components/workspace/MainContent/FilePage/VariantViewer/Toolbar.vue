@@ -6,6 +6,11 @@
         <template #unchecked> Read </template>
       </n-switch>
 
+      <n-switch :round="false">
+        <template #checked> w/Border </template>
+        <template #unchecked> w/Background </template>
+      </n-switch>
+
       <blueprint-pop-select />
     </n-space>
 
