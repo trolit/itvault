@@ -20,7 +20,13 @@
         Are you sure?
       </n-popconfirm>
 
-      <n-button type="success" ghost> Save </n-button>
+      <n-popconfirm>
+        <template #trigger>
+          <n-button type="success" ghost> Save </n-button>
+        </template>
+
+        Are you sure?
+      </n-popconfirm>
     </n-space>
   </n-card>
 </template>
