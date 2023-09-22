@@ -13,15 +13,10 @@ export default (
   let carriageIndex = 0;
   const lineParts: LinePart[] = [];
 
-  const saveLine = (
-    from: number,
-    to: number,
-    location: LinePartLocation,
-    isColored: boolean
-  ) => {
+  const saveLine = (from: number, to: number, isColored: boolean) => {
     lineParts.push({
       lineIndex,
-      location,
+      location: { from, to, original: `${from}-${to}` },
       text: line.slice(from, to),
       isColored,
     });
@@ -32,7 +27,7 @@ export default (
 
     if (!location) {
       if (carriageIndex !== lineLength) {
-        saveLine(carriageIndex, lineLength, location, false);
+        saveLine(carriageIndex, lineLength, false);
       }
 
       break;
@@ -45,7 +40,7 @@ export default (
 
       const value = isFromZero ? to + 1 : from;
 
-      saveLine(carriageIndex, value, location, to === value - 1);
+      saveLine(carriageIndex, value, to === value - 1);
       isFromZero ? colorIndex++ : colorIndex;
       carriageIndex = value;
 
@@ -53,20 +48,22 @@ export default (
     }
 
     if (carriageIndex !== from) {
-      saveLine(carriageIndex, from, location, false);
+      saveLine(carriageIndex, from, false);
       carriageIndex = from;
 
       continue;
     }
 
     if (carriageIndex === from) {
-      saveLine(carriageIndex, to + 1, location, true);
+      saveLine(carriageIndex, to + 1, true);
       carriageIndex = to + 1;
       colorIndex++;
 
       continue;
     }
   }
+
+  console.log(lineParts);
 
   return lineParts;
 };
