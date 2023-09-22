@@ -34,12 +34,18 @@ export const useBucketsStore = defineStore("buckets", {
       const { lineIndex, location } = part;
 
       if (!location) {
+    removeActiveBucketPart(lineIndex: number, originalLocation: string) {
+      const workspacesStore = useWorkspacesStore();
+
+      const activeBucket = workspacesStore.activeBucket;
+
+      if (!activeBucket) {
         return;
       }
 
       const line = activeBucket.value[lineIndex];
 
-      const index = line.findIndex(coloring => coloring === location.original);
+      const index = line.findIndex(coloring => coloring === originalLocation);
 
       if (~index) {
         line.splice(index, 1);
