@@ -45,7 +45,11 @@ export const useBucketsStore = defineStore("buckets", {
 
       const line = activeBucket.value[lineIndex];
 
-      const index = line.findIndex(coloring => coloring === originalLocation);
+      const [from, to] = originalLocation.split("-");
+
+      const fixedLocation = `${from}-${parseInt(to) - 1}`;
+
+      const index = line.findIndex(coloring => coloring === fixedLocation);
 
       if (~index) {
         line.splice(index, 1);
