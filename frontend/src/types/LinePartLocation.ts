@@ -1,4 +1,4 @@
-export type ColorLocation = {
+export type LinePartLocation = {
   from: number;
 
   to: number;

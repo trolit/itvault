@@ -1,9 +1,11 @@
-import type { ColorLocation } from "./ColorLocation";
+import type { LinePartLocation } from "./LinePartLocation";
 
 export type LinePart = {
   lineIndex: number;
 
   text: string;
 
-  location: ColorLocation | null;
+  location: LinePartLocation;
+
+  isColored: boolean;
 };

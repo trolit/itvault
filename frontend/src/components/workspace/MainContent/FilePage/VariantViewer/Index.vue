@@ -104,8 +104,12 @@ function renderText(content: string) {
 
   const children = splitText.map((line, index) =>
     bucket && blueprint && line
-      ? h("div", parseLineWithBucket(index, line, bucket, blueprint))
-      : h(line ? "div" : "br", line)
+      ? h(
+          "div",
+          { id: `line-${index}`, class: "line" },
+          parseLineWithBucket(index, line, bucket, blueprint)
+        )
+      : h(line ? "div" : "br", { id: `line-${index}`, class: "line" }, line)
   );
 
   return h("div", { class: "text-render" }, children);
@@ -138,7 +142,7 @@ function parseLineWithBucket(
   );
 
   return preparedLine.map(part =>
-    part.location ? h(ColorPopover, { color, part }) : h("span", part.text)
+    part.isColored ? h(ColorPopover, { color, part }) : h("span", part.text)
   );
 }
 </script>
