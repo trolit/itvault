@@ -38,6 +38,7 @@ import { h, onBeforeMount, ref, type PropType, type Ref } from "vue";
 
 import Toolbar from "./Toolbar.vue";
 import Empty from "@/components/common/Empty.vue";
+import { useBucketsStore } from "@/store/buckets";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
 import { useWorkspacesStore } from "@/store/workspaces";
@@ -53,6 +54,7 @@ import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData"
 
 const text = ref("");
 const isLoading = ref(false);
+const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 const assignColorPopoverX = ref(0);
@@ -128,10 +130,20 @@ function renderText(content: string) {
     bucket && blueprint && line
       ? h(
           "div",
-          { id: `line-${index}`, class: "line" },
+          {
+            id: bucketsStore.getLineId(index),
+            class: bucketsStore.LINE_CLASS_NAME,
+          },
           parseLineWithBucket(index, line, bucket, blueprint)
         )
-      : h(line ? "div" : "br", { id: `line-${index}`, class: "line" }, line)
+      : h(
+          line ? "div" : "br",
+          {
+            id: bucketsStore.getLineId(index),
+            class: bucketsStore.LINE_CLASS_NAME,
+          },
+          line
+        )
   );
 
   return h("div", { class: "text-render" }, children);
@@ -208,8 +220,12 @@ async function onMouseUp(event: MouseEvent) {
     return;
   }
 
-  const anchorNodeDiv = parentAnchorElement.closest(".line");
-  const focusNodeDiv = parentFocusElement.closest(".line");
+  const anchorNodeDiv = parentAnchorElement.closest(
+    `.${bucketsStore.LINE_CLASS_NAME}`
+  );
+  const focusNodeDiv = parentFocusElement.closest(
+    `.${bucketsStore.LINE_CLASS_NAME}`
+  );
 
   if (!anchorNodeDiv || !focusNodeDiv) {
     return;

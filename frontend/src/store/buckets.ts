@@ -4,12 +4,22 @@ import cloneDeep from "lodash/cloneDeep";
 import { useWorkspacesStore } from "./workspaces";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
-interface IState {}
+interface IState {
+  LINE_CLASS_NAME: string;
+  LOCATION_ATTRIBUTE_NAME: string;
+}
 
 export const useBucketsStore = defineStore("buckets", {
-  state: (): IState => ({}),
+  state: (): IState => ({
+    LINE_CLASS_NAME: "line",
+    LOCATION_ATTRIBUTE_NAME: "location",
+  }),
 
   actions: {
+    getLineId(value: number) {
+      return `line-${value}`;
+    },
+
     paintData(data: AssignColorSelectionData) {
       const workspacesStore = useWorkspacesStore();
 
@@ -35,7 +45,7 @@ export const useBucketsStore = defineStore("buckets", {
         lineIndex <= endLineIndex;
         lineIndex++
       ) {
-        const line = document.getElementById(`line-${lineIndex}`);
+        const line = document.getElementById(this.getLineId(lineIndex));
 
         if (!line) {
           break;
@@ -58,7 +68,7 @@ export const useBucketsStore = defineStore("buckets", {
         for (; nodeIndex < lineChildrenLength; nodeIndex++) {
           const node = lineChildren[nodeIndex];
 
-          const location = node.getAttribute("location");
+          const location = node.getAttribute(this.LOCATION_ATTRIBUTE_NAME);
 
           if (location) {
             this.removeFromValue(lineIndex, location);

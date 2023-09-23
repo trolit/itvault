@@ -3,7 +3,7 @@
     <template #trigger>
       <span
         :style="{ backgroundColor: color, padding: '3px 0' }"
-        :location="part.location.original"
+        :[bucketsStore.LOCATION_ATTRIBUTE_NAME]="part.location.original"
       >
         {{ part.text }}
       </span>
