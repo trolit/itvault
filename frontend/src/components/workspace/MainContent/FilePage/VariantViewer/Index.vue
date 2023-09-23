@@ -9,7 +9,7 @@
             <span v-for="index in numberOfLines" :key="index"></span>
           </div>
 
-          <component :is="renderText(text)" />
+          <component :is="renderText(text)" @mouseup="onMouseUp" />
         </div>
       </n-scrollbar>
     </template>
@@ -29,6 +29,7 @@ import { h, onBeforeMount, ref, type PropType } from "vue";
 
 import Toolbar from "./Toolbar.vue";
 import ColorPopover from "./ColorPopover.vue";
+import { useBucketsStore } from "@/store/buckets";
 import Empty from "@/components/common/Empty.vue";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
@@ -42,6 +43,7 @@ import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const text = ref("");
 const isLoading = ref(false);
+const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -144,5 +146,85 @@ function parseLineWithBucket(
   return preparedLine.map(part =>
     part.isColored ? h(ColorPopover, { color, part }) : h("span", part.text)
   );
+}
+
+async function onMouseUp() {
+  const selection = window.getSelection();
+
+  if (!selection || selection?.type === "Caret") {
+    return;
+  }
+
+  const { focusNode, anchorNode, focusOffset, anchorOffset } = selection;
+
+  if (!focusNode || !anchorNode) {
+    return;
+  }
+
+  const position = anchorNode.compareDocumentPosition(focusNode);
+  let isBackwardSelection = false;
+
+  if (
+    (!position && anchorOffset > focusOffset) ||
+    position === Node.DOCUMENT_POSITION_PRECEDING
+  ) {
+    isBackwardSelection = true;
+  }
+
+  if (anchorNode.nodeName !== "#text" || focusNode.nodeName !== "#text") {
+    return;
+  }
+
+  const { parentElement: parentAnchorElement } = anchorNode;
+  const { parentElement: parentFocusElement } = focusNode;
+
+  if (!parentAnchorElement || !parentFocusElement) {
+    return;
+  }
+
+  const anchorNodeDiv = parentAnchorElement.closest(".line");
+  const focusNodeDiv = parentFocusElement.closest(".line");
+
+  if (!anchorNodeDiv || !focusNodeDiv) {
+    return;
+  }
+
+  const startLine = anchorNodeDiv.id.split("-").pop();
+  const endLine = focusNodeDiv.id.split("-").pop();
+
+  if (!startLine || !endLine) {
+    return;
+  }
+
+  const parsedStartLine = parseInt(startLine);
+  const parsedEndLine = parseInt(endLine);
+
+  const anchorNodeIndex = Array.from(anchorNodeDiv.children).indexOf(
+    parentAnchorElement
+  );
+
+  const focusNodeIndex = Array.from(focusNodeDiv.children).indexOf(
+    parentFocusElement
+  );
+
+  const selectionData = isBackwardSelection
+    ? {
+        anchorChildrenIndex: focusNodeIndex,
+        focusChildrenIndex: anchorNodeIndex,
+        anchorOffset: focusOffset,
+        focusOffset: anchorOffset,
+      }
+    : {
+        anchorChildrenIndex: anchorNodeIndex,
+        focusChildrenIndex: focusNodeIndex,
+        anchorOffset,
+        focusOffset,
+      };
+
+  bucketsStore.colorActiveBucketPart({
+    startLine: parsedStartLine,
+    endLine: parsedEndLine,
+    ...selectionData,
+  });
 }
 </script>
