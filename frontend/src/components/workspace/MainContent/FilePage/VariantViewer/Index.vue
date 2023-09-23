@@ -9,7 +9,7 @@
             <span v-for="index in numberOfLines" :key="index"></span>
           </div>
 
-          <component :is="renderText(text)" @mouseup="onMouseUp" />
+          <component :is="renderText(text)" @mouseup.stop="onMouseUp" />
         </div>
       </n-scrollbar>
     </template>
