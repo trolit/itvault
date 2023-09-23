@@ -1,11 +1,11 @@
 import type { LinePart } from "@/types/LinePart";
-import type { ColorLocation } from "@/types/ColorLocation";
+import type { LinePartLocation } from "@/types/LinePartLocation";
 
 export default (
   lineIndex: number,
   line: string,
   iterations: number,
-  colorLocations: ColorLocation[]
+  parsedColors: LinePartLocation[]
 ) => {
   const lineLength = line.length;
 
@@ -13,24 +13,21 @@ export default (
   let carriageIndex = 0;
   const lineParts: LinePart[] = [];
 
-  const saveLine = (
-    from: number,
-    to: number,
-    location: ColorLocation | null
-  ) => {
+  const saveLine = (from: number, to: number, isColored: boolean) => {
     lineParts.push({
       lineIndex,
+      location: { from, to, original: `${from}-${to}` },
       text: line.slice(from, to),
-      colorLocation: location,
+      isColored,
     });
   };
 
   for (let iteration = 0; iteration < iterations; iteration++) {
-    const location = colorLocations[colorIndex];
+    const location = parsedColors[colorIndex];
 
     if (!location) {
       if (carriageIndex !== lineLength) {
-        saveLine(carriageIndex, lineLength, null);
+        saveLine(carriageIndex, lineLength, false);
       }
 
       break;
@@ -43,7 +40,7 @@ export default (
 
       const value = isFromZero ? to + 1 : from;
 
-      saveLine(carriageIndex, value, to === value - 1 ? location : null);
+      saveLine(carriageIndex, value, to === value - 1);
       isFromZero ? colorIndex++ : colorIndex;
       carriageIndex = value;
 
@@ -51,14 +48,14 @@ export default (
     }
 
     if (carriageIndex !== from) {
-      saveLine(carriageIndex, from, null);
+      saveLine(carriageIndex, from, false);
       carriageIndex = from;
 
       continue;
     }
 
     if (carriageIndex === from) {
-      saveLine(carriageIndex, to + 1, location);
+      saveLine(carriageIndex, to + 1, true);
       carriageIndex = to + 1;
       colorIndex++;
 

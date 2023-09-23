@@ -1,8 +1,10 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import cloneDeep from "lodash/cloneDeep";
 
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
+import type { Bucket } from "@/types/Bucket";
 import type { FileTab } from "@/types/FileTab";
 import { useBlueprintsStore } from "./blueprints";
 import type { VariantTab } from "@/types/VariantTab";
@@ -68,7 +70,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         blueprint => blueprint.id === variantTab.activeBlueprintId
       );
     },
-    activeBucket(): IBucketDto | undefined {
+    activeBucket(): Bucket | undefined {
       const variantTab = this.activeVariantTab;
 
       if (!variantTab) {
@@ -180,7 +182,10 @@ export const useWorkspacesStore = defineStore("workspaces", {
         return;
       }
 
-      this.activeVariantTab.buckets.push(bucket);
+      this.activeVariantTab.buckets.push({
+        ...bucket,
+        initialValue: cloneDeep(bucket.value),
+      });
     },
 
     addVariantTab(variant: IVariantDto, options?: { unshift: boolean }) {

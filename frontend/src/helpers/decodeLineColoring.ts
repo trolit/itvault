@@ -1,7 +1,7 @@
 import sortBy from "lodash/sortBy";
 
 export default (line: string, colors: string[]) => {
-  const mappedColors = mapColors(colors);
+  const parsedColors = parseColors(colors);
 
   const lineLength = line.length;
 
@@ -10,7 +10,7 @@ export default (line: string, colors: string[]) => {
   let recentColorIndex = -1;
 
   for (let index = 0; index < lineLength; index++) {
-    const colorIndex = mappedColors.findIndex(
+    const colorIndex = parsedColors.findIndex(
       color => index >= color.from && index <= color.to
     );
 
@@ -28,17 +28,18 @@ export default (line: string, colors: string[]) => {
     }
   }
 
-  return { iterations, mappedColors };
+  return { iterations, parsedColors };
 };
 
-function mapColors(colors: string[]) {
-  const mappedColors = colors.map(color => {
+function parseColors(colors: string[]) {
+  const parsedColors = colors.map(color => {
     const [from, to] = color.split("-");
     return {
       from: parseInt(from),
       to: parseInt(to),
+      original: color,
     };
   });
 
-  return sortBy(mappedColors, value => value.from);
+  return sortBy(parsedColors, value => value.from);
 }

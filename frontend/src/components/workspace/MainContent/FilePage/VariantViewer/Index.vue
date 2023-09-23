@@ -1,11 +1,7 @@
 <template>
   <div class="variant-viewer">
     <template v-if="text">
-      <n-card class="header" :bordered="false">
-        <blueprint-pop-select />
-
-        <n-button type="info" ghost>Save</n-button>
-      </n-card>
+      <toolbar :is-bucket-modified="isBucketModified" />
 
       <n-scrollbar>
         <div class="content">
@@ -13,8 +9,17 @@
             <span v-for="index in numberOfLines" :key="index"></span>
           </div>
 
-          <component :is="renderText(text)" />
+          <component :is="renderText(text)" @mouseup.stop="onMouseUp" />
         </div>
+
+        <assign-color-popover
+          v-if="!!workspacesStore.activeBucket"
+          :is-visible="isAssignColorPopoverVisible"
+          :x="assignColorPopoverX"
+          :y="assignColorPopoverY"
+          :selection-data="selectionData"
+          @update:is-visible="isAssignColorPopoverVisible = false"
+        />
       </n-scrollbar>
     </template>
 
@@ -28,30 +33,64 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NScrollbar, NButton, NSpin } from "naive-ui";
-import { h, onBeforeMount, ref, computed, type PropType } from "vue";
+import { NSpin, NScrollbar } from "naive-ui";
+import { h, onBeforeMount, ref, type PropType, type Ref } from "vue";
 
-import ColorPopover from "./ColorPopover.vue";
+import Toolbar from "./Toolbar.vue";
 import Empty from "@/components/common/Empty.vue";
+import { useBucketsStore } from "@/store/buckets";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
 import { useWorkspacesStore } from "@/store/workspaces";
-import BlueprintPopSelect from "./BlueprintPopSelect.vue";
+import AssignColorPopover from "./AssignColorPopover.vue";
+import { defineComputed } from "@/helpers/defineComputed";
+import UnassignColorPopover from "./UnassignColorPopover.vue";
 import decodeLineColoring from "@/helpers/decodeLineColoring";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { BucketContent } from "@shared/types/BucketContent";
 import prepareLineForColoring from "@/helpers/prepareLineForColoring";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
 const text = ref("");
 const isLoading = ref(false);
+const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
+const assignColorPopoverX = ref(0);
+const assignColorPopoverY = ref(0);
+const isAssignColorPopoverVisible = ref(false);
+const selectionData: Ref<AssignColorSelectionData> = ref({
+  startLineIndex: 0,
+  endLineIndex: 0,
+  anchorChildrenIndex: 0,
+  focusChildrenIndex: 0,
+  anchorOffset: 0,
+  focusOffset: 0,
+});
 
 const props = defineProps({
   variantTab: {
     type: Object as PropType<VariantTab>,
     required: true,
+  },
+});
+
+const { numberOfLines, isBucketModified } = defineComputed({
+  numberOfLines() {
+    return text.value.split("\n").length;
+  },
+
+  isBucketModified() {
+    const bucket = workspacesStore.activeBucket;
+
+    if (bucket) {
+      return (
+        JSON.stringify(bucket.initialValue) !== JSON.stringify(bucket.value)
+      );
+    }
+
+    return false;
   },
 });
 
@@ -79,10 +118,6 @@ onBeforeMount(async () => {
   text.value = variantTab.content;
 });
 
-const numberOfLines = computed((): number => {
-  return text.value.split("\n").length;
-});
-
 function renderText(content: string) {
   let value = content;
 
@@ -93,8 +128,22 @@ function renderText(content: string) {
 
   const children = splitText.map((line, index) =>
     bucket && blueprint && line
-      ? h("div", parseLineWithBucket(index, line, bucket, blueprint))
-      : h(line ? "div" : "br", line)
+      ? h(
+          "div",
+          {
+            id: bucketsStore.getLineId(index),
+            class: bucketsStore.LINE_CLASS_NAME,
+          },
+          parseLineWithBucket(index, line, bucket, blueprint)
+        )
+      : h(
+          line ? "div" : "br",
+          {
+            id: bucketsStore.getLineId(index),
+            class: bucketsStore.LINE_CLASS_NAME,
+          },
+          line
+        )
   );
 
   return h("div", { class: "text-render" }, children);
@@ -117,17 +166,112 @@ function parseLineWithBucket(
 
   const coloring = value[index as keyof BucketContent];
 
-  const { iterations, mappedColors } = decodeLineColoring(line, coloring);
+  const { iterations, parsedColors } = decodeLineColoring(line, coloring);
 
   const preparedLine = prepareLineForColoring(
     index,
     line,
     iterations,
-    mappedColors
+    parsedColors
   );
 
   return preparedLine.map(part =>
-    part.colorLocation ? h(ColorPopover, { color, part }) : h("span", part.text)
+    part.isColored
+      ? h(UnassignColorPopover, { color, part })
+      : h("span", part.text)
   );
+}
+
+async function onMouseUp(event: MouseEvent) {
+  if (isAssignColorPopoverVisible.value) {
+    isAssignColorPopoverVisible.value = false;
+  }
+
+  const selection = window.getSelection();
+
+  if (!selection || selection?.type === "Caret") {
+    return;
+  }
+
+  const { focusNode, anchorNode, focusOffset, anchorOffset } = selection;
+
+  if (!focusNode || !anchorNode) {
+    return;
+  }
+
+  const position = anchorNode.compareDocumentPosition(focusNode);
+  let isBackwardSelection = false;
+
+  if (
+    (!position && anchorOffset > focusOffset) ||
+    position === Node.DOCUMENT_POSITION_PRECEDING
+  ) {
+    isBackwardSelection = true;
+  }
+
+  if (anchorNode.nodeName !== "#text" || focusNode.nodeName !== "#text") {
+    return;
+  }
+
+  const { parentElement: parentAnchorElement } = anchorNode;
+  const { parentElement: parentFocusElement } = focusNode;
+
+  if (!parentAnchorElement || !parentFocusElement) {
+    return;
+  }
+
+  const anchorNodeDiv = parentAnchorElement.closest(
+    `.${bucketsStore.LINE_CLASS_NAME}`
+  );
+  const focusNodeDiv = parentFocusElement.closest(
+    `.${bucketsStore.LINE_CLASS_NAME}`
+  );
+
+  if (!anchorNodeDiv || !focusNodeDiv) {
+    return;
+  }
+
+  const startLine = anchorNodeDiv.id.split("-").pop();
+  const endLine = focusNodeDiv.id.split("-").pop();
+
+  if (!startLine || !endLine) {
+    return;
+  }
+
+  const parsedStartLine = parseInt(startLine);
+  const parsedEndLine = parseInt(endLine);
+
+  const anchorNodeIndex = Array.from(anchorNodeDiv.children).indexOf(
+    parentAnchorElement
+  );
+
+  const focusNodeIndex = Array.from(focusNodeDiv.children).indexOf(
+    parentFocusElement
+  );
+
+  const data = isBackwardSelection
+    ? {
+        anchorChildrenIndex: focusNodeIndex,
+        focusChildrenIndex: anchorNodeIndex,
+        anchorOffset: focusOffset,
+        focusOffset: anchorOffset,
+      }
+    : {
+        anchorChildrenIndex: anchorNodeIndex,
+        focusChildrenIndex: focusNodeIndex,
+        anchorOffset,
+        focusOffset,
+      };
+
+  isAssignColorPopoverVisible.value = true;
+
+  assignColorPopoverX.value = event.clientX;
+  assignColorPopoverY.value = event.clientY;
+
+  selectionData.value = {
+    startLineIndex: parsedStartLine,
+    endLineIndex: parsedEndLine,
+    ...data,
+  };
 }
 </script>
