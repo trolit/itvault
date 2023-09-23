@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import type { PropType } from "vue";
-import { Add as AddIcon } from "@vicons/carbon";
+import { PaintBrush as AddIcon } from "@vicons/carbon";
 import { NPopover, NButton, NIcon } from "naive-ui";
 
 import { useBucketsStore } from "@/store/buckets";
