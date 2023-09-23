@@ -250,7 +250,7 @@ async function onMouseUp(event: MouseEvent) {
   isAssignColorPopoverVisible.value = true;
 
   assignColorPopoverX.value = event.clientX;
-  assignColorPopoverX.value = event.clientY;
+  assignColorPopoverY.value = event.clientY;
 
   selectionData.value = {
     startLineIndex: parsedStartLine,
