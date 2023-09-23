@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
-import type { LinePart } from "@/types/LinePart";
 import { useWorkspacesStore } from "./workspaces";
 
 interface IState {}
@@ -22,7 +21,14 @@ export const useBucketsStore = defineStore("buckets", {
       activeBucket.value = cloneDeep(activeBucket.initialValue);
     },
 
-    removeActiveBucketPart(part: LinePart) {
+    colorActiveBucketPart(data: {
+      startLineIndex: number;
+      endLineIndex: number;
+      anchorChildrenIndex: number;
+      focusChildrenIndex: number;
+      anchorOffset: number;
+      focusOffset: number;
+    }) {
       const workspacesStore = useWorkspacesStore();
 
       const activeBucket = workspacesStore.activeBucket;
@@ -31,9 +37,117 @@ export const useBucketsStore = defineStore("buckets", {
         return;
       }
 
-      const { lineIndex, location } = part;
+      const {
+        startLineIndex,
+        endLineIndex,
+        anchorChildrenIndex,
+        focusChildrenIndex,
+        anchorOffset,
+        focusOffset,
+      } = data;
 
-      if (!location) {
+      const isSingleLine = startLineIndex === endLineIndex;
+
+      for (
+        let lineIndex = startLineIndex;
+        lineIndex <= endLineIndex;
+        lineIndex++
+      ) {
+        const line = document.getElementById(`line-${lineIndex}`);
+
+        if (!line) {
+          break;
+        }
+
+        const isLastLine = lineIndex === endLineIndex;
+        // @NOTE when first line - start from anchor node
+        let elementIndex =
+          lineIndex === startLineIndex ? anchorChildrenIndex : 0;
+
+        const lineChildren = Array.from(line.children);
+        const lineChildrenLength = lineChildren.length;
+
+        const from = this.determineGlobalLineIndex(
+          lineChildren,
+          elementIndex,
+          lineIndex === startLineIndex ? anchorOffset : 0
+        );
+        let to = 0;
+
+        for (; elementIndex < lineChildrenLength; elementIndex++) {
+          const node = lineChildren[elementIndex];
+
+          const location = node.getAttribute("location");
+
+          if (location) {
+            this.removeActiveBucketPart(lineIndex, location);
+          }
+
+          if (node.textContent) {
+            const localIndex =
+              elementIndex === focusChildrenIndex &&
+              (isSingleLine || isLastLine)
+                ? focusOffset
+                : node.textContent.length;
+
+            to = this.determineGlobalLineIndex(
+              lineChildren,
+              elementIndex,
+              localIndex
+            );
+          }
+
+          if (elementIndex !== focusChildrenIndex) {
+            continue;
+          }
+
+          if (isSingleLine || isLastLine) {
+            break;
+          }
+        }
+
+        this.addPartToActiveBucket(lineIndex, `${from}-${to - 1}`);
+      }
+    },
+
+    determineGlobalLineIndex(
+      lineChildren: Element[],
+      nodeIndex: number,
+      localIndex: number
+    ) {
+      let length = 0;
+
+      for (let index = 0; index < nodeIndex; index++) {
+        const node = lineChildren[index];
+
+        if (node.textContent) {
+          length += node.textContent.length;
+        }
+      }
+
+      return localIndex + length;
+    },
+
+    addPartToActiveBucket(lineIndex: number, location: string) {
+      const workspacesStore = useWorkspacesStore();
+
+      const activeBucket = workspacesStore.activeBucket;
+
+      if (!activeBucket) {
+        return;
+      }
+
+      let line = activeBucket.value[lineIndex];
+
+      if (!line) {
+        line = [];
+      }
+
+      activeBucket.value[lineIndex]
+        ? activeBucket.value[lineIndex].push(location)
+        : (activeBucket.value[lineIndex] = [location]);
+    },
+
     removeActiveBucketPart(lineIndex: number, originalLocation: string) {
       const workspacesStore = useWorkspacesStore();
 
