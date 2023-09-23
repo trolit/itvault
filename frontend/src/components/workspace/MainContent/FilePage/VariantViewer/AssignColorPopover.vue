@@ -18,6 +18,7 @@ import { PaintBrush as AddIcon } from "@vicons/carbon";
 import { NPopover, NButton, NIcon } from "naive-ui";
 
 import { useBucketsStore } from "@/store/buckets";
+import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
 const props = defineProps({
   isVisible: {
@@ -36,16 +37,7 @@ const props = defineProps({
   },
 
   selectionData: {
-    type: Object as PropType<{
-      startLineIndex: number;
-      endLineIndex: number;
-
-      anchorChildrenIndex: number;
-      focusChildrenIndex: number;
-
-      anchorOffset: number;
-      focusOffset: number;
-    }>,
+    type: Object as PropType<AssignColorSelectionData>,
     required: true,
   },
 });
