@@ -11,6 +11,14 @@
 
           <component :is="renderText(text)" @mouseup.stop="onMouseUp" />
         </div>
+
+        <assign-color-popover
+          :is-visible="isAssignColorPopoverVisible"
+          :x="x"
+          :y="y"
+          :selection-data="selectionData"
+          @update:is-visible="isAssignColorPopoverVisible = false"
+        />
       </n-scrollbar>
     </template>
 
@@ -25,14 +33,14 @@
 
 <script setup lang="ts">
 import { NSpin, NScrollbar } from "naive-ui";
-import { h, onBeforeMount, ref, type PropType } from "vue";
+import { h, onBeforeMount, ref, type PropType, type Ref } from "vue";
 
 import Toolbar from "./Toolbar.vue";
-import { useBucketsStore } from "@/store/buckets";
 import Empty from "@/components/common/Empty.vue";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
 import { useWorkspacesStore } from "@/store/workspaces";
+import AssignColorPopover from "./AssignColorPopover.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import UnassignColorPopover from "./UnassignColorPopover.vue";
 import decodeLineColoring from "@/helpers/decodeLineColoring";
@@ -40,12 +48,23 @@ import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { BucketContent } from "@shared/types/BucketContent";
 import prepareLineForColoring from "@/helpers/prepareLineForColoring";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
 const text = ref("");
 const isLoading = ref(false);
-const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
+const x = ref(0);
+const y = ref(0);
+const isAssignColorPopoverVisible = ref(false);
+const selectionData: Ref<AssignColorSelectionData> = ref({
+  startLineIndex: 0,
+  endLineIndex: 0,
+  anchorChildrenIndex: 0,
+  focusChildrenIndex: 0,
+  anchorOffset: 0,
+  focusOffset: 0,
+});
 
 const props = defineProps({
   variantTab: {
@@ -150,7 +169,11 @@ function parseLineWithBucket(
   );
 }
 
-async function onMouseUp() {
+async function onMouseUp(event: MouseEvent) {
+  if (isAssignColorPopoverVisible.value) {
+    isAssignColorPopoverVisible.value = false;
+  }
+
   const selection = window.getSelection();
 
   if (!selection || selection?.type === "Caret") {
@@ -209,7 +232,7 @@ async function onMouseUp() {
     parentFocusElement
   );
 
-  const selectionData = isBackwardSelection
+  const data = isBackwardSelection
     ? {
         anchorChildrenIndex: focusNodeIndex,
         focusChildrenIndex: anchorNodeIndex,
@@ -223,10 +246,15 @@ async function onMouseUp() {
         focusOffset,
       };
 
-  bucketsStore.colorActiveBucketPart({
+  isAssignColorPopoverVisible.value = true;
+
+  x.value = event.clientX;
+  y.value = event.clientY;
+
+  selectionData.value = {
     startLineIndex: parsedStartLine,
     endLineIndex: parsedEndLine,
-    ...selectionData,
-  });
+    ...data,
+  };
 }
 </script>
