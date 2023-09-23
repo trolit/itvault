@@ -1,5 +1,5 @@
 <template>
-  <n-popover trigger="click" placement="bottom">
+  <n-popover trigger="click" placement="right">
     <template #trigger>
       <span
         :style="{ backgroundColor: color, padding: '3px 0' }"
