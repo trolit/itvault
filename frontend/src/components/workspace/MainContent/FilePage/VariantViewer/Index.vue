@@ -222,8 +222,8 @@ async function onMouseUp() {
       };
 
   bucketsStore.colorActiveBucketPart({
-    startLine: parsedStartLine,
-    endLine: parsedEndLine,
+    startLineIndex: parsedStartLine,
+    endLineIndex: parsedEndLine,
     ...selectionData,
   });
 }
