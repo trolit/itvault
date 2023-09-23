@@ -15,8 +15,8 @@
         <assign-color-popover
           v-if="!!workspacesStore.activeBucket"
           :is-visible="isAssignColorPopoverVisible"
-          :x="x"
-          :y="y"
+          :x="assignColorPopoverX"
+          :y="assignColorPopoverY"
           :selection-data="selectionData"
           @update:is-visible="isAssignColorPopoverVisible = false"
         />
@@ -55,8 +55,8 @@ const text = ref("");
 const isLoading = ref(false);
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
-const x = ref(0);
-const y = ref(0);
+const assignColorPopoverX = ref(0);
+const assignColorPopoverY = ref(0);
 const isAssignColorPopoverVisible = ref(false);
 const selectionData: Ref<AssignColorSelectionData> = ref({
   startLineIndex: 0,
@@ -249,8 +249,8 @@ async function onMouseUp(event: MouseEvent) {
 
   isAssignColorPopoverVisible.value = true;
 
-  x.value = event.clientX;
-  y.value = event.clientY;
+  assignColorPopoverX.value = event.clientX;
+  assignColorPopoverX.value = event.clientY;
 
   selectionData.value = {
     startLineIndex: parsedStartLine,
