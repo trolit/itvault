@@ -28,13 +28,13 @@ import { NSpin, NScrollbar } from "naive-ui";
 import { h, onBeforeMount, ref, type PropType } from "vue";
 
 import Toolbar from "./Toolbar.vue";
-import ColorPopover from "./ColorPopover.vue";
 import { useBucketsStore } from "@/store/buckets";
 import Empty from "@/components/common/Empty.vue";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
+import UnassignColorPopover from "./UnassignColorPopover.vue";
 import decodeLineColoring from "@/helpers/decodeLineColoring";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { BucketContent } from "@shared/types/BucketContent";
@@ -144,7 +144,9 @@ function parseLineWithBucket(
   );
 
   return preparedLine.map(part =>
-    part.isColored ? h(ColorPopover, { color, part }) : h("span", part.text)
+    part.isColored
+      ? h(UnassignColorPopover, { color, part })
+      : h("span", part.text)
   );
 }
 
