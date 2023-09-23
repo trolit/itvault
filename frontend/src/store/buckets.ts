@@ -131,12 +131,6 @@ export const useBucketsStore = defineStore("buckets", {
         return;
       }
 
-      let line = activeBucket.value[lineIndex];
-
-      if (!line) {
-        line = [];
-      }
-
       activeBucket.value[lineIndex]
         ? activeBucket.value[lineIndex].push(location)
         : (activeBucket.value[lineIndex] = [location]);
