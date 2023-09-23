@@ -43,21 +43,20 @@ export const useBucketsStore = defineStore("buckets", {
 
         const isLastLine = lineIndex === endLineIndex;
         // @NOTE when first line - start from anchor node
-        let elementIndex =
-          lineIndex === startLineIndex ? anchorChildrenIndex : 0;
+        let nodeIndex = lineIndex === startLineIndex ? anchorChildrenIndex : 0;
 
         const lineChildren = Array.from(line.children);
         const lineChildrenLength = lineChildren.length;
 
         const from = this.localIndexToGlobalIndex(
           lineIndex === startLineIndex ? anchorOffset : 0,
-          elementIndex,
+          nodeIndex,
           lineChildren
         );
         let to = 0;
 
-        for (; elementIndex < lineChildrenLength; elementIndex++) {
-          const node = lineChildren[elementIndex];
+        for (; nodeIndex < lineChildrenLength; nodeIndex++) {
+          const node = lineChildren[nodeIndex];
 
           const location = node.getAttribute("location");
 
@@ -67,19 +66,18 @@ export const useBucketsStore = defineStore("buckets", {
 
           if (node.textContent) {
             const localIndex =
-              elementIndex === focusChildrenIndex &&
-              (isSingleLine || isLastLine)
+              nodeIndex === focusChildrenIndex && (isSingleLine || isLastLine)
                 ? focusOffset
                 : node.textContent.length;
 
             to = this.localIndexToGlobalIndex(
               localIndex,
-              elementIndex,
+              nodeIndex,
               lineChildren
             );
           }
 
-          if (elementIndex !== focusChildrenIndex) {
+          if (nodeIndex !== focusChildrenIndex) {
             continue;
           }
 
