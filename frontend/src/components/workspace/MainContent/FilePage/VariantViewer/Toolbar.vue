@@ -7,8 +7,8 @@
       </n-switch>
 
       <n-switch :round="false">
-        <template #checked> w/Border </template>
-        <template #unchecked> w/Background </template>
+        <template #checked> Border </template>
+        <template #unchecked> Background </template>
       </n-switch>
 
       <blueprint-pop-select />
