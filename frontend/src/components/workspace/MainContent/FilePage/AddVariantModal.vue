@@ -31,7 +31,7 @@
           @before-upload="data = []"
           @update-file-list="onFileListUpdate"
         >
-          <n-button>Upload file</n-button>
+          <n-button>Select file</n-button>
         </n-upload>
       </n-form-item>
     </n-form>
