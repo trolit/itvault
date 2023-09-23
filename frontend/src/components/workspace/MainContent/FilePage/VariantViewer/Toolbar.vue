@@ -25,7 +25,7 @@
 
       <n-popconfirm @positive-click="bucketsStore.resetActiveBucketValue">
         <template #trigger>
-          <n-button type="warning" ghost> Discard </n-button>
+          <n-button type="warning" ghost size="small"> Discard </n-button>
         </template>
 
         Are you sure?
@@ -33,7 +33,7 @@
 
       <n-popconfirm>
         <template #trigger>
-          <n-button type="success" ghost> Save </n-button>
+          <n-button type="success" ghost size="small"> Save </n-button>
         </template>
 
         Are you sure?
