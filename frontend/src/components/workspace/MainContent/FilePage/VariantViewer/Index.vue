@@ -13,6 +13,7 @@
         </div>
 
         <assign-color-popover
+          v-if="!!workspacesStore.activeBucket"
           :is-visible="isAssignColorPopoverVisible"
           :x="x"
           :y="y"
