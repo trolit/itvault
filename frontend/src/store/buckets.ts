@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
 import { useWorkspacesStore } from "./workspaces";
+import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
 interface IState {}
 
@@ -21,14 +22,7 @@ export const useBucketsStore = defineStore("buckets", {
       activeBucket.value = cloneDeep(activeBucket.initialValue);
     },
 
-    colorActiveBucketPart(data: {
-      startLineIndex: number;
-      endLineIndex: number;
-      anchorChildrenIndex: number;
-      focusChildrenIndex: number;
-      anchorOffset: number;
-      focusOffset: number;
-    }) {
+    colorActiveBucketPart(data: AssignColorSelectionData) {
       const workspacesStore = useWorkspacesStore();
 
       const activeBucket = workspacesStore.activeBucket;
