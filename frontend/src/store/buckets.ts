@@ -10,19 +10,7 @@ export const useBucketsStore = defineStore("buckets", {
   state: (): IState => ({}),
 
   actions: {
-    resetActiveBucketValue() {
-      const workspacesStore = useWorkspacesStore();
-
-      const activeBucket = workspacesStore.activeBucket;
-
-      if (!activeBucket) {
-        return;
-      }
-
-      activeBucket.value = cloneDeep(activeBucket.initialValue);
-    },
-
-    colorActiveBucketPart(data: AssignColorSelectionData) {
+    paintData(data: AssignColorSelectionData) {
       const workspacesStore = useWorkspacesStore();
 
       const activeBucket = workspacesStore.activeBucket;
@@ -61,10 +49,10 @@ export const useBucketsStore = defineStore("buckets", {
         const lineChildren = Array.from(line.children);
         const lineChildrenLength = lineChildren.length;
 
-        const from = this.determineGlobalLineIndex(
-          lineChildren,
+        const from = this.localIndexToGlobalIndex(
+          lineIndex === startLineIndex ? anchorOffset : 0,
           elementIndex,
-          lineIndex === startLineIndex ? anchorOffset : 0
+          lineChildren
         );
         let to = 0;
 
@@ -74,7 +62,7 @@ export const useBucketsStore = defineStore("buckets", {
           const location = node.getAttribute("location");
 
           if (location) {
-            this.removeActiveBucketPart(lineIndex, location);
+            this.removeFromValue(lineIndex, location);
           }
 
           if (node.textContent) {
@@ -84,10 +72,10 @@ export const useBucketsStore = defineStore("buckets", {
                 ? focusOffset
                 : node.textContent.length;
 
-            to = this.determineGlobalLineIndex(
-              lineChildren,
+            to = this.localIndexToGlobalIndex(
+              localIndex,
               elementIndex,
-              localIndex
+              lineChildren
             );
           }
 
@@ -100,14 +88,14 @@ export const useBucketsStore = defineStore("buckets", {
           }
         }
 
-        this.addPartToActiveBucket(lineIndex, `${from}-${to - 1}`);
+        this.addToValue(lineIndex, `${from}-${to - 1}`);
       }
     },
 
-    determineGlobalLineIndex(
-      lineChildren: Element[],
+    localIndexToGlobalIndex(
+      localIndex: number,
       nodeIndex: number,
-      localIndex: number
+      lineChildren: Element[]
     ) {
       let length = 0;
 
@@ -122,7 +110,7 @@ export const useBucketsStore = defineStore("buckets", {
       return localIndex + length;
     },
 
-    addPartToActiveBucket(lineIndex: number, location: string) {
+    addToValue(lineIndex: number, location: string) {
       const workspacesStore = useWorkspacesStore();
 
       const activeBucket = workspacesStore.activeBucket;
@@ -136,7 +124,7 @@ export const useBucketsStore = defineStore("buckets", {
         : (activeBucket.value[lineIndex] = [location]);
     },
 
-    removeActiveBucketPart(lineIndex: number, originalLocation: string) {
+    removeFromValue(lineIndex: number, location: string) {
       const workspacesStore = useWorkspacesStore();
 
       const activeBucket = workspacesStore.activeBucket;
@@ -147,7 +135,7 @@ export const useBucketsStore = defineStore("buckets", {
 
       const line = activeBucket.value[lineIndex];
 
-      const [from, to] = originalLocation.split("-");
+      const [from, to] = location.split("-");
 
       const fixedLocation = `${from}-${parseInt(to) - 1}`;
 
@@ -156,6 +144,18 @@ export const useBucketsStore = defineStore("buckets", {
       if (~index) {
         line.splice(index, 1);
       }
+    },
+
+    resetValue() {
+      const workspacesStore = useWorkspacesStore();
+
+      const activeBucket = workspacesStore.activeBucket;
+
+      if (!activeBucket) {
+        return;
+      }
+
+      activeBucket.value = cloneDeep(activeBucket.initialValue);
     },
   },
 });

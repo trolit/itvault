@@ -5,7 +5,7 @@
       type="success"
       secondary
       circle
-      @click="assignColor"
+      @click="paintSelectedPart"
     >
       <n-icon :size="20" :component="AddIcon" />
     </n-button>
@@ -46,8 +46,8 @@ const emit = defineEmits(["update:is-visible"]);
 
 const bucketsStore = useBucketsStore();
 
-function assignColor() {
-  bucketsStore.colorActiveBucketPart(props.selectionData);
+function paintSelectedPart() {
+  bucketsStore.paintData(props.selectionData);
 
   emit("update:is-visible");
 }

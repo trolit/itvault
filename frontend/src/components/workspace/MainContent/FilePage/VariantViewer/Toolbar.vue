@@ -18,7 +18,7 @@
     <n-space v-if="isBucketModified" align="center">
       <small>New changes!</small>
 
-      <n-popconfirm @positive-click="bucketsStore.resetActiveBucketValue">
+      <n-popconfirm @positive-click="bucketsStore.resetValue">
         <template #trigger>
           <n-button type="warning" ghost size="small"> Discard </n-button>
         </template>

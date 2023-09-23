@@ -15,10 +15,7 @@
       secondary
       circle
       @click="
-        bucketsStore.removeActiveBucketPart(
-          part.lineIndex,
-          part.location.original
-        )
+        bucketsStore.removeFromValue(part.lineIndex, part.location.original)
       "
     >
       <n-icon :size="20" :component="DeleteIcon" />
