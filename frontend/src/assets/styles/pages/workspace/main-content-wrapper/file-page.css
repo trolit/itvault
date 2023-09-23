@@ -71,11 +71,12 @@
                     }
 
                     .toolbar {
-                      padding: 10px 8px 0px 8px;
+                      padding: 0px 8px;
                       height: var(--file-page-variant-toolbar-height);
 
                       .n-card__content {
                         display: flex;
+                        align-items: center;
                         justify-content: space-between;
                       }
                     }
