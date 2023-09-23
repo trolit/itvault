@@ -5,7 +5,7 @@
       type="success"
       secondary
       circle
-      @click="bucketsStore.colorActiveBucketPart(selectionData)"
+      @click="assignColor"
     >
       <n-icon :size="20" :component="AddIcon" />
     </n-button>
@@ -19,7 +19,7 @@ import { NPopover, NButton, NIcon } from "naive-ui";
 
 import { useBucketsStore } from "@/store/buckets";
 
-defineProps({
+const props = defineProps({
   isVisible: {
     type: Boolean,
     required: true,
@@ -50,5 +50,13 @@ defineProps({
   },
 });
 
+const emit = defineEmits(["update:is-visible"]);
+
 const bucketsStore = useBucketsStore();
+
+function assignColor() {
+  bucketsStore.colorActiveBucketPart(props.selectionData);
+
+  emit("update:is-visible");
+}
 </script>
