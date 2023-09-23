@@ -63,7 +63,5 @@ export default (
     }
   }
 
-  console.log(lineParts);
-
   return lineParts;
 };
