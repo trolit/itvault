@@ -1,6 +1,12 @@
 <template>
   <n-card class="toolbar" :bordered="false">
-    <n-space>
+    <n-space align="center">
+      <n-button text circle size="large">
+        <template #icon>
+          <n-icon :component="HelpIcon" />
+        </template>
+      </n-button>
+
       <n-switch :round="false">
         <template #checked> Write </template>
         <template #unchecked> Read </template>
@@ -37,7 +43,8 @@
 </template>
 
 <script setup lang="ts">
-import { NCard, NSpace, NButton, NSwitch, NPopconfirm } from "naive-ui";
+import { Help as HelpIcon } from "@vicons/carbon";
+import { NCard, NSpace, NButton, NSwitch, NPopconfirm, NIcon } from "naive-ui";
 
 import { useBucketsStore } from "@/store/buckets";
 import BlueprintPopSelect from "./BlueprintPopSelect.vue";
