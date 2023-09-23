@@ -10,11 +10,6 @@
         <template #unchecked> Read </template>
       </n-switch>
 
-      <n-switch :round="false">
-        <template #checked> Border </template>
-        <template #unchecked> Background </template>
-      </n-switch>
-
       <n-divider vertical />
 
       <blueprint-pop-select />
