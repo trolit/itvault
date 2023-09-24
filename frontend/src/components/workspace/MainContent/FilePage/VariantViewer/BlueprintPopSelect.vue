@@ -4,9 +4,10 @@
     :value="data.id"
     :options="data.options"
     :render-label="renderLabel"
+    :disabled="isBucketModified"
     @update:value="workspacesStore.setVariantTabActiveBlueprint($event)"
   >
-    <n-button size="small" :loading="isLoading">
+    <n-button size="small" :loading="isLoading" :disabled="isBucketModified">
       {{ data.name || "pick blueprint" }}
     </n-button>
 
@@ -44,6 +45,13 @@ import { useWorkspacesStore } from "@/store/workspaces";
 
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
+
+defineProps({
+  isBucketModified: {
+    type: Boolean,
+    required: true,
+  },
+});
 
 const isLoading = ref(false);
 

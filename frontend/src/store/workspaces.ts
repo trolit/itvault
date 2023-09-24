@@ -59,6 +59,9 @@ export const useWorkspacesStore = defineStore("workspaces", {
         variantTab => variantTab.variant.id === fileTab.activeVariantId
       );
     },
+    isActiveVariantTabInWriteMode(): boolean {
+      return this.activeVariantTab?.isWriteModeActive || false;
+    },
     activeBlueprintId(): IBlueprintDto | undefined {
       const variantTab = this.activeVariantTab;
 
@@ -161,6 +164,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
+    setVariantTabWriteMode(value: boolean) {
+      if (!this.activeVariantTab) {
+        return;
+      }
+
+      this.activeVariantTab.isWriteModeActive = value;
+    },
+
     setVariantTabActiveBlueprint(id: number) {
       if (!this.activeVariantTab) {
         return;
@@ -196,10 +207,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
       const variantTab = {
         variant,
         content: "",
-        activeBlueprintId: 0,
+        buckets: [],
         blueprints: [],
         isVisible: false,
-        buckets: [],
+        activeBlueprintId: 0,
+        isWriteModeActive: false,
       };
 
       if (options?.unshift) {

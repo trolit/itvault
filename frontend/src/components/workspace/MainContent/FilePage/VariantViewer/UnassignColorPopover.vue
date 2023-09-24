@@ -1,5 +1,9 @@
 <template>
-  <n-popover trigger="click" placement="right">
+  <n-popover
+    trigger="click"
+    placement="right"
+    :disabled="!workspacesStore.isActiveVariantTabInWriteMode"
+  >
     <template #trigger>
       <span
         :style="{ backgroundColor: color, padding: '3px 0' }"
@@ -30,6 +34,10 @@ import { NPopover, NButton, NIcon } from "naive-ui";
 import type { LinePart } from "@/types/LinePart";
 import { useBucketsStore } from "@/store/buckets";
 import { Delete as DeleteIcon } from "@vicons/carbon";
+import { useWorkspacesStore } from "@/store/workspaces";
+
+const bucketsStore = useBucketsStore();
+const workspacesStore = useWorkspacesStore();
 
 defineProps({
   color: {
@@ -42,6 +50,4 @@ defineProps({
     required: true,
   },
 });
-
-const bucketsStore = useBucketsStore();
 </script>

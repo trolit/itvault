@@ -183,6 +183,10 @@ function parseLineWithBucket(
 }
 
 async function onMouseUp(event: MouseEvent) {
+  if (!workspacesStore.isActiveVariantTabInWriteMode) {
+    return;
+  }
+
   if (isAssignColorPopoverVisible.value) {
     isAssignColorPopoverVisible.value = false;
   }

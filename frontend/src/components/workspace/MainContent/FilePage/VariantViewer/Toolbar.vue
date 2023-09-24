@@ -5,14 +5,20 @@
 
       <n-divider vertical />
 
-      <n-switch :round="false">
+      <n-switch
+        :value="workspacesStore.isActiveVariantTabInWriteMode"
+        :disabled="isBucketModified"
+        :round="false"
+        @update-value="workspacesStore.setVariantTabWriteMode"
+      >
         <template #checked> Write </template>
+
         <template #unchecked> Read </template>
       </n-switch>
 
       <n-divider vertical />
 
-      <blueprint-pop-select />
+      <blueprint-pop-select :is-bucket-modified="isBucketModified" />
     </n-space>
 
     <n-space v-if="isBucketModified" align="center">
@@ -48,7 +54,11 @@ import {
 } from "naive-ui";
 
 import { useBucketsStore } from "@/store/buckets";
+import { useWorkspacesStore } from "@/store/workspaces";
 import BlueprintPopSelect from "./BlueprintPopSelect.vue";
+
+const bucketsStore = useBucketsStore();
+const workspacesStore = useWorkspacesStore();
 
 defineProps({
   isBucketModified: {
@@ -56,6 +66,4 @@ defineProps({
     required: true,
   },
 });
-
-const bucketsStore = useBucketsStore();
 </script>
