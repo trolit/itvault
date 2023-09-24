@@ -14,4 +14,6 @@ export type VariantTab = {
   blueprints: IBlueprintDto[];
 
   buckets: Bucket[];
+
+  isWriteModeActive: boolean;
 };

@@ -196,10 +196,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
       const variantTab = {
         variant,
         content: "",
-        activeBlueprintId: 0,
+        buckets: [],
         blueprints: [],
         isVisible: false,
-        buckets: [],
+        activeBlueprintId: 0,
+        isWriteModeActive: false,
       };
 
       if (options?.unshift) {
