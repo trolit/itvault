@@ -18,7 +18,7 @@
 
       <n-divider vertical />
 
-      <blueprint-pop-select />
+      <blueprint-pop-select :is-bucket-modified="isBucketModified" />
     </n-space>
 
     <n-space v-if="isBucketModified" align="center">
