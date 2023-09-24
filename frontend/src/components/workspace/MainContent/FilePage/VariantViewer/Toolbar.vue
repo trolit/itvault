@@ -6,7 +6,7 @@
       <n-divider vertical />
 
       <n-switch
-        :value="isWriteModeActive"
+        :value="workspacesStore.isActiveVariantTabInWriteMode"
         :round="false"
         @update-value="workspacesStore.setVariantTabWriteMode"
       >
@@ -55,7 +55,6 @@ import {
 import { useBucketsStore } from "@/store/buckets";
 import { useWorkspacesStore } from "@/store/workspaces";
 import BlueprintPopSelect from "./BlueprintPopSelect.vue";
-import { defineComputed } from "@/helpers/defineComputed";
 
 const bucketsStore = useBucketsStore();
 const workspacesStore = useWorkspacesStore();
@@ -64,12 +63,6 @@ defineProps({
   isBucketModified: {
     type: Boolean,
     required: true,
-  },
-});
-
-const { isWriteModeActive } = defineComputed({
-  isWriteModeActive() {
-    return workspacesStore.activeVariantTab?.isWriteModeActive || false;
   },
 });
 </script>
