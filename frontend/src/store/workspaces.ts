@@ -161,6 +161,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
+    setVariantTabWriteMode(value: boolean) {
+      if (!this.activeVariantTab) {
+        return;
+      }
+
+      this.activeVariantTab.isWriteModeActive = value;
+    },
+
     setVariantTabActiveBlueprint(id: number) {
       if (!this.activeVariantTab) {
         return;
