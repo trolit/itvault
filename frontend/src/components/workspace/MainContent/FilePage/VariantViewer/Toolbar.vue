@@ -32,9 +32,16 @@
         Are you sure?
       </n-popconfirm>
 
-      <n-popconfirm>
+      <n-popconfirm @positive-click="saveChanges">
         <template #trigger>
-          <n-button type="success" ghost size="small"> Save </n-button>
+          <n-button
+            ghost
+            size="small"
+            type="success"
+            :loading="isSavingChanges"
+          >
+            Save
+          </n-button>
         </template>
 
         Are you sure?
@@ -50,13 +57,16 @@ import {
   NButton,
   NSwitch,
   NDivider,
+  useMessage,
   NPopconfirm,
 } from "naive-ui";
+import { ref } from "vue";
 
 import { useBucketsStore } from "@/store/buckets";
 import { useWorkspacesStore } from "@/store/workspaces";
 import BlueprintPopSelect from "./BlueprintPopSelect.vue";
 
+const message = useMessage();
 const bucketsStore = useBucketsStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -66,4 +76,22 @@ defineProps({
     required: true,
   },
 });
+
+const isSavingChanges = ref(false);
+
+async function saveChanges() {
+  isSavingChanges.value = true;
+
+  try {
+    await bucketsStore.upsert();
+
+    message.success(
+      `Changes saved! Please note that these changes won't be applied to bundles that were already generated.`
+    );
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isSavingChanges.value = false;
+  }
+}
 </script>
