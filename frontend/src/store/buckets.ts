@@ -1,7 +1,11 @@
+import axios from "axios";
 import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
 import { useWorkspacesStore } from "./workspaces";
+import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
+import type { BucketContent } from "@shared/types/BucketContent";
+import type { AddEditBucketDto } from "@shared/types/dtos/AddEditBucketDto";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
 interface IState {
@@ -164,6 +168,38 @@ export const useBucketsStore = defineStore("buckets", {
       }
 
       activeBucket.value = cloneDeep(activeBucket.initialValue);
+    },
+
+    async upsert(value: BucketContent) {
+      const workspacesStore = useWorkspacesStore();
+
+      const activeBucket = workspacesStore.activeBucket;
+      const activeVariantTab = workspacesStore.activeVariantTab;
+      const activeBlueprint = workspacesStore.activeBlueprintId;
+
+      if (!activeVariantTab || !activeBlueprint || !activeBucket) {
+        return;
+      }
+
+      const params = {
+        version: 1,
+        workspaceId: workspacesStore.activeItem.id,
+      };
+
+      const payload: AddEditBucketDto = {
+        value,
+        blueprintId: activeBlueprint.id,
+        variantId: activeVariantTab.variant.id,
+      };
+
+      const { data } = await axios.post<IBucketDto>("v1/buckets", payload, {
+        params,
+      });
+
+      activeBucket.value = cloneDeep(data.value);
+      activeBucket.initialValue = cloneDeep(data.value);
+
+      return data;
     },
   },
 });
