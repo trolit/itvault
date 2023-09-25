@@ -64,7 +64,7 @@ import {
   NPagination,
   NDrawerContent,
 } from "naive-ui";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { storeToRefs } from "pinia";
 
 import SingleNote from "./SingleNote.vue";
@@ -74,6 +74,7 @@ import { useDrawerStore } from "@/store/drawer";
 import UserNotesModal from "./UserNotesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
+import { defineWatchers } from "@/helpers/defineWatchers";
 
 const notesStore = useNotesStore();
 const drawerStore = useDrawerStore();
@@ -99,24 +100,32 @@ const { isActive, notes } = defineComputed({
   },
 });
 
-watch(isActive, async () => {
-  if (!isActive.value) {
-    return;
-  }
+defineWatchers({
+  isActive: {
+    source: isActive,
+    handler: () => {
+      if (!isActive.value) {
+        return;
+      }
 
-  if (!notes.value.data.length) {
-    fetchNotes();
-  }
-});
+      if (!notes.value.data.length) {
+        fetchNotes();
+      }
+    },
+  },
 
-watch(activeFileTab, async () => {
-  if (!activeFileTab || !isActive.value) {
-    return;
-  }
+  activeFileTab: {
+    source: activeFileTab,
+    handler: () => {
+      if (!activeFileTab || !isActive.value) {
+        return;
+      }
 
-  if (!notes.value.data.length) {
-    fetchNotes();
-  }
+      if (!notes.value.data.length) {
+        fetchNotes();
+      }
+    },
+  },
 });
 
 function onPageChange(newPage: number) {
