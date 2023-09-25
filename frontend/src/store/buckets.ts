@@ -4,7 +4,6 @@ import cloneDeep from "lodash/cloneDeep";
 
 import { useWorkspacesStore } from "./workspaces";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
-import type { BucketContent } from "@shared/types/BucketContent";
 import type { AddEditBucketDto } from "@shared/types/dtos/AddEditBucketDto";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
@@ -170,7 +169,7 @@ export const useBucketsStore = defineStore("buckets", {
       activeBucket.value = cloneDeep(activeBucket.initialValue);
     },
 
-    async upsert(value: BucketContent) {
+    async upsert() {
       const workspacesStore = useWorkspacesStore();
 
       const activeBucket = workspacesStore.activeBucket;
@@ -180,6 +179,8 @@ export const useBucketsStore = defineStore("buckets", {
       if (!activeVariantTab || !activeBlueprint || !activeBucket) {
         return;
       }
+
+      const value = activeBucket.value;
 
       const params = {
         version: 1,
