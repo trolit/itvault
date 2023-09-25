@@ -23,12 +23,11 @@ export const useAuthStore = defineStore("auth", {
     },
   }),
 
-  actions: {
-    // @TODO move to getters
-    loggedUserId() {
-      return this.profile.id;
-    },
+  getters: {
+    loggedUserId: state => state.profile.id,
+  },
 
+  actions: {
     hasPermission(permission: Permission) {
       return isPermissionEnabled(permission, this.profile.permissions);
     },
