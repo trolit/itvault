@@ -56,11 +56,13 @@ import {
   NButton,
   NScrollbar,
 } from "naive-ui";
+import { ref, toRefs } from "vue";
 import { Timer as TimeIcon } from "@vicons/carbon";
-import { computed, ref, toRefs, watch } from "vue";
 
 import { useUsersStore } from "@/store/users";
+import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
+import { defineWatchers } from "@/helpers/defineWatchers";
 
 const page = ref(1);
 const isLoading = ref(false);
@@ -81,16 +83,26 @@ const props = defineProps({
 
 const { id } = toRefs(props);
 
-watch(id, async () => {
-  page.value = 1;
+const { title, areAllNotesFetched } = defineComputed({
+  title() {
+    return `${props.fullName}'s notes`;
+  },
 
-  fetchNotes();
+  areAllNotesFetched() {
+    return usersStore.notes.result.length === usersStore.notes.total;
+  },
 });
 
-const title = computed(() => `${props.fullName}'s notes`);
-const areAllNotesFetched = computed(
-  () => usersStore.notes.result.length === usersStore.notes.total
-);
+defineWatchers({
+  id: {
+    source: id,
+    handler: () => {
+      page.value = 1;
+
+      fetchNotes();
+    },
+  },
+});
 
 function onLoadMore() {
   page.value = page.value + 1;
