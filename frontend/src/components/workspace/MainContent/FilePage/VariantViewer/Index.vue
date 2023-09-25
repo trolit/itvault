@@ -6,7 +6,7 @@
       <n-scrollbar>
         <div class="content">
           <div class="line-numbers">
-            <span v-for="index in numberOfLines" :key="index"></span>
+            <span v-for="index in numberOfLines" :key="index" />
           </div>
 
           <component :is="renderText(text)" @mouseup.stop="onMouseUp" />
