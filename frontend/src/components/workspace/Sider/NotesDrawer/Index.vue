@@ -64,6 +64,7 @@ import {
   NPagination,
   NDrawerContent,
 } from "naive-ui";
+import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 
 import SingleNote from "./SingleNote.vue";
@@ -83,6 +84,8 @@ const isLoading = ref(true);
 const userFullName = ref("");
 const isUserNotesModalVisible = ref(false);
 
+const { activeFileTab } = storeToRefs(workspacesStore);
+
 const isActive = computed((): boolean => {
   return drawerStore.isDrawerActive(Drawer.Notes) || false;
 });
@@ -99,6 +102,16 @@ const onShowUpdate = () => {
 
 watch(isActive, async () => {
   if (!isActive.value) {
+    return;
+  }
+
+  if (!notes.value.data.length) {
+    fetchNotes();
+  }
+});
+
+watch(activeFileTab, async () => {
+  if (!activeFileTab || !isActive.value) {
     return;
   }
 
