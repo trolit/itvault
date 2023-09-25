@@ -9,7 +9,7 @@
     :block-scroll="false"
     :mask-closable="false"
     class="notes-drawer"
-    @update:show="onShowUpdate"
+    @update:show="drawerStore.setActiveDrawer(null)"
   >
     <n-drawer-content title="Notes" closable>
       <div v-if="isLoading" class="spin-wrapper">
@@ -64,7 +64,8 @@ import {
   NPagination,
   NDrawerContent,
 } from "naive-ui";
-import { computed, ref, watch } from "vue";
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
 
 import SingleNote from "./SingleNote.vue";
 import { Drawer } from "@/types/enums/Drawer";
@@ -72,6 +73,8 @@ import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
 import UserNotesModal from "./UserNotesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { defineComputed } from "@/helpers/defineComputed";
+import { defineWatchers } from "@/helpers/defineWatchers";
 
 const notesStore = useNotesStore();
 const drawerStore = useDrawerStore();
@@ -83,28 +86,46 @@ const isLoading = ref(true);
 const userFullName = ref("");
 const isUserNotesModalVisible = ref(false);
 
-const isActive = computed((): boolean => {
-  return drawerStore.isDrawerActive(Drawer.Notes) || false;
+const { activeFileTab } = storeToRefs(workspacesStore);
+
+const { isActive, notes } = defineComputed({
+  isActive() {
+    return drawerStore.isDrawerActive(Drawer.Notes) || false;
+  },
+
+  notes() {
+    const tab = workspacesStore.activeFileTab;
+
+    return tab ? tab.notes : { page: 1, total: 0, data: [] };
+  },
 });
 
-const notes = computed(() => {
-  const tab = workspacesStore.activeFileTab;
+defineWatchers({
+  isActive: {
+    source: isActive,
+    handler: () => {
+      if (!isActive.value) {
+        return;
+      }
 
-  return tab ? tab.notes : { page: 1, total: 0, data: [] };
-});
+      if (!notes.value.data.length) {
+        fetchNotes();
+      }
+    },
+  },
 
-const onShowUpdate = () => {
-  drawerStore.setActiveDrawer(null);
-};
+  activeFileTab: {
+    source: activeFileTab,
+    handler: () => {
+      if (!activeFileTab || !isActive.value) {
+        return;
+      }
 
-watch(isActive, async () => {
-  if (!isActive.value) {
-    return;
-  }
-
-  if (!notes.value.data.length) {
-    fetchNotes();
-  }
+      if (!notes.value.data.length) {
+        fetchNotes();
+      }
+    },
+  },
 });
 
 function onPageChange(newPage: number) {

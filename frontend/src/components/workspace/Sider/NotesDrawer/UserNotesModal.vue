@@ -23,6 +23,13 @@
           </n-card>
         </n-thing>
 
+        <n-space
+          v-if="isLoading && !usersStore.notes.result.length"
+          justify="center"
+        >
+          <n-spin />
+        </n-space>
+
         <n-space v-if="usersStore.notes.result.length" justify="center">
           <n-button
             :disabled="areAllNotesFetched"
@@ -41,6 +48,7 @@
 import {
   NCard,
   NIcon,
+  NSpin,
   NSpace,
   NModal,
   NThing,
@@ -48,16 +56,19 @@ import {
   NButton,
   NScrollbar,
 } from "naive-ui";
+import { ref, toRefs } from "vue";
 import { Timer as TimeIcon } from "@vicons/carbon";
-import { computed, ref, toRefs, watch } from "vue";
 
 import { useUsersStore } from "@/store/users";
+import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
+import { defineWatchers } from "@/helpers/defineWatchers";
+
+const usersStore = useUsersStore();
+const dateService = useDateService();
 
 const page = ref(1);
 const isLoading = ref(false);
-const usersStore = useUsersStore();
-const dateService = useDateService();
 
 const props = defineProps({
   id: {
@@ -73,16 +84,26 @@ const props = defineProps({
 
 const { id } = toRefs(props);
 
-watch(id, async () => {
-  page.value = 1;
+const { title, areAllNotesFetched } = defineComputed({
+  title() {
+    return `${props.fullName}'s notes`;
+  },
 
-  fetchNotes();
+  areAllNotesFetched() {
+    return usersStore.notes.result.length === usersStore.notes.total;
+  },
 });
 
-const title = computed(() => `${props.fullName}'s notes`);
-const areAllNotesFetched = computed(
-  () => usersStore.notes.result.length === usersStore.notes.total
-);
+defineWatchers({
+  id: {
+    source: id,
+    handler: () => {
+      page.value = 1;
+
+      fetchNotes();
+    },
+  },
+});
 
 function onLoadMore() {
   page.value = page.value + 1;

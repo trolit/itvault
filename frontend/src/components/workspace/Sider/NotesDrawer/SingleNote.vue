@@ -42,14 +42,14 @@
     <template #footer>
       <!-- @TODO update note -->
       <require-permission
-        v-if="loggedUserId !== createdBy.id"
+        v-if="authStore.loggedUserId !== createdBy.id"
         :permission="Permission.DeleteAnyNote"
       >
         <n-button type="info" size="small" secondary> Update (any) </n-button>
       </require-permission>
 
       <n-button
-        v-if="loggedUserId === createdBy.id"
+        v-if="authStore.loggedUserId === createdBy.id"
         type="warning"
         size="small"
         secondary
@@ -60,7 +60,7 @@
       <!-- @TODO delete note -->
       <require-permission
         :permission="Permission.DeleteAnyNote"
-        :or="loggedUserId === createdBy.id"
+        :or="authStore.loggedUserId === createdBy.id"
       >
         <n-button type="error" size="small" secondary>Delete</n-button>
       </require-permission>
@@ -69,16 +69,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import type { PropType } from "vue";
 import { NThing, NTag, NCard, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
+import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
+
+const authStore = useAuthStore();
+const dateService = useDateService();
 
 const props = defineProps({
   note: {
@@ -89,14 +92,9 @@ const props = defineProps({
 
 const emits = defineEmits(["toggle-user-comments-modal"]);
 
-const authStore = useAuthStore();
-const dateService = useDateService();
-
-const note = computed(() => {
-  return props.note;
+const { createdBy } = defineComputed({
+  createdBy() {
+    return props.note.createdBy;
+  },
 });
-
-const loggedUserId = computed(authStore.loggedUserId);
-
-const createdBy = computed(() => props.note.createdBy);
 </script>
