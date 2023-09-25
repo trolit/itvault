@@ -62,7 +62,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     isActiveVariantTabInWriteMode(): boolean {
       return this.activeVariantTab?.isWriteModeActive || false;
     },
-    activeBlueprintId(): IBlueprintDto | undefined {
+    activeBlueprint(): IBlueprintDto | undefined {
       const variantTab = this.activeVariantTab;
 
       if (!variantTab) {

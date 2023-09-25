@@ -174,7 +174,7 @@ export const useBucketsStore = defineStore("buckets", {
 
       const activeBucket = workspacesStore.activeBucket;
       const activeVariantTab = workspacesStore.activeVariantTab;
-      const activeBlueprint = workspacesStore.activeBlueprintId;
+      const activeBlueprint = workspacesStore.activeBlueprint;
 
       if (!activeVariantTab || !activeBlueprint || !activeBucket) {
         return;
