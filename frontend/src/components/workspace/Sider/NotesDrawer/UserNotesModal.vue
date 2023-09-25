@@ -23,6 +23,13 @@
           </n-card>
         </n-thing>
 
+        <n-space
+          v-if="isLoading && !usersStore.notes.result.length"
+          justify="center"
+        >
+          <n-spin />
+        </n-space>
+
         <n-space v-if="usersStore.notes.result.length" justify="center">
           <n-button
             :disabled="areAllNotesFetched"
@@ -41,6 +48,7 @@
 import {
   NCard,
   NIcon,
+  NSpin,
   NSpace,
   NModal,
   NThing,
