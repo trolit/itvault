@@ -9,7 +9,7 @@
     :block-scroll="false"
     :mask-closable="false"
     class="notes-drawer"
-    @update:show="onShowUpdate"
+    @update:show="drawerStore.setActiveDrawer(null)"
   >
     <n-drawer-content title="Notes" closable>
       <div v-if="isLoading" class="spin-wrapper">
@@ -64,8 +64,8 @@ import {
   NPagination,
   NDrawerContent,
 } from "naive-ui";
+import { ref, watch } from "vue";
 import { storeToRefs } from "pinia";
-import { computed, ref, watch } from "vue";
 
 import SingleNote from "./SingleNote.vue";
 import { Drawer } from "@/types/enums/Drawer";
@@ -73,6 +73,7 @@ import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
 import UserNotesModal from "./UserNotesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { defineComputed } from "@/helpers/defineComputed";
 
 const notesStore = useNotesStore();
 const drawerStore = useDrawerStore();
@@ -86,19 +87,17 @@ const isUserNotesModalVisible = ref(false);
 
 const { activeFileTab } = storeToRefs(workspacesStore);
 
-const isActive = computed((): boolean => {
-  return drawerStore.isDrawerActive(Drawer.Notes) || false;
+const { isActive, notes } = defineComputed({
+  isActive() {
+    return drawerStore.isDrawerActive(Drawer.Notes) || false;
+  },
+
+  notes() {
+    const tab = workspacesStore.activeFileTab;
+
+    return tab ? tab.notes : { page: 1, total: 0, data: [] };
+  },
 });
-
-const notes = computed(() => {
-  const tab = workspacesStore.activeFileTab;
-
-  return tab ? tab.notes : { page: 1, total: 0, data: [] };
-});
-
-const onShowUpdate = () => {
-  drawerStore.setActiveDrawer(null);
-};
 
 watch(isActive, async () => {
   if (!isActive.value) {
