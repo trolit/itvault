@@ -66,7 +66,7 @@ const data = computed(() => {
 
   return {
     id,
-    name: workspacesStore.activeBlueprintId?.name,
+    name: workspacesStore.activeBlueprint?.name,
     options: blueprints.map(({ id, name, color }) => ({
       label: name,
       value: id,

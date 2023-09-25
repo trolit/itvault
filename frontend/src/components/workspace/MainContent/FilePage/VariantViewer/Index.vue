@@ -6,7 +6,7 @@
       <n-scrollbar>
         <div class="content">
           <div class="line-numbers">
-            <span v-for="index in numberOfLines" :key="index"></span>
+            <span v-for="index in numberOfLines" :key="index" />
           </div>
 
           <component :is="renderText(text)" @mouseup.stop="onMouseUp" />
@@ -122,7 +122,7 @@ function renderText(content: string) {
   let value = content;
 
   const bucket = workspacesStore.activeBucket;
-  const blueprint = workspacesStore.activeBlueprintId;
+  const blueprint = workspacesStore.activeBlueprint;
 
   const splitText = value.toString().split("\n");
 
