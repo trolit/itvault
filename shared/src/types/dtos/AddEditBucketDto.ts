@@ -1,7 +1,9 @@
 import { BucketContent } from "../BucketContent";
 
-export type AddBucketDto = {
+export type AddEditBucketDto = {
   value: BucketContent;
 
   blueprintId: number;
+
+  variantId: string;
 };
