@@ -64,10 +64,11 @@ import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { defineWatchers } from "@/helpers/defineWatchers";
 
-const page = ref(1);
-const isLoading = ref(false);
 const usersStore = useUsersStore();
 const dateService = useDateService();
+
+const page = ref(1);
+const isLoading = ref(false);
 
 const props = defineProps({
   id: {
