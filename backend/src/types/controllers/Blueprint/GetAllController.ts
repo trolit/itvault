@@ -6,7 +6,7 @@ import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    type Common = { inUse?: number };
+    type Common = { inUse?: number; name?: string };
 
     export type QueryInput = WorkspaceId & IPaginationQuery & Common;
 
