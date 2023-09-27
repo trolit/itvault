@@ -13,7 +13,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
     page: pageSchema,
     perPage: perPageSchema,
     workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
-    inUse: number().optional().default(0),
+    inUse: number().optional(),
   });
 
 export const useGetAllSuperSchema: SuperSchema.Runner<
