@@ -1,4 +1,4 @@
-import { IsNull, Not } from "typeorm";
+import { IsNull, Like, Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
@@ -36,16 +36,18 @@ export class GetAllController extends BaseController {
     response: GetAllControllerTypes.v1.Response
   ) {
     const {
-      query: { skip, take, workspaceId, inUse },
+      query: { skip, take, workspaceId, inUse, name },
     } = request;
 
     // @TMP, consider implementing "flexible filtering" later
     const bucketsQuery = inUse === 1 ? { buckets: { id: Not(IsNull()) } } : {};
+    const nameQuery = name ? { name: Like(`%${name}%`) } : {};
 
     const [result, total] = await this._blueprintRepository.getAllAndCount({
       skip,
       take,
       where: {
+        ...nameQuery,
         workspace: {
           id: workspaceId,
         },
