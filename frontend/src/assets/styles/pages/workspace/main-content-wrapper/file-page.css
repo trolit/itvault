@@ -101,7 +101,7 @@
                               &::before {
                                 content: counter(linenumber);
                                 display: block;
-                                color: #769293;
+                                color: #0a75ad;
                               }
                             }
                           }
