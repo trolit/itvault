@@ -188,6 +188,21 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.activeVariantTab.content = content;
     },
 
+    initializeBlueprintWithBucket(blueprint: IBlueprintDto) {
+      if (!this.activeVariantTab) {
+        return;
+      }
+
+      this.activeVariantTab.blueprints.push(blueprint);
+
+      this.activeVariantTab.buckets.push({
+        id: 0, // @NOTE this id is not that important as we are using combination of blueprintId + variantId in `upsert`
+        blueprintId: blueprint.id,
+        initialValue: {},
+        value: {},
+      });
+    },
+
     setVariantTabBucket(bucket: IBucketDto) {
       if (!this.activeVariantTab) {
         return;

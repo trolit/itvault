@@ -25,8 +25,9 @@ export const useBlueprintsStore = defineStore("blueprints", {
   },
 
   actions: {
-    // @TODO add option to find blueprints that have at least 1 file
-    async getAll(options: IPaginationQuery & { inUse?: number }) {
+    async getAll(
+      options: IPaginationQuery & { inUse?: number; name?: string }
+    ) {
       const workspacesStore = useWorkspacesStore();
 
       const params = {

@@ -197,6 +197,7 @@ export const useBucketsStore = defineStore("buckets", {
         params,
       });
 
+      activeBucket.id = data.id;
       activeBucket.value = cloneDeep(data.value);
       activeBucket.initialValue = cloneDeep(data.value);
 
