@@ -106,7 +106,7 @@
                           }
 
                           .text-render {
-                            flex: 0.95;
+                            width: 100%;
                           }
                         }
                       }
