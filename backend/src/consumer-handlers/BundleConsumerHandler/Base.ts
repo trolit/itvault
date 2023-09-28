@@ -56,7 +56,6 @@ export abstract class BaseBundleConsumerHandler {
         index >= minLineIndex &&
         index <= maxLineIndex
       ) {
-        // @NOTE add line-break [as empty string] if it's between min and max (bucket) line
         // @NOTE consider if line-break should be limited to 1 between content (?)
         result.push("");
 
@@ -71,6 +70,7 @@ export abstract class BaseBundleConsumerHandler {
         index
       );
 
+      // @TODO verify case with 2 (or more) blueprints in line and how it behaves when it starts from edge/inner one
       for (const { from, to } of allLineValues) {
         const part = line.substring(from, to + 1);
 
