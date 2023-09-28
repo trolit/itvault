@@ -62,13 +62,14 @@ import {
   useMessage,
   NAutoComplete,
 } from "naive-ui";
-import { computed, h, ref, watch, type Ref } from "vue";
+import { h, ref, watch, type Ref } from "vue";
 import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
 
 import { useVariantsStore } from "@/store/variants";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { useWorkspacesStore } from "@/store/workspaces";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import { defineComputed } from "@/helpers/defineComputed";
 
 const message = useMessage();
 const variantsStore = useVariantsStore();
@@ -89,42 +90,45 @@ const isFetchingBlueprints = ref(false);
 const blueprintSearchTimeoutId = ref(0);
 const blueprints: Ref<IBlueprintDto[]> = ref([]);
 
-const blueprintOptions = computed(() =>
-  blueprints.value.map(({ id, name }) => ({
-    label: name,
-    value: id.toString(),
-  }))
-);
-
-const isBlueprintAlreadyIncluded = computed(
-  () =>
-    !!selectedBlueprintId.value &&
-    data.value.options.some(
-      option => option.value === selectedBlueprintId.value
-    )
-);
-
-const data = computed(() => {
-  const variantTab = workspacesStore.activeVariantTab;
-
-  if (!variantTab) {
-    return { id: 0, options: [] };
-  }
-
-  const { activeBlueprintId: id, blueprints, buckets } = variantTab;
-
-  return {
-    id,
-    name: workspacesStore.activeBlueprint?.name,
-    options: blueprints.map(({ id, name, color }) => ({
+const { blueprintOptions, isBlueprintAlreadyIncluded, data } = defineComputed({
+  blueprintOptions() {
+    return blueprints.value.map(({ id, name }) => ({
       label: name,
-      value: id,
-      color: color,
-      isNotSaved: !!buckets.find(
-        bucket => bucket.blueprintId === id && bucket.id === 0
-      ),
-    })),
-  };
+      value: id.toString(),
+    }));
+  },
+
+  isBlueprintAlreadyIncluded() {
+    return (
+      !!selectedBlueprintId.value &&
+      data.value.options.some(
+        option => option.value === selectedBlueprintId.value
+      )
+    );
+  },
+
+  data() {
+    const variantTab = workspacesStore.activeVariantTab;
+
+    if (!variantTab) {
+      return { id: 0, options: [] };
+    }
+
+    const { activeBlueprintId: id, blueprints, buckets } = variantTab;
+
+    return {
+      id,
+      name: workspacesStore.activeBlueprint?.name,
+      options: blueprints.map(({ id, name, color }) => ({
+        label: name,
+        value: id,
+        color: color,
+        isNotSaved: !!buckets.find(
+          bucket => bucket.blueprintId === id && bucket.id === 0
+        ),
+      })),
+    };
+  },
 });
 
 function renderLabel(
