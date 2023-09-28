@@ -46,9 +46,9 @@
         </n-button>
       </div>
 
-      <small v-if="isBlueprintAlreadyIncluded">
-        This blueprint is already included
-      </small>
+      <n-text v-if="isBlueprintAlreadyIncluded" type="warning">
+        <small>This blueprint is already included.</small>
+      </n-text>
     </template>
   </n-popselect>
 </template>
