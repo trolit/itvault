@@ -62,7 +62,7 @@ const data = computed(() => {
     return { id: 0, options: [] };
   }
 
-  const { activeBlueprintId: id, blueprints } = variantTab;
+  const { activeBlueprintId: id, blueprints, buckets } = variantTab;
 
   return {
     id,
@@ -71,29 +71,40 @@ const data = computed(() => {
       label: name,
       value: id,
       color: color,
+      isNotSaved: !!buckets.find(
+        bucket => bucket.blueprintId === id && bucket.id === 0
+      ),
     })),
   };
 });
 
-function renderLabel(option: SelectBaseOption & { color: string }) {
-  const { label, color } = option;
+function renderLabel(
+  option: SelectBaseOption & { color: string; isNotSaved: boolean }
+) {
+  const { label, color, isNotSaved } = option;
+
+  const content = [
+    h("div", {
+      style: { backgroundColor: color, width: "15px", height: "15px" },
+    }),
+    h(
+      NTag,
+      { size: "small" },
+      {
+        default: () => color,
+      }
+    ),
+    h("span", label?.toString()),
+  ];
+
+  if (isNotSaved) {
+    content.push(h(NText, { depth: 3 }, { default: () => "(Not saved)" }));
+  }
 
   return h(
     "div",
     { class: "flex align-items-center", style: { columnGap: "5px" } },
-    [
-      h("div", {
-        style: { backgroundColor: color, width: "15px", height: "15px" },
-      }),
-      h(
-        NTag,
-        { size: "small" },
-        {
-          default: () => color,
-        }
-      ),
-      h("span", label?.toString()),
-    ]
+    content
   );
 }
 
