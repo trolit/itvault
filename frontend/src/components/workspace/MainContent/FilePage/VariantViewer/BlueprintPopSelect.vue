@@ -7,7 +7,11 @@
     :disabled="isBucketModified"
     @update:value="workspacesStore.setVariantTabActiveBlueprint($event)"
   >
-    <n-button size="small" :loading="isLoading" :disabled="isBucketModified">
+    <n-button
+      size="small"
+      :loading="isFetchingBucket"
+      :disabled="isBucketModified"
+    >
       {{ data.name || "pick blueprint" }}
     </n-button>
 
@@ -21,29 +25,54 @@
           alignItems: 'center',
         }"
       >
-        <n-input clearable placeholder="Type name or color" />
+        <n-auto-complete
+          blur-after-select
+          :value="blueprintInput"
+          placeholder="Type name"
+          :options="blueprintOptions"
+          :loading="isFetchingBlueprints"
+          :disabled="isFetchingBlueprints"
+          @select="onBlueprintSelect"
+          @update:value="onBlueprintInputChange"
+        />
 
-        <n-button size="small" disabled>assign</n-button>
+        <!-- @TODO disable add button when blueprint is already included-->
+        <n-button
+          size="small"
+          :disabled="!selectedBlueprintId || isBlueprintAlreadyIncluded"
+          @click="onBlueprintAdd"
+        >
+          add
+        </n-button>
       </div>
 
-      <small class="flex align-items-center">
-        This gives only 5 suggestions. Use
-        <n-button size="tiny" quaternary type="info">blueprints</n-button> tab
-        to view more.
+      <small v-if="isBlueprintAlreadyIncluded">
+        This blueprint is already included
       </small>
     </template>
   </n-popselect>
 </template>
 
 <script setup lang="ts">
-import { computed, h, ref, watch } from "vue";
-import { NButton, NPopselect, NTag, NInput } from "naive-ui";
+import {
+  NTag,
+  NText,
+  NButton,
+  NPopselect,
+  useMessage,
+  NAutoComplete,
+} from "naive-ui";
+import { computed, h, ref, watch, type Ref } from "vue";
+import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
 
 import { useVariantsStore } from "@/store/variants";
-import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
+import { useBlueprintsStore } from "@/store/blueprints";
 import { useWorkspacesStore } from "@/store/workspaces";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
+const message = useMessage();
 const variantsStore = useVariantsStore();
+const blueprintsStore = useBlueprintsStore();
 const workspacesStore = useWorkspacesStore();
 
 defineProps({
@@ -53,7 +82,27 @@ defineProps({
   },
 });
 
-const isLoading = ref(false);
+const blueprintInput = ref("");
+const selectedBlueprintId = ref(0);
+const isFetchingBucket = ref(false);
+const isFetchingBlueprints = ref(false);
+const blueprintSearchTimeoutId = ref(0);
+const blueprints: Ref<IBlueprintDto[]> = ref([]);
+
+const blueprintOptions = computed(() =>
+  blueprints.value.map(({ id, name }) => ({
+    label: name,
+    value: id.toString(),
+  }))
+);
+
+const isBlueprintAlreadyIncluded = computed(
+  () =>
+    !!selectedBlueprintId.value &&
+    data.value.options.some(
+      option => option.value === selectedBlueprintId.value
+    )
+);
 
 const data = computed(() => {
   const variantTab = workspacesStore.activeVariantTab;
@@ -117,15 +166,92 @@ watch(data, async () => {
   }
 
   if (!workspacesStore.activeBucket?.value && variantId) {
-    isLoading.value = true;
+    isFetchingBucket.value = true;
 
     try {
       await variantsStore.getBucketById(variantId);
     } catch (error) {
       console.log(error);
     } finally {
-      isLoading.value = false;
+      isFetchingBucket.value = false;
     }
   }
 });
+
+function onBlueprintInputChange(input: string) {
+  if (blueprintOptions.value.some(({ label }) => label === input)) {
+    return;
+  }
+
+  blueprintInput.value = input;
+
+  if (!input) {
+    selectedBlueprintId.value = 0;
+
+    return;
+  }
+
+  if (blueprintSearchTimeoutId.value) {
+    clearTimeout(blueprintSearchTimeoutId.value);
+  }
+
+  blueprintSearchTimeoutId.value = setTimeout(async () => {
+    blueprints.value = [];
+
+    isFetchingBlueprints.value = true;
+
+    try {
+      const { result, total } = await blueprintsStore.getAll({
+        page: 1,
+        perPage: 5,
+        name: input,
+      });
+
+      blueprints.value = total ? result : [];
+
+      if (!total) {
+        message.info(`No blueprints found with keyword /${input}/`);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isFetchingBlueprints.value = false;
+    }
+  }, 250);
+}
+
+function onBlueprintSelect(value: string | number) {
+  if (typeof value !== "string") {
+    return;
+  }
+
+  const option = blueprintOptions.value.find(option => option.value === value);
+
+  if (option && option.label) {
+    blueprintInput.value = option.label;
+
+    selectedBlueprintId.value = parseInt(value);
+  }
+}
+
+function onBlueprintAdd() {
+  const blueprint = blueprints.value.find(
+    ({ id }) => id === selectedBlueprintId.value
+  );
+
+  if (!blueprint) {
+    return;
+  }
+
+  workspacesStore.initializeBlueprintWithBucket(blueprint);
+
+  workspacesStore.setVariantTabActiveBlueprint(blueprint.id);
+
+  if (!workspacesStore.isActiveVariantTabInWriteMode) {
+    workspacesStore.setVariantTabWriteMode(true);
+  }
+
+  blueprintInput.value = "";
+  selectedBlueprintId.value = 0;
+}
 </script>

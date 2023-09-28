@@ -188,7 +188,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.activeVariantTab.content = content;
     },
 
-    initializeVariantTabBucket(blueprint: IBlueprintDto) {
+    initializeBlueprintWithBucket(blueprint: IBlueprintDto) {
       if (!this.activeVariantTab) {
         return;
       }
