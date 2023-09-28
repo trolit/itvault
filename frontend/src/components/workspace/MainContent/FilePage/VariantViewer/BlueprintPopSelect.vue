@@ -26,6 +26,7 @@
         }"
       >
         <n-auto-complete
+          clearable
           blur-after-select
           :value="blueprintInput"
           placeholder="Type name"
