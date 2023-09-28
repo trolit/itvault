@@ -62,14 +62,15 @@ import {
   useMessage,
   NAutoComplete,
 } from "naive-ui";
-import { h, ref, watch, type Ref } from "vue";
+import { h, ref, type Ref } from "vue";
 import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
 
 import { useVariantsStore } from "@/store/variants";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { useWorkspacesStore } from "@/store/workspaces";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import { defineComputed } from "@/helpers/defineComputed";
+import { defineWatchers } from "@/helpers/defineWatchers";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const message = useMessage();
 const variantsStore = useVariantsStore();
@@ -131,6 +132,32 @@ const { blueprintOptions, isBlueprintAlreadyIncluded, data } = defineComputed({
   },
 });
 
+defineWatchers({
+  data: {
+    source: data,
+    handler: async () => {
+      const blueprintId = data.value.id;
+      const variantId = workspacesStore.activeFileTab?.activeVariantId;
+
+      if (!blueprintId) {
+        return;
+      }
+
+      if (!workspacesStore.activeBucket?.value && variantId) {
+        isFetchingBucket.value = true;
+
+        try {
+          await variantsStore.getBucketById(variantId);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          isFetchingBucket.value = false;
+        }
+      }
+    },
+  },
+});
+
 function renderLabel(
   option: SelectBaseOption & { color: string; isNotSaved: boolean }
 ) {
@@ -160,27 +187,6 @@ function renderLabel(
     content
   );
 }
-
-watch(data, async () => {
-  const blueprintId = data.value.id;
-  const variantId = workspacesStore.activeFileTab?.activeVariantId;
-
-  if (!blueprintId) {
-    return;
-  }
-
-  if (!workspacesStore.activeBucket?.value && variantId) {
-    isFetchingBucket.value = true;
-
-    try {
-      await variantsStore.getBucketById(variantId);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      isFetchingBucket.value = false;
-    }
-  }
-});
 
 function onBlueprintInputChange(input: string) {
   if (blueprintOptions.value.some(({ label }) => label === input)) {
