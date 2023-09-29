@@ -1,50 +1,54 @@
 <template>
   <div class="sider">
     <div class="wrapper">
-      <n-divider dashed> Variants </n-divider>
+      <n-card :bordered="false">
+        <n-text depth="3">/actions/</n-text>
 
-      <n-timeline v-if="!isLoading">
-        <n-timeline-item type="info" line-type="dashed">
-          <template #default>
-            <n-button
-              size="small"
-              type="info"
-              @click="isAddVariantModalVisible = true"
-            >
-              <n-icon :component="AddIcon" :size="25" />
-            </n-button>
-          </template>
-        </n-timeline-item>
+        <div>
+          <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
+            Notes
+          </n-button>
+        </div>
 
-        <n-timeline-item
-          v-for="({ id, name, createdAt, size }, index) in variants"
-          :key="index"
-        >
-          <template #default>
-            <n-button @click="workspacesStore.setVariantTab(id)">
-              {{ name }}
-            </n-button>
+        <br />
 
-            <div>
-              <small>{{ dateService.format(createdAt) }}</small>
-            </div>
+        <n-text depth="3">/variants/</n-text>
 
-            <n-gradient-text type="warning" :size="12">
-              ({{ size.value }}{{ size.unit }})
-            </n-gradient-text>
-          </template>
-        </n-timeline-item>
-      </n-timeline>
+        <n-timeline v-if="!isLoading">
+          <n-timeline-item type="info" line-type="dashed">
+            <template #default>
+              <n-button
+                size="small"
+                type="info"
+                @click="isAddVariantModalVisible = true"
+              >
+                <n-icon :component="AddIcon" :size="25" />
+              </n-button>
+            </template>
+          </n-timeline-item>
 
-      <n-spin v-else size="medium" />
+          <n-timeline-item
+            v-for="({ id, name, createdAt, size }, index) in variants"
+            :key="index"
+          >
+            <template #default>
+              <n-button @click="workspacesStore.setVariantTab(id)" tertiary>
+                {{ name }}
+              </n-button>
 
-      <n-divider dashed> Actions </n-divider>
+              <div>
+                <small>{{ dateService.format(createdAt) }}</small>
+              </div>
 
-      <div>
-        <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
-          Notes
-        </n-button>
-      </div>
+              <n-gradient-text type="warning" :size="12">
+                ({{ size.value }}{{ size.unit }})
+              </n-gradient-text>
+            </template>
+          </n-timeline-item>
+        </n-timeline>
+
+        <n-spin v-else size="medium" />
+      </n-card>
     </div>
 
     <add-variant-modal
@@ -58,8 +62,9 @@
 import {
   NIcon,
   NSpin,
+  NText,
+  NCard,
   NButton,
-  NDivider,
   NTimeline,
   NTimelineItem,
   NGradientText,
@@ -80,11 +85,12 @@ import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
 const isLoading = ref(false);
 const isAddVariantModalVisible = ref(false);
+
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
+const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
-const generalStore = useGeneralStore();
 
 const { activeFileTab } = storeToRefs(workspacesStore);
 

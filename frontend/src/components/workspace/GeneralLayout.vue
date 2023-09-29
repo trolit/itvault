@@ -6,17 +6,22 @@
       :width="340"
       :collapsed-width="0"
       collapse-mode="transform"
-      :trigger-style="{
-        borderRadius: 0,
-        transform: 'translateX(100%) translateY(-100%)',
-      }"
-      :collapsed-trigger-style="{
-        borderRadius: 0,
-        transform: 'translateX(100%) translateY(-100%)',
-      }"
       :native-scrollbar="false"
       :inverted="inverted"
       :collapsed="generalStore.isSiderCollapsed"
+      :style="{ zIndex: 1000 }"
+      :trigger-style="{
+        borderRadius: 0,
+        top: generalStore.TRIGGER_STYLE_TOP,
+        height: generalStore.TRIGGER_STYLE_HEIGHT,
+        transform: 'translateX(0%) translateY(0%)',
+      }"
+      :collapsed-trigger-style="{
+        borderRadius: 0,
+        top: generalStore.TRIGGER_STYLE_TOP,
+        height: generalStore.TRIGGER_STYLE_HEIGHT,
+        transform: 'translateX(100%) translateY(0%)',
+      }"
       @expand="generalStore.toggleSider"
       @collapse="generalStore.toggleSider"
     >
