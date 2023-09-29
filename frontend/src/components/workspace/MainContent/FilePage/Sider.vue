@@ -1,7 +1,17 @@
 <template>
   <div class="sider">
     <div class="wrapper">
-      <n-divider dashed> Variants </n-divider>
+      <n-text depth="3">(actions)</n-text>
+
+      <div>
+        <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
+          Notes
+        </n-button>
+      </div>
+
+      <br />
+
+      <n-text depth="3">(variants)</n-text>
 
       <n-timeline v-if="!isLoading">
         <n-timeline-item type="info" line-type="dashed">
@@ -37,14 +47,6 @@
       </n-timeline>
 
       <n-spin v-else size="medium" />
-
-      <n-divider dashed> Actions </n-divider>
-
-      <div>
-        <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
-          Notes
-        </n-button>
-      </div>
     </div>
 
     <add-variant-modal
@@ -58,8 +60,8 @@
 import {
   NIcon,
   NSpin,
+  NText,
   NButton,
-  NDivider,
   NTimeline,
   NTimelineItem,
   NGradientText,
