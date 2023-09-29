@@ -64,28 +64,29 @@ export abstract class BaseBundleConsumerHandler {
 
       const matchedBuckets = buckets.filter(({ value }) => !!value[index]);
 
-      // @TODO verify scenario that +2 blueprints painted correctly common data (included only once)
       const allLineValues = this._getAllValuesRelatedToLine(
         matchedBuckets,
         index
       );
 
-      // @TODO verify case with 2 (or more) blueprints in line and how it behaves when it starts from edge/inner one
-      for (const { from, to } of allLineValues) {
-        const part = line.substring(from, to + 1);
-
-        if (!result[index]) {
-          result.push(part);
-
-          continue;
-        }
-
-        const currentValue = result[index];
-
-        result[index] = currentValue
-          .substring(0, from)
-          .concat(part, currentValue.substring(part.length));
+      if (!allLineValues.length) {
+        continue;
       }
+
+      const lineBuilder: (string | null)[] = Array.from(
+        { length: line.length },
+        () => null
+      );
+
+      for (const { from, to } of allLineValues) {
+        for (let charIndex = from; charIndex <= to; charIndex++) {
+          const character = line[charIndex];
+
+          lineBuilder[charIndex] = character;
+        }
+      }
+
+      result[index] = lineBuilder.filter(value => !!value).join("");
     }
 
     return result.join("\n");
