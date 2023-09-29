@@ -32,7 +32,7 @@
             :key="index"
           >
             <template #default>
-              <n-button @click="workspacesStore.setVariantTab(id)">
+              <n-button @click="workspacesStore.setVariantTab(id)" tertiary>
                 {{ name }}
               </n-button>
 
