@@ -1,8 +1,10 @@
 <template>
   <div class="blueprints-tab">
     <toolbar
+      :is-loading="isLoading"
       input-placeholder="Type name or color"
       @add-item="toggleAddEditBlueprintDrawer"
+      @reload="onPageChange(page.value)"
     />
 
     <n-scrollbar>
