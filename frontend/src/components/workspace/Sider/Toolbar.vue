@@ -1,11 +1,21 @@
 <template>
   <n-thing>
     <div class="tab-toolbar">
-      <n-button type="warning" size="small" @click="$emit('reload')">
+      <n-button
+        type="warning"
+        size="small"
+        :disabled="isLoading"
+        @click="$emit('reload')"
+      >
         <n-icon :component="ReloadIcon" :size="20" />
       </n-button>
 
-      <n-input clearable show-count :placeholder="inputPlaceholder">
+      <n-input
+        clearable
+        show-count
+        :disabled="isLoading"
+        :placeholder="inputPlaceholder"
+      >
         <template #prefix>
           <n-icon :component="SearchIcon" />
         </template>
@@ -32,6 +42,11 @@ import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 defineProps({
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
+
   inputPlaceholder: {
     type: String,
     required: true,
