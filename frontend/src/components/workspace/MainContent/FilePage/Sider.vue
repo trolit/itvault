@@ -1,52 +1,54 @@
 <template>
   <div class="sider">
     <div class="wrapper">
-      <n-text depth="3">(actions)</n-text>
+      <n-card :bordered="false">
+        <n-text depth="3">/actions/</n-text>
 
-      <div>
-        <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
-          Notes
-        </n-button>
-      </div>
+        <div>
+          <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
+            Notes
+          </n-button>
+        </div>
 
-      <br />
+        <br />
 
-      <n-text depth="3">(variants)</n-text>
+        <n-text depth="3">/variants/</n-text>
 
-      <n-timeline v-if="!isLoading">
-        <n-timeline-item type="info" line-type="dashed">
-          <template #default>
-            <n-button
-              size="small"
-              type="info"
-              @click="isAddVariantModalVisible = true"
-            >
-              <n-icon :component="AddIcon" :size="25" />
-            </n-button>
-          </template>
-        </n-timeline-item>
+        <n-timeline v-if="!isLoading">
+          <n-timeline-item type="info" line-type="dashed">
+            <template #default>
+              <n-button
+                size="small"
+                type="info"
+                @click="isAddVariantModalVisible = true"
+              >
+                <n-icon :component="AddIcon" :size="25" />
+              </n-button>
+            </template>
+          </n-timeline-item>
 
-        <n-timeline-item
-          v-for="({ id, name, createdAt, size }, index) in variants"
-          :key="index"
-        >
-          <template #default>
-            <n-button @click="workspacesStore.setVariantTab(id)">
-              {{ name }}
-            </n-button>
+          <n-timeline-item
+            v-for="({ id, name, createdAt, size }, index) in variants"
+            :key="index"
+          >
+            <template #default>
+              <n-button @click="workspacesStore.setVariantTab(id)">
+                {{ name }}
+              </n-button>
 
-            <div>
-              <small>{{ dateService.format(createdAt) }}</small>
-            </div>
+              <div>
+                <small>{{ dateService.format(createdAt) }}</small>
+              </div>
 
-            <n-gradient-text type="warning" :size="12">
-              ({{ size.value }}{{ size.unit }})
-            </n-gradient-text>
-          </template>
-        </n-timeline-item>
-      </n-timeline>
+              <n-gradient-text type="warning" :size="12">
+                ({{ size.value }}{{ size.unit }})
+              </n-gradient-text>
+            </template>
+          </n-timeline-item>
+        </n-timeline>
 
-      <n-spin v-else size="medium" />
+        <n-spin v-else size="medium" />
+      </n-card>
     </div>
 
     <add-variant-modal
@@ -61,6 +63,7 @@ import {
   NIcon,
   NSpin,
   NText,
+  NCard,
   NButton,
   NTimeline,
   NTimelineItem,
