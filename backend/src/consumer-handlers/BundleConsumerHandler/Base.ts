@@ -64,15 +64,13 @@ export abstract class BaseBundleConsumerHandler {
 
       const matchedBuckets = buckets.filter(({ value }) => !!value[index]);
 
-      const lineLength = line.length;
-
       const allLineValues = this._getAllValuesRelatedToLine(
         matchedBuckets,
         index
       );
 
       const lineBuilder: (string | null)[] = Array.from(
-        { length: lineLength },
+        { length: line.length },
         () => null
       );
 
