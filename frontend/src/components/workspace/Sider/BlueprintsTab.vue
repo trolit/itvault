@@ -4,7 +4,7 @@
       :is-loading="isLoading"
       input-placeholder="Type name or color"
       @add-item="toggleAddEditBlueprintDrawer"
-      @reload="onPageChange(page.value)"
+      @reload="getBlueprints(page.value)"
     />
 
     <n-scrollbar>
