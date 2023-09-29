@@ -8,12 +8,18 @@
         :collapsed-width="0"
         collapse-mode="transform"
         :trigger-style="{
+          left: 0,
           borderRadius: 0,
-          transform: 'translateX(50%) translateY(-100%)',
+          top: generalStore.TRIGGER_STYLE_TOP,
+          height: generalStore.TRIGGER_STYLE_HEIGHT,
+          transform: 'translateX(0%) translateY(0%)',
         }"
         :collapsed-trigger-style="{
+          left: 0,
           borderRadius: 0,
-          transform: 'translateX(100%) translateY(-250%)',
+          top: generalStore.TRIGGER_STYLE_TOP,
+          height: generalStore.TRIGGER_STYLE_HEIGHT,
+          transform: 'translateX(0%) translateY(0%)',
         }"
       >
         <sider />
@@ -61,8 +67,10 @@ import {
 import Sider from "./Sider.vue";
 import Variants from "./Variants.vue";
 import Empty from "@/components/common/Empty.vue";
+import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
 
+const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
 const variantTab = computed((): string => {

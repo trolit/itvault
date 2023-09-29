@@ -16,6 +16,11 @@ export const useGeneralStore = defineStore("general", {
     loadingState: LoadingState.Idle,
   }),
 
+  getters: {
+    TRIGGER_STYLE_TOP: () => "31px",
+    TRIGGER_STYLE_HEIGHT: () => "17px",
+  },
+
   actions: {
     setTheme(theme: string) {
       this.theme = theme;
