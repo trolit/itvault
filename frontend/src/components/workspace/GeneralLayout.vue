@@ -6,6 +6,7 @@
       :width="340"
       :collapsed-width="0"
       collapse-mode="transform"
+      :style="{ zIndex: 1000 }"
       :trigger-style="{
         borderRadius: 0,
         transform: 'translateX(100%) translateY(-100%)',

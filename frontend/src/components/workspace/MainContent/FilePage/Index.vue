@@ -1,6 +1,6 @@
 <template>
   <div class="file-page">
-    <n-layout has-sider sider-placement="left">
+    <n-layout has-sider sider-placement="left" :style="{ zIndex: 500 }">
       <n-layout-sider
         bordered
         show-trigger
