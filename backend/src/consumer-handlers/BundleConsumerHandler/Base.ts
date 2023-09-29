@@ -69,14 +69,14 @@ export abstract class BaseBundleConsumerHandler {
         index
       );
 
+      if (!allLineValues.length) {
+        continue;
+      }
+
       const lineBuilder: (string | null)[] = Array.from(
         { length: line.length },
         () => null
       );
-
-      if (!allLineValues.length) {
-        continue;
-      }
 
       for (const { from, to } of allLineValues) {
         for (let charIndex = from; charIndex <= to; charIndex++) {
