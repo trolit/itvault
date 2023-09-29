@@ -85,11 +85,12 @@ import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 
 const isLoading = ref(false);
 const isAddVariantModalVisible = ref(false);
+
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
+const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
-const generalStore = useGeneralStore();
 
 const { activeFileTab } = storeToRefs(workspacesStore);
 
