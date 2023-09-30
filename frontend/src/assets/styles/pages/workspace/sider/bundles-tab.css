@@ -23,7 +23,7 @@
         min-height: var(--bundle-scrollbar-section-height);
         max-height: var(--bundle-scrollbar-section-height);
 
-        .spinner {
+        .loading {
           display: flex;
           align-items: center;
           justify-content: center;
