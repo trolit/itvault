@@ -25,13 +25,19 @@
     </template>
 
     <template #header-extra>
-      {{ dateService.fromNow(note.createdAt) }}
+      <actions-dropdown />
     </template>
 
     <template #description>
       <n-tag size="small" type="info">
         {{ createdBy.role }}
       </n-tag>
+
+      <div>
+        <n-text depth="3">
+          <small>{{ dateService.fromNow(note.createdAt) }}</small>
+        </n-text>
+      </div>
     </template>
 
     <!-- @TODO markdown compiler -->
@@ -70,7 +76,7 @@
 
 <script setup lang="ts">
 import type { PropType } from "vue";
-import { NThing, NTag, NCard, NButton } from "naive-ui";
+import { NThing, NTag, NCard, NButton, NSpace, NText } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import { defineComputed } from "@/helpers/defineComputed";
