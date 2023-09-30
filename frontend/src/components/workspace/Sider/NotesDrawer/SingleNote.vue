@@ -25,7 +25,12 @@
     </template>
 
     <template #header-extra>
-      <actions-dropdown />
+      <actions-dropdown
+        v-if="isNoteOwner || canDeleteAnyNote || canUpdateAnyNote"
+        :is-note-owner="isNoteOwner"
+        :can-delete-any-note="canDeleteAnyNote"
+        :can-update-any-note="canUpdateAnyNote"
+      />
     </template>
 
     <template #description>
@@ -44,46 +49,19 @@
     <n-card>
       {{ note.value }}
     </n-card>
-
-    <template #footer>
-      <!-- @TODO update note -->
-      <require-permission
-        v-if="authStore.loggedUserId !== createdBy.id"
-        :permission="Permission.DeleteAnyNote"
-      >
-        <n-button type="info" size="small" secondary> Update (any) </n-button>
-      </require-permission>
-
-      <n-button
-        v-if="authStore.loggedUserId === createdBy.id"
-        type="warning"
-        size="small"
-        secondary
-      >
-        Update
-      </n-button>
-
-      <!-- @TODO delete note -->
-      <require-permission
-        :permission="Permission.DeleteAnyNote"
-        :or="authStore.loggedUserId === createdBy.id"
-      >
-        <n-button type="error" size="small" secondary>Delete</n-button>
-      </require-permission>
-    </template>
   </n-thing>
 </template>
 
 <script setup lang="ts">
-import type { PropType } from "vue";
-import { NThing, NTag, NCard, NButton, NSpace, NText } from "naive-ui";
+import { toRefs, type PropType } from "vue";
+import { NThing, NTag, NCard, NButton, NText } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
+import ActionsDropdown from "./ActionsDropdown.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
-import RequirePermission from "@/components/common/RequirePermission.vue";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 const authStore = useAuthStore();
@@ -98,9 +76,24 @@ const props = defineProps({
 
 const emits = defineEmits(["toggle-user-comments-modal"]);
 
-const { createdBy } = defineComputed({
-  createdBy() {
-    return props.note.createdBy;
-  },
-});
+const { note } = toRefs(props);
+
+const { createdBy, isNoteOwner, canUpdateAnyNote, canDeleteAnyNote } =
+  defineComputed({
+    createdBy() {
+      return props.note.createdBy;
+    },
+
+    isNoteOwner() {
+      return authStore.loggedUserId === createdBy.value.id;
+    },
+
+    canUpdateAnyNote() {
+      return authStore.hasPermission(Permission.UpdateAnyNote);
+    },
+
+    canDeleteAnyNote() {
+      return authStore.hasPermission(Permission.DeleteAnyNote);
+    },
+  });
 </script>
