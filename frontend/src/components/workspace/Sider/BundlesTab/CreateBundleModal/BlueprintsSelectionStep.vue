@@ -49,12 +49,22 @@
                 selected: isBlueprintSelected(blueprint.id),
               }"
             >
-              {{ blueprint.name }}
+              <div class="title">
+                {{ blueprint.name }}
 
-              <div
-                class="thumbnail"
-                :style="{ backgroundColor: blueprint.color }"
-              />
+                <div
+                  class="thumbnail"
+                  :style="{ backgroundColor: blueprint.color }"
+                />
+              </div>
+
+              <n-text depth="3">
+                <small>
+                  <n-ellipsis :line-clamp="3">
+                    {{ blueprint.description }}
+                  </n-ellipsis>
+                </small>
+              </n-text>
             </n-card>
           </n-grid-item>
         </n-grid>
@@ -84,8 +94,10 @@ import {
   NCard,
   NGrid,
   NIcon,
+  NText,
   NButton,
   NDivider,
+  NEllipsis,
   NGridItem,
   NScrollbar,
   NPagination,

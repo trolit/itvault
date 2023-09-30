@@ -84,12 +84,14 @@
             }
 
             .n-card__content {
-              display: flex;
-              justify-content: space-between;
+              .title {
+                display: flex;
+                justify-content: space-between;
 
-              .thumbnail {
-                width: 25px;
-                height: 25px;
+                .thumbnail {
+                  width: 25px;
+                  height: 25px;
+                }
               }
             }
           }
