@@ -1,6 +1,6 @@
 <template>
   <div class="loading">
-    <n-spin :size="spinSize || 'medium'" />
+    <n-spin :size="spinSize" />
   </div>
 </template>
 
@@ -11,5 +11,7 @@ interface IProps {
   spinSize?: number | "small" | "medium" | "large";
 }
 
-defineProps<IProps>();
+withDefaults(defineProps<IProps>(), {
+  spinSize: "medium",
+});
 </script>
