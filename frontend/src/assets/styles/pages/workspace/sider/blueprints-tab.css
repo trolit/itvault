@@ -26,7 +26,7 @@
         min-height: var(--blueprints-scrollbar-section-height);
         max-height: var(--blueprints-scrollbar-section-height);
 
-        .spinner {
+        .loading {
           display: flex;
           align-items: center;
           justify-content: center;

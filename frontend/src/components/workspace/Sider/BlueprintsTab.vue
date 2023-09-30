@@ -41,9 +41,7 @@
         </n-list-item>
       </n-list>
 
-      <div v-else class="spinner">
-        <n-spin />
-      </div>
+      <loading-section v-else />
     </n-scrollbar>
 
     <div class="footer">
@@ -63,7 +61,6 @@
 import cloneDeep from "lodash/cloneDeep";
 import {
   NTag,
-  NSpin,
   NList,
   NText,
   NSpace,
@@ -78,6 +75,7 @@ import Toolbar from "./Toolbar.vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const drawerStore = useDrawerStore();
