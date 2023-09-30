@@ -6,12 +6,10 @@
 
 <script setup lang="ts">
 import { NSpin } from "naive-ui";
-import type { PropType } from "vue";
 
-defineProps({
-  spinSize: {
-    type: Object as PropType<number | "small" | "medium" | "large">,
-    required: false,
-  },
-});
+interface IProps {
+  spinSize?: number | "small" | "medium" | "large";
+}
+
+defineProps<IProps>();
 </script>
