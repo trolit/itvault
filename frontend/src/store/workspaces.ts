@@ -323,7 +323,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     // @TODO add option to query tree by blueprintId
-    async getTree(options: { relativePath: string }) {
+    async getTree(options: { relativePath: string }, isReload?: boolean) {
       const params = {
         version: 1,
         ...options,
@@ -336,7 +336,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         }
       );
 
-      this.tree = Array.prototype.concat(this.tree, data);
+      this.tree = isReload ? data : Array.prototype.concat(this.tree, data);
 
       return data;
     },

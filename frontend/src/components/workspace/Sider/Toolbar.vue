@@ -1,11 +1,21 @@
 <template>
   <n-thing>
     <div class="tab-toolbar">
-      <n-button type="warning" size="small" @click="$emit('reset')">
-        <n-icon :component="ResetIcon" :size="20" />
+      <n-button
+        type="warning"
+        size="small"
+        :disabled="isLoading"
+        @click="$emit('reload')"
+      >
+        <n-icon :component="ReloadIcon" :size="20" />
       </n-button>
 
-      <n-input clearable show-count :placeholder="inputPlaceholder">
+      <n-input
+        clearable
+        show-count
+        :disabled="isLoading"
+        :placeholder="inputPlaceholder"
+      >
         <template #prefix>
           <n-icon :component="SearchIcon" />
         </template>
@@ -23,7 +33,7 @@
 <script setup lang="ts">
 import {
   Add as AddIcon,
-  Reset as ResetIcon,
+  Reset as ReloadIcon,
   Search as SearchIcon,
 } from "@vicons/carbon";
 import { NIcon, NButton, NThing, NInput } from "naive-ui";
@@ -32,11 +42,16 @@ import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 defineProps({
+  isLoading: {
+    type: Boolean,
+    required: true,
+  },
+
   inputPlaceholder: {
     type: String,
     required: true,
   },
 });
 
-defineEmits(["reset", "add-item"]);
+defineEmits(["reload", "add-item"]);
 </script>

@@ -1,8 +1,10 @@
 <template>
   <div class="files-tab">
     <toolbar
+      :is-loading="isLoading"
       input-placeholder="Type name"
       @add-item="isUploadFilesModalVisible = true"
+      @reload="initTree(true)"
     />
 
     <n-scrollbar>
@@ -68,11 +70,11 @@ onBeforeMount(async () => {
   }
 });
 
-async function initTree() {
+async function initTree(isReload?: boolean) {
   emit("update:is-loading", true);
 
   try {
-    await workspacesStore.getTree({ relativePath: filesStore.ROOT });
+    await workspacesStore.getTree({ relativePath: filesStore.ROOT }, isReload);
   } catch (error) {
     console.log(error);
   } finally {

@@ -1,8 +1,10 @@
 <template>
   <div class="bundles-tab">
     <toolbar
+      :is-loading="isLoading"
       input-placeholder="Type note or status"
       @add-item="isCreateBundleModalVisible = true"
+      @reload="getBundles(page.value)"
     />
 
     <n-scrollbar>
@@ -27,9 +29,9 @@
 
     <div class="footer">
       <n-pagination
-        v-model:page="page"
         size="small"
         :item-count="bundlesStore.total"
+        :page="page.value"
         :page-size="perPage"
         :page-slot="6"
         @update:page="onPageChange"
@@ -49,7 +51,7 @@ import {
   NScrollbar,
   NPagination,
 } from "naive-ui";
-import { computed, onMounted, ref, type PropType, toRefs } from "vue";
+import { computed, onMounted, ref, type PropType, type Ref } from "vue";
 
 import SingleBundle from "./SingleBundle.vue";
 import { useBundlesStore } from "@/store/bundles";
@@ -63,7 +65,7 @@ const props = defineProps({
   },
 
   page: {
-    type: Object as PropType<number>,
+    type: Object as PropType<Ref<number>>,
     required: true,
   },
 });
@@ -71,13 +73,12 @@ const props = defineProps({
 const emit = defineEmits(["update:page", "update:is-loading"]);
 
 const perPage = 10;
-const { page } = toRefs(props);
 const bundlesStore = useBundlesStore();
 const isCreateBundleModalVisible = ref(false);
 
 onMounted(() => {
   if (bundlesStore.total === 0) {
-    getBundles(page.value);
+    getBundles(props.page.value);
   }
 });
 
