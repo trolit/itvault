@@ -33,7 +33,7 @@
 
     <div class="items">
       <n-scrollbar trigger="none">
-        <n-spin v-if="isLoading" />
+        <loading-section v-if="isLoading" />
 
         <n-grid
           v-else
@@ -49,12 +49,22 @@
                 selected: isBlueprintSelected(blueprint.id),
               }"
             >
-              {{ blueprint.name }}
+              <div class="title">
+                {{ blueprint.name }}
 
-              <div
-                class="thumbnail"
-                :style="{ backgroundColor: blueprint.color }"
-              />
+                <div
+                  class="thumbnail"
+                  :style="{ backgroundColor: blueprint.color }"
+                />
+              </div>
+
+              <n-text depth="3">
+                <small>
+                  <n-ellipsis :line-clamp="3">
+                    {{ blueprint.description }}
+                  </n-ellipsis>
+                </small>
+              </n-text>
             </n-card>
           </n-grid-item>
         </n-grid>
@@ -73,26 +83,28 @@ import {
 import {
   ref,
   watch,
+  toRefs,
   type Ref,
   computed,
   onBeforeMount,
   type PropType,
-  toRefs,
 } from "vue";
 import {
   NTag,
   NCard,
   NGrid,
   NIcon,
-  NSpin,
+  NText,
   NButton,
   NDivider,
+  NEllipsis,
   NGridItem,
   NScrollbar,
   NPagination,
 } from "naive-ui";
 
 import { useBlueprintsStore } from "@/store/blueprints";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const props = defineProps({

@@ -22,9 +22,7 @@
         </n-list>
       </div>
 
-      <div v-else class="spinner">
-        <n-spin />
-      </div>
+      <loading-section v-else />
     </n-scrollbar>
 
     <div class="footer">
@@ -43,20 +41,14 @@
 </template>
 
 <script setup lang="ts">
-import {
-  NSpin,
-  NList,
-  NEmpty,
-  NListItem,
-  NScrollbar,
-  NPagination,
-} from "naive-ui";
 import { computed, onMounted, ref, type PropType, type Ref } from "vue";
+import { NList, NEmpty, NListItem, NScrollbar, NPagination } from "naive-ui";
 
 import SingleBundle from "./SingleBundle.vue";
 import { useBundlesStore } from "@/store/bundles";
 import CreateBundleModal from "./CreateBundleModal/Index.vue";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const props = defineProps({
   isLoading: {

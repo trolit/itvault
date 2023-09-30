@@ -12,9 +12,7 @@
     @update:show="drawerStore.setActiveDrawer(null)"
   >
     <n-drawer-content title="Notes" closable>
-      <div v-if="isLoading" class="spin-wrapper">
-        <n-spin />
-      </div>
+      <loading-section v-if="isLoading" />
 
       <n-result
         v-else-if="!notes.data.length"
@@ -57,7 +55,6 @@
 <script setup lang="ts">
 import {
   NList,
-  NSpin,
   NDrawer,
   NResult,
   NListItem,
@@ -75,6 +72,7 @@ import UserNotesModal from "./UserNotesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const notesStore = useNotesStore();
 const drawerStore = useDrawerStore();

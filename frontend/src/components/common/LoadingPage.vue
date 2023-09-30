@@ -2,9 +2,7 @@
   <div class="loading-page">
     <div class="wrapper">
       <div v-if="!isFailed" class="state-loading">
-        <div>
-          <n-spin size="large" />
-        </div>
+        <loading-section spin-size="large" />
 
         <div>Loading page...</div>
       </div>
@@ -20,7 +18,9 @@
 </template>
 
 <script setup lang="ts">
-import { NSpin, NAlert } from "naive-ui";
+import { NAlert } from "naive-ui";
+
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 // @TODO allow to pass response codes and show message depending on status code
 defineProps({

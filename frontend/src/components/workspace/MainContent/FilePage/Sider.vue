@@ -47,7 +47,7 @@
           </n-timeline-item>
         </n-timeline>
 
-        <n-spin v-else size="medium" />
+        <loading-section v-else spin-size="medium" />
       </n-card>
     </div>
 
@@ -61,7 +61,6 @@
 <script setup lang="ts">
 import {
   NIcon,
-  NSpin,
   NText,
   NCard,
   NButton,
@@ -82,6 +81,7 @@ import { useWorkspacesStore } from "@/store/workspaces";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const isLoading = ref(false);
 const isAddVariantModalVisible = ref(false);

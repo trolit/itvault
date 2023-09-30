@@ -8,7 +8,7 @@
 
     <template #header> Blueprints </template>
 
-    <n-spin v-if="isLoading" />
+    <loading-section v-if="isLoading" />
 
     <div v-else>
       <blueprint
@@ -21,13 +21,14 @@
 </template>
 
 <script setup lang="ts">
+import { NIcon, NThing, NAvatar } from "naive-ui";
 import { ref, type PropType, onMounted } from "vue";
-import { NSpin, NIcon, NThing, NAvatar } from "naive-ui";
 import { PaintBrush as BlueprintIcon } from "@vicons/carbon";
 
 import Blueprint from "./Blueprint.vue";
 import { useBundlesStore } from "@/store/bundles";
 import type { BundleBlueprint } from "@/types/BundleBlueprint";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const props = defineProps({
   blueprints: {

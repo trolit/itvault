@@ -27,7 +27,7 @@
           v-if="isLoading && !usersStore.notes.result.length"
           justify="center"
         >
-          <n-spin />
+          <loading-section />
         </n-space>
 
         <n-space v-if="usersStore.notes.result.length" justify="center">
@@ -48,7 +48,6 @@
 import {
   NCard,
   NIcon,
-  NSpin,
   NSpace,
   NModal,
   NThing,
@@ -63,6 +62,7 @@ import { useUsersStore } from "@/store/users";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { defineWatchers } from "@/helpers/defineWatchers";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const usersStore = useUsersStore();
 const dateService = useDateService();

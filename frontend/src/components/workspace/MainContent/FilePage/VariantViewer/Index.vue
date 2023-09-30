@@ -23,17 +23,14 @@
       </n-scrollbar>
     </template>
 
-    <!-- @TODO make common "wrapped" spinner component -->
-    <div class="loading" v-else-if="isLoading">
-      <n-spin />
-    </div>
+    <loading-section v-else-if="isLoading" />
 
     <empty v-else title="Variant not found." />
   </div>
 </template>
 
 <script setup lang="ts">
-import { NSpin, NScrollbar } from "naive-ui";
+import { NScrollbar } from "naive-ui";
 import { h, onBeforeMount, ref, type PropType, type Ref } from "vue";
 
 import Toolbar from "./Toolbar.vue";
@@ -48,6 +45,7 @@ import UnassignColorPopover from "./UnassignColorPopover.vue";
 import decodeLineColoring from "@/helpers/decodeLineColoring";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { BucketContent } from "@shared/types/BucketContent";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 import prepareLineForColoring from "@/helpers/prepareLineForColoring";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
