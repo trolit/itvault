@@ -33,7 +33,7 @@
 
     <div class="items">
       <n-scrollbar trigger="none">
-        <n-spin v-if="isLoading" />
+        <loading-section v-if="isLoading" />
 
         <div class="wrapper" v-else>
           <n-card v-for="file in activeItem.files" :key="file.id">
@@ -80,21 +80,21 @@
 </template>
 
 <script setup lang="ts">
-import { ViewFilled as ViewIcon } from "@vicons/carbon";
-import { ref, type PropType, computed, watch, toRefs } from "vue";
 import {
   NCard,
-  NAlert,
   NIcon,
-  NScrollbar,
-  NSpin,
-  NDivider,
+  NAlert,
   NButton,
+  NDivider,
+  NScrollbar,
   NButtonGroup,
 } from "naive-ui";
+import { ViewFilled as ViewIcon } from "@vicons/carbon";
+import { ref, type PropType, computed, watch, toRefs } from "vue";
 
 import { useFilesStore } from "@/store/files";
 import type { BundleModalItem } from "@/types/BundleModalItem";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const props = defineProps({
