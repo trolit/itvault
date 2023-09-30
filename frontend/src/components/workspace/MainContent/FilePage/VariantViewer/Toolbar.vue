@@ -7,7 +7,7 @@
 
       <n-switch
         :value="workspacesStore.isActiveVariantTabInWriteMode"
-        :disabled="isBucketModified"
+        :disabled="isBucketModified || !workspacesStore.activeBlueprint"
         :round="false"
         @update-value="workspacesStore.setVariantTabWriteMode"
       >
