@@ -134,8 +134,8 @@ function onPageChange(newPage: number) {
   }
 }
 
-function onToggleUserCommentsModal(id: number, fullName: string) {
-  userId.value = id;
+function onToggleUserCommentsModal(userId: number, fullName: string) {
+  userId.value = userId;
   userFullName.value = fullName;
 
   isUserNotesModalVisible.value = true;
