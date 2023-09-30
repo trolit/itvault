@@ -3,7 +3,7 @@
     .n-drawer-body-content-wrapper {
       padding: 0 10px;
 
-      .spin-wrapper {
+      .loading {
         display: flex;
         height: inherit;
         align-items: center;
