@@ -33,7 +33,7 @@
 
     <div class="items">
       <n-scrollbar trigger="none">
-        <n-spin v-if="isLoading" />
+        <loading-section v-if="isLoading" />
 
         <n-grid
           v-else
@@ -73,18 +73,17 @@ import {
 import {
   ref,
   watch,
+  toRefs,
   type Ref,
   computed,
   onBeforeMount,
   type PropType,
-  toRefs,
 } from "vue";
 import {
   NTag,
   NCard,
   NGrid,
   NIcon,
-  NSpin,
   NButton,
   NDivider,
   NGridItem,
@@ -93,6 +92,7 @@ import {
 } from "naive-ui";
 
 import { useBlueprintsStore } from "@/store/blueprints";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const props = defineProps({
