@@ -32,7 +32,7 @@
         min-height: var(--files-tree-scrollbar-section-height);
         max-height: var(--files-tree-scrollbar-section-height);
 
-        .spinner {
+        .loading {
           display: flex;
           align-items: center;
           justify-content: center;

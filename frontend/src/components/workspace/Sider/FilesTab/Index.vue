@@ -24,9 +24,7 @@
 
       <file-hierarchy v-if="!isLoading" :data="workspacesStore.tree" />
 
-      <div v-else class="spinner">
-        <n-spin />
-      </div>
+      <loading-section v-else />
     </n-scrollbar>
 
     <upload-files-modal
@@ -37,15 +35,16 @@
 </template>
 
 <script setup lang="ts">
-import { Reset as ResetIcon } from "@vicons/carbon";
 import { onBeforeMount, ref } from "vue";
-import { NScrollbar, NSpin, NAlert, NButton, NIcon } from "naive-ui";
+import { Reset as ResetIcon } from "@vicons/carbon";
+import { NScrollbar, NAlert, NButton, NIcon } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
 import UploadFilesModal from "./UploadFilesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
