@@ -5,6 +5,12 @@
       <span>
         {{ createdBy.fullName }}
       </span>
+
+      <br />
+
+      <n-tag size="small" type="info">
+        {{ createdBy.role }}
+      </n-tag>
     </template>
 
     <template #header-extra>
@@ -26,15 +32,9 @@
     </template>
 
     <template #description>
-      <n-tag size="small" type="info">
-        {{ createdBy.role }}
-      </n-tag>
-
-      <div>
-        <n-text depth="3">
-          <small>{{ dateService.fromNow(note.createdAt) }}</small>
-        </n-text>
-      </div>
+      <n-text depth="3">
+        <small>{{ dateService.fromNow(note.createdAt) }}</small>
+      </n-text>
     </template>
 
     <!-- @TODO markdown compiler -->
