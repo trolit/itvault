@@ -51,8 +51,7 @@ const options = ref([
   },
   {
     key: "update-any",
-    label: () =>
-      h(NText, { type: "warning" }, { default: () => "Update (any)" }),
+    label: () => h(NText, { type: "info" }, { default: () => "Update (any)" }),
     show: canUpdateAnyNote.value,
   },
   {
