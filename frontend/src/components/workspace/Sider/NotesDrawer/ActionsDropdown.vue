@@ -1,5 +1,10 @@
 <template>
-  <n-dropdown trigger="hover" :options="options" placement="bottom-end">
+  <n-dropdown
+    trigger="hover"
+    :options="options"
+    placement="bottom-end"
+    @select="handleSelect"
+  >
     <n-button text>
       <n-icon :size="25" :component="GearIcon" />
     </n-button>
@@ -14,6 +19,8 @@ import { OperationsField as GearIcon } from "@vicons/carbon";
 interface IProps {
   isNoteOwner: boolean;
 
+  canViewUserNotes: boolean;
+
   canDeleteAnyNote: boolean;
 
   canUpdateAnyNote: boolean;
@@ -21,9 +28,22 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-const { isNoteOwner, canUpdateAnyNote, canDeleteAnyNote } = toRefs(props);
+const emit = defineEmits(["toggle-user-comments-modal"]);
+
+const { isNoteOwner, canViewUserNotes, canUpdateAnyNote, canDeleteAnyNote } =
+  toRefs(props);
 
 const options = ref([
+  {
+    label: "Profile",
+    key: "profile",
+    disabled: true,
+  },
+  {
+    label: "Comments",
+    key: "notes",
+    show: canViewUserNotes.value,
+  },
   {
     label: "Update",
     key: "update",
@@ -41,4 +61,12 @@ const options = ref([
     show: canDeleteAnyNote.value,
   },
 ]);
+
+function handleSelect(key: string) {
+  if (key === "notes") {
+    emit("toggle-user-comments-modal");
+
+    return;
+  }
+}
 </script>
