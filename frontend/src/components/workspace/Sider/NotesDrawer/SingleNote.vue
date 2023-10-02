@@ -2,9 +2,7 @@
   <!-- @TODO show some indicator if message is removed or not (display only if permission is enabled)-->
   <n-thing class="single-note">
     <template #avatar>
-      <n-avatar>
-        <n-icon :component="UserIcon" />
-      </n-avatar>
+      <n-avatar size="small"> {{ initials }} </n-avatar>
     </template>
 
     <template #header>
@@ -58,8 +56,7 @@
 
 <script setup lang="ts">
 import { toRefs, type PropType } from "vue";
-import { User as UserIcon } from "@vicons/carbon";
-import { NThing, NTag, NCard, NText, NTooltip, NAvatar, NIcon } from "naive-ui";
+import { NThing, NTag, NCard, NText, NTooltip, NAvatar } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import ActionsDropdown from "./ActionsDropdown.vue";
@@ -83,12 +80,19 @@ const emits = defineEmits(["toggle-user-comments-modal"]);
 const { note } = toRefs(props);
 
 const {
+  initials,
   createdBy,
   isNoteOwner,
   canViewUserNotes,
   canUpdateAnyNote,
   canDeleteAnyNote,
 } = defineComputed({
+  initials() {
+    const [name, surname] = props.note.createdBy.fullName.split(" ");
+
+    return `${name[0]}${surname[0]}`;
+  },
+
   createdBy() {
     return props.note.createdBy;
   },
