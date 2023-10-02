@@ -1,6 +1,12 @@
 <template>
   <!-- @TODO show some indicator if message is removed or not (display only if permission is enabled)-->
-  <n-thing content-indented class="single-note">
+  <n-thing class="single-note">
+    <template #avatar>
+      <n-avatar>
+        <n-icon :component="User" />
+      </n-avatar>
+    </template>
+
     <template #header>
       <span>
         {{ createdBy.fullName }}
@@ -51,8 +57,9 @@
 </template>
 
 <script setup lang="ts">
+import { User } from "@vicons/carbon";
 import { toRefs, type PropType } from "vue";
-import { NThing, NTag, NCard, NText, NTooltip } from "naive-ui";
+import { NThing, NTag, NCard, NText, NTooltip, NAvatar, NIcon } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import ActionsDropdown from "./ActionsDropdown.vue";
