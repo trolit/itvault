@@ -1,5 +1,6 @@
 <template>
   <n-dropdown
+    size="small"
     trigger="click"
     :options="options"
     placement="bottom-end"
