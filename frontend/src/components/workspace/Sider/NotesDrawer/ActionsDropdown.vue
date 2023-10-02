@@ -7,7 +7,7 @@
     @select="handleSelect"
   >
     <n-button quaternary>
-      <n-icon :size="25" :component="GearIcon" />
+      <n-icon :size="20" :component="GearIcon" />
     </n-button>
   </n-dropdown>
 </template>
