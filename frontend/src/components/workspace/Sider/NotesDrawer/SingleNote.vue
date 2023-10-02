@@ -8,7 +8,7 @@
 
       <br />
 
-      <n-tag size="small" type="info">
+      <n-tag size="small">
         {{ createdBy.role }}
       </n-tag>
     </template>
