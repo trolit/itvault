@@ -3,7 +3,7 @@
   <n-thing class="single-note">
     <template #avatar>
       <n-avatar>
-        <n-icon :component="User" />
+        <n-icon :component="UserIcon" />
       </n-avatar>
     </template>
 
@@ -57,8 +57,8 @@
 </template>
 
 <script setup lang="ts">
-import { User } from "@vicons/carbon";
 import { toRefs, type PropType } from "vue";
+import { User as UserIcon } from "@vicons/carbon";
 import { NThing, NTag, NCard, NText, NTooltip, NAvatar, NIcon } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
