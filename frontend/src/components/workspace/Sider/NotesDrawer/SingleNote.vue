@@ -32,9 +32,15 @@
     </template>
 
     <template #description>
-      <n-text depth="3">
-        <small>{{ dateService.fromNow(note.createdAt) }}</small>
-      </n-text>
+      <n-tooltip trigger="hover" placement="right">
+        <template #trigger>
+          <n-text depth="3">
+            <small>{{ dateService.fromNow(note.createdAt) }}</small>
+          </n-text>
+        </template>
+
+        {{ dateService.format(note.createdAt, "YYYY-MM-DD HH:mm") }}
+      </n-tooltip>
     </template>
 
     <!-- @TODO markdown compiler -->
@@ -46,7 +52,7 @@
 
 <script setup lang="ts">
 import { toRefs, type PropType } from "vue";
-import { NThing, NTag, NCard, NText } from "naive-ui";
+import { NThing, NTag, NCard, NText, NTooltip } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import ActionsDropdown from "./ActionsDropdown.vue";
