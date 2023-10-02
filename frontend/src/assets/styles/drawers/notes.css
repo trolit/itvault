@@ -9,6 +9,12 @@
         align-items: center;
         justify-content: center;
       }
+
+      .single-note {
+        .n-thing-main__description {
+          font-size: 13px;
+        }
+      }
     }
 
     .n-drawer-footer {
