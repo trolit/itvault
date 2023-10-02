@@ -1,11 +1,11 @@
 <template>
   <n-dropdown
-    trigger="hover"
+    trigger="click"
     :options="options"
     placement="bottom-end"
     @select="handleSelect"
   >
-    <n-button text>
+    <n-button quaternary>
       <n-icon :size="25" :component="GearIcon" />
     </n-button>
   </n-dropdown>
