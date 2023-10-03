@@ -50,15 +50,20 @@
     </template>
 
     <!-- @TODO markdown compiler -->
-    <n-input
-      resizable
-      v-if="isInUpdateMode"
-      v-model:value="updatedValue"
-      type="textarea"
-      :autosize="{
-        minRows: 5,
-      }"
-    />
+    <div v-if="isInUpdateMode">
+      <n-input
+        resizable
+        v-model:value="updatedValue"
+        type="textarea"
+        :autosize="{
+          minRows: 5,
+        }"
+      />
+
+      <n-text v-if="lastErrorMessage" type="error">
+        Error: {{ lastErrorMessage }}
+      </n-text>
+    </div>
 
     <n-card v-else>
       {{ note.value }}
@@ -96,10 +101,12 @@ import {
   NTooltip,
   useMessage,
 } from "naive-ui";
+import { AxiosError } from "axios";
 import { toRefs, type PropType, ref } from "vue";
 
 import { useAuthStore } from "@/store/auth";
 import { useNotesStore } from "@/store/notes";
+import type { ApiError } from "@/types/ApiError";
 import ActionsDropdown from "./ActionsDropdown.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
@@ -122,6 +129,7 @@ const emits = defineEmits(["toggle-user-comments-modal", "update-note"]);
 
 const isLoading = ref(false);
 const updatedValue = ref("");
+const lastErrorMessage = ref("");
 const isInUpdateMode = ref(false);
 
 const { note } = toRefs(props);
@@ -166,6 +174,8 @@ function toggleUpdateMode() {
     updatedValue.value = props.note.value;
   }
 
+  lastErrorMessage.value = "";
+
   isInUpdateMode.value = !isInUpdateMode.value;
 }
 
@@ -184,6 +194,18 @@ async function updateNote() {
     message.success("Note updated!");
   } catch (error) {
     console.log(error);
+
+    if (error instanceof AxiosError) {
+      const data: ApiError<{ text: string[] }> = error.response?.data;
+
+      const [validationMessage] = data.body.text;
+
+      if (validationMessage) {
+        lastErrorMessage.value = validationMessage;
+      }
+    }
+
+    message.error("Failed to update note.");
   } finally {
     isLoading.value = false;
   }
