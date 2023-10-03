@@ -29,6 +29,7 @@
         :can-view-user-notes="canViewUserNotes"
         :can-delete-any-note="canDeleteAnyNote"
         :can-update-any-note="canUpdateAnyNote"
+        @toggle-note-update="isInUpdateMode = !isInUpdateMode"
         @toggle-user-comments-modal="
           emits('toggle-user-comments-modal', createdBy.id, createdBy.fullName)
         "
@@ -48,15 +49,43 @@
     </template>
 
     <!-- @TODO markdown compiler -->
-    <n-card>
+    <n-input
+      resizable
+      v-if="isInUpdateMode"
+      v-model:value="updatedValue"
+      type="textarea"
+      :autosize="{
+        minRows: 5,
+      }"
+    />
+
+    <n-card v-else>
       {{ note.value }}
     </n-card>
+
+    <template #footer>
+      <n-space v-if="isInUpdateMode" class="w-100" justify="space-between">
+        <n-button type="warning" secondary> Cancel </n-button>
+
+        <n-button type="info" secondary> Save </n-button>
+      </n-space>
+    </template>
   </n-thing>
 </template>
 
 <script setup lang="ts">
-import { toRefs, type PropType } from "vue";
-import { NThing, NTag, NCard, NText, NTooltip, NAvatar } from "naive-ui";
+import {
+  NTag,
+  NCard,
+  NText,
+  NInput,
+  NSpace,
+  NThing,
+  NAvatar,
+  NButton,
+  NTooltip,
+} from "naive-ui";
+import { toRefs, type PropType, ref } from "vue";
 
 import { useAuthStore } from "@/store/auth";
 import ActionsDropdown from "./ActionsDropdown.vue";
@@ -76,6 +105,9 @@ const props = defineProps({
 });
 
 const emits = defineEmits(["toggle-user-comments-modal"]);
+
+const updatedValue = ref("");
+const isInUpdateMode = ref(false);
 
 const { note } = toRefs(props);
 
