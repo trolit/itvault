@@ -29,7 +29,7 @@
         :can-view-user-notes="canViewUserNotes"
         :can-delete-any-note="canDeleteAnyNote"
         :can-update-any-note="canUpdateAnyNote"
-        @toggle-note-update="isInUpdateMode = !isInUpdateMode"
+        @toggle-note-update="toggleUpdateMode"
         @toggle-user-comments-modal="
           emits('toggle-user-comments-modal', createdBy.id, createdBy.fullName)
         "
@@ -65,7 +65,7 @@
 
     <template #footer>
       <n-space v-if="isInUpdateMode" class="w-100" justify="space-between">
-        <n-button type="warning" secondary> Cancel </n-button>
+        <n-button secondary @click="toggleUpdateMode"> Cancel </n-button>
 
         <n-button type="info" secondary> Save </n-button>
       </n-space>
@@ -145,4 +145,12 @@ const {
     return authStore.hasPermission(Permission.DeleteAnyNote);
   },
 });
+
+function toggleUpdateMode() {
+  if (!isInUpdateMode.value) {
+    updatedValue.value = props.note.value;
+  }
+
+  isInUpdateMode.value = !isInUpdateMode.value;
+}
 </script>
