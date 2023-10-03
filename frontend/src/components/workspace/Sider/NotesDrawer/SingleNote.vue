@@ -52,7 +52,6 @@
     <!-- @TODO markdown compiler -->
     <div v-if="isInUpdateMode">
       <n-input
-        resizable
         v-model:value="updatedValue"
         type="textarea"
         :autosize="{
