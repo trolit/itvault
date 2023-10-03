@@ -29,7 +29,7 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-const emit = defineEmits(["toggle-user-comments-modal"]);
+const emit = defineEmits(["toggle-user-comments-modal", "toggle-note-update"]);
 
 const { isNoteOwner, canViewUserNotes, canUpdateAnyNote, canDeleteAnyNote } =
   toRefs(props);
@@ -65,6 +65,12 @@ const options = ref([
 function handleSelect(key: string) {
   if (key === "notes") {
     emit("toggle-user-comments-modal");
+
+    return;
+  }
+
+  if (key === "update" || key === "update-any") {
+    emit("toggle-note-update");
 
     return;
   }
