@@ -39,5 +39,20 @@ export const useNotesStore = defineStore("notes", {
 
       return data;
     },
+
+    async update(id: number, text: string) {
+      const params = {
+        id,
+        version: 1,
+      };
+
+      const payload = {
+        text,
+      };
+
+      await axios.put(`v1/notes/${id}`, payload, {
+        params,
+      });
+    },
   },
 });
