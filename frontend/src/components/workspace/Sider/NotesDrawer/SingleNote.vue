@@ -201,6 +201,8 @@ async function updateNote() {
   } catch (error) {
     console.log(error);
 
+    message.error("Failed to update note.");
+
     if (error instanceof AxiosError) {
       const data: ApiError<{ text: string[] }> = error.response?.data;
 
@@ -210,8 +212,6 @@ async function updateNote() {
         lastErrorMessage.value = validationMessage;
       }
     }
-
-    message.error("Failed to update note.");
   } finally {
     isLoading.value = false;
   }
