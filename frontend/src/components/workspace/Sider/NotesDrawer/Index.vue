@@ -26,6 +26,7 @@
         <n-list-item v-for="note in notes.data" :key="`note-${note.id}`">
           <single-note
             :note="note"
+            @update-note="note.value = $event"
             @toggle-user-comments-modal="onToggleUserCommentsModal"
           />
         </n-list-item>

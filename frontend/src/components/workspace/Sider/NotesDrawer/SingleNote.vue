@@ -25,10 +25,12 @@
           canDeleteAnyNote ||
           canUpdateAnyNote
         "
+        :disabled="isLoading"
         :is-note-owner="isNoteOwner"
         :can-view-user-notes="canViewUserNotes"
         :can-delete-any-note="canDeleteAnyNote"
         :can-update-any-note="canUpdateAnyNote"
+        @toggle-note-update="toggleUpdateMode"
         @toggle-user-comments-modal="
           emits('toggle-user-comments-modal', createdBy.id, createdBy.fullName)
         "
@@ -48,24 +50,72 @@
     </template>
 
     <!-- @TODO markdown compiler -->
-    <n-card>
+    <div v-if="isInUpdateMode">
+      <n-input
+        v-model:value="updatedValue"
+        type="textarea"
+        :autosize="{
+          minRows: 5,
+        }"
+      />
+
+      <n-text v-if="lastErrorMessage" type="error">
+        Error: {{ lastErrorMessage }}
+      </n-text>
+    </div>
+
+    <n-card v-else>
       {{ note.value }}
     </n-card>
+
+    <template #footer>
+      <n-space v-if="isInUpdateMode" class="w-100" justify="space-between">
+        <n-button secondary @click="toggleUpdateMode" :loading="isLoading">
+          Cancel
+        </n-button>
+
+        <n-button
+          type="info"
+          secondary
+          :loading="isLoading"
+          :disabled="isUpdatedValueMatchingOriginalValue"
+          @click="updateNote"
+        >
+          Save
+        </n-button>
+      </n-space>
+    </template>
   </n-thing>
 </template>
 
 <script setup lang="ts">
-import { toRefs, type PropType } from "vue";
-import { NThing, NTag, NCard, NText, NTooltip, NAvatar } from "naive-ui";
+import {
+  NTag,
+  NCard,
+  NText,
+  NInput,
+  NSpace,
+  NThing,
+  NAvatar,
+  NButton,
+  NTooltip,
+  useMessage,
+} from "naive-ui";
+import { AxiosError } from "axios";
+import { toRefs, type PropType, ref } from "vue";
 
 import { useAuthStore } from "@/store/auth";
+import { useNotesStore } from "@/store/notes";
+import type { ApiError } from "@/types/ApiError";
 import ActionsDropdown from "./ActionsDropdown.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 
+const message = useMessage();
 const authStore = useAuthStore();
+const notesStore = useNotesStore();
 const dateService = useDateService();
 
 const props = defineProps({
@@ -75,7 +125,12 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(["toggle-user-comments-modal"]);
+const emits = defineEmits(["toggle-user-comments-modal", "update-note"]);
+
+const isLoading = ref(false);
+const updatedValue = ref("");
+const lastErrorMessage = ref("");
+const isInUpdateMode = ref(false);
 
 const { note } = toRefs(props);
 
@@ -86,6 +141,7 @@ const {
   canViewUserNotes,
   canUpdateAnyNote,
   canDeleteAnyNote,
+  isUpdatedValueMatchingOriginalValue,
 } = defineComputed({
   initials() {
     const [name, surname] = props.note.createdBy.fullName.split(" ");
@@ -112,5 +168,51 @@ const {
   canDeleteAnyNote() {
     return authStore.hasPermission(Permission.DeleteAnyNote);
   },
+
+  isUpdatedValueMatchingOriginalValue() {
+    return props.note.value === updatedValue.value;
+  },
 });
+
+function toggleUpdateMode() {
+  if (!isInUpdateMode.value) {
+    updatedValue.value = props.note.value;
+  }
+
+  lastErrorMessage.value = "";
+
+  isInUpdateMode.value = !isInUpdateMode.value;
+}
+
+async function updateNote() {
+  isLoading.value = true;
+
+  try {
+    const id = props.note.id;
+
+    await notesStore.update(id, updatedValue.value);
+
+    emits("update-note", updatedValue.value);
+
+    toggleUpdateMode();
+
+    message.success("Note updated!");
+  } catch (error) {
+    console.log(error);
+
+    message.error("Failed to update note.");
+
+    if (error instanceof AxiosError) {
+      const data: ApiError<{ text: string[] }> = error.response?.data;
+
+      const [validationMessage] = data.body.text;
+
+      if (validationMessage) {
+        lastErrorMessage.value = validationMessage;
+      }
+    }
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>
