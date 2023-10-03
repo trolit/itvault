@@ -6,9 +6,9 @@
     </template>
 
     <template #header>
-      <span>
+      <em>
         {{ createdBy.fullName }}
-      </span>
+      </em>
 
       <br />
 
@@ -25,6 +25,7 @@
           canDeleteAnyNote ||
           canUpdateAnyNote
         "
+        :disabled="isLoading"
         :is-note-owner="isNoteOwner"
         :can-view-user-notes="canViewUserNotes"
         :can-delete-any-note="canDeleteAnyNote"
@@ -65,9 +66,18 @@
 
     <template #footer>
       <n-space v-if="isInUpdateMode" class="w-100" justify="space-between">
-        <n-button secondary @click="toggleUpdateMode"> Cancel </n-button>
+        <n-button secondary @click="toggleUpdateMode" :loading="isLoading">
+          Cancel
+        </n-button>
 
-        <n-button type="info" secondary> Save </n-button>
+        <n-button
+          type="info"
+          secondary
+          :loading="isLoading"
+          @click="updateNote"
+        >
+          Save
+        </n-button>
       </n-space>
     </template>
   </n-thing>
@@ -84,17 +94,21 @@ import {
   NAvatar,
   NButton,
   NTooltip,
+  useMessage,
 } from "naive-ui";
 import { toRefs, type PropType, ref } from "vue";
 
 import { useAuthStore } from "@/store/auth";
+import { useNotesStore } from "@/store/notes";
 import ActionsDropdown from "./ActionsDropdown.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 
+const message = useMessage();
 const authStore = useAuthStore();
+const notesStore = useNotesStore();
 const dateService = useDateService();
 
 const props = defineProps({
@@ -104,8 +118,9 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(["toggle-user-comments-modal"]);
+const emits = defineEmits(["toggle-user-comments-modal", "update-note"]);
 
+const isLoading = ref(false);
 const updatedValue = ref("");
 const isInUpdateMode = ref(false);
 
@@ -152,5 +167,25 @@ function toggleUpdateMode() {
   }
 
   isInUpdateMode.value = !isInUpdateMode.value;
+}
+
+async function updateNote() {
+  isLoading.value = true;
+
+  try {
+    const id = props.note.id;
+
+    await notesStore.update(id, updatedValue.value);
+
+    emits("update-note", updatedValue.value);
+
+    toggleUpdateMode();
+
+    message.success("Note updated!");
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isLoading.value = false;
+  }
 }
 </script>
