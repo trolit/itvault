@@ -6,9 +6,9 @@
     </template>
 
     <template #header>
-      <em>
+      <span>
         {{ createdBy.fullName }}
-      </em>
+      </span>
 
       <br />
 
