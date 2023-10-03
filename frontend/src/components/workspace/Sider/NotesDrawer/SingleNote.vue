@@ -79,6 +79,7 @@
           type="info"
           secondary
           :loading="isLoading"
+          :disabled="isUpdatedValueMatchingOriginalValue"
           @click="updateNote"
         >
           Save
@@ -141,6 +142,7 @@ const {
   canViewUserNotes,
   canUpdateAnyNote,
   canDeleteAnyNote,
+  isUpdatedValueMatchingOriginalValue,
 } = defineComputed({
   initials() {
     const [name, surname] = props.note.createdBy.fullName.split(" ");
@@ -166,6 +168,10 @@ const {
 
   canDeleteAnyNote() {
     return authStore.hasPermission(Permission.DeleteAnyNote);
+  },
+
+  isUpdatedValueMatchingOriginalValue() {
+    return props.note.value === updatedValue.value;
   },
 });
 
