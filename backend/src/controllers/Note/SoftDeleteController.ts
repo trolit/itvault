@@ -41,7 +41,7 @@ export class SoftDeleteController extends BaseController {
 
     const parsedId = parseInt(id);
 
-    if (!isInteger(id) || isNaN(parsedId)) {
+    if (!isInteger(parsedId)) {
       return response.sendStatus(HTTP.BAD_REQUEST);
     }
 
