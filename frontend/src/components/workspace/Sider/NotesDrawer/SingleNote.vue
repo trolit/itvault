@@ -27,9 +27,11 @@
         "
         :disabled="isLoading"
         :is-note-owner="isNoteOwner"
+        :is-removing-element="isLoading"
         :can-view-user-notes="canViewUserNotes"
         :can-delete-any-note="canDeleteAnyNote"
         :can-update-any-note="canUpdateAnyNote"
+        @delete="deleteNote"
         @toggle-note-update="toggleUpdateMode"
         @toggle-user-comments-modal="
           emits('toggle-user-comments-modal', createdBy.id, createdBy.fullName)
@@ -108,6 +110,7 @@ import { useAuthStore } from "@/store/auth";
 import { useNotesStore } from "@/store/notes";
 import type { ApiError } from "@/types/ApiError";
 import ActionsDropdown from "./ActionsDropdown.vue";
+import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
@@ -117,6 +120,7 @@ const message = useMessage();
 const authStore = useAuthStore();
 const notesStore = useNotesStore();
 const dateService = useDateService();
+const workspacesStore = useWorkspacesStore();
 
 const props = defineProps({
   note: {
@@ -211,6 +215,28 @@ async function updateNote() {
         lastErrorMessage.value = validationMessage;
       }
     }
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+async function deleteNote() {
+  isLoading.value = true;
+
+  const fileId = workspacesStore.activeFileTab?.file.id;
+
+  if (!fileId) {
+    message.error("Failed to delete note (file tab not found)");
+
+    return;
+  }
+
+  try {
+    await notesStore.delete(note.value.id, fileId);
+  } catch (error) {
+    console.log(error);
+
+    message.error("Failed to delete note");
   } finally {
     isLoading.value = false;
   }
