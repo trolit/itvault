@@ -1,6 +1,6 @@
 <template>
   <!-- @TODO show some indicator if message is removed or not (display only if permission is enabled)-->
-  <n-thing class="single-note">
+  <n-thing class="single-note" :style="{ opacity: note.isDeleted ? 0.4 : 1 }">
     <template #avatar>
       <n-avatar size="small"> {{ initials }} </n-avatar>
     </template>
