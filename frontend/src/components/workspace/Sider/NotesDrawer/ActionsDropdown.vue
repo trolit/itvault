@@ -64,12 +64,12 @@ const options = ref([
   {
     label: "Update",
     key: "update",
-    show: isNoteOwner.value,
+    show: isNoteOwner.value && !isDeleted.value,
   },
   {
     key: "update-any",
     label: () => h(NText, { type: "info" }, { default: () => "Update (any)" }),
-    show: canUpdateAnyNote.value && !isNoteOwner.value,
+    show: canUpdateAnyNote.value && !isNoteOwner.value && !isDeleted.value,
   },
   {
     key: "delete",
