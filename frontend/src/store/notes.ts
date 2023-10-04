@@ -1,10 +1,10 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import { useWorkspacesStore } from "./workspaces";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import { useWorkspacesStore } from "./workspaces";
 
 interface IState {}
 
@@ -55,13 +55,28 @@ export const useNotesStore = defineStore("notes", {
       });
     },
 
-    delete(id: number) {
+    async delete(id: number, fileId: number) {
       const params = {
         id,
         version: 1,
       };
 
-      return axios.delete(`v1/notes/${id}`, { params });
+      await axios.delete(`v1/notes/${id}`, { params });
+
+      const workspacesStore = useWorkspacesStore();
+
+      // @TODO create function to get tab by file id
+      const fileTab = workspacesStore.tabs.find(tab => tab.file.id === fileId);
+
+      if (!fileTab) {
+        return;
+      }
+
+      const noteIndex = fileTab.notes.data.findIndex(note => note.id === id);
+
+      if (~noteIndex) {
+        fileTab.notes.data.splice(noteIndex, 1);
+      }
     },
   },
 });
