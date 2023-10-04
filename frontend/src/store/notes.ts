@@ -57,7 +57,6 @@ export const useNotesStore = defineStore("notes", {
 
     async delete(id: number, fileId: number) {
       const params = {
-        id,
         version: 1,
       };
 
