@@ -227,17 +227,19 @@ async function deleteNote() {
   const fileId = workspacesStore.activeFileTab?.file.id;
 
   if (!fileId) {
-    message.error("Failed to delete note (file tab not found)");
+    message.error("Failed to delete note (file tab not found)!");
 
     return;
   }
 
   try {
     await notesStore.delete(note.value.id, fileId);
+
+    message.success("Note deleted.");
   } catch (error) {
     console.log(error);
 
-    message.error("Failed to delete note");
+    message.error("Failed to delete note!");
   } finally {
     isLoading.value = false;
   }
