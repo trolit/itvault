@@ -71,10 +71,10 @@ export const useNotesStore = defineStore("notes", {
         return;
       }
 
-      const noteIndex = fileTab.notes.data.findIndex(note => note.id === id);
+      const note = fileTab.notes.data.find(note => note.id === id);
 
-      if (~noteIndex) {
-        fileTab.notes.data.splice(noteIndex, 1);
+      if (note) {
+        note.isDeleted = true;
       }
     },
   },
