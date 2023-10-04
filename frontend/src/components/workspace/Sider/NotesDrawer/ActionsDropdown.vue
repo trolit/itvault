@@ -20,6 +20,8 @@ import { NDropdown, NIcon, NButton, NText, useDialog } from "naive-ui";
 const dialog = useDialog();
 
 interface IProps {
+  isDeleted: boolean;
+
   isNoteOwner: boolean;
 
   canViewUserNotes: boolean;
@@ -40,6 +42,7 @@ const emit = defineEmits([
 ]);
 
 const {
+  isDeleted,
   isNoteOwner,
   canViewUserNotes,
   canUpdateAnyNote,
@@ -71,7 +74,7 @@ const options = ref([
   {
     key: "delete",
     label: () => h(NText, { type: "error" }, { default: () => "Delete" }),
-    show: canDeleteAnyNote.value,
+    show: canDeleteAnyNote.value && !isDeleted.value,
   },
 ]);
 

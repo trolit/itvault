@@ -25,6 +25,7 @@
           canDeleteAnyNote ||
           canUpdateAnyNote
         "
+        :is-deleted="note.isDeleted"
         :disabled="isLoading"
         :is-note-owner="isNoteOwner"
         :is-removing-element="isLoading"
