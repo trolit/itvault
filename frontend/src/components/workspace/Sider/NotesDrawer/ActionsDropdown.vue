@@ -27,6 +27,8 @@ interface IProps {
   canDeleteAnyNote: boolean;
 
   canUpdateAnyNote: boolean;
+
+  isRemovingElement: boolean;
 }
 
 const props = defineProps<IProps>();
@@ -37,8 +39,13 @@ const emit = defineEmits([
   "toggle-user-comments-modal",
 ]);
 
-const { isNoteOwner, canViewUserNotes, canUpdateAnyNote, canDeleteAnyNote } =
-  toRefs(props);
+const {
+  isNoteOwner,
+  canViewUserNotes,
+  canUpdateAnyNote,
+  canDeleteAnyNote,
+  isRemovingElement,
+} = toRefs(props);
 
 const options = ref([
   {
@@ -84,6 +91,7 @@ function handleSelect(key: string) {
   if (key === "delete") {
     dialog.warning({
       title: "Confirm",
+      loading: isRemovingElement.value,
       content: "Are you sure?",
       positiveText: "Delete",
       negativeText: "Cancel",
