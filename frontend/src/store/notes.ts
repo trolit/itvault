@@ -40,7 +40,7 @@ export const useNotesStore = defineStore("notes", {
       return data;
     },
 
-    async update(id: number, text: string) {
+    update(id: number, text: string) {
       const params = {
         id,
         version: 1,
@@ -50,9 +50,18 @@ export const useNotesStore = defineStore("notes", {
         text,
       };
 
-      await axios.put(`v1/notes/${id}`, payload, {
+      return axios.put(`v1/notes/${id}`, payload, {
         params,
       });
+    },
+
+    delete(id: number) {
+      const params = {
+        id,
+        version: 1,
+      };
+
+      return axios.delete(`v1/notes/${id}`, { params });
     },
   },
 });
