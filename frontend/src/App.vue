@@ -10,7 +10,9 @@
       <n-message-provider placement="top-left">
         <app-header v-if="withAppHeader" />
 
-        <app-main :with-app-header="withAppHeader" />
+        <n-dialog-provider>
+          <app-main :with-app-header="withAppHeader" />
+        </n-dialog-provider>
       </n-message-provider>
     </n-loading-bar-provider>
   </n-config-provider>
@@ -29,6 +31,7 @@ import {
   darkTheme,
   NGlobalStyle,
   NConfigProvider,
+  NDialogProvider,
   NMessageProvider,
   NLoadingBarProvider,
   type GlobalThemeOverrides,

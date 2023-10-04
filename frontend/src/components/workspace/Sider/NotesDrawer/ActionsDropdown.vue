@@ -14,8 +14,10 @@
 
 <script setup lang="ts">
 import { h, ref, toRefs } from "vue";
-import { NDropdown, NIcon, NButton, NText } from "naive-ui";
 import { OperationsField as GearIcon } from "@vicons/carbon";
+import { NDropdown, NIcon, NButton, NText, useDialog } from "naive-ui";
+
+const dialog = useDialog();
 
 interface IProps {
   isNoteOwner: boolean;
@@ -29,7 +31,11 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-const emit = defineEmits(["toggle-user-comments-modal", "toggle-note-update"]);
+const emit = defineEmits([
+  "delete",
+  "toggle-note-update",
+  "toggle-user-comments-modal",
+]);
 
 const { isNoteOwner, canViewUserNotes, canUpdateAnyNote, canDeleteAnyNote } =
   toRefs(props);
@@ -71,6 +77,18 @@ function handleSelect(key: string) {
 
   if (key === "update" || key === "update-any") {
     emit("toggle-note-update");
+
+    return;
+  }
+
+  if (key === "delete") {
+    dialog.warning({
+      title: "Confirm",
+      content: "Are you sure?",
+      positiveText: "Delete",
+      negativeText: "Cancel",
+      onPositiveClick: () => emit("delete"),
+    });
 
     return;
   }
