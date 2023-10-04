@@ -1,10 +1,10 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import { useWorkspacesStore } from "./workspaces";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import { useWorkspacesStore } from "./workspaces";
 
 interface IState {}
 
@@ -40,7 +40,7 @@ export const useNotesStore = defineStore("notes", {
       return data;
     },
 
-    async update(id: number, text: string) {
+    update(id: number, text: string) {
       const params = {
         id,
         version: 1,
@@ -50,9 +50,32 @@ export const useNotesStore = defineStore("notes", {
         text,
       };
 
-      await axios.put(`v1/notes/${id}`, payload, {
+      return axios.put(`v1/notes/${id}`, payload, {
         params,
       });
+    },
+
+    async delete(id: number, fileId: number) {
+      const params = {
+        version: 1,
+      };
+
+      await axios.delete(`v1/notes/${id}`, { params });
+
+      const workspacesStore = useWorkspacesStore();
+
+      // @TODO create function to get tab by file id
+      const fileTab = workspacesStore.tabs.find(tab => tab.file.id === fileId);
+
+      if (!fileTab) {
+        return;
+      }
+
+      const note = fileTab.notes.data.find(note => note.id === id);
+
+      if (note) {
+        note.isDeleted = true;
+      }
     },
   },
 });

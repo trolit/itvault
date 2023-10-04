@@ -14,10 +14,14 @@
 
 <script setup lang="ts">
 import { h, ref, toRefs } from "vue";
-import { NDropdown, NIcon, NButton, NText } from "naive-ui";
 import { OperationsField as GearIcon } from "@vicons/carbon";
+import { NDropdown, NIcon, NButton, NText, useDialog } from "naive-ui";
+
+const dialog = useDialog();
 
 interface IProps {
+  isDeleted: boolean;
+
   isNoteOwner: boolean;
 
   canViewUserNotes: boolean;
@@ -25,14 +29,26 @@ interface IProps {
   canDeleteAnyNote: boolean;
 
   canUpdateAnyNote: boolean;
+
+  isRemovingElement: boolean;
 }
 
 const props = defineProps<IProps>();
 
-const emit = defineEmits(["toggle-user-comments-modal", "toggle-note-update"]);
+const emit = defineEmits([
+  "delete",
+  "toggle-note-update",
+  "toggle-user-comments-modal",
+]);
 
-const { isNoteOwner, canViewUserNotes, canUpdateAnyNote, canDeleteAnyNote } =
-  toRefs(props);
+const {
+  isDeleted,
+  isNoteOwner,
+  canViewUserNotes,
+  canUpdateAnyNote,
+  canDeleteAnyNote,
+  isRemovingElement,
+} = toRefs(props);
 
 const options = ref([
   {
@@ -48,17 +64,17 @@ const options = ref([
   {
     label: "Update",
     key: "update",
-    show: isNoteOwner.value,
+    show: isNoteOwner.value && !isDeleted.value,
   },
   {
     key: "update-any",
     label: () => h(NText, { type: "info" }, { default: () => "Update (any)" }),
-    show: canUpdateAnyNote.value && !isNoteOwner.value,
+    show: canUpdateAnyNote.value && !isNoteOwner.value && !isDeleted.value,
   },
   {
     key: "delete",
     label: () => h(NText, { type: "error" }, { default: () => "Delete" }),
-    show: canDeleteAnyNote.value,
+    show: canDeleteAnyNote.value && !isDeleted.value,
   },
 ]);
 
@@ -71,6 +87,19 @@ function handleSelect(key: string) {
 
   if (key === "update" || key === "update-any") {
     emit("toggle-note-update");
+
+    return;
+  }
+
+  if (key === "delete") {
+    dialog.warning({
+      title: "Confirm",
+      loading: isRemovingElement.value,
+      content: "Are you sure?",
+      positiveText: "Delete",
+      negativeText: "Cancel",
+      onPositiveClick: () => emit("delete"),
+    });
 
     return;
   }
