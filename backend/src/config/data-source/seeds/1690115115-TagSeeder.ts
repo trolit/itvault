@@ -10,6 +10,6 @@ export default class TagSeeder implements Seeder {
   ) {
     const tagFactory = factoryManager.get(Tag);
 
-    await tagFactory.saveMany(15);
+    await tagFactory.saveMany(20);
   }
 }
