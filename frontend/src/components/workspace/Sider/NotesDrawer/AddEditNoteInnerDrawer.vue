@@ -9,10 +9,10 @@
   >
     <n-drawer-content>
       <add-edit-note-form
-        value=""
         :is-loading="isLoading"
-        @save="addNote"
-        @cancel="$emit('update:is-visible', false)"
+        :value="noteToEdit?.value || ''"
+        @save="save"
+        @cancel="$emit('cancel')"
       />
     </n-drawer-content>
   </n-drawer>
@@ -23,20 +23,23 @@ import { ref, toRefs } from "vue";
 import { NDrawer, NDrawerContent } from "naive-ui";
 
 import AddEditNoteForm from "./AddEditNoteForm.vue";
+import type { INoteDto } from "@shared/types/dtos/INoteDto";
 
 interface IProps {
   isVisible: boolean;
+
+  noteToEdit: INoteDto | null;
 }
 
 const props = defineProps<IProps>();
 
-defineEmits(["update:is-visible"]);
+defineEmits(["cancel"]);
 
-const { isVisible } = toRefs(props);
+const { isVisible, noteToEdit } = toRefs(props);
 
 const isLoading = ref(false);
 
-function addNote() {
+function save() {
   // @TODO
 }
 </script>
