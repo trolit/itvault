@@ -10,10 +10,14 @@ const buildPath = (path: string) => FILES.ROOT.concat("/", path);
 const relativePaths = [
   buildPath("src"),
 
+  buildPath("src/jobs"),
   buildPath("src/models"),
   buildPath("src/helpers"),
+  buildPath("src/services/dayjs"),
   buildPath("src/services"),
+  buildPath("src/services/common"),
   buildPath("src/factories"),
+  buildPath("src/middleware"),
 
   buildPath("src/config"),
   buildPath("src/config/database"),
