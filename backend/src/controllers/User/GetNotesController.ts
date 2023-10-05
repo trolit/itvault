@@ -78,6 +78,9 @@ export class GetNotesController extends BaseController {
           id,
         },
       },
+      order: {
+        createdAt: "desc",
+      },
       relations: {
         createdBy: {
           role: true,
