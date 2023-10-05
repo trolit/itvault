@@ -14,6 +14,7 @@
     @update:show="drawerStore.setActiveDrawer(null)"
   >
     <n-drawer-content
+      id="notes-drawer-content"
       title="Notes"
       closable
       :footer-style="{
@@ -42,6 +43,21 @@
         </n-list-item>
       </n-list>
 
+      <n-drawer
+        v-model:show="isAddNoteDrawerVisible"
+        resizable
+        :show-mask="false"
+        :trap-focus="false"
+        to="#notes-drawer-content"
+        placement="bottom"
+      >
+        <n-drawer-content>
+          <n-divider />
+
+          Stoner is a 1965 novel by the American writer John Williams.
+        </n-drawer-content>
+      </n-drawer>
+
       <template #footer>
         <n-pagination
           :disabled="isLoading"
@@ -53,7 +69,12 @@
           @update:page="onPageChange"
         />
 
-        <n-button :disabled="isLoading" size="small" ghost>
+        <n-button
+          :disabled="isLoading"
+          size="small"
+          ghost
+          @click="isAddNoteDrawerVisible = true"
+        >
           <n-icon :component="AddIcon" :size="25" />
         </n-button>
       </template>
@@ -74,6 +95,7 @@ import {
   NButton,
   NDrawer,
   NResult,
+  NDivider,
   NListItem,
   NPagination,
   NDrawerContent,
@@ -100,6 +122,7 @@ const perPage = 5;
 const userId = ref(0);
 const isLoading = ref(true);
 const userFullName = ref("");
+const isAddNoteDrawerVisible = ref(false);
 const isUserNotesModalVisible = ref(false);
 
 const { activeFileTab } = storeToRefs(workspacesStore);
