@@ -1,6 +1,6 @@
 import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
-import { And, In, Like, Not, Repository } from "typeorm";
+import { In, Like, Not, Repository } from "typeorm";
 import { IDirectoryRepository } from "types/repositories/IDirectoryRepository";
 
 import { FILES } from "@config";
@@ -24,7 +24,7 @@ export class DirectoryRepository
     // @NOTE (1) fetch all workspace related directories
     const directories = await this.database.find({
       where: {
-        relativePath: And(Not(Like(`${FILES.ROOT}/%/%`)), Not(FILES.ROOT)),
+        relativePath: Not(FILES.ROOT),
         files: { workspace: { id: workspaceId } },
       },
     });
@@ -63,7 +63,7 @@ export class DirectoryRepository
           },
         },
         parentDirectory: {
-          relativePath,
+          relativePath: Like(`${relativePath}%`),
         },
       },
     });
