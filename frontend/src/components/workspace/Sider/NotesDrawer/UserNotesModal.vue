@@ -19,7 +19,7 @@
           </template>
 
           <n-card>
-            {{ note.value }}
+            <div v-html="markdown.render(note.value)" />
           </n-card>
         </n-thing>
 
@@ -62,10 +62,12 @@ import { useUsersStore } from "@/store/users";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { defineWatchers } from "@/helpers/defineWatchers";
+import { useMarkdownService } from "@/services/useMarkdownService";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const usersStore = useUsersStore();
 const dateService = useDateService();
+const markdown = useMarkdownService();
 
 const page = ref(1);
 const isLoading = ref(false);
