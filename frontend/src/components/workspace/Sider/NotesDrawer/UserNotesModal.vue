@@ -19,7 +19,10 @@
           </template>
 
           <n-card>
-            <div v-html="markdown.render(note.value)" />
+            <div
+              v-html="markdown.render(note.value)"
+              class="note-render-area"
+            />
           </n-card>
         </n-thing>
 

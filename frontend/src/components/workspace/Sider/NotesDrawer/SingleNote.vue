@@ -68,7 +68,7 @@
     </div>
 
     <n-card v-else>
-      <div v-html="markdown.render(note.value)" class="note-render" />
+      <div v-html="markdown.render(note.value)" class="note-render-area" />
     </n-card>
 
     <template #footer>
