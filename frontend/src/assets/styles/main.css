@@ -101,3 +101,10 @@
     align-items: center;
   }
 }
+
+.note-render-area {
+  img {
+    height: auto;
+    max-width: 100%;
+  }
+}
