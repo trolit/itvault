@@ -40,6 +40,34 @@ export const useNotesStore = defineStore("notes", {
       return data;
     },
 
+    async store(text: string, fileId: number) {
+      const params = {
+        version: 1,
+      };
+
+      const payload = {
+        text,
+      };
+
+      const { data: item } = await axios.post<INoteDto>(`v1/notes`, payload, {
+        params,
+      });
+
+      const workspacesStore = useWorkspacesStore();
+
+      // @TODO create function to get tab by file id
+      const fileTab = workspacesStore.tabs.find(tab => tab.file.id === fileId);
+
+      if (!fileTab) {
+        return;
+      }
+
+      fileTab.notes.total += 1;
+      fileTab.notes.data.unshift(item);
+
+      return item;
+    },
+
     update(id: number, text: string) {
       const params = {
         id,
