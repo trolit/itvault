@@ -41,13 +41,10 @@ import { object, string } from "yup";
 import { NForm, NFormItem, NInput, NSpace, NButton } from "naive-ui";
 
 import { defineForm } from "@/helpers/defineForm";
-import { defineWatchers } from "@/helpers/defineWatchers";
 import { defineComputed } from "@/helpers/defineComputed";
 
 interface IProps {
   isLoading: boolean;
-
-  isVisible: boolean;
 
   value: string;
 }
@@ -56,7 +53,7 @@ const props = defineProps<IProps>();
 
 const emit = defineEmits(["cancel", "save"]);
 
-const { isLoading, isVisible, value: originalText } = toRefs(props);
+const { isLoading, value: originalText } = toRefs(props);
 
 const defaultFormData: { text: string } = {
   text: "",
@@ -71,6 +68,8 @@ const { fields, getError, hasError, setFormData, handleSubmit } = defineForm<{
   })
 );
 
+setFormData({ text: originalText.value });
+
 const {
   text: { value: text },
 } = fields;
@@ -82,19 +81,6 @@ const onSubmit = handleSubmit.withControlled(async formData => {
 const { isInitialValue } = defineComputed({
   isInitialValue() {
     return originalText.value === text.value;
-  },
-});
-
-defineWatchers({
-  isVisible: {
-    source: isVisible,
-    handler(value: boolean) {
-      if (!value) {
-        return;
-      }
-
-      setFormData({ text: originalText.value });
-    },
   },
 });
 </script>
