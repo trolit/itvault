@@ -3,7 +3,7 @@
     <!-- @TODO allow to pass custom message -->
     <loading-page v-if="isLoading" :is-failed="isFailed" />
 
-    <general-layout v-else-if="!isFailed">
+    <general-layout id="general-layout" v-else-if="!isFailed">
       <template #sider>
         <sider />
       </template>

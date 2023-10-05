@@ -1,11 +1,13 @@
 <template>
   <n-drawer
+    resizable
     :show="isActive"
-    :width="340"
     placement="left"
-    to="#sider"
+    :min-width="340"
+    :default-width="340"
     :show-mask="false"
     :trap-focus="false"
+    to="#general-layout"
     :block-scroll="false"
     :mask-closable="false"
     class="notes-drawer"
