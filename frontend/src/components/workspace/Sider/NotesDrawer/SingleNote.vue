@@ -68,7 +68,7 @@
     </div>
 
     <n-card v-else>
-      {{ note.value }}
+      <div v-html="markdown.render(note.value)" />
     </n-card>
 
     <template #footer>
@@ -116,11 +116,13 @@ import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
+import { useMarkdownService } from "@/services/useMarkdownService";
 
 const message = useMessage();
 const authStore = useAuthStore();
 const notesStore = useNotesStore();
 const dateService = useDateService();
+const markdown = useMarkdownService();
 const workspacesStore = useWorkspacesStore();
 
 const props = defineProps({
