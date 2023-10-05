@@ -52,7 +52,7 @@
       </n-tooltip>
     </template>
 
-    <!-- @TODO markdown compiler -->
+    <!-- @TODO add some panel that allows to paste syntax -->
     <div v-if="isInUpdateMode">
       <n-input
         v-model:value="updatedValue"
