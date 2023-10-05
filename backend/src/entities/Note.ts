@@ -6,7 +6,9 @@ import { User } from "./User";
 
 @Entity("notes")
 export class Note extends Base {
-  @Column()
+  @Column({
+    type: "longtext",
+  })
   value: string;
 
   @ManyToOne(() => User, { cascade: false })
