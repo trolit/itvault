@@ -55,15 +55,18 @@ import {
   NButton,
   NDrawer,
   NFormItem,
+  useMessage,
   NDrawerContent,
 } from "naive-ui";
 import { ref, toRefs } from "vue";
 import { object, string } from "yup";
 
+import { useNotesStore } from "@/store/notes";
 import { defineForm } from "@/helpers/defineForm";
 import { defineComputed } from "@/helpers/defineComputed";
-import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import { defineWatchers } from "@/helpers/defineWatchers";
+import type { INoteDto } from "@shared/types/dtos/INoteDto";
+import { useWorkspacesStore } from "@/store/workspaces";
 
 interface IProps {
   isVisible: boolean;
@@ -71,9 +74,13 @@ interface IProps {
   noteToEdit: INoteDto | null;
 }
 
+const message = useMessage();
+const notesStore = useNotesStore();
+const workspacesStore = useWorkspacesStore();
+
 const props = defineProps<IProps>();
 
-defineEmits(["cancel"]);
+const emits = defineEmits(["cancel", "update-note"]);
 
 const { isVisible, noteToEdit } = toRefs(props);
 
@@ -135,6 +142,34 @@ defineWatchers({
 });
 
 const onSubmit = handleSubmit.withControlled(async formData => {
-  // emit("save", formData.text);
+  isLoading.value = true;
+
+  const fileId = workspacesStore.activeFileTab?.file.id;
+
+  if (!fileId) {
+    message.error("Failed to delete note (file tab not found)!");
+
+    return;
+  }
+
+  const noteId = noteToEdit.value?.id;
+
+  try {
+    noteId
+      ? await notesStore.update(noteId, formData.text)
+      : await notesStore.store(formData.text, "File", fileId);
+
+    if (noteId) {
+      emits("update-note", formData.text);
+    }
+
+    message.success("Note updated!");
+  } catch (error) {
+    console.log(error);
+
+    message.error("Failed to update note.");
+  } finally {
+    isLoading.value = false;
+  }
 });
 </script>
