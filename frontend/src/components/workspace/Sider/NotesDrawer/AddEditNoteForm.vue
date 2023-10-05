@@ -1,9 +1,7 @@
 <template>
   <div>
-    <n-form>
+    <n-form :show-label="false" :style="{ paddingTop: '20px' }">
       <n-form-item
-        label="Text"
-        :required="true"
         :feedback="getError('text')"
         :validation-status="hasError('text')"
       >
@@ -11,7 +9,7 @@
           v-model:value="text"
           type="textarea"
           :autosize="{
-            minRows: 5,
+            minRows: 8,
           }"
         />
       </n-form-item>
