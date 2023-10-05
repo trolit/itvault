@@ -1,3 +1,4 @@
+import random from "lodash/random";
 import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
 import { Seeder } from "typeorm-extension";
@@ -13,11 +14,13 @@ export default class BlueprintSeeder implements Seeder {
     const workspaces = await workspaceRepository.find();
 
     for (const workspace of workspaces) {
+      const descriptionCount = random(8, 25);
+
       for (let index = 0; index < 20; index++) {
         await blueprintRepository.save({
           name: `BR${index + 1}`,
           color: faker.color.rgb({ format: "hex", casing: "upper" }),
-          description: `Blueprint ${index + 1}`,
+          description: faker.random.words(descriptionCount),
           workspace,
         });
       }
