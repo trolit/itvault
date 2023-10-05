@@ -11,7 +11,15 @@
     class="notes-drawer"
     @update:show="drawerStore.setActiveDrawer(null)"
   >
-    <n-drawer-content title="Notes" closable>
+    <n-drawer-content
+      title="Notes"
+      closable
+      :footer-style="{
+        display: 'flex',
+        margin: '0 10px',
+        justifyContent: 'space-between',
+      }"
+    >
       <loading-section v-if="isLoading" />
 
       <n-result
@@ -34,7 +42,7 @@
 
       <template #footer>
         <n-pagination
-          v-if="!isLoading"
+          :disabled="isLoading"
           size="small"
           :page="notes.page"
           :page-size="perPage"
@@ -42,6 +50,10 @@
           :page-slot="6"
           @update:page="onPageChange"
         />
+
+        <n-button :disabled="isLoading" size="small" ghost>
+          <n-icon :component="AddIcon" :size="25" />
+        </n-button>
       </template>
 
       <user-notes-modal
@@ -56,6 +68,8 @@
 <script setup lang="ts">
 import {
   NList,
+  NIcon,
+  NButton,
   NDrawer,
   NResult,
   NListItem,
@@ -64,6 +78,7 @@ import {
 } from "naive-ui";
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
+import { Add as AddIcon } from "@vicons/carbon";
 
 import SingleNote from "./SingleNote.vue";
 import { Drawer } from "@/types/enums/Drawer";
