@@ -31,7 +31,7 @@
       </n-form>
 
       <template #footer>
-        <n-button secondary :loading="isLoading" @click="$emit('cancel')">
+        <n-button secondary :loading="isLoading" @click="$emit('close')">
           Cancel
         </n-button>
 
@@ -81,7 +81,7 @@ const workspacesStore = useWorkspacesStore();
 
 const props = defineProps<IProps>();
 
-const emits = defineEmits(["cancel", "update-note"]);
+const emits = defineEmits(["close", "update-note"]);
 
 const { isVisible, noteToEdit } = toRefs(props);
 
@@ -166,6 +166,8 @@ const onSubmit = handleSubmit.withControlled(async formData => {
     }
 
     message.success("Note updated!");
+
+    emits("close");
   } catch (error) {
     console.log(error);
 
