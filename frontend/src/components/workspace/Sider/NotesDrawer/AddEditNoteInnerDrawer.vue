@@ -98,6 +98,7 @@ const { fields, getError, hasError, setFormData, handleSubmit, resetForm } =
     })
   );
 
+const fileId = ref(0);
 const isLoading = ref(false);
 
 const {
@@ -125,6 +126,8 @@ defineWatchers({
       if (noteToEdit.value) {
         setFormData({ text: noteToEdit.value.value });
       }
+
+      fileId.value = workspacesStore.activeFileTab?.file.id || 0;
     },
   },
 
@@ -144,9 +147,7 @@ defineWatchers({
 const onSubmit = handleSubmit.withControlled(async formData => {
   isLoading.value = true;
 
-  const fileId = workspacesStore.activeFileTab?.file.id;
-
-  if (!fileId) {
+  if (!fileId.value) {
     message.error("Failed to delete note (file tab not found)!");
 
     return;
@@ -157,7 +158,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   try {
     noteId
       ? await notesStore.update(noteId, formData.text)
-      : await notesStore.store(formData.text, "File", fileId);
+      : await notesStore.store(formData.text, "File", fileId.value);
 
     if (noteId) {
       emits("update-note", formData.text);
