@@ -19,11 +19,13 @@ export class NoteMapper extends BaseMapper<Note> implements INoteDto {
 
     const { createdBy, updatedBy, deletedAt } = data;
 
-    this.createdBy = {
-      id: createdBy.id,
-      fullName: createdBy.fullName,
-      role: createdBy.role.name,
-    };
+    if (createdBy) {
+      this.createdBy = {
+        id: createdBy.id,
+        fullName: createdBy.fullName,
+        role: createdBy.role?.name,
+      };
+    }
 
     this.updatedBy = updatedBy.fullName;
     this.isDeleted = !!deletedAt;
