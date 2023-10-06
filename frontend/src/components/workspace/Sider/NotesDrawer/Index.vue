@@ -139,6 +139,8 @@ defineWatchers({
     source: isActive,
     handler: () => {
       if (!isActive.value) {
+        isAddEditNoteDrawerVisible.value = false;
+
         return;
       }
 
