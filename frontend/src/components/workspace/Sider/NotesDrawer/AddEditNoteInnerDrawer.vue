@@ -22,6 +22,7 @@
           <n-input
             v-model:value="text"
             type="textarea"
+            placeholder="comment..."
             :autosize="{
               minRows: 8,
             }"
