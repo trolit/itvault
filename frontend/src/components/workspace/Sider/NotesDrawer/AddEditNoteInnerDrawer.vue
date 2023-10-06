@@ -16,6 +16,7 @@
         justifyContent: 'space-between',
       }"
     >
+      <!-- @TODO menu that allows to input markdown syntax at carriage position -->
       <n-form :show-label="false" :style="{ paddingTop: '20px' }">
         <n-form-item
           :feedback="getError('text')"
