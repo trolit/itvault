@@ -5,7 +5,6 @@ import { useWorkspacesStore } from "./workspaces";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import { useAuthStore } from "./auth";
 
 interface IState {}
 
@@ -57,25 +56,6 @@ export const useNotesStore = defineStore("notes", {
       const { data: item } = await axios.post<INoteDto>(`v1/notes`, payload, {
         params,
       });
-
-      const authStore = useAuthStore();
-      const workspacesStore = useWorkspacesStore();
-
-      // @TODO create function to get tab by file id
-      const fileTab = workspacesStore.tabs.find(tab => tab.file.id === fileId);
-
-      if (!fileTab) {
-        return;
-      }
-
-      const {
-        profile: { id, fullName, roleName },
-      } = authStore;
-
-      item.createdBy = { id, fullName, role: roleName };
-
-      fileTab.notes.total += 1;
-      fileTab.notes.data.unshift(item);
 
       return item;
     },

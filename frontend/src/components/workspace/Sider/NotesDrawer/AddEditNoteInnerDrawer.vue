@@ -81,7 +81,7 @@ const workspacesStore = useWorkspacesStore();
 
 const props = defineProps<IProps>();
 
-const emits = defineEmits(["close", "update-note"]);
+const emits = defineEmits(["close", "update-note", "refetch-notes"]);
 
 const { isVisible, noteToEdit } = toRefs(props);
 
@@ -163,6 +163,8 @@ const onSubmit = handleSubmit.withControlled(async formData => {
 
     if (noteId) {
       emits("update-note", formData.text);
+    } else {
+      emits("refetch-notes");
     }
 
     message.success("Note updated!");

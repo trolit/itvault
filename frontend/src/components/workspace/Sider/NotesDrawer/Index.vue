@@ -47,6 +47,7 @@
         :note-to-edit="noteToEdit"
         :is-visible="isAddEditNoteDrawerVisible"
         @update-note="onNoteUpdate"
+        @refetch-notes="refetchNotes"
         @close="onAddEditNoteInnerDrawerClose"
       />
 
@@ -174,6 +175,14 @@ function onToggleUserCommentsModal(id: number, fullName: string) {
   userFullName.value = fullName;
 
   isUserNotesModalVisible.value = true;
+}
+
+function refetchNotes() {
+  if (workspacesStore.activeFileTab) {
+    workspacesStore.activeFileTab.notes.page = 1;
+
+    fetchNotes();
+  }
 }
 
 async function fetchNotes() {
