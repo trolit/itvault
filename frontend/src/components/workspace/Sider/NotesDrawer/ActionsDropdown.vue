@@ -13,9 +13,11 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, toRefs } from "vue";
+import { h, toRefs } from "vue";
 import { OperationsField as GearIcon } from "@vicons/carbon";
 import { NDropdown, NIcon, NButton, NText, useDialog } from "naive-ui";
+
+import { defineComputed } from "@/helpers/defineComputed";
 
 const dialog = useDialog();
 
@@ -50,33 +52,38 @@ const {
   isRemovingElement,
 } = toRefs(props);
 
-const options = ref([
-  {
-    label: "Profile",
-    key: "profile",
-    disabled: true,
+const { options } = defineComputed({
+  options() {
+    return [
+      {
+        label: "Profile",
+        key: "profile",
+        disabled: true,
+      },
+      {
+        label: "Comments",
+        key: "notes",
+        show: canViewUserNotes.value,
+      },
+      {
+        label: "Update",
+        key: "update",
+        show: isNoteOwner.value && !isDeleted.value,
+      },
+      {
+        key: "update-any",
+        label: () =>
+          h(NText, { type: "info" }, { default: () => "Update (any)" }),
+        show: canUpdateAnyNote.value && !isNoteOwner.value && !isDeleted.value,
+      },
+      {
+        key: "delete",
+        label: () => h(NText, { type: "error" }, { default: () => "Delete" }),
+        show: canDeleteAnyNote.value && !isDeleted.value,
+      },
+    ];
   },
-  {
-    label: "Comments",
-    key: "notes",
-    show: canViewUserNotes.value,
-  },
-  {
-    label: "Update",
-    key: "update",
-    show: isNoteOwner.value && !isDeleted.value,
-  },
-  {
-    key: "update-any",
-    label: () => h(NText, { type: "info" }, { default: () => "Update (any)" }),
-    show: canUpdateAnyNote.value && !isNoteOwner.value && !isDeleted.value,
-  },
-  {
-    key: "delete",
-    label: () => h(NText, { type: "error" }, { default: () => "Delete" }),
-    show: canDeleteAnyNote.value && !isDeleted.value,
-  },
-]);
+});
 
 function handleSelect(key: string) {
   if (key === "notes") {
