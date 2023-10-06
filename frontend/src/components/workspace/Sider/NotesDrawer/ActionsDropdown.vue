@@ -13,14 +13,29 @@
 </template>
 
 <script setup lang="ts">
-import { h, ref, toRefs } from "vue";
+import {
+  NIcon,
+  NText,
+  NButton,
+  NDropdown,
+  useDialog,
+  useMessage,
+} from "naive-ui";
+import { h, toRefs } from "vue";
 import { OperationsField as GearIcon } from "@vicons/carbon";
-import { NDropdown, NIcon, NButton, NText, useDialog } from "naive-ui";
+
+import { useNotesStore } from "@/store/notes";
+import { useWorkspacesStore } from "@/store/workspaces";
+import { defineComputed } from "@/helpers/defineComputed";
+import type { INoteDto } from "@shared/types/dtos/INoteDto";
 
 const dialog = useDialog();
+const message = useMessage();
+const notesStore = useNotesStore();
+const workspacesStore = useWorkspacesStore();
 
 interface IProps {
-  isDeleted: boolean;
+  note: INoteDto;
 
   isNoteOwner: boolean;
 
@@ -29,54 +44,53 @@ interface IProps {
   canDeleteAnyNote: boolean;
 
   canUpdateAnyNote: boolean;
-
-  isRemovingElement: boolean;
 }
 
 const props = defineProps<IProps>();
 
-const emit = defineEmits([
-  "delete",
-  "toggle-note-update",
-  "toggle-user-comments-modal",
-]);
+const emit = defineEmits(["toggle-note-update", "toggle-user-comments-modal"]);
 
 const {
-  isDeleted,
+  note,
   isNoteOwner,
   canViewUserNotes,
   canUpdateAnyNote,
   canDeleteAnyNote,
-  isRemovingElement,
 } = toRefs(props);
 
-const options = ref([
-  {
-    label: "Profile",
-    key: "profile",
-    disabled: true,
+const { options } = defineComputed({
+  options() {
+    return [
+      {
+        label: "Profile",
+        key: "profile",
+        disabled: true,
+      },
+      {
+        label: "Comments",
+        key: "notes",
+        show: canViewUserNotes.value,
+      },
+      {
+        label: "Update",
+        key: "update",
+        show: isNoteOwner.value && !note.value.isDeleted,
+      },
+      {
+        key: "update-any",
+        label: () =>
+          h(NText, { type: "info" }, { default: () => "Update (any)" }),
+        show:
+          canUpdateAnyNote.value && !isNoteOwner.value && !note.value.isDeleted,
+      },
+      {
+        key: "delete",
+        label: () => h(NText, { type: "error" }, { default: () => "Delete" }),
+        show: canDeleteAnyNote.value && !note.value.isDeleted,
+      },
+    ];
   },
-  {
-    label: "Comments",
-    key: "notes",
-    show: canViewUserNotes.value,
-  },
-  {
-    label: "Update",
-    key: "update",
-    show: isNoteOwner.value && !isDeleted.value,
-  },
-  {
-    key: "update-any",
-    label: () => h(NText, { type: "info" }, { default: () => "Update (any)" }),
-    show: canUpdateAnyNote.value && !isNoteOwner.value && !isDeleted.value,
-  },
-  {
-    key: "delete",
-    label: () => h(NText, { type: "error" }, { default: () => "Delete" }),
-    show: canDeleteAnyNote.value && !isDeleted.value,
-  },
-]);
+});
 
 function handleSelect(key: string) {
   if (key === "notes") {
@@ -92,13 +106,32 @@ function handleSelect(key: string) {
   }
 
   if (key === "delete") {
-    dialog.warning({
+    const deleteDialog = dialog.warning({
       title: "Confirm",
-      loading: isRemovingElement.value,
       content: "Are you sure?",
       positiveText: "Delete",
-      negativeText: "Cancel",
-      onPositiveClick: () => emit("delete"),
+      negativeText: "Close",
+      onPositiveClick: async () => {
+        deleteDialog.loading = true;
+
+        const fileId = workspacesStore.activeFileTab?.file.id;
+
+        if (!fileId) {
+          message.error("Failed to delete note (file tab not found)!");
+
+          return;
+        }
+
+        try {
+          await notesStore.delete(note.value.id, fileId);
+
+          message.success("Note deleted.");
+        } catch (error) {
+          console.log(error);
+
+          message.error("Failed to delete note!");
+        }
+      },
     });
 
     return;

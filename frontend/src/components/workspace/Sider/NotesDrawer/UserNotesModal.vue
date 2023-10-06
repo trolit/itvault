@@ -9,7 +9,11 @@
 
     <n-scrollbar :style="{ marginTop: '10px', height: '80vh' }">
       <n-space vertical size="large">
-        <n-thing v-for="note in usersStore.notes.result" :key="note.id">
+        <n-thing
+          v-for="note in usersStore.notes.result"
+          :key="note.id"
+          :style="{ opacity: note.isDeleted ? 0.4 : 1 }"
+        >
           <template #header-extra>
             <div class="align-center">
               <n-icon :component="TimeIcon" :size="20" :depth="5" />

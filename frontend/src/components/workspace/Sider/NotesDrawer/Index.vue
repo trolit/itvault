@@ -1,17 +1,28 @@
 <template>
   <n-drawer
+    resizable
     :show="isActive"
-    :width="340"
     placement="left"
-    to="#sider"
+    :min-width="340"
+    :default-width="340"
     :show-mask="false"
     :trap-focus="false"
+    to="#general-layout"
     :block-scroll="false"
     :mask-closable="false"
     class="notes-drawer"
     @update:show="drawerStore.setActiveDrawer(null)"
   >
-    <n-drawer-content title="Notes" closable>
+    <n-drawer-content
+      id="notes-drawer-content"
+      title="Notes"
+      closable
+      :footer-style="{
+        display: 'flex',
+        margin: '0 10px',
+        justifyContent: 'space-between',
+      }"
+    >
       <loading-section v-if="isLoading" />
 
       <n-result
@@ -26,15 +37,23 @@
         <n-list-item v-for="note in notes.data" :key="`note-${note.id}`">
           <single-note
             :note="note"
-            @update-note="note.value = $event"
+            @edit-note="onNoteEdit(note)"
             @toggle-user-comments-modal="onToggleUserCommentsModal"
           />
         </n-list-item>
       </n-list>
 
+      <add-edit-note-inner-drawer
+        :note-to-edit="noteToEdit"
+        :is-visible="isAddEditNoteDrawerVisible"
+        @update-note="onNoteUpdate"
+        @refetch-notes="refetchNotes"
+        @close="onAddEditNoteInnerDrawerClose"
+      />
+
       <template #footer>
         <n-pagination
-          v-if="!isLoading"
+          :disabled="isLoading"
           size="small"
           :page="notes.page"
           :page-size="perPage"
@@ -42,6 +61,15 @@
           :page-slot="6"
           @update:page="onPageChange"
         />
+
+        <n-button
+          :disabled="isLoading"
+          size="small"
+          ghost
+          @click="isAddEditNoteDrawerVisible = true"
+        >
+          <n-icon :component="AddIcon" :size="25" />
+        </n-button>
       </template>
 
       <user-notes-modal
@@ -56,14 +84,17 @@
 <script setup lang="ts">
 import {
   NList,
+  NIcon,
+  NButton,
   NDrawer,
   NResult,
   NListItem,
   NPagination,
   NDrawerContent,
 } from "naive-ui";
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import { storeToRefs } from "pinia";
+import { Add as AddIcon } from "@vicons/carbon";
 
 import SingleNote from "./SingleNote.vue";
 import { Drawer } from "@/types/enums/Drawer";
@@ -73,6 +104,8 @@ import UserNotesModal from "./UserNotesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
+import type { INoteDto } from "@shared/types/dtos/INoteDto";
+import AddEditNoteInnerDrawer from "./AddEditNoteInnerDrawer.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const notesStore = useNotesStore();
@@ -84,6 +117,8 @@ const userId = ref(0);
 const isLoading = ref(true);
 const userFullName = ref("");
 const isUserNotesModalVisible = ref(false);
+const isAddEditNoteDrawerVisible = ref(false);
+const noteToEdit: Ref<INoteDto | null> = ref(null);
 
 const { activeFileTab } = storeToRefs(workspacesStore);
 
@@ -104,6 +139,8 @@ defineWatchers({
     source: isActive,
     handler: () => {
       if (!isActive.value) {
+        isAddEditNoteDrawerVisible.value = false;
+
         return;
       }
 
@@ -142,6 +179,14 @@ function onToggleUserCommentsModal(id: number, fullName: string) {
   isUserNotesModalVisible.value = true;
 }
 
+function refetchNotes() {
+  if (workspacesStore.activeFileTab) {
+    workspacesStore.activeFileTab.notes.page = 1;
+
+    fetchNotes();
+  }
+}
+
 async function fetchNotes() {
   isLoading.value = true;
 
@@ -156,5 +201,23 @@ async function fetchNotes() {
   } finally {
     isLoading.value = false;
   }
+}
+
+function onNoteEdit(note: INoteDto) {
+  isAddEditNoteDrawerVisible.value = true;
+
+  noteToEdit.value = note;
+}
+
+function onNoteUpdate(text: string) {
+  if (noteToEdit.value) {
+    noteToEdit.value.value = text;
+  }
+}
+
+function onAddEditNoteInnerDrawerClose() {
+  noteToEdit.value = null;
+
+  isAddEditNoteDrawerVisible.value = false;
 }
 </script>

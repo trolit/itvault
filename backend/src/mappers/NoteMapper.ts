@@ -22,7 +22,7 @@ export class NoteMapper extends BaseMapper<Note> implements INoteDto {
     this.createdBy = {
       id: createdBy.id,
       fullName: createdBy.fullName,
-      role: createdBy.role.name,
+      role: createdBy.role?.name,
     };
 
     this.updatedBy = updatedBy.fullName;

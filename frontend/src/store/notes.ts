@@ -40,6 +40,26 @@ export const useNotesStore = defineStore("notes", {
       return data;
     },
 
+    async store(text: string, resource: string, fileId: number) {
+      const params = {
+        version: 1,
+      };
+
+      const payload = {
+        text,
+        resource: {
+          id: fileId,
+          name: resource,
+        },
+      };
+
+      const { data: item } = await axios.post<INoteDto>(`v1/notes`, payload, {
+        params,
+      });
+
+      return item;
+    },
+
     update(id: number, text: string) {
       const params = {
         id,

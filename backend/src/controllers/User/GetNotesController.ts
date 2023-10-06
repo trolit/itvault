@@ -41,6 +41,7 @@ export class GetNotesController extends BaseController {
       value: true,
       createdAt: true,
       updatedAt: true,
+      deletedAt: true,
       createdBy: {
         id: true,
         fullName: true,
