@@ -37,26 +37,18 @@
         <n-list-item v-for="note in notes.data" :key="`note-${note.id}`">
           <single-note
             :note="note"
-            @update-note="note.value = $event"
+            @edit-note="onNoteEdit(note)"
             @toggle-user-comments-modal="onToggleUserCommentsModal"
           />
         </n-list-item>
       </n-list>
 
-      <n-drawer
-        v-model:show="isAddNoteDrawerVisible"
-        resizable
-        :show-mask="false"
-        :trap-focus="false"
-        to="#notes-drawer-content"
-        placement="bottom"
-      >
-        <n-drawer-content>
-          <n-divider />
-
-          Stoner is a 1965 novel by the American writer John Williams.
-        </n-drawer-content>
-      </n-drawer>
+      <add-edit-note-inner-drawer
+        :note-to-edit="noteToEdit"
+        :is-visible="isAddEditNoteDrawerVisible"
+        @update-note="onNoteUpdate"
+        @close="onAddEditNoteInnerDrawerClose"
+      />
 
       <template #footer>
         <n-pagination
@@ -73,7 +65,7 @@
           :disabled="isLoading"
           size="small"
           ghost
-          @click="isAddNoteDrawerVisible = true"
+          @click="isAddEditNoteDrawerVisible = true"
         >
           <n-icon :component="AddIcon" :size="25" />
         </n-button>
@@ -95,12 +87,11 @@ import {
   NButton,
   NDrawer,
   NResult,
-  NDivider,
   NListItem,
   NPagination,
   NDrawerContent,
 } from "naive-ui";
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import { storeToRefs } from "pinia";
 import { Add as AddIcon } from "@vicons/carbon";
 
@@ -112,6 +103,8 @@ import UserNotesModal from "./UserNotesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
+import type { INoteDto } from "@shared/types/dtos/INoteDto";
+import AddEditNoteInnerDrawer from "./AddEditNoteInnerDrawer.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const notesStore = useNotesStore();
@@ -122,8 +115,9 @@ const perPage = 5;
 const userId = ref(0);
 const isLoading = ref(true);
 const userFullName = ref("");
-const isAddNoteDrawerVisible = ref(false);
 const isUserNotesModalVisible = ref(false);
+const isAddEditNoteDrawerVisible = ref(false);
+const noteToEdit: Ref<INoteDto | null> = ref(null);
 
 const { activeFileTab } = storeToRefs(workspacesStore);
 
@@ -196,5 +190,23 @@ async function fetchNotes() {
   } finally {
     isLoading.value = false;
   }
+}
+
+function onNoteEdit(note: INoteDto) {
+  isAddEditNoteDrawerVisible.value = true;
+
+  noteToEdit.value = note;
+}
+
+function onNoteUpdate(text: string) {
+  if (noteToEdit.value) {
+    noteToEdit.value.value = text;
+  }
+}
+
+function onAddEditNoteInnerDrawerClose() {
+  noteToEdit.value = null;
+
+  isAddEditNoteDrawerVisible.value = false;
 }
 </script>
