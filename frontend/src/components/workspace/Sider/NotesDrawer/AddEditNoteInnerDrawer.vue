@@ -152,7 +152,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   isLoading.value = true;
 
   if (!fileId.value) {
-    message.error("Failed to delete note (file tab not found)!");
+    message.error("Failed to save note (file tab not found)!");
 
     return;
   }
