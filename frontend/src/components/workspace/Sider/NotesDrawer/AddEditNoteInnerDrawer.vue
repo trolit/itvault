@@ -2,6 +2,7 @@
   <n-drawer
     :show="isVisible"
     resizable
+    :min-height="320"
     placement="bottom"
     :show-mask="false"
     :trap-focus="false"
