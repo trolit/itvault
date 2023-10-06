@@ -25,14 +25,11 @@
           canDeleteAnyNote ||
           canUpdateAnyNote
         "
-        :is-deleted="note.isDeleted"
-        :disabled="isLoading"
+        :note="note"
         :is-note-owner="isNoteOwner"
-        :is-removing-element="isLoading"
         :can-view-user-notes="canViewUserNotes"
         :can-delete-any-note="canDeleteAnyNote"
         :can-update-any-note="canUpdateAnyNote"
-        @delete="deleteNote"
         @toggle-note-update="$emit('edit-note')"
         @toggle-user-comments-modal="
           emits('toggle-user-comments-modal', createdBy.id, createdBy.fullName)
@@ -59,33 +56,20 @@
 </template>
 
 <script setup lang="ts">
-import {
-  NTag,
-  NCard,
-  NText,
-  NThing,
-  NAvatar,
-  NTooltip,
-  useMessage,
-} from "naive-ui";
-import { toRefs, type PropType, ref } from "vue";
+import { toRefs, type PropType } from "vue";
+import { NTag, NCard, NText, NThing, NAvatar, NTooltip } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
-import { useNotesStore } from "@/store/notes";
 import ActionsDropdown from "./ActionsDropdown.vue";
-import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import { useMarkdownService } from "@/services/useMarkdownService";
 
-const message = useMessage();
 const authStore = useAuthStore();
-const notesStore = useNotesStore();
 const dateService = useDateService();
 const markdown = useMarkdownService();
-const workspacesStore = useWorkspacesStore();
 
 const props = defineProps({
   note: {
@@ -95,8 +79,6 @@ const props = defineProps({
 });
 
 const emits = defineEmits(["toggle-user-comments-modal", "edit-note"]);
-
-const isLoading = ref(false);
 
 const { note } = toRefs(props);
 
@@ -134,28 +116,4 @@ const {
     return authStore.hasPermission(Permission.DeleteAnyNote);
   },
 });
-
-async function deleteNote() {
-  isLoading.value = true;
-
-  const fileId = workspacesStore.activeFileTab?.file.id;
-
-  if (!fileId) {
-    message.error("Failed to delete note (file tab not found)!");
-
-    return;
-  }
-
-  try {
-    await notesStore.delete(note.value.id, fileId);
-
-    message.success("Note deleted.");
-  } catch (error) {
-    console.log(error);
-
-    message.error("Failed to delete note!");
-  } finally {
-    isLoading.value = false;
-  }
-}
 </script>
