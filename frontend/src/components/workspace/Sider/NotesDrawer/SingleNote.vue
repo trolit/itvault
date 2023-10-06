@@ -33,7 +33,7 @@
         :can-delete-any-note="canDeleteAnyNote"
         :can-update-any-note="canUpdateAnyNote"
         @delete="deleteNote"
-        @toggle-note-update="toggleUpdateMode"
+        @toggle-note-update="$emit('edit-note')"
         @toggle-user-comments-modal="
           emits('toggle-user-comments-modal', createdBy.id, createdBy.fullName)
         "
@@ -52,42 +52,9 @@
       </n-tooltip>
     </template>
 
-    <!-- @TODO add some panel that allows to paste syntax -->
-    <div v-if="isInUpdateMode">
-      <n-input
-        v-model:value="updatedValue"
-        type="textarea"
-        :autosize="{
-          minRows: 5,
-        }"
-      />
-
-      <n-text v-if="lastErrorMessage" type="error">
-        Error: {{ lastErrorMessage }}
-      </n-text>
-    </div>
-
-    <n-card v-else>
+    <n-card>
       <div v-html="markdown.render(note.value)" class="note-render-area" />
     </n-card>
-
-    <template #footer>
-      <n-space v-if="isInUpdateMode" class="w-100" justify="space-between">
-        <n-button secondary @click="toggleUpdateMode" :loading="isLoading">
-          Cancel
-        </n-button>
-
-        <n-button
-          type="info"
-          secondary
-          :loading="isLoading"
-          :disabled="isUpdatedValueMatchingOriginalValue"
-          @click="updateNote"
-        >
-          Save
-        </n-button>
-      </n-space>
-    </template>
   </n-thing>
 </template>
 
@@ -96,20 +63,15 @@ import {
   NTag,
   NCard,
   NText,
-  NInput,
-  NSpace,
   NThing,
   NAvatar,
-  NButton,
   NTooltip,
   useMessage,
 } from "naive-ui";
-import { AxiosError } from "axios";
 import { toRefs, type PropType, ref } from "vue";
 
 import { useAuthStore } from "@/store/auth";
 import { useNotesStore } from "@/store/notes";
-import type { ApiError } from "@/types/ApiError";
 import ActionsDropdown from "./ActionsDropdown.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
@@ -132,12 +94,9 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(["toggle-user-comments-modal", "update-note"]);
+const emits = defineEmits(["toggle-user-comments-modal", "edit-note"]);
 
 const isLoading = ref(false);
-const updatedValue = ref("");
-const lastErrorMessage = ref("");
-const isInUpdateMode = ref(false);
 
 const { note } = toRefs(props);
 
@@ -148,7 +107,6 @@ const {
   canViewUserNotes,
   canUpdateAnyNote,
   canDeleteAnyNote,
-  isUpdatedValueMatchingOriginalValue,
 } = defineComputed({
   initials() {
     const [name, surname] = props.note.createdBy.fullName.split(" ");
@@ -175,53 +133,7 @@ const {
   canDeleteAnyNote() {
     return authStore.hasPermission(Permission.DeleteAnyNote);
   },
-
-  isUpdatedValueMatchingOriginalValue() {
-    return props.note.value === updatedValue.value;
-  },
 });
-
-function toggleUpdateMode() {
-  if (!isInUpdateMode.value) {
-    updatedValue.value = props.note.value;
-  }
-
-  lastErrorMessage.value = "";
-
-  isInUpdateMode.value = !isInUpdateMode.value;
-}
-
-async function updateNote() {
-  isLoading.value = true;
-
-  try {
-    const id = props.note.id;
-
-    await notesStore.update(id, updatedValue.value);
-
-    emits("update-note", updatedValue.value);
-
-    toggleUpdateMode();
-
-    message.success("Note updated!");
-  } catch (error) {
-    console.log(error);
-
-    message.error("Failed to update note.");
-
-    if (error instanceof AxiosError) {
-      const data: ApiError<{ text: string[] }> = error.response?.data;
-
-      const [validationMessage] = data.body.text;
-
-      if (validationMessage) {
-        lastErrorMessage.value = validationMessage;
-      }
-    }
-  } finally {
-    isLoading.value = false;
-  }
-}
 
 async function deleteNote() {
   isLoading.value = true;
