@@ -170,13 +170,13 @@ const onSubmit = handleSubmit.withControlled(async formData => {
       emits("refetch-notes");
     }
 
-    message.success("Note updated!");
+    message.success(`Note ${noteId ? "updated" : "added"}!`);
 
     emits("close");
   } catch (error) {
     console.log(error);
 
-    message.error("Failed to update note.");
+    message.error(`Failed to ${noteId ? "update" : "add"} note!`);
   } finally {
     isLoading.value = false;
   }
