@@ -67,10 +67,10 @@ import { object, string } from "yup";
 
 import { useNotesStore } from "@/store/notes";
 import { defineForm } from "@/helpers/defineForm";
+import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
-import { useWorkspacesStore } from "@/store/workspaces";
 
 interface IProps {
   isVisible: boolean;
@@ -92,15 +92,22 @@ const defaultFormData: { text: string } = {
   text: "",
 };
 
-const { fields, getError, hasError, setFormData, handleSubmit, resetForm } =
-  defineForm<{
-    text: string;
-  }>(
-    defaultFormData,
-    object({
-      text: string().required(),
-    })
-  );
+const {
+  fields,
+  getError,
+  hasError,
+  setFormData,
+  handleSubmit,
+  resetForm,
+  setValidationErrors,
+} = defineForm<{
+  text: string;
+}>(
+  defaultFormData,
+  object({
+    text: string().required(),
+  })
+);
 
 const fileId = ref(0);
 const isLoading = ref(false);
@@ -175,6 +182,8 @@ const onSubmit = handleSubmit.withControlled(async formData => {
     emits("close");
   } catch (error) {
     console.log(error);
+
+    setValidationErrors(error);
 
     message.error(`Failed to ${noteId ? "update" : "add"} note!`);
   } finally {

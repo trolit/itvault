@@ -106,14 +106,21 @@ defineWatchers({
   },
 });
 
-const { fields, getError, hasError, resetForm, setFormData, handleSubmit } =
-  defineForm<AddVariantForm>(
-    defaultFormData,
-    object({
-      name: string().required(),
-      file: mixed<File>().required(),
-    })
-  );
+const {
+  fields,
+  getError,
+  hasError,
+  resetForm,
+  setFormData,
+  handleSubmit,
+  setValidationErrors,
+} = defineForm<AddVariantForm>(
+  defaultFormData,
+  object({
+    name: string().required(),
+    file: mixed<File>().required(),
+  })
+);
 
 const {
   name: { value: name },
@@ -139,6 +146,8 @@ const onSubmit = handleSubmit.withControlled(async value => {
     emit("update:is-visible", false);
   } catch (error) {
     console.error(error);
+
+    setValidationErrors(error);
   } finally {
     isLoading.value = false;
   }
