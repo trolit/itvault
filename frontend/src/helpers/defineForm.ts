@@ -20,6 +20,7 @@ export const defineForm = <T extends GenericObject>(
   const {
     meta,
     errors,
+    setErrors,
     setValues,
     resetForm,
     handleSubmit,
@@ -41,6 +42,7 @@ export const defineForm = <T extends GenericObject>(
   return {
     getError,
     hasError,
+    setErrors,
     resetForm,
 
     fields,
