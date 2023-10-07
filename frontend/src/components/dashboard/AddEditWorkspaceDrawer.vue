@@ -124,6 +124,7 @@ const {
   setFormData,
   handleSubmit,
   currentFormData,
+  setValidationErrors,
 } = defineForm<AddEditWorkspaceDto>(
   defaultFormData,
   object({
@@ -222,6 +223,8 @@ const onSubmit = handleSubmit.withControlled(async formData => {
     dismissDrawer();
   } catch (error) {
     console.error(error);
+
+    setValidationErrors(error);
   } finally {
     isLoading.value = false;
   }
