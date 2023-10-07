@@ -1,7 +1,7 @@
 <template>
   <n-card class="toolbar" :bordered="false">
     <n-space align="center">
-      <n-button quaternary size="tiny"> Help </n-button>
+      <n-button secondary size="small" type="info"> Help </n-button>
 
       <n-divider vertical />
 
