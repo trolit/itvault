@@ -33,8 +33,8 @@
       <n-auto-complete
         blur-after-select
         :value="tagInput"
-        placeholder="type to find tag(s) suggestions"
-        :options="options"
+        placeholder="type to find suggestions"
+        :options="filteredOptions"
         :loading="isLoadingTags"
         :disabled="isLoadingTags"
         @select="onTagSelect"
@@ -145,25 +145,31 @@ const {
   tags: { value: tags },
 } = fields;
 
-const { isActive, title, isEditMode, isInitialState } = defineComputed({
-  isActive() {
-    return drawerStore.isDrawerActive(Drawer.AddEditWorkspace) || false;
-  },
+const { isActive, title, isEditMode, isInitialState, filteredOptions } =
+  defineComputed({
+    isActive() {
+      return drawerStore.isDrawerActive(Drawer.AddEditWorkspace) || false;
+    },
 
-  isEditMode() {
-    return !!workspacesStore.itemToEdit;
-  },
+    isEditMode() {
+      return !!workspacesStore.itemToEdit;
+    },
 
-  title(): string {
-    return `${isEditMode.value ? "Edit" : "Add"} workspace`;
-  },
+    title(): string {
+      return `${isEditMode.value ? "Edit" : "Add"} workspace`;
+    },
 
-  isInitialState() {
-    return (
-      JSON.stringify(initialFormData.value) === JSON.stringify(currentFormData)
-    );
-  },
-});
+    isInitialState() {
+      return (
+        JSON.stringify(initialFormData.value) ===
+        JSON.stringify(currentFormData)
+      );
+    },
+
+    filteredOptions() {
+      return options.value.filter(tag => !tags.value.includes(tag));
+    },
+  });
 
 defineWatchers({
   isActive: {
