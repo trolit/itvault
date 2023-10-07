@@ -5,8 +5,10 @@ import {
   type FieldContext,
 } from "vee-validate";
 import type { Schema } from "yup";
+import { AxiosError } from "axios";
 import { toTypedSchema } from "@vee-validate/yup";
 
+import type { ApiError } from "@/types/ApiError";
 import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
 
 type FormFieldContext<T> = { [I in keyof T]: FieldContext<T[I]> };
@@ -39,11 +41,27 @@ export const defineForm = <T extends GenericObject>(
 
   const { getError, hasError } = useVeeValidateHelpers(meta, errors);
 
+  const setValidationErrors = (error: unknown) => {
+    if (error instanceof AxiosError) {
+      const data: ApiError<{}> | undefined = error.response?.data;
+
+      if (!data) {
+        return;
+      }
+
+      const { body } = data;
+
+      if (Object.keys(body)) {
+        setErrors(data.body);
+      }
+    }
+  };
+
   return {
     getError,
     hasError,
-    setErrors,
     resetForm,
+    setValidationErrors,
 
     fields,
     handleSubmit,
