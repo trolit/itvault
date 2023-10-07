@@ -33,7 +33,7 @@
       <n-auto-complete
         blur-after-select
         :value="tagInput"
-        placeholder="type to find tag(s) suggestions"
+        placeholder="type to find suggestions"
         :options="filteredOptions"
         :loading="isLoadingTags"
         :disabled="isLoadingTags"
