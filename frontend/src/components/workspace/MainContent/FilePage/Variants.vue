@@ -4,14 +4,14 @@
       closable
       type="card"
       :value="activeTab"
-      @close="workspacesStore.closeVariantTab"
-      @update:value="workspacesStore.setVariantTab"
+      @close="variantsStore.closeTab"
+      @update:value="variantsStore.setActiveTab"
     >
       <n-tab-pane
         v-for="tab in variantTabs"
         :key="tab.variant.id"
-        :tab="tab.variant.name"
         :name="tab.variant.id"
+        :tab="tab.variant.name"
       >
         <async-variant-viewer :variant-tab="tab" />
       </n-tab-pane>
@@ -20,12 +20,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from "vue";
 import { NTabs, NTabPane, NSpin } from "naive-ui";
+import { computed, defineAsyncComponent } from "vue";
 
-import { useWorkspacesStore } from "@/store/workspaces";
+import { useFilesStore } from "@/store/files";
+import { useVariantsStore } from "@/store/variants";
 
-const workspacesStore = useWorkspacesStore();
+const filesStore = useFilesStore();
+const variantsStore = useVariantsStore();
 
 defineProps({
   activeTab: {
@@ -35,7 +37,7 @@ defineProps({
 });
 
 const variantTabs = computed(() => {
-  const tab = workspacesStore.activeFileTab;
+  const tab = filesStore.activeTab;
 
   if (!tab) {
     return [];
