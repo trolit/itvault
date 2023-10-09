@@ -5,7 +5,7 @@
     :options="data.options"
     :render-label="renderLabel"
     :disabled="isBucketModified"
-    @update:value="workspacesStore.setVariantTabActiveBlueprint($event)"
+    @update:value="variantsStore.setActiveTabBlueprint($event)"
   >
     <n-button
       size="small"
@@ -66,17 +66,19 @@ import {
 import { h, ref, type Ref } from "vue";
 import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
 
+import { useFilesStore } from "@/store/files";
+import { useBucketsStore } from "@/store/buckets";
 import { useVariantsStore } from "@/store/variants";
 import { useBlueprintsStore } from "@/store/blueprints";
-import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const message = useMessage();
+const filesStore = useFilesStore();
+const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const blueprintsStore = useBlueprintsStore();
-const workspacesStore = useWorkspacesStore();
 
 defineProps({
   isBucketModified: {
@@ -110,7 +112,7 @@ const { blueprintOptions, isBlueprintAlreadyIncluded, data } = defineComputed({
   },
 
   data() {
-    const variantTab = workspacesStore.activeVariantTab;
+    const variantTab = variantsStore.activeTab;
 
     if (!variantTab) {
       return { id: 0, options: [] };
@@ -120,7 +122,7 @@ const { blueprintOptions, isBlueprintAlreadyIncluded, data } = defineComputed({
 
     return {
       id,
-      name: workspacesStore.activeBlueprint?.name,
+      name: blueprintsStore.activeItem?.name,
       options: blueprints.map(({ id, name, color }) => ({
         label: name,
         value: id,
@@ -138,13 +140,13 @@ defineWatchers({
     source: data,
     handler: async () => {
       const blueprintId = data.value.id;
-      const variantId = workspacesStore.activeFileTab?.activeVariantId;
+      const variantId = filesStore.activeTab?.activeVariantId;
 
       if (!blueprintId) {
         return;
       }
 
-      if (!workspacesStore.activeBucket?.value && variantId) {
+      if (!bucketsStore.activeBucket?.value && variantId) {
         isFetchingBucket.value = true;
 
         try {
@@ -254,12 +256,12 @@ function onBlueprintAdd() {
     return;
   }
 
-  workspacesStore.initializeBlueprintWithBucket(blueprint);
+  variantsStore.initializeActiveTabBlueprintWithBucket(blueprint);
 
-  workspacesStore.setVariantTabActiveBlueprint(blueprint.id);
+  variantsStore.setActiveTabBlueprint(blueprint.id);
 
-  if (!workspacesStore.isActiveVariantTabInWriteMode) {
-    workspacesStore.setVariantTabWriteMode(true);
+  if (!variantsStore.isActiveTabInWriteMode) {
+    variantsStore.setActiveTabWriteMode(true);
   }
 
   blueprintInput.value = "";
