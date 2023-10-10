@@ -22,7 +22,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
   }),
 
   getters: {
-    BLUEPRINTS_TAB_ITEMS_PER_PAGE: () => 13,
+    ITEMS_PER_PAGE: () => 13,
     activeItem(): IBlueprintDto | undefined {
       const { activeTab } = useVariantsStore();
 

@@ -239,7 +239,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
     if (!isEdit) {
       blueprintsStore.getAll({
         page: 1,
-        perPage: blueprintsStore.BLUEPRINTS_TAB_ITEMS_PER_PAGE,
+        perPage: blueprintsStore.ITEMS_PER_PAGE,
       });
     }
 
