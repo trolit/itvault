@@ -65,9 +65,9 @@ import {
 import { ref, toRefs } from "vue";
 import { object, string } from "yup";
 
+import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { defineForm } from "@/helpers/defineForm";
-import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
@@ -79,8 +79,8 @@ interface IProps {
 }
 
 const message = useMessage();
+const filesStore = useFilesStore();
 const notesStore = useNotesStore();
-const workspacesStore = useWorkspacesStore();
 
 const props = defineProps<IProps>();
 
@@ -138,7 +138,7 @@ defineWatchers({
         setFormData({ text: noteToEdit.value.value });
       }
 
-      fileId.value = workspacesStore.activeFileTab?.file.id || 0;
+      fileId.value = filesStore.activeFileId;
     },
   },
 

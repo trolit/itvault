@@ -13,7 +13,7 @@
         </div>
 
         <assign-color-popover
-          v-if="!!workspacesStore.activeBucket"
+          v-if="!!bucketsStore.activeItem"
           :is-visible="isAssignColorPopoverVisible"
           :x="assignColorPopoverX"
           :y="assignColorPopoverY"
@@ -38,7 +38,7 @@ import Empty from "@/components/common/Empty.vue";
 import { useBucketsStore } from "@/store/buckets";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
-import { useWorkspacesStore } from "@/store/workspaces";
+import { useBlueprintsStore } from "@/store/blueprints";
 import AssignColorPopover from "./AssignColorPopover.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import UnassignColorPopover from "./UnassignColorPopover.vue";
@@ -54,7 +54,7 @@ const text = ref("");
 const isLoading = ref(false);
 const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
-const workspacesStore = useWorkspacesStore();
+const blueprintsStore = useBlueprintsStore();
 const assignColorPopoverX = ref(0);
 const assignColorPopoverY = ref(0);
 const isAssignColorPopoverVisible = ref(false);
@@ -80,7 +80,7 @@ const { numberOfLines, isBucketModified } = defineComputed({
   },
 
   isBucketModified() {
-    const bucket = workspacesStore.activeBucket;
+    const bucket = bucketsStore.activeItem;
 
     if (bucket) {
       return (
@@ -119,8 +119,8 @@ onBeforeMount(async () => {
 function renderText(content: string) {
   let value = content;
 
-  const bucket = workspacesStore.activeBucket;
-  const blueprint = workspacesStore.activeBlueprint;
+  const bucket = bucketsStore.activeItem;
+  const blueprint = blueprintsStore.activeItem;
 
   const splitText = value.toString().split("\n");
 
@@ -181,7 +181,7 @@ function parseLineWithBucket(
 }
 
 async function onMouseUp(event: MouseEvent) {
-  if (!workspacesStore.isActiveVariantTabInWriteMode) {
+  if (!variantsStore.isActiveTabInWriteMode) {
     return;
   }
 

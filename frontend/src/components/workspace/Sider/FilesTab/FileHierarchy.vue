@@ -48,7 +48,7 @@ const props = defineProps({
 
 const { selectedKeys } = defineComputed({
   selectedKeys() {
-    return [`file-${workspacesStore.activeFileId}`];
+    return [`file-${filesStore.activeFileId}`];
   },
 });
 
@@ -101,7 +101,7 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
 
         // @TODO redundant check ^^...
         if (treeElement && isFile(treeElement)) {
-          workspacesStore.setFileTab(treeElement);
+          filesStore.newTab(treeElement);
         }
       }
     },
@@ -207,7 +207,7 @@ async function onLoadMore(node: TreeOption, relativePath: string) {
     });
 
     node.children = result.map(value =>
-      value?.originalFilename
+      isFile(value)
         ? createFileTreeOption(value)
         : createFolderTreeOption(value)
     );

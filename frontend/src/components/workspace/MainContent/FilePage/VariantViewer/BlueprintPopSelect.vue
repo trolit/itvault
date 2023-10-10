@@ -146,7 +146,7 @@ defineWatchers({
         return;
       }
 
-      if (!bucketsStore.activeBucket?.value && variantId) {
+      if (!bucketsStore.activeItem?.value && variantId) {
         isFetchingBucket.value = true;
 
         try {

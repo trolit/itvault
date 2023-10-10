@@ -2,10 +2,13 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
+import type { Bucket } from "@/types/Bucket";
+import { useVariantsStore } from "./variants";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { AddEditBucketDto } from "@shared/types/dtos/AddEditBucketDto";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
+import { useBlueprintsStore } from "./blueprints";
 
 interface IState {
   LINE_CLASS_NAME: string;
@@ -18,15 +21,27 @@ export const useBucketsStore = defineStore("buckets", {
     LOCATION_ATTRIBUTE_NAME: "location",
   }),
 
+  getters: {
+    activeItem(): Bucket | undefined {
+      const { activeTab } = useVariantsStore();
+
+      if (!activeTab) {
+        return;
+      }
+
+      return activeTab.buckets.find(
+        bucket => bucket.blueprintId === activeTab.activeBlueprintId
+      );
+    },
+  },
+
   actions: {
     getLineId(value: number) {
       return `line-${value}`;
     },
 
     paintData(data: AssignColorSelectionData) {
-      const workspacesStore = useWorkspacesStore();
-
-      const activeBucket = workspacesStore.activeBucket;
+      const activeBucket = this.activeItem;
 
       if (!activeBucket) {
         return;
@@ -122,9 +137,7 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     addToValue(lineIndex: number, location: string) {
-      const workspacesStore = useWorkspacesStore();
-
-      const activeBucket = workspacesStore.activeBucket;
+      const activeBucket = this.activeItem;
 
       if (!activeBucket) {
         return;
@@ -136,9 +149,7 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     removeFromValue(lineIndex: number, location: string) {
-      const workspacesStore = useWorkspacesStore();
-
-      const activeBucket = workspacesStore.activeBucket;
+      const activeBucket = this.activeItem;
 
       if (!activeBucket) {
         return;
@@ -158,9 +169,7 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     resetValue() {
-      const workspacesStore = useWorkspacesStore();
-
-      const activeBucket = workspacesStore.activeBucket;
+      const activeBucket = this.activeItem;
 
       if (!activeBucket) {
         return;
@@ -170,11 +179,13 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     async upsert() {
+      const variantsStore = useVariantsStore();
+      const blueprintsStore = useBlueprintsStore();
       const workspacesStore = useWorkspacesStore();
 
-      const activeBucket = workspacesStore.activeBucket;
-      const activeVariantTab = workspacesStore.activeVariantTab;
-      const activeBlueprint = workspacesStore.activeBlueprint;
+      const activeBucket = this.activeItem;
+      const activeVariantTab = variantsStore.activeTab;
+      const activeBlueprint = blueprintsStore.activeItem;
 
       if (!activeVariantTab || !activeBlueprint || !activeBucket) {
         return;

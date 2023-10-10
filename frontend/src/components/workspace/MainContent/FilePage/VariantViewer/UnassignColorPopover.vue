@@ -2,7 +2,7 @@
   <n-popover
     trigger="click"
     placement="right"
-    :disabled="!workspacesStore.isActiveVariantTabInWriteMode"
+    :disabled="!variantsStore.isActiveTabInWriteMode"
   >
     <template #trigger>
       <span
@@ -33,11 +33,11 @@ import { NPopover, NButton, NIcon } from "naive-ui";
 
 import type { LinePart } from "@/types/LinePart";
 import { useBucketsStore } from "@/store/buckets";
+import { useVariantsStore } from "@/store/variants";
 import { Delete as DeleteIcon } from "@vicons/carbon";
-import { useWorkspacesStore } from "@/store/workspaces";
 
 const bucketsStore = useBucketsStore();
-const workspacesStore = useWorkspacesStore();
+const variantsStore = useVariantsStore();
 
 defineProps({
   color: {

@@ -25,14 +25,14 @@ import { h, toRefs } from "vue";
 import { OperationsField as GearIcon } from "@vicons/carbon";
 
 import { useNotesStore } from "@/store/notes";
-import { useWorkspacesStore } from "@/store/workspaces";
+import { useFilesStore } from "@/store/files";
 import { defineComputed } from "@/helpers/defineComputed";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 
 const dialog = useDialog();
 const message = useMessage();
+const filesStore = useFilesStore();
 const notesStore = useNotesStore();
-const workspacesStore = useWorkspacesStore();
 
 interface IProps {
   note: INoteDto;
@@ -114,7 +114,7 @@ function handleSelect(key: string) {
       onPositiveClick: async () => {
         deleteDialog.loading = true;
 
-        const fileId = workspacesStore.activeFileTab?.file.id;
+        const fileId = filesStore.activeFileId;
 
         if (!fileId) {
           message.error("Failed to delete note (file tab not found)!");

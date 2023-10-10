@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import { useVariantsStore } from "./variants";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
@@ -21,6 +22,18 @@ export const useBlueprintsStore = defineStore("blueprints", {
   }),
 
   getters: {
+    activeItem(): IBlueprintDto | undefined {
+      const { activeTab } = useVariantsStore();
+
+      if (!activeTab) {
+        return;
+      }
+
+      return activeTab.blueprints.find(
+        blueprint => blueprint.id === activeTab.activeBlueprintId
+      );
+    },
+
     BLUEPRINTS_TAB_ITEMS_PER_PAGE: () => 13,
   },
 
