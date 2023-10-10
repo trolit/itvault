@@ -15,15 +15,15 @@ export const useNotesStore = defineStore("notes", {
     async getAll(options: IPaginationQuery & { resource: string }) {
       const filesStore = useFilesStore();
 
-      const fileTab = filesStore.activeTab;
+      const { activeTab, activeFileId } = filesStore;
 
-      if (!fileTab) {
+      if (!activeTab) {
         return;
       }
 
       const params = {
         version: 1,
-        id: filesStore.activeFileId,
+        id: activeFileId,
         ...options,
       };
 
@@ -34,8 +34,8 @@ export const useNotesStore = defineStore("notes", {
         }
       );
 
-      fileTab.notes.total = data.total;
-      fileTab.notes.data = data.result;
+      activeTab.notes.total = data.total;
+      activeTab.notes.data = data.result;
 
       return data;
     },
@@ -82,10 +82,10 @@ export const useNotesStore = defineStore("notes", {
 
       await axios.delete(`v1/notes/${id}`, { params });
 
-      const filesStore = useFilesStore();
+      const { tabs } = useFilesStore();
 
       // @TODO create function to get tab by file id
-      const fileTab = filesStore.tabs.find(tab => tab.file.id === fileId);
+      const fileTab = tabs.find(tab => tab.file.id === fileId);
 
       if (!fileTab) {
         return;
