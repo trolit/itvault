@@ -4,11 +4,11 @@ import cloneDeep from "lodash/cloneDeep";
 
 import type { Bucket } from "@/types/Bucket";
 import { useVariantsStore } from "./variants";
+import { useBlueprintsStore } from "./blueprints";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { AddEditBucketDto } from "@shared/types/dtos/AddEditBucketDto";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
-import { useBlueprintsStore } from "./blueprints";
 
 interface IState {
   LINE_CLASS_NAME: string;
@@ -41,9 +41,7 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     paintData(data: AssignColorSelectionData) {
-      const activeBucket = this.activeItem;
-
-      if (!activeBucket) {
+      if (!this.activeItem) {
         return;
       }
 
@@ -137,25 +135,25 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     addToValue(lineIndex: number, location: string) {
-      const activeBucket = this.activeItem;
+      const { activeItem } = this;
 
-      if (!activeBucket) {
+      if (!activeItem) {
         return;
       }
 
-      activeBucket.value[lineIndex]
-        ? activeBucket.value[lineIndex].push(location)
-        : (activeBucket.value[lineIndex] = [location]);
+      activeItem.value[lineIndex]
+        ? activeItem.value[lineIndex].push(location)
+        : (activeItem.value[lineIndex] = [location]);
     },
 
     removeFromValue(lineIndex: number, location: string) {
-      const activeBucket = this.activeItem;
+      const { activeItem } = this;
 
-      if (!activeBucket) {
+      if (!activeItem) {
         return;
       }
 
-      const line = activeBucket.value[lineIndex];
+      const line = activeItem.value[lineIndex];
 
       const [from, to] = location.split("-");
 
@@ -169,13 +167,13 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     resetValue() {
-      const activeBucket = this.activeItem;
+      const { activeItem } = this;
 
-      if (!activeBucket) {
+      if (!activeItem) {
         return;
       }
 
-      activeBucket.value = cloneDeep(activeBucket.initialValue);
+      activeItem.value = cloneDeep(activeItem.initialValue);
     },
 
     async upsert() {
@@ -183,15 +181,13 @@ export const useBucketsStore = defineStore("buckets", {
       const blueprintsStore = useBlueprintsStore();
       const workspacesStore = useWorkspacesStore();
 
-      const activeBucket = this.activeItem;
+      const { activeItem } = this;
       const activeVariantTab = variantsStore.activeTab;
       const activeBlueprint = blueprintsStore.activeItem;
 
-      if (!activeVariantTab || !activeBlueprint || !activeBucket) {
+      if (!activeVariantTab || !activeBlueprint || !activeItem) {
         return;
       }
-
-      const value = activeBucket.value;
 
       const params = {
         version: 1,
@@ -199,7 +195,7 @@ export const useBucketsStore = defineStore("buckets", {
       };
 
       const payload: AddEditBucketDto = {
-        value,
+        value: activeItem.value,
         blueprintId: activeBlueprint.id,
         variantId: activeVariantTab.variant.id,
       };
@@ -208,9 +204,9 @@ export const useBucketsStore = defineStore("buckets", {
         params,
       });
 
-      activeBucket.id = data.id;
-      activeBucket.value = cloneDeep(data.value);
-      activeBucket.initialValue = cloneDeep(data.value);
+      activeItem.id = data.id;
+      activeItem.value = cloneDeep(data.value);
+      activeItem.initialValue = cloneDeep(data.value);
 
       return data;
     },
