@@ -16,16 +16,14 @@ export const useVariantsStore = defineStore("variants", {
 
   getters: {
     activeTab(): VariantTab | undefined {
-      const filesStore = useFilesStore();
+      const { activeTab } = useFilesStore();
 
-      const tab = filesStore.activeTab;
-
-      if (!tab) {
+      if (!activeTab) {
         return;
       }
 
-      return tab.variantTabs.find(
-        variantTab => variantTab.variant.id === tab.activeVariantId
+      return activeTab.variantTabs.find(
+        variantTab => variantTab.variant.id === activeTab.activeVariantId
       );
     },
 
@@ -36,15 +34,13 @@ export const useVariantsStore = defineStore("variants", {
 
   actions: {
     async getAll() {
-      const filesStore = useFilesStore();
-      const workspacesStore = useWorkspacesStore();
-
-      const { activeItem } = workspacesStore;
+      const { activeFileId } = useFilesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        fileId: filesStore.activeFileId,
-        workspaceId: activeItem.id,
+        fileId: activeFileId,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.get<IVariantDto[]>("v1/variants", {
@@ -57,11 +53,11 @@ export const useVariantsStore = defineStore("variants", {
     },
 
     async getBlueprintsById(id: string) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.get<IBlueprintDto[]>(
@@ -77,11 +73,11 @@ export const useVariantsStore = defineStore("variants", {
     },
 
     async getContentById(id: string) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.get<string>(`v1/variants/${id}/content`, {
@@ -94,19 +90,17 @@ export const useVariantsStore = defineStore("variants", {
     },
 
     async getBucketById(id: string) {
-      const variantsStore = useVariantsStore();
-      const workspacesStore = useWorkspacesStore();
+      const { activeTab } = useVariantsStore();
+      const { activeItemId } = useWorkspacesStore();
 
-      const variantTab = variantsStore.activeTab;
-
-      if (!variantTab) {
+      if (!activeTab) {
         return;
       }
 
       const params = {
         version: 1,
-        blueprintId: variantTab.activeBlueprintId,
-        workspaceId: workspacesStore.activeItem.id,
+        blueprintId: activeTab.activeBlueprintId,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.get<IBucketDto>(`v1/variants/${id}/bucket`, {
@@ -119,14 +113,14 @@ export const useVariantsStore = defineStore("variants", {
     },
 
     async store(formData: FormData) {
-      const filesStore = useFilesStore();
-      const workspacesStore = useWorkspacesStore();
+      const { activeFileId } = useFilesStore();
+      const { activeItemId } = useWorkspacesStore();
 
-      formData.append("fileId", filesStore.activeFileId.toString());
+      formData.append("fileId", activeFileId.toString());
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.post<IVariantDto>("v1/variants", formData, {
