@@ -26,7 +26,7 @@ export const useBundlesStore = defineStore("bundles", {
   }),
 
   getters: {
-    activeBundle: state =>
+    activeItem: state =>
       state.items.find(item => item.id === state.activeItemId),
   },
 
@@ -81,8 +81,8 @@ export const useBundlesStore = defineStore("bundles", {
         }
       );
 
-      if (this.activeBundle) {
-        this.activeBundle.blueprints = data.map(element => ({
+      if (this.activeItem) {
+        this.activeItem.blueprints = data.map(element => ({
           ...element,
           files: [],
         }));
@@ -107,11 +107,11 @@ export const useBundlesStore = defineStore("bundles", {
         }
       );
 
-      if (!this.activeBundle) {
+      if (!this.activeItem) {
         return data;
       }
 
-      const blueprint = this.activeBundle.blueprints.find(
+      const blueprint = this.activeItem.blueprints.find(
         blueprint => blueprint.id === blueprintId
       );
 
