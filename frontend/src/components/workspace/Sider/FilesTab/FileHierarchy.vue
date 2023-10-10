@@ -101,7 +101,7 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
 
         // @TODO redundant check ^^...
         if (treeElement && isFile(treeElement)) {
-          filesStore.newTab(treeElement);
+          filesStore.setActiveTab(treeElement);
         }
       }
     },

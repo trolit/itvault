@@ -80,7 +80,7 @@ export const useFilesStore = defineStore("files", {
       return this.tabs.find(tab => tab.file.id === id);
     },
 
-    newTab(file: IFileDto) {
+    setActiveTab(file: IFileDto) {
       const tab = this.findTabById(file.id);
 
       this.activeFileId = file.id;
@@ -97,7 +97,7 @@ export const useFilesStore = defineStore("files", {
       });
     },
 
-    async newTabFromBundle(bundle: IBundleFileDto, blueprintId: number) {
+    async setActiveTabFromBundle(bundle: IBundleFileDto, blueprintId: number) {
       const { fileId, variantId } = bundle;
 
       const fileTab = this.findTabById(fileId);
@@ -109,7 +109,7 @@ export const useFilesStore = defineStore("files", {
         file = await filesStore.getById(fileId);
       }
 
-      this.newTab(file);
+      this.setActiveTab(file);
 
       this.tabToOpenData = { blueprintId, variantId };
     },

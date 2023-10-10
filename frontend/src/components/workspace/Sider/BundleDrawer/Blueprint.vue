@@ -92,7 +92,7 @@ async function openFile(file: IBundleFileDto) {
   generalStore.setLoadingState(LoadingState.Start);
 
   try {
-    await filesStore.newTabFromBundle(file, props.value.id);
+    await filesStore.setActiveTabFromBundle(file, props.value.id);
 
     generalStore.setLoadingState(LoadingState.Finish);
   } catch (error) {
