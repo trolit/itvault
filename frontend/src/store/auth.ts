@@ -38,16 +38,6 @@ export const useAuthStore = defineStore("auth", {
       );
     },
 
-    async status() {
-      const { data } = await axios.get<ILoggedUserDto>("v1/auth/status", {
-        params: { version: 1 },
-      });
-
-      this.profile = data;
-
-      return data;
-    },
-
     async login(payload: ILoginForm) {
       return axios.post<ILoggedUserDto>("v1/auth/sign-in", payload, {
         params: { version: 1 },
@@ -58,6 +48,16 @@ export const useAuthStore = defineStore("auth", {
       return axios.post("v1/auth/logout", null, {
         params: { version: 1 },
       });
+    },
+
+    async status() {
+      const { data } = await axios.get<ILoggedUserDto>("v1/auth/status", {
+        params: { version: 1 },
+      });
+
+      this.profile = data;
+
+      return data;
     },
   },
 });
