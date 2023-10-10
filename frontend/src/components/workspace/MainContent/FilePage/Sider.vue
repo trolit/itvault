@@ -75,9 +75,9 @@ import { Add as AddIcon } from "@vicons/carbon";
 import { Drawer } from "@/types/enums/Drawer";
 import { useFilesStore } from "@/store/files";
 import { useDrawerStore } from "@/store/drawer";
-import { useGeneralStore } from "@/store/general";
 import AddVariantModal from "./AddVariantModal.vue";
 import { useVariantsStore } from "@/store/variants";
+import { useWorkspacesStore } from "@/store/workspaces";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
@@ -86,8 +86,8 @@ import LoadingSection from "@/components/common/LoadingSection.vue";
 const filesStore = useFilesStore();
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
-const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
+const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(false);
 const isAddVariantModalVisible = ref(false);
@@ -104,8 +104,8 @@ const isBundleDrawerActive = computed(() => {
 });
 
 function toggleNotesDrawer() {
-  if (generalStore.isSiderCollapsed) {
-    generalStore.toggleSider();
+  if (workspacesStore.isSiderCollapsed) {
+    workspacesStore.toggleSider();
   }
 
   drawerStore.setActiveDrawer(Drawer.Notes);

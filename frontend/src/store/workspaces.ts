@@ -14,6 +14,7 @@ import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto
 interface IState {
   total: number;
   items: IWorkspaceDto[];
+  isSiderCollapsed: boolean;
   activeItem: IWorkspaceDto;
   itemToEdit: IWorkspaceDto | null;
   tree: (IDirectoryDto | IFileDto)[];
@@ -26,16 +27,23 @@ export const useWorkspacesStore = defineStore("workspaces", {
     total: 0,
     items: [],
     itemToEdit: null,
-    activeItem: { id: 0, name: "", slug: "", tags: [] },
     openTabData: null,
+    isSiderCollapsed: false,
+    activeItem: { id: 0, name: "", slug: "", tags: [] },
   }),
 
   getters: {
     ITEMS_PER_PAGE: () => 10,
+    TRIGGER_STYLE_TOP: () => "31px",
+    TRIGGER_STYLE_HEIGHT: () => "17px",
     activeItemId: state => state.activeItem.id,
   },
 
   actions: {
+    toggleSider() {
+      this.isSiderCollapsed = !this.isSiderCollapsed;
+    },
+
     setActiveItem(item: IWorkspaceDto) {
       this.activeItem = item;
 
