@@ -17,7 +17,6 @@ interface IState {
   activeItem: IWorkspaceDto;
   itemToEdit: IWorkspaceDto | null;
   tree: (IDirectoryDto | IFileDto)[];
-
   openTabData: { blueprintId: number; variantId: string } | null;
 }
 
@@ -33,6 +32,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
   getters: {
     ITEMS_PER_PAGE: () => 10,
+    activeItemId: state => state.activeItem.id,
   },
 
   actions: {
