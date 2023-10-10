@@ -82,10 +82,10 @@ export const useNotesStore = defineStore("notes", {
 
       await axios.delete(`v1/notes/${id}`, { params });
 
-      const { tabs } = useFilesStore();
+      const filesStore = useFilesStore();
 
       // @TODO create function to get tab by file id
-      const fileTab = tabs.find(tab => tab.file.id === fileId);
+      const fileTab = filesStore.findTabById(fileId);
 
       if (!fileTab) {
         return;
