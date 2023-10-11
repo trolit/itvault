@@ -10,18 +10,14 @@ import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { AddEditBucketDto } from "@shared/types/dtos/AddEditBucketDto";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
-interface IState {
-  LINE_CLASS_NAME: string;
-  LOCATION_ATTRIBUTE_NAME: string;
-}
+interface IState {}
 
 export const useBucketsStore = defineStore("buckets", {
-  state: (): IState => ({
-    LINE_CLASS_NAME: "line",
-    LOCATION_ATTRIBUTE_NAME: "location",
-  }),
+  state: (): IState => ({}),
 
   getters: {
+    LINE_CLASS_NAME: () => "line",
+    LOCATION_ATTRIBUTE_NAME: () => "location",
     activeItem(): Bucket | undefined {
       const { activeTab } = useVariantsStore();
 
