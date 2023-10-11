@@ -1,7 +1,10 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import cloneDeep from "lodash/cloneDeep";
 
+import { useFilesStore } from "./files";
 import { useWorkspacesStore } from "./workspaces";
+import type { VariantTab } from "@/types/VariantTab";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
@@ -11,33 +14,50 @@ interface IState {}
 export const useVariantsStore = defineStore("variants", {
   state: (): IState => ({}),
 
+  getters: {
+    activeTab(): VariantTab | undefined {
+      const { activeTab } = useFilesStore();
+
+      if (!activeTab) {
+        return;
+      }
+
+      return activeTab.variantTabs.find(
+        variantTab => variantTab.variant.id === activeTab.activeVariantId
+      );
+    },
+
+    isActiveTabInWriteMode(): boolean {
+      return !!this.activeTab?.isWriteModeActive || false;
+    },
+  },
+
   actions: {
     async getAll() {
-      const workspacesStore = useWorkspacesStore();
-
-      const { activeFileId, activeItem } = workspacesStore;
+      const { activeFileId } = useFilesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       const params = {
         version: 1,
         fileId: activeFileId,
-        workspaceId: activeItem.id,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.get<IVariantDto[]>("v1/variants", {
         params,
       });
 
-      workspacesStore.createVariantTabs(data);
+      this.initializeTabs(data);
 
       return data;
     },
 
     async getBlueprintsById(id: string) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.get<IBlueprintDto[]>(
@@ -47,69 +67,215 @@ export const useVariantsStore = defineStore("variants", {
         }
       );
 
-      workspacesStore.setVariantTabBlueprints(data);
+      this.initializeActiveTabBlueprints(data);
 
       return data;
     },
 
     async getContentById(id: string) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.get<string>(`v1/variants/${id}/content`, {
         params,
       });
 
-      workspacesStore.setVariantTabContent(data);
+      this.setActiveTabContent(data);
 
       return data;
     },
 
     async getBucketById(id: string) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeTab } = useVariantsStore();
+      const { activeItemId } = useWorkspacesStore();
 
-      const variantTab = workspacesStore.activeVariantTab;
-
-      if (!variantTab) {
+      if (!activeTab) {
         return;
       }
 
       const params = {
         version: 1,
-        blueprintId: variantTab.activeBlueprintId,
-        workspaceId: workspacesStore.activeItem.id,
+        blueprintId: activeTab.activeBlueprintId,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.get<IBucketDto>(`v1/variants/${id}/bucket`, {
         params,
       });
 
-      workspacesStore.setVariantTabBucket(data);
+      this.setActiveTabBucket(data);
 
       return data;
     },
 
     async store(formData: FormData) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeFileId } = useFilesStore();
+      const { activeItemId } = useWorkspacesStore();
 
-      formData.append("fileId", workspacesStore.activeFileId.toString());
+      formData.append("fileId", activeFileId.toString());
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId: activeItemId,
       };
 
       const { data } = await axios.post<IVariantDto>("v1/variants", formData, {
         params,
       });
 
-      workspacesStore.addVariantTab(data, { unshift: true });
+      this.initializeTab(data, { unshift: true });
 
       return data;
+    },
+
+    initializeTab(variant: IVariantDto, options?: { unshift: boolean }) {
+      const { activeTab } = useFilesStore();
+
+      if (!activeTab) {
+        return;
+      }
+
+      const variantTab = {
+        variant,
+        content: "",
+        buckets: [],
+        blueprints: [],
+        isVisible: false,
+        activeBlueprintId: 0,
+        isWriteModeActive: false,
+      };
+
+      if (options?.unshift) {
+        activeTab.variantTabs.unshift(variantTab);
+
+        return;
+      }
+
+      activeTab.variantTabs.push(variantTab);
+    },
+
+    initializeTabs(variants: IVariantDto[]) {
+      const { openTabData } = useWorkspacesStore();
+
+      variants.map(variant => this.initializeTab(variant));
+
+      if (openTabData) {
+        this.setActiveTab(openTabData.variantId);
+      }
+    },
+
+    initializeActiveTabBlueprints(blueprints: IBlueprintDto[]) {
+      const { tabToOpenData } = useFilesStore();
+
+      if (!this.activeTab) {
+        return;
+      }
+
+      this.activeTab.blueprints = blueprints;
+
+      const { variant } = this.activeTab;
+
+      if (tabToOpenData && variant.id === tabToOpenData.variantId) {
+        this.setActiveTabBlueprint(tabToOpenData.blueprintId);
+      }
+    },
+
+    initializeActiveTabBlueprintWithBucket(blueprint: IBlueprintDto) {
+      if (!this.activeTab) {
+        return;
+      }
+
+      this.activeTab.blueprints.push(blueprint);
+
+      this.activeTab.buckets.push({
+        id: 0, // @NOTE this id is not that important as we are using combination of blueprintId + variantId in `upsert`
+        blueprintId: blueprint.id,
+        initialValue: {},
+        value: {},
+      });
+    },
+
+    setActiveTab(id: string) {
+      const { activeTab } = useFilesStore();
+
+      if (!activeTab) {
+        return;
+      }
+
+      const variantTab = activeTab.variantTabs.find(
+        variantTab => variantTab.variant.id === id
+      );
+
+      if (variantTab && !variantTab.isVisible) {
+        variantTab.isVisible = true;
+      }
+
+      activeTab.activeVariantId = id;
+    },
+
+    closeTab(id: string) {
+      const { activeTab } = useFilesStore();
+
+      if (!activeTab) {
+        return;
+      }
+
+      const variantTabToClose = activeTab.variantTabs.find(
+        variantTab => variantTab.variant.id === id
+      );
+
+      if (!variantTabToClose) {
+        return;
+      }
+
+      variantTabToClose.isVisible = false;
+
+      const visibleVariantTab = activeTab.variantTabs.find(
+        variantTab => variantTab.isVisible === true
+      );
+
+      activeTab.activeVariantId = visibleVariantTab?.variant.id || "";
+    },
+
+    setActiveTabWriteMode(value: boolean) {
+      if (!this.activeTab) {
+        console.log("Failed to toggle write mode!");
+
+        return;
+      }
+
+      this.activeTab.isWriteModeActive = value;
+    },
+
+    setActiveTabBlueprint(id: number) {
+      if (!this.activeTab) {
+        return;
+      }
+
+      this.activeTab.activeBlueprintId = id;
+    },
+
+    setActiveTabContent(content: string) {
+      if (!this.activeTab) {
+        return;
+      }
+
+      this.activeTab.content = content;
+    },
+
+    setActiveTabBucket(bucket: IBucketDto) {
+      if (!this.activeTab) {
+        return;
+      }
+
+      this.activeTab.buckets.push({
+        ...bucket,
+        initialValue: cloneDeep(bucket.value),
+      });
     },
   },
 });

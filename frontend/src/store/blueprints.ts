@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import { useVariantsStore } from "./variants";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
@@ -21,18 +22,29 @@ export const useBlueprintsStore = defineStore("blueprints", {
   }),
 
   getters: {
-    BLUEPRINTS_TAB_ITEMS_PER_PAGE: () => 13,
+    ITEMS_PER_PAGE: () => 13,
+    activeItem(): IBlueprintDto | undefined {
+      const { activeTab } = useVariantsStore();
+
+      if (!activeTab) {
+        return;
+      }
+
+      return activeTab.blueprints.find(
+        blueprint => blueprint.id === activeTab.activeBlueprintId
+      );
+    },
   },
 
   actions: {
     async getAll(
       options: IPaginationQuery & { inUse?: number; name?: string }
     ) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId: activeItemId,
         ...options,
       };
 
@@ -53,18 +65,18 @@ export const useBlueprintsStore = defineStore("blueprints", {
     },
 
     async store(payload: AddEditBlueprintDto) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       return axios.post<IBlueprintDto>("v1/blueprints", payload, {
-        params: { version: 1, workspaceId: workspacesStore.activeItem.id },
+        params: { version: 1, workspaceId: activeItemId },
       });
     },
 
     async delete(id: number) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       await axios.delete(`v1/blueprints/${id}`, {
-        params: { version: 1, workspaceId: workspacesStore.activeItem.id },
+        params: { version: 1, workspaceId: activeItemId },
       });
 
       const blueprintIndex = this.items.findIndex(item => item.id === id);
@@ -81,10 +93,10 @@ export const useBlueprintsStore = defineStore("blueprints", {
 
       const id = this.itemToEdit.id;
 
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId } = useWorkspacesStore();
 
       await axios.put(`v1/blueprints/${id}`, payload, {
-        params: { version: 1, workspaceId: workspacesStore.activeItem.id },
+        params: { version: 1, workspaceId: activeItemId },
       });
 
       const updatedBlueprintIndex = this.items.findIndex(

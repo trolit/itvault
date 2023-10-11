@@ -32,7 +32,7 @@
             :key="index"
           >
             <template #default>
-              <n-button @click="workspacesStore.setVariantTab(id)" tertiary>
+              <n-button @click="variantsStore.setActiveTab(id)" tertiary>
                 {{ name }}
               </n-button>
 
@@ -73,8 +73,8 @@ import { storeToRefs } from "pinia";
 import { Add as AddIcon } from "@vicons/carbon";
 
 import { Drawer } from "@/types/enums/Drawer";
+import { useFilesStore } from "@/store/files";
 import { useDrawerStore } from "@/store/drawer";
-import { useGeneralStore } from "@/store/general";
 import AddVariantModal from "./AddVariantModal.vue";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
@@ -83,25 +83,20 @@ import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
-const isLoading = ref(false);
-const isAddVariantModalVisible = ref(false);
-
+const filesStore = useFilesStore();
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
-const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
-const { activeFileTab } = storeToRefs(workspacesStore);
+const isLoading = ref(false);
+const isAddVariantModalVisible = ref(false);
+const { activeTab } = storeToRefs(filesStore);
 
 const variants = computed((): IVariantDto[] => {
-  const tab = workspacesStore.activeFileTab;
-
-  if (!tab) {
-    return [];
-  }
-
-  return tab.variantTabs.map(({ variant }) => variant);
+  return activeTab.value
+    ? activeTab.value.variantTabs.map(({ variant }) => variant)
+    : [];
 });
 
 const isBundleDrawerActive = computed(() => {
@@ -109,16 +104,16 @@ const isBundleDrawerActive = computed(() => {
 });
 
 function toggleNotesDrawer() {
-  if (generalStore.isSiderCollapsed) {
-    generalStore.toggleSider();
+  if (workspacesStore.isSiderCollapsed) {
+    workspacesStore.toggleSider();
   }
 
   drawerStore.setActiveDrawer(Drawer.Notes);
 }
 
 defineWatchers({
-  activeFileTab: {
-    source: activeFileTab,
+  activeTab: {
+    source: activeTab,
     handler: async () => {
       if (!variants.value.length) {
         isLoading.value = true;

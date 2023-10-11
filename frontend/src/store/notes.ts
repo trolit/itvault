@@ -1,7 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import { useWorkspacesStore } from "./workspaces";
+import { useFilesStore } from "./files";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
@@ -13,17 +13,17 @@ export const useNotesStore = defineStore("notes", {
 
   actions: {
     async getAll(options: IPaginationQuery & { resource: string }) {
-      const workspaceStore = useWorkspacesStore();
+      const filesStore = useFilesStore();
 
-      const fileTab = workspaceStore.activeFileTab;
+      const { activeTab, activeFileId } = filesStore;
 
-      if (!fileTab) {
+      if (!activeTab) {
         return;
       }
 
       const params = {
         version: 1,
-        id: workspaceStore.activeFileId,
+        id: activeFileId,
         ...options,
       };
 
@@ -34,8 +34,8 @@ export const useNotesStore = defineStore("notes", {
         }
       );
 
-      fileTab.notes.total = data.total;
-      fileTab.notes.data = data.result;
+      activeTab.notes.total = data.total;
+      activeTab.notes.data = data.result;
 
       return data;
     },
@@ -82,10 +82,10 @@ export const useNotesStore = defineStore("notes", {
 
       await axios.delete(`v1/notes/${id}`, { params });
 
-      const workspacesStore = useWorkspacesStore();
+      const filesStore = useFilesStore();
 
       // @TODO create function to get tab by file id
-      const fileTab = workspacesStore.tabs.find(tab => tab.file.id === fileId);
+      const fileTab = filesStore.findTabById(fileId);
 
       if (!fileTab) {
         return;

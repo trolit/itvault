@@ -1,6 +1,6 @@
 <template>
   <div id="main-content">
-    <empty v-if="nothingSelected" title="Nothing to display 😢">
+    <empty v-if="!tabs.length" title="Nothing to display 😢">
       <template #extra>
         <n-grid :x-gap="100" :cols="2">
           <n-grid-item v-for="(item, index) in gridItems" :key="index">
@@ -14,23 +14,23 @@
       </template>
     </empty>
 
-    <file-page v-else-if="workspacesStore.tabs.length" />
+    <file-page v-else-if="filesStore.tabs.length" />
 
     <add-edit-blueprint-drawer />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import { NGrid, NGridItem, NIcon } from "naive-ui";
 import { Term as OptionIcon } from "@vicons/carbon";
 
 import FilePage from "./FilePage/Index.vue";
+import { useFilesStore } from "@/store/files";
 import Empty from "@/components/common/Empty.vue";
-import { useWorkspacesStore } from "@/store/workspaces";
+import { defineComputed } from "@/helpers/defineComputed";
 import AddEditBlueprintDrawer from "./AddEditBlueprintDrawer.vue";
 
-const workspacesStore = useWorkspacesStore();
+const filesStore = useFilesStore();
 
 const gridItems = [
   {
@@ -43,7 +43,9 @@ const gridItems = [
   },
 ];
 
-const nothingSelected = computed<boolean>((): boolean => {
-  return !workspacesStore.tabs.length;
+const { tabs } = defineComputed({
+  tabs() {
+    return filesStore.tabs;
+  },
 });
 </script>

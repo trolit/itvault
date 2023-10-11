@@ -8,22 +8,22 @@
       collapse-mode="transform"
       :native-scrollbar="false"
       :inverted="inverted"
-      :collapsed="generalStore.isSiderCollapsed"
+      :collapsed="workspacesStore.isSiderCollapsed"
       :style="{ zIndex: 1000 }"
       :trigger-style="{
         borderRadius: 0,
-        top: generalStore.TRIGGER_STYLE_TOP,
-        height: generalStore.TRIGGER_STYLE_HEIGHT,
+        top: workspacesStore.TRIGGER_STYLE_TOP,
+        height: workspacesStore.TRIGGER_STYLE_HEIGHT,
         transform: 'translateX(0%) translateY(0%)',
       }"
       :collapsed-trigger-style="{
         borderRadius: 0,
-        top: generalStore.TRIGGER_STYLE_TOP,
-        height: generalStore.TRIGGER_STYLE_HEIGHT,
+        top: workspacesStore.TRIGGER_STYLE_TOP,
+        height: workspacesStore.TRIGGER_STYLE_HEIGHT,
         transform: 'translateX(100%) translateY(0%)',
       }"
-      @expand="generalStore.toggleSider"
-      @collapse="generalStore.toggleSider"
+      @expand="workspacesStore.toggleSider"
+      @collapse="workspacesStore.toggleSider"
     >
       <div class="sider">
         <slot name="sider"></slot>
@@ -42,11 +42,11 @@ import { NLayout, NLayoutSider } from "naive-ui";
 
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
-import { useGeneralStore } from "@/store/general";
+import { useWorkspacesStore } from "@/store/workspaces";
 
 const inverted = ref(false);
 const drawerStore = useDrawerStore();
-const generalStore = useGeneralStore();
+const workspacesStore = useWorkspacesStore();
 
 const isNotesDrawerActive = computed(() => {
   return drawerStore.isDrawerActive(Drawer.Notes) || false;

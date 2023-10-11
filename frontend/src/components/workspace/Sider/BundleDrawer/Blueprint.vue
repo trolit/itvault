@@ -57,9 +57,9 @@ import { ref, type PropType } from "vue";
 import { NCard, NTag, NButton, NIcon } from "naive-ui";
 import { Magnify as PreviewIcon } from "@vicons/carbon";
 
+import { useFilesStore } from "@/store/files";
 import { useBundlesStore } from "@/store/bundles";
 import { useGeneralStore } from "@/store/general";
-import { useWorkspacesStore } from "@/store/workspaces";
 import { LoadingState } from "@/types/enums/LoadingState";
 import type { BundleBlueprint } from "@/types/BundleBlueprint";
 import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
@@ -72,9 +72,9 @@ const props = defineProps({
 });
 
 const isLoading = ref(false);
+const filesStore = useFilesStore();
 const generalStore = useGeneralStore();
 const bundlesStore = useBundlesStore();
-const workspacesStore = useWorkspacesStore();
 
 async function fetchFiles() {
   isLoading.value = true;
@@ -92,7 +92,7 @@ async function openFile(file: IBundleFileDto) {
   generalStore.setLoadingState(LoadingState.Start);
 
   try {
-    await workspacesStore.setFileTabFromBundle(file, props.value.id);
+    await filesStore.setActiveTabFromBundle(file, props.value.id);
 
     generalStore.setLoadingState(LoadingState.Finish);
   } catch (error) {

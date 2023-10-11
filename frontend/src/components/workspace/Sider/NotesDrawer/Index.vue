@@ -98,19 +98,19 @@ import { Add as AddIcon } from "@vicons/carbon";
 
 import SingleNote from "./SingleNote.vue";
 import { Drawer } from "@/types/enums/Drawer";
+import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
 import UserNotesModal from "./UserNotesModal.vue";
-import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import AddEditNoteInnerDrawer from "./AddEditNoteInnerDrawer.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
+const filesStore = useFilesStore();
 const notesStore = useNotesStore();
 const drawerStore = useDrawerStore();
-const workspacesStore = useWorkspacesStore();
 
 const perPage = 5;
 const userId = ref(0);
@@ -120,7 +120,7 @@ const isUserNotesModalVisible = ref(false);
 const isAddEditNoteDrawerVisible = ref(false);
 const noteToEdit: Ref<INoteDto | null> = ref(null);
 
-const { activeFileTab } = storeToRefs(workspacesStore);
+const { activeTab } = storeToRefs(filesStore);
 
 const { isActive, notes } = defineComputed({
   isActive() {
@@ -128,7 +128,7 @@ const { isActive, notes } = defineComputed({
   },
 
   notes() {
-    const tab = workspacesStore.activeFileTab;
+    const tab = filesStore.activeTab;
 
     return tab ? tab.notes : { page: 1, total: 0, data: [] };
   },
@@ -150,10 +150,10 @@ defineWatchers({
     },
   },
 
-  activeFileTab: {
-    source: activeFileTab,
+  activeTab: {
+    source: activeTab,
     handler: () => {
-      if (!activeFileTab || !isActive.value) {
+      if (!activeTab || !isActive.value) {
         return;
       }
 
@@ -165,8 +165,8 @@ defineWatchers({
 });
 
 function onPageChange(newPage: number) {
-  if (workspacesStore.activeFileTab) {
-    workspacesStore.activeFileTab.notes.page = newPage;
+  if (filesStore.activeTab) {
+    filesStore.activeTab.notes.page = newPage;
 
     fetchNotes();
   }
@@ -180,8 +180,8 @@ function onToggleUserCommentsModal(id: number, fullName: string) {
 }
 
 function refetchNotes() {
-  if (workspacesStore.activeFileTab) {
-    workspacesStore.activeFileTab.notes.page = 1;
+  if (filesStore.activeTab) {
+    filesStore.activeTab.notes.page = 1;
 
     fetchNotes();
   }

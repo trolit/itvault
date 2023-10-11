@@ -1,6 +1,6 @@
 <template>
   <div v-if="isOneOfRoutes" class="location">
-    {{ activeWorkspace.name }}
+    {{ workspacesStore.activeItem.name }}
   </div>
 </template>
 
@@ -17,9 +17,5 @@ const workspacesStore = useWorkspacesStore();
 
 const isOneOfRoutes = computed(() => {
   return route.name === ROUTE_WORKSPACE_NAME;
-});
-
-const activeWorkspace = computed(() => {
-  return workspacesStore.activeItem;
 });
 </script>

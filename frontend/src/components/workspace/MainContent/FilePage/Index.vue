@@ -29,11 +29,11 @@
         <n-tabs
           closable
           type="card"
-          v-model:value="workspacesStore.activeFileId"
-          @close="workspacesStore.closeFileTab"
+          v-model:value="filesStore.activeFileId"
+          @close="filesStore.closeTab"
         >
           <n-tab-pane
-            v-for="{ file } in workspacesStore.tabs"
+            v-for="{ file } in filesStore.tabs"
             :key="file.id"
             :tab="file.originalFilename"
             :name="file.id"
@@ -41,7 +41,7 @@
             <n-card :bordered="false">
               <template #default>
                 <!-- @TODO scroll -->
-                <variants v-if="variantTab" :active-tab="variantTab" />
+                <variants v-if="variantId" :active-tab="variantId" />
 
                 <empty v-else title="Select variant" />
               </template>
@@ -66,15 +66,15 @@ import {
 
 import Sider from "./Sider.vue";
 import Variants from "./Variants.vue";
+import { useFilesStore } from "@/store/files";
 import Empty from "@/components/common/Empty.vue";
 import { useGeneralStore } from "@/store/general";
-import { useWorkspacesStore } from "@/store/workspaces";
 
+const filesStore = useFilesStore();
 const generalStore = useGeneralStore();
-const workspacesStore = useWorkspacesStore();
 
-const variantTab = computed((): string => {
-  const tab = workspacesStore.activeFileTab;
+const variantId = computed((): string => {
+  const tab = filesStore.activeTab;
 
   if (!tab) {
     return "";

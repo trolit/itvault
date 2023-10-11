@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { storeToRefs } from "pinia";
 import { NDrawer, NDivider, NDrawerContent } from "naive-ui";
 
 import Note from "./Note.vue";
@@ -51,11 +52,11 @@ import { useBundlesStore } from "@/store/bundles";
 const drawerStore = useDrawerStore();
 const bundlesStore = useBundlesStore();
 
+const { activeItem: bundle } = storeToRefs(bundlesStore);
+
 const isActive = computed((): boolean => {
   return drawerStore.isDrawerActive(Drawer.Bundle) || false;
 });
-
-const bundle = computed(() => bundlesStore.activeBundle);
 
 const onShowUpdate = () => {
   drawerStore.setActiveDrawer(null);
