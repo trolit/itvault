@@ -127,12 +127,12 @@ export const useVariantsStore = defineStore("variants", {
         params,
       });
 
-      this.createTab(data, { unshift: true });
+      this.initializeTab(data, { unshift: true });
 
       return data;
     },
 
-    createTab(variant: IVariantDto, options?: { unshift: boolean }) {
+    initializeTab(variant: IVariantDto, options?: { unshift: boolean }) {
       const { activeTab } = useFilesStore();
 
       if (!activeTab) {
@@ -161,7 +161,7 @@ export const useVariantsStore = defineStore("variants", {
     initializeTabs(variants: IVariantDto[]) {
       const { openTabData } = useWorkspacesStore();
 
-      variants.map(variant => this.createTab(variant));
+      variants.map(variant => this.initializeTab(variant));
 
       if (openTabData) {
         this.setActiveTab(openTabData.variantId);
