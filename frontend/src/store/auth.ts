@@ -1,10 +1,9 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
-
 import type { ILoginForm } from "@/interfaces/ILoginForm";
 import type { Permission } from "@shared/types/enums/Permission";
+import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 interface IState {
