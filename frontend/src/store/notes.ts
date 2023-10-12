@@ -12,6 +12,7 @@ export const useNotesStore = defineStore("notes", {
   state: (): IState => ({}),
 
   actions: {
+    // @TODO make shared ResourceDto type that includes { name, id }
     async getAll(options: IPaginationQuery & { resource: string }) {
       const filesStore = useFilesStore();
 
@@ -40,7 +41,7 @@ export const useNotesStore = defineStore("notes", {
       return data;
     },
 
-    async store(text: string, resource: string, fileId: number) {
+    async store(text: string, resource: string, id: number) {
       const params = {
         version: 1,
       };
@@ -48,7 +49,7 @@ export const useNotesStore = defineStore("notes", {
       const payload = {
         text,
         resource: {
-          id: fileId,
+          id,
           name: resource,
         },
       };
@@ -75,6 +76,7 @@ export const useNotesStore = defineStore("notes", {
       });
     },
 
+    // @TODO require resource name to know what action to take after note delete
     async delete(id: number, fileId: number) {
       const params = {
         version: 1,
@@ -84,7 +86,6 @@ export const useNotesStore = defineStore("notes", {
 
       const filesStore = useFilesStore();
 
-      // @TODO create function to get tab by file id
       const fileTab = filesStore.findTabById(fileId);
 
       if (!fileTab) {

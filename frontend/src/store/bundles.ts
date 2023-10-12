@@ -31,12 +31,16 @@ export const useBundlesStore = defineStore("bundles", {
   },
 
   actions: {
+    findBundleById(id: number) {
+      return this.items.find(item => item.id === id);
+    },
+
     async getAll(options: IPaginationQuery) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId,
         ...options,
       };
 
@@ -67,67 +71,54 @@ export const useBundlesStore = defineStore("bundles", {
     },
 
     async getBlueprints() {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId: bundleId } = this;
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId,
       };
 
       const { data } = await axios.get<IBundleBlueprintDto[]>(
-        `v1/bundles/${this.activeItemId}/blueprints`,
+        `v1/bundles/${bundleId}/blueprints`,
         {
           params,
         }
       );
 
-      if (this.activeItem) {
-        this.activeItem.blueprints = data.map(element => ({
-          ...element,
-          files: [],
-        }));
-      }
+      this.setBundleBlueprints(bundleId, data);
 
       return data;
     },
 
     async getFiles(blueprintId: number) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId: bundleId } = this;
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
         version: 1,
         blueprintId,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId,
       };
 
       const { data } = await axios.get<IBundleFileDto[]>(
-        `v1/bundles/${this.activeItemId}/files`,
+        `v1/bundles/${bundleId}/files`,
         {
           params,
         }
       );
 
-      if (!this.activeItem) {
-        return data;
-      }
-
-      const blueprint = this.activeItem.blueprints.find(
-        blueprint => blueprint.id === blueprintId
-      );
-
-      if (blueprint) {
-        blueprint.files = data;
-      }
+      this.setBundleBlueprintFiles(bundleId, blueprintId, data);
 
       return data;
     },
 
     requeue(id: number) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId,
       };
 
       return axios.post(`v1/bundles/${id}/requeue`, null, {
@@ -136,11 +127,11 @@ export const useBundlesStore = defineStore("bundles", {
     },
 
     async store(payload: AddBundleDto) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId,
       };
 
       const { data } = await axios.post<IBundleDto>(`v1/bundles`, payload, {
@@ -153,11 +144,11 @@ export const useBundlesStore = defineStore("bundles", {
     },
 
     async download(id: number) {
-      const workspacesStore = useWorkspacesStore();
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId,
       };
 
       const { data } = await axios.get<string>(`v1/bundles/${id}`, {
@@ -166,6 +157,41 @@ export const useBundlesStore = defineStore("bundles", {
       });
 
       return data;
+    },
+
+    setBundleBlueprints(id: number, blueprints: IBundleBlueprintDto[]) {
+      const bundle = this.findBundleById(id);
+
+      if (!bundle) {
+        return;
+      }
+
+      bundle.blueprints = blueprints.map(blueprint => ({
+        ...blueprint,
+        files: [],
+      }));
+    },
+
+    setBundleBlueprintFiles(
+      id: number,
+      blueprintId: number,
+      files: IBundleFileDto[]
+    ) {
+      const bundle = this.findBundleById(id);
+
+      if (!bundle) {
+        return;
+      }
+
+      const blueprint = bundle.blueprints.find(
+        blueprint => blueprint.id === blueprintId
+      );
+
+      if (!blueprint) {
+        return;
+      }
+
+      blueprint.files = files;
     },
 
     resetState() {
