@@ -1,7 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import type { ILoginForm } from "@/interfaces/ILoginForm";
+import type { SignInDto } from "@shared/types/dtos/SignInDto";
 import type { Permission } from "@shared/types/enums/Permission";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore("auth", {
       );
     },
 
-    async login(payload: ILoginForm) {
+    async login(payload: SignInDto) {
       return axios.post<ILoggedUserDto>("v1/auth/sign-in", payload, {
         params: { version: 1 },
       });
