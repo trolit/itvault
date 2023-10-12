@@ -28,6 +28,7 @@ import { useNotesStore } from "@/store/notes";
 import { useFilesStore } from "@/store/files";
 import { defineComputed } from "@/helpers/defineComputed";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
+import { NoteResource } from "@shared/types/enums/NoteResource";
 
 const dialog = useDialog();
 const message = useMessage();
@@ -123,7 +124,10 @@ function handleSelect(key: string) {
         }
 
         try {
-          await notesStore.delete(note.value.id, fileId);
+          await notesStore.delete(note.value.id, {
+            id: fileId,
+            name: NoteResource.File,
+          });
 
           message.success("Note deleted.");
         } catch (error) {

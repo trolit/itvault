@@ -1,12 +1,12 @@
-import { Resource } from "@enums/Resource";
 import { NoteMapper } from "@mappers/NoteMapper";
+import { IPaginationOptions } from "types/IPaginationOptions";
+import { NoteResource } from "@shared/types/enums/NoteResource";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import { IPaginationOptions } from "types/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    type QueryCommon = { id: string; resource: Resource } & {
+    type QueryCommon = { id: string; resource: NoteResource } & {
       userId?: number;
     };
 

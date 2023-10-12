@@ -71,6 +71,7 @@ import { defineForm } from "@/helpers/defineForm";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
+import { NoteResource } from "@shared/types/enums/NoteResource";
 
 interface IProps {
   isVisible: boolean;
@@ -169,7 +170,10 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   try {
     noteId
       ? await notesStore.update(noteId, formData.text)
-      : await notesStore.store(formData.text, "File", fileId.value);
+      : await notesStore.store(formData.text, {
+          id: fileId.value,
+          name: NoteResource.File,
+        });
 
     if (noteId) {
       emits("update-note", formData.text);

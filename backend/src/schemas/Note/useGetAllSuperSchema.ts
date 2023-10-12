@@ -4,7 +4,7 @@ import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 
 import { useResourceEntityTest } from "./useResourceEntityTest";
 
-import { Resource } from "@enums/Resource";
+import { NoteResource } from "@shared/types/enums/NoteResource";
 
 import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -15,7 +15,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
     perPage: perPageSchema,
     userId: number().optional(),
     id: useResourceEntityTest(),
-    resource: string().required().oneOf([Resource.File]),
+    resource: string().required().oneOf([NoteResource.File]),
   });
 
 export const useGetAllSuperSchema: SuperSchema.Runner<

@@ -1,9 +1,7 @@
-export type AddNoteDto<T> = {
+import { ResourceDto } from "./ResourceDto";
+
+export type AddNoteDto = {
   text: string;
 
-  resource: {
-    id: number | string;
-
-    name: T;
-  };
+  resource: ResourceDto;
 };
