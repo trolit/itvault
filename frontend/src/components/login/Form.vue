@@ -38,30 +38,38 @@
 import { ref } from "vue";
 import { object, string } from "yup";
 import { useRouter } from "vue-router";
-import { useForm, useField } from "vee-validate";
-import { NInput, NForm, NFormItem, NButton, useMessage } from "naive-ui";
+import { NInput, NForm, NFormItem, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
-import type { ILoginForm } from "@/interfaces/ILoginForm";
+import { defineForm } from "@/helpers/defineForm";
+import type { SignInDto } from "@shared/types/dtos/SignInDto";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
-import { useVeeValidateHelpers } from "@/utilities/useVeeValidateHelpers";
 
 const router = useRouter();
-const message = useMessage();
 const authStore = useAuthStore();
-const { errors, handleSubmit, meta } = useForm({
-  validationSchema: object({
-    email: string().required().email(),
-    password: string().required(),
-  }),
-});
-const { value: email } = useField<string>("email");
-const { value: password } = useField<string>("password");
-const { getError, hasError } = useVeeValidateHelpers(meta, errors);
+
+const defaultFormData: SignInDto = {
+  email: "",
+  password: "",
+};
 
 const isLoading = ref(false);
 
-const onSubmit = handleSubmit.withControlled(async values => {
+const { fields, getError, hasError, handleSubmit, setValidationErrors } =
+  defineForm<SignInDto>(
+    defaultFormData,
+    object({
+      email: string().email().required(),
+      password: string().required(),
+    })
+  );
+
+const {
+  email: { value: email },
+  password: { value: password },
+} = fields;
+
+const onSubmit = handleSubmit.withControlled(async formData => {
   if (isLoading.value) {
     return;
   }
@@ -69,17 +77,14 @@ const onSubmit = handleSubmit.withControlled(async values => {
   isLoading.value = true;
 
   try {
-    await authStore.login(values as ILoginForm);
+    await authStore.login(formData);
 
     router.push({ name: ROUTE_DASHBOARD_NAME });
   } catch (error) {
     // @TODO handle server errors
     console.error(error);
 
-    // @NOTE consider custom message
-    message.warning(
-      "Provided credentials are invalid or account does not exist."
-    );
+    setValidationErrors(error);
   } finally {
     isLoading.value = false;
   }
