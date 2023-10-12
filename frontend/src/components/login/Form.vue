@@ -81,7 +81,6 @@ const onSubmit = handleSubmit.withControlled(async formData => {
 
     router.push({ name: ROUTE_DASHBOARD_NAME });
   } catch (error) {
-    // @TODO handle server errors
     console.error(error);
 
     setValidationErrors(error);
