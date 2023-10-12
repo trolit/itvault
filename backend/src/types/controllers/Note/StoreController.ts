@@ -1,10 +1,9 @@
-import { Resource } from "@enums/Resource";
 import { NoteMapper } from "@mappers/NoteMapper";
 import { AddNoteDto } from "@shared/types/dtos/AddNoteDto";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = AddNoteDto<Resource>;
+    export type Body = AddNoteDto;
 
     export type Request = CustomRequest<undefined, Body>;
 

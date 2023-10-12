@@ -1,11 +1,11 @@
-import { Resource } from "@enums/Resource";
+import { NoteResource } from "@shared/types/enums/NoteResource";
 
 export const resourceToEntityReference = <T>(
   resource: T,
   id: number | string
 ) => {
   switch (resource) {
-    case Resource.File: {
+    case NoteResource.File: {
       return {
         file: {
           id: <number>id,
