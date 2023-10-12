@@ -31,11 +31,11 @@ export const useFilesStore = defineStore("files", {
 
   actions: {
     async getById(id: number) {
-      const { activeItemId } = useWorkspacesStore();
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: activeItemId,
+        workspaceId,
       };
 
       const { data } = await axios.get<IFileDto>(`v1/files/${id}`, {
@@ -46,12 +46,12 @@ export const useFilesStore = defineStore("files", {
     },
 
     getAll(options: { blueprintId: number }) {
-      const { activeItemId } = useWorkspacesStore();
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
         version: 1,
         ...options,
-        workspaceId: activeItemId,
+        workspaceId,
       };
 
       return axios.get<IFileVariantDto[]>(`v1/files`, {
@@ -60,11 +60,11 @@ export const useFilesStore = defineStore("files", {
     },
 
     async store(formData: FormData) {
-      const { activeItemId } = useWorkspacesStore();
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
         version: 1,
-        workspaceId: activeItemId,
+        workspaceId,
       };
 
       const { data } = await axios.post<IFileDto[]>("v1/files", formData, {
