@@ -1,11 +1,7 @@
-import { NoteResource } from "../enums/NoteResource";
+import { ResourceDto } from "./ResourceDto";
 
 export type AddNoteDto = {
   text: string;
 
-  resource: {
-    id: number | string;
-
-    name: NoteResource;
-  };
+  resource: ResourceDto;
 };
