@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 
 import { useFilesStore } from "./files";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
+import { NoteResource } from "@shared/types/enums/NoteResource";
+import type { ResourceDto } from "@shared/types/dtos/ResourceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
@@ -12,7 +14,6 @@ export const useNotesStore = defineStore("notes", {
   state: (): IState => ({}),
 
   actions: {
-    // @TODO make shared ResourceDto type that includes { name, id }
     async getAll(options: IPaginationQuery & { resource: string }) {
       const filesStore = useFilesStore();
 
@@ -41,17 +42,14 @@ export const useNotesStore = defineStore("notes", {
       return data;
     },
 
-    async store(text: string, resource: string, id: number) {
+    async store(text: string, resource: ResourceDto) {
       const params = {
         version: 1,
       };
 
       const payload = {
         text,
-        resource: {
-          id,
-          name: resource,
-        },
+        resource,
       };
 
       const { data: item } = await axios.post<INoteDto>(`v1/notes`, payload, {
@@ -76,17 +74,22 @@ export const useNotesStore = defineStore("notes", {
       });
     },
 
-    // @TODO require resource name to know what action to take after note delete
-    async delete(id: number, fileId: number) {
+    async delete(id: number, resource: ResourceDto) {
       const params = {
         version: 1,
       };
 
       await axios.delete(`v1/notes/${id}`, { params });
 
+      if (resource.name === NoteResource.File) {
+        this._removeFileNote(<number>resource.id);
+      }
+    },
+
+    _removeFileNote(id: number) {
       const filesStore = useFilesStore();
 
-      const fileTab = filesStore.findTabById(fileId);
+      const fileTab = filesStore.findTabById(id);
 
       if (!fileTab) {
         return;
