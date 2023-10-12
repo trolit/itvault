@@ -131,25 +131,25 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     addToValue(lineIndex: number, location: string) {
-      const { activeItem } = this;
+      const { activeItem: activeBucket } = this;
 
-      if (!activeItem) {
+      if (!activeBucket) {
         return;
       }
 
-      activeItem.value[lineIndex]
-        ? activeItem.value[lineIndex].push(location)
-        : (activeItem.value[lineIndex] = [location]);
+      activeBucket.value[lineIndex]
+        ? activeBucket.value[lineIndex].push(location)
+        : (activeBucket.value[lineIndex] = [location]);
     },
 
     removeFromValue(lineIndex: number, location: string) {
-      const { activeItem } = this;
+      const { activeItem: activeBucket } = this;
 
-      if (!activeItem) {
+      if (!activeBucket) {
         return;
       }
 
-      const line = activeItem.value[lineIndex];
+      const line = activeBucket.value[lineIndex];
 
       const [from, to] = location.split("-");
 
@@ -173,25 +173,22 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     async upsert() {
-      const variantsStore = useVariantsStore();
-      const blueprintsStore = useBlueprintsStore();
-      const workspacesStore = useWorkspacesStore();
+      const { activeItem: activeBucket } = this;
+      const { activeTab: activeVariantTab } = useVariantsStore();
+      const { activeItem: activeBlueprint } = useBlueprintsStore();
+      const { activeItem: activeWorkspace } = useWorkspacesStore();
 
-      const { activeItem } = this;
-      const activeVariantTab = variantsStore.activeTab;
-      const activeBlueprint = blueprintsStore.activeItem;
-
-      if (!activeVariantTab || !activeBlueprint || !activeItem) {
+      if (!activeVariantTab || !activeBlueprint || !activeBucket) {
         return;
       }
 
       const params = {
         version: 1,
-        workspaceId: workspacesStore.activeItem.id,
+        workspaceId: activeWorkspace.id,
       };
 
       const payload: AddEditBucketDto = {
-        value: activeItem.value,
+        value: activeBucket.value,
         blueprintId: activeBlueprint.id,
         variantId: activeVariantTab.variant.id,
       };
@@ -200,9 +197,9 @@ export const useBucketsStore = defineStore("buckets", {
         params,
       });
 
-      activeItem.id = data.id;
-      activeItem.value = cloneDeep(data.value);
-      activeItem.initialValue = cloneDeep(data.value);
+      activeBucket.id = data.id;
+      activeBucket.value = cloneDeep(data.value);
+      activeBucket.initialValue = cloneDeep(data.value);
 
       return data;
     },
