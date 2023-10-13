@@ -10,15 +10,15 @@
         :trigger-style="{
           left: 0,
           borderRadius: 0,
-          top: generalStore.TRIGGER_STYLE_TOP,
-          height: generalStore.TRIGGER_STYLE_HEIGHT,
+          top: workspacesStore.TRIGGER_STYLE_TOP,
+          height: workspacesStore.TRIGGER_STYLE_HEIGHT,
           transform: 'translateX(0%) translateY(0%)',
         }"
         :collapsed-trigger-style="{
           left: 0,
           borderRadius: 0,
-          top: generalStore.TRIGGER_STYLE_TOP,
-          height: generalStore.TRIGGER_STYLE_HEIGHT,
+          top: workspacesStore.TRIGGER_STYLE_TOP,
+          height: workspacesStore.TRIGGER_STYLE_HEIGHT,
           transform: 'translateX(0%) translateY(0%)',
         }"
       >
@@ -40,7 +40,6 @@
           >
             <n-card :bordered="false">
               <template #default>
-                <!-- @TODO scroll -->
                 <variants v-if="variantId" :active-tab="variantId" />
 
                 <empty v-else title="Select variant" />
@@ -68,10 +67,10 @@ import Sider from "./Sider.vue";
 import Variants from "./Variants.vue";
 import { useFilesStore } from "@/store/files";
 import Empty from "@/components/common/Empty.vue";
-import { useGeneralStore } from "@/store/general";
+import { useWorkspacesStore } from "@/store/workspaces";
 
 const filesStore = useFilesStore();
-const generalStore = useGeneralStore();
+const workspacesStore = useWorkspacesStore();
 
 const variantId = computed((): string => {
   const tab = filesStore.activeTab;

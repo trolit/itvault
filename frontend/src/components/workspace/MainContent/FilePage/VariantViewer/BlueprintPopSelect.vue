@@ -15,7 +15,6 @@
       {{ data.name || "pick blueprint" }}
     </n-button>
 
-    <!-- @TODO fetch blueprints matching input (+ allow to pick) -->
     <template #action>
       <div
         :style="{
@@ -37,7 +36,6 @@
           @update:value="onBlueprintInputChange"
         />
 
-        <!-- @TODO disable add button when blueprint is already included-->
         <n-button
           size="small"
           :disabled="!selectedBlueprintId || isBlueprintAlreadyIncluded"
