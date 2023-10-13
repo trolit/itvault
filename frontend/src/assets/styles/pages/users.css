@@ -1,6 +1,18 @@
 .users-page {
+  .header {
+    display: flex;
+    margin: 0 15px;
+    column-gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+    height: var(--users-header-height);
+  }
+
   .n-data-table {
-    height: calc(100vh - var(--header-height) - 20px) !important;
+    height: calc(
+      100vh - var(--header-height) - var(--users-header-height) -
+        var(--users-footer-height)
+    ) !important;
 
     .n-data-table-base-table-body {
       .n-scrollbar-content {
