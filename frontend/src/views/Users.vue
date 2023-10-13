@@ -106,12 +106,12 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Role",
     key: "roleName",
+    ellipsis: true,
   },
 
   {
     title: "Invited by",
     key: "invitedBy",
-    width: 140,
     ellipsis: true,
     render: row => row.invitedBy || "-",
   },
