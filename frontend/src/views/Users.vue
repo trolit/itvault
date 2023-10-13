@@ -1,5 +1,25 @@
 <template>
   <div class="users-page page">
+    <div class="header" align="center">
+      <small>New changes!</small>
+
+      <n-popconfirm>
+        <template #trigger>
+          <n-button type="warning" ghost size="small"> Discard </n-button>
+        </template>
+
+        Are you sure?
+      </n-popconfirm>
+
+      <n-popconfirm>
+        <template #trigger>
+          <n-button ghost size="small" type="success"> Save </n-button>
+        </template>
+
+        Are you sure?
+      </n-popconfirm>
+    </div>
+
     <n-data-table
       remote
       flex-height
@@ -22,8 +42,10 @@
 import {
   NTag,
   NEmpty,
+  NButton,
   NDataTable,
   useMessage,
+  NPopconfirm,
   type PaginationProps,
   type DataTableColumns,
 } from "naive-ui";
