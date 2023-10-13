@@ -22,6 +22,7 @@
 
     <n-data-table
       remote
+      striped
       flex-height
       single-column
       :data="usersStore.items"
