@@ -2,8 +2,8 @@
   <div class="users-page page">
     <n-data-table
       remote
+      flex-height
       single-column
-      :paginate-single-page="false"
       :data="usersStore.items"
       :columns="columns"
       :loading="isLoading"
