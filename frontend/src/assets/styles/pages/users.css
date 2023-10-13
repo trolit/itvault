@@ -1,0 +1,5 @@
+.users-page {
+  .n-data-table {
+    height: calc(100vh - var(--header-height)) !important;
+  }
+}
