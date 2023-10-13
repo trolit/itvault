@@ -1,5 +1,15 @@
 .users-page {
   .n-data-table {
-    height: calc(100vh - var(--header-height)) !important;
+    height: calc(100vh - var(--header-height) - 20px) !important;
+
+    .n-data-table-base-table-body {
+      .n-scrollbar-content {
+        align-items: normal !important;
+      }
+    }
+
+    .n-data-table__pagination {
+      justify-content: center;
+    }
   }
 }
