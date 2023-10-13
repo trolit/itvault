@@ -7,6 +7,7 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
+import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
@@ -33,8 +34,7 @@ const {
 bundlesRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );
-
-// @TODO is workspace available middleware (instead of check in super schema)
+bundlesRouter.use(IsWorkspaceAvailable);
 
 bundlesRouter.get(
   "",
