@@ -60,7 +60,7 @@ const { fields, getError, hasError, handleSubmit, setValidationErrors } =
     defaultFormData,
     object({
       email: string().email().required(),
-      password: string().required().min(5),
+      password: string().required().min(4),
     })
   );
 
