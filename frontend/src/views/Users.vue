@@ -92,11 +92,15 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Full name",
     key: "fullName",
+    ellipsis: true,
+    resizable: true,
   },
 
   {
     title: "Email",
     key: "email",
+    ellipsis: true,
+    resizable: true,
   },
 
   {
@@ -107,12 +111,15 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Invited by",
     key: "invitedBy",
+    width: 140,
+    ellipsis: true,
     render: row => row.invitedBy || "-",
   },
 
   {
     title: "Signed up?",
     key: "isSignedUp",
+    width: 80,
     render: row => {
       const isSignedUp = !!row.isSignedUp;
 
@@ -127,6 +134,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Active?",
     key: "isActive",
+    width: 80,
     render: row => {
       const isActive = !!row.isActive;
 
