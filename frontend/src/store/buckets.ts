@@ -143,13 +143,11 @@ export const useBucketsStore = defineStore("buckets", {
     },
 
     removeFromValue(lineIndex: number, location: string) {
-      const { activeItem: activeBucket } = this;
-
-      if (!activeBucket) {
+      if (!this.activeItem) {
         return;
       }
 
-      const line = activeBucket.value[lineIndex];
+      const line = this.activeItem.value[lineIndex];
 
       const [from, to] = location.split("-");
 
@@ -159,6 +157,8 @@ export const useBucketsStore = defineStore("buckets", {
 
       if (~index) {
         line.splice(index, 1);
+
+        line.length ? {} : delete this.activeItem.value[lineIndex];
       }
     },
 
