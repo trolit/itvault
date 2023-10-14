@@ -1,7 +1,7 @@
 <template>
   <div class="users-page page">
     <div class="header">
-      <div class="wrapper">
+      <div class="wrapper" v-if="false">
         <small>New changes!</small>
 
         <n-popconfirm>
