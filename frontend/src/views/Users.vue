@@ -143,7 +143,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
       return h(
         NTag,
         { type: isActive ? "default" : "error" },
-        { defaukt: () => (isActive ? "Yes" : "No") }
+        { default: () => (isActive ? "Yes" : "No") }
       );
     },
   },
