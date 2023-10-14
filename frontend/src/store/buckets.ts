@@ -159,6 +159,10 @@ export const useBucketsStore = defineStore("buckets", {
 
       if (~index) {
         line.splice(index, 1);
+
+        if (!line.length) {
+          delete activeBucket.value[lineIndex];
+        }
       }
     },
 
