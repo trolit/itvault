@@ -25,7 +25,6 @@
 
         <!-- @TODO allow to requeue bundle for bundle owners (?) -->
         <require-permission :permission="Permission.RequeueBundle">
-          <!-- @TODO -->
           <n-button
             v-if="isBundleGenerationFailed"
             type="warning"
@@ -37,9 +36,7 @@
           </n-button>
         </require-permission>
 
-        <!-- @TODO  -->
         <require-permission :permission="Permission.DownloadBundle">
-          <!-- @TODO -->
           <n-button
             v-if="isReady"
             type="info"

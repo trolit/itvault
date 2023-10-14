@@ -1,0 +1,32 @@
+.users-page {
+  .header {
+    display: flex;
+    margin: 0 15px;
+    align-items: center;
+    justify-content: flex-end;
+    height: var(--users-header-height);
+
+    .wrapper {
+      display: inherit;
+      column-gap: 10px;
+      align-items: center;
+    }
+  }
+
+  .n-data-table {
+    height: calc(
+      100vh - var(--header-height) - var(--users-header-height) -
+        var(--users-footer-height)
+    ) !important;
+
+    .n-data-table-base-table-body {
+      .n-scrollbar-content {
+        align-items: normal !important;
+      }
+    }
+
+    .n-data-table__pagination {
+      justify-content: center;
+    }
+  }
+}
