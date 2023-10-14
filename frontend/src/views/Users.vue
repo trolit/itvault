@@ -1,23 +1,25 @@
 <template>
   <div class="users-page page">
-    <div class="header" v-if="false">
-      <small>New changes!</small>
+    <div class="header">
+      <div class="wrapper">
+        <small>New changes!</small>
 
-      <n-popconfirm>
-        <template #trigger>
-          <n-button type="warning" ghost size="small"> Discard </n-button>
-        </template>
+        <n-popconfirm>
+          <template #trigger>
+            <n-button type="warning" ghost size="small"> Discard </n-button>
+          </template>
 
-        Are you sure?
-      </n-popconfirm>
+          Are you sure?
+        </n-popconfirm>
 
-      <n-popconfirm>
-        <template #trigger>
-          <n-button ghost size="small" type="success"> Save </n-button>
-        </template>
+        <n-popconfirm>
+          <template #trigger>
+            <n-button ghost size="small" type="success"> Save </n-button>
+          </template>
 
-        Are you sure?
-      </n-popconfirm>
+          Are you sure?
+        </n-popconfirm>
+      </div>
     </div>
 
     <n-data-table

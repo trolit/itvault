@@ -2,10 +2,15 @@
   .header {
     display: flex;
     margin: 0 15px;
-    column-gap: 10px;
     align-items: center;
     justify-content: flex-end;
     height: var(--users-header-height);
+
+    .wrapper {
+      display: inherit;
+      column-gap: 10px;
+      align-items: center;
+    }
   }
 
   .n-data-table {
