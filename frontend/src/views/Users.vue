@@ -1,6 +1,6 @@
 <template>
   <div class="users-page page">
-    <div class="header" align="center">
+    <div class="header" v-if="false">
       <small>New changes!</small>
 
       <n-popconfirm>
