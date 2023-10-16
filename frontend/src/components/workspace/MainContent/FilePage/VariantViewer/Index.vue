@@ -144,7 +144,7 @@ function renderText(content: string) {
         )
   );
 
-  return h("div", { class: "text-render" }, children);
+  return h("pre", { class: "text-render" }, children);
 }
 
 function parseLineWithBucket(
