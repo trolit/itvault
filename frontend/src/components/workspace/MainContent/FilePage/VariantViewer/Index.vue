@@ -106,6 +106,10 @@ onBeforeMount(async () => {
       text.value = await variantsStore.getContentById(id);
 
       await variantsStore.getBlueprintsById(id);
+
+      variantsStore.overwriteActiveInformationIfPossible({
+        blueprint: true,
+      });
     } catch (error) {
       console.log(error);
     } finally {

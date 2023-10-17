@@ -47,7 +47,7 @@ export const useVariantsStore = defineStore("variants", {
         params,
       });
 
-      this.initializeTabs(data);
+      data.map(variant => this.initializeTab(variant));
 
       return data;
     },
@@ -158,30 +158,12 @@ export const useVariantsStore = defineStore("variants", {
       activeTab.variantTabs.push(variantTab);
     },
 
-    initializeTabs(variants: IVariantDto[]) {
-      const { openTabData } = useWorkspacesStore();
-
-      variants.map(variant => this.initializeTab(variant));
-
-      if (openTabData) {
-        this.setActiveTab(openTabData.variantId);
-      }
-    },
-
     initializeActiveTabBlueprints(blueprints: IBlueprintDto[]) {
-      const { tabToOpenData } = useFilesStore();
-
       if (!this.activeTab) {
         return;
       }
 
       this.activeTab.blueprints = blueprints;
-
-      const { variant } = this.activeTab;
-
-      if (tabToOpenData && variant.id === tabToOpenData.variantId) {
-        this.setActiveTabBlueprint(tabToOpenData.blueprintId);
-      }
     },
 
     initializeActiveTabBlueprintWithBucket(blueprint: IBlueprintDto) {
@@ -197,6 +179,29 @@ export const useVariantsStore = defineStore("variants", {
         initialValue: {},
         value: {},
       });
+    },
+
+    overwriteActiveInformationIfPossible(data: {
+      variant?: boolean;
+      blueprint?: boolean;
+    }) {
+      const filesStore = useFilesStore();
+      const { variant, blueprint } = data;
+      const { tabToOpenData } = filesStore;
+
+      if (!tabToOpenData) {
+        return;
+      }
+
+      if (variant) {
+        this.setActiveTab(tabToOpenData.variantId);
+      }
+
+      if (blueprint) {
+        this.setActiveTabBlueprint(tabToOpenData.blueprintId);
+
+        filesStore.tabToOpenData = null;
+      }
     },
 
     setActiveTab(id: string) {

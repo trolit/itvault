@@ -1,6 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import { useVariantsStore } from "./variants";
 import type { FileTab } from "@/types/FileTab";
 import { useWorkspacesStore } from "./workspaces";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
@@ -99,11 +100,15 @@ export const useFilesStore = defineStore("files", {
 
     async setActiveTabFromBundle(bundle: IBundleFileDto, blueprintId: number) {
       const { fileId, variantId } = bundle;
+      const variantsStore = useVariantsStore();
 
       const fileTab = this.findTabById(fileId);
       let file = fileTab?.file;
+      let isFileAvailable = true;
 
       if (!file) {
+        isFileAvailable = false;
+
         const filesStore = useFilesStore();
 
         file = await filesStore.getById(fileId);
@@ -112,6 +117,13 @@ export const useFilesStore = defineStore("files", {
       this.setActiveTab(file);
 
       this.tabToOpenData = { blueprintId, variantId };
+
+      if (isFileAvailable) {
+        variantsStore.overwriteActiveInformationIfPossible({
+          variant: true,
+          blueprint: true,
+        });
+      }
     },
 
     closeTab(id: number) {

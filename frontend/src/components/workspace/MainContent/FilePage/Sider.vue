@@ -120,6 +120,10 @@ defineWatchers({
 
         try {
           await variantsStore.getAll();
+
+          variantsStore.overwriteActiveInformationIfPossible({
+            variant: true,
+          });
         } catch (error) {
           console.log(error);
         } finally {
