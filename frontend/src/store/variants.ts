@@ -159,12 +159,12 @@ export const useVariantsStore = defineStore("variants", {
     },
 
     initializeTabs(variants: IVariantDto[]) {
-      const { openTabData } = useWorkspacesStore();
+      const { tabToOpenData } = useFilesStore();
 
       variants.map(variant => this.initializeTab(variant));
 
-      if (openTabData) {
-        this.setActiveTab(openTabData.variantId);
+      if (tabToOpenData) {
+        this.setActiveTab(tabToOpenData.variantId);
       }
     },
 
