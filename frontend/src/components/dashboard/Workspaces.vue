@@ -49,7 +49,6 @@ import {
   NButton,
   NDataTable,
   useMessage,
-  NSpace,
 } from "naive-ui";
 import {
   Search as SearchIcon,
@@ -136,42 +135,36 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   {
     title: "Actions",
     key: "actions",
-    width: "15%",
+    width: 140,
     render(row) {
-      return h(
-        NSpace,
-        {},
-        {
-          default: () => [
-            h(
-              NButton,
-              {
-                size: "small",
-                onClick: event => {
-                  event.stopPropagation();
+      return h("div", { class: "actions-wrapper" }, [
+        h(
+          NButton,
+          {
+            size: "small",
+            onClick: event => {
+              event.stopPropagation();
 
-                  toggleAddEditWorkspaceDrawer(row);
-                },
-              },
-              { default: () => "Edit" }
-            ),
-            h(
-              NButton,
-              {
-                size: "small",
-                onClick: event => {
-                  event.stopPropagation();
+              toggleAddEditWorkspaceDrawer(row);
+            },
+          },
+          { default: () => "Edit" }
+        ),
+        h(
+          NButton,
+          {
+            size: "small",
+            onClick: event => {
+              event.stopPropagation();
 
-                  workspacesStore.setActiveItem(row);
+              workspacesStore.setActiveItem(row);
 
-                  router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
-                },
-              },
-              { default: () => "Open" }
-            ),
-          ],
-        }
-      );
+              router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
+            },
+          },
+          { default: () => "Open" }
+        ),
+      ]);
     },
   },
 ]);

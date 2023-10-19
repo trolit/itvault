@@ -135,6 +135,11 @@
                     display: flex;
                     flex-wrap: wrap;
                   }
+
+                  .actions-wrapper {
+                    gap: 5px;
+                    display: flex;
+                  }
                 }
 
                 .n-input {
