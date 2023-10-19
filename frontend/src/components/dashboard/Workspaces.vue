@@ -10,12 +10,7 @@
 
     <template #content>
       <!-- @TODO show input only when there are at least 3 pages -->
-      <n-input
-        clearable
-        show-count
-        maxlength="30"
-        placeholder="Type name or tag to filter"
-      >
+      <n-input clearable placeholder="Type name or tag to filter">
         <template #prefix>
           <n-icon :component="SearchIcon" />
         </template>
@@ -24,7 +19,7 @@
       <n-data-table
         remote
         single-column
-        :max-height="500"
+        :max-height="420"
         :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
