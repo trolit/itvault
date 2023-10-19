@@ -14,7 +14,7 @@
           responsive="screen"
           cols="1 s:1 m:5 l:5 xl:5 2xl:5"
         >
-          <n-grid-item :span="2">
+          <n-grid-item :span="2" class="text-center">
             <welcome />
           </n-grid-item>
 
