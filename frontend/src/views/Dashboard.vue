@@ -34,12 +34,12 @@
         </n-grid>
       </n-grid-item>
 
-      <n-grid-item class="permissions-wrapper" span="1">
-        <permissions />
-      </n-grid-item>
-
       <n-grid-item class="workspaces-card-wrapper" span="2">
         <workspaces-card />
+      </n-grid-item>
+
+      <n-grid-item class="permissions-wrapper" span="1">
+        <permissions />
       </n-grid-item>
 
       <n-grid-item class="other-cards-wrapper" span="3">
