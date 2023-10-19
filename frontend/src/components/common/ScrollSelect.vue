@@ -12,10 +12,12 @@
 <script setup lang="ts">
 import { NSelect } from "naive-ui";
 
+import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
+
 interface IProps {
   value: string | number | null;
 
-  options: { label: string; value: string | number }[];
+  options: PrimitiveSelectOption[];
 }
 
 const props = defineProps<IProps>();
