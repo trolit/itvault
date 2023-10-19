@@ -4,6 +4,7 @@
     :options="options"
     :reset-menu-on-options-change="false"
     @scroll="handleScroll"
+    @update-show="onUpdateShow"
     @update-value="$emit('select', $event)"
   />
 </template>
@@ -12,14 +13,20 @@
 import { NSelect } from "naive-ui";
 
 interface IProps {
-  value: string | number;
+  value: string | number | null;
 
-  options?: { label: string; value: string | number }[];
+  options: { label: string; value: string | number }[];
 }
 
-defineProps<IProps>();
+const props = defineProps<IProps>();
 
-const emit = defineEmits(["scroll", "select"]);
+const emit = defineEmits(["scroll", "select", "init"]);
+
+function onUpdateShow(value: boolean) {
+  if (value && !props.options.length) {
+    emit("init");
+  }
+}
 
 function handleScroll(event: Event) {
   const currentTarget = event.currentTarget as HTMLElement;
