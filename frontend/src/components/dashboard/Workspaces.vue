@@ -24,7 +24,7 @@
       <n-data-table
         remote
         single-column
-        :paginate-single-page="false"
+        :max-height="400"
         :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
@@ -113,6 +113,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   {
     title: "Tags",
     key: "tags",
+    width: "30%",
     className: "tags-row",
     render(row) {
       const tags = row.tags.map(tagKey => {
@@ -135,6 +136,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   {
     title: "Actions",
     key: "actions",
+    width: "15%",
     render(row) {
       return h(
         NSpace,
