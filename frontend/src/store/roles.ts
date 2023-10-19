@@ -28,7 +28,7 @@ export const useRolesStore = defineStore("roles", {
         { params }
       );
 
-      this.items = data.result;
+      this.items = Array.prototype.concat(this.items, data.result);
 
       this.total = data.total;
 
