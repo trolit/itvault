@@ -24,7 +24,7 @@
       <n-data-table
         remote
         single-column
-        :max-height="400"
+        :max-height="500"
         :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
