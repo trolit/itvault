@@ -1,9 +1,9 @@
 <template>
-  <n-h1> &gt; Dashboard </n-h1>
+  <n-h1> _Dashboard </n-h1>
 
   <n-h2>
     Welcome
-    <n-gradient-text> {{ authStore.profile.fullName }} </n-gradient-text>,
+    <n-gradient-text> {{ authStore.profile.fullName }} </n-gradient-text>
   </n-h2>
 
   <div>
@@ -17,7 +17,6 @@
       <small>
         ({{ remainingDays }} days left till the end of the year 2023)
       </small>
-      🎉
     </n-text>
   </div>
 </template>

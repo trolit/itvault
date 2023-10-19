@@ -10,12 +10,7 @@
 
     <template #content>
       <!-- @TODO show input only when there are at least 3 pages -->
-      <n-input
-        clearable
-        show-count
-        maxlength="30"
-        placeholder="Type name or tag to filter"
-      >
+      <n-input clearable placeholder="Type name or tag to filter">
         <template #prefix>
           <n-icon :component="SearchIcon" />
         </template>
@@ -24,7 +19,7 @@
       <n-data-table
         remote
         single-column
-        :paginate-single-page="false"
+        :max-height="420"
         :data="workspacesStore.items"
         :columns="columns"
         :loading="isLoading"
@@ -49,7 +44,6 @@ import {
   NButton,
   NDataTable,
   useMessage,
-  NSpace,
 } from "naive-ui";
 import {
   Search as SearchIcon,
@@ -113,6 +107,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   {
     title: "Tags",
     key: "tags",
+    width: "30%",
     className: "tags-row",
     render(row) {
       const tags = row.tags.map(tagKey => {
@@ -135,41 +130,36 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   {
     title: "Actions",
     key: "actions",
+    width: 140,
     render(row) {
-      return h(
-        NSpace,
-        {},
-        {
-          default: () => [
-            h(
-              NButton,
-              {
-                size: "small",
-                onClick: event => {
-                  event.stopPropagation();
+      return h("div", { class: "actions-wrapper" }, [
+        h(
+          NButton,
+          {
+            size: "small",
+            onClick: event => {
+              event.stopPropagation();
 
-                  toggleAddEditWorkspaceDrawer(row);
-                },
-              },
-              { default: () => "Edit" }
-            ),
-            h(
-              NButton,
-              {
-                size: "small",
-                onClick: event => {
-                  event.stopPropagation();
+              toggleAddEditWorkspaceDrawer(row);
+            },
+          },
+          { default: () => "Edit" }
+        ),
+        h(
+          NButton,
+          {
+            size: "small",
+            onClick: event => {
+              event.stopPropagation();
 
-                  workspacesStore.setActiveItem(row);
+              workspacesStore.setActiveItem(row);
 
-                  router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
-                },
-              },
-              { default: () => "Open" }
-            ),
-          ],
-        }
-      );
+              router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
+            },
+          },
+          { default: () => "Open" }
+        ),
+      ]);
     },
   },
 ]);

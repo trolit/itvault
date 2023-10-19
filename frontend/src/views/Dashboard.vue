@@ -14,57 +14,57 @@
           responsive="screen"
           cols="1 s:1 m:5 l:5 xl:5 2xl:5"
         >
-          <n-grid-item :span="2">
+          <n-grid-item :span="2" class="text-center">
             <welcome />
           </n-grid-item>
 
-          <n-grid-item
-            v-for="({ title, to, icon, description, props }, index) of topCards"
-            v-bind="props"
-            class="other-card-wrapper"
-            :key="index"
-          >
-            <link-card
-              :to="to"
-              :icon="icon"
-              :title="title"
-              :description="description"
-            />
+          <n-grid-item span="3">
+            <n-grid
+              x-gap="20"
+              y-gap="20"
+              responsive="screen"
+              cols="1 s:1 m:2 l:2 xl:2 2xl:2"
+            >
+              <n-grid-item
+                v-for="(
+                  { title, to, icon, description, props }, index
+                ) of topCards"
+                v-bind="props"
+                class="other-card-wrapper"
+                :key="index"
+              >
+                <link-card
+                  :to="to"
+                  :icon="icon"
+                  :title="title"
+                  :description="description"
+                />
+              </n-grid-item>
+            </n-grid>
           </n-grid-item>
         </n-grid>
-      </n-grid-item>
-
-      <n-grid-item class="permissions-wrapper" span="1">
-        <permissions />
       </n-grid-item>
 
       <n-grid-item class="workspaces-card-wrapper" span="2">
         <workspaces-card />
       </n-grid-item>
 
-      <n-grid-item class="other-cards-wrapper" span="3">
-        <n-grid
-          x-gap="20"
-          y-gap="20"
-          responsive="screen"
-          cols="1 s:1 m:2 l:2 xl:2 2xl:2"
-        >
-          <n-grid-item
-            v-for="(
-              { title, to, icon, description, props }, index
-            ) of middleCards"
-            v-bind="props"
-            class="other-card-wrapper"
-            :key="index"
-          >
-            <link-card
-              :to="to"
-              :icon="icon"
-              :title="title"
-              :description="description"
-            />
-          </n-grid-item>
-        </n-grid>
+      <n-grid-item class="permissions-wrapper" span="1">
+        <permissions />
+      </n-grid-item>
+
+      <n-grid-item
+        v-for="({ title, to, icon, description, props }, index) of bottomCards"
+        v-bind="props"
+        class="other-card-wrapper"
+        :key="index"
+      >
+        <link-card
+          :to="to"
+          :icon="icon"
+          :title="title"
+          :description="description"
+        />
       </n-grid-item>
     </n-grid>
 
@@ -103,7 +103,7 @@ interface OtherCard {
   description: string;
 }
 
-const topCards: Ref<OtherCard[]> = ref([
+const bottomCards: Ref<OtherCard[]> = ref([
   {
     title: "Guide",
     to: ROUTE_GUIDE_NAME,
@@ -126,7 +126,7 @@ const topCards: Ref<OtherCard[]> = ref([
   },
 ]);
 
-const middleCards: Ref<OtherCard[]> = ref([
+const topCards: Ref<OtherCard[]> = ref([
   {
     title: "Users",
     to: ROUTE_USERS_NAME,

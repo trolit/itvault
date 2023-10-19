@@ -1,4 +1,12 @@
 .dashboard-page {
+  --workspaces-card-input-height: 40px;
+  --workspaces-card-input-margin-bottom-height: 10px;
+  /* see Workspaces.vue */
+  --workspaces-card-content-height: calc(
+    500px + var(--workspaces-card-input-height) +
+      var(--workspaces-card-input-margin-bottom-height)
+  );
+
   &.page {
     margin: var(--page-margin);
   }
@@ -14,11 +22,11 @@
 
     .permissions-wrapper,
     .workspaces-card-wrapper {
-      min-height: 70vh;
+      min-height: 20vh;
     }
 
     .other-cards-wrapper {
-      min-height: 30vh;
+      min-height: 6vh;
     }
 
     .content-card {
@@ -83,7 +91,7 @@
     .permissions-wrapper {
       .n-card {
         .n-scrollbar {
-          max-height: calc(100vh * 0.6);
+          max-height: var(--workspaces-card-content-height);
         }
       }
 
@@ -111,19 +119,17 @@
         .n-thing {
           .n-thing-main {
             .n-thing-main__content {
-              .content {
-                height: 100%;
-                display: flex;
-                flex-direction: column;
+              .n-input {
+                height: var(--workspaces-card-input-height);
+                margin-bottom: var(
+                  --workspaces-card-input-margin-bottom-height
+                );
+              }
 
-                .actions {
-                  display: flex;
-                  margin-top: 20px;
-                  justify-content: center;
-                }
+              .content {
+                height: var(--workspaces-card-content-height);
 
                 .n-data-table {
-                  height: 100%;
                   min-height: 250px;
 
                   .n-data-table__pagination {
@@ -131,14 +137,15 @@
                   }
 
                   .tags-row {
-                    gap: 10px;
+                    gap: 5px;
                     display: flex;
                     flex-wrap: wrap;
                   }
-                }
 
-                .n-input {
-                  margin-bottom: 20px;
+                  .actions-wrapper {
+                    gap: 5px;
+                    display: flex;
+                  }
                 }
               }
             }
