@@ -1,6 +1,13 @@
 <template>
   <div class="users-page page">
     <div class="header">
+      <!-- @TODO -->
+      <n-input clearable placeholder="Type email or full name to filter">
+        <template #prefix>
+          <n-icon :component="SearchIcon" />
+        </template>
+      </n-input>
+
       <div class="wrapper" v-if="usersStore.itemsToUpdate.length">
         <small>New changes detected!</small>
 
@@ -43,7 +50,9 @@
 <script setup lang="ts">
 import {
   NTag,
+  NIcon,
   NEmpty,
+  NInput,
   NButton,
   NSwitch,
   NDataTable,
@@ -52,6 +61,7 @@ import {
   type PaginationProps,
   type DataTableColumns,
 } from "naive-ui";
+import { Search as SearchIcon } from "@vicons/carbon";
 import { h, onBeforeMount, reactive, ref, type Ref } from "vue";
 
 import { useRolesStore } from "@/store/roles";
