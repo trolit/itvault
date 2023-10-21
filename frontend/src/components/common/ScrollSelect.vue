@@ -4,8 +4,8 @@
     :options="options"
     :reset-menu-on-options-change="false"
     @scroll="handleScroll"
+    @update-value="onSelect"
     @update-show="onUpdateShow"
-    @update-value="$emit('select', $event)"
   />
 </template>
 
@@ -23,6 +23,14 @@ interface IProps {
 const props = defineProps<IProps>();
 
 const emit = defineEmits(["scroll", "select", "init"]);
+
+function onSelect(value: string | number) {
+  if (value === props.value) {
+    return;
+  }
+
+  emit("select", value);
+}
 
 function onUpdateShow(value: boolean) {
   if (value && !props.options.length) {
