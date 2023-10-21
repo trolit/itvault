@@ -2,7 +2,11 @@
   <div class="users-page page">
     <div class="header">
       <!-- @TODO -->
-      <n-input clearable placeholder="Type email or full name to filter">
+      <n-input
+        clearable
+        placeholder="Type email or full name to filter"
+        disabled
+      >
         <template #prefix>
           <n-icon :component="SearchIcon" />
         </template>
