@@ -147,7 +147,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
 
       // @NOTE maybe extract HEAD_ADMIN_ID to shared module or do not return head admin at all (?)
       if (roleId === 1) {
-        return rowData.roleName;
+        return `⭐ ${rowData.roleName}`;
       }
 
       const roleIdToUpdate = usersStore.findItemToUpdateRoleId(id);
