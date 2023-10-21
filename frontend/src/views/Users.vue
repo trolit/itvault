@@ -158,7 +158,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Signed up?",
     key: "isSignedUp",
-    width: 80,
+    width: 100,
     render: rowData => {
       const isSignedUp = !!rowData.isSignedUp;
 
