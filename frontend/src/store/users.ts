@@ -1,4 +1,5 @@
 import axios from "axios";
+import has from "lodash/has";
 import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -81,9 +82,21 @@ export const useUsersStore = defineStore("users", {
     findItemToUpdateRoleId(id: number) {
       const itemToUpdate = this.findItemToUpdate(id);
 
-      const roleId = itemToUpdate?.data.roleId;
+      if (!itemToUpdate || !itemToUpdate.data.roleId) {
+        return null;
+      }
 
-      return roleId || null;
+      return itemToUpdate.data.roleId;
+    },
+
+    findItemToUpdateIsActive(id: number) {
+      const itemToUpdate = this.findItemToUpdate(id);
+
+      if (!itemToUpdate || !has(itemToUpdate.data, "isActive")) {
+        return null;
+      }
+
+      return itemToUpdate.data.isActive;
     },
 
     setRole(userId: number, roleId: number) {
@@ -114,6 +127,36 @@ export const useUsersStore = defineStore("users", {
       }
 
       item.data.roleId = roleId;
+    },
+
+    setIsActive(userId: number, status: boolean) {
+      const originalItem = this.items.find(item => item.id === userId);
+
+      const item = this.findItemToUpdate(userId);
+
+      if (
+        item &&
+        originalItem &&
+        originalItem.id === item.id &&
+        status === originalItem.isActive
+      ) {
+        this.removeDataKey("isActive", item);
+
+        return;
+      }
+
+      if (!item) {
+        this.itemsToUpdate.push({
+          id: userId,
+          data: {
+            isActive: status,
+          },
+        });
+
+        return;
+      }
+
+      item.data.isActive = status;
     },
   },
 });

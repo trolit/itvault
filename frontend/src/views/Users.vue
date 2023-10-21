@@ -24,7 +24,6 @@
 
     <n-data-table
       remote
-      striped
       flex-height
       single-column
       :data="usersStore.items"
@@ -46,6 +45,7 @@ import {
   NTag,
   NEmpty,
   NButton,
+  NSwitch,
   NDataTable,
   useMessage,
   NPopconfirm,
@@ -159,8 +159,12 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     title: "Signed up?",
     key: "isSignedUp",
     width: 80,
-    render: row => {
-      const isSignedUp = !!row.isSignedUp;
+    render: rowData => {
+      const isSignedUp = !!rowData.isSignedUp;
+
+      if (rowData.roleId === 1) {
+        return "-";
+      }
 
       return h(
         NTag,
@@ -174,13 +178,34 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     title: "Active?",
     key: "isActive",
     width: 80,
-    render: row => {
-      const isActive = !!row.isActive;
+    cellProps: rowData => {
+      const { id } = rowData;
+
+      const isActiveToUpdate = usersStore.findItemToUpdateIsActive(id);
+
+      return isActiveToUpdate
+        ? { style: { border: "2px dashed #FF0000" } }
+        : {};
+    },
+    render: rowData => {
+      const { id, roleId, isActive } = rowData;
+
+      if (roleId === 1) {
+        return "-";
+      }
+
+      const isActiveToUpdate = usersStore.findItemToUpdateIsActive(id);
 
       return h(
-        NTag,
-        { type: isActive ? "default" : "error" },
-        { default: () => (isActive ? "Yes" : "No") }
+        NSwitch,
+        {
+          round: false,
+          value: isActiveToUpdate === null ? isActive : isActiveToUpdate,
+
+          "on-update:value": (value: boolean) =>
+            usersStore.setIsActive(id, value),
+        },
+        { checked: () => "Yes", unchecked: () => "No" }
       );
     },
   },
