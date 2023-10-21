@@ -1,10 +1,14 @@
 .users-page {
   .header {
     display: flex;
-    margin: 0 15px;
+    margin: 0 10px;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     height: var(--users-header-height);
+
+    .n-input {
+      width: 35%;
+    }
 
     .wrapper {
       display: inherit;
