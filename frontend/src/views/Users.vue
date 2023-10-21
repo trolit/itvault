@@ -104,14 +104,18 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Full name",
     key: "fullName",
-    ellipsis: true,
+    ellipsis: {
+      tooltip: true,
+    },
     resizable: true,
   },
 
   {
     title: "Email",
     key: "email",
-    ellipsis: true,
+    ellipsis: {
+      tooltip: true,
+    },
     resizable: true,
   },
 
