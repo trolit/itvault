@@ -167,7 +167,11 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Invited by",
     key: "invitedBy",
-    ellipsis: true,
+    ellipsis: {
+      tooltip: true,
+    },
+    resizable: true,
+    width: 100,
     render: row => row.invitedBy || "-",
   },
 
