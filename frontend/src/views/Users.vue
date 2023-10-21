@@ -1,8 +1,8 @@
 <template>
   <div class="users-page page">
     <div class="header">
-      <div class="wrapper" v-if="false">
-        <small>New changes!</small>
+      <div class="wrapper" v-if="usersStore.itemsToUpdate.length">
+        <small>New changes detected!</small>
 
         <n-popconfirm>
           <template #trigger>
@@ -119,22 +119,31 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     title: "Role",
     key: "roleName",
     ellipsis: true,
+    cellProps: rowData => {
+      const { id } = rowData;
+
+      const roleIdToUpdate = usersStore.findItemToUpdateRoleId(id);
+
+      return roleIdToUpdate ? { style: { border: "2px dashed #FF0000" } } : {};
+    },
     render: rowData => {
-      const { roleId } = rowData;
+      const { id, roleId } = rowData;
 
       // @NOTE maybe extract HEAD_ADMIN_ID to shared module or do not return head admin at all (?)
       if (roleId === 1) {
         return rowData.roleName;
       }
 
+      const roleIdToUpdate = usersStore.findItemToUpdateRoleId(id);
+
       return h(ScrollSelect, {
-        value: roleId,
+        value: roleIdToUpdate || roleId,
         options: rolesStore.options,
         disabled: isLoadingRoles.value,
         consistentMenuWidth: false,
 
         onScroll: getRoles,
-        onSelect: roleId => (rowData.roleId = roleId),
+        onSelect: newRoleId => usersStore.setRole(id, newRoleId),
       });
     },
   },

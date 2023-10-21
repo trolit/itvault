@@ -4,12 +4,14 @@ import cloneDeep from "lodash/cloneDeep";
 
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
+import type { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
   total: number;
   items: IUserDto[];
+  itemsToUpdate: UpdateUserDto[];
   notes: PaginatedResponse<INoteDto>;
 }
 
@@ -17,6 +19,7 @@ export const useUsersStore = defineStore("users", {
   state: (): IState => ({
     total: 0,
     items: [],
+    itemsToUpdate: [],
     notes: { total: 0, result: [] },
   }),
 
@@ -59,6 +62,58 @@ export const useUsersStore = defineStore("users", {
       );
 
       this.notes.total = total;
+    },
+
+    findItemToUpdate(id: number) {
+      return this.itemsToUpdate.find(itemToUpdate => itemToUpdate.id === id);
+    },
+
+    removeDataKey(key: "roleId" | "isActive", item: UpdateUserDto) {
+      delete item.data[key];
+
+      if (!Object.keys(item.data).length) {
+        const index = this.itemsToUpdate.indexOf(item);
+
+        this.itemsToUpdate.splice(index, 1);
+      }
+    },
+
+    findItemToUpdateRoleId(id: number) {
+      const itemToUpdate = this.findItemToUpdate(id);
+
+      const roleId = itemToUpdate?.data.roleId;
+
+      return roleId || null;
+    },
+
+    setRole(userId: number, roleId: number) {
+      const originalItem = this.items.find(item => item.id === userId);
+
+      const item = this.findItemToUpdate(userId);
+
+      if (
+        item &&
+        originalItem &&
+        originalItem.id === item.id &&
+        roleId === originalItem.roleId
+      ) {
+        this.removeDataKey("roleId", item);
+
+        return;
+      }
+
+      if (!item) {
+        this.itemsToUpdate.push({
+          id: userId,
+          data: {
+            roleId,
+          },
+        });
+
+        return;
+      }
+
+      item.data.roleId = roleId;
     },
   },
 });
