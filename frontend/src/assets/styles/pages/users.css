@@ -19,6 +19,10 @@
         var(--users-footer-height)
     ) !important;
 
+    .n-data-table-wrapper {
+      margin: 0 10px;
+    }
+
     .n-data-table-base-table-body {
       .n-scrollbar-content {
         align-items: normal !important;
