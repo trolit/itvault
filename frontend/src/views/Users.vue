@@ -29,7 +29,7 @@
       single-column
       :data="usersStore.items"
       :columns="columns"
-      :loading="isLoading"
+      :loading="isLoadingUsers"
       :pagination="pagination"
       :row-key="(row: IUserDto) => row.id"
       @update:page="getUsers"
@@ -54,18 +54,28 @@ import {
 } from "naive-ui";
 import { h, onBeforeMount, reactive, ref, type Ref } from "vue";
 
+import { useRolesStore } from "@/store/roles";
 import { useUsersStore } from "@/store/users";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
+import ScrollSelect from "@/components/common/ScrollSelect.vue";
 
 const message = useMessage();
+const rolesStore = useRolesStore();
 const usersStore = useUsersStore();
 
-const isLoading = ref(true);
+const rolesPage = ref(1);
+const isLoadingUsers = ref(true);
+const isLoadingRoles = ref(false);
 
+const rolesPerPage = 5;
 const defaultPagination = {
   page: 1,
   pageSize: 10,
 };
+
+onBeforeMount(async () => {
+  await getRoles();
+});
 
 const pagination: PaginationProps = reactive({
   ...defaultPagination,
@@ -109,6 +119,24 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     title: "Role",
     key: "roleName",
     ellipsis: true,
+    render: rowData => {
+      const { roleId } = rowData;
+
+      // @NOTE maybe extract HEAD_ADMIN_ID to shared module or do not return head admin at all (?)
+      if (roleId === 1) {
+        return rowData.roleName;
+      }
+
+      return h(ScrollSelect, {
+        value: roleId,
+        options: rolesStore.options,
+        disabled: isLoadingRoles.value,
+        consistentMenuWidth: false,
+
+        onScroll: getRoles,
+        onSelect: roleId => (rowData.roleId = roleId),
+      });
+    },
   },
 
   {
@@ -150,7 +178,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
 ]);
 
 async function getUsers() {
-  isLoading.value = true;
+  isLoadingUsers.value = true;
 
   const { total } = usersStore;
 
@@ -166,7 +194,26 @@ async function getUsers() {
 
     message.error("There was an error when trying to load users.");
   } finally {
-    isLoading.value = false;
+    isLoadingUsers.value = false;
+  }
+}
+
+async function getRoles() {
+  isLoadingRoles.value = true;
+
+  try {
+    await rolesStore.getAll({
+      page: rolesPage.value,
+      perPage: rolesPerPage,
+    });
+
+    rolesPage.value += 1;
+  } catch (error) {
+    console.log(error);
+
+    message.error("There was an error when trying to load roles!");
+  } finally {
+    isLoadingRoles.value = false;
   }
 }
 </script>
