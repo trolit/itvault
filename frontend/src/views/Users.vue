@@ -128,7 +128,9 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
 
       const roleIdToUpdate = usersStore.findItemToUpdateRoleId(id);
 
-      return roleIdToUpdate ? { style: { border: "2px dashed #FF0000" } } : {};
+      return roleIdToUpdate
+        ? { style: { outline: "2px dashed #FF0000", outlineOffset: "-10px" } }
+        : {};
     },
     render: rowData => {
       const { id, roleId } = rowData;
@@ -188,7 +190,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
       const isActiveToUpdate = usersStore.findItemToUpdateIsActive(id);
 
       return isActiveToUpdate !== null
-        ? { style: { border: "2px dashed #FF0000" } }
+        ? { style: { outline: "2px dashed #FF0000", outlineOffset: "-10px" } }
         : {};
     },
     render: rowData => {
