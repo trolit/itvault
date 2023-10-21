@@ -4,7 +4,7 @@
       <div class="wrapper" v-if="usersStore.itemsToUpdate.length">
         <small>New changes detected!</small>
 
-        <n-popconfirm>
+        <n-popconfirm @positive-click="usersStore.itemsToUpdate = []">
           <template #trigger>
             <n-button type="warning" ghost size="small"> Discard </n-button>
           </template>
