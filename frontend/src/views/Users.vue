@@ -187,7 +187,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
 
       const isActiveToUpdate = usersStore.findItemToUpdateIsActive(id);
 
-      return isActiveToUpdate
+      return isActiveToUpdate !== null
         ? { style: { border: "2px dashed #FF0000" } }
         : {};
     },
