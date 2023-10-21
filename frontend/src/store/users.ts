@@ -1,5 +1,4 @@
 import axios from "axios";
-import has from "lodash/has";
 import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
@@ -92,7 +91,7 @@ export const useUsersStore = defineStore("users", {
     findItemToUpdateIsActive(id: number) {
       const itemToUpdate = this.findItemToUpdate(id);
 
-      if (!itemToUpdate || !has(itemToUpdate.data, "isActive")) {
+      if (!itemToUpdate || typeof itemToUpdate.data.isActive !== "boolean") {
         return null;
       }
 
