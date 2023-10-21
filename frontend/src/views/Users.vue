@@ -34,7 +34,6 @@
     </div>
 
     <n-data-table
-      remote
       flex-height
       single-column
       :data="usersStore.items"
