@@ -65,9 +65,17 @@ export const useUsersStore = defineStore("users", {
     },
 
     async updateMany() {
-      await axios.patch("v1/users", {
-        value: this.itemsToUpdate,
-      });
+      const params = {
+        version: 1,
+      };
+
+      await axios.patch(
+        "v1/users",
+        {
+          values: this.itemsToUpdate,
+        },
+        { params }
+      );
 
       this.itemsToUpdate.map(itemToUpdate => {
         const item = this.items.find(item => item.id === itemToUpdate.id);
