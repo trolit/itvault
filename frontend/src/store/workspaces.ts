@@ -148,6 +148,9 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     initTree() {
+      this.treeData = [];
+      this.treeDataExpandedKeys = [];
+
       const uniqueRelativePaths = getUniqueTreeRelativePaths(this.tree);
 
       for (const relativePath of uniqueRelativePaths) {
