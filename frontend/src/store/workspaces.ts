@@ -1,18 +1,24 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import type { TreeOption } from "naive-ui";
 
+import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
 import { useBlueprintsStore } from "./blueprints";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
+import createFileTreeOption from "@/helpers/createFileTreeOption";
+import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
+import { getUniqueTreeRelativePaths } from "@/helpers/getUniqueTreeRelativePaths";
 
 interface IState {
   total: number;
+  treeData: TreeOption[];
   items: IWorkspaceDto[];
   isSiderCollapsed: boolean;
   activeItem: IWorkspaceDto;
@@ -25,6 +31,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     tree: [],
     total: 0,
     items: [],
+    treeData: [],
     itemToEdit: null,
     isSiderCollapsed: false,
     activeItem: { id: 0, name: "", slug: "", tags: [] },
@@ -135,6 +142,34 @@ export const useWorkspacesStore = defineStore("workspaces", {
           ...this.itemToEdit,
           ...payload,
         });
+      }
+    },
+
+    initTree() {
+      const uniqueRelativePaths = getUniqueTreeRelativePaths(this.tree);
+
+      for (const relativePath of uniqueRelativePaths) {
+        const values = this.tree.filter(
+          value => value.relativePath === relativePath
+        );
+
+        for (const value of values) {
+          const isValueFile = isFile(value);
+
+          const treeOptionToAdd = isValueFile
+            ? createFileTreeOption(value)
+            : createFolderTreeOption(value);
+
+          if (!isValueFile) {
+            const hasAnyFile = this.tree.some(
+              value => value.relativePath === relativePath && isFile(value)
+            );
+
+            treeOptionToAdd.children = hasAnyFile ? [] : undefined;
+          }
+
+          this.treeData.push(treeOptionToAdd);
+        }
       }
     },
   },

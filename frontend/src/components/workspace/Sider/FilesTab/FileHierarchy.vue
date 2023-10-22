@@ -2,7 +2,7 @@
   <n-tree
     block-line
     expand-on-click
-    :data="treeData"
+    :data="workspacesStore.treeData"
     check-strategy="child"
     :node-props="nodeProps"
     :on-load="onDirectoryLoad"
@@ -16,10 +16,8 @@
 // @TODO HANDLE DRAG (RELATIVE PATH CHANGE)
 // @TODO HANDLE FILENAME CHANGE
 
-import sortBy from "lodash/sortBy";
-import type { TreeOption } from "naive-ui";
-import { NTree, NIcon } from "naive-ui";
-import { h, reactive, type PropType, onBeforeMount } from "vue";
+import { h } from "vue";
+import { NTree, NIcon, type TreeOption } from "naive-ui";
 
 import {
   Folder as OpenedFolderIcon,
@@ -29,31 +27,17 @@ import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
 import isDirectory from "@/helpers/isDirectory";
 import { useWorkspacesStore } from "@/store/workspaces";
-import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
-import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 import { defineComputed } from "@/helpers/defineComputed";
 
 const filesStore = useFilesStore();
-const treeData: TreeOption[] = reactive([]);
 const workspacesStore = useWorkspacesStore();
-
-const props = defineProps({
-  data: {
-    type: Array as PropType<(IFileDto | IDirectoryDto)[]>,
-    required: true,
-  },
-});
 
 const { selectedKeys } = defineComputed({
   selectedKeys() {
     return [`file-${filesStore.activeFileId}`];
   },
-});
-
-onBeforeMount(() => {
-  restoreTreeData(props.data);
 });
 
 const updatePrefixOnToggle = (
@@ -107,69 +91,6 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
     },
   };
 };
-
-function getUniqueRelativePaths(tree: (IDirectoryDto | IFileDto)[]) {
-  const uniqueRelativePaths = [
-    ...new Set(tree.map(({ relativePath }) => relativePath)),
-  ];
-
-  return sortBy(uniqueRelativePaths);
-}
-
-function restoreTreeData(tree: (IDirectoryDto | IFileDto)[]) {
-  const uniqueRelativePaths = getUniqueRelativePaths(tree);
-
-  for (const relativePath of uniqueRelativePaths) {
-    const splitRelativePath = relativePath.split("/");
-
-    const values = tree.filter(value => value.relativePath === relativePath);
-
-    const isRoot = relativePath === filesStore.ROOT;
-
-    for (const value of values) {
-      const isValueFile = isFile(value);
-
-      const treeOptionToAdd = isValueFile
-        ? createFileTreeOption(value)
-        : createFolderTreeOption(value);
-
-      if (!isValueFile) {
-        const hasAnyFile = tree.some(
-          value => value.relativePath === relativePath && isFile(value)
-        );
-
-        treeOptionToAdd.children = hasAnyFile ? [] : undefined;
-      }
-
-      // if its root file/dir or dir with relative path length 2
-      if (isRoot || (!isValueFile && splitRelativePath.length === 2)) {
-        treeData.push(treeOptionToAdd);
-
-        continue;
-      }
-
-      const [, ...splitRelativePathExceptRoot] = splitRelativePath;
-
-      if (!isValueFile) {
-        // take out "leaf" dir because we need to create it
-        splitRelativePathExceptRoot.pop();
-      }
-
-      let target: TreeOption[] | TreeOption | undefined;
-
-      for (const pathPart of splitRelativePathExceptRoot) {
-        target =
-          target && Array.isArray(target)
-            ? target.find(({ label }) => label === pathPart)?.children
-            : treeData.find(({ label }) => label === pathPart)?.children;
-      }
-
-      if (target && Array.isArray(target)) {
-        target.push(treeOptionToAdd);
-      }
-    }
-  }
-}
 
 async function onDirectoryLoad(node: TreeOption) {
   const { key } = node;
