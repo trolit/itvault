@@ -284,7 +284,7 @@ async function updateUsers() {
 
     message.error("There was an error when committing changes!");
   } finally {
-    isLoadingRoles.value = false;
+    isLoadingUsers.value = false;
   }
 }
 </script>
