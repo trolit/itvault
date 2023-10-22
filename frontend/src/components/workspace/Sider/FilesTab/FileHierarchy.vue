@@ -3,6 +3,7 @@
     block-line
     expand-on-click
     :data="workspacesStore.treeData"
+    :expanded-keys="workspacesStore.treeDataExpandedKeys"
     check-strategy="child"
     :node-props="nodeProps"
     :on-load="onDirectoryLoad"
@@ -52,6 +53,10 @@ const updatePrefixOnToggle = (
 
   if (!node) {
     return;
+  }
+
+  if (node.key && ["collapse", "expand"].includes(action)) {
+    workspacesStore.toggleTreeDir(node.key.toString());
   }
 
   node.prefix = () =>

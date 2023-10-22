@@ -24,6 +24,7 @@ interface IState {
   activeItem: IWorkspaceDto;
   itemToEdit: IWorkspaceDto | null;
   tree: (IDirectoryDto | IFileDto)[];
+  treeDataExpandedKeys: (string | number)[];
 }
 
 export const useWorkspacesStore = defineStore("workspaces", {
@@ -35,6 +36,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     itemToEdit: null,
     isSiderCollapsed: false,
     activeItem: { id: 0, name: "", slug: "", tags: [] },
+    treeDataExpandedKeys: [],
   }),
 
   getters: {
@@ -171,6 +173,20 @@ export const useWorkspacesStore = defineStore("workspaces", {
           this.treeData.push(treeOptionToAdd);
         }
       }
+    },
+
+    toggleTreeDir(key: string) {
+      const index = this.treeDataExpandedKeys.findIndex(
+        expandedKey => expandedKey === key
+      );
+
+      if (~index) {
+        this.treeDataExpandedKeys.splice(index, 1);
+
+        return;
+      }
+
+      this.treeDataExpandedKeys.push(key);
     },
   },
 });
