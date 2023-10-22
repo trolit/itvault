@@ -279,6 +279,8 @@ async function updateUsers() {
 
   try {
     await usersStore.updateMany();
+
+    message.success("Changes saved!");
   } catch (error) {
     console.log(error);
 
