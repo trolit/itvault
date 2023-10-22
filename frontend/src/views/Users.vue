@@ -23,7 +23,7 @@
           Are you sure?
         </n-popconfirm>
 
-        <n-popconfirm>
+        <n-popconfirm @positive-click="updateUsers">
           <template #trigger>
             <n-button ghost size="small" type="success"> Save </n-button>
           </template>
@@ -269,6 +269,20 @@ async function getRoles() {
     console.log(error);
 
     message.error("There was an error when trying to load roles!");
+  } finally {
+    isLoadingRoles.value = false;
+  }
+}
+
+async function updateUsers() {
+  isLoadingUsers.value = true;
+
+  try {
+    await usersStore.updateMany();
+  } catch (error) {
+    console.log(error);
+
+    message.error("There was an error when committing changes!");
   } finally {
     isLoadingRoles.value = false;
   }

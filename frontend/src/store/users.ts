@@ -64,6 +64,32 @@ export const useUsersStore = defineStore("users", {
       this.notes.total = total;
     },
 
+    async updateMany() {
+      await axios.patch("v1/users", {
+        value: this.itemsToUpdate,
+      });
+
+      this.itemsToUpdate.map(itemToUpdate => {
+        const item = this.items.find(item => item.id === itemToUpdate.id);
+
+        if (!item) {
+          return;
+        }
+
+        const { data } = itemToUpdate;
+
+        if (typeof data.isActive === "boolean") {
+          item.isActive = data.isActive;
+        }
+
+        if (data.roleId) {
+          item.roleId = data.roleId;
+        }
+      });
+
+      this.itemsToUpdate = [];
+    },
+
     findItemToUpdate(id: number) {
       return this.itemsToUpdate.find(itemToUpdate => itemToUpdate.id === id);
     },
