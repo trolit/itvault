@@ -22,7 +22,7 @@
         button (or refresh page) to view uploaded files.
       </n-alert>
 
-      <file-hierarchy v-if="!isLoading" :data="workspacesStore.tree" />
+      <file-hierarchy v-if="!isLoading" />
 
       <loading-section v-else />
     </n-scrollbar>
@@ -74,6 +74,8 @@ async function initTree(isReload?: boolean) {
 
   try {
     await workspacesStore.getTree({ relativePath: filesStore.ROOT }, isReload);
+
+    workspacesStore.initTree();
   } catch (error) {
     console.log(error);
   } finally {
