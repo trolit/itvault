@@ -284,6 +284,8 @@ async function updateUsers() {
   } catch (error) {
     console.log(error);
 
+    // @TODO handle yup response
+
     message.error("There was an error when committing changes!");
   } finally {
     isLoadingUsers.value = false;
