@@ -156,7 +156,7 @@ function restoreTreeData(tree: (IDirectoryDto | IFileDto)[]) {
 
       let target: TreeOption[] | TreeOption | undefined;
 
-      for (const pathPart of splitRelativePath) {
+      for (const pathPart of splitRelativePathExceptRoot) {
         target = treeData.find(({ label }) => label === pathPart)?.children;
       }
 
