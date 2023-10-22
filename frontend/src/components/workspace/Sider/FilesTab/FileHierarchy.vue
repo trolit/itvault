@@ -141,6 +141,7 @@ function restoreTreeData(tree: (IDirectoryDto | IFileDto)[]) {
         treeOptionToAdd.children = hasAnyFile ? [] : undefined;
       }
 
+      // if its root file/dir or dir with relative path length 2
       if (isRoot || (!isValueFile && splitRelativePath.length === 2)) {
         treeData.push(treeOptionToAdd);
 
@@ -157,7 +158,10 @@ function restoreTreeData(tree: (IDirectoryDto | IFileDto)[]) {
       let target: TreeOption[] | TreeOption | undefined;
 
       for (const pathPart of splitRelativePathExceptRoot) {
-        target = treeData.find(({ label }) => label === pathPart)?.children;
+        target =
+          target && Array.isArray(target)
+            ? target.find(({ label }) => label === pathPart)?.children
+            : treeData.find(({ label }) => label === pathPart)?.children;
       }
 
       if (target && Array.isArray(target)) {
