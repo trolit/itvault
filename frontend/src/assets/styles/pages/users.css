@@ -1,10 +1,14 @@
 .users-page {
   .header {
     display: flex;
-    margin: 0 15px;
+    margin: 0 10px;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     height: var(--users-header-height);
+
+    .n-input {
+      width: 35%;
+    }
 
     .wrapper {
       display: inherit;
@@ -18,6 +22,10 @@
       100vh - var(--header-height) - var(--users-header-height) -
         var(--users-footer-height)
     ) !important;
+
+    .n-data-table-wrapper {
+      margin: 0 10px;
+    }
 
     .n-data-table-base-table-body {
       .n-scrollbar-content {

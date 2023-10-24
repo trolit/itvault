@@ -4,12 +4,14 @@ import cloneDeep from "lodash/cloneDeep";
 
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
+import type { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
   total: number;
   items: IUserDto[];
+  itemsToUpdate: UpdateUserDto[];
   notes: PaginatedResponse<INoteDto>;
 }
 
@@ -17,6 +19,7 @@ export const useUsersStore = defineStore("users", {
   state: (): IState => ({
     total: 0,
     items: [],
+    itemsToUpdate: [],
     notes: { total: 0, result: [] },
   }),
 
@@ -59,6 +62,134 @@ export const useUsersStore = defineStore("users", {
       );
 
       this.notes.total = total;
+    },
+
+    async updateMany() {
+      const params = {
+        version: 1,
+      };
+
+      await axios.patch(
+        "v1/users",
+        {
+          values: this.itemsToUpdate,
+        },
+        { params }
+      );
+
+      this.itemsToUpdate.map(itemToUpdate => {
+        const item = this.items.find(item => item.id === itemToUpdate.id);
+
+        if (!item) {
+          return;
+        }
+
+        const { data } = itemToUpdate;
+
+        if (typeof data.isActive === "boolean") {
+          item.isActive = data.isActive;
+        }
+
+        if (data.roleId) {
+          item.roleId = data.roleId;
+        }
+      });
+
+      this.itemsToUpdate = [];
+    },
+
+    findItemToUpdate(id: number) {
+      return this.itemsToUpdate.find(itemToUpdate => itemToUpdate.id === id);
+    },
+
+    removeDataKey(key: "roleId" | "isActive", item: UpdateUserDto) {
+      delete item.data[key];
+
+      if (!Object.keys(item.data).length) {
+        const index = this.itemsToUpdate.indexOf(item);
+
+        this.itemsToUpdate.splice(index, 1);
+      }
+    },
+
+    findItemToUpdateRoleId(id: number) {
+      const itemToUpdate = this.findItemToUpdate(id);
+
+      if (!itemToUpdate || !itemToUpdate.data.roleId) {
+        return null;
+      }
+
+      return itemToUpdate.data.roleId;
+    },
+
+    findItemToUpdateIsActive(id: number) {
+      const itemToUpdate = this.findItemToUpdate(id);
+
+      if (!itemToUpdate || typeof itemToUpdate.data.isActive !== "boolean") {
+        return null;
+      }
+
+      return itemToUpdate.data.isActive;
+    },
+
+    setRole(userId: number, roleId: number) {
+      const originalItem = this.items.find(item => item.id === userId);
+
+      const item = this.findItemToUpdate(userId);
+
+      if (
+        item &&
+        originalItem &&
+        originalItem.id === item.id &&
+        roleId === originalItem.roleId
+      ) {
+        this.removeDataKey("roleId", item);
+
+        return;
+      }
+
+      if (!item) {
+        this.itemsToUpdate.push({
+          id: userId,
+          data: {
+            roleId,
+          },
+        });
+
+        return;
+      }
+
+      item.data.roleId = roleId;
+    },
+
+    setIsActive(userId: number, status: boolean) {
+      const originalItem = this.items.find(item => item.id === userId);
+
+      const item = this.findItemToUpdate(userId);
+
+      if (
+        item &&
+        originalItem &&
+        originalItem.id === item.id &&
+        status === originalItem.isActive
+      ) {
+        this.removeDataKey("isActive", item);
+
+        return;
+      }
+
+      if (!item) {
+        this.itemsToUpdate.push({
+          id: userId,
+          data: {
+            isActive: status,
+          },
+        });
+
+        return;
+      }
+
+      item.data.isActive = status;
     },
   },
 });
