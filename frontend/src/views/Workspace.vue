@@ -18,10 +18,10 @@ import { AxiosError } from "axios";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
-import { useWorkspacesStore } from "@/store/workspaces";
 
 import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
+import { useWorkspacesStore } from "@/store/workspaces";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import Sider from "@/components/workspace/Sider/Index.vue";
 import LoadingPage from "@/components/common/LoadingPage.vue";
