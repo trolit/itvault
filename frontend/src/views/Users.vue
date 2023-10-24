@@ -25,7 +25,14 @@
 
         <n-popconfirm @positive-click="updateUsers">
           <template #trigger>
-            <n-button ghost size="small" type="success"> Save </n-button>
+            <n-button
+              ghost
+              size="small"
+              type="success"
+              :loading="isLoadingUsers"
+            >
+              Save
+            </n-button>
           </template>
 
           Are you sure?
@@ -274,6 +281,10 @@ async function getRoles() {
 }
 
 async function updateUsers() {
+  if (isLoadingUsers.value) {
+    return;
+  }
+
   isLoadingUsers.value = true;
 
   try {
