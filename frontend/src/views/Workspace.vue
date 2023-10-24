@@ -20,6 +20,8 @@ import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 
+import { useFilesStore } from "@/store/files";
+import { useVariantsStore } from "@/store/variants";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import Sider from "@/components/workspace/Sider/Index.vue";
 import LoadingPage from "@/components/common/LoadingPage.vue";
@@ -27,10 +29,14 @@ import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
 import MainContent from "@/components/workspace/MainContent/Index.vue";
 
 const route = useRoute();
+const filesStore = useFilesStore();
+const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(false);
 const isFailed = ref(false);
+const { activeTab } = storeToRefs(variantsStore);
+const { activeFileId } = storeToRefs(filesStore);
 const { generalLayoutSiderKey } = storeToRefs(workspacesStore);
 
 onBeforeMount(async () => {
@@ -68,6 +74,25 @@ defineWatchers({
     },
     options: {
       immediate: true,
+    },
+  },
+
+  fileId: {
+    source: activeFileId,
+    handler: () => {
+      workspacesStore.updateUrlSearchParams();
+    },
+  },
+
+  variantTab: {
+    source: activeTab,
+    handler: value => {
+      if (value) {
+        workspacesStore.updateUrlSearchParams();
+      }
+    },
+    options: {
+      deep: true,
     },
   },
 });
