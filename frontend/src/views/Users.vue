@@ -155,11 +155,6 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     render: rowData => {
       const { id, roleId } = rowData;
 
-      // @NOTE maybe extract HEAD_ADMIN_ID to shared module or do not return head admin at all (?)
-      if (roleId === 1) {
-        return `⭐ ${rowData.roleName}`;
-      }
-
       const roleIdToUpdate = usersStore.findItemToUpdateRoleId(id);
 
       return h(ScrollSelect, {
@@ -217,11 +212,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
         : {};
     },
     render: rowData => {
-      const { id, roleId, isActive } = rowData;
-
-      if (roleId === 1) {
-        return "-";
-      }
+      const { id, isActive } = rowData;
 
       const isActiveToUpdate = usersStore.findItemToUpdateIsActive(id);
 
