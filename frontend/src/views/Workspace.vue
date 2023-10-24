@@ -15,21 +15,23 @@
 
 <script setup lang="ts">
 import { AxiosError } from "axios";
+import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 
+import { defineWatchers } from "@/helpers/defineWatchers";
 import Sider from "@/components/workspace/Sider/Index.vue";
 import LoadingPage from "@/components/common/LoadingPage.vue";
 import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
 import MainContent from "@/components/workspace/MainContent/Index.vue";
 
 const route = useRoute();
-
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(false);
 const isFailed = ref(false);
+const { generalLayoutSiderKey } = storeToRefs(workspacesStore);
 
 onBeforeMount(async () => {
   const {
@@ -56,5 +58,17 @@ onBeforeMount(async () => {
   } finally {
     isLoading.value = false;
   }
+});
+
+defineWatchers({
+  key: {
+    source: generalLayoutSiderKey,
+    handler: () => {
+      workspacesStore.updateUrlSearchParams();
+    },
+    options: {
+      immediate: true,
+    },
+  },
 });
 </script>
