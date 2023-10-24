@@ -39,6 +39,9 @@ import BundlesTab from "./BundlesTab/Index.vue";
 import BlueprintsTab from "./BlueprintsTab.vue";
 import NotesDrawer from "./NotesDrawer/Index.vue";
 import BundleDrawer from "./BundleDrawer/Index.vue";
+import { useWorkspacesStore } from "@/store/workspaces";
+
+const workspacesStore = useWorkspacesStore();
 
 const bundlePage = ref(1);
 const blueprintPage = ref(1);
