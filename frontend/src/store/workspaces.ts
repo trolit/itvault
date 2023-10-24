@@ -53,7 +53,9 @@ export const useWorkspacesStore = defineStore("workspaces", {
           : {
               fileId: activeFileId.toString(),
               variantId: activeTab?.variant.id || null,
-              blueprintId: activeTab?.activeBlueprintId.toString() || null,
+              blueprintId: activeTab?.activeBlueprintId
+                ? activeTab?.activeBlueprintId.toString()
+                : null,
             };
 
       return {
