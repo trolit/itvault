@@ -1,4 +1,4 @@
-import { Not } from "typeorm";
+import { And, Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { UserMapper } from "@mappers/UserMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
@@ -38,6 +38,7 @@ export class GetAllController extends BaseController {
     response: GetAllControllerTypes.v1.Response
   ) {
     const {
+      userId,
       query: { skip, take },
     } = request;
 
@@ -51,7 +52,10 @@ export class GetAllController extends BaseController {
         role: true,
       },
       where: {
-        id: Not(HEAD_ADMIN_ROLE_ID),
+        id:
+          userId === HEAD_ADMIN_ROLE_ID
+            ? Not(HEAD_ADMIN_ROLE_ID)
+            : And(Not(HEAD_ADMIN_ROLE_ID), Not(userId)),
       },
       withDeleted: true,
     });
