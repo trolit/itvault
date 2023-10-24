@@ -73,6 +73,7 @@ async function initTree(isReload?: boolean) {
   emit("update:is-loading", true);
 
   try {
+    // @TODO when loading files tab with activeFileId in query params - load files from activeFile path
     await workspacesStore.getTree({ relativePath: filesStore.ROOT }, isReload);
   } catch (error) {
     console.log(error);
