@@ -3,12 +3,14 @@ import { defineStore } from "pinia";
 
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
+import { useVariantsStore } from "./variants";
 import { useBlueprintsStore } from "./blueprints";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { WorkspaceSearchParams } from "@/types/WorkspaceSearchParams";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
 interface IState {
@@ -37,6 +39,28 @@ export const useWorkspacesStore = defineStore("workspaces", {
     TRIGGER_STYLE_TOP: () => "31px",
     TRIGGER_STYLE_HEIGHT: () => "17px",
     activeItemId: state => state.activeItem.id,
+    SEARCH_PARAMS(): WorkspaceSearchParams {
+      const { activeFileId } = useFilesStore();
+      const { activeTab } = useVariantsStore();
+
+      const fileParams =
+        activeFileId === 0
+          ? {
+              fileId: null,
+              variantId: null,
+              blueprintId: null,
+            }
+          : {
+              fileId: activeFileId.toString(),
+              variantId: activeTab?.variant.id || null,
+              blueprintId: activeTab?.activeBlueprintId.toString() || null,
+            };
+
+      return {
+        sider: this.generalLayoutSiderKey,
+        ...fileParams,
+      };
+    },
   },
 
   actions: {
@@ -138,6 +162,40 @@ export const useWorkspacesStore = defineStore("workspaces", {
           ...payload,
         });
       }
+    },
+
+    updateUrlSearchParams() {
+      const { SEARCH_PARAMS } = this;
+
+      const searchParams = new URLSearchParams();
+
+      const keys = Object.keys(SEARCH_PARAMS);
+
+      for (const key of keys) {
+        const value = SEARCH_PARAMS[key as keyof WorkspaceSearchParams];
+
+        if (!value) {
+          continue;
+        }
+
+        if (Array.isArray(value)) {
+          // @TODO implement when needed
+
+          continue;
+        }
+
+        searchParams.append(key, value.toString());
+      }
+
+      const {
+        location: { origin, pathname },
+      } = window;
+
+      history.pushState(
+        {},
+        "",
+        `${origin}${pathname}?${searchParams.toString()}`
+      );
     },
   },
 });
