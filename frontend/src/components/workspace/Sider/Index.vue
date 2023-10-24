@@ -4,8 +4,8 @@
       animated
       type="line"
       size="medium"
+      v-model:value="workspacesStore.generalLayoutSiderKey"
       justify-content="space-evenly"
-      :default-value="defaultTab"
     >
       <n-tab-pane
         :name="key"
@@ -75,8 +75,6 @@ const tabs = [
     },
   },
 ];
-
-const defaultTab = "blueprints";
 
 function updateLoadingState(value: boolean) {
   isLoading.value = value;

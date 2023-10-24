@@ -18,6 +18,7 @@ interface IState {
   activeItem: IWorkspaceDto;
   itemToEdit: IWorkspaceDto | null;
   tree: (IDirectoryDto | IFileDto)[];
+  generalLayoutSiderKey: string;
 }
 
 export const useWorkspacesStore = defineStore("workspaces", {
@@ -27,6 +28,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     items: [],
     itemToEdit: null,
     isSiderCollapsed: false,
+    generalLayoutSiderKey: "blueprints",
     activeItem: { id: 0, name: "", slug: "", tags: [] },
   }),
 
