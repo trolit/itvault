@@ -35,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { Reset as ResetIcon } from "@vicons/carbon";
 import { NScrollbar, NAlert, NButton, NIcon } from "naive-ui";
@@ -46,6 +47,7 @@ import { useWorkspacesStore } from "@/store/workspaces";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
+const route = useRoute();
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -72,9 +74,17 @@ onBeforeMount(async () => {
 async function initTree(isReload?: boolean) {
   emit("update:is-loading", true);
 
+  const value = workspacesStore.getUrlSearchParamValue(route, "fileId");
+
   try {
-    // @TODO when loading files tab with activeFileId in query params - load files from activeFile path
-    await workspacesStore.getTree({ relativePath: filesStore.ROOT }, isReload);
+    if (value && typeof value === "string" && !isReload) {
+      await initTreeByProvidedFileId(parseInt(value));
+    } else {
+      await workspacesStore.getTree(
+        { relativePath: filesStore.ROOT },
+        isReload
+      );
+    }
 
     workspacesStore.initTree();
   } catch (error) {
@@ -88,5 +98,29 @@ function onUpload() {
   isUploadFilesModalVisible.value = false;
 
   isFileUploadAlertVisible.value = true;
+}
+
+async function initTreeByProvidedFileId(fileId: number) {
+  filesStore.activeFileId = fileId;
+
+  const { relativePath } = await filesStore.getById(fileId);
+
+  const splitRelativePath = relativePath.split("/");
+  const splitRelativePathLength = splitRelativePath.length;
+
+  const promises = [];
+
+  for (let index = 0; index < splitRelativePathLength; index++) {
+    const relativePath =
+      index === 0
+        ? filesStore.ROOT
+        : splitRelativePath.slice(0, index + 1).join("/");
+
+    const promise = workspacesStore.getTree({ relativePath });
+
+    promises.push(promise);
+  }
+
+  await Promise.all(promises);
 }
 </script>
