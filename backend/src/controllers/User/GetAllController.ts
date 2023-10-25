@@ -1,9 +1,12 @@
+import { And, Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { UserMapper } from "@mappers/UserMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IUserRepository } from "types/repositories/IUserRepository";
 import { GetAllControllerTypes } from "types/controllers/User/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
+
+import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { User } from "@entities/User";
@@ -35,6 +38,7 @@ export class GetAllController extends BaseController {
     response: GetAllControllerTypes.v1.Response
   ) {
     const {
+      userId,
       query: { skip, take },
     } = request;
 
@@ -46,6 +50,12 @@ export class GetAllController extends BaseController {
       },
       relations: {
         role: true,
+      },
+      where: {
+        id:
+          userId === HEAD_ADMIN_ROLE_ID
+            ? Not(HEAD_ADMIN_ROLE_ID)
+            : And(Not(HEAD_ADMIN_ROLE_ID), Not(userId)),
       },
       withDeleted: true,
     });

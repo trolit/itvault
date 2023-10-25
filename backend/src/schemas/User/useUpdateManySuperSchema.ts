@@ -41,6 +41,10 @@ const useSingleValueSchema: (
       roleId: number()
         .optional()
         .test((value, ctx) => {
+          if (value === undefined) {
+            return true;
+          }
+
           if (value === HEAD_ADMIN_ROLE_ID) {
             return ctx.createError({
               message: setYupError(

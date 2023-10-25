@@ -1,27 +1,34 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import type { TreeOption } from "naive-ui";
+import type { RouteLocationNormalizedLoaded } from "vue-router";
 
+import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
 import { useVariantsStore } from "./variants";
 import { useBlueprintsStore } from "./blueprints";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
+import createFileTreeOption from "@/helpers/createFileTreeOption";
+import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { WorkspaceSearchParams } from "@/types/WorkspaceSearchParams";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
-import type { RouteLocationNormalizedLoaded } from "vue-router";
+import { getUniqueTreeRelativePaths } from "@/helpers/getUniqueTreeRelativePaths";
 
 interface IState {
   total: number;
+  treeData: TreeOption[];
   items: IWorkspaceDto[];
   isSiderCollapsed: boolean;
   activeItem: IWorkspaceDto;
   itemToEdit: IWorkspaceDto | null;
   tree: (IDirectoryDto | IFileDto)[];
   generalLayoutSiderKey: string;
+  treeDataExpandedKeys: (string | number)[];
 }
 
 export const useWorkspacesStore = defineStore("workspaces", {
@@ -29,10 +36,12 @@ export const useWorkspacesStore = defineStore("workspaces", {
     tree: [],
     total: 0,
     items: [],
+    treeData: [],
     itemToEdit: null,
     isSiderCollapsed: false,
     generalLayoutSiderKey: "",
     activeItem: { id: 0, name: "", slug: "", tags: [] },
+    treeDataExpandedKeys: [],
   }),
 
   getters: {
@@ -215,6 +224,51 @@ export const useWorkspacesStore = defineStore("workspaces", {
         "",
         `${origin}${pathname}?${searchParams.toString()}`
       );
+    },
+
+    initTree() {
+      this.treeData = [];
+      this.treeDataExpandedKeys = [];
+
+      const uniqueRelativePaths = getUniqueTreeRelativePaths(this.tree);
+
+      for (const relativePath of uniqueRelativePaths) {
+        const values = this.tree.filter(
+          value => value.relativePath === relativePath
+        );
+
+        for (const value of values) {
+          const isValueFile = isFile(value);
+
+          const treeOptionToAdd = isValueFile
+            ? createFileTreeOption(value)
+            : createFolderTreeOption(value);
+
+          if (!isValueFile) {
+            const hasAnyFile = this.tree.some(
+              value => value.relativePath === relativePath && isFile(value)
+            );
+
+            treeOptionToAdd.children = hasAnyFile ? [] : undefined;
+          }
+
+          this.treeData.push(treeOptionToAdd);
+        }
+      }
+    },
+
+    toggleTreeDir(key: string) {
+      const index = this.treeDataExpandedKeys.findIndex(
+        expandedKey => expandedKey === key
+      );
+
+      if (~index) {
+        this.treeDataExpandedKeys.splice(index, 1);
+
+        return;
+      }
+
+      this.treeDataExpandedKeys.push(key);
     },
   },
 });

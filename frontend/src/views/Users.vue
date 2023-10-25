@@ -1,10 +1,21 @@
 <template>
   <div class="users-page page">
     <div class="header">
-      <div class="wrapper" v-if="false">
-        <small>New changes!</small>
+      <!-- @TODO -->
+      <n-input
+        clearable
+        placeholder="Type email or full name to filter"
+        disabled
+      >
+        <template #prefix>
+          <n-icon :component="SearchIcon" />
+        </template>
+      </n-input>
 
-        <n-popconfirm>
+      <div class="wrapper" v-if="usersStore.itemsToUpdate.length">
+        <small>New changes detected!</small>
+
+        <n-popconfirm @positive-click="usersStore.itemsToUpdate = []">
           <template #trigger>
             <n-button type="warning" ghost size="small"> Discard </n-button>
           </template>
@@ -12,9 +23,16 @@
           Are you sure?
         </n-popconfirm>
 
-        <n-popconfirm>
+        <n-popconfirm @positive-click="updateUsers">
           <template #trigger>
-            <n-button ghost size="small" type="success"> Save </n-button>
+            <n-button
+              ghost
+              size="small"
+              type="success"
+              :loading="isLoadingUsers"
+            >
+              Save
+            </n-button>
           </template>
 
           Are you sure?
@@ -23,13 +41,11 @@
     </div>
 
     <n-data-table
-      remote
-      striped
       flex-height
       single-column
       :data="usersStore.items"
       :columns="columns"
-      :loading="isLoading"
+      :loading="isLoadingUsers"
       :pagination="pagination"
       :row-key="(row: IUserDto) => row.id"
       @update:page="getUsers"
@@ -44,28 +60,42 @@
 <script setup lang="ts">
 import {
   NTag,
+  NIcon,
   NEmpty,
+  NInput,
   NButton,
+  NSwitch,
   NDataTable,
   useMessage,
   NPopconfirm,
   type PaginationProps,
   type DataTableColumns,
 } from "naive-ui";
+import { Search as SearchIcon } from "@vicons/carbon";
 import { h, onBeforeMount, reactive, ref, type Ref } from "vue";
 
+import { useRolesStore } from "@/store/roles";
 import { useUsersStore } from "@/store/users";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
+import ScrollSelect from "@/components/common/ScrollSelect.vue";
 
 const message = useMessage();
+const rolesStore = useRolesStore();
 const usersStore = useUsersStore();
 
-const isLoading = ref(true);
+const rolesPage = ref(1);
+const isLoadingUsers = ref(true);
+const isLoadingRoles = ref(false);
 
+const rolesPerPage = 5;
 const defaultPagination = {
   page: 1,
   pageSize: 10,
 };
+
+onBeforeMount(async () => {
+  await getRoles();
+});
 
 const pagination: PaginationProps = reactive({
   ...defaultPagination,
@@ -94,14 +124,18 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Full name",
     key: "fullName",
-    ellipsis: true,
+    ellipsis: {
+      tooltip: true,
+    },
     resizable: true,
   },
 
   {
     title: "Email",
     key: "email",
-    ellipsis: true,
+    ellipsis: {
+      tooltip: true,
+    },
     resizable: true,
   },
 
@@ -109,21 +143,52 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     title: "Role",
     key: "roleName",
     ellipsis: true,
+    cellProps: rowData => {
+      const { id } = rowData;
+
+      const roleIdToUpdate = usersStore.findItemToUpdateRoleId(id);
+
+      return roleIdToUpdate
+        ? { style: { outline: "2px dashed #FF0000", outlineOffset: "-10px" } }
+        : {};
+    },
+    render: rowData => {
+      const { id, roleId } = rowData;
+
+      const roleIdToUpdate = usersStore.findItemToUpdateRoleId(id);
+
+      return h(ScrollSelect, {
+        value: roleIdToUpdate || roleId,
+        options: rolesStore.options,
+        disabled: isLoadingRoles.value,
+        consistentMenuWidth: false,
+
+        onScroll: getRoles,
+        onSelect: newRoleId => usersStore.setRole(id, newRoleId),
+      });
+    },
   },
 
   {
     title: "Invited by",
     key: "invitedBy",
-    ellipsis: true,
+    ellipsis: {
+      tooltip: true,
+    },
+    width: 100,
     render: row => row.invitedBy || "-",
   },
 
   {
     title: "Signed up?",
     key: "isSignedUp",
-    width: 80,
-    render: row => {
-      const isSignedUp = !!row.isSignedUp;
+    width: 100,
+    render: rowData => {
+      const isSignedUp = !!rowData.isSignedUp;
+
+      if (rowData.roleId === 1) {
+        return "-";
+      }
 
       return h(
         NTag,
@@ -137,20 +202,37 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     title: "Active?",
     key: "isActive",
     width: 80,
-    render: row => {
-      const isActive = !!row.isActive;
+    cellProps: rowData => {
+      const { id } = rowData;
+
+      const isActiveToUpdate = usersStore.findItemToUpdateIsActive(id);
+
+      return isActiveToUpdate !== null
+        ? { style: { outline: "2px dashed #FF0000", outlineOffset: "-10px" } }
+        : {};
+    },
+    render: rowData => {
+      const { id, isActive } = rowData;
+
+      const isActiveToUpdate = usersStore.findItemToUpdateIsActive(id);
 
       return h(
-        NTag,
-        { type: isActive ? "default" : "error" },
-        { default: () => (isActive ? "Yes" : "No") }
+        NSwitch,
+        {
+          round: false,
+          value: isActiveToUpdate === null ? isActive : isActiveToUpdate,
+
+          "on-update:value": (value: boolean) =>
+            usersStore.setIsActive(id, value),
+        },
+        { checked: () => "Yes", unchecked: () => "No" }
       );
     },
   },
 ]);
 
 async function getUsers() {
-  isLoading.value = true;
+  isLoadingUsers.value = true;
 
   const { total } = usersStore;
 
@@ -166,7 +248,48 @@ async function getUsers() {
 
     message.error("There was an error when trying to load users.");
   } finally {
-    isLoading.value = false;
+    isLoadingUsers.value = false;
+  }
+}
+
+async function getRoles() {
+  isLoadingRoles.value = true;
+
+  try {
+    await rolesStore.getAll({
+      page: rolesPage.value,
+      perPage: rolesPerPage,
+    });
+
+    rolesPage.value += 1;
+  } catch (error) {
+    console.log(error);
+
+    message.error("There was an error when trying to load roles!");
+  } finally {
+    isLoadingRoles.value = false;
+  }
+}
+
+async function updateUsers() {
+  if (isLoadingUsers.value) {
+    return;
+  }
+
+  isLoadingUsers.value = true;
+
+  try {
+    await usersStore.updateMany();
+
+    message.success("Changes saved!");
+  } catch (error) {
+    console.log(error);
+
+    // @TODO handle yup response
+
+    message.error("There was an error when committing changes!");
+  } finally {
+    isLoadingUsers.value = false;
   }
 }
 </script>
