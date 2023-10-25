@@ -44,7 +44,7 @@ onBeforeMount(async () => {
     params: { slug },
   } = route;
 
-  workspacesStore.updateUrlSearchParams();
+  loadGeneralLayoutSiderKeyFromUrl();
 
   const { activeItem } = workspacesStore;
 
@@ -68,11 +68,23 @@ onBeforeMount(async () => {
   }
 });
 
+function loadGeneralLayoutSiderKeyFromUrl() {
+  const value = workspacesStore.getUrlSearchParamValue(route, "sider");
+
+  workspacesStore.generalLayoutSiderKey =
+    !!value && typeof value === "string"
+      ? value
+      : workspacesStore.DEFAULT_GENERAL_LAYOUT_SIDER_KEY;
+}
+
 defineWatchers({
   key: {
     source: generalLayoutSiderKey,
     handler: () => {
       workspacesStore.updateUrlSearchParams();
+    },
+    options: {
+      immediate: true,
     },
   },
 
