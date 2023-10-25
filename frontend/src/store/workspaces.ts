@@ -12,6 +12,7 @@ import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { WorkspaceSearchParams } from "@/types/WorkspaceSearchParams";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
+import type { RouteLocationNormalizedLoaded } from "vue-router";
 
 interface IState {
   total: number;
@@ -30,7 +31,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     items: [],
     itemToEdit: null,
     isSiderCollapsed: false,
-    generalLayoutSiderKey: "blueprints",
+    generalLayoutSiderKey: "",
     activeItem: { id: 0, name: "", slug: "", tags: [] },
   }),
 
@@ -38,6 +39,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     ITEMS_PER_PAGE: () => 10,
     TRIGGER_STYLE_TOP: () => "31px",
     TRIGGER_STYLE_HEIGHT: () => "17px",
+    DEFAULT_GENERAL_LAYOUT_SIDER_KEY: () => "blueprints",
     activeItemId: state => state.activeItem.id,
     SEARCH_PARAMS(): WorkspaceSearchParams {
       const { activeFileId } = useFilesStore();
@@ -164,6 +166,21 @@ export const useWorkspacesStore = defineStore("workspaces", {
           ...payload,
         });
       }
+    },
+
+    getUrlSearchParamValue(
+      route: RouteLocationNormalizedLoaded,
+      key: keyof WorkspaceSearchParams
+    ) {
+      const { query } = route;
+
+      const { [key]: value } = query;
+
+      if (!value) {
+        return null;
+      }
+
+      return value;
     },
 
     updateUrlSearchParams() {
