@@ -44,6 +44,8 @@ onBeforeMount(async () => {
     params: { slug },
   } = route;
 
+  workspacesStore.updateUrlSearchParams();
+
   const { activeItem } = workspacesStore;
 
   if (activeItem.id) {
@@ -71,9 +73,6 @@ defineWatchers({
     source: generalLayoutSiderKey,
     handler: () => {
       workspacesStore.updateUrlSearchParams();
-    },
-    options: {
-      immediate: true,
     },
   },
 
