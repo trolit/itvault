@@ -1,4 +1,4 @@
-import sortBy from "lodash/sortBy";
+import orderBy from "lodash/orderBy";
 
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
@@ -10,5 +10,5 @@ export const getUniqueTreeRelativePaths = (
     ...new Set(tree.map(({ relativePath }) => relativePath)),
   ];
 
-  return sortBy(uniqueRelativePaths);
+  return orderBy(uniqueRelativePaths, ["asc"]);
 };
