@@ -312,6 +312,23 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
+    setTreeDataExpandedKeysByRelativePath(relativePath: string) {
+      const splitRelativePath = relativePath.split("/");
+      const length = splitRelativePath.length;
+
+      for (let index = 1; index < length; index++) {
+        const path = splitRelativePath.slice(0, index + 1).join("/");
+
+        const dir = this.tree.find(
+          value => value.relativePath === path && isDirectory(value)
+        );
+
+        if (dir) {
+          this.treeDataExpandedKeys.push(`folder-${dir.id}`);
+        }
+      }
+    },
+
     toggleTreeDir(key: string) {
       const index = this.treeDataExpandedKeys.findIndex(
         expandedKey => expandedKey === key

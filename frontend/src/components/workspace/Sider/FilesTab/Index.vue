@@ -77,8 +77,10 @@ async function initTree(isReload?: boolean) {
   const value = workspacesStore.getUrlSearchParamValue(route, "fileId");
 
   try {
+    let relativePath = null;
+
     if (value && typeof value === "string" && !isReload) {
-      await initTreeByProvidedFileId(parseInt(value));
+      relativePath = await initTreeByProvidedFileId(parseInt(value));
     } else {
       await workspacesStore.getTree(
         { relativePath: filesStore.ROOT },
@@ -87,6 +89,10 @@ async function initTree(isReload?: boolean) {
     }
 
     workspacesStore.initTree();
+
+    if (relativePath) {
+      workspacesStore.setTreeDataExpandedKeysByRelativePath(relativePath);
+    }
   } catch (error) {
     console.log(error);
   } finally {
@@ -122,5 +128,7 @@ async function initTreeByProvidedFileId(fileId: number) {
   }
 
   await Promise.all(promises);
+
+  return relativePath;
 }
 </script>
