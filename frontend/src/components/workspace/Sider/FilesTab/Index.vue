@@ -44,6 +44,7 @@ import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
 import UploadFilesModal from "./UploadFilesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
+import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
@@ -77,10 +78,10 @@ async function initTree(isReload?: boolean) {
   const value = workspacesStore.getUrlSearchParamValue(route, "fileId");
 
   try {
-    let relativePath = null;
+    let file: IFileDto | null = null;
 
     if (value && typeof value === "string" && !isReload) {
-      relativePath = await initTreeByProvidedFileId(parseInt(value));
+      file = await initTreeByProvidedFileId(parseInt(value));
     } else {
       await workspacesStore.getTree(
         { relativePath: filesStore.ROOT },
@@ -90,8 +91,10 @@ async function initTree(isReload?: boolean) {
 
     workspacesStore.initTree();
 
-    if (relativePath) {
-      workspacesStore.setTreeDataExpandedKeysByRelativePath(relativePath);
+    if (file) {
+      workspacesStore.setTreeDataExpandedKeysByRelativePath(file.relativePath);
+
+      filesStore.setActiveTab(file);
     }
   } catch (error) {
     console.log(error);
@@ -109,9 +112,9 @@ function onUpload() {
 async function initTreeByProvidedFileId(fileId: number) {
   filesStore.activeFileId = fileId;
 
-  const { relativePath } = await filesStore.getById(fileId);
+  const file = await filesStore.getById(fileId);
 
-  const splitRelativePath = relativePath.split("/");
+  const splitRelativePath = file.relativePath.split("/");
   const splitRelativePathLength = splitRelativePath.length;
 
   const promises = [];
@@ -129,6 +132,6 @@ async function initTreeByProvidedFileId(fileId: number) {
 
   await Promise.all(promises);
 
-  return relativePath;
+  return file;
 }
 </script>
