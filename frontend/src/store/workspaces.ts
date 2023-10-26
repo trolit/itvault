@@ -7,6 +7,7 @@ import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
 import { useVariantsStore } from "./variants";
+import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
@@ -226,11 +227,62 @@ export const useWorkspacesStore = defineStore("workspaces", {
       );
     },
 
+    _initializeTreeDataDirsFromPath(path: string) {
+      let treeOption: TreeOption | undefined;
+      const [, ...splitPathExceptRoot] = path.split("/");
+
+      for (let index = 0; index < splitPathExceptRoot.length; index++) {
+        const pathPart = splitPathExceptRoot[index];
+
+        const nextTreeOption = treeOption?.children
+          ? treeOption.children.find(({ label }) => label === pathPart)
+          : this.treeData.find(({ label }) => label === pathPart);
+
+        const treeValue = this.tree.find(
+          value =>
+            value.relativePath === currentRelativePath && isDirectory(value)
+        );
+
+        if (!treeValue) {
+          continue;
+        }
+
+        const folder = createFolderTreeOption(treeValue);
+
+        const hasAnyFile = this.tree.some(
+          value => value.relativePath === currentRelativePath && isFile(value)
+        );
+
+        folder.children = hasAnyFile ? [] : undefined;
+
+        if (!nextTreeOption) {
+          treeOption?.children
+            ? treeOption.children.push(folder)
+            : this.treeData.push(folder);
+
+          if (this.treeData) {
+            treeOption = treeOption?.children
+              ? treeOption[treeOption.children.length - 1]
+              : this.treeData[this.treeData.length - 1];
+          }
+
+          continue;
+        }
+
+        treeOption = nextTreeOption;
+      }
+    },
+
     initTree() {
       this.treeData = [];
       this.treeDataExpandedKeys = [];
 
       const uniqueRelativePaths = getUniqueTreeRelativePaths(this.tree);
+
+      // initialize dirs
+      for (const uniqueRelativePath of uniqueRelativePaths) {
+        this._initializeTreeDataDirsFromPath(uniqueRelativePath);
+      }
 
       for (const relativePath of uniqueRelativePaths) {
         const values = this.tree.filter(
