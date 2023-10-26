@@ -256,10 +256,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
             value => value.relativePath === currentRelativePath && isFile(value)
           );
 
-          folder.children = hasAnyFile ? [] : undefined;
+          if (hasAnyFile) {
+            folder.children = [];
+          }
 
-          if (treeOption?.children) {
-            treeOption.children.push(folder);
+          if (treeOption) {
+            treeOption.children = treeOption.children
+              ? Array.prototype.concat(treeOption.children, [folder])
+              : [folder];
 
             treeOption = treeOption.children[treeOption.children.length - 1];
           } else {
