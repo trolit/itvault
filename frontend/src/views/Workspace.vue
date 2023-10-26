@@ -97,10 +97,8 @@ defineWatchers({
 
   variantTab: {
     source: activeTab,
-    handler: value => {
-      if (value) {
-        workspacesStore.updateUrlSearchParams();
-      }
+    handler: () => {
+      workspacesStore.updateUrlSearchParams();
     },
     options: {
       deep: true,
