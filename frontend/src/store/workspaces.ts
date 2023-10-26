@@ -227,7 +227,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       );
     },
 
-    _findTreeOptionByPath(path: string) {
+    _getTreeOptionChildrenByRelativePath(path: string) {
       const [, ...splitPathExceptRoot] = path.split("/");
 
       let treeOption: TreeOption | undefined;
@@ -307,10 +307,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
             treeOptionToAdd.children = hasAnyFile ? [] : undefined;
           }
 
-          const location = this._findTreeOptionByPath(relativePath);
+          const treeOptionChildren =
+            this._getTreeOptionChildrenByRelativePath(relativePath);
 
-          if (Array.isArray(location) && isValueFile) {
-            location.push(treeOptionToAdd);
+          if (Array.isArray(treeOptionChildren) && isValueFile) {
+            treeOptionChildren.push(treeOptionToAdd);
           }
         }
       }
