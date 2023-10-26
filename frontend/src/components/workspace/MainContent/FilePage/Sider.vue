@@ -124,6 +124,10 @@ defineWatchers({
           route,
           "variantId"
         );
+        const blueprintId = workspacesStore.getUrlSearchParamValue(
+          route,
+          "blueprintId"
+        );
 
         try {
           const variants = await variantsStore.getAll();
@@ -138,6 +142,10 @@ defineWatchers({
             variants.some(variant => variant.id === variantId)
           ) {
             variantsStore.setActiveTab(variantId);
+
+            if (blueprintId && typeof blueprintId === "string") {
+              variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
+            }
           }
         } catch (error) {
           console.log(error);
