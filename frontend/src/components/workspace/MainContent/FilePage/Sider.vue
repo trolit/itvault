@@ -136,6 +136,7 @@ defineWatchers({
             variant: true,
           });
 
+          // @TODO handle case when variantId or blueprintId do not exist
           if (
             variantId &&
             typeof variantId === "string" &&
