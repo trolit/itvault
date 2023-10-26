@@ -228,11 +228,16 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     _initializeTreeDataDirsFromPath(path: string) {
+      const { ROOT } = useFilesStore();
+
       let treeOption: TreeOption | undefined;
+      let currentRelativePath = `${ROOT}`;
       const [, ...splitPathExceptRoot] = path.split("/");
 
       for (let index = 0; index < splitPathExceptRoot.length; index++) {
         const pathPart = splitPathExceptRoot[index];
+
+        currentRelativePath += `/${pathPart}`;
 
         const nextTreeOption = treeOption?.children
           ? treeOption.children.find(({ label }) => label === pathPart)
