@@ -227,48 +227,45 @@ export const useWorkspacesStore = defineStore("workspaces", {
       );
     },
 
-    _initializeTreeDataDirsFromPath(path: string) {
-      const { ROOT } = useFilesStore();
-
-      let treeOption: TreeOption | undefined;
-      let currentRelativePath = `${ROOT}`;
+    _findTreeOptionByPath(path: string) {
       const [, ...splitPathExceptRoot] = path.split("/");
 
-      for (let index = 0; index < splitPathExceptRoot.length; index++) {
-        const pathPart = splitPathExceptRoot[index];
+      let treeOption: TreeOption | undefined;
+      let currentRelativePath = ".";
 
+      for (const pathPart of splitPathExceptRoot) {
         currentRelativePath += `/${pathPart}`;
 
         const nextTreeOption = treeOption?.children
           ? treeOption.children.find(({ label }) => label === pathPart)
           : this.treeData.find(({ label }) => label === pathPart);
 
-        const treeValue = this.tree.find(
-          value =>
-            value.relativePath === currentRelativePath && isDirectory(value)
-        );
-
-        if (!treeValue) {
-          continue;
-        }
-
-        const folder = createFolderTreeOption(treeValue);
-
-        const hasAnyFile = this.tree.some(
-          value => value.relativePath === currentRelativePath && isFile(value)
-        );
-
-        folder.children = hasAnyFile ? [] : undefined;
-
         if (!nextTreeOption) {
-          treeOption?.children
-            ? treeOption.children.push(folder)
-            : this.treeData.push(folder);
+          const treeValue = this.tree.find(
+            value =>
+              value.relativePath === currentRelativePath && isDirectory(value)
+          );
 
-          if (this.treeData) {
-            treeOption = treeOption?.children
-              ? treeOption[treeOption.children.length - 1]
-              : this.treeData[this.treeData.length - 1];
+          if (!treeValue) {
+            continue;
+          }
+
+          const folder = createFolderTreeOption(treeValue);
+
+          const hasAnyFile = this.tree.some(
+            value => value.relativePath === currentRelativePath && isFile(value)
+          );
+
+          folder.children = hasAnyFile ? [] : undefined;
+
+          if (treeOption?.children) {
+            treeOption.children.push(folder);
+
+            treeOption = treeOption.children[treeOption.children.length - 1];
+          } else {
+            this.treeData.push(folder);
+
+            treeOption = this.treeData[this.treeData.length - 1];
           }
 
           continue;
@@ -276,6 +273,8 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
         treeOption = nextTreeOption;
       }
+
+      return treeOption?.children;
     },
 
     initTree() {
@@ -283,11 +282,6 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.treeDataExpandedKeys = [];
 
       const uniqueRelativePaths = getUniqueTreeRelativePaths(this.tree);
-
-      // initialize dirs
-      for (const uniqueRelativePath of uniqueRelativePaths) {
-        this._initializeTreeDataDirsFromPath(uniqueRelativePath);
-      }
 
       for (const relativePath of uniqueRelativePaths) {
         const values = this.tree.filter(
@@ -309,7 +303,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
             treeOptionToAdd.children = hasAnyFile ? [] : undefined;
           }
 
-          this.treeData.push(treeOptionToAdd);
+          const location = this._findTreeOptionByPath(relativePath);
+
+          if (Array.isArray(location) && isValueFile) {
+            location.push(treeOptionToAdd);
+          }
         }
       }
     },
