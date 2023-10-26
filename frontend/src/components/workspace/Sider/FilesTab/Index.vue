@@ -95,6 +95,8 @@ async function initTree(isReload?: boolean) {
       workspacesStore.setTreeDataExpandedKeysByRelativePath(file.relativePath);
 
       filesStore.setActiveTab(file);
+
+      // @NOTE consider to refactor variants to create variant tabs in different way (?)
     }
   } catch (error) {
     console.log(error);
