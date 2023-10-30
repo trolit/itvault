@@ -55,27 +55,17 @@ export const useWorkspacesStore = defineStore("workspaces", {
       const { activeFileId } = useFilesStore();
       const { activeTab } = useVariantsStore();
 
+      const fileId = activeFileId ? activeFileId.toString() : null;
       const variantId = activeTab?.variant.id || null;
       const blueprintId = activeTab?.activeBlueprintId
         ? activeTab?.activeBlueprintId.toString()
         : null;
 
-      const fileParams =
-        activeFileId === 0
-          ? {
-              fileId: null,
-              variantId: null,
-              blueprintId: null,
-            }
-          : {
-              fileId: activeFileId.toString(),
-              variantId,
-              blueprintId,
-            };
-
       return {
         sider: this.generalLayoutSiderKey,
-        ...fileParams,
+        fileId,
+        variantId,
+        blueprintId,
       };
     },
   },
