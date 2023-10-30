@@ -1,10 +1,13 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 import type { TreeOption } from "naive-ui";
+import type { RouteLocationNormalizedLoaded } from "vue-router";
 
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
+import { useVariantsStore } from "./variants";
+import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
@@ -13,6 +16,7 @@ import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { WorkspaceSearchParams } from "@/types/WorkspaceSearchParams";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 import { getUniqueTreeRelativePaths } from "@/helpers/getUniqueTreeRelativePaths";
 
@@ -24,6 +28,7 @@ interface IState {
   activeItem: IWorkspaceDto;
   itemToEdit: IWorkspaceDto | null;
   tree: (IDirectoryDto | IFileDto)[];
+  generalLayoutSiderKey: string;
   treeDataExpandedKeys: (string | number)[];
 }
 
@@ -35,6 +40,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     treeData: [],
     itemToEdit: null,
     isSiderCollapsed: false,
+    generalLayoutSiderKey: "",
     activeItem: { id: 0, name: "", slug: "", tags: [] },
     treeDataExpandedKeys: [],
   }),
@@ -43,7 +49,25 @@ export const useWorkspacesStore = defineStore("workspaces", {
     ITEMS_PER_PAGE: () => 10,
     TRIGGER_STYLE_TOP: () => "31px",
     TRIGGER_STYLE_HEIGHT: () => "17px",
+    DEFAULT_GENERAL_LAYOUT_SIDER_KEY: () => "blueprints",
     activeItemId: state => state.activeItem.id,
+    SEARCH_PARAMS(): WorkspaceSearchParams {
+      const { activeFileId } = useFilesStore();
+      const { activeTab } = useVariantsStore();
+
+      const fileId = activeFileId ? activeFileId.toString() : null;
+      const variantId = activeTab?.variant.id || null;
+      const blueprintId = activeTab?.activeBlueprintId
+        ? activeTab?.activeBlueprintId.toString()
+        : null;
+
+      return {
+        sider: this.generalLayoutSiderKey,
+        fileId,
+        variantId,
+        blueprintId,
+      };
+    },
   },
 
   actions: {
@@ -147,6 +171,109 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
+    getUrlSearchParamValue(
+      route: RouteLocationNormalizedLoaded,
+      key: keyof WorkspaceSearchParams
+    ) {
+      const { query } = route;
+
+      const { [key]: value } = query;
+
+      if (!value) {
+        return null;
+      }
+
+      return value;
+    },
+
+    updateUrlSearchParams() {
+      const { SEARCH_PARAMS } = this;
+
+      const searchParams = new URLSearchParams();
+
+      const keys = Object.keys(SEARCH_PARAMS);
+
+      for (const key of keys) {
+        const value = SEARCH_PARAMS[key as keyof WorkspaceSearchParams];
+
+        if (!value) {
+          continue;
+        }
+
+        if (Array.isArray(value)) {
+          // @TODO implement when needed
+
+          continue;
+        }
+
+        searchParams.append(key, value.toString());
+      }
+
+      const {
+        location: { origin, pathname },
+      } = window;
+
+      history.pushState(
+        {},
+        "",
+        `${origin}${pathname}?${searchParams.toString()}`
+      );
+    },
+
+    _getTreeOptionChildrenByRelativePath(path: string) {
+      const [, ...splitPathExceptRoot] = path.split("/");
+
+      let treeOption: TreeOption | undefined;
+      let currentRelativePath = ".";
+
+      for (const pathPart of splitPathExceptRoot) {
+        currentRelativePath += `/${pathPart}`;
+
+        const nextTreeOption = treeOption?.children
+          ? treeOption.children.find(({ label }) => label === pathPart)
+          : this.treeData.find(({ label }) => label === pathPart);
+
+        if (!nextTreeOption) {
+          const treeValue = this.tree.find(
+            value =>
+              value.relativePath === currentRelativePath && isDirectory(value)
+          );
+
+          if (!treeValue) {
+            continue;
+          }
+
+          const folder = createFolderTreeOption(treeValue);
+
+          const hasAnyFile = this.tree.some(
+            value => value.relativePath === currentRelativePath && isFile(value)
+          );
+
+          if (hasAnyFile) {
+            folder.children = [];
+          }
+
+          if (treeOption) {
+            treeOption.children = treeOption.children
+              ? Array.prototype.concat(treeOption.children, [folder])
+              : [folder];
+
+            treeOption = treeOption.children[treeOption.children.length - 1];
+          } else {
+            this.treeData.push(folder);
+
+            treeOption = this.treeData[this.treeData.length - 1];
+          }
+
+          continue;
+        }
+
+        treeOption = nextTreeOption;
+      }
+
+      return treeOption?.children;
+    },
+
     initTree() {
       this.treeData = [];
       this.treeDataExpandedKeys = [];
@@ -173,7 +300,29 @@ export const useWorkspacesStore = defineStore("workspaces", {
             treeOptionToAdd.children = hasAnyFile ? [] : undefined;
           }
 
-          this.treeData.push(treeOptionToAdd);
+          const treeOptionChildren =
+            this._getTreeOptionChildrenByRelativePath(relativePath);
+
+          if (Array.isArray(treeOptionChildren) && isValueFile) {
+            treeOptionChildren.push(treeOptionToAdd);
+          }
+        }
+      }
+    },
+
+    setTreeDataExpandedKeysByRelativePath(relativePath: string) {
+      const splitRelativePath = relativePath.split("/");
+      const length = splitRelativePath.length;
+
+      for (let index = 1; index < length; index++) {
+        const path = splitRelativePath.slice(0, index + 1).join("/");
+
+        const dir = this.tree.find(
+          value => value.relativePath === path && isDirectory(value)
+        );
+
+        if (dir) {
+          this.treeDataExpandedKeys.push(`folder-${dir.id}`);
         }
       }
     },

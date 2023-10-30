@@ -70,6 +70,7 @@ import {
 } from "naive-ui";
 import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 import { Add as AddIcon } from "@vicons/carbon";
 
 import { Drawer } from "@/types/enums/Drawer";
@@ -83,6 +84,7 @@ import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
+const route = useRoute();
 const filesStore = useFilesStore();
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
@@ -118,12 +120,34 @@ defineWatchers({
       if (!variants.value.length) {
         isLoading.value = true;
 
+        const variantId = workspacesStore.getUrlSearchParamValue(
+          route,
+          "variantId"
+        );
+        const blueprintId = workspacesStore.getUrlSearchParamValue(
+          route,
+          "blueprintId"
+        );
+
         try {
-          await variantsStore.getAll();
+          const variants = await variantsStore.getAll();
 
           variantsStore.overwriteActiveInformationIfPossible({
             variant: true,
           });
+
+          // @TODO handle case when variantId or blueprintId do not exist
+          if (
+            variantId &&
+            typeof variantId === "string" &&
+            variants.some(variant => variant.id === variantId)
+          ) {
+            variantsStore.setActiveTab(variantId);
+
+            if (blueprintId && typeof blueprintId === "string") {
+              variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
+            }
+          }
         } catch (error) {
           console.log(error);
         } finally {

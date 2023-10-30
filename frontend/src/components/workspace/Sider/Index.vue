@@ -4,8 +4,8 @@
       animated
       type="line"
       size="medium"
+      v-model:value="workspacesStore.generalLayoutSiderKey"
       justify-content="space-evenly"
-      :default-value="defaultTab"
     >
       <n-tab-pane
         :name="key"
@@ -39,6 +39,9 @@ import BundlesTab from "./BundlesTab/Index.vue";
 import BlueprintsTab from "./BlueprintsTab.vue";
 import NotesDrawer from "./NotesDrawer/Index.vue";
 import BundleDrawer from "./BundleDrawer/Index.vue";
+import { useWorkspacesStore } from "@/store/workspaces";
+
+const workspacesStore = useWorkspacesStore();
 
 const bundlePage = ref(1);
 const blueprintPage = ref(1);
@@ -75,8 +78,6 @@ const tabs = [
     },
   },
 ];
-
-const defaultTab = "blueprints";
 
 function updateLoadingState(value: boolean) {
   isLoading.value = value;

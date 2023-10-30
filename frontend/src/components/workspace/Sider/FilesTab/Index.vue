@@ -35,6 +35,7 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { Reset as ResetIcon } from "@vicons/carbon";
 import { NScrollbar, NAlert, NButton, NIcon } from "naive-ui";
@@ -43,9 +44,11 @@ import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
 import UploadFilesModal from "./UploadFilesModal.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
+import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
+const route = useRoute();
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -72,10 +75,29 @@ onBeforeMount(async () => {
 async function initTree(isReload?: boolean) {
   emit("update:is-loading", true);
 
+  const value = workspacesStore.getUrlSearchParamValue(route, "fileId");
+
   try {
-    await workspacesStore.getTree({ relativePath: filesStore.ROOT }, isReload);
+    let file: IFileDto | null = null;
+
+    if (value && typeof value === "string" && !isReload) {
+      file = await initTreeByProvidedFileId(parseInt(value));
+    } else {
+      await workspacesStore.getTree(
+        { relativePath: filesStore.ROOT },
+        isReload
+      );
+    }
 
     workspacesStore.initTree();
+
+    if (file) {
+      workspacesStore.setTreeDataExpandedKeysByRelativePath(file.relativePath);
+
+      filesStore.setActiveTab(file);
+
+      // @NOTE consider to refactor variants to create variant tabs in different way (?)
+    }
   } catch (error) {
     console.log(error);
   } finally {
@@ -87,5 +109,31 @@ function onUpload() {
   isUploadFilesModalVisible.value = false;
 
   isFileUploadAlertVisible.value = true;
+}
+
+async function initTreeByProvidedFileId(fileId: number) {
+  filesStore.activeFileId = fileId;
+
+  const file = await filesStore.getById(fileId);
+
+  const splitRelativePath = file.relativePath.split("/");
+  const splitRelativePathLength = splitRelativePath.length;
+
+  const promises = [];
+
+  for (let index = 0; index < splitRelativePathLength; index++) {
+    const relativePath =
+      index === 0
+        ? filesStore.ROOT
+        : splitRelativePath.slice(0, index + 1).join("/");
+
+    const promise = workspacesStore.getTree({ relativePath });
+
+    promises.push(promise);
+  }
+
+  await Promise.all(promises);
+
+  return file;
 }
 </script>
