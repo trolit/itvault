@@ -32,7 +32,19 @@ const querySchema: SuperSchema.Fragment<GetTreeControllerTypes.v1.Query> =
         .when("blueprintId", {
           is: (value: string) => !!value,
           then: schema => schema.typeError(requireOneOfError),
-          otherwise: schema => schema.required(),
+          otherwise: schema =>
+            schema.required().test((value, ctx) => {
+              if (value.endsWith("/")) {
+                return ctx.createError({
+                  message: setYupError(
+                    CUSTOM_MESSAGES.GENERAL.SHOULD_NOT_END_WITH,
+                    "/ (slash)"
+                  ),
+                });
+              }
+
+              return true;
+            }),
         }),
     },
     [["blueprintId", "relativePath"]]
