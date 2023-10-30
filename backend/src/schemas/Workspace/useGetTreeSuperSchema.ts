@@ -8,6 +8,7 @@ import { setYupError } from "@helpers/yup/setError";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
+import { useRelativePathTest } from "@schemas/common/useRelativePathTest";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const requireOneOfError = setYupError(
@@ -32,7 +33,7 @@ const querySchema: SuperSchema.Fragment<GetTreeControllerTypes.v1.Query> =
         .when("blueprintId", {
           is: (value: string) => !!value,
           then: schema => schema.typeError(requireOneOfError),
-          otherwise: schema => schema.required(),
+          otherwise: useRelativePathTest,
         }),
     },
     [["blueprintId", "relativePath"]]
