@@ -1,15 +1,11 @@
-import { object, string } from "yup";
+import { object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { PatchRelativePathControllerTypes } from "types/controllers/File/PatchRelativePathController";
 
-import { FILES } from "@config";
-
 import { Di } from "@enums/Di";
 
-import { setYupError } from "@helpers/yup/setError";
-import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
-
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
+import { useRelativePathTest } from "@schemas/common/useRelativePathTest";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const paramsSchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Params> =
@@ -24,33 +20,7 @@ const querySchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Quer
 
 const bodySchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Body> =
   object({
-    relativePath: string()
-      .trim()
-      .required()
-      .matches(/^[a-zA-Z0-9/._-]+$/)
-      .test((value: string, ctx) => {
-        if (value.includes("//")) {
-          return ctx.createError({
-            message: "Double slash is forbidden.",
-          });
-        }
-
-        if (value.split(FILES.ROOT).length !== 2) {
-          return ctx.createError({
-            message: setYupError(CUSTOM_MESSAGES.FILE.ONLY_ONE_ROOT_INDICATOR),
-          });
-        }
-
-        if (value.includes("/") && !value.startsWith(FILES.ROOT)) {
-          return ctx.createError({
-            message: setYupError(
-              CUSTOM_MESSAGES.FILE.SHOULD_START_WITH_ROOT_INDICATOR
-            ),
-          });
-        }
-
-        return true;
-      }),
+    relativePath: useRelativePathTest(),
   });
 
 export const usePatchRelativePathSuperSchema: SuperSchema.Runner<

@@ -19,17 +19,26 @@ export const useRelativePathTest = () =>
         });
       }
 
-      if (value.split(FILES.ROOT).length !== 2) {
+      if (value.endsWith("/")) {
         return ctx.createError({
-          message: setYupError(CUSTOM_MESSAGES.FILE.ONLY_ONE_ROOT_INDICATOR),
+          message: setYupError(
+            CUSTOM_MESSAGES.GENERAL.SHOULD_NOT_END_WITH,
+            "/ (slash)"
+          ),
         });
       }
 
-      if (value.includes("/") && !value.startsWith(FILES.ROOT)) {
+      if (!value.startsWith(FILES.ROOT)) {
         return ctx.createError({
           message: setYupError(
             CUSTOM_MESSAGES.FILE.SHOULD_START_WITH_ROOT_INDICATOR
           ),
+        });
+      }
+
+      if (value.split(FILES.ROOT).length !== 2) {
+        return ctx.createError({
+          message: setYupError(CUSTOM_MESSAGES.FILE.ONLY_ONE_ROOT_INDICATOR),
         });
       }
 
