@@ -50,12 +50,13 @@ export class DirectoryRepository
     });
   }
 
-  getAllByRelativePath(workspaceId: number, relativePath: string) {
+  async getAllByRelativePath(workspaceId: number, relativePath: string) {
     if (relativePath === FILES.ROOT) {
       return this._handleRootRelativePathRequest(workspaceId);
     }
 
-    return this.database.find({
+    // @NOTE (1) fetch all dirs with matching relativePath and workspace
+    const directories = await this.database.find({
       where: {
         files: {
           workspace: {
@@ -66,6 +67,22 @@ export class DirectoryRepository
           relativePath: Like(`${relativePath}%`),
         },
       },
+    });
+
+    const relativePathLength = relativePath.split("/").length;
+
+    // @NOTE (2) take all relativePath children dirs
+    const relativePathChildrenDirectories = uniq(
+      directories.map(dir => {
+        const splitPath = dir.relativePath.split("/");
+
+        return splitPath.splice(0, relativePathLength + 1).join("/");
+      })
+    );
+
+    // @NOTE (3) fetch all children dirs
+    return this.database.find({
+      where: { relativePath: In(relativePathChildrenDirectories) },
     });
   }
 
