@@ -2,6 +2,8 @@ import { number, object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetTreeControllerTypes } from "types/controllers/Workspace/GetTreeController";
 
+import { FILES } from "@config";
+
 import { Di } from "@enums/Di";
 
 import { setYupError } from "@helpers/yup/setError";
@@ -34,6 +36,15 @@ const querySchema: SuperSchema.Fragment<GetTreeControllerTypes.v1.Query> =
           then: schema => schema.typeError(requireOneOfError),
           otherwise: schema =>
             schema.required().test((value, ctx) => {
+              if (!value.startsWith(FILES.ROOT)) {
+                return ctx.createError({
+                  message: setYupError(
+                    CUSTOM_MESSAGES.GENERAL.SHOULD_START_WITH,
+                    `'${FILES.ROOT}' (e.g. '${FILES.ROOT}/src')`
+                  ),
+                });
+              }
+
               if (value.endsWith("/")) {
                 return ctx.createError({
                   message: setYupError(
