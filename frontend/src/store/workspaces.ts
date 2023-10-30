@@ -55,6 +55,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
       const { activeFileId } = useFilesStore();
       const { activeTab } = useVariantsStore();
 
+      const variantId = activeTab?.variant.id || null;
+      const blueprintId = activeTab?.activeBlueprintId
+        ? activeTab?.activeBlueprintId.toString()
+        : null;
+
       const fileParams =
         activeFileId === 0
           ? {
@@ -64,10 +69,8 @@ export const useWorkspacesStore = defineStore("workspaces", {
             }
           : {
               fileId: activeFileId.toString(),
-              variantId: activeTab?.variant.id || null,
-              blueprintId: activeTab?.activeBlueprintId
-                ? activeTab?.activeBlueprintId.toString()
-                : null,
+              variantId,
+              blueprintId,
             };
 
       return {
