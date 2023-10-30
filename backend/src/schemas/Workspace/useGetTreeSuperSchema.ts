@@ -39,8 +39,7 @@ const querySchema: SuperSchema.Fragment<GetTreeControllerTypes.v1.Query> =
               if (!value.startsWith(FILES.ROOT)) {
                 return ctx.createError({
                   message: setYupError(
-                    CUSTOM_MESSAGES.GENERAL.SHOULD_START_WITH,
-                    `'${FILES.ROOT}' (e.g. '${FILES.ROOT}/src')`
+                    CUSTOM_MESSAGES.FILE.SHOULD_START_WITH_ROOT_INDICATOR
                   ),
                 });
               }
