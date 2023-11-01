@@ -1,5 +1,5 @@
 export type WorkspaceSearchParams = {
-  sider: string;
+  sider: string | null;
 
   fileId: string | null;
 
