@@ -83,9 +83,6 @@ defineWatchers({
     handler: () => {
       workspacesStore.updateUrlSearchParams();
     },
-    options: {
-      immediate: true,
-    },
   },
 
   fileId: {
