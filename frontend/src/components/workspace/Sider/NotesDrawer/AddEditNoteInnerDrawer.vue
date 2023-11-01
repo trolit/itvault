@@ -59,7 +59,6 @@ import {
   NButton,
   NDrawer,
   NFormItem,
-  useMessage,
   NDrawerContent,
 } from "naive-ui";
 import { ref, toRefs } from "vue";
@@ -68,6 +67,7 @@ import { object, string } from "yup";
 import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { defineForm } from "@/helpers/defineForm";
+import { useGeneralStore } from "@/store/general";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
@@ -79,9 +79,9 @@ interface IProps {
   noteToEdit: INoteDto | null;
 }
 
-const message = useMessage();
 const filesStore = useFilesStore();
 const notesStore = useNotesStore();
+const generalStore = useGeneralStore();
 
 const props = defineProps<IProps>();
 
@@ -160,7 +160,9 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   isLoading.value = true;
 
   if (!fileId.value) {
-    message.error("Failed to save note (file tab not found)!");
+    generalStore.messageProvider.error(
+      "Failed to save note (file tab not found)!"
+    );
 
     return;
   }
@@ -181,7 +183,9 @@ const onSubmit = handleSubmit.withControlled(async formData => {
       emits("refetch-notes");
     }
 
-    message.success(`Note ${noteId ? "updated" : "added"}!`);
+    generalStore.messageProvider.success(
+      `Note ${noteId ? "updated" : "added"}!`
+    );
 
     emits("close");
   } catch (error) {
@@ -189,7 +193,9 @@ const onSubmit = handleSubmit.withControlled(async formData => {
 
     setValidationErrors(error);
 
-    message.error(`Failed to ${noteId ? "update" : "add"} note!`);
+    generalStore.messageProvider.error(
+      `Failed to ${noteId ? "update" : "add"} note!`
+    );
   } finally {
     isLoading.value = false;
   }
