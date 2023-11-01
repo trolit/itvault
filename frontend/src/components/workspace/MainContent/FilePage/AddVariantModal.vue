@@ -56,7 +56,6 @@ import {
   NButton,
   NUpload,
   NFormItem,
-  useMessage,
   type UploadFileInfo,
 } from "naive-ui";
 import cloneDeep from "lodash/cloneDeep";
@@ -64,11 +63,12 @@ import { ref, toRefs, type Ref } from "vue";
 import { mixed, object, string } from "yup";
 
 import { defineForm } from "@/helpers/defineForm";
+import { useGeneralStore } from "@/store/general";
 import { useVariantsStore } from "@/store/variants";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import type { AddVariantForm } from "@/types/AddVariantForm";
 
-const message = useMessage();
+const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 
 const isLoading = ref(false);
@@ -141,7 +141,7 @@ const onSubmit = handleSubmit.withControlled(async value => {
   try {
     await variantsStore.store(formData);
 
-    message.success(`Variant successfully added!`);
+    generalStore.messageProvider.success(`Variant successfully added!`);
 
     emit("update:is-visible", false);
   } catch (error) {
