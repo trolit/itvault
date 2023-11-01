@@ -37,7 +37,8 @@ const isLoading = ref(false);
 const isFailed = ref(false);
 const { activeTab } = storeToRefs(variantsStore);
 const { activeFileId } = storeToRefs(filesStore);
-const { generalLayoutSiderKey } = storeToRefs(workspacesStore);
+const { generalLayoutSiderKey, ARE_ALL_INITIAL_SEARCH_PARAMS_LOADED } =
+  storeToRefs(workspacesStore);
 
 onBeforeMount(async () => {
   const {
@@ -101,6 +102,15 @@ defineWatchers({
     },
     options: {
       deep: true,
+    },
+  },
+
+  areAllInitialSearchParamsInitialized: {
+    source: ARE_ALL_INITIAL_SEARCH_PARAMS_LOADED,
+    handler: (value: boolean) => {
+      if (value) {
+        workspacesStore.initialSearchParams = {};
+      }
     },
   },
 });

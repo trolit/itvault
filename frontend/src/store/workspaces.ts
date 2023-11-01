@@ -53,6 +53,26 @@ export const useWorkspacesStore = defineStore("workspaces", {
     TRIGGER_STYLE_HEIGHT: () => "17px",
     DEFAULT_GENERAL_LAYOUT_SIDER_KEY: () => "blueprints",
     activeItemId: state => state.activeItem.id,
+    ARE_ALL_INITIAL_SEARCH_PARAMS_LOADED(): boolean {
+      let result = true;
+
+      Object.keys(this.initialSearchParams).map(key => {
+        const searchParamKey = key as keyof WorkspaceSearchParams;
+        const initialValue = this.initialSearchParams[searchParamKey];
+
+        if (!initialValue) {
+          return;
+        }
+
+        if (initialValue !== this.SEARCH_PARAMS[searchParamKey]) {
+          result = false;
+
+          return false;
+        }
+      });
+
+      return result;
+    },
     SEARCH_PARAMS(): WorkspaceSearchParams {
       const { activeFileId } = useFilesStore();
       const { activeTab } = useVariantsStore();
