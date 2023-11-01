@@ -30,6 +30,7 @@ interface IState {
   tree: (IDirectoryDto | IFileDto)[];
   generalLayoutSiderKey: string;
   treeDataExpandedKeys: (string | number)[];
+  initialSearchParams: Partial<WorkspaceSearchParams>;
 }
 
 export const useWorkspacesStore = defineStore("workspaces", {
@@ -43,6 +44,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     generalLayoutSiderKey: "",
     activeItem: { id: 0, name: "", slug: "", tags: [] },
     treeDataExpandedKeys: [],
+    initialSearchParams: {},
   }),
 
   getters: {
@@ -51,6 +53,26 @@ export const useWorkspacesStore = defineStore("workspaces", {
     TRIGGER_STYLE_HEIGHT: () => "17px",
     DEFAULT_GENERAL_LAYOUT_SIDER_KEY: () => "blueprints",
     activeItemId: state => state.activeItem.id,
+    ARE_ALL_INITIAL_SEARCH_PARAMS_LOADED(): boolean {
+      let result = true;
+
+      Object.keys(this.initialSearchParams).map(key => {
+        const searchParamKey = key as keyof WorkspaceSearchParams;
+        const initialValue = this.initialSearchParams[searchParamKey];
+
+        if (!initialValue) {
+          return;
+        }
+
+        if (initialValue !== this.SEARCH_PARAMS[searchParamKey]) {
+          result = false;
+
+          return false;
+        }
+      });
+
+      return result;
+    },
     SEARCH_PARAMS(): WorkspaceSearchParams {
       const { activeFileId } = useFilesStore();
       const { activeTab } = useVariantsStore();
@@ -171,6 +193,21 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
+    readInitialSearchParamsFromUrl(route: RouteLocationNormalizedLoaded) {
+      const { query } = route;
+
+      Object.keys(this.SEARCH_PARAMS).map(key => {
+        const { [key]: value } = query;
+
+        if (!value) {
+          return;
+        }
+
+        this.initialSearchParams[key as keyof WorkspaceSearchParams] =
+          value.toString();
+      });
+    },
+
     getUrlSearchParamValue(
       route: RouteLocationNormalizedLoaded,
       key: keyof WorkspaceSearchParams
@@ -194,15 +231,19 @@ export const useWorkspacesStore = defineStore("workspaces", {
       const keys = Object.keys(SEARCH_PARAMS);
 
       for (const key of keys) {
-        const value = SEARCH_PARAMS[key as keyof WorkspaceSearchParams];
+        const searchParamsKey = key as keyof WorkspaceSearchParams;
+        const initialSearchParamValue =
+          this.initialSearchParams[searchParamsKey];
 
-        if (!value) {
+        const value = SEARCH_PARAMS[searchParamsKey];
+
+        if (!value && initialSearchParamValue) {
+          searchParams.append(key, initialSearchParamValue.toString());
+
           continue;
         }
 
-        if (Array.isArray(value)) {
-          // @TODO implement when needed
-
+        if (!value) {
           continue;
         }
 
