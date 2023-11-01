@@ -3,7 +3,6 @@ import { useMessage } from "naive-ui";
 
 import { THEME_DARK } from "@/assets/constants/themes";
 import { LoadingState } from "@/types/enums/LoadingState";
-import type { MessageApiInjection } from "naive-ui/es/message/src/MessageProvider";
 
 interface IState {
   theme: string;
@@ -17,9 +16,7 @@ export const useGeneralStore = defineStore("general", {
   }),
 
   getters: {
-    messageProvider(): MessageApiInjection {
-      return useMessage();
-    },
+    messageProvider: () => useMessage(),
   },
 
   actions: {
