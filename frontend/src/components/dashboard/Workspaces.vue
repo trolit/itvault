@@ -59,7 +59,7 @@ import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { Permission } from "@shared/types/enums/Permission";
-import { ROUTE_WORKSPACE_NAME } from "@/assets/constants/routes";
+import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
@@ -154,7 +154,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
 
               workspacesStore.setActiveItem(row);
 
-              router.push({ path: `${ROUTE_WORKSPACE_NAME}/${row.slug}` });
+              router.push({ path: `${ROUTE_WORKSPACES_NAME}/${row.slug}` });
             },
           },
           { default: () => "Open" }

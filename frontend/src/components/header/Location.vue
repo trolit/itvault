@@ -9,13 +9,13 @@ import { computed } from "vue";
 import { useRoute } from "vue-router";
 
 import { useWorkspacesStore } from "@/store/workspaces";
-import { ROUTE_WORKSPACE_NAME } from "@/assets/constants/routes";
+import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 
 const route = useRoute();
 
 const workspacesStore = useWorkspacesStore();
 
 const isOneOfRoutes = computed(() => {
-  return route.name === ROUTE_WORKSPACE_NAME;
+  return route.name === ROUTE_WORKSPACES_NAME;
 });
 </script>
