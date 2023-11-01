@@ -15,7 +15,7 @@ import {
   ROUTE_USERS_NAME,
   ROUTE_UPDATES_NAME,
   ROUTE_DASHBOARD_NAME,
-  ROUTE_WORKSPACE_NAME,
+  ROUTE_WORKSPACES_NAME,
 } from "@/assets/constants/routes";
 
 import Guest from "@/views/Guest.vue";
@@ -68,8 +68,8 @@ const router = createRouter({
     },
 
     {
-      path: `/${ROUTE_WORKSPACE_NAME}/:slug`,
-      name: ROUTE_WORKSPACE_NAME,
+      path: `/${ROUTE_WORKSPACES_NAME}/:slug`,
+      name: ROUTE_WORKSPACES_NAME,
       component: Workspace,
       props: {},
       meta: {
