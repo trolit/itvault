@@ -13,27 +13,21 @@
 </template>
 
 <script setup lang="ts">
-import {
-  NIcon,
-  NText,
-  NButton,
-  NDropdown,
-  useDialog,
-  useMessage,
-} from "naive-ui";
 import { h, toRefs } from "vue";
 import { OperationsField as GearIcon } from "@vicons/carbon";
+import { NIcon, NText, NButton, NDropdown, useDialog } from "naive-ui";
 
 import { useNotesStore } from "@/store/notes";
 import { useFilesStore } from "@/store/files";
+import { useGeneralStore } from "@/store/general";
 import { defineComputed } from "@/helpers/defineComputed";
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import { NoteResource } from "@shared/types/enums/NoteResource";
 
 const dialog = useDialog();
-const message = useMessage();
 const filesStore = useFilesStore();
 const notesStore = useNotesStore();
+const generalStore = useGeneralStore();
 
 interface IProps {
   note: INoteDto;
@@ -118,7 +112,9 @@ function handleSelect(key: string) {
         const fileId = filesStore.activeFileId;
 
         if (!fileId) {
-          message.error("Failed to delete note (file tab not found)!");
+          generalStore.messageProvider.error(
+            "Failed to delete note (file tab not found)!"
+          );
 
           return;
         }
@@ -129,11 +125,11 @@ function handleSelect(key: string) {
             name: NoteResource.File,
           });
 
-          message.success("Note deleted.");
+          generalStore.messageProvider.success("Note deleted.");
         } catch (error) {
           console.log(error);
 
-          message.error("Failed to delete note!");
+          generalStore.messageProvider.error("Failed to delete note!");
         }
       },
     });
