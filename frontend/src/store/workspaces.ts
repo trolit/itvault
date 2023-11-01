@@ -30,6 +30,7 @@ interface IState {
   tree: (IDirectoryDto | IFileDto)[];
   generalLayoutSiderKey: string;
   treeDataExpandedKeys: (string | number)[];
+  initialSearchParams: Partial<WorkspaceSearchParams>;
 }
 
 export const useWorkspacesStore = defineStore("workspaces", {
@@ -43,6 +44,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     generalLayoutSiderKey: "",
     activeItem: { id: 0, name: "", slug: "", tags: [] },
     treeDataExpandedKeys: [],
+    initialSearchParams: {},
   }),
 
   getters: {
@@ -171,6 +173,21 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
+    loadInitialSearchParams(route: RouteLocationNormalizedLoaded) {
+      const { query } = route;
+
+      Object.keys(this.SEARCH_PARAMS).map(key => {
+        const { [key]: value } = query;
+
+        if (!value) {
+          return;
+        }
+
+        this.initialSearchParams[key as keyof WorkspaceSearchParams] =
+          value.toString();
+      });
+    },
+
     getUrlSearchParamValue(
       route: RouteLocationNormalizedLoaded,
       key: keyof WorkspaceSearchParams
@@ -194,15 +211,19 @@ export const useWorkspacesStore = defineStore("workspaces", {
       const keys = Object.keys(SEARCH_PARAMS);
 
       for (const key of keys) {
-        const value = SEARCH_PARAMS[key as keyof WorkspaceSearchParams];
+        const searchParamsKey = key as keyof WorkspaceSearchParams;
+        const initialSearchParamValue =
+          this.initialSearchParams[searchParamsKey];
 
-        if (!value) {
+        const value = SEARCH_PARAMS[searchParamsKey];
+
+        if (!value && initialSearchParamValue) {
+          searchParams.append(key, initialSearchParamValue.toString());
+
           continue;
         }
 
-        if (Array.isArray(value)) {
-          // @TODO implement when needed
-
+        if (!value) {
           continue;
         }
 

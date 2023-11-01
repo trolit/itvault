@@ -44,6 +44,8 @@ onBeforeMount(async () => {
     params: { slug },
   } = route;
 
+  workspacesStore.loadInitialSearchParams(route);
+
   loadGeneralLayoutSiderKeyFromUrl();
 
   const { activeItem } = workspacesStore;
