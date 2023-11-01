@@ -193,7 +193,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
-    loadInitialSearchParams(route: RouteLocationNormalizedLoaded) {
+    readInitialSearchParamsFromUrl(route: RouteLocationNormalizedLoaded) {
       const { query } = route;
 
       Object.keys(this.SEARCH_PARAMS).map(key => {

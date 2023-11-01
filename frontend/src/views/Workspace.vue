@@ -45,7 +45,7 @@ onBeforeMount(async () => {
     params: { slug },
   } = route;
 
-  workspacesStore.loadInitialSearchParams(route);
+  workspacesStore.readInitialSearchParamsFromUrl(route);
 
   loadGeneralLayoutSiderKeyFromUrl();
 
