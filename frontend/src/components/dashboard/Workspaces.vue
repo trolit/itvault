@@ -37,15 +37,6 @@
 
 <script setup lang="ts">
 import {
-  NTag,
-  NIcon,
-  NInput,
-  NEmpty,
-  NButton,
-  NDataTable,
-  useMessage,
-} from "naive-ui";
-import {
   Search as SearchIcon,
   Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
@@ -53,10 +44,12 @@ import { useRouter } from "vue-router";
 import cloneDeep from "lodash/cloneDeep";
 import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
 import type { DataTableColumns, PaginationProps } from "naive-ui";
+import { NTag, NIcon, NInput, NEmpty, NButton, NDataTable } from "naive-ui";
 
 import ContentCard from "./ContentCard.vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
+import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { Permission } from "@shared/types/enums/Permission";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
@@ -64,8 +57,8 @@ import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const router = useRouter();
-const message = useMessage();
 const drawerStore = useDrawerStore();
+const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(true);
@@ -179,7 +172,9 @@ async function getWorkspaces() {
   } catch (error) {
     console.log(error);
 
-    message.error("There was an error when trying to load workspaces.");
+    generalStore.messageProvider.error(
+      "There was an error when trying to load workspaces."
+    );
   } finally {
     isLoading.value = false;
   }

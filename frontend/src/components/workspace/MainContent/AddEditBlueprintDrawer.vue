@@ -107,7 +107,6 @@ import {
   NButton,
   NDrawer,
   NFormItem,
-  useMessage,
   NPopconfirm,
   NColorPicker,
   NDrawerContent,
@@ -121,6 +120,7 @@ import { useAuthStore } from "@/store/auth";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { defineForm } from "@/helpers/defineForm";
+import { useGeneralStore } from "@/store/general";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
@@ -128,9 +128,9 @@ import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
-const message = useMessage();
 const authStore = useAuthStore();
 const drawerStore = useDrawerStore();
+const generalStore = useGeneralStore();
 const blueprintsStore = useBlueprintsStore();
 
 const isLoading = ref(false);
@@ -243,7 +243,9 @@ const onSubmit = handleSubmit.withControlled(async formData => {
       });
     }
 
-    message.success(`Blueprint successfully ${isEdit ? "updated" : "added"}.`);
+    generalStore.messageProvider.success(
+      `Blueprint successfully ${isEdit ? "updated" : "added"}.`
+    );
 
     dismissDrawer();
   } catch (error) {
@@ -267,7 +269,7 @@ async function deleteBlueprint() {
 
     itemToEdit.value = null;
 
-    message.success(`Blueprint removed.`);
+    generalStore.messageProvider.success(`Blueprint removed.`);
 
     dismissDrawer();
   } catch (error) {

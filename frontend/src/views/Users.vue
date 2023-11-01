@@ -66,7 +66,6 @@ import {
   NButton,
   NSwitch,
   NDataTable,
-  useMessage,
   NPopconfirm,
   type PaginationProps,
   type DataTableColumns,
@@ -76,12 +75,13 @@ import { h, onBeforeMount, reactive, ref, type Ref } from "vue";
 
 import { useRolesStore } from "@/store/roles";
 import { useUsersStore } from "@/store/users";
+import { useGeneralStore } from "@/store/general";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
 import ScrollSelect from "@/components/common/ScrollSelect.vue";
 
-const message = useMessage();
 const rolesStore = useRolesStore();
 const usersStore = useUsersStore();
+const generalStore = useGeneralStore();
 
 const rolesPage = ref(1);
 const isLoadingUsers = ref(true);
@@ -246,7 +246,9 @@ async function getUsers() {
   } catch (error) {
     console.log(error);
 
-    message.error("There was an error when trying to load users.");
+    generalStore.messageProvider.error(
+      "There was an error when trying to load users."
+    );
   } finally {
     isLoadingUsers.value = false;
   }
@@ -265,7 +267,9 @@ async function getRoles() {
   } catch (error) {
     console.log(error);
 
-    message.error("There was an error when trying to load roles!");
+    generalStore.messageProvider.error(
+      "There was an error when trying to load roles!"
+    );
   } finally {
     isLoadingRoles.value = false;
   }
@@ -281,13 +285,15 @@ async function updateUsers() {
   try {
     await usersStore.updateMany();
 
-    message.success("Changes saved!");
+    generalStore.messageProvider.success("Changes saved!");
   } catch (error) {
     console.log(error);
 
     // @TODO handle yup response
 
-    message.error("There was an error when committing changes!");
+    generalStore.messageProvider.error(
+      "There was an error when committing changes!"
+    );
   } finally {
     isLoadingUsers.value = false;
   }

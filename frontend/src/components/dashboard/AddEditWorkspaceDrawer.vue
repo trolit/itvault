@@ -74,7 +74,6 @@ import {
   NButton,
   NDrawer,
   NFormItem,
-  useMessage,
   NDynamicTags,
   NAutoComplete,
   NDrawerContent,
@@ -88,6 +87,7 @@ import { useTagsStore } from "@/store/tags";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { defineForm } from "@/helpers/defineForm";
+import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
@@ -95,9 +95,9 @@ import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
-const message = useMessage();
 const tagsStore = useTagsStore();
 const drawerStore = useDrawerStore();
+const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
 const tagInput = ref("");
@@ -224,7 +224,9 @@ const onSubmit = handleSubmit.withControlled(async formData => {
       });
     }
 
-    message.success(`Workspace successfully ${isEdit ? "updated" : "added"}.`);
+    generalStore.messageProvider.success(
+      `Workspace successfully ${isEdit ? "updated" : "added"}.`
+    );
 
     dismissDrawer();
   } catch (error) {
@@ -262,7 +264,9 @@ function onTagInputChange(input: string) {
       options.value = data.total ? data.result.map(item => item.value) : [];
 
       if (!data.total) {
-        message.info(`No tags found with keyword: ${input}`);
+        generalStore.messageProvider.info(
+          `No tags found with keyword: ${input}`
+        );
       }
     } catch (error) {
       console.log(error);

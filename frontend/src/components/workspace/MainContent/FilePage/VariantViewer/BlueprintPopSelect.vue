@@ -53,28 +53,22 @@
 </template>
 
 <script setup lang="ts">
-import {
-  NTag,
-  NText,
-  NButton,
-  NPopselect,
-  useMessage,
-  NAutoComplete,
-} from "naive-ui";
 import { h, ref, type Ref } from "vue";
 import type { SelectBaseOption } from "naive-ui/es/select/src/interface";
+import { NTag, NText, NButton, NPopselect, NAutoComplete } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
 import { useBucketsStore } from "@/store/buckets";
+import { useGeneralStore } from "@/store/general";
 import { useVariantsStore } from "@/store/variants";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
-const message = useMessage();
 const filesStore = useFilesStore();
 const bucketsStore = useBucketsStore();
+const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const blueprintsStore = useBlueprintsStore();
 
@@ -221,7 +215,9 @@ function onBlueprintInputChange(input: string) {
       blueprints.value = total ? result : [];
 
       if (!total) {
-        message.info(`No blueprints found with keyword /${input}/`);
+        generalStore.messageProvider.info(
+          `No blueprints found with keyword /${input}/`
+        );
       }
     } catch (error) {
       console.log(error);

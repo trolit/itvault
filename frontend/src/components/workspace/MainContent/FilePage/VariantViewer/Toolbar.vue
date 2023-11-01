@@ -57,18 +57,18 @@ import {
   NButton,
   NSwitch,
   NDivider,
-  useMessage,
   NPopconfirm,
 } from "naive-ui";
 import { ref } from "vue";
 
+import { useGeneralStore } from "@/store/general";
 import { useBucketsStore } from "@/store/buckets";
 import { useVariantsStore } from "@/store/variants";
 import { useBlueprintsStore } from "@/store/blueprints";
 import BlueprintPopSelect from "./BlueprintPopSelect.vue";
 
-const message = useMessage();
 const bucketsStore = useBucketsStore();
+const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const blueprintsStore = useBlueprintsStore();
 
@@ -87,7 +87,7 @@ async function saveChanges() {
   try {
     await bucketsStore.upsert();
 
-    message.success(
+    generalStore.messageProvider.success(
       `Changes saved! Please note that these changes won't be applied to bundles that were already generated.`
     );
   } catch (error) {

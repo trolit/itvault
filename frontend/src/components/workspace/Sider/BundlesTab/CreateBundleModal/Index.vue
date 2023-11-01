@@ -45,24 +45,25 @@ import { ref, computed, type Ref } from "vue";
 import { NModal, NSpace, NSteps, NStep, NButton } from "naive-ui";
 
 import FormStep from "./FormStep.vue";
-import { useMessage } from "naive-ui";
 import { useBundlesStore } from "@/store/bundles";
+import { useGeneralStore } from "@/store/general";
+import type { Value } from "@shared/types/dtos/AddBundleDto";
 import type { BundleModalItem } from "@/types/BundleModalItem";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
-import type { Value } from "@shared/types/dtos/AddBundleDto";
+
+const bundlesStore = useBundlesStore();
+const generalStore = useGeneralStore();
 
 const emit = defineEmits(["update:show"]);
 
 const note = ref("");
 const current = ref(1);
-const message = useMessage();
 const isSubmittingForm = ref(false);
 const isVariantConflict = ref(false);
-const bundlesStore = useBundlesStore();
 const expiration = ref(BundleExpire.OneDay);
 const items: Ref<BundleModalItem[]> = ref([]);
 
@@ -180,7 +181,7 @@ async function onSubmit() {
       expiration: expiration.value,
     });
 
-    message.success("Bundle successfully queued.");
+    generalStore.messageProvider.success("Bundle successfully queued.");
 
     emit("update:show", false);
   } catch (error) {

@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { watch } from "vue";
 import { storeToRefs } from "pinia";
-import { NScrollbar, useLoadingBar } from "naive-ui";
+import { NScrollbar, useLoadingBar, useMessage } from "naive-ui";
 
 import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
@@ -21,10 +21,13 @@ defineProps({
   },
 });
 
+const message = useMessage();
 const loadingBar = useLoadingBar();
 const generalStore = useGeneralStore();
 
 const { loadingState } = storeToRefs(generalStore);
+
+generalStore.setMessageProvider(message);
 
 watch(loadingState, () => {
   switch (loadingState.value) {
