@@ -18,4 +18,8 @@
   /* USERS */
   --users-header-height: 9vh;
   --users-footer-height: 5vh;
+
+  /* ROLES */
+  --roles-header-height: 9vh;
+  --roles-footer-height: 5vh;
 }
