@@ -1,0 +1,34 @@
+.roles-page {
+  .header {
+    display: flex;
+    margin: 0 10px;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--users-header-height);
+
+    .n-input {
+      width: 35%;
+    }
+  }
+
+  .n-data-table {
+    height: calc(
+      100vh - var(--header-height) - var(--users-header-height) -
+        var(--users-footer-height)
+    ) !important;
+
+    .n-data-table-wrapper {
+      margin: 0 10px;
+    }
+
+    .n-data-table-base-table-body {
+      .n-scrollbar-content {
+        align-items: normal !important;
+      }
+    }
+
+    .n-data-table__pagination {
+      justify-content: center;
+    }
+  }
+}
