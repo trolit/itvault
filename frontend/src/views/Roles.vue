@@ -10,12 +10,12 @@
     </div>
 
     <n-data-table
-      flex-height
-      single-column
       :data="data"
       :columns="columns"
-      :loading="isLoadingRoles"
+      :single-line="false"
+      :single-column="false"
       :pagination="pagination"
+      :loading="isLoadingRoles"
       :row-key="(row: IRoleDto) => row.id"
       @update:page="getRoles"
     >
@@ -84,11 +84,10 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
     ellipsis: {
       tooltip: true,
     },
-    resizable: true,
   },
 
   {
-    title: "Actions",
+    title: "Action(s)",
     key: "actions",
     width: 140,
     render() {
