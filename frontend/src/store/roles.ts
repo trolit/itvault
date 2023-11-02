@@ -16,11 +16,6 @@ export const useRolesStore = defineStore("roles", {
     items: [],
   }),
 
-  getters: {
-    options: state =>
-      state.items.map(({ id, name }) => ({ label: name, value: id })),
-  },
-
   actions: {
     async getAll(options: IPaginationQuery) {
       const params = {
@@ -32,11 +27,6 @@ export const useRolesStore = defineStore("roles", {
         `v1/roles`,
         { params }
       );
-
-      this.items =
-        options.page === 1
-          ? data.result
-          : Array.prototype.concat(this.items, data.result);
 
       this.total = data.total;
 

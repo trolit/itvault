@@ -76,6 +76,8 @@ import { h, onBeforeMount, reactive, ref, type Ref } from "vue";
 import { useRolesStore } from "@/store/roles";
 import { useUsersStore } from "@/store/users";
 import { useGeneralStore } from "@/store/general";
+import { defineComputed } from "@/helpers/defineComputed";
+import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
 import ScrollSelect from "@/components/common/ScrollSelect.vue";
 
@@ -86,6 +88,7 @@ const generalStore = useGeneralStore();
 const rolesPage = ref(1);
 const isLoadingUsers = ref(true);
 const isLoadingRoles = ref(false);
+let roles: IRoleDto[] = reactive([]);
 
 const rolesPerPage = 5;
 const defaultPagination = {
@@ -95,6 +98,12 @@ const defaultPagination = {
 
 onBeforeMount(async () => {
   await getRoles();
+});
+
+const { options } = defineComputed({
+  options() {
+    return roles.map(({ id, name }) => ({ label: name, value: id }));
+  },
 });
 
 const pagination: PaginationProps = reactive({
@@ -159,7 +168,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
 
       return h(ScrollSelect, {
         value: roleIdToUpdate || roleId,
-        options: rolesStore.options,
+        options: options.value,
         disabled: isLoadingRoles.value,
         consistentMenuWidth: false,
 
@@ -258,10 +267,13 @@ async function getRoles() {
   isLoadingRoles.value = true;
 
   try {
-    await rolesStore.getAll({
+    const { result } = await rolesStore.getAll({
       page: rolesPage.value,
       perPage: rolesPerPage,
     });
+
+    roles =
+      rolesPage.value === 1 ? result : Array.prototype.concat(roles, result);
 
     rolesPage.value += 1;
   } catch (error) {
