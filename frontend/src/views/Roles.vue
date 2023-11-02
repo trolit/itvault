@@ -2,7 +2,7 @@
   <div class="roles-page page">
     <div class="header">
       <!-- @TODO -->
-      <n-input clearable placeholder="Type name filter" disabled>
+      <n-input clearable placeholder="Type name to filter" disabled>
         <template #prefix>
           <n-icon :component="SearchIcon" />
         </template>
