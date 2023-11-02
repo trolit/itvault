@@ -4,7 +4,7 @@
     margin: 0 10px;
     align-items: center;
     justify-content: space-between;
-    height: var(--users-header-height);
+    height: var(--roles-header-height);
 
     .n-input {
       width: 35%;
@@ -13,8 +13,8 @@
 
   .n-data-table {
     height: calc(
-      100vh - var(--header-height) - var(--users-header-height) -
-        var(--users-footer-height)
+      100vh - var(--header-height) - var(--roles-header-height) -
+        var(--roles-footer-height)
     ) !important;
 
     .n-data-table-wrapper {
