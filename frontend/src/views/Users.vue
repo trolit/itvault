@@ -51,7 +51,7 @@
       @update:page="getUsers"
     >
       <template #empty>
-        <n-empty description="No workspaces found." />
+        <n-empty description="No users found." />
       </template>
     </n-data-table>
   </div>
