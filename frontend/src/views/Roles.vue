@@ -22,17 +22,8 @@
       cols="1 s:1 m:3 l:3 xl:3 2xl:3"
     >
       <n-grid-item v-if="hasAnyTab" span="1">
-        <n-card>
-          <n-tabs
-            key="oasis"
-            type="line"
-            justify-content="space-evenly"
-            animated
-          >
-            <n-tab-pane name="oasis" tab="Oasis"> Wonderwall </n-tab-pane>
-          </n-tabs>
-
-          <add-edit-form />
+        <n-card :bordered="false">
+          <roles-tabs />
         </n-card>
       </n-grid-item>
 
@@ -44,23 +35,14 @@
 </template>
 
 <script setup lang="ts">
-import {
-  NCard,
-  NGrid,
-  NTabs,
-  NIcon,
-  NInput,
-  NButton,
-  NTabPane,
-  NGridItem,
-} from "naive-ui";
 import { storeToRefs } from "pinia";
 import { Add as AddIcon, Search as SearchIcon } from "@vicons/carbon";
+import { NCard, NGrid, NIcon, NInput, NButton, NGridItem } from "naive-ui";
 
 import { useRolesStore } from "@/store/roles";
+import RolesTabs from "@/components/roles/Tabs.vue";
 import RolesTable from "@/components/roles/Table.vue";
 import { Permission } from "@shared/types/enums/Permission";
-import AddEditForm from "@/components/roles/AddEditForm.vue";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const rolesStore = useRolesStore();

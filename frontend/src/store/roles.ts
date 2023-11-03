@@ -50,5 +50,15 @@ export const useRolesStore = defineStore("roles", {
         permissions: [],
       });
     },
+
+    closeTab(id: number) {
+      const tabIndex = this.tabs.findIndex(tab => tab.role.id === id);
+
+      if (~tabIndex) {
+        this.tabs.splice(tabIndex, 1);
+
+        this.activeRoleId = this.tabs.length ? this.tabs[0].role.id : 0;
+      }
+    },
   },
 });

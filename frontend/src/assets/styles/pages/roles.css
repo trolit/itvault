@@ -32,6 +32,10 @@
 
     .n-card {
       height: 100%;
+
+      .n-card__content {
+        padding: 0;
+      }
     }
   }
 }
