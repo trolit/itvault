@@ -37,7 +37,7 @@ rolesRouter.get(
 
 rolesRouter.get(
   "/:id/permissions",
-  requirePermissions([Permission.UpdateRole]),
+  requirePermissions(GetPermissionsController.isMissingPermissions),
   requireEndpointVersion(GetPermissionsController.ALL_VERSIONS),
   processRequestWith(GetPermissionsController)
 );
