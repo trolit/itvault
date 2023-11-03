@@ -4,18 +4,20 @@ import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { requireAuthentication } from "@middleware/requireAuthentication";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Role/useStoreSuperSchema";
-import { useUpdateSuperSchema } from "@schemas/Role/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Role/useGetAllSuperSchema";
+import { useUpdateSuperSchema } from "@schemas/Role/useUpdateSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Role/StoreController";
 import { GetAllController } from "@controllers/Role/GetAllController";
 import { UpdateController } from "@controllers/Role/UpdateController";
+import { GetPermissionsController } from "@controllers/Role/GetPermissionsController";
 
 const rolesRouter = Router();
 
@@ -31,6 +33,13 @@ rolesRouter.get(
   validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
+);
+
+rolesRouter.get(
+  "/:id/permissions",
+  requirePermissions([Permission.UpdateRole]),
+  requireEndpointVersion(GetPermissionsController.ALL_VERSIONS),
+  processRequestWith(GetPermissionsController)
 );
 
 rolesRouter.post(
