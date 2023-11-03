@@ -1,5 +1,3 @@
-export type UpdatePermissionDto = {
-  signature: string;
+import { IPermissionDto } from "./IPermissionDto";
 
-  enabled: boolean;
-};
+export type UpdatePermissionDto = Pick<IPermissionDto, "signature" | "enabled">;
