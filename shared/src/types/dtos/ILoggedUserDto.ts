@@ -1,4 +1,4 @@
-import { PermissionDto } from "./PermissionDto";
+import { IPermissionDto } from "./IPermissionDto";
 
 export interface ILoggedUserDto {
   id: number;
@@ -11,5 +11,5 @@ export interface ILoggedUserDto {
 
   roleName: string;
 
-  permissions: PermissionDto[];
+  permissions: IPermissionDto[];
 }

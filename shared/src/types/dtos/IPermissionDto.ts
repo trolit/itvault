@@ -1,4 +1,4 @@
-export type PermissionDto = {
+export interface IPermissionDto {
   signature: string;
 
   name: string;
@@ -6,4 +6,4 @@ export type PermissionDto = {
   group: string;
 
   enabled: boolean;
-};
+}
