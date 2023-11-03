@@ -1,3 +1,4 @@
+import { And, Equal, Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
@@ -5,6 +6,8 @@ import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { GetPermissionsControllerTypes } from "types/controllers/Role/GetPermissionsController";
+
+import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
@@ -47,7 +50,7 @@ export class GetPermissionsController extends BaseController {
         permissionToRole: true,
       },
       where: {
-        id,
+        id: And(Equal(id), Not(HEAD_ADMIN_ROLE_ID)),
       },
       relations: {
         permissionToRole: {
