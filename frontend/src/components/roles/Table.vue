@@ -32,8 +32,6 @@ import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 const rolesStore = useRolesStore();
 const generalStore = useGeneralStore();
 
-const emits = defineEmits(["edit"]);
-
 const isLoadingRoles = ref(false);
 let data: IRoleDto[] = reactive([]);
 
@@ -85,7 +83,7 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
             onClick: event => {
               event.stopPropagation();
 
-              emits("edit", role);
+              rolesStore.setActiveTab(role);
             },
           },
           { default: () => "Edit" }

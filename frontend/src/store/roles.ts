@@ -17,6 +17,10 @@ export const useRolesStore = defineStore("roles", {
     activeRoleId: 0,
   }),
 
+  getters: {
+    hasAnyTab: state => !!state.tabs.length,
+  },
+
   actions: {
     async getAll(options: IPaginationQuery) {
       const params = {
@@ -30,6 +34,21 @@ export const useRolesStore = defineStore("roles", {
       );
 
       return data;
+    },
+
+    setActiveTab(role: IRoleDto) {
+      const tab = this.tabs.find(tab => tab.role.id === role.id);
+
+      this.activeRoleId = role.id;
+
+      if (tab) {
+        return;
+      }
+
+      this.tabs.push({
+        role,
+        permissions: [],
+      });
     },
   },
 });
