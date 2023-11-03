@@ -1,7 +1,8 @@
 .roles-page {
+  margin: 0 10px;
+
   .header {
     display: flex;
-    margin: 0 10px;
     align-items: center;
     justify-content: space-between;
     height: var(--roles-header-height);
@@ -11,24 +12,26 @@
     }
   }
 
-  .n-data-table {
-    height: calc(
-      100vh - var(--header-height) - var(--roles-header-height) -
-        var(--roles-footer-height)
-    ) !important;
+  .n-grid {
+    .n-data-table {
+      height: calc(
+        100vh - var(--header-height) - var(--roles-header-height) -
+          var(--roles-footer-height)
+      ) !important;
 
-    .n-data-table-wrapper {
-      margin: 0 10px;
-    }
+      .n-data-table-base-table-body {
+        .n-scrollbar-content {
+          align-items: normal !important;
+        }
+      }
 
-    .n-data-table-base-table-body {
-      .n-scrollbar-content {
-        align-items: normal !important;
+      .n-data-table__pagination {
+        justify-content: center;
       }
     }
 
-    .n-data-table__pagination {
-      justify-content: center;
+    .n-card {
+      height: 100%;
     }
   }
 }
