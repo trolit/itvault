@@ -9,7 +9,11 @@
       </n-input>
 
       <require-permission :permission="Permission.CreateBlueprint">
-        <n-button size="small">
+        <n-button
+          size="small"
+          :disabled="includesEmptyTab"
+          @click="rolesStore.addEmptyTab"
+        >
           <n-icon :component="AddIcon" :size="25" />
         </n-button>
       </require-permission>
@@ -21,13 +25,13 @@
       responsive="screen"
       cols="1 s:1 m:3 l:3 xl:3 2xl:3"
     >
-      <n-grid-item v-if="hasAnyTab" span="1">
+      <n-grid-item v-if="includesAnyTab" span="1">
         <n-card :bordered="false">
           <roles-tabs />
         </n-card>
       </n-grid-item>
 
-      <n-grid-item :span="hasAnyTab ? 2 : 3">
+      <n-grid-item :span="includesAnyTab ? 2 : 3">
         <roles-table />
       </n-grid-item>
     </n-grid>
@@ -47,5 +51,5 @@ import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const rolesStore = useRolesStore();
 
-const { hasAnyTab } = storeToRefs(rolesStore);
+const { includesAnyTab, includesEmptyTab } = storeToRefs(rolesStore);
 </script>

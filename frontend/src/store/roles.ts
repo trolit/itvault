@@ -18,7 +18,8 @@ export const useRolesStore = defineStore("roles", {
   }),
 
   getters: {
-    hasAnyTab: state => !!state.tabs.length,
+    includesAnyTab: state => !!state.tabs.length,
+    includesEmptyTab: state => !!state.tabs.find(tab => tab.role.id === 0),
   },
 
   actions: {
@@ -34,6 +35,16 @@ export const useRolesStore = defineStore("roles", {
       );
 
       return data;
+    },
+
+    addEmptyTab() {
+      this.tabs.push({
+        role: {
+          id: 0,
+          name: "Role 1",
+        },
+        permissions: [],
+      });
     },
 
     setActiveTab(role: IRoleDto) {
