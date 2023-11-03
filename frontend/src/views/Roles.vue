@@ -8,10 +8,11 @@
         </template>
       </n-input>
 
+      <!-- @TODO limit amount of roles that can be added -->
       <require-permission :permission="Permission.CreateBlueprint">
         <n-button
           size="small"
-          :disabled="includesEmptyTab"
+          :disabled="includesEmptyTab || rolesStore.total >= 10"
           @click="rolesStore.addEmptyTab"
         >
           <n-icon :component="AddIcon" :size="25" />

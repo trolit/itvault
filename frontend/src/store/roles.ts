@@ -7,12 +7,14 @@ import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
+  total: number;
   tabs: RoleTab[];
   activeRoleId: number;
 }
 
 export const useRolesStore = defineStore("roles", {
   state: (): IState => ({
+    total: 0,
     tabs: [],
     activeRoleId: 0,
   }),
@@ -33,6 +35,8 @@ export const useRolesStore = defineStore("roles", {
         `v1/roles`,
         { params }
       );
+
+      this.total = data.total;
 
       return data;
     },
