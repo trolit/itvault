@@ -48,8 +48,6 @@ onBeforeMount(async () => {
 
 const pagination: PaginationProps = reactive({
   ...defaultPagination,
-  showSizePicker: true,
-  pageSizes: [10, 20, 40],
   onChange: (page: number) => {
     pagination.page = page;
 
