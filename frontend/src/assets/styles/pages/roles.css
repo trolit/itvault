@@ -3,8 +3,8 @@
 
   .header {
     display: flex;
+    column-gap: 20px;
     align-items: center;
-    justify-content: space-between;
     height: var(--roles-header-height);
 
     .n-input {
