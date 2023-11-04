@@ -24,6 +24,21 @@ export const useRolesStore = defineStore("roles", {
   getters: {
     includesAnyTab: state => !!state.tabs.length,
     includesEmptyTab: state => !!state.tabs.find(tab => tab.role.id === 0),
+    activeTabGroupedPermissions(): IRolePermissionDto[][] {
+      const tab = this.tabs.find(tab => tab.role.id === this.activeRoleId);
+
+      if (!tab) {
+        return [];
+      }
+
+      const { permissions } = tab;
+
+      const groups = [...new Set(permissions.map(({ group }) => group))].sort();
+
+      return groups.map(group =>
+        permissions.filter(permission => permission.group === group)
+      );
+    },
   },
 
   actions: {
