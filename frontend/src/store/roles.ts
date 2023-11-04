@@ -5,6 +5,7 @@ import type { RoleTab } from "@/types/RoleTab";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
 interface IState {
   total: number;
@@ -37,6 +38,21 @@ export const useRolesStore = defineStore("roles", {
       );
 
       this.total = data.total;
+
+      return data;
+    },
+
+    async getPermissionsById(id: number) {
+      const params = {
+        version: 1,
+      };
+
+      const { data } = await axios.get<IRolePermissionDto[]>(
+        `v1/roles/${id}/permissions`,
+        {
+          params,
+        }
+      );
 
       return data;
     },
