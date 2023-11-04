@@ -1,9 +1,9 @@
 import { Permission } from "../types/enums/Permission";
-import { IPermissionDto } from "../types/dtos/IPermissionDto";
+import { IRolePermissionDto } from "../types/dtos/IRolePermissionDto";
 
 export const isPermissionEnabled = <T = void>(
   permission: Permission,
-  source: IPermissionDto[] | T
+  source: IRolePermissionDto[] | T
 ): boolean => {
   if (Array.isArray(source)) {
     const result = source.find(({ signature }) => signature === permission);

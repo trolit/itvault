@@ -1,4 +1,4 @@
-import { IPermissionDto } from "@shared/types/dtos/IPermissionDto";
+import { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
 export namespace GetPermissionsControllerTypes {
   export namespace v1 {
@@ -8,6 +8,6 @@ export namespace GetPermissionsControllerTypes {
 
     export type Request = CustomRequest<Params, void, void>;
 
-    export type Response = CustomResponse<IPermissionDto[]>;
+    export type Response = CustomResponse<IRolePermissionDto[]>;
   }
 }

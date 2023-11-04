@@ -1,3 +1,6 @@
-import { IPermissionDto } from "./IPermissionDto";
+import { IRolePermissionDto } from "./IRolePermissionDto";
 
-export type UpdatePermissionDto = Pick<IPermissionDto, "signature" | "enabled">;
+export type UpdatePermissionDto = Pick<
+  IRolePermissionDto,
+  "signature" | "enabled"
+>;
