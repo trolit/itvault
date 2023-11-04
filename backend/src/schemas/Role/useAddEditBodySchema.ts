@@ -1,3 +1,4 @@
+import { Not } from "typeorm";
 import { SuperSchema } from "types/SuperSchema";
 import { array, boolean, object, string } from "yup";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
@@ -29,12 +30,13 @@ export const useAddEditBodySchema: (
           Di.RoleRepository
         );
 
-        const role = await roleRepository.getOne({ where: { name: value } });
+        const idQuery = id ? { id: Not(id) } : {};
 
-        const isSameName = typeof id === undefined && !!role;
-        const isSameNameButDifferentIds = !!id && !!role && role.id !== id;
+        const role = await roleRepository.getOne({
+          where: { ...idQuery, name: value },
+        });
 
-        if (isSameName || isSameNameButDifferentIds) {
+        if (role) {
           return ctx.createError({
             message: setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "name"),
           });
