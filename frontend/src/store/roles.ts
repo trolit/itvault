@@ -96,11 +96,9 @@ export const useRolesStore = defineStore("roles", {
       const tab = this.tabs.find(tab => tab.role.id === 0);
 
       if (tab) {
-        tab.initialPermissions = cloneDeep(tab.permissions);
-      }
+        tab.role = data;
 
-      if (this.activeRoleId === 0) {
-        this.activeRoleId = data.id;
+        tab.initialPermissions = cloneDeep(tab.permissions);
       }
 
       return data;
@@ -118,6 +116,8 @@ export const useRolesStore = defineStore("roles", {
       const tab = this.tabs.find(tab => tab.role.id === id);
 
       if (tab) {
+        tab.role.name = payload.name;
+
         tab.initialPermissions = cloneDeep(tab.permissions);
 
         return;
