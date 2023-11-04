@@ -8,20 +8,21 @@
     @close="rolesStore.closeTab"
   >
     <n-tab-pane
-      :key="role.id"
-      :name="role.id"
-      :tab="role.name"
-      v-for="{ role } in tabs"
+      :key="tab.role.id"
+      :name="tab.role.id"
+      :tab="tab.role.name"
+      v-for="tab in tabs"
     >
-      xd
+      <add-edit-form :role-tab="tab" />
     </n-tab-pane>
   </n-tabs>
 </template>
 
 <script setup lang="ts">
-import { NTabs, NTabPane } from "naive-ui";
 import { storeToRefs } from "pinia";
+import { NTabs, NTabPane } from "naive-ui";
 
+import AddEditForm from "./AddEditForm.vue";
 import { useRolesStore } from "@/store/roles";
 
 const rolesStore = useRolesStore();
