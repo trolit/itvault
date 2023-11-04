@@ -35,6 +35,17 @@
 
       .n-card__content {
         padding: 0;
+
+        .group {
+          display: flex;
+          min-height: 100px;
+          align-items: center;
+          justify-content: center;
+
+          span {
+            transform: rotate(-30deg);
+          }
+        }
       }
     }
   }

@@ -12,8 +12,10 @@
       :key="`group-${index}`"
     >
       <n-grid :cols="3">
-        <n-grid-item :span="1">
-          {{ permissions[0].group }}
+        <n-grid-item class="group" :span="1">
+          <span>
+            {{ permissions[0].group }}
+          </span>
         </n-grid-item>
 
         <n-grid-item :span="2">
