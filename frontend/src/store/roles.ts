@@ -93,16 +93,14 @@ export const useRolesStore = defineStore("roles", {
         params,
       });
 
-      if (this.activeRoleId === 0) {
-        this.activeRoleId = data.id;
-      }
-
       const tab = this.tabs.find(tab => tab.role.id === 0);
 
       if (tab) {
         tab.initialPermissions = cloneDeep(tab.permissions);
+      }
 
-        return;
+      if (this.activeRoleId === 0) {
+        this.activeRoleId = data.id;
       }
 
       return data;
