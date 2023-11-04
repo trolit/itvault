@@ -6,6 +6,7 @@ import orderBy from "lodash/orderBy";
 import type { RoleTab } from "@/types/RoleTab";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
+import type { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
 import type { IPermissionDto } from "@shared/types/dtos/IPermissionDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
@@ -81,6 +82,48 @@ export const useRolesStore = defineStore("roles", {
       );
 
       return data;
+    },
+
+    async store(payload: AddEditRoleDto) {
+      const params = {
+        version: 1,
+      };
+
+      const { data } = await axios.post<IRoleDto>("v1/roles", payload, {
+        params,
+      });
+
+      if (this.activeRoleId === 0) {
+        this.activeRoleId = data.id;
+      }
+
+      const tab = this.tabs.find(tab => tab.role.id === 0);
+
+      if (tab) {
+        tab.initialPermissions = cloneDeep(tab.permissions);
+
+        return;
+      }
+
+      return data;
+    },
+
+    async update(id: number, payload: AddEditRoleDto) {
+      const params = {
+        version: 1,
+      };
+
+      await axios.put<void>(`v1/roles/${id}`, payload, {
+        params,
+      });
+
+      const tab = this.tabs.find(tab => tab.role.id === id);
+
+      if (tab) {
+        tab.initialPermissions = cloneDeep(tab.permissions);
+
+        return;
+      }
     },
 
     addEmptyTab() {
