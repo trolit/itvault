@@ -1,8 +1,8 @@
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
-import type { IPermissionDto } from "@shared/types/dtos/IPermissionDto";
+import type { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
 export type RoleTab = {
   role: IRoleDto;
 
-  permissions: IPermissionDto[];
+  permissions: IRolePermissionDto[];
 };
