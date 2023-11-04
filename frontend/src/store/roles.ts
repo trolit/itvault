@@ -77,10 +77,15 @@ export const useRolesStore = defineStore("roles", {
 
       if (tab) {
         tab.roleId = data.id;
+
         tab.initialForm = {
           name: tab.currentForm.name,
           permissions: cloneDeep(tab.currentForm.permissions),
         };
+      }
+
+      if (this.activeRoleId === 0) {
+        this.activeRoleId = data.id;
       }
 
       return data;
