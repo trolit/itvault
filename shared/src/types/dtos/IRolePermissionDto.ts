@@ -1,9 +1,5 @@
-export interface IRolePermissionDto {
-  signature: string;
+import { IPermissionDto } from "./IPermissionDto";
 
-  name: string;
-
-  group: string;
-
+export interface IRolePermissionDto extends IPermissionDto {
   enabled: boolean;
 }
