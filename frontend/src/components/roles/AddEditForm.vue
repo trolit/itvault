@@ -246,14 +246,18 @@ const onSubmit = handleSubmit.withControlled(async formData => {
 
   try {
     isEdit
-      ? await rolesStore.store(formData)
-      : await rolesStore.update(roleId, formData);
+      ? await rolesStore.update(roleId, formData)
+      : await rolesStore.store(formData);
 
     generalStore.messageProvider.success(
       `Role successfully ${isEdit ? "updated" : "added"}.`
     );
   } catch (error) {
     console.error(error);
+
+    generalStore.messageProvider.success(
+      `Failed to ${isEdit ? "update" : "add"} role.`
+    );
 
     setValidationErrors(error);
   } finally {
