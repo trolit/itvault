@@ -1,22 +1,32 @@
 <template>
-  <loading-section v-if="isLoading" />
+  <loading-section v-if="isLoadingPermissions" />
 
   <empty
-    v-else-if="!roleTab.permissions.length"
+    v-else-if="!roleTab.currentForm.permissions.length"
     title="Permissions not found."
   />
 
   <div class="wrapper" v-else>
-    <n-form>
-      <n-form-item required label="Name">
-        <n-input placeholder="name" />
+    <n-form :disabled="isLoading">
+      <n-form-item
+        required
+        label="Name"
+        :feedback="getError('name')"
+        :validation-status="hasError('name')"
+      >
+        <n-input v-model:value="name" type="text" placeholder="name" />
       </n-form-item>
 
-      <n-form-item label="Permissions">
+      <n-form-item
+        v-if="groupedPermissions"
+        label="Permissions"
+        :feedback="getError('permissions')"
+        :validation-status="hasError('permissions')"
+      >
         <div>
           <n-grid
             :cols="4"
-            v-for="(permissions, index) in activeTabGroupedPermissions"
+            v-for="(permissions, index) in groupedPermissions"
             :key="`group-${index}`"
           >
             <n-grid-item class="group" :span="1">
@@ -34,13 +44,7 @@
                   <n-checkbox
                     size="small"
                     :label="permission.name"
-                    :checked="permission.enabled"
-                    @update:checked="
-                      rolesStore.toggleTabPermission(
-                        roleTab.role.id,
-                        permission.signature
-                      )
-                    "
+                    v-model:checked="permission.enabled"
                   />
                 </n-grid-item>
               </n-grid>
@@ -51,7 +55,7 @@
     </n-form>
 
     <n-space justify="space-evenly">
-      <n-popconfirm>
+      <n-popconfirm @positive-click="reset">
         <template #trigger>
           <n-button
             secondary
@@ -65,7 +69,7 @@
         Are you sure?
       </n-popconfirm>
 
-      <n-popconfirm>
+      <n-popconfirm @positive-click="onSubmit">
         <template #trigger>
           <n-button
             secondary
@@ -73,7 +77,7 @@
             :loading="isLoading"
             :disabled="isInitialState"
           >
-            {{ isActiveTabNewRole ? "Create" : "Update" }}
+            {{ isNewRole ? "Create" : "Update" }}
           </n-button>
         </template>
 
@@ -95,15 +99,21 @@ import {
   NFormItem,
   NPopconfirm,
 } from "naive-ui";
-import { storeToRefs } from "pinia";
-import { onBeforeMount, ref, type PropType } from "vue";
+import orderBy from "lodash/orderBy";
+import cloneDeep from "lodash/cloneDeep";
+import { array, object, string } from "yup";
+import { onBeforeMount, ref, type PropType, toRefs } from "vue";
 
 import { useRolesStore } from "@/store/roles";
-import type { RoleTab } from "@/types/RoleTab";
+import type { Form, RoleTab } from "@/types/RoleTab";
 import Empty from "@/components/common/Empty.vue";
+import { defineForm } from "@/helpers/defineForm";
+import { useGeneralStore } from "@/store/general";
 import { defineComputed } from "@/helpers/defineComputed";
+import { defineWatchers } from "@/helpers/defineWatchers";
 import { usePermissionsStore } from "@/store/permissions";
 import LoadingSection from "@/components/common/LoadingSection.vue";
+import type { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
 const props = defineProps({
   roleTab: {
@@ -113,34 +123,100 @@ const props = defineProps({
 });
 
 const rolesStore = useRolesStore();
+const generalStore = useGeneralStore();
 const permissionsStore = usePermissionsStore();
 
-const { activeTabGroupedPermissions, isActiveTabNewRole } =
-  storeToRefs(rolesStore);
+const { roleTab } = toRefs(props);
 
 const isLoading = ref(false);
+const isLoadingPermissions = ref(false);
+
+const {
+  fields,
+  getError,
+  hasError,
+  resetForm,
+  handleSubmit,
+  setFormData,
+  currentFormData,
+  setValidationErrors,
+} = defineForm<Form>(
+  { name: "", permissions: [] },
+  object({
+    name: string().required(),
+    permissions: array().required(),
+  })
+);
 
 onBeforeMount(async () => {
-  if (!props.roleTab.permissions.length) {
-    getPermissions();
+  const { currentForm } = roleTab.value;
+
+  if (!currentForm.permissions.length) {
+    await getPermissions();
   }
+
+  setFormData(cloneDeep(currentForm));
 });
 
-const { isInitialState } = defineComputed({
-  isInitialState() {
-    const tab = rolesStore.activeTab;
+const {
+  name: { value: name },
+  permissions: { value: permissions },
+} = fields;
 
+const { isNewRole, isInitialState, groupedPermissions } = defineComputed({
+  isNewRole() {
+    return roleTab.value.roleId === 0;
+  },
+
+  isInitialState() {
     return (
-      tab &&
-      JSON.stringify(tab.initialPermissions) === JSON.stringify(tab.permissions)
+      JSON.stringify(roleTab.value.initialForm) ===
+      JSON.stringify(currentFormData)
     );
+  },
+
+  groupedPermissions() {
+    if (!permissions.value) {
+      return [];
+    }
+
+    const groups = [
+      ...new Set(permissions.value.map(({ group }) => group)),
+    ].sort();
+
+    return groups.map(group => {
+      const data = permissions.value.filter(
+        permission => permission.group === group
+      );
+
+      return orderBy(data, element => element.name, ["asc"]);
+    });
+  },
+});
+
+defineWatchers({
+  permissions: {
+    source: permissions,
+    handler: (value: IRolePermissionDto[]) => {
+      rolesStore.updateTabCurrentFormPermissions(roleTab.value.roleId, value);
+    },
+    options: {
+      deep: true,
+    },
+  },
+
+  name: {
+    source: name,
+    handler: (value: string) => {
+      rolesStore.updateTabCurrentFormName(roleTab.value.roleId, value);
+    },
   },
 });
 
 async function getPermissions() {
-  isLoading.value = true;
+  isLoadingPermissions.value = true;
 
-  const roleId = props.roleTab.role.id;
+  const { roleId } = roleTab.value;
 
   try {
     const data =
@@ -152,7 +228,36 @@ async function getPermissions() {
   } catch (error) {
     console.log(error);
   } finally {
-    isLoading.value = false;
+    isLoadingPermissions.value = false;
   }
 }
+
+function reset() {
+  resetForm();
+
+  setFormData(cloneDeep(roleTab.value.initialForm));
+}
+
+const onSubmit = handleSubmit.withControlled(async formData => {
+  isLoading.value = true;
+
+  const roleId = rolesStore.activeRoleId;
+  const isEdit = roleId !== 0;
+
+  try {
+    isEdit
+      ? await rolesStore.store(formData)
+      : await rolesStore.update(roleId, formData);
+
+    generalStore.messageProvider.success(
+      `Role successfully ${isEdit ? "updated" : "added"}.`
+    );
+  } catch (error) {
+    console.error(error);
+
+    setValidationErrors(error);
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
