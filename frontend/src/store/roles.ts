@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import orderBy from "lodash/orderBy";
 
 import type { RoleTab } from "@/types/RoleTab";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
@@ -35,9 +36,13 @@ export const useRolesStore = defineStore("roles", {
 
       const groups = [...new Set(permissions.map(({ group }) => group))].sort();
 
-      return groups.map(group =>
-        permissions.filter(permission => permission.group === group)
-      );
+      return groups.map(group => {
+        const data = permissions.filter(
+          permission => permission.group === group
+        );
+
+        return orderBy(data, element => element.name, ["asc"]);
+      });
     },
   },
 
