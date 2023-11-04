@@ -8,9 +8,9 @@
     @close="rolesStore.closeTab"
   >
     <n-tab-pane
-      :key="tab.role.id"
-      :name="tab.role.id"
-      :tab="tab.role.name"
+      :key="tab.roleId"
+      :name="tab.roleId"
+      :tab="getPrefixIfAnyChanges(tab)"
       v-for="tab in tabs"
     >
       <n-scrollbar trigger="none">
@@ -21,13 +21,27 @@
 </template>
 
 <script setup lang="ts">
+import { h } from "vue";
 import { storeToRefs } from "pinia";
 import { NTabs, NTabPane, NScrollbar } from "naive-ui";
 
 import AddEditForm from "./AddEditForm.vue";
 import { useRolesStore } from "@/store/roles";
+import type { RoleTab } from "@/types/RoleTab";
 
 const rolesStore = useRolesStore();
 
 const { tabs } = storeToRefs(rolesStore);
+
+function getPrefixIfAnyChanges(tab: RoleTab) {
+  const {
+    initialForm: { name },
+  } = tab;
+
+  const nameSpan = h("span", name);
+
+  return JSON.stringify(tab.initialForm) !== JSON.stringify(tab.currentForm)
+    ? h("span", [h("span", { style: { color: "red" } }, "*"), nameSpan])
+    : nameSpan;
+}
 </script>
