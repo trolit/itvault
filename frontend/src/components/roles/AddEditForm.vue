@@ -11,14 +11,14 @@
       v-for="(permissions, index) in activeTabGroupedPermissions"
       :key="`group-${index}`"
     >
-      <n-grid :cols="3">
+      <n-grid :cols="4">
         <n-grid-item class="group" :span="1">
           <span>
             {{ permissions[0].group }}
           </span>
         </n-grid-item>
 
-        <n-grid-item :span="2">
+        <n-grid-item class="permissions" :span="3">
           <n-grid :y-gap="10" :cols="2">
             <n-grid-item
               v-for="(permission, index) in permissions"

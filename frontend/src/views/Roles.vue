@@ -27,7 +27,7 @@
       cols="1 s:1 m:3 l:3 xl:3 2xl:3"
     >
       <n-grid-item v-if="includesAnyTab" span="1">
-        <n-card :bordered="false">
+        <n-card>
           <roles-tabs />
         </n-card>
       </n-grid-item>

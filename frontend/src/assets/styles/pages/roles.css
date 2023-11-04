@@ -31,19 +31,42 @@
     }
 
     .n-card {
-      height: 100%;
-
       .n-card__content {
         padding: 0;
+        height: calc(100vh - var(--header-height) - var(--roles-header-height));
 
-        .group {
-          display: flex;
-          min-height: 100px;
-          align-items: center;
-          justify-content: center;
+        .n-tabs {
+          .n-tabs-nav {
+            height: var(--roles-tabs-height);
+          }
 
-          span {
-            transform: rotate(-30deg);
+          .n-tabs-pane-wrapper {
+            .n-tab-pane {
+              .n-scrollbar {
+                max-height: calc(
+                  100vh - var(--header-height) - var(--roles-header-height) -
+                    var(--roles-tabs-height) - 20px
+                );
+
+                .n-scrollbar-content {
+                  .group {
+                    display: flex;
+                    min-height: 100px;
+                    align-items: center;
+                    justify-content: center;
+
+                    span {
+                      transform: rotate(-30deg);
+                    }
+                  }
+
+                  .permissions {
+                    display: flex;
+                    align-items: center;
+                  }
+                }
+              }
+            }
           }
         }
       }
