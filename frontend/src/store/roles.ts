@@ -1,4 +1,5 @@
 import axios from "axios";
+import cloneDeep from "lodash/cloneDeep";
 import { defineStore } from "pinia";
 import orderBy from "lodash/orderBy";
 
@@ -25,6 +26,10 @@ export const useRolesStore = defineStore("roles", {
   getters: {
     includesAnyTab: state => !!state.tabs.length,
     includesEmptyTab: state => !!state.tabs.find(tab => tab.role.id === 0),
+    activeTab(): RoleTab | undefined {
+      return this.tabs.find(tab => tab.role.id === this.activeRoleId);
+    },
+    isActiveTabNewRole: state => state.activeRoleId === 0,
     activeTabGroupedPermissions(): IRolePermissionDto[][] {
       const tab = this.tabs.find(tab => tab.role.id === this.activeRoleId);
 
@@ -120,8 +125,8 @@ export const useRolesStore = defineStore("roles", {
         ...permission,
       }));
 
-      tab.permissions = mappedPermissions;
-      tab.initialPermissions = mappedPermissions;
+      tab.permissions = cloneDeep(mappedPermissions);
+      tab.initialPermissions = cloneDeep(mappedPermissions);
     },
 
     toggleTabPermission(id: number, signature: string) {

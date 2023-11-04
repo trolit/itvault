@@ -6,7 +6,7 @@
     title="Permissions not found."
   />
 
-  <div v-else>
+  <div class="wrapper" v-else>
     <n-grid
       :cols="4"
       v-for="(permissions, index) in activeTabGroupedPermissions"
@@ -39,17 +39,27 @@
         </n-grid>
       </n-grid-item>
     </n-grid>
+
+    <n-button
+      secondary
+      type="success"
+      :loading="isLoading"
+      :disabled="isInitialState"
+    >
+      {{ isActiveTabNewRole ? "Create" : "Update" }}
+    </n-button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { NCheckbox, NGrid, NGridItem } from "naive-ui";
+import { NCheckbox, NGrid, NGridItem, NButton } from "naive-ui";
 import { onBeforeMount, ref, type PropType } from "vue";
 
 import { useRolesStore } from "@/store/roles";
 import type { RoleTab } from "@/types/RoleTab";
 import Empty from "@/components/common/Empty.vue";
+import { defineComputed } from "@/helpers/defineComputed";
 import { usePermissionsStore } from "@/store/permissions";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
@@ -63,7 +73,8 @@ const props = defineProps({
 const rolesStore = useRolesStore();
 const permissionsStore = usePermissionsStore();
 
-const { activeTabGroupedPermissions } = storeToRefs(rolesStore);
+const { activeTabGroupedPermissions, isActiveTabNewRole } =
+  storeToRefs(rolesStore);
 
 const isLoading = ref(false);
 
@@ -71,6 +82,17 @@ onBeforeMount(async () => {
   if (!props.roleTab.permissions.length) {
     getPermissions();
   }
+});
+
+const { isInitialState } = defineComputed({
+  isInitialState() {
+    const tab = rolesStore.activeTab;
+
+    return (
+      tab &&
+      JSON.stringify(tab.initialPermissions) === JSON.stringify(tab.permissions)
+    );
+  },
 });
 
 async function getPermissions() {
