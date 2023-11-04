@@ -1,4 +1,4 @@
-export interface IPermissionDto {
+export interface IRolePermissionDto {
   signature: string;
 
   name: string;
