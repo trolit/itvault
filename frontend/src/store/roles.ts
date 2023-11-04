@@ -121,6 +121,22 @@ export const useRolesStore = defineStore("roles", {
       tab.permissions = mappedPermissions;
     },
 
+    toggleTabPermission(id: number, signature: string) {
+      const tab = this.tabs.find(tab => tab.role.id === id);
+
+      if (!tab) {
+        return;
+      }
+
+      const permission = tab.permissions.find(
+        permission => permission.signature === signature
+      );
+
+      if (permission) {
+        permission.enabled = !permission.enabled;
+      }
+    },
+
     closeTab(id: number) {
       const tabIndex = this.tabs.findIndex(tab => tab.role.id === id);
 
