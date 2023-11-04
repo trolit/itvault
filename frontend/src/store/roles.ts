@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 import type { RoleTab } from "@/types/RoleTab";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
+import type { IPermissionDto } from "@shared/types/dtos/IPermissionDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
@@ -80,6 +81,24 @@ export const useRolesStore = defineStore("roles", {
         role,
         permissions: [],
       });
+    },
+
+    setTabPermissions(
+      id: number,
+      permissions: IRolePermissionDto[] | IPermissionDto[]
+    ) {
+      const tab = this.tabs.find(tab => tab.role.id === id);
+
+      if (!tab) {
+        return;
+      }
+
+      const mappedPermissions = permissions.map(permission => ({
+        enabled: false,
+        ...permission,
+      }));
+
+      tab.permissions = mappedPermissions;
     },
 
     closeTab(id: number) {
