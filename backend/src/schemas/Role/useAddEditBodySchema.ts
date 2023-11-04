@@ -31,8 +31,8 @@ export const useAddEditBodySchema: (
 
         const role = await roleRepository.getOne({ where: { name: value } });
 
-        const isSameName = !id && role;
-        const isSameNameButDifferentIds = id && role && role.id !== id;
+        const isSameName = typeof id === undefined && !!role;
+        const isSameNameButDifferentIds = !!id && !!role && role.id !== id;
 
         if (isSameName || isSameNameButDifferentIds) {
           return ctx.createError({
