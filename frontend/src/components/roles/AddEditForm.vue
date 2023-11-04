@@ -40,20 +40,49 @@
       </n-grid-item>
     </n-grid>
 
-    <n-button
-      secondary
-      type="success"
-      :loading="isLoading"
-      :disabled="isInitialState"
-    >
-      {{ isActiveTabNewRole ? "Create" : "Update" }}
-    </n-button>
+    <n-space justify="space-evenly">
+      <n-popconfirm>
+        <template #trigger>
+          <n-button
+            secondary
+            type="warning"
+            :disabled="isInitialState || isLoading"
+          >
+            Reset
+          </n-button>
+        </template>
+
+        Are you sure?
+      </n-popconfirm>
+
+      <n-popconfirm>
+        <template #trigger>
+          <n-button
+            secondary
+            type="success"
+            :loading="isLoading"
+            :disabled="isInitialState"
+          >
+            {{ isActiveTabNewRole ? "Create" : "Update" }}
+          </n-button>
+        </template>
+
+        Are you sure?
+      </n-popconfirm>
+    </n-space>
   </div>
 </template>
 
 <script setup lang="ts">
+import {
+  NGrid,
+  NSpace,
+  NButton,
+  NCheckbox,
+  NGridItem,
+  NPopconfirm,
+} from "naive-ui";
 import { storeToRefs } from "pinia";
-import { NCheckbox, NGrid, NGridItem, NButton } from "naive-ui";
 import { onBeforeMount, ref, type PropType } from "vue";
 
 import { useRolesStore } from "@/store/roles";
