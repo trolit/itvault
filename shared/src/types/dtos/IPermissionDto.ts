@@ -4,6 +4,4 @@ export interface IPermissionDto {
   name: string;
 
   group: string;
-
-  enabled: boolean;
 }

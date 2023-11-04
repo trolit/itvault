@@ -3,16 +3,13 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { RolePermissionMapper } from "@mappers/RolePermissionMapper";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
-import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { GetPermissionsControllerTypes } from "types/controllers/Role/GetPermissionsController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@shared/types/enums/Permission";
 import { PermissionToRole } from "@entities/PermissionToRole";
-import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -68,16 +65,5 @@ export class GetPermissionsController extends BaseController {
       .to(RolePermissionMapper);
 
     return this.finalizeRequest(response, HTTP.OK, result);
-  }
-
-  static isMissingPermissions(
-    request: CustomRequest<void, void, GetAllControllerTypes.v1.QueryInput>
-  ) {
-    const { permissions } = request;
-
-    return (
-      !isPermissionEnabled(Permission.CreateRole, permissions) &&
-      !isPermissionEnabled(Permission.UpdateRole, permissions)
-    );
   }
 }
