@@ -1,5 +1,7 @@
 <template>
-  <div>{{ roleTab.permissions }}</div>
+  <loading-section v-if="isLoading" />
+
+  <div v-else>{{ roleTab.permissions }}</div>
 </template>
 
 <script setup lang="ts">
@@ -8,6 +10,7 @@ import { onBeforeMount, ref, type PropType } from "vue";
 import { useRolesStore } from "@/store/roles";
 import type { RoleTab } from "@/types/RoleTab";
 import { usePermissionsStore } from "@/store/permissions";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const props = defineProps({
   roleTab: {
