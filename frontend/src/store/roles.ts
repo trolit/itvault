@@ -85,6 +85,7 @@ export const useRolesStore = defineStore("roles", {
           name: "Role 1",
         },
         permissions: [],
+        initialPermissions: [],
       });
     },
 
@@ -100,6 +101,7 @@ export const useRolesStore = defineStore("roles", {
       this.tabs.push({
         role,
         permissions: [],
+        initialPermissions: [],
       });
     },
 
@@ -119,6 +121,7 @@ export const useRolesStore = defineStore("roles", {
       }));
 
       tab.permissions = mappedPermissions;
+      tab.initialPermissions = mappedPermissions;
     },
 
     toggleTabPermission(id: number, signature: string) {
