@@ -7,38 +7,48 @@
   />
 
   <div class="wrapper" v-else>
-    <n-grid
-      :cols="4"
-      v-for="(permissions, index) in activeTabGroupedPermissions"
-      :key="`group-${index}`"
-    >
-      <n-grid-item class="group" :span="1">
-        <span>
-          {{ permissions[0].group }}
-        </span>
-      </n-grid-item>
+    <n-form>
+      <n-form-item required label="Name">
+        <n-input placeholder="name" />
+      </n-form-item>
 
-      <n-grid-item class="permissions" :span="3">
-        <n-grid :y-gap="10" :cols="2">
-          <n-grid-item
-            v-for="(permission, index) in permissions"
-            :key="`permission-${index}`"
+      <n-form-item label="Permissions">
+        <div>
+          <n-grid
+            :cols="4"
+            v-for="(permissions, index) in activeTabGroupedPermissions"
+            :key="`group-${index}`"
           >
-            <n-checkbox
-              size="small"
-              :label="permission.name"
-              :checked="permission.enabled"
-              @update:checked="
-                rolesStore.toggleTabPermission(
-                  roleTab.role.id,
-                  permission.signature
-                )
-              "
-            />
-          </n-grid-item>
-        </n-grid>
-      </n-grid-item>
-    </n-grid>
+            <n-grid-item class="group" :span="1">
+              <span>
+                {{ permissions[0].group }}
+              </span>
+            </n-grid-item>
+
+            <n-grid-item class="permissions" :span="3">
+              <n-grid :y-gap="10" :cols="2">
+                <n-grid-item
+                  v-for="(permission, index) in permissions"
+                  :key="`permission-${index}`"
+                >
+                  <n-checkbox
+                    size="small"
+                    :label="permission.name"
+                    :checked="permission.enabled"
+                    @update:checked="
+                      rolesStore.toggleTabPermission(
+                        roleTab.role.id,
+                        permission.signature
+                      )
+                    "
+                  />
+                </n-grid-item>
+              </n-grid>
+            </n-grid-item>
+          </n-grid>
+        </div>
+      </n-form-item>
+    </n-form>
 
     <n-space justify="space-evenly">
       <n-popconfirm>
@@ -75,11 +85,14 @@
 
 <script setup lang="ts">
 import {
+  NForm,
   NGrid,
+  NInput,
   NSpace,
   NButton,
   NCheckbox,
   NGridItem,
+  NFormItem,
   NPopconfirm,
 } from "naive-ui";
 import { storeToRefs } from "pinia";

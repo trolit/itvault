@@ -49,21 +49,29 @@
                 );
 
                 .n-scrollbar-content {
-                  .group {
-                    display: flex;
-                    min-height: 100px;
-                    margin-right: 15px;
-                    align-items: center;
-                    justify-content: center;
+                  .n-form {
+                    margin: 10px 20px 0 10px;
 
-                    span {
-                      transform: rotate(-30deg);
+                    .n-form-item {
+                      margin: 0;
+
+                      .group {
+                        display: flex;
+                        min-height: 100px;
+                        margin-right: 15px;
+                        align-items: center;
+                        justify-content: center;
+
+                        span {
+                          transform: rotate(-30deg);
+                        }
+                      }
+
+                      .permissions {
+                        display: flex;
+                        align-items: center;
+                      }
                     }
-                  }
-
-                  .permissions {
-                    display: flex;
-                    align-items: center;
                   }
                 }
               }
