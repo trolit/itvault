@@ -18,7 +18,6 @@ export const usePermissionsStore = defineStore("permissions", {
     async getAll() {
       const params = {
         version: 1,
-        ...options,
       };
 
       const { data } = await axios.get<IPermissionDto[]>(`v1/permissions`, {
