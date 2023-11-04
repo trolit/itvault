@@ -1,7 +1,6 @@
 import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { defineStore } from "pinia";
-import orderBy from "lodash/orderBy";
 
 import type { RoleTab } from "@/types/RoleTab";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
@@ -26,30 +25,11 @@ export const useRolesStore = defineStore("roles", {
 
   getters: {
     includesAnyTab: state => !!state.tabs.length,
-    includesEmptyTab: state => !!state.tabs.find(tab => tab.role.id === 0),
+    includesEmptyTab: state => !!state.tabs.find(tab => tab.roleId === 0),
     activeTab(): RoleTab | undefined {
-      return this.tabs.find(tab => tab.role.id === this.activeRoleId);
+      return this.tabs.find(tab => tab.roleId === this.activeRoleId);
     },
     isActiveTabNewRole: state => state.activeRoleId === 0,
-    activeTabGroupedPermissions(): IRolePermissionDto[][] {
-      const tab = this.tabs.find(tab => tab.role.id === this.activeRoleId);
-
-      if (!tab) {
-        return [];
-      }
-
-      const { permissions } = tab;
-
-      const groups = [...new Set(permissions.map(({ group }) => group))].sort();
-
-      return groups.map(group => {
-        const data = permissions.filter(
-          permission => permission.group === group
-        );
-
-        return orderBy(data, element => element.name, ["asc"]);
-      });
-    },
   },
 
   actions: {
@@ -93,12 +73,14 @@ export const useRolesStore = defineStore("roles", {
         params,
       });
 
-      const tab = this.tabs.find(tab => tab.role.id === 0);
+      const tab = this.tabs.find(tab => tab.roleId === 0);
 
       if (tab) {
-        tab.role = data;
-
-        tab.initialPermissions = cloneDeep(tab.permissions);
+        tab.roleId = data.id;
+        tab.initialForm = {
+          name: tab.currentForm.name,
+          permissions: cloneDeep(tab.currentForm.permissions),
+        };
       }
 
       return data;
@@ -113,12 +95,13 @@ export const useRolesStore = defineStore("roles", {
         params,
       });
 
-      const tab = this.tabs.find(tab => tab.role.id === id);
+      const tab = this.tabs.find(tab => tab.roleId === id);
 
       if (tab) {
-        tab.role.name = payload.name;
-
-        tab.initialPermissions = cloneDeep(tab.permissions);
+        tab.initialForm = {
+          name: tab.currentForm.name,
+          permissions: cloneDeep(tab.currentForm.permissions),
+        };
 
         return;
       }
@@ -126,17 +109,22 @@ export const useRolesStore = defineStore("roles", {
 
     addEmptyTab() {
       this.tabs.push({
-        role: {
-          id: 0,
-          name: "Role 1",
+        roleId: 0,
+        currentForm: {
+          name: "New Role",
+          permissions: [],
         },
-        permissions: [],
-        initialPermissions: [],
+        initialForm: {
+          name: "New Role",
+          permissions: [],
+        },
       });
+
+      this.activeRoleId = 0;
     },
 
     setActiveTab(role: IRoleDto) {
-      const tab = this.tabs.find(tab => tab.role.id === role.id);
+      const tab = this.tabs.find(tab => tab.roleId === role.id);
 
       this.activeRoleId = role.id;
 
@@ -145,17 +133,46 @@ export const useRolesStore = defineStore("roles", {
       }
 
       this.tabs.push({
-        role,
-        permissions: [],
-        initialPermissions: [],
+        roleId: role.id,
+        currentForm: {
+          name: role.name,
+          permissions: [],
+        },
+        initialForm: {
+          name: role.name,
+          permissions: [],
+        },
       });
+    },
+
+    updateTabCurrentFormName(id: number, name: string) {
+      const tab = this.tabs.find(tab => tab.roleId === id);
+
+      if (!tab) {
+        return;
+      }
+
+      tab.currentForm.name = name;
+    },
+
+    updateTabCurrentFormPermissions(
+      id: number,
+      permissions: IRolePermissionDto[]
+    ) {
+      const tab = this.tabs.find(tab => tab.roleId === id);
+
+      if (!tab) {
+        return;
+      }
+
+      tab.currentForm.permissions = permissions;
     },
 
     setTabPermissions(
       id: number,
       permissions: IRolePermissionDto[] | IPermissionDto[]
     ) {
-      const tab = this.tabs.find(tab => tab.role.id === id);
+      const tab = this.tabs.find(tab => tab.roleId === id);
 
       if (!tab) {
         return;
@@ -166,33 +183,17 @@ export const useRolesStore = defineStore("roles", {
         ...permission,
       }));
 
-      tab.permissions = cloneDeep(mappedPermissions);
-      tab.initialPermissions = cloneDeep(mappedPermissions);
-    },
-
-    toggleTabPermission(id: number, signature: string) {
-      const tab = this.tabs.find(tab => tab.role.id === id);
-
-      if (!tab) {
-        return;
-      }
-
-      const permission = tab.permissions.find(
-        permission => permission.signature === signature
-      );
-
-      if (permission) {
-        permission.enabled = !permission.enabled;
-      }
+      tab.currentForm.permissions = cloneDeep(mappedPermissions);
+      tab.initialForm.permissions = cloneDeep(mappedPermissions);
     },
 
     closeTab(id: number) {
-      const tabIndex = this.tabs.findIndex(tab => tab.role.id === id);
+      const tabIndex = this.tabs.findIndex(tab => tab.roleId === id);
 
       if (~tabIndex) {
         this.tabs.splice(tabIndex, 1);
 
-        this.activeRoleId = this.tabs.length ? this.tabs[0].role.id : 0;
+        this.activeRoleId = this.tabs.length ? this.tabs[0].roleId : 0;
       }
     },
   },
