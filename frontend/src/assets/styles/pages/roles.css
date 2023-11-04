@@ -1,6 +1,11 @@
 .roles-page {
   margin: 0 10px;
 
+  --tab-pane-height: calc(
+    100vh - var(--header-height) - var(--roles-header-height) -
+      var(--roles-tabs-height) - 20px
+  );
+
   .header {
     display: flex;
     column-gap: 20px;
@@ -42,11 +47,17 @@
 
           .n-tabs-pane-wrapper {
             .n-tab-pane {
+              .loading {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: var(--tab-pane-height);
+              }
+
               .n-scrollbar {
-                max-height: calc(
-                  100vh - var(--header-height) - var(--roles-header-height) -
-                    var(--roles-tabs-height) - 20px
-                );
+                min-height: var(--tab-pane-height);
+                max-height: var(--tab-pane-height);
 
                 .n-scrollbar-content {
                   .n-form {
