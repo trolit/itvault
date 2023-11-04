@@ -1,7 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { IPermissionDto } from "@shared/types/dtos/IPermissionDto";
 
 interface IState {
@@ -16,7 +15,7 @@ export const usePermissionsStore = defineStore("permissions", {
   getters: {},
 
   actions: {
-    async getAll(options: IPaginationQuery) {
+    async getAll() {
       const params = {
         version: 1,
         ...options,
