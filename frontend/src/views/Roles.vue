@@ -1,13 +1,6 @@
 <template>
   <div class="roles-page page">
     <div class="header">
-      <!-- @TODO -->
-      <n-input clearable placeholder="Type name to filter" disabled>
-        <template #prefix>
-          <n-icon :component="SearchIcon" />
-        </template>
-      </n-input>
-
       <!-- @TODO limit amount of roles that can be added -->
       <require-permission :permission="Permission.CreateBlueprint">
         <n-button
@@ -18,6 +11,13 @@
           <n-icon :component="AddIcon" :size="25" />
         </n-button>
       </require-permission>
+
+      <!-- @TODO -->
+      <n-input clearable placeholder="Type name to filter" disabled>
+        <template #prefix>
+          <n-icon :component="SearchIcon" />
+        </template>
+      </n-input>
     </div>
 
     <n-grid
