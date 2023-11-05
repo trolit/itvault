@@ -12,7 +12,7 @@
       <require-permission :permission="Permission.CreateBlueprint">
         <n-button
           size="small"
-          :disabled="includesEmptyTab"
+          :disabled="includesNewRoleTab"
           @click="rolesStore.addEmptyTab"
         >
           <n-icon :component="AddIcon" :size="25" />
@@ -68,7 +68,7 @@ const perPage = 8;
 const total = ref(0);
 const isLoading = ref(false);
 let data: { value: IRoleDto[] } = reactive({ value: [] });
-const { includesAnyTab, includesEmptyTab } = storeToRefs(rolesStore);
+const { includesAnyTab, includesNewRoleTab } = storeToRefs(rolesStore);
 
 function onRoleCreate(id: number) {
   rolesStore.promoteCreateRoleTabToEditRoleTab(id);

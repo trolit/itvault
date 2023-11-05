@@ -25,10 +25,7 @@ export const useRolesStore = defineStore("roles", {
 
   getters: {
     includesAnyTab: state => !!state.tabs.length,
-    includesEmptyTab: state => !!state.tabs.find(tab => tab.roleId === 0),
-    activeTab(): RoleTab | undefined {
-      return this.tabs.find(tab => tab.roleId === this.activeRoleId);
-    },
+    includesNewRoleTab: state => !!state.tabs.find(tab => tab.roleId === 0),
   },
 
   actions: {
