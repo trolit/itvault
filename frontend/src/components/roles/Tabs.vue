@@ -10,7 +10,7 @@
     <n-tab-pane
       :key="tab.roleId"
       :name="tab.roleId"
-      :tab="getPrefixIfAnyChanges(tab)"
+      :tab="getTabTitle(tab)"
       v-for="tab in tabs"
     >
       <n-scrollbar trigger="none">
@@ -33,7 +33,7 @@ const rolesStore = useRolesStore();
 
 const { tabs } = storeToRefs(rolesStore);
 
-function getPrefixIfAnyChanges(tab: RoleTab) {
+function getTabTitle(tab: RoleTab) {
   const {
     initialForm: { name },
   } = tab;
