@@ -105,14 +105,15 @@ import { array, object, string } from "yup";
 import { onBeforeMount, ref, type PropType, toRefs } from "vue";
 
 import { useRolesStore } from "@/store/roles";
-import type { Form, RoleTab } from "@/types/RoleTab";
 import Empty from "@/components/common/Empty.vue";
 import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
+import type { Form, RoleTab } from "@/types/RoleTab";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { usePermissionsStore } from "@/store/permissions";
 import LoadingSection from "@/components/common/LoadingSection.vue";
+import type { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
 import type { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
 const rolesStore = useRolesStore();
@@ -246,11 +247,19 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   let roleId = rolesStore.activeRoleId;
   const isEdit = roleId !== 0;
 
+  const payload: AddEditRoleDto = {
+    name: formData.name,
+    permissions: formData.permissions.map(({ signature, enabled }) => ({
+      signature,
+      enabled,
+    })),
+  };
+
   try {
     if (isEdit) {
-      await rolesStore.update(roleId, formData);
+      await rolesStore.update(roleId, payload);
     } else {
-      const result = await rolesStore.store(formData);
+      const result = await rolesStore.store(payload);
 
       roleId = result.id;
     }
