@@ -72,21 +72,6 @@ export const useRolesStore = defineStore("roles", {
         params,
       });
 
-      const tab = this.tabs.find(tab => tab.roleId === 0);
-
-      if (tab) {
-        tab.roleId = data.id;
-
-        tab.initialForm = {
-          name: tab.currentForm.name,
-          permissions: cloneDeep(tab.currentForm.permissions),
-        };
-      }
-
-      if (this.activeRoleId === 0) {
-        this.activeRoleId = data.id;
-      }
-
       return data;
     },
 
@@ -125,6 +110,23 @@ export const useRolesStore = defineStore("roles", {
       });
 
       this.activeRoleId = 0;
+    },
+
+    promoteCreateRoleTabToEditRoleTab(id: number) {
+      const tab = this.tabs.find(tab => tab.roleId === 0);
+
+      if (tab) {
+        tab.roleId = id;
+
+        tab.initialForm = {
+          name: tab.currentForm.name,
+          permissions: cloneDeep(tab.currentForm.permissions),
+        };
+      }
+
+      if (this.activeRoleId === 0) {
+        this.activeRoleId = id;
+      }
     },
 
     setActiveTab(role: IRoleDto) {

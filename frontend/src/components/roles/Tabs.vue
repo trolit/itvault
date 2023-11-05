@@ -16,7 +16,7 @@
       <n-scrollbar trigger="none">
         <add-edit-form
           :role-tab="tab"
-          @create-role="$emit('create-role')"
+          @create-role="(...args) => $emit('create-role', ...args)"
           @update-role="(...args) => $emit('update-role', ...args)"
         />
       </n-scrollbar>

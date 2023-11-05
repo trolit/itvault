@@ -243,23 +243,25 @@ function reset() {
 const onSubmit = handleSubmit.withControlled(async formData => {
   isLoading.value = true;
 
-  const roleId = rolesStore.activeRoleId;
+  let roleId = rolesStore.activeRoleId;
   const isEdit = roleId !== 0;
 
   try {
-    const result = isEdit
-      ? await rolesStore.update(roleId, formData)
-      : await rolesStore.store(formData);
+    if (isEdit) {
+      await rolesStore.update(roleId, formData);
+    } else {
+      const result = await rolesStore.store(formData);
+
+      roleId = result.id;
+    }
 
     generalStore.messageProvider.success(
       `Role successfully ${isEdit ? "updated" : "added"}.`
     );
 
-    if (isEdit) {
-      emits("update-role", roleId, formData.name);
-    } else if (result) {
-      emits("create-role");
-    }
+    isEdit
+      ? emits("update-role", roleId, formData.name)
+      : emits("create-role", roleId);
   } catch (error) {
     console.error(error);
 
