@@ -17,7 +17,7 @@
 
   /* USERS */
   --users-header-height: 9vh;
-  --users-footer-height: 5vh;
+  --users-bottom-margin: 20px;
 
   /* ROLES */
   --roles-header-height: 9vh;

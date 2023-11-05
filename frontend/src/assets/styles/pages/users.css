@@ -20,7 +20,7 @@
   .n-data-table {
     height: calc(
       100vh - var(--header-height) - var(--users-header-height) -
-        var(--users-footer-height)
+        var(--users-bottom-margin)
     ) !important;
 
     .n-data-table-wrapper {
