@@ -51,8 +51,6 @@ const pagination: PaginationProps = reactive({
   pageSize: 10,
   onChange: (page: number) => {
     pagination.page = page;
-
-    getRoles();
   },
 });
 
@@ -93,7 +91,7 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
 function getRoles() {
   emits("get-roles", {
     page: pagination.page,
-    perPage: pagination.pageSize,
+    perPage: 10,
   });
 }
 </script>
