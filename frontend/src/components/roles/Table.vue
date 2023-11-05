@@ -42,17 +42,13 @@ defineProps<IProps>();
 
 const emits = defineEmits(["get-roles"]);
 
-const defaultPagination = {
-  page: 1,
-  pageSize: 10,
-};
-
 onBeforeMount(async () => {
   getRoles();
 });
 
 const pagination: PaginationProps = reactive({
-  ...defaultPagination,
+  page: 1,
+  pageSize: 10,
   onChange: (page: number) => {
     pagination.page = page;
 
