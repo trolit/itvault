@@ -115,6 +115,10 @@ import { usePermissionsStore } from "@/store/permissions";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
+const rolesStore = useRolesStore();
+const generalStore = useGeneralStore();
+const permissionsStore = usePermissionsStore();
+
 const props = defineProps({
   roleTab: {
     type: Object as PropType<RoleTab>,
@@ -122,9 +126,7 @@ const props = defineProps({
   },
 });
 
-const rolesStore = useRolesStore();
-const generalStore = useGeneralStore();
-const permissionsStore = usePermissionsStore();
+const emits = defineEmits(["create-role", "update-role"]);
 
 const { roleTab } = toRefs(props);
 
@@ -245,13 +247,19 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   const isEdit = roleId !== 0;
 
   try {
-    isEdit
+    const result = isEdit
       ? await rolesStore.update(roleId, formData)
       : await rolesStore.store(formData);
 
     generalStore.messageProvider.success(
       `Role successfully ${isEdit ? "updated" : "added"}.`
     );
+
+    if (isEdit) {
+      emits("update-role", roleId, formData.name);
+    } else if (result) {
+      emits("create-role");
+    }
   } catch (error) {
     console.error(error);
 

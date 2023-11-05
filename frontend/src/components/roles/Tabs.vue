@@ -14,7 +14,11 @@
       v-for="tab in tabs"
     >
       <n-scrollbar trigger="none">
-        <add-edit-form :role-tab="tab" />
+        <add-edit-form
+          :role-tab="tab"
+          @create-role="$emit('create-role')"
+          @update-role="(...args) => $emit('update-role', ...args)"
+        />
       </n-scrollbar>
     </n-tab-pane>
   </n-tabs>
@@ -30,6 +34,8 @@ import { useRolesStore } from "@/store/roles";
 import type { RoleTab } from "@/types/RoleTab";
 
 const rolesStore = useRolesStore();
+
+defineEmits(["create-role", "update-role"]);
 
 const { tabs } = storeToRefs(rolesStore);
 
