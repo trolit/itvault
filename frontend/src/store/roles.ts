@@ -29,7 +29,6 @@ export const useRolesStore = defineStore("roles", {
     activeTab(): RoleTab | undefined {
       return this.tabs.find(tab => tab.roleId === this.activeRoleId);
     },
-    isActiveTabNewRole: state => state.activeRoleId === 0,
   },
 
   actions: {
