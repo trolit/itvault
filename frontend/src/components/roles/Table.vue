@@ -1,10 +1,12 @@
 <template>
   <n-data-table
+    remote
+    flex-height
     :data="data"
     :columns="columns"
     :single-line="false"
     :single-column="false"
-    :pagination="{ page, pageSize: perPage }"
+    :pagination="{ page, pageSize: perPage, itemCount: total }"
     :loading="isLoading"
     :row-key="(row: IRoleDto) => row.id"
     @update:page="$event => $emit('get-roles', $event)"
