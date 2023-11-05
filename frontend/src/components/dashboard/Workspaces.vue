@@ -2,7 +2,7 @@
   <content-card :icon="WorkspacesIcon" title="Workspaces">
     <template #header-extra>
       <require-permission :permission="Permission.CreateWorkspace">
-        <n-button type="info" @click="toggleAddEditWorkspaceDrawer()">
+        <n-button secondary type="info" @click="toggleAddEditWorkspaceDrawer()">
           New workspace
         </n-button>
       </require-permission>

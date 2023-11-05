@@ -17,9 +17,10 @@
 
   /* USERS */
   --users-header-height: 9vh;
-  --users-footer-height: 5vh;
+  --users-bottom-margin: 20px;
 
   /* ROLES */
   --roles-header-height: 9vh;
-  --roles-footer-height: 5vh;
+  --roles-tabs-height: 43px;
+  --roles-bottom-margin: 20px;
 }

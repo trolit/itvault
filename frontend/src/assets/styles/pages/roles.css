@@ -1,9 +1,15 @@
 .roles-page {
+  margin: 0 10px;
+
+  --tab-pane-height: calc(
+    100vh - var(--header-height) - var(--roles-header-height) -
+      var(--roles-tabs-height) - var(--roles-bottom-margin)
+  );
+
   .header {
     display: flex;
-    margin: 0 10px;
+    column-gap: 20px;
     align-items: center;
-    justify-content: space-between;
     height: var(--roles-header-height);
 
     .n-input {
@@ -11,24 +17,79 @@
     }
   }
 
-  .n-data-table {
-    height: calc(
-      100vh - var(--header-height) - var(--roles-header-height) -
-        var(--roles-footer-height)
-    ) !important;
+  .n-grid {
+    .n-data-table {
+      height: calc(
+        100vh - var(--header-height) - var(--roles-header-height) -
+          var(--roles-bottom-margin)
+      ) !important;
 
-    .n-data-table-wrapper {
-      margin: 0 10px;
-    }
+      .n-data-table-base-table-body {
+        .n-scrollbar-content {
+          align-items: normal !important;
+        }
+      }
 
-    .n-data-table-base-table-body {
-      .n-scrollbar-content {
-        align-items: normal !important;
+      .n-data-table__pagination {
+        justify-content: center;
       }
     }
 
-    .n-data-table__pagination {
-      justify-content: center;
+    .n-card {
+      .n-card__content {
+        padding: 0;
+        height: calc(100vh - var(--header-height) - var(--roles-header-height));
+
+        .n-tabs {
+          .n-tabs-nav {
+            height: var(--roles-tabs-height);
+          }
+
+          .n-tabs-pane-wrapper {
+            .n-tab-pane {
+              .loading {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: var(--tab-pane-height);
+              }
+
+              .n-scrollbar {
+                min-height: var(--tab-pane-height);
+                max-height: var(--tab-pane-height);
+
+                .n-scrollbar-content {
+                  .n-form {
+                    margin: 10px 20px 0 10px;
+
+                    .n-form-item {
+                      margin: 0;
+
+                      .group {
+                        display: flex;
+                        min-height: 100px;
+                        margin-right: 15px;
+                        align-items: center;
+                        justify-content: center;
+
+                        span {
+                          transform: rotate(-30deg);
+                        }
+                      }
+
+                      .permissions {
+                        display: flex;
+                        align-items: center;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
