@@ -34,8 +34,10 @@
 
       <n-grid-item :span="includesAnyTab ? 2 : 3">
         <roles-table
-          :data="data"
+          :page="page"
           :total="total"
+          :data="data.value"
+          :per-page="perPage"
           :is-loading="isLoading"
           @get-roles="getRoles"
         />
@@ -56,35 +58,42 @@ import RolesTabs from "@/components/roles/Tabs.vue";
 import RolesTable from "@/components/roles/Table.vue";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import { Permission } from "@shared/types/enums/Permission";
-import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const rolesStore = useRolesStore();
 const generalStore = useGeneralStore();
 
+const page = ref(1);
+const perPage = 10;
 const total = ref(0);
 const isLoading = ref(false);
-let data: IRoleDto[] = reactive([]);
+let data: { value: IRoleDto[] } = reactive({ value: [] });
 const { includesAnyTab, includesEmptyTab } = storeToRefs(rolesStore);
 
 function onRoleCreate() {
-  // @TODO
+  getRoles(1);
 }
 
 function onRoleUpdate(id: number, name: string) {
-  // @TODO
+  const item = data.value.find(item => item.id === id);
+
+  if (item) {
+    item.name = name;
+  }
 }
 
-async function getRoles(query: IPaginationQuery) {
+async function getRoles(newPage: number) {
   isLoading.value = true;
+
+  page.value = newPage;
 
   try {
     const response = await rolesStore.getAll({
-      page: query.page,
-      perPage: query.perPage,
+      page: newPage,
+      perPage,
     });
 
-    data = response.result;
+    data.value = response.result;
 
     total.value = response.total;
   } catch (error) {

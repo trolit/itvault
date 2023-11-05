@@ -4,10 +4,10 @@
     :columns="columns"
     :single-line="false"
     :single-column="false"
-    :pagination="pagination"
+    :pagination="{ page, pageSize: perPage }"
     :loading="isLoading"
     :row-key="(row: IRoleDto) => row.id"
-    @update:page="getRoles"
+    @update:page="$event => $emit('get-roles', $event)"
   >
     <template #empty>
       <n-empty description="No roles found." />
@@ -16,14 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import {
-  NEmpty,
-  NButton,
-  NDataTable,
-  type PaginationProps,
-  type DataTableColumns,
-} from "naive-ui";
-import { ref, reactive, onBeforeMount, type Ref, h } from "vue";
+import { ref, onBeforeMount, type Ref, h } from "vue";
+import { NEmpty, NButton, NDataTable, type DataTableColumns } from "naive-ui";
 
 import { useRolesStore } from "@/store/roles";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
@@ -31,6 +25,10 @@ import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 const rolesStore = useRolesStore();
 
 interface IProps {
+  page: number;
+
+  perPage: number;
+
   isLoading: boolean;
 
   data: IRoleDto[];
@@ -38,20 +36,12 @@ interface IProps {
   total: number;
 }
 
-defineProps<IProps>();
+const props = defineProps<IProps>();
 
 const emits = defineEmits(["get-roles"]);
 
 onBeforeMount(async () => {
-  getRoles();
-});
-
-const pagination: PaginationProps = reactive({
-  page: 1,
-  pageSize: 10,
-  onChange: (page: number) => {
-    pagination.page = page;
-  },
+  emits("get-roles", props.page);
 });
 
 const columns: Ref<DataTableColumns<IRoleDto>> = ref<
@@ -87,11 +77,4 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
     },
   },
 ]);
-
-function getRoles() {
-  emits("get-roles", {
-    page: pagination.page,
-    perPage: 10,
-  });
-}
 </script>
