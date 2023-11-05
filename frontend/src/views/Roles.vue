@@ -4,7 +4,9 @@
       <!-- @TODO limit amount of roles that can be added -->
       <require-permission :permission="Permission.CreateBlueprint">
         <n-button
+          secondary
           size="small"
+          type="success"
           :disabled="includesNewRoleTab"
           @click="rolesStore.addEmptyTab"
         >
