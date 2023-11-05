@@ -46,7 +46,7 @@ function getTabTitle(tab: RoleTab) {
 
   const nameSpan = h("span", name);
 
-  return tab.roleId === 0 ||
+  return tab.roleId !== 0 &&
     JSON.stringify(tab.initialForm) !== JSON.stringify(tab.currentForm)
     ? h("span", [h("span", { style: { color: "red" } }, "*"), nameSpan])
     : nameSpan;
