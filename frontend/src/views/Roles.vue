@@ -28,29 +28,73 @@
     >
       <n-grid-item v-if="includesAnyTab" span="1">
         <n-card>
-          <roles-tabs />
+          <roles-tabs @create-role="onRoleCreate" @update-role="onRoleUpdate" />
         </n-card>
       </n-grid-item>
 
       <n-grid-item :span="includesAnyTab ? 2 : 3">
-        <roles-table />
+        <roles-table
+          :data="data"
+          :total="total"
+          :is-loading="isLoading"
+          @get-roles="getRoles"
+        />
       </n-grid-item>
     </n-grid>
   </div>
 </template>
 
 <script setup lang="ts">
+import { reactive, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { Add as AddIcon, Search as SearchIcon } from "@vicons/carbon";
 import { NCard, NGrid, NIcon, NInput, NButton, NGridItem } from "naive-ui";
 
 import { useRolesStore } from "@/store/roles";
+import { useGeneralStore } from "@/store/general";
 import RolesTabs from "@/components/roles/Tabs.vue";
 import RolesTable from "@/components/roles/Table.vue";
+import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import { Permission } from "@shared/types/enums/Permission";
+import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const rolesStore = useRolesStore();
+const generalStore = useGeneralStore();
 
+const total = ref(0);
+const isLoading = ref(false);
+let data: IRoleDto[] = reactive([]);
 const { includesAnyTab, includesEmptyTab } = storeToRefs(rolesStore);
+
+function onRoleCreate() {
+  // @TODO
+}
+
+function onRoleUpdate(id: number, name: string) {
+  // @TODO
+}
+
+async function getRoles(query: IPaginationQuery) {
+  isLoading.value = true;
+
+  try {
+    const response = await rolesStore.getAll({
+      page: query.page,
+      perPage: query.perPage,
+    });
+
+    data = response.result;
+
+    total.value = response.total;
+  } catch (error) {
+    console.log(error);
+
+    generalStore.messageProvider.error(
+      "There was an error when trying to load roles."
+    );
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>
