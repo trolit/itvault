@@ -3,7 +3,7 @@
 
   --tab-pane-height: calc(
     100vh - var(--header-height) - var(--roles-header-height) -
-      var(--roles-tabs-height) - 20px
+      var(--roles-tabs-height) - var(--roles-bottom-margin)
   );
 
   .header {
@@ -21,7 +21,7 @@
     .n-data-table {
       height: calc(
         100vh - var(--header-height) - var(--roles-header-height) -
-          var(--roles-footer-height)
+          var(--roles-bottom-margin)
       ) !important;
 
       .n-data-table-base-table-body {

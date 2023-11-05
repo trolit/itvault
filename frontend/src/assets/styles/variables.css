@@ -22,5 +22,5 @@
   /* ROLES */
   --roles-header-height: 9vh;
   --roles-tabs-height: 43px;
-  --roles-footer-height: 5vh;
+  --roles-bottom-margin: 20px;
 }
