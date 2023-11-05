@@ -97,11 +97,11 @@ export const useRolesStore = defineStore("roles", {
       this.tabs.push({
         roleId: 0,
         currentForm: {
-          name: "New Role",
+          name: "[New Role]",
           permissions: [],
         },
         initialForm: {
-          name: "New Role",
+          name: "[New Role]",
           permissions: [],
         },
       });
