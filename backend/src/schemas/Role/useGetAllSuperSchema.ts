@@ -1,4 +1,4 @@
-import { object } from "yup";
+import { object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 
@@ -9,6 +9,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
   object({
     page: pageSchema,
     perPage: perPageSchema,
+    search: string().optional(),
   });
 
 export const useGetAllSuperSchema: SuperSchema.Runner<
