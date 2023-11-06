@@ -88,7 +88,7 @@ const generalStore = useGeneralStore();
 const rolesPage = ref(1);
 const isLoadingUsers = ref(true);
 const isLoadingRoles = ref(false);
-let roles: IRoleDto[] = reactive([]);
+let roles: { value: IRoleDto[] } = reactive({ value: [] });
 
 const rolesPerPage = 5;
 const defaultPagination = {
@@ -102,7 +102,7 @@ onBeforeMount(async () => {
 
 const { options } = defineComputed({
   options() {
-    return roles.map(({ id, name }) => ({ label: name, value: id }));
+    return roles.value.map(({ id, name }) => ({ label: name, value: id }));
   },
 });
 
@@ -272,8 +272,10 @@ async function getRoles() {
       perPage: rolesPerPage,
     });
 
-    roles =
-      rolesPage.value === 1 ? result : Array.prototype.concat(roles, result);
+    roles.value =
+      rolesPage.value === 1
+        ? result
+        : Array.prototype.concat(roles.value, result);
 
     rolesPage.value += 1;
   } catch (error) {
