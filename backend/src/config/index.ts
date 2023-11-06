@@ -23,6 +23,7 @@ export const APP = {
   ROUTES_PREFIX: envString("ROUTES_PREFIX"),
   WORKING_DIR: <WorkingDir>envEnum("WORKING_DIRECTORY", WorkingDir),
   IS_CLEARING_TEMPORARY_UPLOADS_DIR: false,
+  MAX_ITEMS_PER_PAGE: 20,
 };
 
 export const DATABASE = {
