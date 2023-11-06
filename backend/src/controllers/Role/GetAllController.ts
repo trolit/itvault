@@ -1,4 +1,4 @@
-import { Not } from "typeorm";
+import { Like, Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
@@ -40,14 +40,17 @@ export class GetAllController extends BaseController {
     response: GetAllControllerTypes.v1.Response
   ) {
     const {
-      query: { skip, take },
+      query: { skip, take, name },
     } = request;
+
+    const nameQuery = name ? { name: Like(`%${name}%`) } : {};
 
     const [result, total] = await this._roleRepository.getAllAndCount({
       skip,
       take,
       where: {
         id: Not(HEAD_ADMIN_ROLE_ID),
+        ...nameQuery,
       },
     });
 
