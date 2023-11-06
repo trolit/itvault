@@ -1,5 +1,5 @@
 export interface IPaginationQuery {
-  page: number;
+  page?: number;
 
-  perPage: number;
+  perPage?: number;
 }
