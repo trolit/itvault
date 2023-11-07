@@ -6,7 +6,7 @@ export namespace UpdateManyControllerTypes {
       values: UpdateUserDto[];
     };
 
-    export type Request = CustomRequest<undefined, Body>;
+    export type Request = CustomRequest<void, Body>;
 
     export type Response = CustomResponse<string>;
   }
