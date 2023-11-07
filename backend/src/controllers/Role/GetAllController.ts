@@ -10,8 +10,6 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
-import { Permission } from "@shared/types/enums/Permission";
-import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -60,16 +58,5 @@ export class GetAllController extends BaseController {
       result: mappedResult,
       total,
     });
-  }
-
-  static isMissingPermissions(
-    request: CustomRequest<void, void, GetAllControllerTypes.v1.QueryInput>
-  ) {
-    const { permissions } = request;
-
-    return (
-      !isPermissionEnabled(Permission.CreateRole, permissions) &&
-      !isPermissionEnabled(Permission.UpdateRole, permissions)
-    );
   }
 }
