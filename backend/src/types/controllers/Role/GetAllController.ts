@@ -7,7 +7,7 @@ export namespace GetAllControllerTypes {
   export namespace v1 {
     type QueryCommon = { name?: string };
 
-    export type QueryInput = Partial<IPaginationQuery> & QueryCommon;
+    export type QueryInput = IPaginationQuery & QueryCommon;
 
     export type QueryOutput = IPaginationOptions & QueryCommon;
 
