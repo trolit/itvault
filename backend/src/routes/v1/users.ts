@@ -39,7 +39,7 @@ usersRouter.get(
 usersRouter.get(
   "/:id/notes",
   validateRequestWith({ [v1_0]: useGetNotesSuperSchema }),
-  transformPagination({ perPage: GetNotesController.ITEMS_PER_PAGE }),
+  transformPagination({ defaultPerPage: GetNotesController.ITEMS_PER_PAGE }),
   processRequestWith(GetNotesController)
 );
 

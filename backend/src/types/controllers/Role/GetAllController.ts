@@ -5,9 +5,11 @@ import { IPaginationOptions } from "types/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    export type QueryInput = IPaginationQuery;
+    type QueryCommon = { name?: string };
 
-    export type QueryOutput = IPaginationOptions;
+    export type QueryInput = Partial<IPaginationQuery> & QueryCommon;
+
+    export type QueryOutput = IPaginationOptions & QueryCommon;
 
     export type Request = CustomRequest<void, void, QueryOutput>;
 
