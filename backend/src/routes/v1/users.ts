@@ -1,23 +1,28 @@
 import { Router } from "express";
+import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
 import { Permission } from "@shared/types/enums/Permission";
+import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { processRequestWith } from "@helpers/processRequestWith";
-import { requirePermissions } from "@middleware/requirePermissions";
 import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
+import {
+  requirePermissions,
+  requirePermissionsCustomHandler,
+} from "@middleware/requirePermissions";
 
 import { useStoreSuperSchema } from "@schemas/User/useStoreSuperSchema";
-import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useGetNotesSuperSchema } from "@schemas/User/useGetNotesSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/User/StoreController";
-import { SignUpController } from "@controllers/User/SignUpController";
 import { GetAllController } from "@controllers/User/GetAllController";
+import { SignUpController } from "@controllers/User/SignUpController";
 import { GetNotesController } from "@controllers/User/GetNotesController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
 
@@ -60,7 +65,33 @@ usersRouter.post(
 usersRouter.patch(
   "",
   requireAuthentication,
-  requirePermissions(UpdateManyController.isMissingPermissions),
+  requirePermissions([Permission.ViewAllUsers]),
+  requirePermissionsCustomHandler<
+    void,
+    UpdateManyControllerTypes.v1.Body,
+    void
+  >(({ permissions, body }) => {
+    const [canRestoreAccount, canDeactivateAccount, canChangeRole] = [
+      isPermissionEnabled(Permission.RestoreUserAccount, permissions),
+      isPermissionEnabled(Permission.DeactivateUserAccount, permissions),
+      isPermissionEnabled(Permission.ChangeUserRole, permissions),
+    ];
+
+    const isActivePropertyCheck = (isActive?: boolean) => {
+      if (isActive === undefined) {
+        return false;
+      }
+
+      return isActive ? !canRestoreAccount : !canDeactivateAccount;
+    };
+
+    const isMissingPermission = body.values.some(
+      ({ data }) =>
+        isActivePropertyCheck(data.isActive) || (data.roleId && !canChangeRole)
+    );
+
+    return !isMissingPermission;
+  }),
   validateRequestWith({ [v1_0]: useUpdateManySuperSchema }),
   processRequestWith(UpdateManyController)
 );
