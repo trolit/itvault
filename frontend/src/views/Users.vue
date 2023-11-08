@@ -183,6 +183,11 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
         loading: isLoadingRoles.value,
         consistentMenuWidth: false,
 
+        onBlur: () =>
+          setTimeout(
+            () => (filteredRoles.value = cloneDeep(allFetchedRoles.value)),
+            200
+          ),
         onFilter: (value: string) => {
           if (!value) {
             filteredRoles.value = cloneDeep(allFetchedRoles.value);
