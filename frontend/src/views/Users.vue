@@ -183,7 +183,15 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
         loading: isLoadingRoles.value,
         consistentMenuWidth: false,
 
-        onFilter: (value: string) => getRoles(value),
+        onFilter: (value: string) => {
+          if (!value) {
+            filteredRoles.value = cloneDeep(allFetchedRoles.value);
+
+            return;
+          }
+
+          getRoles(value);
+        },
         onSelect: (selectedRoleId: number) => {
           usersStore.setRole(id, selectedRoleId);
 
