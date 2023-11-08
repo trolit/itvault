@@ -1,9 +1,11 @@
 <template>
   <n-select
+    remote
+    filterable
     :value="value"
     :options="options"
     :reset-menu-on-options-change="false"
-    @scroll="handleScroll"
+    @search="onSearch"
     @update-value="onSelect"
     @update-show="onUpdateShow"
   />
@@ -22,7 +24,7 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-const emit = defineEmits(["scroll", "select", "init"]);
+const emit = defineEmits(["select", "init", "filter"]);
 
 function onSelect(value: string | number) {
   if (value === props.value) {
@@ -38,14 +40,7 @@ function onUpdateShow(value: boolean) {
   }
 }
 
-function handleScroll(event: Event) {
-  const currentTarget = event.currentTarget as HTMLElement;
-
-  if (
-    currentTarget.scrollTop + currentTarget.offsetHeight >=
-    currentTarget.scrollHeight
-  ) {
-    emit("scroll");
-  }
+function onSearch(value: string) {
+  emit("filter", value);
 }
 </script>
