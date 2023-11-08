@@ -1,9 +1,12 @@
 <template>
   <n-select
-    :value="value"
+    remote
+    show-checkmark
+    filterable
+    :value="fixedValue"
     :options="options"
     :reset-menu-on-options-change="false"
-    @scroll="handleScroll"
+    @search="onSearch"
     @update-value="onSelect"
     @update-show="onUpdateShow"
   />
@@ -12,6 +15,7 @@
 <script setup lang="ts">
 import { NSelect } from "naive-ui";
 
+import { defineComputed } from "@/helpers/defineComputed";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
 
 interface IProps {
@@ -22,10 +26,18 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-const emit = defineEmits(["scroll", "select", "init"]);
+const emit = defineEmits(["select", "init", "filter"]);
+
+const { fixedValue } = defineComputed({
+  fixedValue() {
+    const option = props.options.find(option => option.label === props.value);
+
+    return option ? option.value : props.value;
+  },
+});
 
 function onSelect(value: string | number) {
-  if (value === props.value) {
+  if (fixedValue.value === value) {
     return;
   }
 
@@ -38,14 +50,7 @@ function onUpdateShow(value: boolean) {
   }
 }
 
-function handleScroll(event: Event) {
-  const currentTarget = event.currentTarget as HTMLElement;
-
-  if (
-    currentTarget.scrollTop + currentTarget.offsetHeight >=
-    currentTarget.scrollHeight
-  ) {
-    emit("scroll");
-  }
+function onSearch(value: string) {
+  emit("filter", value);
 }
 </script>

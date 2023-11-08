@@ -29,7 +29,7 @@ export const useRolesStore = defineStore("roles", {
   },
 
   actions: {
-    async getAll(options: IPaginationQuery) {
+    async getAll(options: IPaginationQuery & { name?: string }) {
       const params = {
         version: 1,
         ...options,
