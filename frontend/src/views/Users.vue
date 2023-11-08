@@ -184,8 +184,14 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
         consistentMenuWidth: false,
 
         onFilter: (value: string) => getRoles(value),
-        onSelect: (selectedRoleId: number) =>
-          usersStore.setRole(id, selectedRoleId),
+        onSelect: (selectedRoleId: number) => {
+          usersStore.setRole(id, selectedRoleId);
+
+          setTimeout(
+            () => (filteredRoles.value = cloneDeep(allFetchedRoles.value)),
+            200
+          );
+        },
       });
     },
   },
