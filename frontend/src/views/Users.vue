@@ -104,10 +104,14 @@ onBeforeMount(async () => {
 
 const { options } = defineComputed({
   options() {
-    return filteredRoles.value.map(({ id, name }) => ({
+    const value = filteredRoles.value.map(({ id, name }) => ({
       label: name,
       value: id,
     }));
+
+    value.sort((a, b) => a.label.localeCompare(b.label));
+
+    return value;
   },
 });
 
