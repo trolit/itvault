@@ -70,6 +70,8 @@ import {
   type PaginationProps,
   type DataTableColumns,
 } from "naive-ui";
+import uniqBy from "lodash/uniqBy";
+import cloneDeep from "lodash/cloneDeep";
 import { Search as SearchIcon } from "@vicons/carbon";
 import { h, onBeforeMount, reactive, ref, type Ref } from "vue";
 
@@ -79,30 +81,33 @@ import { useGeneralStore } from "@/store/general";
 import { defineComputed } from "@/helpers/defineComputed";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
-import ScrollSelect from "@/components/common/ScrollSelect.vue";
+import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 
 const rolesStore = useRolesStore();
 const usersStore = useUsersStore();
 const generalStore = useGeneralStore();
 
-const rolesPage = ref(1);
 const isLoadingUsers = ref(true);
 const isLoadingRoles = ref(false);
-let roles: { value: IRoleDto[] } = reactive({ value: [] });
+const rolessSearchTimeoutId = ref(0);
+let filteredRoles: { value: IRoleDto[] } = reactive({ value: [] });
+let allFetchedRoles: { value: IRoleDto[] } = reactive({ value: [] });
 
-const rolesPerPage = 5;
 const defaultPagination = {
   page: 1,
   pageSize: 10,
 };
 
 onBeforeMount(async () => {
-  await getRoles();
+  getRoles();
 });
 
 const { options } = defineComputed({
   options() {
-    return roles.value.map(({ id, name }) => ({ label: name, value: id }));
+    return filteredRoles.value.map(({ id, name }) => ({
+      label: name,
+      value: id,
+    }));
   },
 });
 
@@ -162,18 +167,25 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
         : {};
     },
     render: rowData => {
-      const { id, roleId } = rowData;
+      const { id, roleId, roleName } = rowData;
 
       const roleIdToUpdate = usersStore.findItemToUpdateRoleId(id);
 
-      return h(ScrollSelect, {
-        value: roleIdToUpdate || roleId,
+      const idToFind = roleIdToUpdate || roleId;
+
+      const matchingRole = allFetchedRoles.value.find(
+        role => role.id === idToFind
+      );
+
+      return h(AsynchronousSelect, {
+        value: matchingRole ? matchingRole.name : roleName,
         options: options.value,
-        disabled: isLoadingRoles.value,
+        loading: isLoadingRoles.value,
         consistentMenuWidth: false,
 
-        onScroll: getRoles,
-        onSelect: newRoleId => usersStore.setRole(id, newRoleId),
+        onFilter: (value: string) => getRoles(value),
+        onSelect: (selectedRoleId: number) =>
+          usersStore.setRole(id, selectedRoleId),
       });
     },
   },
@@ -263,30 +275,43 @@ async function getUsers() {
   }
 }
 
-async function getRoles() {
-  isLoadingRoles.value = true;
-
-  try {
-    const { result } = await rolesStore.getAll({
-      page: rolesPage.value,
-      perPage: rolesPerPage,
-    });
-
-    roles.value =
-      rolesPage.value === 1
-        ? result
-        : Array.prototype.concat(roles.value, result);
-
-    rolesPage.value += 1;
-  } catch (error) {
-    console.log(error);
-
-    generalStore.messageProvider.error(
-      "There was an error when trying to load roles!"
-    );
-  } finally {
-    isLoadingRoles.value = false;
+function getRoles(name?: string) {
+  if (isLoadingRoles.value) {
+    return;
   }
+
+  if (rolessSearchTimeoutId.value) {
+    clearTimeout(rolessSearchTimeoutId.value);
+  }
+
+  rolessSearchTimeoutId.value = setTimeout(async () => {
+    isLoadingRoles.value = true;
+
+    try {
+      const nameQuery = name ? { name } : {};
+
+      const { result } = await rolesStore.getAll({
+        page: 1,
+        perPage: 6,
+        ...nameQuery,
+      });
+
+      filteredRoles.value = result;
+
+      allFetchedRoles.value = uniqBy(
+        Array.prototype.concat(cloneDeep(result), allFetchedRoles.value),
+        value => value.id
+      );
+    } catch (error) {
+      console.log(error);
+
+      generalStore.messageProvider.error(
+        "There was an error when trying to load roles!"
+      );
+    } finally {
+      isLoadingRoles.value = false;
+    }
+  }, 200);
 }
 
 async function updateUsers() {
