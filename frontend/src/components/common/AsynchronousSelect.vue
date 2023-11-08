@@ -3,7 +3,7 @@
     remote
     show-checkmark
     filterable
-    :value="trueValue"
+    :value="fixedValue"
     :options="options"
     :reset-menu-on-options-change="false"
     @search="onSearch"
@@ -28,8 +28,8 @@ const props = defineProps<IProps>();
 
 const emit = defineEmits(["select", "init", "filter"]);
 
-const { trueValue } = defineComputed({
-  trueValue() {
+const { fixedValue } = defineComputed({
+  fixedValue() {
     const option = props.options.find(option => option.label === props.value);
 
     return option ? option.value : props.value;
@@ -37,7 +37,7 @@ const { trueValue } = defineComputed({
 });
 
 function onSelect(value: string | number) {
-  if (value === props.value) {
+  if (fixedValue.value === value) {
     return;
   }
 
