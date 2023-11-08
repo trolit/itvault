@@ -1,8 +1,9 @@
 <template>
   <n-select
     remote
+    show-checkmark
     filterable
-    :value="value"
+    :value="trueValue"
     :options="options"
     :reset-menu-on-options-change="false"
     @search="onSearch"
@@ -14,6 +15,7 @@
 <script setup lang="ts">
 import { NSelect } from "naive-ui";
 
+import { defineComputed } from "@/helpers/defineComputed";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
 
 interface IProps {
@@ -25,6 +27,14 @@ interface IProps {
 const props = defineProps<IProps>();
 
 const emit = defineEmits(["select", "init", "filter"]);
+
+const { trueValue } = defineComputed({
+  trueValue() {
+    const option = props.options.find(option => option.label === props.value);
+
+    return option ? option.value : props.value;
+  },
+});
 
 function onSelect(value: string | number) {
   if (value === props.value) {
