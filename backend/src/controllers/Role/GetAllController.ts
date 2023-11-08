@@ -1,4 +1,4 @@
-import { Not } from "typeorm";
+import { Like, Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
@@ -10,8 +10,6 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
-import { Permission } from "@shared/types/enums/Permission";
-import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -40,14 +38,17 @@ export class GetAllController extends BaseController {
     response: GetAllControllerTypes.v1.Response
   ) {
     const {
-      query: { skip, take },
+      query: { skip, take, name },
     } = request;
+
+    const nameQuery = name ? { name: Like(`%${name}%`) } : {};
 
     const [result, total] = await this._roleRepository.getAllAndCount({
       skip,
       take,
       where: {
         id: Not(HEAD_ADMIN_ROLE_ID),
+        ...nameQuery,
       },
     });
 
@@ -57,16 +58,5 @@ export class GetAllController extends BaseController {
       result: mappedResult,
       total,
     });
-  }
-
-  static isMissingPermissions(
-    request: CustomRequest<void, void, GetAllControllerTypes.v1.QueryInput>
-  ) {
-    const { permissions } = request;
-
-    return (
-      !isPermissionEnabled(Permission.CreateRole, permissions) &&
-      !isPermissionEnabled(Permission.UpdateRole, permissions)
-    );
   }
 }

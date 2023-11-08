@@ -29,7 +29,9 @@ rolesRouter.use(requireAuthentication);
 
 rolesRouter.get(
   "",
-  requirePermissions(GetAllController.isMissingPermissions),
+  requirePermissions([Permission.CreateRole, Permission.UpdateRole], {
+    condition: "OR",
+  }),
   validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
