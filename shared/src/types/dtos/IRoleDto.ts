@@ -9,7 +9,7 @@ export interface IRoleDto {
 
   updatedAt: string;
 
-  createdBy: IAuthorDto;
+  createdBy: IAuthorDto | null;
 
-  updatedBy: IAuthorDto;
+  updatedBy: IAuthorDto | null;
 }
