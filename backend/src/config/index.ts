@@ -24,6 +24,7 @@ export const APP = {
   WORKING_DIR: <WorkingDir>envEnum("WORKING_DIRECTORY", WorkingDir),
   IS_CLEARING_TEMPORARY_UPLOADS_DIR: false,
   MAX_ITEMS_PER_PAGE: 20,
+  TOTAL_ROLES_LIMIT: envInt("TOTAL_ROLES_LIMIT"),
 };
 
 export const DATABASE = {
