@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 import { User } from "./User";
 import { PermissionToRole } from "./PermissionToRole";
@@ -20,4 +28,16 @@ export class Role {
     { cascade: true }
   )
   permissionToRole: PermissionToRole[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @ManyToOne(() => User, { cascade: false })
+  createdBy: User;
+
+  @ManyToOne(() => User, { cascade: false })
+  updatedBy: User;
 }
