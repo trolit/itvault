@@ -17,12 +17,16 @@ export const isLimitNotReached = <P, B, Q>(
   ) => {
     const repository = getInstanceOf<IBaseRepository<unknown>>(repositoryName);
 
+    const [entityName] = repositoryName.slice(1).split("Repository");
+
     const [, total] = await repository.getAllAndCount({ skip: 0, take: 1 });
 
     if (total > limit) {
       return response
         .status(HTTP.BAD_REQUEST)
-        .send(`Cannot create more entities. Limit (${limit}) reached!`);
+        .send(
+          `Cannot create more (${entityName}) entities. Limit (${limit}) reached! Please ask administrator to change it, if you really need more.`
+        );
     }
 
     return next();
