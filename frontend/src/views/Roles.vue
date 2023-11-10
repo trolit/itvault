@@ -6,7 +6,7 @@
           secondary
           size="small"
           type="success"
-          :disabled="includesNewRoleTab || rolesStore.isLimitReached"
+          :disabled="includesNewRoleTab || rolesStore.isAddLimitReached"
           @click="rolesStore.addEmptyTab"
         >
           <n-icon :component="AddIcon" :size="25" />

@@ -24,7 +24,7 @@ export const useRolesStore = defineStore("roles", {
   }),
 
   getters: {
-    isLimitReached: state => state.total > 20,
+    isAddLimitReached: state => state.total > 20,
     includesAnyTab: state => !!state.tabs.length,
     includesNewRoleTab: state => !!state.tabs.find(tab => tab.roleId === 0),
   },
