@@ -1,8 +1,12 @@
 import { Router } from "express";
 
+import { APP } from "@config";
+
+import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
+import { isLimitNotReached } from "@middleware/isLimitNotReached";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
@@ -10,8 +14,8 @@ import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Role/useStoreSuperSchema";
-import { useGetAllSuperSchema } from "@schemas/Role/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Role/useUpdateSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/Role/useGetAllSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Role/StoreController";
@@ -47,6 +51,7 @@ rolesRouter.get(
 rolesRouter.post(
   "",
   requirePermissions([Permission.CreateRole]),
+  isLimitNotReached(Di.RoleRepository, APP.TOTAL_ROLES_LIMIT),
   validateRequestWith({ [v1_0]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
