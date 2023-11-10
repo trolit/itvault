@@ -1,13 +1,12 @@
 <template>
   <div class="roles-page page">
     <div class="header">
-      <!-- @TODO limit amount of roles that can be added -->
-      <require-permission :permission="Permission.CreateBlueprint">
+      <require-permission :permission="Permission.CreateRole">
         <n-button
           secondary
           size="small"
           type="success"
-          :disabled="includesNewRoleTab"
+          :disabled="includesNewRoleTab || rolesStore.isLimitReached"
           @click="rolesStore.addEmptyTab"
         >
           <n-icon :component="AddIcon" :size="25" />
