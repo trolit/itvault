@@ -18,13 +18,22 @@
 </template>
 
 <script setup lang="ts">
+import {
+  NH3,
+  NText,
+  NEmpty,
+  NButton,
+  NDataTable,
+  type DataTableColumns,
+} from "naive-ui";
 import { ref, onBeforeMount, type Ref, h } from "vue";
-import { NEmpty, NButton, NDataTable, type DataTableColumns } from "naive-ui";
 
 import { useRolesStore } from "@/store/roles";
+import { useDateService } from "@/services/useDateService";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 
 const rolesStore = useRolesStore();
+const dateService = useDateService();
 
 interface IProps {
   page: number;
@@ -54,6 +63,68 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
     key: "name",
     ellipsis: {
       tooltip: true,
+    },
+    render: ({ name }) =>
+      h(
+        NH3,
+        {},
+        {
+          default: () => name,
+        }
+      ),
+  },
+
+  {
+    title: "Created at",
+    key: "createdAt",
+    ellipsis: {
+      tooltip: true,
+    },
+    render: ({ createdAt }) =>
+      dateService.format(createdAt, "DD MMM YYYY (HH:mm)"),
+  },
+
+  {
+    title: "Created by",
+    key: "createdBy",
+    ellipsis: {
+      tooltip: true,
+    },
+    render({ createdBy }) {
+      return createdBy
+        ? h(
+            NButton,
+            { dashed: true, type: "info" },
+            { default: () => createdBy.fullName }
+          )
+        : h(NText, { depth: 3 }, { default: () => "SYSTEM" });
+    },
+  },
+
+  {
+    title: "Updated at",
+    key: "updatedAt",
+    ellipsis: {
+      tooltip: true,
+    },
+    render: ({ updatedAt }) =>
+      dateService.format(updatedAt, "DD MMM YYYY (HH:mm)"),
+  },
+
+  {
+    title: "Updated by",
+    key: "updatedBy",
+    ellipsis: {
+      tooltip: true,
+    },
+    render({ updatedBy }) {
+      return updatedBy
+        ? h(
+            NButton,
+            { dashed: true, type: "info" },
+            { default: () => updatedBy.fullName }
+          )
+        : h(NText, { depth: 3 }, { default: () => "SYSTEM" });
     },
   },
 

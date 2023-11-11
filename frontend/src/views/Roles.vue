@@ -53,6 +53,7 @@ import { storeToRefs } from "pinia";
 import { Add as AddIcon, Search as SearchIcon } from "@vicons/carbon";
 import { NCard, NGrid, NIcon, NInput, NButton, NGridItem } from "naive-ui";
 
+import { useAuthStore } from "@/store/auth";
 import { useRolesStore } from "@/store/roles";
 import { useGeneralStore } from "@/store/general";
 import RolesTabs from "@/components/roles/Tabs.vue";
@@ -60,8 +61,11 @@ import RolesTable from "@/components/roles/Table.vue";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import { useDateService } from "@/services/useDateService";
 
+const authStore = useAuthStore();
 const rolesStore = useRolesStore();
+const dateService = useDateService();
 const generalStore = useGeneralStore();
 
 const page = ref(1);
@@ -82,6 +86,13 @@ function onRoleUpdate(id: number, name: string) {
 
   if (item) {
     item.name = name;
+
+    // @TMP (if we implement websockets)
+    const { id, fullName } = authStore.profile;
+
+    item.updatedBy = { id, fullName };
+
+    item.updatedAt = dateService.now().toISOString();
   }
 }
 

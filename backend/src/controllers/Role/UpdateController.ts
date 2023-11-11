@@ -33,11 +33,12 @@ export class UpdateController extends BaseController {
     response: UpdateControllerTypes.v1.Response
   ) {
     const {
+      userId,
       params: { id },
       body,
     } = request;
 
-    const result = await this._roleService.update(id, body);
+    const result = await this._roleService.update(id, userId, body);
 
     if (!result.isSuccess) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);

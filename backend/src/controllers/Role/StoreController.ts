@@ -34,9 +34,9 @@ export class StoreController extends BaseController {
     request: StoreControllerTypes.v1.Request,
     response: StoreControllerTypes.v1.Response
   ) {
-    const { body } = request;
+    const { userId, body } = request;
 
-    const result = await this._roleService.create(body);
+    const result = await this._roleService.create(userId, body);
 
     if (!result.isSuccess) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
