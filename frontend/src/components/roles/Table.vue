@@ -107,8 +107,8 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
     ellipsis: {
       tooltip: true,
     },
-    render: ({ createdAt }) =>
-      dateService.format(createdAt, "DD MMM YYYY (HH:mm)"),
+    render: ({ updatedAt }) =>
+      dateService.format(updatedAt, "DD MMM YYYY (HH:mm)"),
   },
 
   {
