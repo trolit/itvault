@@ -18,13 +18,21 @@
 </template>
 
 <script setup lang="ts">
+import {
+  NText,
+  NEmpty,
+  NButton,
+  NDataTable,
+  type DataTableColumns,
+} from "naive-ui";
 import { ref, onBeforeMount, type Ref, h } from "vue";
-import { NEmpty, NButton, NDataTable, type DataTableColumns } from "naive-ui";
 
 import { useRolesStore } from "@/store/roles";
+import { useDateService } from "@/services/useDateService";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 
 const rolesStore = useRolesStore();
+const dateService = useDateService();
 
 interface IProps {
   page: number;
@@ -54,6 +62,48 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
     key: "name",
     ellipsis: {
       tooltip: true,
+    },
+  },
+
+  {
+    title: "Created at",
+    key: "createdAt",
+    ellipsis: {
+      tooltip: true,
+    },
+    render: ({ createdAt }) =>
+      dateService.format(createdAt, "DD MMM YYYY (HH:mm)"),
+  },
+
+  {
+    title: "Created by",
+    key: "createdBy",
+    ellipsis: {
+      tooltip: true,
+    },
+    render({ createdBy }) {
+      return createdBy ? createdBy.fullName : h(NText, { depth: 3 }, "SYSTEM");
+    },
+  },
+
+  {
+    title: "Updated at",
+    key: "updatedAt",
+    ellipsis: {
+      tooltip: true,
+    },
+    render: ({ createdAt }) =>
+      dateService.format(createdAt, "DD MMM YYYY (HH:mm)"),
+  },
+
+  {
+    title: "Updated by",
+    key: "updatedBy",
+    ellipsis: {
+      tooltip: true,
+    },
+    render({ updatedBy }) {
+      return updatedBy ? updatedBy.fullName : h(NText, { depth: 3 }, "SYSTEM");
     },
   },
 
