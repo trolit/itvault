@@ -50,6 +50,10 @@ export class GetAllController extends BaseController {
         id: Not(HEAD_ADMIN_ROLE_ID),
         ...nameQuery,
       },
+      relations: {
+        createdBy: true,
+        updatedBy: true,
+      },
     });
 
     const mappedResult = this.mapper.map<Role>(result).to(RoleMapper);
