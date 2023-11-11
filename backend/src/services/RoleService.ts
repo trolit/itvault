@@ -17,7 +17,10 @@ export class RoleService implements IRoleService {
     private _roleRepository: IRoleRepository
   ) {}
 
-  async create(data: AddEditRoleDto): Promise<TransactionResult<Role>> {
+  async create(
+    userId: number,
+    data: AddEditRoleDto
+  ): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
     const { name, permissions } = data;
@@ -27,6 +30,12 @@ export class RoleService implements IRoleService {
 
       const role = await manager.save(Role, {
         name,
+        createdBy: {
+          id: userId,
+        },
+        updatedBy: {
+          id: userId,
+        },
         permissionToRole: permissionEntities.map(entity => {
           const { enabled } = this._findPermissionBySignatureOrThrowError(
             entity.signature,
@@ -58,6 +67,7 @@ export class RoleService implements IRoleService {
 
   async update(
     id: number,
+    userId: number,
     data: AddEditRoleDto
   ): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
@@ -75,6 +85,9 @@ export class RoleService implements IRoleService {
       await manager.save(Role, {
         ...currentRole,
         name,
+        updatedBy: {
+          id: userId,
+        },
         permissionToRole: permissionToRole.map(value => {
           const { permission } = value;
 
