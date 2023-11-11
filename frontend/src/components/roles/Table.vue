@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import {
+  NH3,
   NText,
   NEmpty,
   NButton,
@@ -63,6 +64,7 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
     ellipsis: {
       tooltip: true,
     },
+    render: ({ name }) => h(NH3, name),
   },
 
   {
@@ -82,7 +84,9 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
       tooltip: true,
     },
     render({ createdBy }) {
-      return createdBy ? createdBy.fullName : h(NText, { depth: 3 }, "SYSTEM");
+      return createdBy
+        ? h(NButton, { dashed: true, type: "info" }, createdBy.fullName)
+        : h(NText, { depth: 3 }, "SYSTEM");
     },
   },
 
@@ -103,7 +107,9 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
       tooltip: true,
     },
     render({ updatedBy }) {
-      return updatedBy ? updatedBy.fullName : h(NText, { depth: 3 }, "SYSTEM");
+      return updatedBy
+        ? h(NButton, { dashed: true, type: "info" }, updatedBy.fullName)
+        : h(NText, { depth: 3 }, "SYSTEM");
     },
   },
 
