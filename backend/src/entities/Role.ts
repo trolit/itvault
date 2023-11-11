@@ -35,9 +35,9 @@ export class Role {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ManyToOne(() => User, { cascade: false })
+  @ManyToOne(() => User, { cascade: false, nullable: true })
   createdBy: User;
 
-  @ManyToOne(() => User, { cascade: false })
+  @ManyToOne(() => User, { cascade: false, nullable: true })
   updatedBy: User;
 }
