@@ -24,7 +24,6 @@ export class RoleMapper extends BaseMapper<Role> implements IRoleDto {
       ? {
           id: createdBy.id,
           fullName: createdBy.fullName,
-          roleName: createdBy.role?.name,
         }
       : null;
 
@@ -32,7 +31,6 @@ export class RoleMapper extends BaseMapper<Role> implements IRoleDto {
       ? {
           id: updatedBy.id,
           fullName: updatedBy.fullName,
-          roleName: updatedBy.role?.name,
         }
       : null;
 
