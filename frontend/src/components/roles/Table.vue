@@ -64,7 +64,14 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
     ellipsis: {
       tooltip: true,
     },
-    render: ({ name }) => h(NH3, name),
+    render: ({ name }) =>
+      h(
+        NH3,
+        {},
+        {
+          default: () => name,
+        }
+      ),
   },
 
   {
@@ -85,8 +92,12 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
     },
     render({ createdBy }) {
       return createdBy
-        ? h(NButton, { dashed: true, type: "info" }, createdBy.fullName)
-        : h(NText, { depth: 3 }, "SYSTEM");
+        ? h(
+            NButton,
+            { dashed: true, type: "info" },
+            { default: () => createdBy.fullName }
+          )
+        : h(NText, { depth: 3 }, { default: () => "SYSTEM" });
     },
   },
 
@@ -108,8 +119,12 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
     },
     render({ updatedBy }) {
       return updatedBy
-        ? h(NButton, { dashed: true, type: "info" }, updatedBy.fullName)
-        : h(NText, { depth: 3 }, "SYSTEM");
+        ? h(
+            NButton,
+            { dashed: true, type: "info" },
+            { default: () => updatedBy.fullName }
+          )
+        : h(NText, { depth: 3 }, { default: () => "SYSTEM" });
     },
   },
 
