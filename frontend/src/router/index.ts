@@ -29,6 +29,7 @@ import Workspace from "@/views/Workspace.vue";
 
 import { useAuthStore } from "@/store/auth";
 import { LoadingState } from "@/types/enums/LoadingState";
+import { Permission } from "@shared/types/enums/Permission";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -84,6 +85,7 @@ const router = createRouter({
       props: {},
       meta: {
         requiresAuth: true,
+        requiresOneOfPermissions: [Permission.ViewAllUsers],
       },
     },
 
@@ -94,6 +96,10 @@ const router = createRouter({
       props: {},
       meta: {
         requiresAuth: true,
+        requiresOneOfPermissions: [
+          Permission.CreateRole,
+          Permission.UpdateRole,
+        ],
       },
     },
   ],
@@ -112,11 +118,24 @@ router.beforeEach(
 
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
+    // @NOTE consider testing "to.matched.length" (if equals 1) to eliminate wrong permissions check possibility (?)
+
     if (requiresAuth) {
       const authStore = useAuthStore();
 
       try {
         await authStore.status();
+
+        const requiresOneOfPermissions = <Permission[] | undefined>(
+          to.meta.requiresOneOfPermissions
+        );
+
+        if (
+          requiresOneOfPermissions &&
+          !authStore.hasAtLeastOnePermission(requiresOneOfPermissions)
+        ) {
+          throw Error("Insufficient permissions to access the page!");
+        }
 
         drawerStore.setActiveDrawer(null);
 
