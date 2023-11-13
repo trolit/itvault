@@ -5,6 +5,8 @@ export interface IRoleDto {
 
   name: string;
 
+  description: string;
+
   createdAt: string;
 
   updatedAt: string;

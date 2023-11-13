@@ -7,6 +7,7 @@ import { IAuthorDto } from "@shared/types/dtos/IAuthorDto";
 export class RoleMapper extends BaseMapper<Role> implements IRoleDto {
   id: number;
   name: string;
+  description: string;
   createdAt: string;
   createdBy: IAuthorDto | null;
   updatedAt: string;
@@ -14,7 +15,13 @@ export class RoleMapper extends BaseMapper<Role> implements IRoleDto {
 
   constructor(
     data: Role,
-    keys: (keyof Role)[] = ["id", "name", "createdAt", "updatedAt"]
+    keys: (keyof Role)[] = [
+      "id",
+      "name",
+      "description",
+      "createdAt",
+      "updatedAt",
+    ]
   ) {
     super(data, keys);
 
