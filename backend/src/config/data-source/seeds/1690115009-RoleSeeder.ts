@@ -16,6 +16,7 @@ export default class RoleSeeder implements Seeder {
         await repository.save({
           id: HEAD_ADMIN_ROLE_ID,
           name: roleName,
+          description: "",
         });
 
         continue;
@@ -23,6 +24,7 @@ export default class RoleSeeder implements Seeder {
 
       await repository.save({
         name: roleName,
+        description: "",
       });
     }
   }
