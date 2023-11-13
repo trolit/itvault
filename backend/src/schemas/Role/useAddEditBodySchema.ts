@@ -45,6 +45,8 @@ export const useAddEditBodySchema: (
         return true;
       }),
 
+    description: string().required().max(50),
+
     permissions: array()
       .of(permissionSchema)
       .required()
