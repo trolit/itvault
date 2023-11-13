@@ -55,7 +55,7 @@
                 height: var(--tab-pane-height);
               }
 
-              .n-scrollbar {
+              .tab-scroll {
                 min-height: var(--tab-pane-height);
                 max-height: var(--tab-pane-height);
 

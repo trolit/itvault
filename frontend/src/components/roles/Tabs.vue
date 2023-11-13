@@ -13,7 +13,7 @@
       :tab="getTabTitle(tab)"
       v-for="tab in tabs"
     >
-      <n-scrollbar trigger="none">
+      <n-scrollbar class="tab-scroll" trigger="none">
         <add-edit-form
           :role-tab="tab"
           @create-role="(...args) => $emit('create-role', ...args)"
