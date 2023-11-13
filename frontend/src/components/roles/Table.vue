@@ -95,6 +95,7 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
   {
     title: "Created at",
     key: "createdAt",
+    width: 150,
     ellipsis: {
       tooltip: true,
     },
@@ -122,6 +123,7 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
   {
     title: "Updated at",
     key: "updatedAt",
+    width: 150,
     ellipsis: {
       tooltip: true,
     },
