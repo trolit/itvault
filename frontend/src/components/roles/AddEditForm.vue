@@ -297,7 +297,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
     );
 
     isEdit
-      ? emits("update-role", roleId, formData.name)
+      ? emits("update-role", roleId, payload)
       : emits("create-role", roleId);
   } catch (error) {
     console.error(error);

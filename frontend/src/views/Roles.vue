@@ -58,10 +58,11 @@ import { useRolesStore } from "@/store/roles";
 import { useGeneralStore } from "@/store/general";
 import RolesTabs from "@/components/roles/Tabs.vue";
 import RolesTable from "@/components/roles/Table.vue";
+import { useDateService } from "@/services/useDateService";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import { Permission } from "@shared/types/enums/Permission";
+import type { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
-import { useDateService } from "@/services/useDateService";
 
 const authStore = useAuthStore();
 const rolesStore = useRolesStore();
@@ -81,11 +82,12 @@ function onRoleCreate(id: number) {
   getRoles(1);
 }
 
-function onRoleUpdate(id: number, name: string) {
+function onRoleUpdate(id: number, payload: AddEditRoleDto) {
   const item = data.value.find(item => item.id === id);
 
   if (item) {
-    item.name = name;
+    item.name = payload.name;
+    item.description = payload.description;
 
     // @TMP (if we implement websockets)
     const { id, fullName } = authStore.profile;
