@@ -23,13 +23,14 @@ export class RoleService implements IRoleService {
   ): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
-    const { name, permissions } = data;
+    const { name, description, permissions } = data;
 
     try {
       const permissionEntities = await manager.find(Permission);
 
       const role = await manager.save(Role, {
         name,
+        description,
         createdBy: {
           id: userId,
         },
@@ -72,7 +73,7 @@ export class RoleService implements IRoleService {
   ): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
-    const { name, permissions } = data;
+    const { name, permissions, description } = data;
 
     try {
       const currentRole = await manager.findOneOrFail(Role, {
@@ -85,6 +86,7 @@ export class RoleService implements IRoleService {
       await manager.save(Role, {
         ...currentRole,
         name,
+        description,
         updatedBy: {
           id: userId,
         },
