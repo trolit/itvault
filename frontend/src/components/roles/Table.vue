@@ -75,8 +75,28 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
   },
 
   {
+    title: "Description",
+    key: "description",
+    className: "description",
+    ellipsis: {
+      tooltip: true,
+    },
+    render: ({ description }) =>
+      h(
+        NText,
+        {
+          depth: description ? 1 : 3,
+        },
+        {
+          default: () => description || "No description",
+        }
+      ),
+  },
+
+  {
     title: "Created at",
     key: "createdAt",
+    width: 150,
     ellipsis: {
       tooltip: true,
     },
@@ -104,6 +124,7 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
   {
     title: "Updated at",
     key: "updatedAt",
+    width: 150,
     ellipsis: {
       tooltip: true,
     },

@@ -87,6 +87,7 @@ export const useRolesStore = defineStore("roles", {
       if (tab) {
         tab.initialForm = {
           name: tab.currentForm.name,
+          description: tab.currentForm.description,
           permissions: cloneDeep(tab.currentForm.permissions),
         };
 
@@ -99,10 +100,12 @@ export const useRolesStore = defineStore("roles", {
         roleId: 0,
         currentForm: {
           name: "[New Role]",
+          description: "",
           permissions: [],
         },
         initialForm: {
           name: "[New Role]",
+          description: "",
           permissions: [],
         },
       });
@@ -118,6 +121,7 @@ export const useRolesStore = defineStore("roles", {
 
         tab.initialForm = {
           name: tab.currentForm.name,
+          description: tab.currentForm.description,
           permissions: cloneDeep(tab.currentForm.permissions),
         };
       }
@@ -140,10 +144,12 @@ export const useRolesStore = defineStore("roles", {
         roleId: role.id,
         currentForm: {
           name: role.name,
+          description: role.description,
           permissions: [],
         },
         initialForm: {
           name: role.name,
+          description: role.description,
           permissions: [],
         },
       });
@@ -170,6 +176,16 @@ export const useRolesStore = defineStore("roles", {
       }
 
       tab.currentForm.permissions = permissions;
+    },
+
+    updateTabCurrentFormDescription(id: number, description: string) {
+      const tab = this.tabs.find(tab => tab.roleId === id);
+
+      if (!tab) {
+        return;
+      }
+
+      tab.currentForm.description = description;
     },
 
     setTabPermissions(

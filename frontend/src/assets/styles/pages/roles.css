@@ -28,6 +28,12 @@
         .n-scrollbar-content {
           align-items: normal !important;
         }
+
+        .description {
+          span {
+            white-space: pre-wrap;
+          }
+        }
       }
 
       .n-data-table__pagination {
@@ -55,7 +61,7 @@
                 height: var(--tab-pane-height);
               }
 
-              .n-scrollbar {
+              .tab-scroll {
                 min-height: var(--tab-pane-height);
                 max-height: var(--tab-pane-height);
 
