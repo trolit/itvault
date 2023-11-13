@@ -132,7 +132,7 @@ router.beforeEach(
 
         if (
           requiresOneOfPermissions &&
-          authStore.hasAtLeastOnePermission(requiresOneOfPermissions)
+          !authStore.hasAtLeastOnePermission(requiresOneOfPermissions)
         ) {
           throw Error("Insufficient permissions to access the page!");
         }
