@@ -17,7 +17,7 @@ export const validateRequestWith = <P, B, Q>(
       query: { version: requestedVersion },
     } = request;
 
-    const versions = Object.keys(superSchemaRunners).map(key => parseInt(key));
+    const versions = Object.keys(superSchemaRunners);
 
     if (!versions.includes(requestedVersion)) {
       return response.status(HTTP.BAD_REQUEST).send({
@@ -27,7 +27,7 @@ export const validateRequestWith = <P, B, Q>(
       });
     }
 
-    const useSuperSchemaRunner = superSchemaRunners[requestedVersion];
+    const useSuperSchemaRunner = superSchemaRunners[parseInt(requestedVersion)];
 
     if (!useSuperSchemaRunner) {
       return response
