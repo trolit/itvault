@@ -18,6 +18,22 @@
       </n-form-item>
 
       <n-form-item
+        maxlength="50"
+        label="Description"
+        :feedback="getError('description')"
+        :validation-status="hasError('description')"
+      >
+        <n-input
+          :autosize="{
+            minRows: 5,
+          }"
+          :value="description"
+          type="textarea"
+          placeholder="Short role description"
+        />
+      </n-form-item>
+
+      <n-form-item
         v-if="groupedPermissions"
         label="Permissions"
         :feedback="getError('permissions')"
@@ -144,9 +160,10 @@ const {
   currentFormData,
   setValidationErrors,
 } = defineForm<Form>(
-  { name: "", permissions: [] },
+  { name: "", description: "", permissions: [] },
   object({
     name: string().required(),
+    description: string().required().max(50),
     permissions: array().required(),
   })
 );
@@ -163,6 +180,7 @@ onBeforeMount(async () => {
 
 const {
   name: { value: name },
+  description: { value: description },
   permissions: { value: permissions },
 } = fields;
 
@@ -198,6 +216,20 @@ const { isNewRole, isInitialState, groupedPermissions } = defineComputed({
 });
 
 defineWatchers({
+  name: {
+    source: name,
+    handler: (value: string) => {
+      rolesStore.updateTabCurrentFormName(roleTab.value.roleId, value);
+    },
+  },
+
+  description: {
+    source: description,
+    handler: (value: string) => {
+      rolesStore.updateTabCurrentFormDescription(roleTab.value.roleId, value);
+    },
+  },
+
   permissions: {
     source: permissions,
     handler: (value: IRolePermissionDto[]) => {
@@ -205,13 +237,6 @@ defineWatchers({
     },
     options: {
       deep: true,
-    },
-  },
-
-  name: {
-    source: name,
-    handler: (value: string) => {
-      rolesStore.updateTabCurrentFormName(roleTab.value.roleId, value);
     },
   },
 });
@@ -249,6 +274,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
 
   const payload: AddEditRoleDto = {
     name: formData.name,
+    description: formData.description,
     permissions: formData.permissions.map(({ signature, enabled }) => ({
       signature,
       enabled,
