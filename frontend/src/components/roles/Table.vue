@@ -77,6 +77,7 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
   {
     title: "Description",
     key: "description",
+    className: "description",
     ellipsis: {
       tooltip: true,
     },
@@ -87,7 +88,7 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
           depth: description ? 1 : 3,
         },
         {
-          default: () => description || "Empty",
+          default: () => description || "No description",
         }
       ),
   },
