@@ -1,5 +1,5 @@
 export type ControllerImplementation = {
-  version: string;
+  version: number;
 
   details?: {
     url?: string;

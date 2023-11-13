@@ -10,15 +10,14 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export abstract class BaseController implements IBaseController {
   static ALL_VERSION_DEFINITIONS = {
-    v1_0: "1",
-    v1_1: "1.1",
-    v2_0: "2",
-    v2_1: "2.1",
+    v1: 1,
+    v2: 2,
+    v3: 3,
   };
 
   abstract implementations: ControllerImplementation[];
 
-  usedVersion: string;
+  usedVersion: number;
 
   get mapper() {
     return getInstanceOf<IEntityMapperService>(Di.EntityMapperService);
