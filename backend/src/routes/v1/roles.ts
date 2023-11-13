@@ -26,7 +26,7 @@ import { GetPermissionsController } from "@controllers/Role/GetPermissionsContro
 const rolesRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 rolesRouter.use(requireAuthentication);
@@ -36,7 +36,7 @@ rolesRouter.get(
   requirePermissions([Permission.CreateRole, Permission.UpdateRole], {
     condition: "OR",
   }),
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
 );
@@ -52,14 +52,14 @@ rolesRouter.post(
   "",
   requirePermissions([Permission.CreateRole]),
   isLimitNotReached(Di.RoleRepository, APP.TOTAL_ROLES_LIMIT),
-  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
+  validateRequestWith({ [v1]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
 
 rolesRouter.put(
   "/:id",
   requirePermissions([Permission.UpdateRole]),
-  validateRequestWith({ [v1_0]: useUpdateSuperSchema }),
+  validateRequestWith({ [v1]: useUpdateSuperSchema }),
   processRequestWith(UpdateController)
 );
 

@@ -28,7 +28,7 @@ import { GetBlueprintsController } from "@controllers/Bundle/GetBlueprintsContro
 const bundlesRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 bundlesRouter.use(
@@ -38,7 +38,7 @@ bundlesRouter.use(IsWorkspaceAvailable);
 
 bundlesRouter.get(
   "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
 );
@@ -52,27 +52,27 @@ bundlesRouter.get(
 
 bundlesRouter.get(
   "/:id/blueprints",
-  validateRequestWith({ [v1_0]: useGetBlueprintsSuperSchema }),
+  validateRequestWith({ [v1]: useGetBlueprintsSuperSchema }),
   processRequestWith(GetBlueprintsController)
 );
 
 bundlesRouter.get(
   "/:id/files",
-  validateRequestWith({ [v1_0]: useGetFilesSuperSchema }),
+  validateRequestWith({ [v1]: useGetFilesSuperSchema }),
   processRequestWith(GetFilesController)
 );
 
 bundlesRouter.post(
   "",
   requirePermissions([Permission.CreateBundle]),
-  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
+  validateRequestWith({ [v1]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
 
 bundlesRouter.post(
   "/:id/requeue",
   requirePermissions([Permission.RequeueBundle]),
-  validateRequestWith({ [v1_0]: useRequeueSchema }),
+  validateRequestWith({ [v1]: useRequeueSchema }),
   processRequestWith(RequeueController)
 );
 
