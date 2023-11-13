@@ -36,7 +36,7 @@ export abstract class BaseController implements IBaseController {
     }
 
     const implementation = this.implementations.find(
-      implementation => implementation.version === version
+      implementation => implementation.version === parseInt(version)
     );
 
     if (!implementation) {
