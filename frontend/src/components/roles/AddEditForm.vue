@@ -18,15 +18,17 @@
       </n-form-item>
 
       <n-form-item
-        maxlength="50"
         label="Description"
         :feedback="getError('description')"
         :validation-status="hasError('description')"
       >
         <n-input
+          clearable
+          show-count
           :autosize="{
-            minRows: 5,
+            minRows: 1,
           }"
+          maxlength="50"
           v-model:value="description"
           type="textarea"
           placeholder="Short role description"
