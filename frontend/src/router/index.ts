@@ -118,6 +118,8 @@ router.beforeEach(
 
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
+    // @NOTE consider testing "to.matched.length" (if equals 1) to eliminate wrong permissions check possibility (?)
+
     if (requiresAuth) {
       const authStore = useAuthStore();
 
