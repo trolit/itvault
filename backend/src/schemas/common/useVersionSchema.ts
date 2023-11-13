@@ -1,14 +1,14 @@
-import { object, string } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 
 import { setYupError } from "@helpers/yup/setError";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 export const useVersionSchema: (
-  versions: string[]
-) => SuperSchema.Fragment<{ version: string }> = (versions: string[]) =>
+  versions: number[]
+) => SuperSchema.Fragment<{ version: number }> = (versions: number[]) =>
   object({
-    version: string()
+    version: number()
       .required()
       .oneOf(versions, setYupError(CUSTOM_MESSAGES.GENERAL.WRONG_VERSION)),
   });
