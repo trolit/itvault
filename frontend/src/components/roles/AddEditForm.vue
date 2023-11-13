@@ -27,7 +27,7 @@
           :autosize="{
             minRows: 5,
           }"
-          :value="description"
+          v-model:value="description"
           type="textarea"
           placeholder="Short role description"
         />
