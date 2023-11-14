@@ -25,40 +25,40 @@ import { GetBySlugController } from "@controllers/Workspace/GetBySlugController"
 const workspacesRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 workspacesRouter.get(
   "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
 );
 
 workspacesRouter.get(
   "/:slug",
-  validateRequestWith({ [v1_0]: useGetBySlugSchema }),
+  validateRequestWith({ [v1]: useGetBySlugSchema }),
   processRequestWith(GetBySlugController)
 );
 
 workspacesRouter.get(
   "/:id/tree",
   requireWorkspaceAccess<NumberId>(({ params }) => params.id),
-  validateRequestWith({ [v1_0]: useGetTreeSuperSchema }),
+  validateRequestWith({ [v1]: useGetTreeSuperSchema }),
   processRequestWith(GetTreeController)
 );
 
 workspacesRouter.post(
   "",
   requirePermissions([Permission.CreateWorkspace]),
-  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
+  validateRequestWith({ [v1]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
 
 workspacesRouter.put(
   "/:id",
   requirePermissions([Permission.UpdateWorkspace]),
-  validateRequestWith({ [v1_0]: useUpdateSuperSchema }),
+  validateRequestWith({ [v1]: useUpdateSuperSchema }),
   processRequestWith(UpdateController)
 );
 

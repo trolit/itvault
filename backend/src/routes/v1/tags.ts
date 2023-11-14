@@ -11,12 +11,12 @@ import { GetAllController } from "@controllers/Tag/GetAllController";
 const tagsRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 tagsRouter.get(
   "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   processRequestWith(GetAllController)
 );
 

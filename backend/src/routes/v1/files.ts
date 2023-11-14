@@ -29,7 +29,7 @@ import { PatchRelativePathController } from "@controllers/File/PatchRelativePath
 const filesRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 filesRouter.use(
@@ -38,7 +38,7 @@ filesRouter.use(
 
 filesRouter.get(
   "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   processRequestWith(GetAllController)
 );
 
@@ -63,21 +63,21 @@ filesRouter.post(
 filesRouter.patch(
   "/:id/relative-path",
   requirePermissions([Permission.UpdateFileRelativePath]),
-  validateRequestWith({ [v1_0]: usePatchRelativePathSuperSchema }),
+  validateRequestWith({ [v1]: usePatchRelativePathSuperSchema }),
   processRequestWith(PatchRelativePathController)
 );
 
 filesRouter.patch(
   "/:id/filename",
   requirePermissions([Permission.UpdateFilename]),
-  validateRequestWith({ [v1_0]: usePatchFilenameSuperSchema }),
+  validateRequestWith({ [v1]: usePatchFilenameSuperSchema }),
   processRequestWith(PatchFilenameController)
 );
 
 filesRouter.delete(
   "/:id",
   requirePermissions([Permission.DeleteFile]),
-  validateRequestWith({ [v1_0]: useSoftDeleteSuperSchema }),
+  validateRequestWith({ [v1]: useSoftDeleteSuperSchema }),
   processRequestWith(SoftDeleteController)
 );
 

@@ -6,7 +6,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { formatError } from "@helpers/yup/formatError";
 
 export const validateRequestWith = <P, B, Q>(
-  superSchemaRunners: Record<string, SuperSchema.Runner<P, B, Q>>
+  superSchemaRunners: Record<number, SuperSchema.Runner<P, B, Q>>
 ) => {
   return async (
     request: CustomRequest<P, B, Q>,
@@ -27,7 +27,7 @@ export const validateRequestWith = <P, B, Q>(
       });
     }
 
-    const useSuperSchemaRunner = superSchemaRunners[requestedVersion];
+    const useSuperSchemaRunner = superSchemaRunners[parseInt(requestedVersion)];
 
     if (!useSuperSchemaRunner) {
       return response

@@ -29,21 +29,21 @@ import { UpdateManyController } from "@controllers/User/UpdateManyController";
 const usersRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 usersRouter.get(
   "",
   requireAuthentication,
   requirePermissions([Permission.ViewAllUsers]),
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
 );
 
 usersRouter.get(
   "/:id/notes",
-  validateRequestWith({ [v1_0]: useGetNotesSuperSchema }),
+  validateRequestWith({ [v1]: useGetNotesSuperSchema }),
   transformPagination({ defaultPerPage: GetNotesController.ITEMS_PER_PAGE }),
   processRequestWith(GetNotesController)
 );
@@ -52,13 +52,13 @@ usersRouter.post(
   "",
   requireAuthentication,
   requirePermissions([Permission.CreateUser]),
-  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
+  validateRequestWith({ [v1]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
 
 usersRouter.post(
   "/sign-up",
-  validateRequestWith({ [v1_0]: useSignUpSuperSchema }),
+  validateRequestWith({ [v1]: useSignUpSuperSchema }),
   processRequestWith(SignUpController)
 );
 
@@ -92,7 +92,7 @@ usersRouter.patch(
 
     return !isMissingPermission;
   }),
-  validateRequestWith({ [v1_0]: useUpdateManySuperSchema }),
+  validateRequestWith({ [v1]: useUpdateManySuperSchema }),
   processRequestWith(UpdateManyController)
 );
 
