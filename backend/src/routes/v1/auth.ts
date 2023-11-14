@@ -14,12 +14,12 @@ import { LogoutController } from "@controllers/Auth/LogoutController";
 const authRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 authRouter.post(
   "/sign-in",
-  validateRequestWith({ [v1_0]: useSignInSuperSchema }),
+  validateRequestWith({ [v1]: useSignInSuperSchema }),
   processRequestWith(SignInController)
 );
 

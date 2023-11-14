@@ -6,7 +6,7 @@ import { formatError } from "@helpers/yup/formatError";
 import { useVersionSchema } from "@schemas/common/useVersionSchema";
 
 // @NOTE do not mix with "validateRequestWith"
-export const requireEndpointVersion = <P, B, Q>(versions: string[]) => {
+export const requireEndpointVersion = <P, B, Q>(versions: number[]) => {
   return async (
     request: CustomRequest<P, B, Q>,
     response: Response,

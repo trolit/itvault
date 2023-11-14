@@ -23,7 +23,7 @@ import { GetAllController } from "@controllers/Blueprint/GetAllController";
 const blueprintsRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 blueprintsRouter.use(
@@ -32,7 +32,7 @@ blueprintsRouter.use(
 
 blueprintsRouter.get(
   "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
 );
@@ -40,7 +40,7 @@ blueprintsRouter.get(
 blueprintsRouter.post(
   "",
   requirePermissions([Permission.CreateBlueprint]),
-  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
+  validateRequestWith({ [v1]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
 
@@ -54,7 +54,7 @@ blueprintsRouter.delete(
 blueprintsRouter.put(
   "/:id",
   requirePermissions([Permission.UpdateBlueprint]),
-  validateRequestWith({ [v1_0]: useUpdateSuperSchema }),
+  validateRequestWith({ [v1]: useUpdateSuperSchema }),
   processRequestWith(UpdateController)
 );
 

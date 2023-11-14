@@ -21,12 +21,12 @@ import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
 const notesRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 notesRouter.get(
   "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   transformPagination(),
   processRequestWith(GetAllController)
 );
@@ -34,13 +34,13 @@ notesRouter.get(
 notesRouter.post(
   "",
   requirePermissions([Permission.CreateNote]),
-  validateRequestWith({ [v1_0]: useStoreSuperSchema }),
+  validateRequestWith({ [v1]: useStoreSuperSchema }),
   processRequestWith(StoreController)
 );
 
 notesRouter.put(
   "/:id",
-  validateRequestWith({ [v1_0]: useUpdateSuperSchema }),
+  validateRequestWith({ [v1]: useUpdateSuperSchema }),
   processRequestWith(UpdateController)
 );
 

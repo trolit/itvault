@@ -19,7 +19,7 @@ import { GetAllController } from "@controllers/Bucket/GetAllController";
 const bucketsRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 bucketsRouter.use(
@@ -29,14 +29,14 @@ bucketsRouter.use(IsWorkspaceAvailable);
 
 bucketsRouter.get(
   "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   processRequestWith(GetAllController)
 );
 
 bucketsRouter.post(
   "",
   requirePermissions([Permission.ManageVariantColoring]),
-  validateRequestWith({ [v1_0]: useUpsertSuperSchema }),
+  validateRequestWith({ [v1]: useUpsertSuperSchema }),
   processRequestWith(UpsertController)
 );
 

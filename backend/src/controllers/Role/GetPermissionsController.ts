@@ -13,7 +13,7 @@ import { PermissionToRole } from "@entities/PermissionToRole";
 
 import { BaseController } from "@controllers/BaseController";
 
-const { v1_0 } = BaseController.ALL_VERSION_DEFINITIONS;
+const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
 export class GetPermissionsController extends BaseController {
@@ -26,12 +26,12 @@ export class GetPermissionsController extends BaseController {
 
   implementations: ControllerImplementation[] = [
     {
-      version: v1_0,
+      version: v1,
       handle: this.v1.bind(this),
     },
   ];
 
-  static ALL_VERSIONS = [v1_0];
+  static ALL_VERSIONS = [v1];
 
   async v1(
     request: GetPermissionsControllerTypes.v1.Request,

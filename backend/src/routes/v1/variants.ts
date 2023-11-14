@@ -31,7 +31,7 @@ import { GetContentByIdController } from "@controllers/Variant/GetContentByIdCon
 const variantsRouter = Router();
 
 const {
-  ALL_VERSION_DEFINITIONS: { v1_0 },
+  ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
 variantsRouter.use(
@@ -40,7 +40,7 @@ variantsRouter.use(
 
 variantsRouter.get(
   "",
-  validateRequestWith({ [v1_0]: useGetAllSuperSchema }),
+  validateRequestWith({ [v1]: useGetAllSuperSchema }),
   processRequestWith(GetAllController)
 );
 
@@ -52,13 +52,13 @@ variantsRouter.get(
 
 variantsRouter.get(
   "/:id/blueprints",
-  validateRequestWith({ [v1_0]: useGetBlueprintsSuperSchema }),
+  validateRequestWith({ [v1]: useGetBlueprintsSuperSchema }),
   processRequestWith(GetBlueprintsController)
 );
 
 variantsRouter.get(
   "/:id/bucket",
-  validateRequestWith({ [v1_0]: useGetBucketControllerSuperSchema }),
+  validateRequestWith({ [v1]: useGetBucketControllerSuperSchema }),
   processRequestWith(GetBucketController)
 );
 
@@ -90,7 +90,7 @@ variantsRouter.delete(
 variantsRouter.put(
   "/:id/name",
   requirePermissions([Permission.UpdateVariantName]),
-  validateRequestWith({ [v1_0]: usePatchNameSuperSchema }),
+  validateRequestWith({ [v1]: usePatchNameSuperSchema }),
   processRequestWith(PatchNameController)
 );
 
