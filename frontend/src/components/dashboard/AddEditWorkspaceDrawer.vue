@@ -21,6 +21,22 @@
         </n-form-item>
 
         <n-form-item
+          label="Description"
+          :required="false"
+          :feedback="getError('description')"
+          :validation-status="hasError('description')"
+        >
+          <n-input
+            show-count
+            maxlength="255"
+            v-model:value="description"
+            type="textarea"
+            placeholder="Description"
+            :resizable="true"
+          />
+        </n-form-item>
+
+        <n-form-item
           label="Tags"
           :required="true"
           :feedback="getError('tags')"
@@ -109,6 +125,7 @@ const { itemToEdit } = storeToRefs(workspacesStore);
 
 const defaultFormData: AddEditWorkspaceDto = {
   name: "",
+  description: "",
   tags: [],
 };
 
@@ -129,6 +146,7 @@ const {
   defaultFormData,
   object({
     name: string().required(),
+    description: string().defined().max(255),
     tags: array()
       .of(
         string()
@@ -142,6 +160,7 @@ const {
 
 const {
   name: { value: name },
+  description: { value: description },
   tags: { value: tags },
 } = fields;
 
