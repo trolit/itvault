@@ -7,7 +7,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 
-import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
+import { noteResourceToObject } from "@helpers/noteResourceToObject";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -43,7 +43,7 @@ export class StoreController extends BaseController {
       },
     } = request;
 
-    const entityReference = resourceToEntityReference(name, id);
+    const entityReference = noteResourceToObject(name, id);
 
     if (!entityReference) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();

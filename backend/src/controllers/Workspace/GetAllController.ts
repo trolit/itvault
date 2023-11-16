@@ -46,7 +46,7 @@ export class GetAllController extends BaseController {
       skip,
       take,
       order: {
-        name: "asc",
+        pinnedAt: "desc",
       },
       where: {
         userToWorkspace: {

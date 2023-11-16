@@ -17,6 +17,13 @@ export class Workspace extends Base {
   @Column()
   slug: string;
 
+  @Column({
+    type: "datetime",
+    default: null,
+    nullable: true,
+  })
+  pinnedAt: Date | null;
+
   @OneToMany(
     () => UserToWorkspace,
     userToWorkspace => userToWorkspace.workspace

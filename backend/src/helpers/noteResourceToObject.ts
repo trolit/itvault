@@ -1,7 +1,7 @@
 import { NoteResource } from "@shared/types/enums/NoteResource";
 
-export const resourceToEntityReference = <T>(
-  resource: T,
+export const noteResourceToObject = (
+  resource: NoteResource,
   id: number | string
 ) => {
   switch (resource) {

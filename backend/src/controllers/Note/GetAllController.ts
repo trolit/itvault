@@ -11,7 +11,7 @@ import { Note } from "@entities/Note";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
-import { resourceToEntityReference } from "@helpers/resourceToEntityReference";
+import { noteResourceToObject } from "@helpers/noteResourceToObject";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -64,7 +64,7 @@ export class GetAllController extends BaseController {
       query: { id, resource, skip, take },
     } = request;
 
-    const entityReference = resourceToEntityReference(resource, id);
+    const entityReference = noteResourceToObject(resource, id);
 
     const where: FindOptionsWhere<Note> = {
       ...entityReference,
