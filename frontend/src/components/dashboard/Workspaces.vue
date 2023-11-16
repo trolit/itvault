@@ -102,6 +102,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
           h(NIcon, {
             component: PinIcon,
             color: "#FFFF66",
+            size: "large",
             style: { marginRight: "5px" },
           }),
           h("span", {}, row.name),
