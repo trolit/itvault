@@ -9,6 +9,7 @@ import { useBundlesStore } from "./bundles";
 import { useVariantsStore } from "./variants";
 import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
+import { useDateService } from "@/services/useDateService";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
@@ -42,7 +43,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     itemToEdit: null,
     isSiderCollapsed: false,
     generalLayoutSiderKey: "",
-    activeItem: { id: 0, name: "", slug: "", tags: [] },
+    activeItem: { id: 0, name: "", slug: "", pinnedAt: "", tags: [] },
     treeDataExpandedKeys: [],
     initialSearchParams: {},
   }),
@@ -162,6 +163,22 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.tree = isReload ? data : Array.prototype.concat(this.tree, data);
 
       return data;
+    },
+
+    async pin(id: number) {
+      return axios.post(
+        `v1/workspaces/${id}/pin`,
+        {},
+        { params: { version: 1 } }
+      );
+    },
+
+    async unpin(id: number) {
+      return axios.post(
+        `v1/workspaces/${id}/unpin`,
+        {},
+        { params: { version: 1 } }
+      );
     },
 
     async store(payload: AddEditWorkspaceDto) {
@@ -380,6 +397,34 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
 
       this.treeDataExpandedKeys.push(key);
+    },
+
+    addItemToTheTop(id: number) {
+      const dateService = useDateService();
+
+      const itemIndex = this.items.findIndex(workspace => workspace.id === id);
+
+      if (~itemIndex) {
+        this.items[itemIndex].pinnedAt = dateService.now().toISOString();
+
+        this.items.unshift(this.items.splice(itemIndex, 1)[0]);
+      }
+    },
+
+    unpinItem(id: number) {
+      const itemIndex = this.items.findIndex(workspace => workspace.id === id);
+
+      if (~itemIndex) {
+        this.items[itemIndex].pinnedAt = null;
+      }
+    },
+
+    removeItem(id: number) {
+      const itemIndex = this.items.findIndex(workspace => workspace.id === id);
+
+      if (~itemIndex) {
+        this.items.splice(itemIndex, 1);
+      }
     },
   },
 });

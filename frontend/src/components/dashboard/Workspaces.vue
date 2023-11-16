@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import {
+  Pin as PinIcon,
   Search as SearchIcon,
   Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
@@ -62,6 +63,7 @@ const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(true);
+const pinStatusUpdateItemId = ref(0);
 
 const defaultPagination = {
   page: 1,
@@ -95,6 +97,21 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   {
     title: "Name",
     key: "name",
+    render(row) {
+      if (row.pinnedAt) {
+        return h("span", {}, [
+          h(NIcon, {
+            component: PinIcon,
+            color: "#FFFF66",
+            size: "large",
+            style: { marginRight: "5px" },
+          }),
+          h("span", {}, row.name),
+        ]);
+      }
+
+      return row.name;
+    },
   },
 
   {
@@ -123,13 +140,13 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   {
     title: "Actions",
     key: "actions",
-    width: 140,
+    width: 150,
     render(row) {
       return h("div", { class: "actions-wrapper" }, [
         h(
           NButton,
           {
-            size: "small",
+            size: "tiny",
             onClick: event => {
               event.stopPropagation();
 
@@ -141,7 +158,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
         h(
           NButton,
           {
-            size: "small",
+            size: "tiny",
             onClick: event => {
               event.stopPropagation();
 
@@ -151,6 +168,21 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
             },
           },
           { default: () => "Open" }
+        ),
+        h(
+          NButton,
+          {
+            size: "tiny",
+            loading: pinStatusUpdateItemId.value === row.id,
+            onClick: async event => {
+              event.stopPropagation();
+
+              togglePinStatus(row.id, !!row.pinnedAt);
+            },
+          },
+          {
+            default: () => (row.pinnedAt ? "Unpin" : "Pin"),
+          }
         ),
       ]);
     },
@@ -196,5 +228,35 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
   }
 
   drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
+}
+
+async function togglePinStatus(id: number, isPinned: boolean) {
+  pinStatusUpdateItemId.value = id;
+
+  try {
+    isPinned ? await workspacesStore.unpin(id) : await workspacesStore.pin(id);
+
+    const { page } = pagination;
+
+    if (!page) {
+      return;
+    }
+
+    if (isPinned) {
+      workspacesStore.unpinItem(id);
+    } else {
+      page === 1
+        ? workspacesStore.addItemToTheTop(id)
+        : workspacesStore.removeItem(id);
+    }
+  } catch (error) {
+    console.log(error);
+
+    generalStore.messageProvider.success(
+      `Failed to ${isPinned ? "unpin" : "pin"} workspace!`
+    );
+  } finally {
+    pinStatusUpdateItemId.value = 0;
+  }
 }
 </script>
