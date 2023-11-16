@@ -164,6 +164,22 @@ export const useWorkspacesStore = defineStore("workspaces", {
       return data;
     },
 
+    async pin(id: number) {
+      return axios.post(
+        `v1/workspaces/${id}/pin`,
+        {},
+        { params: { version: 1 } }
+      );
+    },
+
+    async unpin(id: number) {
+      return axios.post(
+        `v1/workspaces/${id}/unpin`,
+        {},
+        { params: { version: 1 } }
+      );
+    },
+
     async store(payload: AddEditWorkspaceDto) {
       return axios.post<AddEditWorkspaceDto>("v1/workspaces", payload, {
         params: { version: 1 },
