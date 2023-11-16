@@ -231,6 +231,20 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
 async function togglePinStatus(id: number, isPinned: boolean) {
   try {
     isPinned ? await workspacesStore.unpin(id) : await workspacesStore.pin(id);
+
+    const { page } = pagination;
+
+    if (!page) {
+      return;
+    }
+
+    if (isPinned) {
+      workspacesStore.unpinItem(id);
+    } else {
+      page === 1
+        ? workspacesStore.addItemToTheTop(id)
+        : workspacesStore.removeItem(id);
+    }
   } catch (error) {
     console.log(error);
 

@@ -9,6 +9,7 @@ import { useBundlesStore } from "./bundles";
 import { useVariantsStore } from "./variants";
 import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
+import { useDateService } from "@/services/useDateService";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
@@ -396,6 +397,34 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
 
       this.treeDataExpandedKeys.push(key);
+    },
+
+    addItemToTheTop(id: number) {
+      const dateService = useDateService();
+
+      const itemIndex = this.items.findIndex(workspace => workspace.id === id);
+
+      if (~itemIndex) {
+        this.items[itemIndex].pinnedAt = dateService.now().toISOString();
+
+        this.items.unshift(this.items.splice(itemIndex, 1)[0]);
+      }
+    },
+
+    unpinItem(id: number) {
+      const itemIndex = this.items.findIndex(workspace => workspace.id === id);
+
+      if (~itemIndex) {
+        this.items[itemIndex].pinnedAt = null;
+      }
+    },
+
+    removeItem(id: number) {
+      const itemIndex = this.items.findIndex(workspace => workspace.id === id);
+
+      if (~itemIndex) {
+        this.items.splice(itemIndex, 1);
+      }
     },
   },
 });
