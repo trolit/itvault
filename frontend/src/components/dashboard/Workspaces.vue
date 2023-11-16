@@ -172,6 +172,11 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
           NButton,
           {
             size: "tiny",
+            onClick: event => {
+              event.stopPropagation();
+
+              togglePinStatus(row.id, !!row.pinnedAt);
+            },
           },
           {
             default: () => (row.pinnedAt ? "Unpin" : "Pin"),
@@ -221,5 +226,17 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
   }
 
   drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
+}
+
+async function togglePinStatus(id: number, isPinned: boolean) {
+  try {
+    isPinned ? await workspacesStore.unpin(id) : await workspacesStore.pin(id);
+  } catch (error) {
+    console.log(error);
+
+    generalStore.messageProvider.success(
+      `Failed to ${isPinned ? "unpin" : "pin"} workspace!`
+    );
+  }
 }
 </script>
