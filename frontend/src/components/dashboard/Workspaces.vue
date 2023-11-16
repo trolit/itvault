@@ -16,191 +16,155 @@
         </template>
       </n-input>
 
-      <n-data-table
-        remote
-        single-column
-        :max-height="420"
-        :data="workspacesStore.items"
-        :columns="columns"
-        :loading="isLoading"
-        :pagination="pagination"
-        :row-key="(row: IWorkspaceDto) => row.id"
-        @update:page="getWorkspaces"
-      >
-        <template #empty>
-          <n-empty description="No workspaces found." />
-        </template>
-      </n-data-table>
+      <n-scrollbar>
+        <n-list v-if="!isLoading">
+          <n-list-item
+            v-for="(item, index) in workspacesStore.items"
+            :key="`workspace-${index}`"
+          >
+            <n-thing :title="item.name">
+              <template v-if="item.pinnedAt" #header-extra>
+                <n-tooltip trigger="hover">
+                  <template #trigger>
+                    <n-icon :component="PinIcon" color="#FFFF66" :size="20" />
+                  </template>
+
+                  pinned {{ dateService.fromNow(item.pinnedAt) }}
+                </n-tooltip>
+              </template>
+
+              <template #description>
+                <n-space size="small" style="margin-top: 4px">
+                  <n-tag
+                    size="small"
+                    type="success"
+                    :key="`tag-${index}`"
+                    v-for="(tag, index) in item.tags"
+                  >
+                    {{ tag }}
+                  </n-tag>
+                </n-space>
+              </template>
+
+              <div :style="{ marginTop: '20px' }">
+                <n-text :depth="3">
+                  {{ item.description }}
+                </n-text>
+              </div>
+
+              <n-space justify="end">
+                <n-button secondary type="success" @click="open(item)">
+                  Open
+                </n-button>
+
+                <n-button-group>
+                  <require-permission :permission="Permission.UpdateWorkspace">
+                    <n-button
+                      tertiary
+                      @click="toggleAddEditWorkspaceDrawer(item)"
+                    >
+                      Edit information
+                    </n-button>
+                  </require-permission>
+
+                  <require-permission :permission="Permission.UpdateWorkspace">
+                    <n-button
+                      tertiary
+                      :loading="pinStatusUpdateItemId === item.id"
+                      @click="togglePinStatus(item.id, !!item.pinnedAt)"
+                    >
+                      {{ item.pinnedAt ? "Unpin" : "Pin" }}
+                    </n-button>
+                  </require-permission>
+                </n-button-group>
+              </n-space>
+            </n-thing>
+          </n-list-item>
+        </n-list>
+
+        <loading-section v-else />
+      </n-scrollbar>
+
+      <n-pagination
+        size="medium"
+        :page-slot="6"
+        :page="page"
+        :page-size="perPage"
+        :item-count="workspacesStore.total"
+        @update:page="value => getWorkspaces(value)"
+      />
     </template>
   </content-card>
 </template>
 
 <script setup lang="ts">
 import {
-  Pin as PinIcon,
+  NTag,
+  NList,
+  NIcon,
+  NInput,
+  NText,
+  NSpace,
+  NThing,
+  NButton,
+  NTooltip,
+  NListItem,
+  NButtonGroup,
+  NScrollbar,
+  NPagination,
+} from "naive-ui";
+import {
+  PinFilled as PinIcon,
   Search as SearchIcon,
   Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
 import { useRouter } from "vue-router";
 import cloneDeep from "lodash/cloneDeep";
-import { h, ref, type Ref, reactive, onBeforeMount } from "vue";
-import type { DataTableColumns, PaginationProps } from "naive-ui";
-import { NTag, NIcon, NInput, NEmpty, NButton, NDataTable } from "naive-ui";
+import { ref, onBeforeMount } from "vue";
 
 import ContentCard from "./ContentCard.vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const router = useRouter();
+const dateService = useDateService();
 const drawerStore = useDrawerStore();
 const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
+const perPage = 11;
+const page = ref(1);
 const isLoading = ref(true);
 const pinStatusUpdateItemId = ref(0);
 
-const defaultPagination = {
-  page: 1,
-  pageSize: 10,
-};
-
-const pagination: PaginationProps = reactive({
-  ...defaultPagination,
-  showSizePicker: true,
-  pageSizes: [10, 20, 40],
-  onChange: (page: number) => {
-    pagination.page = page;
-
-    getWorkspaces();
-  },
-  onUpdatePageSize: (pageSize: number) => {
-    pagination.pageSize = pageSize;
-    pagination.page = 1;
-
-    getWorkspaces();
-  },
-});
-
 onBeforeMount(async () => {
-  getWorkspaces();
+  getWorkspaces(1);
 });
 
-const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
-  DataTableColumns<IWorkspaceDto>
->([
-  {
-    title: "Name",
-    key: "name",
-    render(row) {
-      if (row.pinnedAt) {
-        return h("span", {}, [
-          h(NIcon, {
-            component: PinIcon,
-            color: "#FFFF66",
-            size: "large",
-            style: { marginRight: "5px" },
-          }),
-          h("span", {}, row.name),
-        ]);
-      }
+function open(workspace: IWorkspaceDto) {
+  workspacesStore.setActiveItem(workspace);
 
-      return row.name;
-    },
-  },
+  router.push({ path: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}` });
+}
 
-  {
-    title: "Tags",
-    key: "tags",
-    width: "30%",
-    className: "tags-row",
-    render(row) {
-      const tags = row.tags.map(tagKey => {
-        return h(
-          NTag,
-          {
-            size: "small",
-            type: "info",
-          },
-          {
-            default: () => tagKey,
-          }
-        );
-      });
+async function getWorkspaces(newPage: number) {
+  page.value = newPage;
 
-      return tags;
-    },
-  },
-
-  {
-    title: "Actions",
-    key: "actions",
-    width: 150,
-    render(row) {
-      return h("div", { class: "actions-wrapper" }, [
-        h(
-          NButton,
-          {
-            size: "tiny",
-            onClick: event => {
-              event.stopPropagation();
-
-              toggleAddEditWorkspaceDrawer(row);
-            },
-          },
-          { default: () => "Edit" }
-        ),
-        h(
-          NButton,
-          {
-            size: "tiny",
-            onClick: event => {
-              event.stopPropagation();
-
-              workspacesStore.setActiveItem(row);
-
-              router.push({ path: `${ROUTE_WORKSPACES_NAME}/${row.slug}` });
-            },
-          },
-          { default: () => "Open" }
-        ),
-        h(
-          NButton,
-          {
-            size: "tiny",
-            loading: pinStatusUpdateItemId.value === row.id,
-            onClick: async event => {
-              event.stopPropagation();
-
-              togglePinStatus(row.id, !!row.pinnedAt);
-            },
-          },
-          {
-            default: () => (row.pinnedAt ? "Unpin" : "Pin"),
-          }
-        ),
-      ]);
-    },
-  },
-]);
-
-async function getWorkspaces() {
   isLoading.value = true;
-
-  const { total } = workspacesStore;
 
   try {
     await workspacesStore.getAll({
-      page: pagination.page || defaultPagination.page,
-      perPage: pagination.pageSize || defaultPagination.pageSize,
+      page: newPage,
+      perPage,
     });
-
-    pagination.itemCount = total;
   } catch (error) {
     console.log(error);
 
@@ -236,16 +200,10 @@ async function togglePinStatus(id: number, isPinned: boolean) {
   try {
     isPinned ? await workspacesStore.unpin(id) : await workspacesStore.pin(id);
 
-    const { page } = pagination;
-
-    if (!page) {
-      return;
-    }
-
     if (isPinned) {
       workspacesStore.unpinItem(id);
     } else {
-      page === 1
+      page.value === 1
         ? workspacesStore.addItemToTheTop(id)
         : workspacesStore.removeItem(id);
     }
