@@ -2,6 +2,7 @@
   --workspaces-card-input-height: 40px;
   --workspaces-card-input-margin-bottom-height: 10px;
   /* see Workspaces.vue */
+  --workspaces-card-list-height: 500px;
   --workspaces-card-content-height: calc(
     500px + var(--workspaces-card-input-height) +
       var(--workspaces-card-input-margin-bottom-height)
@@ -121,31 +122,31 @@
             .n-thing-main__content {
               .n-input {
                 height: var(--workspaces-card-input-height);
-                margin-bottom: var(
-                  --workspaces-card-input-margin-bottom-height
-                );
+                margin-bottom: 5px;
               }
 
               .content {
-                height: var(--workspaces-card-content-height);
+                .loading {
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  height: var(--workspaces-card-list-height);
+                }
 
-                .n-data-table {
-                  min-height: 250px;
+                .n-scrollbar {
+                  max-height: var(--workspaces-card-list-height);
 
-                  .n-data-table__pagination {
-                    justify-content: center;
+                  .n-list {
+                    .n-list-item {
+                      margin-right: 15px;
+                    }
                   }
+                }
 
-                  .tags-row {
-                    gap: 5px;
-                    display: flex;
-                    flex-wrap: wrap;
-                  }
-
-                  .actions-wrapper {
-                    gap: 5px;
-                    display: flex;
-                  }
+                .n-pagination {
+                  padding: 10px 0 5px 0;
+                  justify-content: center;
                 }
               }
             }
