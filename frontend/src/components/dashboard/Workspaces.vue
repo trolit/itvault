@@ -40,7 +40,13 @@
 
                 <n-tooltip v-if="item.pinnedAt" trigger="hover">
                   <template #trigger>
-                    <n-icon :component="PinIcon" color="#FFFF66" :size="20" />
+                    <n-icon-wrapper
+                      :size="25"
+                      color="#44BBFF"
+                      :border-radius="5"
+                    >
+                      <n-icon :component="PinIcon" color="#225D7F" :size="20" />
+                    </n-icon-wrapper>
                   </template>
 
                   pinned {{ dateService.fromNow(item.pinnedAt) }}
@@ -126,6 +132,7 @@ import {
   NListItem,
   NScrollbar,
   NPagination,
+  NIconWrapper,
 } from "naive-ui";
 import {
   PinFilled as PinIcon,
