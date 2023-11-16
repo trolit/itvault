@@ -5,7 +5,7 @@ export interface IWorkspaceDto {
 
   slug: string;
 
-  pinnedAt: string;
+  pinnedAt: string | null;
 
   tags: string[];
 }
