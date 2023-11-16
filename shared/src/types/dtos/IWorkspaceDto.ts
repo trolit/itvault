@@ -3,6 +3,8 @@ export interface IWorkspaceDto {
 
   name: string;
 
+  description: string;
+
   slug: string;
 
   pinnedAt: string | null;

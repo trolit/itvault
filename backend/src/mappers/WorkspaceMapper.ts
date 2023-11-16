@@ -9,13 +9,20 @@ export class WorkspaceMapper
 {
   id: number;
   name: string;
+  description: string;
   slug: string;
   tags: string[];
   pinnedAt: string;
 
   constructor(
     data: Workspace,
-    keys: (keyof Workspace)[] = ["id", "name", "pinnedAt", "slug"]
+    keys: (keyof Workspace)[] = [
+      "id",
+      "name",
+      "description",
+      "pinnedAt",
+      "slug",
+    ]
   ) {
     super(data, keys);
 
