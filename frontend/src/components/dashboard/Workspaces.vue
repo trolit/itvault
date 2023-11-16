@@ -10,7 +10,7 @@
 
     <template #content>
       <!-- @TODO show input only when there are at least 3 pages -->
-      <n-input clearable placeholder="Type name or tag to filter">
+      <n-input disabled clearable placeholder="Type name or tag to filter">
         <template #prefix>
           <n-icon :component="SearchIcon" />
         </template>
