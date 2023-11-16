@@ -1,4 +1,5 @@
 import { Not } from "typeorm";
+import sanitizeHtml from "sanitize-html";
 import { SuperSchema } from "types/SuperSchema";
 import { array, boolean, object, string } from "yup";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
@@ -45,7 +46,10 @@ export const useAddEditBodySchema: (
         return true;
       }),
 
-    description: string().required().max(50),
+    description: string()
+      .required()
+      .transform(value => sanitizeHtml(value))
+      .max(255),
 
     permissions: array()
       .of(permissionSchema)
