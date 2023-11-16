@@ -23,13 +23,37 @@
             :key="`workspace-${index}`"
           >
             <n-thing :title="item.name">
-              <template v-if="item.pinnedAt" #header-extra>
-                <n-tooltip trigger="hover">
+              <template #header-extra>
+                <require-permission
+                  v-if="!item.pinnedAt"
+                  :permission="Permission.UpdateWorkspace"
+                >
+                  <n-button
+                    size="tiny"
+                    tertiary
+                    :loading="pinStatusUpdateItemId === item.id"
+                    @click="togglePinStatus(item)"
+                  >
+                    Pin
+                  </n-button>
+                </require-permission>
+
+                <n-tooltip v-if="item.pinnedAt" trigger="hover">
                   <template #trigger>
                     <n-icon :component="PinIcon" color="#FFFF66" :size="20" />
                   </template>
 
                   pinned {{ dateService.fromNow(item.pinnedAt) }}
+
+                  <require-permission :permission="Permission.UpdateWorkspace">
+                    <n-button
+                      secondary
+                      :loading="pinStatusUpdateItemId === item.id"
+                      @click="togglePinStatus(item)"
+                    >
+                      Unpin?
+                    </n-button>
+                  </require-permission>
                 </n-tooltip>
               </template>
 
@@ -54,29 +78,17 @@
 
               <n-space justify="end">
                 <n-button secondary type="success" @click="open(item)">
-                  Open
+                  Go to
                 </n-button>
 
-                <n-button-group>
-                  <require-permission :permission="Permission.UpdateWorkspace">
-                    <n-button
-                      tertiary
-                      @click="toggleAddEditWorkspaceDrawer(item)"
-                    >
-                      Edit information
-                    </n-button>
-                  </require-permission>
-
-                  <require-permission :permission="Permission.UpdateWorkspace">
-                    <n-button
-                      tertiary
-                      :loading="pinStatusUpdateItemId === item.id"
-                      @click="togglePinStatus(item.id, !!item.pinnedAt)"
-                    >
-                      {{ item.pinnedAt ? "Unpin" : "Pin" }}
-                    </n-button>
-                  </require-permission>
-                </n-button-group>
+                <require-permission :permission="Permission.UpdateWorkspace">
+                  <n-button
+                    tertiary
+                    @click="toggleAddEditWorkspaceDrawer(item)"
+                  >
+                    Edit information
+                  </n-button>
+                </require-permission>
               </n-space>
             </n-thing>
           </n-list-item>
@@ -109,7 +121,6 @@ import {
   NButton,
   NTooltip,
   NListItem,
-  NButtonGroup,
   NScrollbar,
   NPagination,
 } from "naive-ui";
@@ -194,18 +205,22 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
   drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
 }
 
-async function togglePinStatus(id: number, isPinned: boolean) {
-  pinStatusUpdateItemId.value = id;
+async function togglePinStatus(workspace: IWorkspaceDto) {
+  const isPinned = !!workspace.pinnedAt;
+
+  pinStatusUpdateItemId.value = workspace.id;
 
   try {
-    isPinned ? await workspacesStore.unpin(id) : await workspacesStore.pin(id);
+    isPinned
+      ? await workspacesStore.unpin(workspace.id)
+      : await workspacesStore.pin(workspace.id);
 
     if (isPinned) {
-      workspacesStore.unpinItem(id);
+      workspacesStore.unpinItem(workspace.id);
     } else {
       page.value === 1
-        ? workspacesStore.addItemToTheTop(id)
-        : workspacesStore.removeItem(id);
+        ? workspacesStore.addItemToTheTop(workspace.id)
+        : workspacesStore.removeItem(workspace.id);
     }
   } catch (error) {
     console.log(error);
