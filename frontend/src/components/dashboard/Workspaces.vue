@@ -63,6 +63,7 @@ const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(true);
+const pinStatusUpdateItemId = ref(0);
 
 const defaultPagination = {
   page: 1,
@@ -172,7 +173,8 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
           NButton,
           {
             size: "tiny",
-            onClick: event => {
+            loading: pinStatusUpdateItemId.value === row.id,
+            onClick: async event => {
               event.stopPropagation();
 
               togglePinStatus(row.id, !!row.pinnedAt);
@@ -229,6 +231,8 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
 }
 
 async function togglePinStatus(id: number, isPinned: boolean) {
+  pinStatusUpdateItemId.value = id;
+
   try {
     isPinned ? await workspacesStore.unpin(id) : await workspacesStore.pin(id);
 
@@ -251,6 +255,8 @@ async function togglePinStatus(id: number, isPinned: boolean) {
     generalStore.messageProvider.success(
       `Failed to ${isPinned ? "unpin" : "pin"} workspace!`
     );
+  } finally {
+    pinStatusUpdateItemId.value = 0;
   }
 }
 </script>
