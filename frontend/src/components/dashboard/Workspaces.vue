@@ -45,9 +45,12 @@
 
                   pinned {{ dateService.fromNow(item.pinnedAt) }}
 
+                  &nbsp;
+
                   <require-permission :permission="Permission.UpdateWorkspace">
                     <n-button
                       secondary
+                      type="warning"
                       :loading="pinStatusUpdateItemId === item.id"
                       @click="togglePinStatus(item)"
                     >
