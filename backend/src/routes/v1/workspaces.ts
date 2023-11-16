@@ -10,15 +10,15 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useGetBySlugSchema } from "@schemas/Workspace/useGetBySlugSchema";
-import { useStoreSuperSchema } from "@schemas/Workspace/useStoreSuperSchema";
-import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
 import { useGetTreeSuperSchema } from "@schemas/Workspace/useGetTreeSuperSchema";
+import { useTogglePinSuperSchema } from "@schemas/Workspace/useTogglePinSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/Workspace/StoreController";
-import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { UpdateController } from "@controllers/Workspace/UpdateController";
+import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
 import { GetBySlugController } from "@controllers/Workspace/GetBySlugController";
 
@@ -49,9 +49,16 @@ workspacesRouter.get(
 );
 
 workspacesRouter.post(
-  "",
-  requirePermissions([Permission.CreateWorkspace]),
-  validateRequestWith({ [v1]: useStoreSuperSchema }),
+  "/:id/pin",
+  requirePermissions([Permission.UpdateWorkspace]),
+  validateRequestWith({ [v1]: useTogglePinSuperSchema }),
+  processRequestWith(StoreController)
+);
+
+workspacesRouter.post(
+  "/:id/unpin",
+  requirePermissions([Permission.UpdateWorkspace]),
+  validateRequestWith({ [v1]: useTogglePinSuperSchema }),
   processRequestWith(StoreController)
 );
 
