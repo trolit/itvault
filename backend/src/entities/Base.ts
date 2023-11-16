@@ -9,7 +9,6 @@ export class Base {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // @TODO consider using "datetime2" instead of "datetime"
   @CreateDateColumn()
   createdAt: Date;
 
