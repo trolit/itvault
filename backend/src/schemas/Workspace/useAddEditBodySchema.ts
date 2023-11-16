@@ -1,4 +1,5 @@
 import uniq from "lodash/uniq";
+import sanitizeHtml from "sanitize-html";
 import { array, object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
@@ -40,7 +41,11 @@ export const useAddEditBodySchema: (
         return true;
       }),
 
-    description: string().trim().required().max(255),
+    description: string()
+      .trim()
+      .required()
+      .transform(value => sanitizeHtml(value))
+      .max(255),
 
     tags: array()
       .of(
