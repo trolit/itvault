@@ -15,6 +15,9 @@ export class Workspace extends Base {
   name: string;
 
   @Column()
+  description: string;
+
+  @Column()
   slug: string;
 
   @Column({

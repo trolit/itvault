@@ -24,7 +24,7 @@ export class WorkspaceService implements IWorkspaceService {
   ): Promise<TransactionResult<Workspace>> {
     const transaction = await this._workspaceRepository.useTransaction();
 
-    const { name, tags } = data;
+    const { name, description, tags } = data;
 
     try {
       const tagEntities = await this._tagRepository.transactionSaveMany(
@@ -34,6 +34,7 @@ export class WorkspaceService implements IWorkspaceService {
 
       const workspace = await transaction.manager.save(Workspace, {
         name,
+        description,
         slug: kebabCase(name),
         tagToWorkspace: tagEntities.map(tagEntity => ({ tag: tagEntity })),
       });
@@ -60,7 +61,7 @@ export class WorkspaceService implements IWorkspaceService {
   ): Promise<TransactionResult<Workspace>> {
     const transaction = await this._workspaceRepository.useTransaction();
 
-    const { name, tags } = data;
+    const { name, description, tags } = data;
 
     try {
       const currentWorkspace = await transaction.manager.findOneByOrFail(
@@ -78,6 +79,7 @@ export class WorkspaceService implements IWorkspaceService {
       const updatedWorkspace = await transaction.manager.save(Workspace, {
         ...currentWorkspace,
         name,
+        description,
         slug: kebabCase(name),
         tagToWorkspace: tagEntities.map(tagEntity => ({ tag: tagEntity })),
       });
