@@ -27,6 +27,8 @@
           :validation-status="hasError('description')"
         >
           <n-input
+            show-count
+            maxlength="255"
             v-model:value="description"
             type="textarea"
             placeholder="Description"
