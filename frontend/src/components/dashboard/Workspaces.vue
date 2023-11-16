@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import {
+  Pin as PinIcon,
   Search as SearchIcon,
   Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
@@ -95,6 +96,20 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   {
     title: "Name",
     key: "name",
+    render(row) {
+      if (row.pinnedAt) {
+        return h("span", {}, [
+          h(NIcon, {
+            component: PinIcon,
+            color: "#FFFF66",
+            style: { marginRight: "5px" },
+          }),
+          h("span", {}, row.name),
+        ]);
+      }
+
+      return row.name;
+    },
   },
 
   {
@@ -123,13 +138,13 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
   {
     title: "Actions",
     key: "actions",
-    width: 140,
+    width: 150,
     render(row) {
       return h("div", { class: "actions-wrapper" }, [
         h(
           NButton,
           {
-            size: "small",
+            size: "tiny",
             onClick: event => {
               event.stopPropagation();
 
@@ -141,7 +156,7 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
         h(
           NButton,
           {
-            size: "small",
+            size: "tiny",
             onClick: event => {
               event.stopPropagation();
 
@@ -151,6 +166,15 @@ const columns: Ref<DataTableColumns<IWorkspaceDto>> = ref<
             },
           },
           { default: () => "Open" }
+        ),
+        h(
+          NButton,
+          {
+            size: "tiny",
+          },
+          {
+            default: () => (row.pinnedAt ? "Unpin" : "Pin"),
+          }
         ),
       ]);
     },
