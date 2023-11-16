@@ -47,7 +47,7 @@ export const useAddEditBodySchema: (
       }),
 
     description: string()
-      .required()
+      .defined()
       .transform(value => sanitizeHtml(value))
       .max(255),
 

@@ -43,7 +43,7 @@ export const useAddEditBodySchema: (
 
     description: string()
       .trim()
-      .required()
+      .defined()
       .transform(value => sanitizeHtml(value))
       .max(255),
 
