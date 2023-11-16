@@ -40,6 +40,8 @@ export const useAddEditBodySchema: (
         return true;
       }),
 
+    description: string().trim().required().max(255),
+
     tags: array()
       .of(
         string()
