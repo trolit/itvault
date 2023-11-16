@@ -42,7 +42,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     itemToEdit: null,
     isSiderCollapsed: false,
     generalLayoutSiderKey: "",
-    activeItem: { id: 0, name: "", slug: "", tags: [] },
+    activeItem: { id: 0, name: "", slug: "", pinnedAt: "", tags: [] },
     treeDataExpandedKeys: [],
     initialSearchParams: {},
   }),
