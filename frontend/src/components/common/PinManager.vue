@@ -16,14 +16,12 @@
 
     <n-tooltip v-if="pinnedAt" trigger="hover">
       <template #trigger>
-        <n-icon-wrapper :size="25" color="#66CC99" :border-radius="5">
-          <n-icon :component="PinIcon" color="#28513D" :size="20" />
+        <n-icon-wrapper :size="22" color="#66CC99" :border-radius="5">
+          <n-icon :component="PinIcon" color="#28513D" :size="16" />
         </n-icon-wrapper>
       </template>
 
-      pinned {{ dateService.fromNow(pinnedAt) }}
-
-      &nbsp;
+      (pinned {{ dateService.fromNow(pinnedAt) }}) &nbsp;
 
       <require-permission :permission="Permission.UpdateWorkspace">
         <n-button
