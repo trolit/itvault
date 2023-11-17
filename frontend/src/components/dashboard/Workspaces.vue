@@ -24,46 +24,12 @@
           >
             <n-thing :title="item.name">
               <template #header-extra>
-                <require-permission
-                  v-if="!item.pinnedAt"
-                  :permission="Permission.UpdateWorkspace"
-                >
-                  <n-button
-                    size="tiny"
-                    tertiary
-                    :loading="pinStatusUpdateItemId === item.id"
-                    @click="togglePinStatus(item)"
-                  >
-                    Pin
-                  </n-button>
-                </require-permission>
-
-                <n-tooltip v-if="item.pinnedAt" trigger="hover">
-                  <template #trigger>
-                    <n-icon-wrapper
-                      :size="25"
-                      color="#44BBFF"
-                      :border-radius="5"
-                    >
-                      <n-icon :component="PinIcon" color="#225D7F" :size="20" />
-                    </n-icon-wrapper>
-                  </template>
-
-                  pinned {{ dateService.fromNow(item.pinnedAt) }}
-
-                  &nbsp;
-
-                  <require-permission :permission="Permission.UpdateWorkspace">
-                    <n-button
-                      secondary
-                      type="warning"
-                      :loading="pinStatusUpdateItemId === item.id"
-                      @click="togglePinStatus(item)"
-                    >
-                      Unpin?
-                    </n-button>
-                  </require-permission>
-                </n-tooltip>
+                <pin-manager
+                  :pinned-at="item.pinnedAt"
+                  :is-loading="pinStatusUpdateItemId === item.id"
+                  @pin="togglePinStatus(item)"
+                  @unpin="togglePinStatus(item)"
+                />
               </template>
 
               <template #description>
@@ -128,14 +94,11 @@ import {
   NSpace,
   NThing,
   NButton,
-  NTooltip,
   NListItem,
   NScrollbar,
   NPagination,
-  NIconWrapper,
 } from "naive-ui";
 import {
-  PinFilled as PinIcon,
   Search as SearchIcon,
   Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
@@ -148,15 +111,14 @@ import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
-import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
+import PinManager from "@/components/common/PinManager.vue";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const router = useRouter();
-const dateService = useDateService();
 const drawerStore = useDrawerStore();
 const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
