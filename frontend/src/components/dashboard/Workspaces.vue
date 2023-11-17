@@ -2,8 +2,8 @@
   <content-card :icon="WorkspacesIcon" title="Workspaces">
     <template #header-extra>
       <require-permission :permission="Permission.CreateWorkspace">
-        <n-button secondary type="info" @click="toggleAddEditWorkspaceDrawer()">
-          New workspace
+        <n-button size="small" @click="toggleAddEditWorkspaceDrawer()">
+          <n-icon :component="AddIcon" :size="25" />
         </n-button>
       </require-permission>
     </template>
@@ -99,6 +99,7 @@ import {
   NPagination,
 } from "naive-ui";
 import {
+  Add as AddIcon,
   Search as SearchIcon,
   Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
