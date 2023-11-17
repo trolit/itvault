@@ -7,7 +7,5 @@ export namespace UnpinControllerTypes {
     export type EntityFields = PinControllerTypes.v1.EntityFields;
 
     export type Request = CustomRequest<Params>;
-
-    export type Response = CustomResponse<void>;
   }
 }

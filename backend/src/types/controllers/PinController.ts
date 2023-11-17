@@ -11,7 +11,5 @@ export namespace PinControllerTypes {
       Pick<Blueprint, "id" | "pinnedAt">;
 
     export type Request = CustomRequest<Params>;
-
-    export type Response = CustomResponse<void>;
   }
 }
