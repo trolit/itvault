@@ -10,6 +10,7 @@ export class BlueprintMapper
   id: number;
   name: string;
   description: string;
+  pinnedAt: string | null;
   color: string;
   createdAt: string;
   updatedAt: string;
@@ -20,6 +21,7 @@ export class BlueprintMapper
       "id",
       "name",
       "description",
+      "pinnedAt",
       "color",
       "createdAt",
       "updatedAt",

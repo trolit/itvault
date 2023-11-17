@@ -5,6 +5,8 @@ export interface IBlueprintDto {
 
   description: string;
 
+  pinnedAt: string | null;
+
   color: string;
 
   createdAt: string;
