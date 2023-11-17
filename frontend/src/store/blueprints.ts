@@ -113,6 +113,22 @@ export const useBlueprintsStore = defineStore("blueprints", {
       }
     },
 
+    async pin(id: number) {
+      return axios.post(
+        `v1/blueprints/${id}/pin`,
+        {},
+        { params: { version: 1 } }
+      );
+    },
+
+    async unpin(id: number) {
+      return axios.post(
+        `v1/blueprints/${id}/unpin`,
+        {},
+        { params: { version: 1 } }
+      );
+    },
+
     resetState() {
       this.total = 0;
       this.items = [];
