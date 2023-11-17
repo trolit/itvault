@@ -18,9 +18,6 @@ export const getRepositoryByOriginalUrl = <T>(
 
   const resource = resourceInPlural.slice(0, -1);
 
-  console.log("xd");
-  console.log(originalUrl.split("/"));
-
   const dependency = `I${capitalize(resource)}Repository`;
 
   if (!container.isRegistered(dependency)) {
