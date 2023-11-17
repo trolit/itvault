@@ -15,6 +15,13 @@ export class Blueprint extends Base {
   })
   description: string;
 
+  @Column({
+    type: "datetime",
+    default: null,
+    nullable: true,
+  })
+  pinnedAt: Date | null;
+
   @Column()
   color!: string;
 
