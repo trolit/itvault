@@ -7,11 +7,13 @@ import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
+import { useGeneralStore } from "./general";
 
 interface IState {
   total: number;
   items: IBlueprintDto[];
   itemToEdit: IBlueprintDto | null;
+  pinStatusUpdateItemId: number;
 }
 
 export const useBlueprintsStore = defineStore("blueprints", {
@@ -19,6 +21,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
     total: 0,
     items: [],
     itemToEdit: null,
+    pinStatusUpdateItemId: 0,
   }),
 
   getters: {
@@ -114,23 +117,57 @@ export const useBlueprintsStore = defineStore("blueprints", {
     },
 
     async pin(id: number) {
+      const generalStore = useGeneralStore();
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
-      return axios.post(
-        `v1/blueprints/${id}/pin`,
-        {},
-        { params: { version: 1, workspaceId } }
-      );
+      if (this.pinStatusUpdateItemId) {
+        return;
+      }
+
+      this.pinStatusUpdateItemId = id;
+
+      try {
+        await axios.post(
+          `v1/blueprints/${id}/pin`,
+          {},
+          { params: { version: 1, workspaceId } }
+        );
+
+        generalStore.messageProvider.success(`Blueprint pinned!`);
+      } catch (error) {
+        console.log(error);
+
+        generalStore.messageProvider.error(`Failed to pin blueprint!`);
+      } finally {
+        this.pinStatusUpdateItemId = 0;
+      }
     },
 
     async unpin(id: number) {
+      const generalStore = useGeneralStore();
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
-      return axios.post(
-        `v1/blueprints/${id}/unpin`,
-        {},
-        { params: { version: 1, workspaceId } }
-      );
+      if (this.pinStatusUpdateItemId) {
+        return;
+      }
+
+      this.pinStatusUpdateItemId = id;
+
+      try {
+        axios.post(
+          `v1/blueprints/${id}/unpin`,
+          {},
+          { params: { version: 1, workspaceId } }
+        );
+
+        generalStore.messageProvider.success(`Blueprint unpinned!`);
+      } catch (error) {
+        console.log(error);
+
+        generalStore.messageProvider.error(`Failed to unpin blueprint!`);
+      } finally {
+        this.pinStatusUpdateItemId = 0;
+      }
     },
 
     resetState() {
