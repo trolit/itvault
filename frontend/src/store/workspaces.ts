@@ -6,6 +6,7 @@ import type { RouteLocationNormalizedLoaded } from "vue-router";
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
+import { useGeneralStore } from "./general";
 import { useVariantsStore } from "./variants";
 import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
@@ -32,6 +33,7 @@ interface IState {
   generalLayoutSiderKey: string;
   treeDataExpandedKeys: (string | number)[];
   initialSearchParams: Partial<WorkspaceSearchParams>;
+  pinStatusUpdateItemId: number;
 }
 
 export const useWorkspacesStore = defineStore("workspaces", {
@@ -53,6 +55,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
     treeDataExpandedKeys: [],
     initialSearchParams: {},
+    pinStatusUpdateItemId: 0,
   }),
 
   getters: {
@@ -173,19 +176,55 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     async pin(id: number) {
-      return axios.post(
-        `v1/workspaces/${id}/pin`,
-        {},
-        { params: { version: 1 } }
-      );
+      const generalStore = useGeneralStore();
+
+      if (this.pinStatusUpdateItemId) {
+        return;
+      }
+
+      this.pinStatusUpdateItemId = id;
+
+      try {
+        await axios.post(
+          `v1/workspaces/${id}/pin`,
+          {},
+          { params: { version: 1 } }
+        );
+
+        generalStore.messageProvider.success(`Workspace pinned!`);
+      } catch (error) {
+        console.log(error);
+
+        generalStore.messageProvider.error(`Failed to pin workspace!`);
+      } finally {
+        this.pinStatusUpdateItemId = 0;
+      }
     },
 
     async unpin(id: number) {
-      return axios.post(
-        `v1/workspaces/${id}/unpin`,
-        {},
-        { params: { version: 1 } }
-      );
+      const generalStore = useGeneralStore();
+
+      if (this.pinStatusUpdateItemId) {
+        return;
+      }
+
+      this.pinStatusUpdateItemId = id;
+
+      try {
+        await axios.post(
+          `v1/workspaces/${id}/unpin`,
+          {},
+          { params: { version: 1 } }
+        );
+
+        generalStore.messageProvider.success(`Workspace unpinned!`);
+      } catch (error) {
+        console.log(error);
+
+        generalStore.messageProvider.error(`Failed to unpin workspace!`);
+      } finally {
+        this.pinStatusUpdateItemId = 0;
+      }
     },
 
     async store(payload: AddEditWorkspaceDto) {
@@ -406,6 +445,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.treeDataExpandedKeys.push(key);
     },
 
+    // @TODO replace with sort in next PR
     addItemToTheTop(id: number) {
       const dateService = useDateService();
 

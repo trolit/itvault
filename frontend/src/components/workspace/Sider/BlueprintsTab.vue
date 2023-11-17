@@ -27,7 +27,18 @@
             </div>
 
             <n-space vertical size="small">
-              {{ blueprint.name }}
+              <n-space justify="space-between">
+                {{ blueprint.name }}
+
+                <pin-manager
+                  :pinned-at="blueprint.pinnedAt"
+                  :is-loading="
+                    blueprintsStore.pinStatusUpdateItemId === blueprint.id
+                  "
+                  @pin="blueprintsStore.pin(blueprint.id)"
+                  @unpin="blueprintsStore.unpin(blueprint.id)"
+                />
+              </n-space>
 
               <small>
                 <n-text depth="3" :style="{ whiteSpace: 'pre-wrap' }">
@@ -75,6 +86,7 @@ import Toolbar from "./Toolbar.vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
+import PinManager from "@/components/common/PinManager.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 

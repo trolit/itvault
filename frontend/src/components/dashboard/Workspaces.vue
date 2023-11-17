@@ -2,8 +2,8 @@
   <content-card :icon="WorkspacesIcon" title="Workspaces">
     <template #header-extra>
       <require-permission :permission="Permission.CreateWorkspace">
-        <n-button secondary type="info" @click="toggleAddEditWorkspaceDrawer()">
-          New workspace
+        <n-button size="small" @click="toggleAddEditWorkspaceDrawer()">
+          <n-icon :component="AddIcon" :size="25" />
         </n-button>
       </require-permission>
     </template>
@@ -24,46 +24,14 @@
           >
             <n-thing :title="item.name">
               <template #header-extra>
-                <require-permission
-                  v-if="!item.pinnedAt"
-                  :permission="Permission.UpdateWorkspace"
-                >
-                  <n-button
-                    size="tiny"
-                    tertiary
-                    :loading="pinStatusUpdateItemId === item.id"
-                    @click="togglePinStatus(item)"
-                  >
-                    Pin
-                  </n-button>
-                </require-permission>
-
-                <n-tooltip v-if="item.pinnedAt" trigger="hover">
-                  <template #trigger>
-                    <n-icon-wrapper
-                      :size="25"
-                      color="#44BBFF"
-                      :border-radius="5"
-                    >
-                      <n-icon :component="PinIcon" color="#225D7F" :size="20" />
-                    </n-icon-wrapper>
-                  </template>
-
-                  pinned {{ dateService.fromNow(item.pinnedAt) }}
-
-                  &nbsp;
-
-                  <require-permission :permission="Permission.UpdateWorkspace">
-                    <n-button
-                      secondary
-                      type="warning"
-                      :loading="pinStatusUpdateItemId === item.id"
-                      @click="togglePinStatus(item)"
-                    >
-                      Unpin?
-                    </n-button>
-                  </require-permission>
-                </n-tooltip>
+                <pin-manager
+                  :pinned-at="item.pinnedAt"
+                  :is-loading="
+                    workspacesStore.pinStatusUpdateItemId === item.id
+                  "
+                  @pin="workspacesStore.pin(item.id)"
+                  @unpin="workspacesStore.unpin(item.id)"
+                />
               </template>
 
               <template #description>
@@ -85,7 +53,7 @@
                 </n-text>
               </div>
 
-              <n-space justify="end">
+              <n-space :style="{ marginTop: '20px' }" justify="end">
                 <n-button secondary type="success" @click="open(item)">
                   Go to
                 </n-button>
@@ -128,14 +96,12 @@ import {
   NSpace,
   NThing,
   NButton,
-  NTooltip,
   NListItem,
   NScrollbar,
   NPagination,
-  NIconWrapper,
 } from "naive-ui";
 import {
-  PinFilled as PinIcon,
+  Add as AddIcon,
   Search as SearchIcon,
   Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
@@ -148,15 +114,14 @@ import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
-import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
+import PinManager from "@/components/common/PinManager.vue";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const router = useRouter();
-const dateService = useDateService();
 const drawerStore = useDrawerStore();
 const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
@@ -164,7 +129,6 @@ const workspacesStore = useWorkspacesStore();
 const perPage = 11;
 const page = ref(1);
 const isLoading = ref(true);
-const pinStatusUpdateItemId = ref(0);
 
 onBeforeMount(async () => {
   getWorkspaces(1);
@@ -213,33 +177,5 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
   }
 
   drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
-}
-
-async function togglePinStatus(workspace: IWorkspaceDto) {
-  const isPinned = !!workspace.pinnedAt;
-
-  pinStatusUpdateItemId.value = workspace.id;
-
-  try {
-    isPinned
-      ? await workspacesStore.unpin(workspace.id)
-      : await workspacesStore.pin(workspace.id);
-
-    if (isPinned) {
-      workspacesStore.unpinItem(workspace.id);
-    } else {
-      page.value === 1
-        ? workspacesStore.addItemToTheTop(workspace.id)
-        : workspacesStore.removeItem(workspace.id);
-    }
-  } catch (error) {
-    console.log(error);
-
-    generalStore.messageProvider.success(
-      `Failed to ${isPinned ? "unpin" : "pin"} workspace!`
-    );
-  } finally {
-    pinStatusUpdateItemId.value = 0;
-  }
 }
 </script>
