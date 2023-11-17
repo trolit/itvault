@@ -114,18 +114,22 @@ export const useBlueprintsStore = defineStore("blueprints", {
     },
 
     async pin(id: number) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
       return axios.post(
         `v1/blueprints/${id}/pin`,
         {},
-        { params: { version: 1 } }
+        { params: { version: 1, workspaceId } }
       );
     },
 
     async unpin(id: number) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
       return axios.post(
         `v1/blueprints/${id}/unpin`,
         {},
-        { params: { version: 1 } }
+        { params: { version: 1, workspaceId } }
       );
     },
 
