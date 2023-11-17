@@ -1,13 +1,13 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import { useGeneralStore } from "./general";
 import { useVariantsStore } from "./variants";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
-import { useGeneralStore } from "./general";
 
 interface IState {
   total: number;
