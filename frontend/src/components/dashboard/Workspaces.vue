@@ -26,9 +26,11 @@
               <template #header-extra>
                 <pin-manager
                   :pinned-at="item.pinnedAt"
-                  :is-loading="pinStatusUpdateItemId === item.id"
-                  @pin="pinItem(item)"
-                  @unpin="unpinItem(item)"
+                  :is-loading="
+                    workspacesStore.pinStatusUpdateItemId === item.id
+                  "
+                  @pin="workspacesStore.pin(item.id)"
+                  @unpin="workspacesStore.unpin(item.id)"
                 />
               </template>
 
@@ -127,7 +129,6 @@ const workspacesStore = useWorkspacesStore();
 const perPage = 11;
 const page = ref(1);
 const isLoading = ref(true);
-const pinStatusUpdateItemId = ref(0);
 
 onBeforeMount(async () => {
   getWorkspaces(1);
@@ -176,39 +177,5 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
   }
 
   drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
-}
-
-async function pinItem(workspace: IWorkspaceDto) {
-  pinStatusUpdateItemId.value = workspace.id;
-
-  try {
-    await workspacesStore.pin(workspace.id);
-
-    page.value === 1
-      ? workspacesStore.addItemToTheTop(workspace.id)
-      : workspacesStore.removeItem(workspace.id);
-  } catch (error) {
-    console.log(error);
-
-    generalStore.messageProvider.success(`Failed to pin workspace!`);
-  } finally {
-    pinStatusUpdateItemId.value = 0;
-  }
-}
-
-async function unpinItem(workspace: IWorkspaceDto) {
-  pinStatusUpdateItemId.value = workspace.id;
-
-  try {
-    await workspacesStore.unpin(workspace.id);
-
-    workspacesStore.unpinItem(workspace.id);
-  } catch (error) {
-    console.log(error);
-
-    generalStore.messageProvider.success(`Failed to unpin workspace!`);
-  } finally {
-    pinStatusUpdateItemId.value = 0;
-  }
 }
 </script>
