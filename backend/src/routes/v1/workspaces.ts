@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { NumberId } from "types/NumberId";
 
+import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
@@ -10,14 +11,14 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useGetBySlugSchema } from "@schemas/Workspace/useGetBySlugSchema";
-import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
+import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
 import { useGetTreeSuperSchema } from "@schemas/Workspace/useGetTreeSuperSchema";
-import { useTogglePinSuperSchema } from "@schemas/Workspace/useTogglePinSuperSchema";
+import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema";
 
+import { PinController } from "@controllers/PinController";
 import { BaseController } from "@controllers/BaseController";
-import { PinController } from "@controllers/Workspace/PinController";
-import { UnpinController } from "@controllers/Workspace/UnpinController";
+import { UnpinController } from "@controllers/UnpinController";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { UpdateController } from "@controllers/Workspace/UpdateController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
@@ -52,14 +53,18 @@ workspacesRouter.get(
 workspacesRouter.post(
   "/:id/pin",
   requirePermissions([Permission.UpdateWorkspace]),
-  validateRequestWith({ [v1]: useTogglePinSuperSchema }),
+  validateRequestWith({
+    [v1]: getTogglePinSuperSchema(Di.WorkspaceRepository),
+  }),
   processRequestWith(PinController)
 );
 
 workspacesRouter.post(
   "/:id/unpin",
   requirePermissions([Permission.UpdateWorkspace]),
-  validateRequestWith({ [v1]: useTogglePinSuperSchema }),
+  validateRequestWith({
+    [v1]: getTogglePinSuperSchema(Di.WorkspaceRepository),
+  }),
   processRequestWith(UnpinController)
 );
 
