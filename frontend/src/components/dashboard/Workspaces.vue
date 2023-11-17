@@ -51,7 +51,7 @@
                 </n-text>
               </div>
 
-              <n-space justify="end">
+              <n-space :style="{ marginTop: '20px' }" justify="end">
                 <n-button secondary type="success" @click="open(item)">
                   Go to
                 </n-button>
