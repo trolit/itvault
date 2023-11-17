@@ -40,7 +40,7 @@ export class PinController extends BaseController {
     } = request;
 
     const repository: IBaseRepository<PinControllerTypes.v1.EntityFields> | null =
-      getRepositoryByOriginalUrl(originalUrl);
+      getRepositoryByOriginalUrl(originalUrl, 3);
 
     if (!repository) {
       return response.status(HTTP.BAD_REQUEST).send();
