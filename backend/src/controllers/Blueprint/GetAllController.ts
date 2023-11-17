@@ -46,6 +46,9 @@ export class GetAllController extends BaseController {
     const [result, total] = await this._blueprintRepository.getAllAndCount({
       skip,
       take,
+      order: {
+        pinnedAt: "desc",
+      },
       where: {
         ...nameQuery,
         workspace: {
