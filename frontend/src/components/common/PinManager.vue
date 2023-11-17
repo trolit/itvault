@@ -4,7 +4,12 @@
       v-if="!pinnedAt"
       :permission="Permission.UpdateWorkspace"
     >
-      <n-button size="tiny" tertiary :loading="isLoading" @click="$emit('pin')">
+      <n-button
+        size="tiny"
+        tertiary
+        :loading="isLoading"
+        @click.stop="$emit('pin')"
+      >
         Pin
       </n-button>
     </require-permission>
@@ -25,7 +30,7 @@
           secondary
           type="warning"
           :loading="isLoading"
-          @click="$emit('unpin')"
+          @click.stop="$emit('unpin')"
         >
           Unpin?
         </n-button>
