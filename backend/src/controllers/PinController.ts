@@ -1,27 +1,30 @@
 import { IsNull } from "typeorm";
+import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IDateService } from "types/services/IDateService";
-import { PinControllerTypes } from "types/controllers/Workspace/PinController";
-import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
+import { IBaseRepository } from "types/repositories/IBaseRepository";
+import { PinControllerTypes } from "types/controllers/PinController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
+
+import { BaseController } from "./BaseController";
 
 import { Di } from "@enums/Di";
 
-import { BaseController } from "@controllers/BaseController";
+import { getRepositoryByOriginalUrl } from "@helpers/getRepositoryByOriginalUrl";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
 export class PinController extends BaseController {
   constructor(
-    @inject(Di.WorkspaceRepository)
-    private _workspaceRepository: IWorkspaceRepository,
     @inject(Di.DateService)
     private _dateService: IDateService
   ) {
     super();
   }
+
+  static ALL_VERSIONS = [v1];
 
   implementations: ControllerImplementation[] = [
     {
@@ -30,17 +33,20 @@ export class PinController extends BaseController {
     },
   ];
 
-  static ALL_VERSIONS = [v1];
-
-  async v1(
-    request: PinControllerTypes.v1.Request,
-    response: PinControllerTypes.v1.Response
-  ) {
+  async v1(request: PinControllerTypes.v1.Request, response: Response) {
     const {
+      originalUrl,
       params: { id },
     } = request;
 
-    const result = await this._workspaceRepository.primitiveUpdate(
+    const repository: IBaseRepository<PinControllerTypes.v1.EntityFields> | null =
+      getRepositoryByOriginalUrl(originalUrl, 3);
+
+    if (!repository) {
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
+
+    const result = await repository.primitiveUpdate(
       { id, pinnedAt: IsNull() },
       { pinnedAt: this._dateService.now().toISOString() }
     );
