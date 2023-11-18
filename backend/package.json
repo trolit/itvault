@@ -9,6 +9,8 @@
   "scripts": {
     "dir:dist": "cross-env WORKING_DIRECTORY=dist",
     "prod": "node dist/main.js",
+    "queues": "ts-node ./src/scripts/queues.ts",
+    "queues:prod": "ts-node --transpile-only ./src/scripts/queues.ts",
     "dev": "npm run dir:dist concurrently \"npx tsc --watch\" \"nodemon -q dist/main.js\"",
     "build": "npx tsc --build & copyfiles -f src/services/MailService/templates/*.mustache dist/services/MailService/templates",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
@@ -83,6 +85,7 @@
     "mustache": "^4.2.0",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.9.3",
+    "proper-lockfile": "^4.1.2",
     "reflect-metadata": "^0.1.13",
     "sanitize-html": "^2.11.0",
     "sprintf-js": "^1.1.2",
@@ -94,6 +97,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@types/proper-lockfile": "^4.1.4",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "concurrently": "^7.5.0",
