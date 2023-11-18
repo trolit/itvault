@@ -1,22 +1,25 @@
-import { connect } from "amqplib";
 import { container } from "tsyringe";
+import { Channel, Connection, connect } from "amqplib";
 
 import { MQRABBIT } from "@config";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 
+let publisher: Channel;
+let connection: Connection | null = null;
+
 export const setupPublisher = async () => {
   const { PORT, USER, PASSWORD } = MQRABBIT;
 
-  const connection = await connect({
+  connection = await connect({
     port: PORT,
     username: USER,
     password: PASSWORD,
   });
 
   try {
-    const publisher = await connection.createChannel();
+    publisher = await connection.createChannel();
 
     const queues = Object.values(Queue);
 
@@ -25,11 +28,19 @@ export const setupPublisher = async () => {
     });
 
     container.register(Di.Publisher, { useValue: publisher });
-
-    return publisher;
   } catch (error) {
     console.log(error);
 
     throw "RabbitMQ: Failed to setup publisher!!";
   }
 };
+
+process.on("SIGINT", async () => {
+  if (connection) {
+    console.log("RabbitMQ: Closing publisher channel...");
+    await publisher.close();
+
+    console.log("RabbitMQ: Closing (publisher) connection...");
+    await connection.close();
+  }
+});

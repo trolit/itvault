@@ -55,7 +55,7 @@ process.on("SIGINT", async () => {
       await channel.close();
     }
 
-    console.log("RabbitMQ: Closing connection...");
+    console.log("RabbitMQ: Closing (queues) connection...");
     await connection.close();
   }
 });
