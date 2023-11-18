@@ -177,6 +177,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
     async pin(id: number) {
       const generalStore = useGeneralStore();
+      const dateService = useDateService();
 
       if (this.pinStatusUpdateItemId) {
         return;
@@ -190,6 +191,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
           {},
           { params: { version: 1 } }
         );
+
+        const itemIndex = this.items.findIndex(
+          workspace => workspace.id === id
+        );
+
+        if (~itemIndex) {
+          this.items[itemIndex].pinnedAt = dateService.now().toISOString();
+        }
 
         generalStore.messageProvider.success(`Workspace pinned!`);
       } catch (error) {
@@ -216,6 +225,14 @@ export const useWorkspacesStore = defineStore("workspaces", {
           {},
           { params: { version: 1 } }
         );
+
+        const itemIndex = this.items.findIndex(
+          workspace => workspace.id === id
+        );
+
+        if (~itemIndex) {
+          this.items[itemIndex].pinnedAt = null;
+        }
 
         generalStore.messageProvider.success(`Workspace unpinned!`);
       } catch (error) {
@@ -443,35 +460,6 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
 
       this.treeDataExpandedKeys.push(key);
-    },
-
-    // @TODO replace with sort in next PR
-    addItemToTheTop(id: number) {
-      const dateService = useDateService();
-
-      const itemIndex = this.items.findIndex(workspace => workspace.id === id);
-
-      if (~itemIndex) {
-        this.items[itemIndex].pinnedAt = dateService.now().toISOString();
-
-        this.items.unshift(this.items.splice(itemIndex, 1)[0]);
-      }
-    },
-
-    unpinItem(id: number) {
-      const itemIndex = this.items.findIndex(workspace => workspace.id === id);
-
-      if (~itemIndex) {
-        this.items[itemIndex].pinnedAt = null;
-      }
-    },
-
-    removeItem(id: number) {
-      const itemIndex = this.items.findIndex(workspace => workspace.id === id);
-
-      if (~itemIndex) {
-        this.items.splice(itemIndex, 1);
-      }
     },
   },
 });

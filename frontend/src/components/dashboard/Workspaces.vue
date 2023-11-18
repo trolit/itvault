@@ -19,7 +19,7 @@
       <n-scrollbar>
         <n-list v-if="!isLoading">
           <n-list-item
-            v-for="(item, index) in workspacesStore.items"
+            v-for="(item, index) in sortedItems"
             :key="`workspace-${index}`"
           >
             <n-thing :title="item.name">
@@ -114,10 +114,12 @@ import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
 import PinManager from "@/components/common/PinManager.vue";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import LoadingSection from "@/components/common/LoadingSection.vue";
+import { sortArrayByPinnedAt } from "@/helpers/sortArrayByPinnedAt";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
@@ -132,6 +134,12 @@ const isLoading = ref(true);
 
 onBeforeMount(async () => {
   getWorkspaces(1);
+});
+
+const { sortedItems } = defineComputed({
+  sortedItems() {
+    return sortArrayByPinnedAt(workspacesStore.items);
+  },
 });
 
 function open(workspace: IWorkspaceDto) {
