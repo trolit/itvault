@@ -15,6 +15,14 @@ export const useDateService = () => ({
 
   endOf: (unit: UnitType) => dayjs().endOf(unit),
 
+  date: (date: string) => {
+    return {
+      isSame: (dateToCompare: string) => dayjs(date).isSame(dateToCompare),
+      isAfter: (dateToCompare: string) => dayjs(date).isAfter(dateToCompare),
+      isBefore: (dateToCompare: string) => dayjs(date).isBefore(dateToCompare),
+    };
+  },
+
   fromNow: (date: string) => dayjs(date).fromNow(),
 
   toNow: (date: string) => dayjs(date).toNow(),

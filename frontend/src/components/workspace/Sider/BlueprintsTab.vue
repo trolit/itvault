@@ -10,7 +10,7 @@
     <n-scrollbar>
       <n-list v-if="!isLoading" clickable hoverable>
         <n-list-item
-          v-for="(blueprint, index) in blueprintsStore.items"
+          v-for="(blueprint, index) in sortedItems"
           :key="index"
           @click="toggleAddEditBlueprintDrawer(blueprint)"
         >
@@ -86,8 +86,10 @@ import Toolbar from "./Toolbar.vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
+import { defineComputed } from "@/helpers/defineComputed";
 import PinManager from "@/components/common/PinManager.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
+import { sortArrayByPinnedAt } from "@/helpers/sortArrayByPinnedAt";
 import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const drawerStore = useDrawerStore();
@@ -106,6 +108,12 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:page", "update:is-loading"]);
+
+const { sortedItems } = defineComputed({
+  sortedItems() {
+    return sortArrayByPinnedAt(blueprintsStore.items);
+  },
+});
 
 const perPage = 11;
 
