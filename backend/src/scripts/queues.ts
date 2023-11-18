@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "module-alias/register";
+import lockfile from "proper-lockfile";
 import { Channel, Connection, connect } from "amqplib";
 
 import { MQRABBIT } from "@config";
@@ -9,30 +10,36 @@ import { Queue } from "@enums/Queue";
 
 import { ConsumerFactory } from "@factories/ConsumerFactory";
 
+function logMessage(message: string) {
+  console.log(`RabbitMQ: ${message}`);
+}
+
+let connection: Connection;
 let consumerChannels: Channel[] = [];
-let connection: Connection | null = null;
+
+const consumers = [
+  {
+    queue: Queue.GenerateBundle,
+    handler: Di.GenerateBundleConsumerHandler,
+  },
+  {
+    queue: Queue.SendMail,
+    handler: Di.SendMailConsumerHandler,
+  },
+];
 
 (async function () {
-  const { PORT, USER, PASSWORD } = MQRABBIT;
-
-  connection = await connect({
-    port: PORT,
-    username: USER,
-    password: PASSWORD,
-  });
-
-  const consumers = [
-    {
-      queue: Queue.GenerateBundle,
-      handler: Di.GenerateBundleConsumerHandler,
-    },
-    {
-      queue: Queue.SendMail,
-      handler: Di.SendMailConsumerHandler,
-    },
-  ];
-
   try {
+    await lockfile.lock(__filename);
+
+    const { PORT, USER, PASSWORD } = MQRABBIT;
+
+    connection = await connect({
+      port: PORT,
+      username: USER,
+      password: PASSWORD,
+    });
+
     const consumerFactory = new ConsumerFactory(connection);
 
     consumerChannels = await Promise.all(
@@ -40,22 +47,35 @@ let connection: Connection | null = null;
         consumerFactory.create(queue, handler)
       )
     );
+
+    logMessage("Queues initialized.");
   } catch (error) {
     console.log(error);
 
-    throw "RabbitMQ: Failed to instantiate consumers!!";
+    logMessage("Failed to initialize queues!");
   }
-});
+})();
 
 process.on("SIGINT", async () => {
-  if (connection) {
-    console.log("RabbitMQ: Closing consumer channels...");
+  logMessage("Closing consumer channels...");
 
-    for (const channel of consumerChannels) {
-      await channel.close();
-    }
+  try {
+    await Promise.all(consumerChannels.map(channel => channel.close()));
+  } catch (error) {
+    console.log(error);
 
-    console.log("RabbitMQ: Closing (queues) connection...");
-    await connection.close();
+    logMessage("Failed to (gracefully) close consumer channels...");
   }
+
+  logMessage("Closing connection...");
+
+  try {
+    await connection.close();
+  } catch (error) {
+    console.log(error);
+
+    logMessage("Failed to (gracefully) close (queues) connection...");
+  }
+
+  logMessage("Queues shut down.");
 });
