@@ -8,6 +8,7 @@ import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
+import { useDateService } from "@/services/useDateService";
 
 interface IState {
   total: number;
@@ -117,6 +118,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
     },
 
     async pin(id: number) {
+      const dateService = useDateService();
       const generalStore = useGeneralStore();
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
@@ -132,6 +134,14 @@ export const useBlueprintsStore = defineStore("blueprints", {
           {},
           { params: { version: 1, workspaceId } }
         );
+
+        const itemIndex = this.items.findIndex(
+          blueprint => blueprint.id === id
+        );
+
+        if (~itemIndex) {
+          this.items[itemIndex].pinnedAt = dateService.now().toISOString();
+        }
 
         generalStore.messageProvider.success(`Blueprint pinned!`);
       } catch (error) {
@@ -159,6 +169,14 @@ export const useBlueprintsStore = defineStore("blueprints", {
           {},
           { params: { version: 1, workspaceId } }
         );
+
+        const itemIndex = this.items.findIndex(
+          blueprint => blueprint.id === id
+        );
+
+        if (~itemIndex) {
+          this.items[itemIndex].pinnedAt = null;
+        }
 
         generalStore.messageProvider.success(`Blueprint unpinned!`);
       } catch (error) {
