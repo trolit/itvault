@@ -7,7 +7,7 @@ import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 
 let publisher: Channel;
-let connection: Connection | null = null;
+let connection: Connection;
 
 export const setupPublisher = async () => {
   const { PORT, USER, PASSWORD } = MQRABBIT;
@@ -36,11 +36,9 @@ export const setupPublisher = async () => {
 };
 
 process.on("SIGINT", async () => {
-  if (connection) {
-    console.log("RabbitMQ: Closing publisher channel...");
-    await publisher.close();
+  console.log("RabbitMQ: Closing publisher channel...");
+  await publisher.close();
 
-    console.log("RabbitMQ: Closing (publisher) connection...");
-    await connection.close();
-  }
+  console.log("RabbitMQ: Closing (publisher) connection...");
+  await connection.close();
 });
