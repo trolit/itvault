@@ -10,6 +10,7 @@
     "dir:dist": "cross-env WORKING_DIRECTORY=dist",
     "prod": "node dist/main.js",
     "queues": "ts-node ./src/scripts/queues.ts",
+    "queues:prod": "ts-node --transpile-only ./src/scripts/queues.ts",
     "dev": "npm run dir:dist concurrently \"npx tsc --watch\" \"nodemon -q dist/main.js\"",
     "build": "npx tsc --build & copyfiles -f src/services/MailService/templates/*.mustache dist/services/MailService/templates",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
