@@ -20,11 +20,16 @@
 </template>
 
 <script setup lang="ts">
+import {
+  Catalog as ProfileIcon,
+  Password as PasswordIcon,
+  SessionBorderControl as SessionIcon,
+} from "@vicons/carbon";
 import type { MenuOption } from "naive-ui";
-
-import { useSettingsStore } from "@/store/settings";
 import { NLayout, NLayoutSider, NMenu } from "naive-ui";
 
+import renderIcon from "@/helpers/renderIcon";
+import { useSettingsStore } from "@/store/settings";
 import { defineComputed } from "@/helpers/defineComputed";
 import ProfileSettings from "@/components/settings/Profile.vue";
 import PasswordSettings from "@/components/settings/Password.vue";
@@ -35,14 +40,17 @@ const menuOptions: MenuOption[] = [
   {
     key: "profile",
     label: "Profile",
+    icon: renderIcon(ProfileIcon),
   },
   {
     key: "password",
     label: "Change password",
+    icon: renderIcon(PasswordIcon),
   },
   {
     key: "sessions",
     label: "Sessions",
+    icon: renderIcon(SessionIcon),
   },
 ];
 
