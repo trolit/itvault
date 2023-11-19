@@ -14,17 +14,10 @@ export class WorkspaceMapper
   tags: string[];
   pinnedAt: string;
 
-  constructor(
-    data: Workspace,
-    keys: (keyof Workspace)[] = [
-      "id",
-      "name",
-      "description",
-      "pinnedAt",
-      "slug",
-    ]
-  ) {
-    super(data, keys);
+  constructor(data: Workspace) {
+    super(data, ["id", "name", "description", "pinnedAt", "slug"]);
+
+    this.assignInitialKeys();
 
     this.tags = data.tagToWorkspace.map(({ tag: { value } }) => value);
 
