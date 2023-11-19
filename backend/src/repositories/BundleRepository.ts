@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { Repository, UpdateResult } from "typeorm";
+import { UpdateResult } from "typeorm";
 import { IBundleRepository } from "types/repositories/IBundleRepository";
 
 import { BaseRepository } from "./BaseRepository";
@@ -12,8 +12,6 @@ export class BundleRepository
   extends BaseRepository<Bundle>
   implements IBundleRepository
 {
-  protected database: Repository<Bundle>;
-
   constructor() {
     super(Bundle);
   }

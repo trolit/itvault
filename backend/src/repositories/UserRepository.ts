@@ -1,4 +1,3 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 import { IUserRepository } from "types/repositories/IUserRepository";
 
@@ -11,8 +10,6 @@ export class UserRepository
   extends BaseRepository<User>
   implements IUserRepository
 {
-  protected database: Repository<User>;
-
   constructor() {
     super(User);
   }

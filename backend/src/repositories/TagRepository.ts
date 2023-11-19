@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { Like, QueryRunner, Repository } from "typeorm";
+import { Like, QueryRunner } from "typeorm";
 import { ITagRepository } from "types/repositories/ITagRepository";
 
 import { BaseRepository } from "./BaseRepository";
@@ -11,8 +11,6 @@ export class TagRepository
   extends BaseRepository<Tag>
   implements ITagRepository
 {
-  protected database: Repository<Tag>;
-
   constructor() {
     super(Tag);
   }

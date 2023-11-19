@@ -1,4 +1,3 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 import { IFileRepository } from "types/repositories/IFileRepository";
 
@@ -11,8 +10,6 @@ export class FileRepository
   extends BaseRepository<File>
   implements IFileRepository
 {
-  protected database: Repository<File>;
-
   constructor() {
     super(File);
   }
