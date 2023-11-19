@@ -72,11 +72,6 @@ const options = ref([
     type: "divider",
   },
   {
-    label: "Profile",
-    key: "profile",
-    disabled: true,
-  },
-  {
     label: "Settings",
     key: "settings",
   },
