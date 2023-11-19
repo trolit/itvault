@@ -18,7 +18,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 export class MailService<T> implements IMailService<T> {
   private _templatesDir: string = path.join(
     ".",
-    APP.WORKING_DIR,
+    APP.BASE_DIR,
     "services",
     "MailService",
     "templates"
