@@ -10,9 +10,13 @@
 </template>
 
 <script setup lang="ts">
+import {
+  ScreenOff as LogoutIcon,
+  Settings as SettingsIcon,
+  UserProfile as UserProfileIcon,
+} from "@vicons/carbon";
 import { h, ref } from "vue";
 import { useRouter } from "vue-router";
-import { UserProfile as UserProfileIcon } from "@vicons/carbon";
 import { NAvatar, NDropdown, NText, NButton, NIcon, NTag } from "naive-ui";
 
 import {
@@ -20,6 +24,7 @@ import {
   ROUTE_SETTINGS_NAME,
 } from "@/assets/constants/routes";
 import { useAuthStore } from "@/store/auth";
+import renderIcon from "@/helpers/renderIcon";
 import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
 
@@ -74,10 +79,16 @@ const options = ref([
   {
     label: "Settings",
     key: "settings",
+    icon: renderIcon(SettingsIcon),
+  },
+  {
+    key: "header-divider",
+    type: "divider",
   },
   {
     label: "Logout",
     key: "logout",
+    icon: renderIcon(LogoutIcon),
   },
 ]);
 
