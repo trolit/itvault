@@ -1,20 +1,31 @@
 <template>
   <div class="settings-page page">
     <n-layout has-sider>
-      <n-layout-sider bordered :width="200">
-        <n-menu
-          v-model:value="settingsStore.activeKey"
-          :options="menuOptions"
-        />
-      </n-layout-sider>
+      <n-grid
+        x-gap="0"
+        y-gap="20"
+        responsive="screen"
+        cols="1 s:1 m:5 l:5 xl:5 2xl:5"
+      >
+        <n-grid-item :span="1">
+          <n-layout-sider bordered width="100%">
+            <n-menu
+              v-model:value="settingsStore.activeKey"
+              :options="menuOptions"
+            />
+          </n-layout-sider>
+        </n-grid-item>
 
-      <n-layout>
-        <div class="content-wrapper">
-          <component v-if="componentToRender" :is="componentToRender" />
+        <n-grid-item :span="4">
+          <n-layout>
+            <div class="content-wrapper">
+              <component v-if="componentToRender" :is="componentToRender" />
 
-          <div v-else>No component provided!</div>
-        </div>
-      </n-layout>
+              <div v-else>No component provided!</div>
+            </div>
+          </n-layout>
+        </n-grid-item>
+      </n-grid>
     </n-layout>
   </div>
 </template>
@@ -26,7 +37,7 @@ import {
   SessionBorderControl as SessionIcon,
 } from "@vicons/carbon";
 import type { MenuOption } from "naive-ui";
-import { NLayout, NLayoutSider, NMenu } from "naive-ui";
+import { NLayout, NLayoutSider, NMenu, NGrid, NGridItem } from "naive-ui";
 
 import renderIcon from "@/helpers/renderIcon";
 import { useSettingsStore } from "@/store/settings";

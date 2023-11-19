@@ -1,6 +1,14 @@
 .settings-page {
-  .n-layout {
+  .n-grid {
     height: calc(100vh - var(--header-height));
+
+    .n-layout {
+      height: 100%;
+    }
+
+    .n-layout-sider {
+      height: 100%;
+    }
   }
 
   .content-wrapper {
