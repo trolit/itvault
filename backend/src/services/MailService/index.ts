@@ -1,12 +1,14 @@
 import path from "path";
 import fs from "fs-extra";
 import mustache from "mustache";
-import camelCase from "lodash/camelCase";
 import { Transporter } from "nodemailer";
+import camelCase from "lodash/camelCase";
 import { inject, injectable } from "tsyringe";
 import { Options } from "nodemailer/lib/mailer";
 import { IMailService } from "types/services/IMailService";
 import { IMailViewBuilder } from "types/mail/IMailViewBuilder";
+
+import { APP } from "@config";
 
 import { Di } from "@enums/Di";
 
@@ -16,7 +18,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 export class MailService<T> implements IMailService<T> {
   private _templatesDir: string = path.join(
     ".",
-    "dist",
+    APP.WORKING_DIR,
     "services",
     "MailService",
     "templates"

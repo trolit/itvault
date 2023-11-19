@@ -16,12 +16,15 @@ const envEnum = <T extends object>(name: string, type: T) =>
   env.get(name).required().asEnum(Object.values(type));
 const envFloat = (name: string) => env.get(name).required().asFloat();
 
+const WORKING_DIR = <WorkingDir>envEnum("WORKING_DIRECTORY", WorkingDir);
+
 export const APP = {
   PORT: envPort("PORT"),
   URL: envString("APP_URL"),
   ENV: <Environment>envEnum("NODE_ENV", Environment),
   ROUTES_PREFIX: envString("ROUTES_PREFIX"),
-  WORKING_DIR: <WorkingDir>envEnum("WORKING_DIRECTORY", WorkingDir),
+  WORKING_DIR,
+  _FILE_EXTENSION: WORKING_DIR === "src" ? "ts" : "js",
   IS_CLEARING_TEMPORARY_UPLOADS_DIR: false,
   MAX_ITEMS_PER_PAGE: 20,
   TOTAL_ROLES_LIMIT: envInt("TOTAL_ROLES_LIMIT"),

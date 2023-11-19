@@ -4,7 +4,7 @@ import Redis from "ioredis/built/Redis";
 import { Transporter } from "nodemailer";
 import { container, DependencyContainer } from "tsyringe";
 
-import { FILES } from "@config/index";
+import { APP, FILES } from "@config";
 
 import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
@@ -62,7 +62,12 @@ export const setupDi = (
 };
 
 function registerMailViewBuilders() {
-  const dir = path.join("dist", "services", "MailService", "view-builders");
+  const dir = path.join(
+    APP.WORKING_DIR,
+    "services",
+    "MailService",
+    "view-builders"
+  );
 
   fs.readdir(dir, async (error, files) => {
     for (const file of files) {
@@ -88,9 +93,13 @@ function registerDependenciesByInterfaces(config: {
     interfacesDirname,
   } = config;
 
-  const dependencyInterfacePath = path.join("dist", "types", interfacesDirname);
+  const dependencyInterfacePath = path.join(
+    APP.WORKING_DIR,
+    "types",
+    interfacesDirname
+  );
 
-  const dir = path.join("dist", dirname);
+  const dir = path.join(APP.WORKING_DIR, dirname);
 
   fs.readdir(dir, async (error, files) => {
     for (const file of files) {
@@ -103,7 +112,12 @@ function registerDependenciesByInterfaces(config: {
       const interfaceName = `I${dependencyFilename}`;
 
       if (
-        fs.existsSync(path.join(dependencyInterfacePath, `${interfaceName}.js`))
+        fs.existsSync(
+          path.join(
+            dependencyInterfacePath,
+            `${interfaceName}.${APP._FILE_EXTENSION}`
+          )
+        )
       ) {
         const module = await import(`@${dirname}/${dependencyFilename}`);
 
