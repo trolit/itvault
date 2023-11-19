@@ -10,11 +10,10 @@ export class FileMapper extends BaseMapper<File> implements IFileDto {
   createdAt: string;
   updatedAt: string;
 
-  constructor(
-    data: File,
-    keys: (keyof File)[] = ["id", "originalFilename", "createdAt", "updatedAt"]
-  ) {
-    super(data, keys);
+  constructor(data: File) {
+    super(data, ["id", "originalFilename", "createdAt", "updatedAt"]);
+
+    this.assignInitialKeys();
 
     if (data.directory) {
       this.relativePath = data.directory.relativePath;

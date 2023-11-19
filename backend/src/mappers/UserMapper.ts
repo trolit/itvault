@@ -13,11 +13,10 @@ export class UserMapper extends BaseMapper<User> implements IUserDto {
   isActive: boolean;
   invitedBy: string | null;
 
-  constructor(
-    data: User,
-    keys: (keyof User)[] = ["id", "email", "fullName", "isSignedUp"]
-  ) {
-    super(data, keys);
+  constructor(data: User) {
+    super(data, ["id", "email", "fullName", "isSignedUp"]);
+
+    this.assignInitialKeys();
 
     const {
       createdBy,

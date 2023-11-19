@@ -10,11 +10,10 @@ export class DirectoryMapper
   id: number;
   relativePath: string;
 
-  constructor(
-    data: Directory,
-    keys: (keyof Directory)[] = ["id", "relativePath"]
-  ) {
-    super(data, keys);
+  constructor(data: Directory) {
+    super(data, ["id", "relativePath"]);
+
+    this.assignInitialKeys();
 
     return this;
   }

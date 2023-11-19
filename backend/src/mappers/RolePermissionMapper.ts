@@ -12,11 +12,10 @@ export class RolePermissionMapper
   group: string;
   enabled: boolean;
 
-  constructor(
-    data: PermissionToRole,
-    keys: (keyof PermissionToRole)[] = ["enabled"]
-  ) {
-    super(data, keys);
+  constructor(data: PermissionToRole) {
+    super(data, ["enabled"]);
+
+    this.assignInitialKeys();
 
     const { signature, name, group } = data.permission;
 

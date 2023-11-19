@@ -7,8 +7,10 @@ export class TagMapper extends BaseMapper<Tag> implements ITagDto {
   id: number;
   value: string;
 
-  constructor(data: Tag, keys: (keyof Tag)[] = ["id", "value"]) {
-    super(data, keys);
+  constructor(data: Tag) {
+    super(data, ["id", "value"]);
+
+    this.assignInitialKeys();
 
     return this;
   }

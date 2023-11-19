@@ -16,9 +16,8 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
   createdAt: string;
   size: { value: number; unit: string };
 
-  constructor(
-    data: Bundle,
-    keys: (keyof Bundle)[] = [
+  constructor(data: Bundle) {
+    super(data, [
       "id",
       "note",
       "filename",
@@ -26,9 +25,9 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDto {
       "expiresAt",
       "status",
       "createdBy",
-    ]
-  ) {
-    super(data, keys);
+    ]);
+
+    this.assignInitialKeys();
 
     this.createdAt = data.createdAt.toISOString();
 
