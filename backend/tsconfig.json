@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["ES2022"],
     "target": "ES2022",
-    "useDefineForClassFields": false,
+    "useDefineForClassFields": true,
     "module": "commonjs",
     "skipLibCheck": false,
     "rootDir": "src",
