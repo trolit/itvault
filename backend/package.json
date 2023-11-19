@@ -97,7 +97,9 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
+    "@types/luxon": "^3.3.4",
     "@types/proper-lockfile": "^4.1.4",
+    "@types/yargs": "^17.0.31",
     "@typescript-eslint/eslint-plugin": "^5.39.0",
     "@typescript-eslint/parser": "^5.39.0",
     "concurrently": "^7.5.0",

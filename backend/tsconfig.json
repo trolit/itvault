@@ -3,7 +3,7 @@
     /* Visit https://aka.ms/tsconfig to read more about this file */
     "target": "ES2020",
     "module": "commonjs",
-    "skipLibCheck": true, // @INFO to get rid of "tpyeorm-extension" TS2344 error
+    "skipLibCheck": false,
     "rootDir": "src",
     "outDir": "dist",
     "esModuleInterop": true,
