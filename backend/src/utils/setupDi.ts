@@ -63,7 +63,7 @@ export const setupDi = (
 
 function registerMailViewBuilders() {
   const dir = path.join(
-    APP.WORKING_DIR,
+    APP.BASE_DIR,
     "services",
     "MailService",
     "view-builders"
@@ -94,12 +94,12 @@ function registerDependenciesByInterfaces(config: {
   } = config;
 
   const dependencyInterfacePath = path.join(
-    APP.WORKING_DIR,
+    APP.BASE_DIR,
     "types",
     interfacesDirname
   );
 
-  const dir = path.join(APP.WORKING_DIR, dirname);
+  const dir = path.join(APP.BASE_DIR, dirname);
 
   fs.readdir(dir, async (error, files) => {
     for (const file of files) {
@@ -115,7 +115,7 @@ function registerDependenciesByInterfaces(config: {
         fs.existsSync(
           path.join(
             dependencyInterfacePath,
-            `${interfaceName}.${APP._FILE_EXTENSION}`
+            `${interfaceName}.${APP.BASE_DIR === "dist" ? "js" : "ts"}`
           )
         )
       ) {
