@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig to read more about this file */
     "lib": ["ES2022"],
-    "target": "ES2022" /* https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping */,
+    "target": "ES2022",
     "module": "commonjs",
     "skipLibCheck": false,
     "rootDir": "src",
@@ -34,7 +33,7 @@
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"],
       "@consumer-handlers/*": ["consumer-handlers/*"],
-      "@shared/*": ["../../shared/src/*"]
+      "@shared/*": ["../../shared/dist/*"]
     }
   },
   "references": [
