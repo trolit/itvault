@@ -15,10 +15,13 @@ import { useRouter } from "vue-router";
 import { UserProfile as UserProfileIcon } from "@vicons/carbon";
 import { NAvatar, NDropdown, NText, NButton, NIcon, NTag } from "naive-ui";
 
+import {
+  ROUTE_LOGIN_NAME,
+  ROUTE_SETTINGS_NAME,
+} from "@/assets/constants/routes";
 import { useAuthStore } from "@/store/auth";
 import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
-import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -76,7 +79,6 @@ const options = ref([
   {
     label: "Settings",
     key: "settings",
-    disabled: true,
   },
   {
     label: "Logout",
@@ -85,6 +87,12 @@ const options = ref([
 ]);
 
 function handleSelect(key: string) {
+  if (key === "settings") {
+    router.push({ name: ROUTE_SETTINGS_NAME });
+
+    return;
+  }
+
   if (key === "logout") {
     logout();
   }
