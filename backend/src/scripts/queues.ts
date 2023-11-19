@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import "module-alias/register";
 import lockfile from "proper-lockfile";
 import { Channel, Connection, connect } from "amqplib";
 
