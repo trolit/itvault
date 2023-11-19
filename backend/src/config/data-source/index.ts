@@ -5,7 +5,7 @@ import { APP, DATABASE } from "@config";
 
 import { Environment } from "@enums/Environment";
 
-const { ENV, WORKING_DIR } = APP;
+const { ENV, BASE_DIR } = APP;
 const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
 
 const isProduction = ENV === Environment.Production;
@@ -17,17 +17,14 @@ const options: DataSourceOptions & SeederOptions = {
   username: ROOT.USERNAME,
   password: ROOT.PASSWORD,
   database: NAME,
-  entities: [`${WORKING_DIR}/entities/*.{ts,js}`],
-  migrations: [`${WORKING_DIR}/migrations/*.{ts,js}`],
+  entities: [`${BASE_DIR}/entities/*`],
+  migrations: [`${BASE_DIR}/migrations/*`],
   logging: true,
   synchronize: false,
 
-  seeds: isProduction
-    ? []
-    : [`${WORKING_DIR}/config/data-source/seeds/*.{ts,js}`],
-  factories: isProduction
-    ? []
-    : [`${WORKING_DIR}/config/data-source/factories/*.{ts,js}`],
+  // @TODO
+  seeds: isProduction ? [] : [`${BASE_DIR}/config/data-source/seeds/*`],
+  factories: isProduction ? [] : [`${BASE_DIR}/config/data-source/factories/*`],
 };
 
 export const dataSource = new DataSource(options);

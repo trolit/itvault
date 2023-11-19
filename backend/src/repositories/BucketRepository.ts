@@ -1,4 +1,3 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 import { TransactionResult } from "types/TransactionResult";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
@@ -13,8 +12,6 @@ export class BucketRepository
   extends BaseRepository<Bucket>
   implements IBucketRepository
 {
-  protected database: Repository<Bucket>;
-
   constructor() {
     super(Bucket);
   }

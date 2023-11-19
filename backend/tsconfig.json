@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    /* Visit https://aka.ms/tsconfig to read more about this file */
-    "target": "ES2020",
+    "lib": ["ES2022"],
+    "target": "ES2022",
+    "useDefineForClassFields": false,
     "module": "commonjs",
-    "skipLibCheck": true, // @INFO to get rid of "tpyeorm-extension" TS2344 error
+    "skipLibCheck": false,
     "rootDir": "src",
     "outDir": "dist",
     "esModuleInterop": true,
@@ -33,7 +34,7 @@
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"],
       "@consumer-handlers/*": ["consumer-handlers/*"],
-      "@shared/*": ["../../shared/src/*"]
+      "@shared/*": ["../../shared/dist/*"]
     }
   },
   "references": [

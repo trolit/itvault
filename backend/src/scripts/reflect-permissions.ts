@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import "module-alias/register";
 import { DataStore } from "types/DataStore";
 
 import { dataSource } from "@config/data-source";

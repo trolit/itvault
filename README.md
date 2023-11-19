@@ -1,4 +1,8 @@
-# Itvault
+# itvault
+
+https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
+
+Alternative to "module-alias" taken from [Kehrlann](https://github.com/Kehrlann/module-alias-74)
 
 # Getting started
 

@@ -1,6 +1,6 @@
 import formidable from "formidable";
 import { Permission } from "@shared/types/enums/Permission";
-import { Request, Response, ParsedQs } from "express";
+import { Request, Response } from "express";
 
 import { IFormDataFile } from "types/IFormDataFile";
 

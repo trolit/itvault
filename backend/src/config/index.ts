@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 
 dotenv.config({});
 
-import { WorkingDir } from "@enums/WorkingDir";
 import { Environment } from "@enums/Environment";
 import { DatabaseType } from "@enums/DatabaseType";
 import { FileStorageMode } from "@enums/FileStorageMode";
@@ -16,14 +15,16 @@ const envEnum = <T extends object>(name: string, type: T) =>
   env.get(name).required().asEnum(Object.values(type));
 const envFloat = (name: string) => env.get(name).required().asFloat();
 
+const ENV = <Environment>envEnum("NODE_ENV", Environment);
+
 export const APP = {
   PORT: envPort("PORT"),
   URL: envString("APP_URL"),
-  ENV: <Environment>envEnum("NODE_ENV", Environment),
+  ENV,
   ROUTES_PREFIX: envString("ROUTES_PREFIX"),
-  WORKING_DIR: <WorkingDir>envEnum("WORKING_DIRECTORY", WorkingDir),
   IS_CLEARING_TEMPORARY_UPLOADS_DIR: false,
   MAX_ITEMS_PER_PAGE: 20,
+  BASE_DIR: ENV === Environment.Production ? "dist" : "src",
   TOTAL_ROLES_LIMIT: envInt("TOTAL_ROLES_LIMIT"),
 };
 

@@ -1,4 +1,3 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
 
@@ -11,8 +10,6 @@ export class RoleRepository
   extends BaseRepository<Role>
   implements IRoleRepository
 {
-  protected database: Repository<Role>;
-
   constructor() {
     super(Role);
   }

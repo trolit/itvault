@@ -1,4 +1,3 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 import { IFormDataFile } from "types/IFormDataFile";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
@@ -12,8 +11,6 @@ export class VariantRepository
   extends BaseRepository<Variant>
   implements IVariantRepository
 {
-  protected database: Repository<Variant>;
-
   constructor() {
     super(Variant);
   }

@@ -1,4 +1,3 @@
-import { Repository } from "typeorm";
 import { injectable } from "tsyringe";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
@@ -11,8 +10,6 @@ export class WorkspaceRepository
   extends BaseRepository<Workspace>
   implements IWorkspaceRepository
 {
-  protected database: Repository<Workspace>;
-
   constructor() {
     super(Workspace);
   }

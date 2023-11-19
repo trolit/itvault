@@ -1,6 +1,6 @@
 import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
-import { In, Like, Not, Repository } from "typeorm";
+import { In, Like, Not } from "typeorm";
 import { IDirectoryRepository } from "types/repositories/IDirectoryRepository";
 
 import { FILES } from "@config";
@@ -14,8 +14,6 @@ export class DirectoryRepository
   extends BaseRepository<Directory>
   implements IDirectoryRepository
 {
-  protected database: Repository<Directory>;
-
   constructor() {
     super(Directory);
   }
