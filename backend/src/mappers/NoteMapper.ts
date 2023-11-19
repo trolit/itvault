@@ -11,11 +11,10 @@ export class NoteMapper extends BaseMapper<Note> implements INoteDto {
   isDeleted: boolean;
   createdBy: { id: number; fullName: string; role: string };
 
-  constructor(
-    data: Note,
-    keys: (keyof Note)[] = ["id", "value", "createdAt", "updatedBy"]
-  ) {
-    super(data, keys);
+  constructor(data: Note) {
+    super(data, ["id", "value", "createdAt", "updatedBy"]);
+
+    this.assignInitialKeys();
 
     const { createdBy, updatedBy, deletedAt } = data;
 

@@ -15,9 +15,8 @@ export class BlueprintMapper
   createdAt: string;
   updatedAt: string;
 
-  constructor(
-    data: Blueprint,
-    keys: (keyof Blueprint)[] = [
+  constructor(data: Blueprint) {
+    super(data, [
       "id",
       "name",
       "description",
@@ -25,9 +24,9 @@ export class BlueprintMapper
       "color",
       "createdAt",
       "updatedAt",
-    ]
-  ) {
-    super(data, keys);
+    ]);
+
+    this.assignInitialKeys();
 
     return this;
   }

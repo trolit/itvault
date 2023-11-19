@@ -23,11 +23,10 @@ export class FileVariantMapper
   variants: IVariantDto[];
 
   // @TODO consider passing mapper instance here
-  constructor(
-    data: File,
-    keys: (keyof File)[] = ["id", "originalFilename", "createdAt", "updatedAt"]
-  ) {
-    super(data, keys);
+  constructor(data: File) {
+    super(data, ["id", "originalFilename", "createdAt", "updatedAt"]);
+
+    this.assignInitialKeys();
 
     const mapper = getInstanceOf<IEntityMapperService>(Di.EntityMapperService);
 

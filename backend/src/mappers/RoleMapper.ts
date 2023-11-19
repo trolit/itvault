@@ -13,17 +13,10 @@ export class RoleMapper extends BaseMapper<Role> implements IRoleDto {
   updatedAt: string;
   updatedBy: IAuthorDto | null;
 
-  constructor(
-    data: Role,
-    keys: (keyof Role)[] = [
-      "id",
-      "name",
-      "description",
-      "createdAt",
-      "updatedAt",
-    ]
-  ) {
-    super(data, keys);
+  constructor(data: Role) {
+    super(data, ["id", "name", "description", "createdAt", "updatedAt"]);
+
+    this.assignInitialKeys();
 
     const { createdBy, updatedBy } = data;
 

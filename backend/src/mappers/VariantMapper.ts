@@ -10,11 +10,10 @@ export class VariantMapper extends BaseMapper<Variant> implements IVariantDto {
   createdAt: string;
   size: { value: number; unit: string };
 
-  constructor(
-    data: Variant,
-    keys: (keyof Variant)[] = ["id", "name", "filename"]
-  ) {
-    super(data, keys);
+  constructor(data: Variant) {
+    super(data, ["id", "name", "filename"]);
+
+    this.assignInitialKeys();
 
     if (data.createdAt) {
       this.createdAt = data.createdAt.toISOString();

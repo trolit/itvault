@@ -15,8 +15,10 @@ export class LoggedUserMapper
   roleName: string;
   permissions: IRolePermissionDto[];
 
-  constructor(data: User, keys: (keyof User)[] = ["id", "email", "fullName"]) {
-    super(data, keys);
+  constructor(data: User) {
+    super(data, ["id", "email", "fullName"]);
+
+    this.assignInitialKeys();
 
     const {
       role: { id, name, permissionToRole },

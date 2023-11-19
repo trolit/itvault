@@ -13,8 +13,8 @@ export class BundleFileMapper
   version: string;
   isDeleted: boolean;
 
-  constructor(data: Variant, keys: (keyof Variant)[] = []) {
-    super(data, keys);
+  constructor(data: Variant) {
+    super(data, []);
 
     if (data.file) {
       this.fileId = data.file.id;

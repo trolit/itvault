@@ -9,8 +9,10 @@ export class BucketMapper extends BaseMapper<Bucket> implements IBucketDto {
   blueprintId: number;
   value: BucketContent;
 
-  constructor(data: Bucket, keys: (keyof Bucket)[] = ["id", "value"]) {
-    super(data, keys);
+  constructor(data: Bucket) {
+    super(data, ["id", "value"]);
+
+    this.assignInitialKeys();
 
     if (data.blueprint) {
       this.blueprintId = data.blueprint.id;

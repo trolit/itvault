@@ -11,10 +11,9 @@ export class PermissionMapper
   name: string;
   group: string;
 
-  constructor(
-    data: Permission,
-    keys: (keyof Permission)[] = ["signature", "name", "group"]
-  ) {
-    super(data, keys);
+  constructor(data: Permission) {
+    super(data, ["signature", "name", "group"]);
+
+    this.assignInitialKeys();
   }
 }
