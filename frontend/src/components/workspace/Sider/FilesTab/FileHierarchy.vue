@@ -1,5 +1,6 @@
 <template>
   <n-tree
+    show-line
     block-line
     expand-on-click
     :data="workspacesStore.treeData"
