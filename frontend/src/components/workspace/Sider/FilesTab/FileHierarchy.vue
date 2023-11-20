@@ -1,6 +1,7 @@
 <template>
   <n-tree
     show-line
+    draggable
     block-line
     expand-on-click
     :data="workspacesStore.treeData"
@@ -10,6 +11,7 @@
     :on-load="onDirectoryLoad"
     :selected-keys="selectedKeys"
     :on-update:expanded-keys="updatePrefixOnToggle"
+    @drop="handleDrop"
   />
 </template>
 
@@ -19,7 +21,7 @@
 // @TODO HANDLE FILENAME CHANGE
 
 import { h } from "vue";
-import { NTree, NIcon, type TreeOption } from "naive-ui";
+import { NTree, NIcon, type TreeOption, type TreeDropInfo } from "naive-ui";
 
 import {
   Folder as OpenedFolderIcon,
@@ -29,9 +31,9 @@ import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
 import isDirectory from "@/helpers/isDirectory";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { defineComputed } from "@/helpers/defineComputed";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
-import { defineComputed } from "@/helpers/defineComputed";
 
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
@@ -150,4 +152,6 @@ async function onLoadMore(node: TreeOption, relativePath: string) {
     return Promise.resolve(false);
   }
 }
+
+function handleDrop(treeDropInfo: TreeDropInfo) {}
 </script>
