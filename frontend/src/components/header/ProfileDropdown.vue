@@ -10,15 +10,23 @@
 </template>
 
 <script setup lang="ts">
+import {
+  ScreenOff as LogoutIcon,
+  Settings as SettingsIcon,
+  UserProfile as UserProfileIcon,
+} from "@vicons/carbon";
 import { h, ref } from "vue";
 import { useRouter } from "vue-router";
-import { UserProfile as UserProfileIcon } from "@vicons/carbon";
 import { NAvatar, NDropdown, NText, NButton, NIcon, NTag } from "naive-ui";
 
+import {
+  ROUTE_LOGIN_NAME,
+  ROUTE_SETTINGS_NAME,
+} from "@/assets/constants/routes";
 import { useAuthStore } from "@/store/auth";
+import renderIcon from "@/helpers/renderIcon";
 import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
-import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -69,22 +77,28 @@ const options = ref([
     type: "divider",
   },
   {
-    label: "Profile",
-    key: "profile",
-    disabled: true,
-  },
-  {
     label: "Settings",
     key: "settings",
-    disabled: true,
+    icon: renderIcon(SettingsIcon),
+  },
+  {
+    key: "header-divider",
+    type: "divider",
   },
   {
     label: "Logout",
     key: "logout",
+    icon: renderIcon(LogoutIcon),
   },
 ]);
 
 function handleSelect(key: string) {
+  if (key === "settings") {
+    router.push({ name: ROUTE_SETTINGS_NAME });
+
+    return;
+  }
+
   if (key === "logout") {
     logout();
   }

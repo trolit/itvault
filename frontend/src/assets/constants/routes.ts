@@ -4,5 +4,6 @@ export const ROUTE_LOGIN_NAME = "login";
 export const ROUTE_ROLES_NAME = "roles";
 export const ROUTE_USERS_NAME = "users";
 export const ROUTE_UPDATES_NAME = "updates";
+export const ROUTE_SETTINGS_NAME = "settings";
 export const ROUTE_DASHBOARD_NAME = "dashboard";
 export const ROUTE_WORKSPACES_NAME = "workspaces";

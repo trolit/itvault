@@ -14,6 +14,7 @@ import {
   ROUTE_ROLES_NAME,
   ROUTE_USERS_NAME,
   ROUTE_UPDATES_NAME,
+  ROUTE_SETTINGS_NAME,
   ROUTE_DASHBOARD_NAME,
   ROUTE_WORKSPACES_NAME,
 } from "@/assets/constants/routes";
@@ -24,6 +25,7 @@ import Login from "@/views/Login.vue";
 import Roles from "@/views/Roles.vue";
 import Users from "@/views/Users.vue";
 import Updates from "@/views/Updates.vue";
+import Settings from "@/views/Settings.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Workspace from "@/views/Workspace.vue";
 
@@ -56,6 +58,16 @@ const router = createRouter({
       path: `/${ROUTE_UPDATES_NAME}`,
       name: ROUTE_UPDATES_NAME,
       component: Updates,
+    },
+
+    {
+      path: `/${ROUTE_SETTINGS_NAME}`,
+      name: ROUTE_SETTINGS_NAME,
+      component: Settings,
+      props: {},
+      meta: {
+        requiresAuth: true,
+      },
     },
 
     {
