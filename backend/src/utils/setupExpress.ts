@@ -34,7 +34,7 @@ export const setupExpress = async (app: Application) => {
 };
 
 async function getRoutes() {
-  const routesDir = path.join("dist", "routes");
+  const routesDir = path.join(APP.BASE_DIR, "routes");
 
   const versions = fs.readdirSync(routesDir);
 
