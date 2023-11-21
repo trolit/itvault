@@ -19,6 +19,7 @@ const options: DataSourceOptions & SeederOptions = {
   database: NAME,
   entities: [`${BASE_DIR}/entities/*`],
   migrations: [`${BASE_DIR}/migrations/*`],
+  subscribers: [`${BASE_DIR}/subscribers/*`],
   logging: true,
   synchronize: false,
 
