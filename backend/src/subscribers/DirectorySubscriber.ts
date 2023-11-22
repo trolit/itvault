@@ -1,7 +1,7 @@
 import {
-  EntitySubscriberInterface,
-  EventSubscriber,
   InsertEvent,
+  EventSubscriber,
+  EntitySubscriberInterface,
 } from "typeorm";
 
 import { Directory } from "@entities/Directory";
@@ -24,21 +24,48 @@ export class DirectorySubscriber
     const splitRelativePath = relativePath.split("/");
     const splitRelativePathLength = splitRelativePath.length;
 
-    for (let index = 1; index < splitRelativePathLength; index++) {
-      const previusPath = splitRelativePath.slice(0, index).join("/");
+    console.info(`Insert request received upon ${relativePath}`);
+
+    let previousDirectory: Directory = await manager.findOneByOrFail(
+      Directory,
+      {
+        relativePath: ".",
+      }
+    );
+
+    console.info(`Making sure that partial paths are in DB.`);
+
+    for (let index = 1; index < splitRelativePathLength - 1; index++) {
       const currentPath = splitRelativePath.slice(0, index + 1).join("/");
 
-      const directory = await manager.findOneBy(Directory, {
+      let currentDirectory = await manager.findOneBy(Directory, {
         relativePath: currentPath,
       });
 
-      if (!directory) {
-        const parentDirectory = await manager.findOneByOrFail(Directory, {
-          relativePath: previusPath,
+      if (!currentDirectory && previousDirectory) {
+        const dirToAdd = manager.create(Directory, {
+          relativePath: currentPath,
+          parentDirectory: {
+            id: previousDirectory.id,
+          },
         });
 
-        await manager.save({ relativePath: currentPath, parentDirectory });
+        currentDirectory = await event.manager.save(dirToAdd, {
+          listeners: false,
+        });
       }
+
+      if (currentDirectory) {
+        previousDirectory = currentDirectory;
+      }
+    }
+
+    if (!event.entity.parentDirectory) {
+      console.info(
+        `Assigning parent directory (${previousDirectory.relativePath}) to ${relativePath}`
+      );
+
+      event.entity.parentDirectory = previousDirectory;
     }
   }
 }
