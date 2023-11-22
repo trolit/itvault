@@ -4,6 +4,8 @@ import {
   EntitySubscriberInterface,
 } from "typeorm";
 
+import { FILES } from "@config/index";
+
 import { Directory } from "@entities/Directory";
 
 @EventSubscriber()
@@ -23,6 +25,10 @@ export class DirectorySubscriber
 
     const splitRelativePath = relativePath.split("/");
     const splitRelativePathLength = splitRelativePath.length;
+
+    if (relativePath === FILES.ROOT) {
+      return;
+    }
 
     console.info(`Insert request received upon ${relativePath}`);
 

@@ -6,8 +6,6 @@ import { IBaseFileService } from "types/services/IBaseFileService";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
-import { FILES } from "@config";
-
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { Directory } from "@entities/Directory";
@@ -132,11 +130,24 @@ export abstract class BaseFileService implements IBaseFileService {
   ): Promise<TransactionResult<File[]>> {
     const transaction = await this.fileRepository.useTransaction();
 
+    const uniqueRelativePaths = uniq(formDataFiles.map(file => file.key));
+
+    const dirs: Directory[] = [];
+
     try {
-      const directories = await this._upsertDirectories(
-        transaction,
-        formDataFiles
-      );
+      for (const relativePath of uniqueRelativePaths) {
+        let directory = await transaction.manager.findOneBy(Directory, {
+          relativePath,
+        });
+
+        if (!directory) {
+          directory = await transaction.manager.save(
+            transaction.manager.create(Directory, { relativePath })
+          );
+        }
+
+        dirs.push({ ...directory });
+      }
 
       const filesToSave = [];
 
@@ -168,7 +179,7 @@ export abstract class BaseFileService implements IBaseFileService {
           },
         });
 
-        const directory = directories.find(
+        const directory = dirs.find(
           directory => directory.relativePath === key
         );
 
@@ -209,68 +220,6 @@ export abstract class BaseFileService implements IBaseFileService {
     } finally {
       await transaction.release();
     }
-  }
-
-  private async _upsertDirectories(
-    transaction: QueryRunner,
-    formDataFiles: IFormDataFile[]
-  ): Promise<Directory[]> {
-    const manager = transaction.manager;
-
-    const rootDirectory = await manager.findOneBy(Directory, {
-      relativePath: FILES.ROOT,
-    });
-
-    if (!rootDirectory) {
-      throw new TransactionError("Failed to find root directory!");
-    }
-
-    const directories: Directory[] = [];
-
-    const uniqueRelativePaths = uniq(formDataFiles.map(file => file.key));
-
-    for (const relativePath of uniqueRelativePaths) {
-      let directory = await manager.findOneBy(Directory, {
-        relativePath,
-      });
-
-      if (!directory) {
-        const splitPath = relativePath.split("/");
-        const splitPathLength = splitPath.length;
-        let previousDirectory = rootDirectory;
-
-        for (let index = 1; index < splitPathLength; index++) {
-          const partOfPath = splitPath.slice(0, index + 1).join("/");
-
-          const record = await manager.findOneBy(Directory, {
-            relativePath: partOfPath,
-          });
-
-          if (record) {
-            record.parentDirectory = previousDirectory;
-
-            await manager.save(Directory, record);
-
-            previousDirectory = record;
-
-            continue;
-          }
-
-          const result = await manager.save(Directory, {
-            relativePath: partOfPath,
-            parentDirectory: previousDirectory,
-          });
-
-          previousDirectory = result;
-        }
-
-        directory = previousDirectory;
-      }
-
-      directories.push(directory);
-    }
-
-    return directories;
   }
 
   private _buildFileRecord(
