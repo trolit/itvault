@@ -1,5 +1,5 @@
 import uniq from "lodash/uniq";
-import { QueryRunner } from "typeorm";
+import { Like, QueryRunner } from "typeorm";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 import { IBaseFileService } from "types/services/IBaseFileService";
@@ -14,6 +14,89 @@ import { Directory } from "@entities/Directory";
 
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}
+
+  async moveFilesFromDirToDir(
+    workspaceId: number,
+    sourceDirectoryId: number,
+    targetDirectoryId: number
+  ): Promise<TransactionResult<void>> {
+    const transaction = await this.fileRepository.useTransaction();
+
+    try {
+      const from = await transaction.manager.findOneByOrFail(Directory, {
+        id: sourceDirectoryId,
+      });
+
+      const to = await transaction.manager.findOneByOrFail(Directory, {
+        id: targetDirectoryId,
+      });
+
+      const files = await transaction.manager.find(File, {
+        where: {
+          workspace: { id: workspaceId },
+          directory: {
+            relativePath: Like(`${from.relativePath}%`),
+          },
+        },
+        relations: {
+          directory: true,
+        },
+      });
+
+      const directories: Directory[] = [];
+
+      const leaf = from.relativePath.split("/").pop() || ".";
+
+      for (const file of files) {
+        const {
+          directory: { relativePath },
+        } = file;
+
+        const newRelativePath = relativePath.replace(
+          from.relativePath,
+          `${to.relativePath}/${leaf}`
+        );
+
+        let newDirectory = directories.find(
+          directory => directory.relativePath === newRelativePath
+        );
+
+        if (!newDirectory) {
+          let directoryToAdd = await transaction.manager.findOneBy(Directory, {
+            relativePath: newRelativePath,
+          });
+
+          if (!directoryToAdd) {
+            directoryToAdd = await transaction.manager.save(Directory, {
+              relativePath: newRelativePath,
+            });
+          }
+
+          newDirectory = directoryToAdd;
+
+          directories.push({ ...directoryToAdd });
+        }
+
+        file.directory = newDirectory;
+      }
+
+      await transaction.manager.save(files);
+
+      await transaction.commitTransaction();
+
+      return TransactionResult.success();
+    } catch (error) {
+      console.log(error);
+
+      await transaction.rollbackTransaction();
+
+      return TransactionResult.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
+    } finally {
+      await transaction.release();
+    }
+  }
 
   async softDeleteFileAndVariants(
     id: number

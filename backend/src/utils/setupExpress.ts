@@ -34,7 +34,7 @@ export const setupExpress = async (app: Application) => {
 };
 
 async function getRoutes() {
-  const routesDir = path.join("dist", "routes");
+  const routesDir = path.join(APP.BASE_DIR, "routes");
 
   const versions = fs.readdirSync(routesDir);
 
@@ -49,7 +49,7 @@ async function getRoutes() {
 
     for (const router of routers) {
       const dependency = await import(
-        path.resolve("dist", "routes", version, router)
+        path.resolve(APP.BASE_DIR, "routes", version, router)
       );
 
       const [routeName] = router.split(".");

@@ -10,4 +10,10 @@ export interface IBaseFileService {
     workspaceId: number,
     formDataFiles: IFormDataFile[]
   ): Promise<TransactionResult<File[]>>;
+
+  moveFilesFromDirToDir(
+    workspaceId: number,
+    sourceDirectoryId: number,
+    targetDirectoryId: number
+  ): Promise<TransactionResult<void>>;
 }
