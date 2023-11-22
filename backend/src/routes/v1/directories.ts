@@ -1,7 +1,10 @@
 import { Router } from "express";
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
+import { Permission } from "@shared/types/enums/Permission";
+
 import { processRequestWith } from "@helpers/processRequestWith";
+import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
@@ -22,9 +25,9 @@ directoriesRouter.use(
 );
 directoriesRouter.use(IsWorkspaceAvailable);
 
-// @TODO permission
 directoriesRouter.post(
   "/move-files",
+  requirePermissions([Permission.MoveFiles]),
   validateRequestWith({ [v1]: useMoveFilesSuperSchema }),
   processRequestWith(MoveFilesController)
 );

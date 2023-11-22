@@ -14,7 +14,7 @@ export enum Permission {
   /* FILE */
   UploadFiles = "FE-U",
   UpdateFilename = "FE-UFN",
-  UpdateFileRelativePath = "FE-CRPP",
+  MoveFiles = "FE-MVF",
   DeleteFile = "FE-D",
 
   /* NOTE */
