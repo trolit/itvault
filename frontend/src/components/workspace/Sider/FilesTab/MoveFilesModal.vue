@@ -6,6 +6,7 @@
     preset="card"
     :bordered="true"
     :mask-closable="false"
+    :closeable="isLoading"
     :style="{ width: '600px' }"
     @close="close"
   >
@@ -51,9 +52,11 @@
 
     <template #footer>
       <n-space justify="space-between">
-        <n-button @click="close"> Cancel </n-button>
+        <n-button @click="close" :disabled="isLoading"> Cancel </n-button>
 
-        <n-button type="warning"> Confirm </n-button>
+        <n-button type="warning" :loading="isLoading" @click="onConfirm">
+          Confirm
+        </n-button>
       </n-space>
     </template>
   </n-modal>
@@ -69,11 +72,14 @@ import {
   NButton,
   type TreeDropInfo,
 } from "naive-ui";
-import { toRefs } from "vue";
+import { ref, toRefs } from "vue";
 
 import isFile from "@/helpers/isFile";
+import { useFilesStore } from "@/store/files";
 import isDirectory from "@/helpers/isDirectory";
+import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { useDirectoriesStore } from "@/store/directories";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 
@@ -83,12 +89,16 @@ interface IProps {
   treeDropInfo: TreeDropInfo;
 }
 
+const filesStore = useFilesStore();
+const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
+const directoriesStore = useDirectoriesStore();
 
 const props = defineProps<IProps>();
 
 const emits = defineEmits(["update:is-visible"]);
 
+const isLoading = ref(false);
 const { treeDropInfo } = toRefs(props);
 
 const {
@@ -200,6 +210,31 @@ function handleInsideDrop(id: string) {
 
   if (item) {
     targetRelativePath = item.relativePath;
+  }
+}
+
+async function onConfirm() {
+  isLoading.value = true;
+
+  try {
+    isSourceFile
+      ? await filesStore.patchRelativePath(targetId, targetRelativePath)
+      : await directoriesStore.moveFiles({
+          sourceDirectoryId: sourceId,
+          targetDirectoryId: targetId,
+        });
+
+    generalStore.messageProvider.success(
+      `Operation successful. Please reload page (until there is no sockets :/)`
+    );
+
+    close();
+  } catch (error) {
+    console.log(error);
+
+    generalStore.messageProvider.error(`Operation failed`);
+  } finally {
+    isLoading.value = false;
   }
 }
 </script>
