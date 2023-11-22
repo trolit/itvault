@@ -218,7 +218,7 @@ async function onConfirm() {
 
   try {
     isSourceFile
-      ? await filesStore.patchRelativePath(targetId, targetRelativePath)
+      ? await filesStore.patchRelativePath(sourceId, targetRelativePath)
       : await directoriesStore.moveFiles({
           sourceDirectoryId: sourceId,
           targetDirectoryId: targetId,
