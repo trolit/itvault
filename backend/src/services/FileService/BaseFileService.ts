@@ -45,6 +45,8 @@ export abstract class BaseFileService implements IBaseFileService {
 
       const directories: Directory[] = [];
 
+      const leaf = from.relativePath.split("/").pop() || ".";
+
       for (const file of files) {
         const {
           directory: { relativePath },
@@ -52,7 +54,7 @@ export abstract class BaseFileService implements IBaseFileService {
 
         const newRelativePath = relativePath.replace(
           from.relativePath,
-          to.relativePath
+          `${to.relativePath}/${leaf}`
         );
 
         let newDirectory = directories.find(
@@ -60,12 +62,15 @@ export abstract class BaseFileService implements IBaseFileService {
         );
 
         if (!newDirectory) {
-          const directoryToAdd = await transaction.manager.findOneByOrFail(
-            Directory,
-            {
+          let directoryToAdd = await transaction.manager.findOneBy(Directory, {
+            relativePath: newRelativePath,
+          });
+
+          if (!directoryToAdd) {
+            directoryToAdd = await transaction.manager.save(Directory, {
               relativePath: newRelativePath,
-            }
-          );
+            });
+          }
 
           newDirectory = directoryToAdd;
 
