@@ -1,18 +1,27 @@
 <template>
-  <n-tree
-    show-line
-    draggable
-    block-line
-    expand-on-click
-    :data="workspacesStore.treeData"
-    :expanded-keys="workspacesStore.treeDataExpandedKeys"
-    check-strategy="child"
-    :node-props="nodeProps"
-    :on-load="onDirectoryLoad"
-    :selected-keys="selectedKeys"
-    :on-update:expanded-keys="updatePrefixOnToggle"
-    @drop="handleDrop"
-  />
+  <div>
+    <n-tree
+      show-line
+      draggable
+      block-line
+      expand-on-click
+      :data="workspacesStore.treeData"
+      :expanded-keys="workspacesStore.treeDataExpandedKeys"
+      check-strategy="child"
+      :node-props="nodeProps"
+      :on-load="onDirectoryLoad"
+      :selected-keys="selectedKeys"
+      :on-update:expanded-keys="updatePrefixOnToggle"
+      @drop="currentTreeDropInfo = $event"
+    />
+
+    <move-files-modal
+      v-if="currentTreeDropInfo"
+      :is-visible="true"
+      :tree-drop-info="currentTreeDropInfo"
+      @update:is-visible="currentTreeDropInfo = null"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -20,7 +29,7 @@
 // @TODO HANDLE DRAG (RELATIVE PATH CHANGE)
 // @TODO HANDLE FILENAME CHANGE
 
-import { h } from "vue";
+import { h, ref, type Ref } from "vue";
 import { NTree, NIcon, type TreeOption, type TreeDropInfo } from "naive-ui";
 
 import {
@@ -34,9 +43,12 @@ import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
+import MoveFilesModal from "@/components/workspace/Sider/FilesTab/MoveFilesModal.vue";
 
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
+
+const currentTreeDropInfo: Ref<TreeDropInfo | null> = ref(null);
 
 const { selectedKeys } = defineComputed({
   selectedKeys() {
@@ -152,6 +164,4 @@ async function onLoadMore(node: TreeOption, relativePath: string) {
     return Promise.resolve(false);
   }
 }
-
-function handleDrop(treeDropInfo: TreeDropInfo) {}
 </script>
