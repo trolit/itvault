@@ -2,7 +2,7 @@
   <div>
     <n-tree
       show-line
-      draggable
+      :draggable="authStore.hasPermission(Permission.MoveFiles)"
       block-line
       expand-on-click
       :data="workspacesStore.treeData"
@@ -37,6 +37,7 @@ import {
   FolderOff as ClosedFolderIcon,
 } from "@vicons/carbon";
 import isFile from "@/helpers/isFile";
+import { useAuthStore } from "@/store/auth";
 import { useFilesStore } from "@/store/files";
 import isDirectory from "@/helpers/isDirectory";
 import { useWorkspacesStore } from "@/store/workspaces";
@@ -44,7 +45,9 @@ import { defineComputed } from "@/helpers/defineComputed";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import MoveFilesModal from "@/components/workspace/Sider/FilesTab/MoveFilesModal.vue";
+import { Permission } from "@shared/types/enums/Permission";
 
+const authStore = useAuthStore();
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
