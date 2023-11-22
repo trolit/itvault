@@ -5,8 +5,9 @@
     :title="`Move ${sourceType}`"
     preset="card"
     :bordered="true"
+    :closable="!isLoading"
+    :close-on-esc="false"
     :mask-closable="false"
-    :closeable="isLoading"
     :style="{ width: '600px' }"
     @close="close"
   >
