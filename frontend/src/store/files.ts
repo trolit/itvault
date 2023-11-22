@@ -77,6 +77,23 @@ export const useFilesStore = defineStore("files", {
       return data;
     },
 
+    async patchRelativePath(id: number, relativePath: string) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId,
+      };
+
+      const payload = {
+        relativePath,
+      };
+
+      return axios.patch<void>(`v1/files/${id}/relative-path`, payload, {
+        params,
+      });
+    },
+
     findTabById(id: number) {
       return this.tabs.find(tab => tab.file.id === id);
     },
