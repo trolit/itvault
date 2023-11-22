@@ -160,8 +160,6 @@ function processNodeKey(nodeKey: string) {
 }
 
 function handleBeforeOrAfterDrop(id: string) {
-  const isBefore = dropPosition === "before";
-
   const itemIndex = workspacesStore.tree.findIndex(
     elem =>
       elem.id == parseInt(id) &&
@@ -176,7 +174,7 @@ function handleBeforeOrAfterDrop(id: string) {
 
   if (itemIndex === 0) {
     targetId = 1;
-    targetRelativePath = ". (root)";
+    targetRelativePath = `${filesStore.ROOT} (root)`;
 
     return;
   }
