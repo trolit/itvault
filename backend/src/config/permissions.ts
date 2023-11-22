@@ -65,9 +65,9 @@ const UPDATE_FILENAME_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Files,
 };
 
-const UPDATE_FILE_RELATIVE_PATH: IPermissionDefinition = {
-  signature: Permission.UpdateFileRelativePath,
-  name: "Update file relative path",
+const MOVE_FILES_PERMISSION: IPermissionDefinition = {
+  signature: Permission.MoveFiles,
+  name: "Move files",
   group: PermissionGroup.Files,
 };
 
@@ -222,7 +222,7 @@ export const ALL_PERMISSIONS = [
 
   UPLOAD_FILES_PERMISSION,
   UPDATE_FILENAME_PERMISSION,
-  UPDATE_FILE_RELATIVE_PATH,
+  MOVE_FILES_PERMISSION,
   REMOVE_FILE_PERMISSION,
 
   CREATE_NOTE_PERMISSION,
