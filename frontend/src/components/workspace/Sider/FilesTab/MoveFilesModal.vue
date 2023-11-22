@@ -174,7 +174,7 @@ function handleBeforeOrAfterDrop(id: string) {
     return;
   }
 
-  if (itemIndex === 0 && isBefore) {
+  if (itemIndex === 0) {
     targetId = 1;
     targetRelativePath = ". (root)";
 
