@@ -40,9 +40,9 @@
 
           <n-row>
             <n-col :span="24">
-              <n-text :depth="3" type="warning">{{
-                targetRelativePath
-              }}</n-text>
+              <n-text :depth="3" type="warning">
+                {{ targetRelativePath }}
+              </n-text>
             </n-col>
           </n-row>
         </div>
