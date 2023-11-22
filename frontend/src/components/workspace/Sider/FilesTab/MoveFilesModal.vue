@@ -2,7 +2,7 @@
   <n-modal
     :show="isVisible"
     segmented
-    title="Move file(s)"
+    :title="`Move ${sourceType}`"
     preset="card"
     :bordered="true"
     :mask-closable="false"
@@ -13,7 +13,7 @@
       <n-space vertical>
         <n-row>
           <n-col :span="24">
-            <n-text> You are about to relocate {{ sourceType }}: </n-text>
+            <n-text> You are about to relocate "{{ sourceType }}": </n-text>
           </n-col>
 
           <n-col :span="24">
@@ -40,7 +40,9 @@
 
           <n-row>
             <n-col :span="24">
-              <n-text :depth="3">{{ targetRelativePath }}</n-text>
+              <n-text :depth="3" type="warning">{{
+                targetRelativePath
+              }}</n-text>
             </n-col>
           </n-row>
         </div>
@@ -89,19 +91,26 @@ const emits = defineEmits(["update:is-visible"]);
 
 const { treeDropInfo } = toRefs(props);
 
-const nodeKey = treeDropInfo.value.node.key;
-const dragNodeKey = treeDropInfo.value.dragNode.key;
+const {
+  dropPosition,
+  node: { key: nodeKey },
+  dragNode: { key: dragNodeKey },
+} = treeDropInfo.value;
 
 let sourceId = 0;
 let sourceType = "";
 let sourceLabel = "";
 let sourceRelativePath = "";
+let isSourceFile = false;
 
 let targetId = 0;
 let targetRelativePath = "";
+let isTargetFile = false;
 
 if (dragNodeKey) {
   const [type, id] = dragNodeKey.toString().split("-");
+
+  isSourceFile = type === "file";
 
   sourceId = parseInt(id);
   sourceType = type;
@@ -109,8 +118,7 @@ if (dragNodeKey) {
 
   const item = workspacesStore.tree.find(
     elem =>
-      elem.id == sourceId &&
-      (sourceType === "file" ? isFile(elem) : isDirectory(elem))
+      elem.id == sourceId && (isSourceFile ? isFile(elem) : isDirectory(elem))
   );
 
   if (item) {
@@ -119,8 +127,71 @@ if (dragNodeKey) {
 }
 
 if (nodeKey) {
-  const [, id] = nodeKey.toString().split("-");
+  processNodeKey(nodeKey.toString());
+}
 
+function close() {
+  emits("update:is-visible", false);
+}
+
+function processNodeKey(nodeKey: string) {
+  const [type, id] = nodeKey.split("-");
+
+  isTargetFile = type === "file";
+
+  if (dropPosition === "inside") {
+    handleInsideDrop(id);
+
+    return;
+  }
+
+  handleBeforeOrAfterDrop(id);
+}
+
+function handleBeforeOrAfterDrop(id: string) {
+  const isBefore = dropPosition === "before";
+
+  const itemIndex = workspacesStore.tree.findIndex(
+    elem =>
+      elem.id == parseInt(id) &&
+      (isTargetFile ? isFile(elem) : isDirectory(elem))
+  );
+
+  const item = workspacesStore.tree[itemIndex];
+
+  if (!item) {
+    return;
+  }
+
+  if (itemIndex === 0 && isBefore) {
+    targetId = 1;
+    targetRelativePath = ". (root)";
+
+    return;
+  }
+
+  if (itemIndex === 1) {
+    targetId = item.id;
+    targetRelativePath = item.relativePath;
+
+    return;
+  }
+
+  const truePath = isTargetFile
+    ? item.relativePath
+    : item.relativePath.split("/").slice(0, -1).join("/");
+
+  const truePathItem = workspacesStore.tree.find(
+    elem => elem.relativePath === truePath && isDirectory(elem)
+  );
+
+  if (truePathItem) {
+    targetId = truePathItem.id;
+    targetRelativePath = truePathItem.relativePath;
+  }
+}
+
+function handleInsideDrop(id: string) {
   targetId = parseInt(id);
 
   const item: IDirectoryDto | IFileDto | undefined = workspacesStore.tree.find(
@@ -130,9 +201,5 @@ if (nodeKey) {
   if (item) {
     targetRelativePath = item.relativePath;
   }
-}
-
-function close() {
-  emits("update:is-visible", false);
 }
 </script>
