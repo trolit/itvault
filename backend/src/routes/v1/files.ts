@@ -62,7 +62,7 @@ filesRouter.post(
 
 filesRouter.patch(
   "/:id/relative-path",
-  requirePermissions([Permission.UpdateFileRelativePath]),
+  requirePermissions([Permission.MoveFiles]),
   validateRequestWith({ [v1]: usePatchRelativePathSuperSchema }),
   processRequestWith(PatchRelativePathController)
 );

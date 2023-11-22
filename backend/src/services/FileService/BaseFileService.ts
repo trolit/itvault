@@ -1,12 +1,10 @@
 import uniq from "lodash/uniq";
-import { QueryRunner } from "typeorm";
+import { Like, QueryRunner } from "typeorm";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 import { IBaseFileService } from "types/services/IBaseFileService";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
-
-import { FILES } from "@config";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
@@ -14,6 +12,89 @@ import { Directory } from "@entities/Directory";
 
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}
+
+  async moveFilesFromDirToDir(
+    workspaceId: number,
+    sourceDirectoryId: number,
+    targetDirectoryId: number
+  ): Promise<TransactionResult<void>> {
+    const transaction = await this.fileRepository.useTransaction();
+
+    try {
+      const from = await transaction.manager.findOneByOrFail(Directory, {
+        id: sourceDirectoryId,
+      });
+
+      const to = await transaction.manager.findOneByOrFail(Directory, {
+        id: targetDirectoryId,
+      });
+
+      const files = await transaction.manager.find(File, {
+        where: {
+          workspace: { id: workspaceId },
+          directory: {
+            relativePath: Like(`${from.relativePath}%`),
+          },
+        },
+        relations: {
+          directory: true,
+        },
+      });
+
+      const directories: Directory[] = [];
+
+      const leaf = from.relativePath.split("/").pop() || ".";
+
+      for (const file of files) {
+        const {
+          directory: { relativePath },
+        } = file;
+
+        const newRelativePath = relativePath.replace(
+          from.relativePath,
+          `${to.relativePath}/${leaf}`
+        );
+
+        let newDirectory = directories.find(
+          directory => directory.relativePath === newRelativePath
+        );
+
+        if (!newDirectory) {
+          let directoryToAdd = await transaction.manager.findOneBy(Directory, {
+            relativePath: newRelativePath,
+          });
+
+          if (!directoryToAdd) {
+            directoryToAdd = await transaction.manager.save(Directory, {
+              relativePath: newRelativePath,
+            });
+          }
+
+          newDirectory = directoryToAdd;
+
+          directories.push({ ...directoryToAdd });
+        }
+
+        file.directory = newDirectory;
+      }
+
+      await transaction.manager.save(files);
+
+      await transaction.commitTransaction();
+
+      return TransactionResult.success();
+    } catch (error) {
+      console.log(error);
+
+      await transaction.rollbackTransaction();
+
+      return TransactionResult.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
+    } finally {
+      await transaction.release();
+    }
+  }
 
   async softDeleteFileAndVariants(
     id: number
@@ -49,11 +130,24 @@ export abstract class BaseFileService implements IBaseFileService {
   ): Promise<TransactionResult<File[]>> {
     const transaction = await this.fileRepository.useTransaction();
 
+    const uniqueRelativePaths = uniq(formDataFiles.map(file => file.key));
+
+    const dirs: Directory[] = [];
+
     try {
-      const directories = await this._upsertDirectories(
-        transaction,
-        formDataFiles
-      );
+      for (const relativePath of uniqueRelativePaths) {
+        let directory = await transaction.manager.findOneBy(Directory, {
+          relativePath,
+        });
+
+        if (!directory) {
+          directory = await transaction.manager.save(
+            transaction.manager.create(Directory, { relativePath })
+          );
+        }
+
+        dirs.push({ ...directory });
+      }
 
       const filesToSave = [];
 
@@ -85,7 +179,7 @@ export abstract class BaseFileService implements IBaseFileService {
           },
         });
 
-        const directory = directories.find(
+        const directory = dirs.find(
           directory => directory.relativePath === key
         );
 
@@ -126,68 +220,6 @@ export abstract class BaseFileService implements IBaseFileService {
     } finally {
       await transaction.release();
     }
-  }
-
-  private async _upsertDirectories(
-    transaction: QueryRunner,
-    formDataFiles: IFormDataFile[]
-  ): Promise<Directory[]> {
-    const manager = transaction.manager;
-
-    const rootDirectory = await manager.findOneBy(Directory, {
-      relativePath: FILES.ROOT,
-    });
-
-    if (!rootDirectory) {
-      throw new TransactionError("Failed to find root directory!");
-    }
-
-    const directories: Directory[] = [];
-
-    const uniqueRelativePaths = uniq(formDataFiles.map(file => file.key));
-
-    for (const relativePath of uniqueRelativePaths) {
-      let directory = await manager.findOneBy(Directory, {
-        relativePath,
-      });
-
-      if (!directory) {
-        const splitPath = relativePath.split("/");
-        const splitPathLength = splitPath.length;
-        let previousDirectory = rootDirectory;
-
-        for (let index = 1; index < splitPathLength; index++) {
-          const partOfPath = splitPath.slice(0, index + 1).join("/");
-
-          const record = await manager.findOneBy(Directory, {
-            relativePath: partOfPath,
-          });
-
-          if (record) {
-            record.parentDirectory = previousDirectory;
-
-            await manager.save(Directory, record);
-
-            previousDirectory = record;
-
-            continue;
-          }
-
-          const result = await manager.save(Directory, {
-            relativePath: partOfPath,
-            parentDirectory: previousDirectory,
-          });
-
-          previousDirectory = result;
-        }
-
-        directory = previousDirectory;
-      }
-
-      directories.push(directory);
-    }
-
-    return directories;
   }
 
   private _buildFileRecord(
