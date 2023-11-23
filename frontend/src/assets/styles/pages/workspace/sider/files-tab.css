@@ -10,6 +10,24 @@
         var(--workspace-sider-content-height) * var(--files-tree-height)
       );
 
+      .n-tree {
+        .n-tree-node {
+          height: 25px;
+
+          .n-button {
+            height: 20px;
+            display: flex;
+            align-items: center;
+
+            .n-icon {
+              display: flex;
+              font-size: 15px;
+              align-items: center;
+            }
+          }
+        }
+      }
+
       .file-upload-alert {
         margin: 15px;
 
