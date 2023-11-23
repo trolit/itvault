@@ -16,7 +16,7 @@
         <n-row>
           <n-col :span="24">
             <n-text v-if="!isConfirmDisabledDueToNotUniqueFilename">
-              You are about to relocate "{{ sourceType }}":
+              You are about to relocate {{ sourceType }}:
             </n-text>
 
             <n-text v-else>
@@ -177,48 +177,68 @@ function processNodeKey(nodeKey: string) {
   handleBeforeOrAfterDrop(id);
 }
 
-function handleBeforeOrAfterDrop(id: string) {
-  const itemIndex = workspacesStore.tree.findIndex(
+function handleBeforeOrAfterDrop(nodeId: string) {
+  const nodeIndex = workspacesStore.tree.findIndex(
     elem =>
-      elem.id == parseInt(id) &&
+      elem.id == parseInt(nodeId) &&
       (isTargetFile ? isFile(elem) : isDirectory(elem))
   );
 
-  const item = workspacesStore.tree[itemIndex];
-
-  const targetIndex = workspacesStore.treeData.findIndex(
-    elem => elem.key === nodeKey
-  );
-
-  if (!item) {
-    return;
-  }
-
-  if (
-    (targetIndex === 0 && dropPosition === "before") ||
-    (targetIndex === workspacesStore.treeData.length - 1 &&
-      dropPosition === "after")
-  ) {
+  if (nodeIndex === 0 && dropPosition === "before") {
     targetId = 1;
     targetRelativePath = filesStore.ROOT;
 
-    checkIfTargetNameIsUnique();
+    if (isSourceFile) {
+      checkIfFilenameIsUniqueInRelativePath(sourceLabel, filesStore.ROOT);
+    }
 
     return;
   }
 
-  if (itemIndex === 1) {
-    targetId = item.id;
-    targetRelativePath = item.relativePath;
+  if (nodeIndex === workspacesStore.tree.length && dropPosition === "after") {
+    targetId = 1;
+    targetRelativePath = filesStore.ROOT;
 
-    checkIfTargetNameIsUnique();
+    if (isSourceFile) {
+      checkIfFilenameIsUniqueInRelativePath(sourceLabel, filesStore.ROOT);
+    }
+
+    return;
+  }
+
+  const nodeItem = workspacesStore.tree[nodeIndex];
+
+  if (!nodeItem) {
+    return;
+  }
+
+  const splitRelativePath = nodeItem.relativePath.split("/");
+
+  if (isFile(nodeItem) && splitRelativePath.length <= 2) {
+    targetId = nodeItem.id;
+    targetRelativePath = nodeItem.relativePath;
+
+    if (isSourceFile) {
+      checkIfFilenameIsUniqueInRelativePath(sourceLabel, targetRelativePath);
+    }
 
     return;
   }
 
   const truePath = isTargetFile
-    ? item.relativePath
-    : item.relativePath.split("/").slice(0, -1).join("/");
+    ? nodeItem.relativePath
+    : nodeItem.relativePath.split("/").slice(0, -1).join("/");
+
+  if (truePath === filesStore.ROOT) {
+    targetId = 1;
+    targetRelativePath = filesStore.ROOT;
+
+    if (isSourceFile) {
+      checkIfFilenameIsUniqueInRelativePath(sourceLabel, targetRelativePath);
+    }
+
+    return;
+  }
 
   const truePathItem = workspacesStore.tree.find(
     elem => elem.relativePath === truePath && isDirectory(elem)
@@ -228,24 +248,28 @@ function handleBeforeOrAfterDrop(id: string) {
     targetId = truePathItem.id;
     targetRelativePath = truePathItem.relativePath;
 
-    checkIfTargetNameIsUnique();
+    if (isSourceFile) {
+      checkIfFilenameIsUniqueInRelativePath(sourceLabel, targetRelativePath);
+    }
   }
 }
 
-function checkIfTargetNameIsUnique() {
-  if (!isTargetFile) {
-    return;
-  }
-
+function checkIfFilenameIsUniqueInRelativePath(
+  filename: string,
+  relativePath: string
+) {
   const item: IDirectoryDto | IFileDto | undefined = workspacesStore.tree.find(
-    elem => elem.relativePath === targetRelativePath && isFile(elem)
+    elem =>
+      isFile(elem) &&
+      elem.relativePath === relativePath &&
+      elem.originalFilename === filename
   );
 
   isConfirmDisabledDueToNotUniqueFilename = !!item;
 }
 
-function handleInsideDrop(id: string) {
-  targetId = parseInt(id);
+function handleInsideDrop(nodeId: string) {
+  targetId = parseInt(nodeId);
 
   const item: IDirectoryDto | IFileDto | undefined = workspacesStore.tree.find(
     elem => elem.id == targetId && isDirectory(elem)
