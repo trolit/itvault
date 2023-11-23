@@ -244,8 +244,8 @@ function checkIfTargetNameIsUnique() {
   isConfirmDisabledDueToNotUniqueFilename = !!item;
 }
 
-function handleInsideDrop(id: string) {
-  targetId = parseInt(id);
+function handleInsideDrop(nodeId: string) {
+  targetId = parseInt(nodeId);
 
   const item: IDirectoryDto | IFileDto | undefined = workspacesStore.tree.find(
     elem => elem.id == targetId && isDirectory(elem)
