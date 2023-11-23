@@ -15,7 +15,14 @@
       <n-space vertical>
         <n-row>
           <n-col :span="24">
-            <n-text> You are about to relocate "{{ sourceType }}": </n-text>
+            <n-text v-if="!isConfirmDisabledDueToNotUniqueFilename">
+              You are about to relocate "{{ sourceType }}":
+            </n-text>
+
+            <n-text v-else>
+              Can't perform requested relocation because at
+              '${targetRelativePath}' there is already file with such name:
+            </n-text>
           </n-col>
 
           <n-col :span="24">
@@ -55,7 +62,12 @@
       <n-space justify="space-between">
         <n-button @click="close" :disabled="isLoading"> Cancel </n-button>
 
-        <n-button type="warning" :loading="isLoading" @click="onConfirm">
+        <n-button
+          type="warning"
+          :disabled="isConfirmDisabledDueToNotUniqueFilename"
+          :loading="isLoading"
+          @click="onConfirm"
+        >
           Confirm
         </n-button>
       </n-space>
@@ -118,6 +130,8 @@ let targetId = 0;
 let targetRelativePath = "";
 let isTargetFile = false;
 
+let isConfirmDisabledDueToNotUniqueFilename = false;
+
 if (dragNodeKey) {
   const [type, id] = dragNodeKey.toString().split("-");
 
@@ -176,12 +190,16 @@ function handleBeforeOrAfterDrop(id: string) {
     targetId = 1;
     targetRelativePath = `${filesStore.ROOT} (root)`;
 
+    checkIfTargetNameIsUnique();
+
     return;
   }
 
   if (itemIndex === 1) {
     targetId = item.id;
     targetRelativePath = item.relativePath;
+
+    checkIfTargetNameIsUnique();
 
     return;
   }
@@ -197,7 +215,21 @@ function handleBeforeOrAfterDrop(id: string) {
   if (truePathItem) {
     targetId = truePathItem.id;
     targetRelativePath = truePathItem.relativePath;
+
+    checkIfTargetNameIsUnique();
   }
+}
+
+function checkIfTargetNameIsUnique() {
+  if (!isTargetFile) {
+    return;
+  }
+
+  const item: IDirectoryDto | IFileDto | undefined = workspacesStore.tree.find(
+    elem => elem.relativePath === targetRelativePath && isFile(elem)
+  );
+
+  isConfirmDisabledDueToNotUniqueFilename = !!item;
 }
 
 function handleInsideDrop(id: string) {
