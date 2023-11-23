@@ -20,8 +20,8 @@
             </n-text>
 
             <n-text v-else>
-              Can't perform requested relocation because at
-              '${targetRelativePath}' there is already file with such name:
+              Can't perform requested relocation because at target location
+              there is already file with such name:
             </n-text>
           </n-col>
 
@@ -181,18 +181,23 @@ function handleBeforeOrAfterDrop(id: string) {
   const itemIndex = workspacesStore.tree.findIndex(
     elem =>
       elem.id == parseInt(id) &&
-      (isSourceFile ? isFile(elem) : isDirectory(elem))
+      (isTargetFile ? isFile(elem) : isDirectory(elem))
   );
 
   const item = workspacesStore.tree[itemIndex];
+
+  const targetIndex = workspacesStore.treeData.findIndex(
+    elem => elem.key === nodeKey
+  );
 
   if (!item) {
     return;
   }
 
   if (
-    (itemIndex === 0 && dropPosition === "before") ||
-    (itemIndex === workspacesStore.tree.length - 1 && dropPosition === "after")
+    (targetIndex === 0 && dropPosition === "before") ||
+    (targetIndex === workspacesStore.treeData.length - 1 &&
+      dropPosition === "after")
   ) {
     targetId = 1;
     targetRelativePath = filesStore.ROOT;
