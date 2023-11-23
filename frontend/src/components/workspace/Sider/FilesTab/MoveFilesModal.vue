@@ -232,13 +232,15 @@ function handleBeforeOrAfterDrop(id: string) {
   }
 }
 
-function checkIfTargetNameIsUnique() {
-  if (!isTargetFile) {
-    return;
-  }
-
+function checkIfFilenameIsUniqueInRelativePath(
+  filename: string,
+  relativePath: string
+) {
   const item: IDirectoryDto | IFileDto | undefined = workspacesStore.tree.find(
-    elem => elem.relativePath === targetRelativePath && isFile(elem)
+    elem =>
+      isFile(elem) &&
+      elem.relativePath === relativePath &&
+      elem.originalFilename === filename
   );
 
   isConfirmDisabledDueToNotUniqueFilename = !!item;
