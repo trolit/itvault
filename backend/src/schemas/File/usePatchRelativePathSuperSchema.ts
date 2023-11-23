@@ -20,6 +20,7 @@ const querySchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Quer
 
 const bodySchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Body> =
   object({
+    // @TODO check if under relative path there is no already file with similiar name
     relativePath: useRelativePathTest(),
   });
 

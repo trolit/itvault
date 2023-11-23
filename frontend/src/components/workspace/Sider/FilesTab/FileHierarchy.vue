@@ -1,15 +1,27 @@
 <template>
-  <n-tree
-    block-line
-    expand-on-click
-    :data="workspacesStore.treeData"
-    :expanded-keys="workspacesStore.treeDataExpandedKeys"
-    check-strategy="child"
-    :node-props="nodeProps"
-    :on-load="onDirectoryLoad"
-    :selected-keys="selectedKeys"
-    :on-update:expanded-keys="updatePrefixOnToggle"
-  />
+  <div>
+    <n-tree
+      show-line
+      :draggable="authStore.hasPermission(Permission.MoveFiles)"
+      block-line
+      expand-on-click
+      :data="workspacesStore.treeData"
+      :expanded-keys="workspacesStore.treeDataExpandedKeys"
+      check-strategy="child"
+      :node-props="nodeProps"
+      :on-load="onDirectoryLoad"
+      :selected-keys="selectedKeys"
+      :on-update:expanded-keys="updatePrefixOnToggle"
+      @drop="currentTreeDropInfo = $event"
+    />
+
+    <move-files-modal
+      v-if="currentTreeDropInfo"
+      :is-visible="true"
+      :tree-drop-info="currentTreeDropInfo"
+      @update:is-visible="currentTreeDropInfo = null"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -17,23 +29,29 @@
 // @TODO HANDLE DRAG (RELATIVE PATH CHANGE)
 // @TODO HANDLE FILENAME CHANGE
 
-import { h } from "vue";
-import { NTree, NIcon, type TreeOption } from "naive-ui";
+import { h, ref, type Ref } from "vue";
+import { NTree, NIcon, type TreeOption, type TreeDropInfo } from "naive-ui";
 
 import {
   Folder as OpenedFolderIcon,
   FolderOff as ClosedFolderIcon,
 } from "@vicons/carbon";
 import isFile from "@/helpers/isFile";
+import { useAuthStore } from "@/store/auth";
 import { useFilesStore } from "@/store/files";
 import isDirectory from "@/helpers/isDirectory";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { defineComputed } from "@/helpers/defineComputed";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
-import { defineComputed } from "@/helpers/defineComputed";
+import MoveFilesModal from "@/components/workspace/Sider/FilesTab/MoveFilesModal.vue";
+import { Permission } from "@shared/types/enums/Permission";
 
+const authStore = useAuthStore();
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
+
+const currentTreeDropInfo: Ref<TreeDropInfo | null> = ref(null);
 
 const { selectedKeys } = defineComputed({
   selectedKeys() {
