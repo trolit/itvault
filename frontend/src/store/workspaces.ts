@@ -426,6 +426,8 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
           if (Array.isArray(treeOptionChildren) && isValueFile) {
             treeOptionChildren.push(treeOptionToAdd);
+          } else if (isValueFile) {
+            this.treeData.push(treeOptionToAdd);
           }
         }
       }
