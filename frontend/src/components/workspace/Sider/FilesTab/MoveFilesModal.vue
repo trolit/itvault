@@ -51,6 +51,10 @@
             <n-col :span="24">
               <n-text :depth="3" type="warning">
                 {{ targetRelativePath }}
+
+                <span v-if="targetRelativePath === filesStore.ROOT">
+                  (root)
+                </span>
               </n-text>
             </n-col>
           </n-row>
@@ -177,7 +181,7 @@ function handleBeforeOrAfterDrop(id: string) {
   const itemIndex = workspacesStore.tree.findIndex(
     elem =>
       elem.id == parseInt(id) &&
-      (isTargetFile ? isFile(elem) : isDirectory(elem))
+      (isSourceFile ? isFile(elem) : isDirectory(elem))
   );
 
   const item = workspacesStore.tree[itemIndex];
@@ -186,9 +190,12 @@ function handleBeforeOrAfterDrop(id: string) {
     return;
   }
 
-  if (itemIndex === 0) {
+  if (
+    (itemIndex === 0 && dropPosition === "before") ||
+    (itemIndex === workspacesStore.tree.length - 1 && dropPosition === "after")
+  ) {
     targetId = 1;
-    targetRelativePath = `${filesStore.ROOT} (root)`;
+    targetRelativePath = filesStore.ROOT;
 
     checkIfTargetNameIsUnique();
 
