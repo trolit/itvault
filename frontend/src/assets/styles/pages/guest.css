@@ -1,107 +1,49 @@
 .guest-page {
   .n-grid {
-    --common-margin: 60px;
     height: 100%;
 
-    .brand {
-      margin: var(--common-margin) 0;
-
-      .primary-content {
-        font-size: 70px;
-
-        .n-icon {
-          font-size: 70px;
-        }
-      }
-
-      .extra-text {
-        bottom: -10px;
-        position: absolute;
-      }
-    }
-
-    .bottom-buttons {
-      gap: 20px;
+    .header-grid-item {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
 
-      .n-button {
-        width: 200px;
-        display: flex;
-        height: 250px;
-        font-size: 20px;
-
-        .n-button__content {
-          display: block;
-
-          .primary-icon {
-            font-size: 60px;
-            margin-bottom: 10px;
-          }
-        }
-      }
-    }
-
-    .feature {
-      display: flex;
-      margin: 0 10px;
-      justify-content: left;
-
-      .icon-wrapper {
-        width: 110px;
-        display: flex;
-        height: 110px;
-        position: relative;
-        align-items: center;
-        border-radius: 100%;
+      .title {
+        display: inherit;
+        font-size: 7.2vw;
         justify-content: center;
-        background-color: #0074d8;
-
-        .n-icon {
-          color: white;
-          font-size: 70px;
-          position: absolute;
-        }
       }
 
-      .text-wrapper {
-        margin-left: 30px;
-
-        .header {
-          font-size: 25px;
-          text-decoration: underline;
-        }
+      .subtitle {
+        opacity: 0.2;
+        display: flex;
+        font-size: 4vw;
+        justify-content: center;
       }
     }
 
-    .label {
-      font-size: 30px;
-      text-align: center;
-    }
-
-    .top-buttons {
+    .quote-grid-item {
       display: flex;
       justify-content: center;
-      margin-bottom: var(--common-margin);
 
-      a {
-        text-decoration: none;
+      .wrapper {
+        opacity: 0.2;
+        width: 255px;
+        margin-top: 20px;
+
+        .author {
+          text-align: right;
+        }
       }
+    }
+
+    .button-grid-item {
+      display: flex;
+      margin-top: 70px;
+      justify-content: center;
 
       .n-button {
-        display: flex;
-        height: 150px;
+        width: 150px;
+        height: 60px;
         font-size: 20px;
-        min-width: 350px;
-
-        .n-button__content {
-          display: block;
-
-          .primary-icon {
-            font-size: 60px;
-            margin-bottom: 10px;
-          }
-        }
       }
     }
   }
