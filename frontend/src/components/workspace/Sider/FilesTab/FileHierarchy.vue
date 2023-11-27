@@ -21,18 +21,30 @@
       :tree-drop-info="currentTreeDropInfo"
       @update:is-visible="currentTreeDropInfo = null"
     />
+
+    <rename-file-modal
+      v-if="fileToEditId"
+      :is-visible="true"
+      :file-id="fileToEditId"
+      @update:is-visible="fileToEditId = 0"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-// @TODO HANDLE INITIAL (EMPTY) STATE UPLOAD!
-// @TODO HANDLE DRAG (RELATIVE PATH CHANGE)
-// @TODO HANDLE FILENAME CHANGE
-
+import {
+  NTree,
+  NIcon,
+  NSpace,
+  NButton,
+  type TreeOption,
+  type TreeDropInfo,
+} from "naive-ui";
 import { h, ref, type Ref } from "vue";
-import { NTree, NIcon, type TreeOption, type TreeDropInfo } from "naive-ui";
 
 import {
+  Pen as EditIcon,
+  TrashCan as DeleteIcon,
   Folder as OpenedFolderIcon,
   FolderOff as ClosedFolderIcon,
 } from "@vicons/carbon";
@@ -42,15 +54,18 @@ import { useFilesStore } from "@/store/files";
 import isDirectory from "@/helpers/isDirectory";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
+import { Permission } from "@shared/types/enums/Permission";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import MoveFilesModal from "@/components/workspace/Sider/FilesTab/MoveFilesModal.vue";
-import { Permission } from "@shared/types/enums/Permission";
+import RenameFileModal from "@/components/workspace/Sider/FilesTab/RenameFileModal.vue";
 
 const authStore = useAuthStore();
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
+const fileToEditId = ref(0);
+const hoveredFileId = ref(0);
 const currentTreeDropInfo: Ref<TreeDropInfo | null> = ref(null);
 
 const { selectedKeys } = defineComputed({
@@ -86,6 +101,66 @@ const updatePrefixOnToggle = (
 
 const nodeProps = ({ option }: { option: TreeOption }) => {
   return {
+    onmouseover() {
+      const { key } = option;
+
+      if (!key) {
+        return;
+      }
+
+      const [type, id] = key.toString().split("-");
+
+      if (id && type === "file") {
+        hoveredFileId.value = parseInt(id);
+
+        option.suffix = () =>
+          h(
+            NSpace,
+            { size: 5 },
+            {
+              default: () => [
+                h(
+                  NButton,
+                  {
+                    secondary: true,
+                    size: "tiny",
+                    type: "info",
+                    onClick: event => {
+                      event.stopPropagation();
+
+                      fileToEditId.value = parseInt(id);
+                    },
+                  },
+                  {
+                    default: () => h(NIcon, { component: EditIcon }),
+                  }
+                ),
+                h(
+                  NButton,
+                  {
+                    secondary: true,
+                    size: "tiny",
+                    type: "error",
+                    onClick: event => {
+                      event.stopPropagation();
+                    },
+                  },
+                  {
+                    default: () => h(NIcon, { component: DeleteIcon }),
+                  }
+                ),
+              ],
+            }
+          );
+      }
+    },
+
+    onmouseleave() {
+      hoveredFileId.value = 0;
+
+      option.suffix = undefined;
+    },
+
     onClick() {
       if (!option.children && option.isLeaf) {
         const { key } = option;

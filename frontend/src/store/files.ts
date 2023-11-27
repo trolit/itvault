@@ -77,6 +77,23 @@ export const useFilesStore = defineStore("files", {
       return data;
     },
 
+    async patchFilename(id: number, filename: string) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId,
+      };
+
+      const payload = {
+        filename,
+      };
+
+      return axios.patch<void>(`v1/files/${id}/filename`, payload, {
+        params,
+      });
+    },
+
     async patchRelativePath(id: number, relativePath: string) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
