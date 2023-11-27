@@ -69,15 +69,15 @@ const treeItem = workspacesStore.tree.find(
 const { fields, getError, hasError, handleSubmit, setValidationErrors } =
   defineForm(
     {
-      name: treeItem && isFile(treeItem) ? treeItem.originalFilename : "",
+      filename: treeItem && isFile(treeItem) ? treeItem.originalFilename : "",
     },
     object({
-      name: string().required(),
+      filename: string().required(),
     })
   );
 
 const {
-  name: { value: filename },
+  filename: { value: filename },
 } = fields;
 
 function close() {
@@ -92,7 +92,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   isLoading.value = true;
 
   try {
-    await filesStore.patchFilename(fileId.value, formData.name);
+    await filesStore.patchFilename(fileId.value, formData.filename);
 
     generalStore.messageProvider.success(`File renamed`);
 
