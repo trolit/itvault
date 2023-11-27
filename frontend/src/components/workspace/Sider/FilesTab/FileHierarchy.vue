@@ -23,7 +23,8 @@
     />
 
     <rename-file-modal
-      :is-visible="!!fileToEditId"
+      v-if="fileToEditId"
+      :is-visible="true"
       :file-id="fileToEditId"
       @update:is-visible="fileToEditId = 0"
     />
