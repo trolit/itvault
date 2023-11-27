@@ -69,10 +69,7 @@ const treeItem = workspacesStore.tree.find(
 const { fields, getError, hasError, handleSubmit, setValidationErrors } =
   defineForm(
     {
-      name:
-        treeItem && isFile(treeItem)
-          ? treeItem.originalFilename.split(".")[0]
-          : "",
+      name: treeItem && isFile(treeItem) ? treeItem.originalFilename : "",
     },
     object({
       name: string().required(),
