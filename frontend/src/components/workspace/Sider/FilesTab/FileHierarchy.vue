@@ -93,11 +93,11 @@ const { selectedKeys, removeFileText } = defineComputed({
     return treeItem && isFile(treeItem)
       ? `Do you really want to remove file "${
           treeItem.originalFilename
-        }" from ${
+        }" from "${
           treeItem.relativePath === filesStore.ROOT
             ? "root"
             : `${treeItem.relativePath}`
-        }?`
+        }" and it's variants?`
       : "";
   },
 });
