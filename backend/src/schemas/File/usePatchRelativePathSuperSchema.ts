@@ -1,4 +1,4 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { PatchRelativePathControllerTypes } from "types/controllers/File/PatchRelativePathController";
@@ -15,7 +15,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const paramsSchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Params> =
   object({
-    id: useIdNumberSchema(Di.FileRepository),
+    id: number().required(),
   });
 
 const querySchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Query> =
