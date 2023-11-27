@@ -33,10 +33,23 @@ const useBodySchema: (
       const fileRepository = getInstanceOf<IFileRepository>(Di.FileRepository);
 
       const file = await fileRepository.getOne({
-        where: { id, directory: { relativePath: value } },
+        where: { id },
       });
 
-      if (file) {
+      if (!file) {
+        return ctx.createError({
+          message: setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "file"),
+        });
+      }
+
+      const fileAtRelativePath = await fileRepository.getOne({
+        where: {
+          originalFilename: file.originalFilename,
+          directory: { relativePath: value },
+        },
+      });
+
+      if (fileAtRelativePath) {
         return ctx.createError({
           message: setYupError(CUSTOM_MESSAGES.FILE.DUPLICATE_FILE, value),
         });
