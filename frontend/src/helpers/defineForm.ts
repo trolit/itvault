@@ -36,7 +36,11 @@ export const defineForm = <T extends GenericObject>(
   Object.keys(initialFormData).map(key => {
     const parsedKey = key as keyof T;
 
-    fields[parsedKey] = useField(key);
+    fields[parsedKey] = useField(
+      key,
+      {},
+      { initialValue: initialFormData[parsedKey] }
+    );
   });
 
   const { getError, hasError } = useVeeValidateHelpers(meta, errors);
