@@ -38,7 +38,10 @@ const useBodySchema: (
 
       if (!file) {
         return ctx.createError({
-          message: setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "file"),
+          message: setYupError(
+            CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE,
+            `file (ref: ${id})`
+          ),
         });
       }
 
