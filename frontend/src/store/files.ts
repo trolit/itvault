@@ -111,6 +111,17 @@ export const useFilesStore = defineStore("files", {
       });
     },
 
+    delete(id: number) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId,
+      };
+
+      return axios.delete(`v1/files/${id}`, { params });
+    },
+
     findTabById(id: number) {
       return this.tabs.find(tab => tab.file.id === id);
     },
