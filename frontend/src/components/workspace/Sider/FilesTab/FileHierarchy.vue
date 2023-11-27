@@ -28,6 +28,14 @@
       :file-id="fileToEditId"
       @update:is-visible="fileToEditId = 0"
     />
+
+    <confirmation-modal
+      :is-loading="isDeletingFile"
+      :is-visible="isDeleteConfirmationModalVisible"
+      :text="removeFileText"
+      @confirm="deleteFile"
+      @update:is-visible="onDeleteConfirmationModalClose"
+    />
   </div>
 </template>
 
@@ -40,7 +48,7 @@ import {
   type TreeOption,
   type TreeDropInfo,
 } from "naive-ui";
-import { h, ref, type Ref } from "vue";
+import { h, ref, type Ref, type VNode } from "vue";
 
 import {
   Pen as EditIcon,
@@ -57,6 +65,7 @@ import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
+import ConfirmationModal from "@/components/common/ConfirmationModal.vue";
 import MoveFilesModal from "@/components/workspace/Sider/FilesTab/MoveFilesModal.vue";
 import RenameFileModal from "@/components/workspace/Sider/FilesTab/RenameFileModal.vue";
 
@@ -66,11 +75,30 @@ const workspacesStore = useWorkspacesStore();
 
 const fileToEditId = ref(0);
 const hoveredFileId = ref(0);
+const fileToDeleteId = ref(0);
+const isDeletingFile = ref(false);
+const isDeleteConfirmationModalVisible = ref(false);
 const currentTreeDropInfo: Ref<TreeDropInfo | null> = ref(null);
 
-const { selectedKeys } = defineComputed({
+const { selectedKeys, removeFileText } = defineComputed({
   selectedKeys() {
     return [`file-${filesStore.activeFileId}`];
+  },
+
+  removeFileText() {
+    const treeItem = workspacesStore.tree.find(
+      item => item.id === fileToDeleteId.value
+    );
+
+    return treeItem && isFile(treeItem)
+      ? `Do you really want to remove file "${
+          treeItem.originalFilename
+        }" from "${
+          treeItem.relativePath === filesStore.ROOT
+            ? "root"
+            : `${treeItem.relativePath}`
+        }" and it's variants?`
+      : "";
   },
 });
 
@@ -113,43 +141,58 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
       if (id && type === "file") {
         hoveredFileId.value = parseInt(id);
 
+        const buttons: VNode[] = [];
+
+        if (authStore.hasPermission(Permission.UpdateFilename)) {
+          buttons.push(
+            h(
+              NButton,
+              {
+                secondary: true,
+                size: "tiny",
+                type: "info",
+                onClick: event => {
+                  event.stopPropagation();
+
+                  fileToEditId.value = parseInt(id);
+                },
+              },
+              {
+                default: () => h(NIcon, { component: EditIcon }),
+              }
+            )
+          );
+        }
+
+        if (authStore.hasPermission(Permission.DeleteFile)) {
+          buttons.push(
+            h(
+              NButton,
+              {
+                secondary: true,
+                size: "tiny",
+                type: "error",
+                onClick: event => {
+                  event.stopPropagation();
+
+                  fileToDeleteId.value = parseInt(id);
+
+                  isDeleteConfirmationModalVisible.value = true;
+                },
+              },
+              {
+                default: () => h(NIcon, { component: DeleteIcon }),
+              }
+            )
+          );
+        }
+
         option.suffix = () =>
           h(
             NSpace,
             { size: 5 },
             {
-              default: () => [
-                h(
-                  NButton,
-                  {
-                    secondary: true,
-                    size: "tiny",
-                    type: "info",
-                    onClick: event => {
-                      event.stopPropagation();
-
-                      fileToEditId.value = parseInt(id);
-                    },
-                  },
-                  {
-                    default: () => h(NIcon, { component: EditIcon }),
-                  }
-                ),
-                h(
-                  NButton,
-                  {
-                    secondary: true,
-                    size: "tiny",
-                    type: "error",
-                    onClick: event => {
-                      event.stopPropagation();
-                    },
-                  },
-                  {
-                    default: () => h(NIcon, { component: DeleteIcon }),
-                  }
-                ),
-              ],
+              default: () => buttons,
             }
           );
       }
@@ -240,6 +283,28 @@ async function onLoadMore(node: TreeOption, relativePath: string) {
     console.log(error);
 
     return Promise.resolve(false);
+  }
+}
+
+function onDeleteConfirmationModalClose() {
+  isDeleteConfirmationModalVisible.value = false;
+
+  setTimeout(() => {
+    fileToDeleteId.value = 0;
+  }, 250);
+}
+
+async function deleteFile() {
+  isDeletingFile.value = true;
+
+  try {
+    await filesStore.delete(fileToDeleteId.value);
+
+    onDeleteConfirmationModalClose();
+  } catch (error) {
+    console.log(error);
+  } finally {
+    isDeletingFile.value = false;
   }
 }
 </script>

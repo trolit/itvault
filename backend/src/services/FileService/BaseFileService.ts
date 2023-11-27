@@ -101,11 +101,16 @@ export abstract class BaseFileService implements IBaseFileService {
   ): Promise<TransactionResult<void>> {
     const transaction = await this.fileRepository.useTransaction();
 
+    // @NOTE to consider: (1) keep as service action OR (2) move to subscriber
+    // @NOTE to consider: (1) soft delete both, (2) soft delete file only
+
     try {
       const file = await transaction.manager.findOneByOrFail(File, { id });
 
       // @TODO consider adding to each file name e.g. underscore to mark file as deleted?
-      transaction.manager.softDelete(Variant, { file: { id: file.id } });
+      await transaction.manager.softDelete(Variant, { file: { id: file.id } });
+
+      await transaction.manager.softDelete(File, { id });
 
       await transaction.commitTransaction();
 
