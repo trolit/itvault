@@ -40,7 +40,7 @@ import {
   type TreeOption,
   type TreeDropInfo,
 } from "naive-ui";
-import { h, ref, type Ref } from "vue";
+import { h, ref, type Ref, type VNode } from "vue";
 
 import {
   Pen as EditIcon,
@@ -113,43 +113,54 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
       if (id && type === "file") {
         hoveredFileId.value = parseInt(id);
 
+        const buttons: VNode[] = [];
+
+        if (authStore.hasPermission(Permission.UpdateFilename)) {
+          buttons.push(
+            h(
+              NButton,
+              {
+                secondary: true,
+                size: "tiny",
+                type: "info",
+                onClick: event => {
+                  event.stopPropagation();
+
+                  fileToEditId.value = parseInt(id);
+                },
+              },
+              {
+                default: () => h(NIcon, { component: EditIcon }),
+              }
+            )
+          );
+        }
+
+        if (authStore.hasPermission(Permission.DeleteFile)) {
+          buttons.push(
+            h(
+              NButton,
+              {
+                secondary: true,
+                size: "tiny",
+                type: "error",
+                onClick: event => {
+                  event.stopPropagation();
+                },
+              },
+              {
+                default: () => h(NIcon, { component: DeleteIcon }),
+              }
+            )
+          );
+        }
+
         option.suffix = () =>
           h(
             NSpace,
             { size: 5 },
             {
-              default: () => [
-                h(
-                  NButton,
-                  {
-                    secondary: true,
-                    size: "tiny",
-                    type: "info",
-                    onClick: event => {
-                      event.stopPropagation();
-
-                      fileToEditId.value = parseInt(id);
-                    },
-                  },
-                  {
-                    default: () => h(NIcon, { component: EditIcon }),
-                  }
-                ),
-                h(
-                  NButton,
-                  {
-                    secondary: true,
-                    size: "tiny",
-                    type: "error",
-                    onClick: event => {
-                      event.stopPropagation();
-                    },
-                  },
-                  {
-                    default: () => h(NIcon, { component: DeleteIcon }),
-                  }
-                ),
-              ],
+              default: () => buttons,
             }
           );
       }
