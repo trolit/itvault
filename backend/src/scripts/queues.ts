@@ -1,20 +1,27 @@
 import "reflect-metadata";
 import lockfile from "proper-lockfile";
+import { Transporter } from "nodemailer";
 import { Channel, Connection, connect } from "amqplib";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import { MQRABBIT } from "@config";
+import { dataSource } from "@config/data-source";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 
+import { setupDi } from "@utils/setupDi";
+import { splitPath } from "@helpers/splitPath";
 import { ConsumerFactory } from "@factories/ConsumerFactory";
+import { setupMailTransporter } from "@utils/setupMailTransporter";
 
 function logMessage(message: string) {
-  console.log(`RabbitMQ: ${message}`);
+  console.log(`[queues]: ${message}`);
 }
 
 let connection: Connection;
 let consumerChannels: Channel[] = [];
+let mailTransporter: Transporter<SMTPTransport.SentMessageInfo>;
 
 const consumers = [
   {
@@ -29,9 +36,25 @@ const consumers = [
 
 (async function () {
   try {
+    logMessage(`acquiring lock on file ${splitPath(__filename).pop()}...`);
+
     await lockfile.lock(__filename);
 
+    logMessage("creating data source connection...");
+
+    await dataSource.initialize();
+
+    logMessage("creating nodemailer connection...");
+
+    mailTransporter = setupMailTransporter();
+
+    logMessage("setting up dependency injection...");
+
+    await setupDi(mailTransporter);
+
     const { PORT, USER, PASSWORD } = MQRABBIT;
+
+    logMessage("establishing amqplib connection...");
 
     connection = await connect({
       port: PORT,
@@ -47,34 +70,63 @@ const consumers = [
       )
     );
 
-    logMessage("Queues initialized.");
+    logMessage("initialization successful!");
   } catch (error) {
     console.log(error);
 
-    logMessage("Failed to initialize queues!");
+    logMessage("initialization failed!");
   }
 })();
 
-process.on("SIGINT", async () => {
-  logMessage("Closing consumer channels...");
+async function onExit() {
+  logMessage("received SHUTDOWN signal");
+  logMessage("received SHUTDOWN signal");
+  logMessage("received SHUTDOWN signal");
+  logMessage("received SHUTDOWN signal");
+
+  logMessage("closing consumer channels...");
 
   try {
     await Promise.all(consumerChannels.map(channel => channel.close()));
   } catch (error) {
     console.log(error);
 
-    logMessage("Failed to (gracefully) close consumer channels...");
+    logMessage("failed to close consumer channels!");
   }
 
-  logMessage("Closing connection...");
+  logMessage("closing nodemailer connection...");
+
+  try {
+    mailTransporter.close();
+  } catch (error) {
+    console.log(error);
+
+    logMessage("failed to close nodemailer connection!");
+  }
+
+  logMessage("closing data source connection...");
+
+  try {
+    await dataSource.destroy();
+  } catch (error) {
+    console.log(error);
+
+    logMessage("failed to destroy data source connection!");
+  }
+
+  logMessage("closing amqplib connection...");
 
   try {
     await connection.close();
   } catch (error) {
     console.log(error);
 
-    logMessage("Failed to (gracefully) close (queues) connection...");
+    logMessage("failed to close amqplib connection!");
   }
 
-  logMessage("Queues shut down.");
-});
+  process.exit();
+}
+
+process.on("SIGINT", onExit);
+process.on("SIGTERM", onExit);
+process.on("SIGQUIT", onExit);

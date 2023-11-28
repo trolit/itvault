@@ -27,7 +27,7 @@ export const server = async () => {
 
   const mailTransporter = setupMailTransporter();
 
-  await setupDi(redis.instance, mailTransporter);
+  await setupDi(mailTransporter, redis.instance);
 
   await setupPublisher();
 
