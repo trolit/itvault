@@ -8,7 +8,6 @@ import { setupRedis } from "@utils/setupRedis";
 import { setupExpress } from "@utils/setupExpress";
 import { loadYupUtils } from "@utils/loadYupUtils";
 import { setupPublisher } from "@utils/setupPublisher";
-import { setupMailTransporter } from "@utils/setupMailTransporter";
 
 export const server = async () => {
   const app = express();
@@ -25,9 +24,7 @@ export const server = async () => {
 
   const redis = setupRedis();
 
-  const mailTransporter = setupMailTransporter();
-
-  await setupDi(mailTransporter, redis.instance);
+  await setupDi({ redis: redis.instance });
 
   await setupPublisher();
 
