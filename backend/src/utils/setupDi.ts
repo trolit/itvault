@@ -13,15 +13,19 @@ import { LocalFileService } from "@services/FileService/LocalFileService";
 import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
 import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
-export const setupDi = (
-  mailTransporter: Transporter,
-  redis?: Redis
-): Promise<DependencyContainer> => {
+export const setupDi = (services: {
+  redis?: Redis;
+  mailTransporter?: Transporter;
+}): Promise<DependencyContainer> => {
+  const { mailTransporter, redis } = services;
+
   if (redis) {
     container.register(Di.Redis, { useValue: redis });
   }
 
-  container.register(Di.MailTransporter, { useValue: mailTransporter });
+  if (mailTransporter) {
+    container.register(Di.MailTransporter, { useValue: mailTransporter });
+  }
 
   registerFileService();
 
