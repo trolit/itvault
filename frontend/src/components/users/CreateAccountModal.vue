@@ -94,13 +94,6 @@
       </n-row>
     </n-form>
 
-    <n-text :depth="3">
-      <small>
-        [Note] at given email, link will be sent which will allow it's owner to
-        finish account creation
-      </small>
-    </n-text>
-
     <template #footer>
       <n-space justify="space-between">
         <n-button @click="close" :disabled="isLoading"> Cancel </n-button>
@@ -117,7 +110,6 @@
 import {
   NCol,
   NRow,
-  NText,
   NForm,
   NInput,
   NSpace,
@@ -128,12 +120,17 @@ import {
 import { ref, toRefs } from "vue";
 import { number, object, string, ref as yupRef } from "yup";
 
+import { useUsersStore } from "@/store/users";
 import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
+
+import { defineWatchers } from "@/helpers/defineWatchers";
 import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
-import { defineWatchers } from "@/helpers/defineWatchers";
+
+const usersStore = useUsersStore();
+const generalStore = useGeneralStore();
 
 interface IProps {
   isVisible: boolean;
@@ -142,8 +139,6 @@ interface IProps {
 
   roles: PrimitiveSelectOption[];
 }
-
-const generalStore = useGeneralStore();
 
 const props = defineProps<IProps>();
 const { isVisible, roles } = toRefs(props);
@@ -228,9 +223,11 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   isLoading.value = true;
 
   try {
-    // @TODO
+    const { confirmEmail, ...payload } = formData;
 
-    generalStore.messageProvider.success(`Account created`);
+    await usersStore.store(payload);
+
+    generalStore.messageProvider.success(`Account created!`);
 
     close();
   } catch (error) {
