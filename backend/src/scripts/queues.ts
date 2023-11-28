@@ -11,6 +11,7 @@ import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 
 import { setupDi } from "@utils/setupDi";
+import { splitPath } from "@helpers/splitPath";
 import { ConsumerFactory } from "@factories/ConsumerFactory";
 import { setupMailTransporter } from "@utils/setupMailTransporter";
 
@@ -35,7 +36,7 @@ const consumers = [
 
 (async function () {
   try {
-    logMessage(`acquiring lock on file ${__filename.split("/").pop()}...`);
+    logMessage(`acquiring lock on file ${splitPath(__filename).pop()}...`);
 
     await lockfile.lock(__filename);
 
