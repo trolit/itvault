@@ -6,6 +6,7 @@ import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
 import type { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
+import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
@@ -62,6 +63,12 @@ export const useUsersStore = defineStore("users", {
       );
 
       this.notes.total = total;
+    },
+
+    async store(payload: AddEditUserDto) {
+      return axios.post<IUserDto>("v1/users", payload, {
+        params: { version: 1 },
+      });
     },
 
     async updateMany() {
