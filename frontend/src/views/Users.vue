@@ -2,7 +2,12 @@
   <div class="users-page page">
     <div class="header">
       <require-permission :permission="Permission.CreateUser">
-        <n-button secondary size="small" type="success">
+        <n-button
+          secondary
+          size="small"
+          type="success"
+          @click="isCreateAccountModalVisible = true"
+        >
           <n-icon :component="AddIcon" :size="25" />
         </n-button>
       </require-permission>
@@ -60,6 +65,15 @@
         <n-empty description="No users found." />
       </template>
     </n-data-table>
+
+    <create-account-modal
+      :is-visible="isCreateAccountModalVisible"
+      :roles="options"
+      :is-loading-roles="isLoadingRoles"
+      @select-blur="onAsynchronousSelectBlur"
+      @select-filter="onAsynchronousSelectFilter"
+      @update:is-visible="isCreateAccountModalVisible = false"
+    />
   </div>
 </template>
 
@@ -89,6 +103,7 @@ import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import CreateAccountModal from "@/components/users/CreateAccountModal.vue";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 
 const rolesStore = useRolesStore();
@@ -98,6 +113,7 @@ const generalStore = useGeneralStore();
 const isLoadingUsers = ref(true);
 const isLoadingRoles = ref(false);
 const rolessSearchTimeoutId = ref(0);
+const isCreateAccountModalVisible = ref(false);
 let filteredRoles: { value: IRoleDto[] } = reactive({ value: [] });
 let allFetchedRoles: { value: IRoleDto[] } = reactive({ value: [] });
 
@@ -195,20 +211,8 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
         loading: isLoadingRoles.value,
         consistentMenuWidth: false,
 
-        onBlur: () =>
-          setTimeout(
-            () => (filteredRoles.value = cloneDeep(allFetchedRoles.value)),
-            200
-          ),
-        onFilter: (value: string) => {
-          if (!value) {
-            filteredRoles.value = cloneDeep(allFetchedRoles.value);
-
-            return;
-          }
-
-          getRoles(value);
-        },
+        onBlur: onAsynchronousSelectBlur,
+        onFilter: onAsynchronousSelectFilter,
         onSelect: (selectedRoleId: number) => {
           usersStore.setRole(id, selectedRoleId);
 
@@ -282,6 +286,23 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     },
   },
 ]);
+
+function onAsynchronousSelectBlur() {
+  setTimeout(
+    () => (filteredRoles.value = cloneDeep(allFetchedRoles.value)),
+    200
+  );
+}
+
+function onAsynchronousSelectFilter(value: string) {
+  if (!value) {
+    filteredRoles.value = cloneDeep(allFetchedRoles.value);
+
+    return;
+  }
+
+  getRoles(value);
+}
 
 async function getUsers() {
   isLoadingUsers.value = true;
