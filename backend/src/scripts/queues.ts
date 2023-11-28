@@ -50,7 +50,7 @@ const consumers = [
 
     logMessage("setting up dependency injection...");
 
-    await setupDi(mailTransporter);
+    await setupDi({ mailTransporter });
 
     const { PORT, USER, PASSWORD } = MQRABBIT;
 
