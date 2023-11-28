@@ -1,6 +1,12 @@
 <template>
   <div class="users-page page">
     <div class="header">
+      <require-permission :permission="Permission.CreateUser">
+        <n-button secondary size="small" type="success">
+          <n-icon :component="AddIcon" :size="25" />
+        </n-button>
+      </require-permission>
+
       <!-- @TODO -->
       <n-input
         clearable
@@ -72,7 +78,7 @@ import {
 } from "naive-ui";
 import uniqBy from "lodash/uniqBy";
 import cloneDeep from "lodash/cloneDeep";
-import { Search as SearchIcon } from "@vicons/carbon";
+import { Add as AddIcon, Search as SearchIcon } from "@vicons/carbon";
 import { h, onBeforeMount, reactive, ref, type Ref } from "vue";
 
 import { useRolesStore } from "@/store/roles";
@@ -81,6 +87,8 @@ import { useGeneralStore } from "@/store/general";
 import { defineComputed } from "@/helpers/defineComputed";
 import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
+import { Permission } from "@shared/types/enums/Permission";
+import RequirePermission from "@/components/common/RequirePermission.vue";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 
 const rolesStore = useRolesStore();

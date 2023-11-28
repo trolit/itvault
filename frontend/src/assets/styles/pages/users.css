@@ -1,19 +1,14 @@
 .users-page {
+  margin: 0 10px;
+
   .header {
     display: flex;
-    margin: 0 10px;
+    column-gap: 20px;
     align-items: center;
-    justify-content: space-between;
     height: var(--users-header-height);
 
     .n-input {
       width: 35%;
-    }
-
-    .wrapper {
-      display: inherit;
-      column-gap: 10px;
-      align-items: center;
     }
   }
 
@@ -22,10 +17,6 @@
       100vh - var(--header-height) - var(--users-header-height) -
         var(--users-bottom-margin)
     ) !important;
-
-    .n-data-table-wrapper {
-      margin: 0 10px;
-    }
 
     .n-data-table-base-table-body {
       .n-scrollbar-content {
