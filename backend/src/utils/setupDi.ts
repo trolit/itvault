@@ -14,10 +14,12 @@ import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
 import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
 export const setupDi = (
-  redis: Redis,
-  mailTransporter: Transporter
+  mailTransporter: Transporter,
+  redis?: Redis
 ): Promise<DependencyContainer> => {
-  container.register(Di.Redis, { useValue: redis });
+  if (redis) {
+    container.register(Di.Redis, { useValue: redis });
+  }
 
   container.register(Di.MailTransporter, { useValue: mailTransporter });
 
