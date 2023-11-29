@@ -9,17 +9,12 @@
     </theme-selector>
 
     <n-card>
-      <n-grid
-        x-gap="20"
-        y-gap="20"
-        responsive="screen"
-        cols="1 s:1 m:12 l:12 xl:12 2xl:12"
-      >
-        <n-grid-item span="6">
+      <n-grid y-gap="20" responsive="screen" cols="1 s:1 m:8 l:8 xl:8 2xl:8">
+        <n-grid-item span="4" class="section">
           <sign-up-banner />
         </n-grid-item>
 
-        <n-grid-item span="6">
+        <n-grid-item span="4" class="section">
           <sign-up-form />
         </n-grid-item>
       </n-grid>
@@ -28,10 +23,35 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeMount, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { RainDrop as RainDropIcon } from "@vicons/carbon";
 import { NCard, NGrid, NGridItem, NIcon, NButton } from "naive-ui";
 
 import SignUpForm from "@/components/users/sign-up/Form.vue";
 import SignUpBanner from "@/components/users/sign-up/Banner.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
+
+const route = useRoute();
+const router = useRouter();
+
+const id = ref("");
+const code = ref("");
+const email = ref("");
+
+onBeforeMount(() => {
+  const {
+    query: { email: qEmail, id: qId, code: qCode },
+  } = route;
+
+  if (!qEmail || !qId || !qCode) {
+    router.back();
+
+    return;
+  }
+
+  id.value = qId.toString();
+  code.value = qCode.toString();
+  email.value = qEmail.toString();
+});
 </script>
