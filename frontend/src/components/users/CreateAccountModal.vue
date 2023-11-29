@@ -223,6 +223,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   isLoading.value = true;
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { confirmEmail, ...payload } = formData;
 
     await usersStore.store(payload);
