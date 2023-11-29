@@ -8,6 +8,12 @@ export namespace SignUpMailViewBuilder {
   export type Output = {
     email: string;
 
-    href: string;
+    firstName: string;
+
+    lastName: string;
+
+    signUpHref: string;
+
+    appHref: string;
   };
 }

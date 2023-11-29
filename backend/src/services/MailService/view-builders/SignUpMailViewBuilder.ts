@@ -10,10 +10,10 @@ export class SignUpMailViewBuilder
 {
   build(data: VB.Input) {
     const {
-      user: { id, email, signUpCode },
+      user: { id, email, signUpCode, firstName, lastName },
     } = data;
 
-    const url = buildUrl(APP.URL, ["auth", "register"], {
+    const url = buildUrl(APP.URL, ["guest", "sign-up"], {
       email,
 
       id: id.toString(),
@@ -23,7 +23,10 @@ export class SignUpMailViewBuilder
 
     return {
       email,
-      href: url.href,
+      lastName,
+      firstName,
+      appHref: APP.URL,
+      signUpHref: url.href,
     };
   }
 }
