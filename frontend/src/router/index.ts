@@ -13,6 +13,7 @@ import {
   ROUTE_LOGIN_NAME,
   ROUTE_ROLES_NAME,
   ROUTE_USERS_NAME,
+  ROUTE_SIGN_UP_NAME,
   ROUTE_UPDATES_NAME,
   ROUTE_SETTINGS_NAME,
   ROUTE_DASHBOARD_NAME,
@@ -24,6 +25,7 @@ import Guide from "@/views/Guide.vue";
 import Login from "@/views/Login.vue";
 import Roles from "@/views/Roles.vue";
 import Users from "@/views/Users.vue";
+import SignUp from "@/views/SignUp.vue";
 import Updates from "@/views/Updates.vue";
 import Settings from "@/views/Settings.vue";
 import Dashboard from "@/views/Dashboard.vue";
@@ -40,6 +42,12 @@ const router = createRouter({
       path: "",
       name: ROUTE_GUEST_NAME,
       component: Guest,
+    },
+
+    {
+      path: `/${ROUTE_GUEST_NAME}/${ROUTE_SIGN_UP_NAME}`,
+      name: ROUTE_SIGN_UP_NAME,
+      component: SignUp,
     },
 
     {
