@@ -50,6 +50,7 @@ export class GetAllController extends BaseController {
       },
       relations: {
         role: true,
+        createdBy: true,
       },
       where: {
         id:
