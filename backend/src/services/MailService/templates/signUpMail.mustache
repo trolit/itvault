@@ -1,9 +1,23 @@
 <div>
-    Hello <strong>{{email}}</strong> 👋,
-    
+    Hello <strong>{{firstName}} {{lastName}}</strong> 👋,
+
     <div>
         your account is almost ready to use! Complete registration process by clicking 
         <br/>
         <a href="{{href}}">here</a>
+    </div>
+</div>
+
+<div>
+    Hello <strong>{{firstName}} {{lastName}}</strong> 👋, 
+    
+    <div style="padding: 20px; text-align: center;"> 
+        your account is almost ready to use at <a href="{{appHref}}" target="_blank">{{appHref}}</a>! To finish registration process, click the following link: 
+        
+        <div style="text-align:center; margin:15px 0;">
+            <a href="{{signUpHref}}" target="_blank">{{signUpHref}}</a>
+        </div> 
+   
+        to set password and access app 🔥
     </div>
 </div>
