@@ -1,2 +1,22 @@
 .sign-up-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .n-card {
+    height: 85vh;
+    width: 90vw;
+  }
+
+  .theme-selector {
+    left: 0;
+    opacity: 0.5;
+    z-index: 9999;
+    position: absolute;
+    top: 5px;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
