@@ -4,6 +4,7 @@ import cloneDeep from "lodash/cloneDeep";
 
 import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
+import type { SignUpDto } from "@shared/types/dtos/SignUpDto";
 import type { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
@@ -67,6 +68,12 @@ export const useUsersStore = defineStore("users", {
 
     async store(payload: AddEditUserDto) {
       return axios.post<IUserDto>("v1/users", payload, {
+        params: { version: 1 },
+      });
+    },
+
+    async signUp(payload: SignUpDto) {
+      return axios.post(`v1/users/sign-up`, payload, {
         params: { version: 1 },
       });
     },
