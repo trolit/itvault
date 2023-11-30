@@ -15,11 +15,11 @@
         <n-text depth="3">/variants/</n-text>
 
         <n-timeline v-if="!isLoading">
-          <n-timeline-item type="info" line-type="dashed">
+          <n-timeline-item type="success" line-type="dashed">
             <template #default>
               <n-button
                 size="small"
-                type="info"
+                type="success"
                 @click="isAddVariantModalVisible = true"
               >
                 <n-icon :component="AddIcon" :size="25" />
@@ -36,13 +36,23 @@
                 {{ name }}
               </n-button>
 
-              <div>
-                <small>{{ dateService.format(createdAt) }}</small>
-              </div>
+              <n-divider vertical />
 
-              <n-gradient-text type="warning" :size="12">
-                ({{ size.value }}{{ size.unit }})
-              </n-gradient-text>
+              <n-button text><small>Rename</small></n-button>
+
+              <div>
+                <n-space justify="center">
+                  <n-gradient-text type="info" :size="12">
+                    {{ size.value }}{{ size.unit }}
+                  </n-gradient-text>
+
+                  <n-text :depth="3" :style="{ fontSize: '13px' }">
+                    <small>
+                      {{ dateService.format(createdAt, "DD-MM-YYYY HH:mm") }}
+                    </small>
+                  </n-text>
+                </n-space>
+              </div>
             </template>
           </n-timeline-item>
         </n-timeline>
@@ -63,7 +73,9 @@ import {
   NIcon,
   NText,
   NCard,
+  NSpace,
   NButton,
+  NDivider,
   NTimeline,
   NTimelineItem,
   NGradientText,
