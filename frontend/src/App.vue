@@ -40,12 +40,16 @@ import { useRoute } from "vue-router";
 import { computed, type ComputedRef } from "vue";
 import type { BuiltInGlobalTheme } from "naive-ui/es/themes/interface";
 
+import {
+  ROUTE_GUEST_NAME,
+  ROUTE_LOGIN_NAME,
+  ROUTE_SIGN_UP_NAME,
+} from "./assets/constants/routes";
 import AppMain from "@/components/Main.vue";
 import { useGeneralStore } from "@/store/general";
 import AppHeader from "@/components/header/Index.vue";
 import { darkDimmedTheme } from "@/custom-themes/DarkDimmed";
 import { THEME_DARK, THEME_DARK_DIMMED } from "@/assets/constants/themes";
-import { ROUTE_GUEST_NAME, ROUTE_LOGIN_NAME } from "./assets/constants/routes";
 
 const generalStore = useGeneralStore();
 
@@ -75,6 +79,8 @@ const withAppHeader: ComputedRef<boolean> = computed(
   (): boolean =>
     route &&
     typeof route.name === "string" &&
-    ![ROUTE_LOGIN_NAME, ROUTE_GUEST_NAME].includes(route.name)
+    ![ROUTE_LOGIN_NAME, ROUTE_GUEST_NAME, ROUTE_SIGN_UP_NAME].includes(
+      route.name
+    )
 );
 </script>
