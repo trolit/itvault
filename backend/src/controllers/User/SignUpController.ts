@@ -46,7 +46,7 @@ export class SignUpController extends BaseController {
     });
 
     if (!user) {
-      return response.status(HTTP.BAD_REQUEST).send();
+      return response.status(HTTP.NO_CONTENT).send();
     }
 
     if (user && user.signUpCode !== signUpCode) {
@@ -55,7 +55,7 @@ export class SignUpController extends BaseController {
         signUpCode: "",
       });
 
-      return response.status(HTTP.BAD_REQUEST).send();
+      return response.status(HTTP.NO_CONTENT).send();
     }
 
     const hashedPassword = await bcrypt.hash(password, BCRYPT.SALT_ROUNDS);
@@ -67,6 +67,6 @@ export class SignUpController extends BaseController {
       isSignedUp: true,
     });
 
-    return this.finalizeRequest(response, HTTP.OK);
+    return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
 }

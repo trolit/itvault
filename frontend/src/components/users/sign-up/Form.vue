@@ -148,15 +148,15 @@ const onSubmit = handleSubmit.withControlled(async formData => {
       password: formData.password,
     });
 
-    generalStore.messageProvider.success("You've successfully signed up!");
+    generalStore.messageProvider.success(
+      "Sign up request processed by application."
+    );
 
     router.push({ name: ROUTE_LOGIN_NAME });
   } catch (error) {
     console.error(error);
 
     setValidationErrors(error);
-
-    generalStore.messageProvider.error("Sign up failed!");
   } finally {
     isLoading.value = false;
   }
