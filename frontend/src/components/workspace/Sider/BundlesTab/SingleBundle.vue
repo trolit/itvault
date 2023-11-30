@@ -20,7 +20,10 @@
       </n-card>
 
       <template #footer>
-        <require-permission :permission="Permission.DeleteBundle">
+        <require-permission
+          v-if="item.status !== BundleStatusEnum.Queried"
+          :permission="Permission.DeleteBundle"
+        >
           <n-popconfirm @positive-click="deleteBundle(item.id)">
             <template #trigger>
               <n-button
