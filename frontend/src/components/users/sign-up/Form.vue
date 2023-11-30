@@ -60,7 +60,9 @@
     </div>
 
     <n-space justify="center">
-      <n-button type="success" @click="onSubmit">Sign up</n-button>
+      <n-button type="success" :loading="isLoading" @click="onSubmit">
+        Sign up
+      </n-button>
     </n-space>
   </div>
 </template>
