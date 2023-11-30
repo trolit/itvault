@@ -78,10 +78,15 @@ import {
 import { ref } from "vue";
 import { object, string, ref as yupRef } from "yup";
 
+import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/users";
 import { defineForm } from "@/helpers/defineForm";
+import { useGeneralStore } from "@/store/general";
+import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
 
+const router = useRouter();
 const usersStore = useUsersStore();
+const generalStore = useGeneralStore();
 
 interface IProps {
   id: string;
@@ -113,8 +118,8 @@ const { fields, getError, hasError, handleSubmit, setValidationErrors } =
         .min(7)
         .matches(/[a-z]/)
         .matches(/[A-Z]/)
-        .matches(/\d/)
-        .matches(/[*.!@#$%^&(){}[\]:;<>,.?/~_+-=|]/),
+        .matches(/[*.!@#$%^&(){}[\]:;<>,.?/~_+-=|]/)
+        .matches(/\d/),
       confirmPassword: string()
         .required()
         .oneOf([yupRef("password")]),
@@ -140,10 +145,16 @@ const onSubmit = handleSubmit.withControlled(async formData => {
       signUpCode: props.code,
       password: formData.password,
     });
+
+    generalStore.messageProvider.success("You've successfully signed up!");
+
+    router.push({ name: ROUTE_LOGIN_NAME });
   } catch (error) {
     console.error(error);
 
     setValidationErrors(error);
+
+    generalStore.messageProvider.error("Sign up failed!");
   } finally {
     isLoading.value = false;
   }
