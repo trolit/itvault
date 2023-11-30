@@ -10,9 +10,8 @@
       <n-text :depth="2">
         You were invited to our source code vault by one of the members!
         Regardless of the role that was assigned to you, please complete
-        registration process by setting your own password (to be able to sign
-        in). We recommend to generate strong password using one of available
-        tools (i.e.
+        registration process by setting your own password. We recommend to
+        generate strong password using one of available tools (i.e.
         <n-button
           text
           tag="a"

@@ -9,15 +9,22 @@
     </theme-selector>
 
     <n-card>
-      <n-grid y-gap="20" responsive="screen" cols="1 s:1 m:8 l:8 xl:8 2xl:8">
-        <n-grid-item span="4" class="section">
-          <sign-up-banner :email="email" />
-        </n-grid-item>
+      <n-scrollbar trigger="none">
+        <n-grid
+          x-gap="30"
+          y-gap="30"
+          responsive="screen"
+          cols="1 s:1 m:8 l:8 xl:8 2xl:8"
+        >
+          <n-grid-item span="4" class="section">
+            <sign-up-banner :email="email" />
+          </n-grid-item>
 
-        <n-grid-item span="4" class="section">
-          <sign-up-form :id="id" :email="email" :code="code" />
-        </n-grid-item>
-      </n-grid>
+          <n-grid-item span="4" class="section">
+            <sign-up-form :id="id" :email="email" :code="code" />
+          </n-grid-item>
+        </n-grid>
+      </n-scrollbar>
     </n-card>
   </div>
 </template>
@@ -26,7 +33,7 @@
 import { onBeforeMount, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { RainDrop as RainDropIcon } from "@vicons/carbon";
-import { NCard, NGrid, NGridItem, NIcon, NButton } from "naive-ui";
+import { NCard, NGrid, NGridItem, NIcon, NButton, NScrollbar } from "naive-ui";
 
 import SignUpForm from "@/components/users/sign-up/Form.vue";
 import SignUpBanner from "@/components/users/sign-up/Banner.vue";

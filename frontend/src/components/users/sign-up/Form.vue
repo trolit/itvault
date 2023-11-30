@@ -1,7 +1,7 @@
 <template>
   <div class="form-wrapper">
     <n-form>
-      <n-form-item label="Your reference ID (READ ONLY)">
+      <n-form-item label="Your refID">
         <n-input
           readonly
           :value="id"
@@ -10,7 +10,7 @@
         />
       </n-form-item>
 
-      <n-form-item label="Your code (READ ONLY)">
+      <n-form-item label="Your code">
         <n-input
           readonly
           :value="code"
@@ -36,6 +36,8 @@
       </n-form-item>
     </n-form>
 
+    <n-divider />
+
     <div class="warning">
       <n-text :depth="3">
         <small>
@@ -46,11 +48,23 @@
         </small>
       </n-text>
     </div>
+
+    <n-space justify="center">
+      <n-button type="success">Sign up</n-button>
+    </n-space>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NText, NForm, NFormItem, NInput } from "naive-ui";
+import {
+  NText,
+  NForm,
+  NInput,
+  NSpace,
+  NButton,
+  NDivider,
+  NFormItem,
+} from "naive-ui";
 
 interface IProps {
   id: string;
