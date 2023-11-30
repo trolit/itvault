@@ -78,7 +78,6 @@ export class GetAllController extends BaseController {
         },
         createdBy: true,
       },
-      withDeleted: true,
     });
 
     const mappedResult = this.mapper.map<Bundle>(result).to(BundleMapper);
