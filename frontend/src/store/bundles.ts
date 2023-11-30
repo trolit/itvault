@@ -159,7 +159,7 @@ export const useBundlesStore = defineStore("bundles", {
       return data;
     },
 
-    async delete(id: string) {
+    async delete(id: number) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
