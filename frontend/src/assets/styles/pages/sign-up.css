@@ -28,6 +28,12 @@
             margin: 0 60px;
           }
         }
+
+        .form-wrapper {
+          .warning {
+            text-align: center;
+          }
+        }
       }
     }
   }

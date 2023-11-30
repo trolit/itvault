@@ -11,11 +11,11 @@
     <n-card>
       <n-grid y-gap="20" responsive="screen" cols="1 s:1 m:8 l:8 xl:8 2xl:8">
         <n-grid-item span="4" class="section">
-          <sign-up-banner />
+          <sign-up-banner :email="email" />
         </n-grid-item>
 
         <n-grid-item span="4" class="section">
-          <sign-up-form />
+          <sign-up-form :id="id" :email="email" :code="code" />
         </n-grid-item>
       </n-grid>
     </n-card>
