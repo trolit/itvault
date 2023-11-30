@@ -36,9 +36,9 @@
                 {{ name }}
               </n-button>
 
-              <require-permission :permission="Permission.UpdateVariantName">
-                <n-divider vertical />
+              <n-divider vertical />
 
+              <require-permission :permission="Permission.UpdateVariantName">
                 <n-button text @click="variantToEditId = id">
                   <small>Rename</small>
                 </n-button>
@@ -57,6 +57,27 @@
                   </n-text>
                 </n-space>
               </div>
+
+              <n-space justify="end">
+                <require-permission :permission="Permission.DeleteVariant">
+                  <n-popconfirm @positive-click="deleteVariant(id)">
+                    <template #trigger>
+                      <n-button
+                        text
+                        type="error"
+                        :loading="variantToDeleteId === id"
+                      >
+                        <small>DELETE</small>
+                      </n-button>
+                    </template>
+
+                    <small>
+                      Do you really want to remove this variant? This action
+                      cannot be undone!
+                    </small>
+                  </n-popconfirm>
+                </require-permission>
+              </n-space>
             </template>
           </n-timeline-item>
         </n-timeline>
@@ -87,6 +108,7 @@ import {
   NButton,
   NDivider,
   NTimeline,
+  NPopconfirm,
   NTimelineItem,
   NGradientText,
 } from "naive-ui";
@@ -98,6 +120,7 @@ import { Add as AddIcon } from "@vicons/carbon";
 import { Drawer } from "@/types/enums/Drawer";
 import { useFilesStore } from "@/store/files";
 import { useDrawerStore } from "@/store/drawer";
+import { useGeneralStore } from "@/store/general";
 import AddVariantModal from "./AddVariantModal.vue";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
@@ -113,11 +136,13 @@ const route = useRoute();
 const filesStore = useFilesStore();
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
+const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(false);
 const variantToEditId = ref("");
+const variantToDeleteId = ref("");
 const isAddVariantModalVisible = ref(false);
 const { activeTab } = storeToRefs(filesStore);
 
