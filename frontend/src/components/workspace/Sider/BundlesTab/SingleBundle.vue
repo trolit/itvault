@@ -21,7 +21,7 @@
 
       <template #footer>
         <require-permission
-          v-if="item.status !== BundleStatusEnum.Enqueued"
+          v-if="item.status !== BundleStatusEnum.Building"
           :permission="Permission.DeleteBundle"
         >
           <n-popconfirm @positive-click="deleteBundle(item.id)">
@@ -33,13 +33,17 @@
                 :loading="bundleToDeleteId == item.id"
                 @click.stop
               >
-                delete
+                {{
+                  item.status === BundleStatusEnum.Enqueued
+                    ? "cancel"
+                    : "delete"
+                }}
               </n-button>
             </template>
 
             <small>
-              Do you really want to remove this bundle? This action cannot be
-              undone!
+              Do you really want to remove this bundle entry? This action cannot
+              be undone!
             </small>
           </n-popconfirm>
         </require-permission>
