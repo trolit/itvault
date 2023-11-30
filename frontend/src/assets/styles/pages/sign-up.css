@@ -6,6 +6,30 @@
   .n-card {
     height: 85vh;
     width: 90vw;
+
+    .n-grid {
+      height: 100%;
+
+      .section {
+        padding: 10px;
+        height: inherit;
+
+        .banner {
+          display: flex;
+          height: inherit;
+          flex-direction: column;
+          justify-content: space-evenly;
+
+          .element {
+            text-align: center;
+          }
+
+          .main-description {
+            margin: 0 60px;
+          }
+        }
+      }
+    }
   }
 
   .theme-selector {
