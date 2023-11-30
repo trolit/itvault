@@ -1,5 +1,5 @@
-import { MoreThanOrEqual } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { IsNull, MoreThanOrEqual } from "typeorm";
 import { BundleMapper } from "@mappers/BundleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IBundleRepository } from "types/repositories/IBundleRepository";
@@ -59,7 +59,7 @@ export class GetAllController extends BaseController {
       },
       where: [
         {
-          expiresAt: undefined,
+          expiresAt: IsNull(),
           ...commonWhere,
         },
         {
