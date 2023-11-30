@@ -75,10 +75,14 @@ const createdAt = computed(() => props.bundle.createdAt);
 const status = computed((): { type: NaiveStatus; text: string } => {
   switch (props.bundle.status) {
     case BundleStatus.Queried:
-    case BundleStatus.Building:
       return {
         type: "info",
-        text: `This bundle is being processed and is not ready yet (status: ${props.bundle.status})`,
+        text: `Enqueued.`,
+      };
+    case BundleStatus.Building:
+      return {
+        type: "warning",
+        text: `Building...`,
       };
     default:
       return {
