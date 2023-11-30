@@ -38,7 +38,9 @@
 
               <n-divider vertical />
 
-              <n-button text><small>Rename</small></n-button>
+              <n-button text @click="variantToEditId = id">
+                <small>Rename</small>
+              </n-button>
 
               <div>
                 <n-space justify="center">
@@ -64,6 +66,13 @@
     <add-variant-modal
       :is-visible="isAddVariantModalVisible"
       @update:is-visible="isAddVariantModalVisible = $event"
+    />
+
+    <rename-variant-modal
+      v-if="variantToEditId"
+      :is-visible="true"
+      :variant-id="variantToEditId"
+      @update:is-visible="variantToEditId = ''"
     />
   </div>
 </template>
@@ -91,6 +100,7 @@ import { useDrawerStore } from "@/store/drawer";
 import AddVariantModal from "./AddVariantModal.vue";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
+import RenameVariantModal from "./RenameVariantModal.vue";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
@@ -104,6 +114,7 @@ const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(false);
+const variantToEditId = ref("");
 const isAddVariantModalVisible = ref(false);
 const { activeTab } = storeToRefs(filesStore);
 
