@@ -15,11 +15,11 @@
         <n-text depth="3">/variants/</n-text>
 
         <n-timeline v-if="!isLoading">
-          <n-timeline-item type="info" line-type="dashed">
+          <n-timeline-item type="success" line-type="dashed">
             <template #default>
               <n-button
                 size="small"
-                type="info"
+                type="success"
                 @click="isAddVariantModalVisible = true"
               >
                 <n-icon :component="AddIcon" :size="25" />
@@ -36,13 +36,25 @@
                 {{ name }}
               </n-button>
 
-              <div>
-                <small>{{ dateService.format(createdAt) }}</small>
-              </div>
+              <n-divider vertical />
 
-              <n-gradient-text type="warning" :size="12">
-                ({{ size.value }}{{ size.unit }})
-              </n-gradient-text>
+              <n-button text @click="variantToEditId = id">
+                <small>Rename</small>
+              </n-button>
+
+              <div>
+                <n-space justify="center">
+                  <n-gradient-text type="info" :size="12">
+                    {{ size.value }}{{ size.unit }}
+                  </n-gradient-text>
+
+                  <n-text :depth="3" :style="{ fontSize: '13px' }">
+                    <small>
+                      {{ dateService.format(createdAt, "DD-MM-YYYY HH:mm") }}
+                    </small>
+                  </n-text>
+                </n-space>
+              </div>
             </template>
           </n-timeline-item>
         </n-timeline>
@@ -55,6 +67,12 @@
       :is-visible="isAddVariantModalVisible"
       @update:is-visible="isAddVariantModalVisible = $event"
     />
+
+    <rename-variant-modal
+      :is-visible="!!variantToEditId"
+      :variant-id="variantToEditId"
+      @update:is-visible="variantToEditId = ''"
+    />
   </div>
 </template>
 
@@ -63,7 +81,9 @@ import {
   NIcon,
   NText,
   NCard,
+  NSpace,
   NButton,
+  NDivider,
   NTimeline,
   NTimelineItem,
   NGradientText,
@@ -79,6 +99,7 @@ import { useDrawerStore } from "@/store/drawer";
 import AddVariantModal from "./AddVariantModal.vue";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
+import RenameVariantModal from "./RenameVariantModal.vue";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { useDateService } from "@/services/useDateService";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
@@ -92,6 +113,7 @@ const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(false);
+const variantToEditId = ref("");
 const isAddVariantModalVisible = ref(false);
 const { activeTab } = storeToRefs(filesStore);
 

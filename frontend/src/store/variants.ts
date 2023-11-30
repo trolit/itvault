@@ -132,6 +132,25 @@ export const useVariantsStore = defineStore("variants", {
       return data;
     },
 
+    async patchName(id: string, name: string) {
+      const { activeFileId: fileId } = useFilesStore();
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        fileId,
+        workspaceId,
+      };
+
+      return await axios.put(
+        `v1/variants/${id}/name`,
+        { name },
+        {
+          params,
+        }
+      );
+    },
+
     initializeTab(variant: IVariantDto, options?: { unshift: boolean }) {
       const { activeTab } = useFilesStore();
 
