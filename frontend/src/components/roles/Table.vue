@@ -167,6 +167,7 @@ const columns: Ref<DataTableColumns<IRoleDto>> = ref<
           },
           { default: () => "Edit" }
         ),
+        // @TODO view users with that role
       ]);
     },
   },

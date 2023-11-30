@@ -1,5 +1,5 @@
-import { MoreThanOrEqual } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { IsNull, MoreThanOrEqual } from "typeorm";
 import { BundleMapper } from "@mappers/BundleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IBundleRepository } from "types/repositories/IBundleRepository";
@@ -8,7 +8,6 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
-import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -60,7 +59,7 @@ export class GetAllController extends BaseController {
       },
       where: [
         {
-          expire: BundleExpire.Never,
+          expiresAt: IsNull(),
           ...commonWhere,
         },
         {
@@ -79,7 +78,6 @@ export class GetAllController extends BaseController {
         },
         createdBy: true,
       },
-      withDeleted: true,
     });
 
     const mappedResult = this.mapper.map<Bundle>(result).to(BundleMapper);

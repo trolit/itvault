@@ -38,8 +38,16 @@ export class LocalBundleConsumerHandler
   }
 
   async handle(data: BundleConsumerHandlerData): Promise<boolean> {
-    // @NOTE consider using yup here (?)
     const { workspaceId, bundle } = data;
+
+    const bundleRecord = this.bundleRepository.getOne({
+      where: { id: bundle.id },
+    });
+
+    if (!bundleRecord) {
+      // @NOTE do not process request as bundle was probably removed (cancelled)
+      return true;
+    }
 
     await this.bundleRepository.setStatus(bundle.id, BundleStatus.Building);
 

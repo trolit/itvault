@@ -1,5 +1,5 @@
 export enum BundleStatus {
-  Queried = "queried",
+  Enqueued = "enqueued",
   Building = "building",
   Ready = "ready",
   Failed = "failed",

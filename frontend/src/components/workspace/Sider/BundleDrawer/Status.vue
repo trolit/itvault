@@ -74,16 +74,20 @@ const expiresAt = computed(() => props.bundle.expiresAt);
 const createdAt = computed(() => props.bundle.createdAt);
 const status = computed((): { type: NaiveStatus; text: string } => {
   switch (props.bundle.status) {
-    case BundleStatus.Queried:
-    case BundleStatus.Building:
+    case BundleStatus.Enqueued:
       return {
         type: "info",
-        text: `This bundle is being processed and is not ready yet (status: ${props.bundle.status})`,
+        text: `Bundle is waiting to become processed...`,
+      };
+    case BundleStatus.Building:
+      return {
+        type: "warning",
+        text: `Building in progress...`,
       };
     default:
       return {
         type: "error",
-        text: "Failed to build bundle 🥺. Try to requeue the operation (if available) or contact staff.",
+        text: "Failed to build bundle 🥺. Try to requeue the operation (if available) or contact itvault team.",
       };
   }
 });

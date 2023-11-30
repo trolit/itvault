@@ -159,6 +159,17 @@ export const useBundlesStore = defineStore("bundles", {
       return data;
     },
 
+    async delete(id: number) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId,
+      };
+
+      return axios.delete(`v1/bundles/${id}`, { params });
+    },
+
     setBundleBlueprints(id: number, blueprints: IBundleBlueprintDto[]) {
       const bundle = this.findBundleById(id);
 

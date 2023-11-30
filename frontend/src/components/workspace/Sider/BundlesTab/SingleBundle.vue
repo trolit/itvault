@@ -20,8 +20,33 @@
       </n-card>
 
       <template #footer>
-        <!-- @TODO delete action + permission (+allow to delete for bundle owners (?)) -->
-        <n-button type="error" ghost size="small" @click.stop>delete</n-button>
+        <require-permission
+          v-if="item.status !== BundleStatusEnum.Building"
+          :permission="Permission.DeleteBundle"
+        >
+          <n-popconfirm @positive-click="deleteBundle(item.id)">
+            <template #trigger>
+              <n-button
+                type="error"
+                ghost
+                size="small"
+                :loading="bundleToDeleteId == item.id"
+                @click.stop
+              >
+                {{
+                  item.status === BundleStatusEnum.Enqueued
+                    ? "cancel"
+                    : "delete"
+                }}
+              </n-button>
+            </template>
+
+            <small>
+              Do you really want to remove this bundle entry? This action cannot
+              be undone!
+            </small>
+          </n-popconfirm>
+        </require-permission>
 
         <!-- @TODO allow to requeue bundle for bundle owners (?) -->
         <require-permission :permission="Permission.RequeueBundle">
@@ -56,7 +81,7 @@
 <script setup lang="ts">
 import { computed, ref, type PropType } from "vue";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-import { NCard, NThing, NButton, NEllipsis } from "naive-ui";
+import { NCard, NThing, NButton, NEllipsis, NPopconfirm } from "naive-ui";
 
 import Status from "./Status.vue";
 import { useGeneralStore } from "@/store/general";
@@ -82,6 +107,7 @@ const generalStore = useGeneralStore();
 
 const { setLoadingState } = generalStore;
 
+const bundleToDeleteId = ref(0);
 const isProcessingRequeueRequest = ref(false);
 const isProcessingDownloadRequest = ref(false);
 
@@ -100,7 +126,7 @@ async function requeueBundle() {
   try {
     await bundlesStore.requeue(props.item.id);
 
-    emit("set-status", BundleStatusEnum.Queried);
+    emit("set-status", BundleStatusEnum.Enqueued);
 
     setLoadingState(LoadingState.Finish);
   } catch (error) {
@@ -139,6 +165,26 @@ async function downloadBundle() {
     setLoadingState(LoadingState.Error);
   } finally {
     isProcessingDownloadRequest.value = false;
+  }
+}
+
+async function deleteBundle(id: number) {
+  if (bundleToDeleteId.value) {
+    return;
+  }
+
+  bundleToDeleteId.value = id;
+
+  try {
+    await bundlesStore.delete(id);
+
+    generalStore.messageProvider.success("Bundle removed!");
+  } catch (error) {
+    console.log(error);
+
+    generalStore.messageProvider.success("Failed to remove bundle!");
+  } finally {
+    bundleToDeleteId.value = 0;
   }
 }
 </script>
