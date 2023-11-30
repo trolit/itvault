@@ -8,7 +8,6 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 import { Bundle } from "@entities/Bundle";
-import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -60,7 +59,7 @@ export class GetAllController extends BaseController {
       },
       where: [
         {
-          expire: BundleExpire.Never,
+          expiresAt: undefined,
           ...commonWhere,
         },
         {
