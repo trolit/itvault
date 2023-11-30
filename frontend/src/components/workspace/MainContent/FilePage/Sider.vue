@@ -186,4 +186,24 @@ defineWatchers({
     },
   },
 });
+
+async function deleteVariant(id: string) {
+  if (variantToDeleteId.value) {
+    return;
+  }
+
+  variantToDeleteId.value = id;
+
+  try {
+    await variantsStore.delete(id);
+
+    generalStore.messageProvider.success("Variant removed!");
+  } catch (error) {
+    console.log(error);
+
+    generalStore.messageProvider.success("Failed to remove variant!");
+  } finally {
+    variantToDeleteId.value = "";
+  }
+}
 </script>
