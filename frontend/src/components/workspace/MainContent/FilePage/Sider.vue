@@ -69,8 +69,7 @@
     />
 
     <rename-variant-modal
-      v-if="variantToEditId"
-      :is-visible="true"
+      :is-visible="!!variantToEditId"
       :variant-id="variantToEditId"
       @update:is-visible="variantToEditId = ''"
     />

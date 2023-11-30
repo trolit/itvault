@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import { object, string } from "yup";
 import { NForm, NFormItem, NInput, NModal, NSpace, NButton } from "naive-ui";
 
@@ -43,6 +43,7 @@ import { useFilesStore } from "@/store/files";
 import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
 import { useVariantsStore } from "@/store/variants";
+import { defineWatchers } from "@/helpers/defineWatchers";
 
 interface IProps {
   isVisible: boolean;
@@ -56,20 +57,16 @@ const variantsStore = useVariantsStore();
 
 const props = defineProps<IProps>();
 
+const { isVisible } = toRefs(props);
+
 const emits = defineEmits(["update:is-visible"]);
 
 const isLoading = ref(false);
 
-const tab = filesStore.activeTab
-  ? filesStore.activeTab.variantTabs.find(
-      tab => tab.variant.id === props.variantId
-    )
-  : undefined;
-
 const { fields, getError, hasError, handleSubmit, setValidationErrors } =
   defineForm(
     {
-      name: tab ? tab.variant.name : "",
+      name: "",
     },
     object({
       name: string().required(),
@@ -79,6 +76,27 @@ const { fields, getError, hasError, handleSubmit, setValidationErrors } =
 const {
   name: { value: name },
 } = fields;
+
+defineWatchers({
+  isVisible: {
+    source: isVisible,
+    handler: (value: boolean) => {
+      if (!value) {
+        return;
+      }
+
+      const tab = filesStore.activeTab
+        ? filesStore.activeTab.variantTabs.find(
+            tab => tab.variant.id === props.variantId
+          )
+        : undefined;
+
+      if (tab) {
+        name.value = tab.variant.name;
+      }
+    },
+  },
+});
 
 function close() {
   emits("update:is-visible", false);
