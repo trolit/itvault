@@ -21,7 +21,7 @@
 
       <template #footer>
         <require-permission
-          v-if="item.status !== BundleStatusEnum.Queried"
+          v-if="item.status !== BundleStatusEnum.Enqueued"
           :permission="Permission.DeleteBundle"
         >
           <n-popconfirm @positive-click="deleteBundle(item.id)">
@@ -122,7 +122,7 @@ async function requeueBundle() {
   try {
     await bundlesStore.requeue(props.item.id);
 
-    emit("set-status", BundleStatusEnum.Queried);
+    emit("set-status", BundleStatusEnum.Enqueued);
 
     setLoadingState(LoadingState.Finish);
   } catch (error) {

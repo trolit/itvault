@@ -81,7 +81,7 @@ export class RequeueController extends BaseController {
         id,
       },
       {
-        status: BundleStatus.Queried,
+        status: BundleStatus.Enqueued,
       }
     );
 

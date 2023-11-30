@@ -12,7 +12,7 @@ import {
   Cube as BuildingStatusIcon,
   DataError as ErrorStatusIcon,
   Unknown as UnknownStatusIcon,
-  ConnectionReceive as QueriedStatusIcon,
+  ConnectionReceive as EnqueuedStatusIcon,
 } from "@vicons/carbon";
 import { NTag, NIcon } from "naive-ui";
 import { computed, type Component, type PropType } from "vue";
@@ -41,9 +41,9 @@ const statuses: {
   },
 
   {
-    status: BundleStatus.Queried,
-    icon: QueriedStatusIcon,
-    text: "queried",
+    status: BundleStatus.Enqueued,
+    icon: EnqueuedStatusIcon,
+    text: "enqueued",
     type: "info",
   },
 
