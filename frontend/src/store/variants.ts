@@ -142,13 +142,24 @@ export const useVariantsStore = defineStore("variants", {
         workspaceId,
       };
 
-      return await axios.put(
+      return axios.put(
         `v1/variants/${id}/name`,
         { name },
         {
           params,
         }
       );
+    },
+
+    async delete(id: string) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
+      const params = {
+        version: 1,
+        workspaceId,
+      };
+
+      return axios.delete(`v1/variants/${id}`, { params });
     },
 
     initializeTab(variant: IVariantDto, options?: { unshift: boolean }) {
