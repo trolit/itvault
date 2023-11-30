@@ -36,11 +36,13 @@
                 {{ name }}
               </n-button>
 
-              <n-divider vertical />
+              <require-permission :permission="Permission.UpdateVariantName">
+                <n-divider vertical />
 
-              <n-button text @click="variantToEditId = id">
-                <small>Rename</small>
-              </n-button>
+                <n-button text @click="variantToEditId = id">
+                  <small>Rename</small>
+                </n-button>
+              </require-permission>
 
               <div>
                 <n-space justify="center">
@@ -102,8 +104,10 @@ import { useWorkspacesStore } from "@/store/workspaces";
 import RenameVariantModal from "./RenameVariantModal.vue";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { useDateService } from "@/services/useDateService";
+import { Permission } from "@shared/types/enums/Permission";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
 import LoadingSection from "@/components/common/LoadingSection.vue";
+import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const route = useRoute();
 const filesStore = useFilesStore();
