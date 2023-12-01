@@ -28,8 +28,16 @@ export const defineFormApiRequest = <T extends GenericObject>(config: {
 
   const { data, schema, formCallHandler, errorHandler } = config;
 
-  const { fields, getError, hasError, handleSubmit, setValidationErrors } =
-    defineForm(data, schema);
+  const {
+    fields,
+    getError,
+    hasError,
+    resetForm,
+    setFormData,
+    handleSubmit,
+    currentFormData,
+    setValidationErrors,
+  } = defineForm(data, schema);
 
   const vModel: VModel<T> = Object.keys(fields).reduce<VModel<T>>(
     (accumulator, currentKey: keyof VModel<T>) => {
@@ -51,7 +59,10 @@ export const defineFormApiRequest = <T extends GenericObject>(config: {
     fields,
     getError,
     hasError,
+    resetForm,
     isLoading,
+    setFormData,
+    currentFormData,
     onSubmit: handleSubmit.withControlled(async formData => {
       if (isLoading.value) {
         return;
