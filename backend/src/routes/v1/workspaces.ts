@@ -11,6 +11,7 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useGetBySlugSchema } from "@schemas/Workspace/useGetBySlugSchema";
+import { useStoreSuperSchema } from "@schemas/Workspace/useStoreSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
 import { useGetTreeSuperSchema } from "@schemas/Workspace/useGetTreeSuperSchema";
@@ -19,6 +20,7 @@ import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema
 import { PinController } from "@controllers/PinController";
 import { BaseController } from "@controllers/BaseController";
 import { UnpinController } from "@controllers/UnpinController";
+import { StoreController } from "@controllers/Workspace/StoreController";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { UpdateController } from "@controllers/Workspace/UpdateController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
@@ -48,6 +50,13 @@ workspacesRouter.get(
   requireWorkspaceAccess<NumberId>(({ params }) => params.id),
   validateRequestWith({ [v1]: useGetTreeSuperSchema }),
   processRequestWith(GetTreeController)
+);
+
+workspacesRouter.post(
+  "",
+  requirePermissions([Permission.CreateWorkspace]),
+  validateRequestWith({ [v1]: useStoreSuperSchema }),
+  processRequestWith(StoreController)
 );
 
 workspacesRouter.post(
