@@ -63,6 +63,7 @@ import isDirectory from "@/helpers/isDirectory";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
+import { defineApiRequest } from "@/helpers/defineApiRequest";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import ConfirmationModal from "@/components/common/ConfirmationModal.vue";
@@ -76,7 +77,6 @@ const workspacesStore = useWorkspacesStore();
 const fileToEditId = ref(0);
 const hoveredFileId = ref(0);
 const fileToDeleteId = ref(0);
-const isDeletingFile = ref(false);
 const isDeleteConfirmationModalVisible = ref(false);
 const currentTreeDropInfo: Ref<TreeDropInfo | null> = ref(null);
 
@@ -294,17 +294,16 @@ function onDeleteConfirmationModalClose() {
   }, 250);
 }
 
-async function deleteFile() {
-  isDeletingFile.value = true;
-
-  try {
+const { isLoading: isDeletingFile, onSubmit: deleteFile } = defineApiRequest({
+  callHandler: async printSuccess => {
     await filesStore.delete(fileToDeleteId.value);
 
     onDeleteConfirmationModalClose();
-  } catch (error) {
-    console.log(error);
-  } finally {
-    isDeletingFile.value = false;
-  }
-}
+
+    printSuccess("File removed!");
+  },
+  errorHandler: (error, printError) => {
+    printError("Failed to remove file!");
+  },
+});
 </script>
