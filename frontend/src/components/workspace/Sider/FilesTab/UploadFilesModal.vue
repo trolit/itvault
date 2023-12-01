@@ -101,7 +101,7 @@ const data: Ref<UploadFileInfo[]> = ref([]);
 
 const emit = defineEmits(["on-upload"]);
 
-const customPathValueRegex = new RegExp(/(^[a-z0-9]+)(\/[a-z0-9-]+)*$/);
+const customPathValueRegex = new RegExp(/(^[.a-z0-9]+)(\/[.a-z0-9-]+)*$/);
 
 const { isRootDirectorySelected, isCustomPathEmpty, isCustomPathValid } =
   defineComputed({
