@@ -4,6 +4,8 @@ import formidable from "formidable";
 import IncomingForm from "formidable/Formidable";
 import { IFormidableFormFactory } from "types/factories/IFormidableFormFactory";
 
+import { APP } from "@config";
+
 export class FormidableFormFactory implements IFormidableFormFactory {
   public uploadDir: string;
 
@@ -30,7 +32,15 @@ export class FormidableFormFactory implements IFormidableFormFactory {
 
     const regex = new RegExp(/^[a-zA-Z0-9/._-]+$/);
 
-    const filter = ({ name, mimetype }: formidable.Part) => {
+    const filter = ({ name, originalFilename, mimetype }: formidable.Part) => {
+      const path = originalFilename
+        ? originalFilename.split("/").slice(0, -1).join("")
+        : "";
+
+      const isFromIgnoredDir = APP.DIRS_TO_IGNORE_FROM_UPLOAD.some(
+        dirToIgnore => path.includes(dirToIgnore)
+      );
+
       const withValidNamePattern = !!name && regex.test(name);
 
       // @TODO add more mimetype rules
@@ -39,6 +49,7 @@ export class FormidableFormFactory implements IFormidableFormFactory {
       const isNameWithoutDoubleSlash = !!name && !name.includes("//");
 
       return (
+        !isFromIgnoredDir &&
         customFilterFlag &&
         isNotImage &&
         withValidNamePattern &&
