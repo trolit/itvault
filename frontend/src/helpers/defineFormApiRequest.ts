@@ -1,4 +1,4 @@
-import { ref } from "vue";
+import { ref, type Ref } from "vue";
 import type { Schema } from "yup";
 import type { GenericObject } from "vee-validate";
 
@@ -8,6 +8,8 @@ import type {
 } from "@/types/ApiRequestDefinition";
 import { defineForm } from "./defineForm";
 import { useGeneralStore } from "@/store/general";
+
+type VModel<E extends object> = { [I in keyof E]: Ref<E[I]> };
 
 export const defineFormApiRequest = <T extends GenericObject>(config: {
   data: T;
@@ -29,7 +31,23 @@ export const defineFormApiRequest = <T extends GenericObject>(config: {
   const { fields, getError, hasError, handleSubmit, setValidationErrors } =
     defineForm(data, schema);
 
+  const vModel: VModel<T> = Object.keys(fields).reduce<VModel<T>>(
+    (accumulator, currentKey: keyof VModel<T>) => {
+      if (!accumulator) {
+        accumulator = {} as VModel<T>;
+      }
+
+      const field = fields[currentKey];
+
+      accumulator[currentKey] = field.value;
+
+      return accumulator;
+    },
+    {} as VModel<T>
+  );
+
   return {
+    vModel,
     fields,
     getError,
     hasError,

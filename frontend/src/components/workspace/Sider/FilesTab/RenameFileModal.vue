@@ -75,30 +75,31 @@ function close() {
 const initialFilename =
   treeItem && isFile(treeItem) ? treeItem.originalFilename : "";
 
-const { fields, isLoading, getError, hasError, onSubmit } =
-  defineFormApiRequest({
-    data: {
-      filename: initialFilename,
-    },
-
-    schema: object({
-      filename: string().required(),
-    }),
-
-    formCallHandler: async (formData, printSuccess) => {
-      await filesStore.patchFilename(fileId.value, formData.filename);
-
-      printSuccess("File renamed.");
-
-      close();
-    },
-
-    errorHandler: (error, printError) => {
-      printError("File rename operation failed!");
-    },
-  });
-
 const {
-  filename: { value: filename },
-} = fields;
+  vModel: { filename },
+  isLoading,
+  getError,
+  hasError,
+  onSubmit,
+} = defineFormApiRequest({
+  data: {
+    filename: initialFilename,
+  },
+
+  schema: object({
+    filename: string().required(),
+  }),
+
+  formCallHandler: async (formData, printSuccess) => {
+    await filesStore.patchFilename(fileId.value, formData.filename);
+
+    printSuccess("File renamed.");
+
+    close();
+  },
+
+  errorHandler: (error, printError) => {
+    printError("File rename operation failed!");
+  },
+});
 </script>
