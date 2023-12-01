@@ -28,8 +28,9 @@
     </n-scrollbar>
 
     <upload-files-modal
-      v-model:show="isUploadFilesModalVisible"
+      :is-visible="isUploadFilesModalVisible"
       @on-upload="onUpload"
+      @update:is-visible="isUploadFilesModalVisible = $event"
     />
   </div>
 </template>
