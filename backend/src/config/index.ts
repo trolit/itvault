@@ -26,7 +26,6 @@ export const APP = {
   MAX_ITEMS_PER_PAGE: 20,
   BASE_DIR: ENV === Environment.Production ? "dist" : "src",
   TOTAL_ROLES_LIMIT: envInt("TOTAL_ROLES_LIMIT"),
-  DIRS_TO_IGNORE_FROM_UPLOAD: [".git"],
 };
 
 export const DATABASE = {

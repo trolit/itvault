@@ -4,7 +4,7 @@ import formidable from "formidable";
 import IncomingForm from "formidable/Formidable";
 import { IFormidableFormFactory } from "types/factories/IFormidableFormFactory";
 
-import { APP } from "@config";
+import { DIRS_TO_IGNORE_FROM_UPLOAD } from "@shared/constants/config";
 
 export class FormidableFormFactory implements IFormidableFormFactory {
   public uploadDir: string;
@@ -37,8 +37,8 @@ export class FormidableFormFactory implements IFormidableFormFactory {
         ? originalFilename.split("/").slice(0, -1).join("")
         : "";
 
-      const isFromIgnoredDir = APP.DIRS_TO_IGNORE_FROM_UPLOAD.some(
-        dirToIgnore => path.includes(dirToIgnore)
+      const isFromIgnoredDir = DIRS_TO_IGNORE_FROM_UPLOAD.some(dirToIgnore =>
+        path.includes(dirToIgnore)
       );
 
       const withValidNamePattern = !!name && regex.test(name);
