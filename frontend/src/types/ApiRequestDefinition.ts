@@ -7,7 +7,9 @@ export type FormCallHandler = <T extends GenericObject>(
   printSuccess: PrintStatus
 ) => void | Promise<void>;
 
-export type CallHandler = (printSuccess: PrintStatus) => void | Promise<void>;
+export type CallHandler = <T>(
+  printSuccess: PrintStatus
+) => void | Promise<void> | Promise<T>;
 
 export type ErrorHandler = (
   error: unknown,
