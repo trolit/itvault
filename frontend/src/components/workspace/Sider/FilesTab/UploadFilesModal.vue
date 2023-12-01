@@ -8,10 +8,15 @@
     :closable="!isLoading"
     :close-on-esc="false"
     :mask-closable="false"
-    :style="{ width: '45vw' }"
+    :style="{ width: '600px' }"
     @close="close"
   >
-    <n-upload multiple directory-dnd v-model:file-list="data" :max="30">
+    <n-upload
+      multiple
+      directory-dnd
+      v-model:file-list="data"
+      :max="MAX_FILES_PER_UPLOAD"
+    >
       <n-upload-dragger>
         <n-space vertical>
           <n-icon size="68" :depth="3" :component="UploadIcon" />
@@ -22,6 +27,16 @@
             <small>
               Drag directory to maintain files structure inside that directory
             </small>
+          </n-p>
+
+          <n-divider />
+
+          <n-p depth="3">
+            <small> Max files per upload </small>
+
+            <div>
+              {{ MAX_FILES_PER_UPLOAD }}
+            </div>
           </n-p>
 
           <n-p v-if="DIRS_TO_IGNORE_FROM_UPLOAD.length" depth="3">
@@ -97,6 +112,7 @@ import {
   NRadio,
   NButton,
   NUpload,
+  NDivider,
   NRadioGroup,
   NAutoComplete,
   NUploadDragger,
@@ -119,6 +135,7 @@ interface IProps {
 defineProps<IProps>();
 
 const isLoading = ref(false);
+const MAX_FILES_PER_UPLOAD = 30;
 const customPathValue = ref("");
 const fileUploadDir = ref(filesStore.ROOT);
 const data: Ref<UploadFileInfo[]> = ref([]);
