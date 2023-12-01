@@ -5,7 +5,7 @@
     preset="card"
     :bordered="true"
     :mask-closable="false"
-    :style="{ width: '100vh' }"
+    :style="{ width: '45vw' }"
   >
     <n-upload multiple directory-dnd v-model:file-list="data" :max="30">
       <n-upload-dragger>
