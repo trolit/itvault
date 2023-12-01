@@ -233,7 +233,7 @@ const nodeProps = ({ option }: { option: TreeOption }) => {
   };
 };
 
-async function onDirectoryLoad(node: TreeOption) {
+function onDirectoryLoad(node: TreeOption) {
   const { key } = node;
 
   const onEarlyFailure = () => {
