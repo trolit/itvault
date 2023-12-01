@@ -26,7 +26,12 @@
       <n-space justify="space-between">
         <n-button @click="close" :disabled="isLoading"> Cancel </n-button>
 
-        <n-button type="warning" :loading="isLoading" @click="onSubmit">
+        <n-button
+          type="warning"
+          :loading="isLoading"
+          :disabled="filename === initialFilename || !filename"
+          @click="onSubmit"
+        >
           Confirm
         </n-button>
       </n-space>
@@ -67,10 +72,13 @@ function close() {
   emits("update:is-visible", false);
 }
 
+const initialFilename =
+  treeItem && isFile(treeItem) ? treeItem.originalFilename : "";
+
 const { fields, isLoading, getError, hasError, onSubmit } =
   defineFormApiRequest({
     data: {
-      filename: treeItem && isFile(treeItem) ? treeItem.originalFilename : "",
+      filename: initialFilename,
     },
 
     schema: object({
