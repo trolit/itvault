@@ -52,15 +52,11 @@
     </div>
 
     <div v-if="!isRootDirectorySelected">
-      <n-input-group>
-        <n-input-group-label>{{ filesStore.ROOT }}</n-input-group-label>
-        <n-input-group-label>/</n-input-group-label>
-        <n-input
-          v-model:value="customPathValue"
-          type="text"
-          placeholder="src/example/path"
-        />
-      </n-input-group>
+      <n-auto-complete
+        v-model:value="customPathValue"
+        :options="autocompleteDirs"
+        placeholder="custom path"
+      />
 
       <small
         v-if="!isCustomPathEmpty && !isCustomPathValid"
@@ -92,25 +88,25 @@ import {
   NTag,
   NIcon,
   NText,
-  NInput,
   NSpace,
   NModal,
   NRadio,
   NButton,
   NUpload,
-  NInputGroup,
   NRadioGroup,
+  NAutoComplete,
   NUploadDragger,
-  NInputGroupLabel,
   type UploadFileInfo,
 } from "naive-ui";
 import { ref, type Ref } from "vue";
 import { useFilesStore } from "@/store/files";
 import { Add as UploadIcon } from "@vicons/carbon";
+import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { DIRS_TO_IGNORE_FROM_UPLOAD } from "@shared/constants/config";
 
 const filesStore = useFilesStore();
+const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(false);
 const customPathValue = ref("");
@@ -119,31 +115,39 @@ const data: Ref<UploadFileInfo[]> = ref([]);
 
 const emit = defineEmits(["on-upload"]);
 
-const customPathValueRegex = new RegExp(/(^[.a-z0-9]+)(\/[.a-z0-9-]+)*$/);
+const customPathValueRegex = new RegExp(/^\.(\/[.a-z0-9-]+)*$/);
 
-const { isRootDirectorySelected, isCustomPathEmpty, isCustomPathValid } =
-  defineComputed({
-    isRootDirectorySelected() {
-      return fileUploadDir.value === filesStore.ROOT;
-    },
+const {
+  isRootDirectorySelected,
+  isCustomPathEmpty,
+  isCustomPathValid,
+  autocompleteDirs,
+} = defineComputed({
+  isRootDirectorySelected() {
+    return fileUploadDir.value === filesStore.ROOT;
+  },
 
-    isCustomPathEmpty() {
-      return !customPathValue.value;
-    },
+  isCustomPathEmpty() {
+    return !customPathValue.value;
+  },
 
-    isCustomPathValid() {
-      if (isCustomPathEmpty.value) {
-        return true;
-      }
+  isCustomPathValid() {
+    if (isCustomPathEmpty.value) {
+      return true;
+    }
 
-      return customPathValueRegex.test(customPathValue.value);
-    },
-  });
+    return customPathValueRegex.test(customPathValue.value);
+  },
+
+  autocompleteDirs() {
+    return workspacesStore.ALL_DIRS.map(dir => dir.relativePath);
+  },
+});
 
 function getBaseUploadDir() {
   return isRootDirectorySelected.value
     ? filesStore.ROOT
-    : filesStore.ROOT.concat(`/${customPathValue.value}`);
+    : customPathValue.value;
 }
 
 // @NOTE e.g. (file) -> "fullPath": "/aha.txt" (file from dir) -> "fullPath": "/aha/zxde.txt"
@@ -164,9 +168,9 @@ async function upload() {
     const isFileInDirectory = fullPath.split("/").length > 2;
 
     if (isFileInDirectory) {
-      const filePath = fullPath.split("/").slice(1, -1);
+      const filePath = fullPath.split("/").slice(1, -1).join("/");
 
-      formData.append(`${baseUploadDir}/${filePath.join("/")}`, file);
+      formData.append(`${baseUploadDir}/${filePath}`, file);
 
       continue;
     }
