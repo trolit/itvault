@@ -1,8 +1,6 @@
-import type { GenericObject } from "vee-validate";
-
 type PrintStatus = (message: string) => void;
 
-export type FormCallHandler = <T extends GenericObject>(
+export type FormCallHandler<T> = (
   formData: T,
   printSuccess: PrintStatus
 ) => void | Promise<void>;

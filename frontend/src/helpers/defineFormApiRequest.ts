@@ -13,7 +13,7 @@ export const defineFormApiRequest = <T extends GenericObject>(config: {
   data: T;
   schema: Schema<T>;
   errorHandler: ErrorHandler;
-  formCallHandler: FormCallHandler;
+  formCallHandler: FormCallHandler<T>;
 }) => {
   const isLoading = ref(false);
   const generalStore = useGeneralStore();
