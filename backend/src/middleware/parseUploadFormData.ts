@@ -48,6 +48,7 @@ export const parseUploadFormData = (
     });
 
     if (fieldsOrder?.length) {
+      // @NOTE force specific order - before parsing files we can check if required fields are defined
       setFieldsOrderValidation(form, fieldsOrder);
     }
 
@@ -61,17 +62,15 @@ export const parseUploadFormData = (
       const mappedFiles = mapFormDataFiles(files);
 
       if (validators) {
-        const isValidOrErrors = await handleValidators(
+        const errors = await handleValidators(
           { fields, files: mappedFiles },
           validators
         );
 
-        if (!(typeof isValidOrErrors === "boolean")) {
+        if (errors) {
           // @TODO remove files
 
-          return response
-            .status(HTTP.BAD_REQUEST)
-            .send({ body: isValidOrErrors });
+          return response.status(HTTP.BAD_REQUEST).send({ body: errors });
         }
       }
 
@@ -104,24 +103,22 @@ async function handleValidators<T>(
   validators?: IFormValidators
 ) {
   if (!validators) {
-    return true;
+    return null;
   }
 
   const { files, fields } = data;
 
   try {
     if (validators.fields) {
-      await validators.fields.validate(fields);
+      await validators.fields.validate(fields, { abortEarly: false });
     }
 
     if (validators.files) {
-      await validators.files.validate(files);
+      await validators.files.validate(files, { abortEarly: false });
     }
-
-    return true;
   } catch (error) {
-    console.log(error);
-
     return formatError(error);
   }
+
+  return null;
 }
