@@ -1,11 +1,15 @@
 <template>
   <n-modal
+    :show="isVisible"
     segmented
     title="Upload files"
     preset="card"
     :bordered="true"
+    :closable="!isLoading"
+    :close-on-esc="false"
     :mask-closable="false"
     :style="{ width: '45vw' }"
+    @close="close"
   >
     <n-upload multiple directory-dnd v-model:file-list="data" :max="30">
       <n-upload-dragger>
@@ -108,12 +112,18 @@ import { DIRS_TO_IGNORE_FROM_UPLOAD } from "@shared/constants/config";
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
+interface IProps {
+  isVisible: boolean;
+}
+
+defineProps<IProps>();
+
 const isLoading = ref(false);
 const customPathValue = ref("");
 const fileUploadDir = ref(filesStore.ROOT);
 const data: Ref<UploadFileInfo[]> = ref([]);
 
-const emit = defineEmits(["on-upload"]);
+const emits = defineEmits(["on-upload", "update:is-visible"]);
 
 const customPathValueRegex = new RegExp(/^\.(\/[.a-z0-9-]+)*$/);
 
@@ -150,6 +160,20 @@ function getBaseUploadDir() {
     : customPathValue.value;
 }
 
+function close() {
+  reset();
+
+  emits("update:is-visible", false);
+}
+
+function reset() {
+  setTimeout(() => {
+    customPathValue.value = "";
+    fileUploadDir.value = filesStore.ROOT;
+    data.value = [];
+  }, 250);
+}
+
 // @NOTE e.g. (file) -> "fullPath": "/aha.txt" (file from dir) -> "fullPath": "/aha/zxde.txt"
 async function upload() {
   isLoading.value = true;
@@ -181,7 +205,9 @@ async function upload() {
   try {
     await filesStore.store(formData);
 
-    emit("on-upload");
+    emits("on-upload");
+
+    reset();
   } catch (error) {
     console.log(error);
   } finally {
