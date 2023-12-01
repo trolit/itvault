@@ -11,6 +11,7 @@
     :style="{ width: '600px' }"
     @close="close"
   >
+    <!-- @TODO customize list of files that were attached -->
     <n-upload
       multiple
       directory-dnd
