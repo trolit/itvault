@@ -35,15 +35,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRefs } from "vue";
+import { toRefs } from "vue";
 import { object, string } from "yup";
 import { NForm, NFormItem, NInput, NModal, NSpace, NButton } from "naive-ui";
 
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
-import { defineForm } from "@/helpers/defineForm";
-import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 
 interface IProps {
   isVisible: boolean;
@@ -52,59 +51,46 @@ interface IProps {
 }
 
 const filesStore = useFilesStore();
-const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
 const props = defineProps<IProps>();
 
 const emits = defineEmits(["update:is-visible"]);
 
-const isLoading = ref(false);
 const { fileId } = toRefs(props);
 
 const treeItem = workspacesStore.tree.find(
   item => item.id === fileId.value && isFile(item)
 );
 
-const { fields, getError, hasError, handleSubmit, setValidationErrors } =
-  defineForm(
-    {
-      filename: treeItem && isFile(treeItem) ? treeItem.originalFilename : "",
-    },
-    object({
-      filename: string().required(),
-    })
-  );
-
-const {
-  filename: { value: filename },
-} = fields;
-
 function close() {
   emits("update:is-visible", false);
 }
 
-const onSubmit = handleSubmit.withControlled(async formData => {
-  if (isLoading.value) {
-    return;
-  }
+const { fields, isLoading, getError, hasError, onSubmit } =
+  defineFormApiRequest({
+    data: {
+      filename: treeItem && isFile(treeItem) ? treeItem.originalFilename : "",
+    },
 
-  isLoading.value = true;
+    schema: object({
+      filename: string().required(),
+    }),
 
-  try {
-    await filesStore.patchFilename(fileId.value, formData.filename);
+    formCallHandler: async (formData, printSuccess) => {
+      await filesStore.patchFilename(fileId.value, formData.filename);
 
-    generalStore.messageProvider.success(`File renamed`);
+      printSuccess("File renamed.");
 
-    close();
-  } catch (error) {
-    console.error(error);
+      close();
+    },
 
-    setValidationErrors(error);
+    errorHandler: (error, printError) => {
+      printError("File rename operation failed!");
+    },
+  });
 
-    generalStore.messageProvider.error(`File rename operation failed!`);
-  } finally {
-    isLoading.value = false;
-  }
-});
+const {
+  filename: { value: filename },
+} = fields;
 </script>
