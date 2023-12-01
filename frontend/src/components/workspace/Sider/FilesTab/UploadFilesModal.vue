@@ -15,7 +15,23 @@
           <n-text> (click) or (drag) to add files to upload </n-text>
 
           <n-p depth="3">
-            *Drag directory to maintain files structure inside that directory
+            <small>
+              Drag directory to maintain files structure inside that directory
+            </small>
+          </n-p>
+
+          <n-p v-if="DIRS_TO_IGNORE_FROM_UPLOAD.length" depth="3">
+            <small> Ignored dirs </small>
+
+            <div>
+              <n-tag
+                size="tiny"
+                v-for="(item, index) in DIRS_TO_IGNORE_FROM_UPLOAD"
+                :key="index"
+              >
+                {{ item }}
+              </n-tag>
+            </div>
           </n-p>
         </n-space>
       </n-upload-dragger>
@@ -73,6 +89,7 @@
 <script setup lang="ts">
 import {
   NP,
+  NTag,
   NIcon,
   NText,
   NInput,
@@ -91,6 +108,7 @@ import { ref, type Ref } from "vue";
 import { useFilesStore } from "@/store/files";
 import { Add as UploadIcon } from "@vicons/carbon";
 import { defineComputed } from "@/helpers/defineComputed";
+import { DIRS_TO_IGNORE_FROM_UPLOAD } from "@shared/constants/config";
 
 const filesStore = useFilesStore();
 
