@@ -36,11 +36,5 @@ export const useRelativePathTest = () =>
         });
       }
 
-      if (value.split(FILES.ROOT).length !== 2) {
-        return ctx.createError({
-          message: setYupError(CUSTOM_MESSAGES.FILE.ONLY_ONE_ROOT_INDICATOR),
-        });
-      }
-
       return true;
     });
