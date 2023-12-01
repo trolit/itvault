@@ -1,17 +1,17 @@
-import type { FormMeta } from "vee-validate";
 import type { ComputedRef } from "vue";
+import type { FormMeta, Path } from "vee-validate";
 
-export const useVeeValidateHelpers = (
+export const useVeeValidateHelpers = <T>(
   meta: ComputedRef<FormMeta<Record<string, any>>>,
-  errors: ComputedRef<Partial<Record<string, string | undefined>>>
+  errors: ComputedRef<Partial<Record<Path<T>, string | undefined>>>
 ) => {
-  function hasError(propertyName: string) {
+  function hasError(propertyName: Path<T>) {
     const message = errors.value[propertyName];
 
     return meta.value.touched && message ? "error" : undefined;
   }
 
-  function getError(propertyName: string) {
+  function getError(propertyName: Path<T>) {
     const message = errors.value[propertyName];
 
     return meta.value.touched ? message : undefined;
