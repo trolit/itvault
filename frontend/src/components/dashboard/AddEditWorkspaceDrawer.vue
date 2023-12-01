@@ -102,12 +102,12 @@ import { array, object, string } from "yup";
 import { useTagsStore } from "@/store/tags";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
-import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { Permission } from "@shared/types/enums/Permission";
+import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
@@ -117,7 +117,6 @@ const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
 const tagInput = ref("");
-const isLoading = ref(false);
 const tagSearchTimeoutId = ref(0);
 const isLoadingTags = ref(false);
 const options: Ref<string[]> = ref([]);
@@ -132,37 +131,6 @@ const defaultFormData: AddEditWorkspaceDto = {
 const initialFormData: Ref<Partial<AddEditWorkspaceDto>> = ref(
   cloneDeep(defaultFormData)
 );
-
-const {
-  fields,
-  getError,
-  hasError,
-  resetForm,
-  setFormData,
-  handleSubmit,
-  currentFormData,
-  setValidationErrors,
-} = defineForm<AddEditWorkspaceDto>(
-  defaultFormData,
-  object({
-    name: string().required(),
-    description: string().defined().max(255),
-    tags: array()
-      .of(
-        string()
-          .matches(/^[a-zA-Z0-9]*$/)
-          .required()
-      )
-      .required()
-      .min(1),
-  })
-);
-
-const {
-  name: { value: name },
-  description: { value: description },
-  tags: { value: tags },
-} = fields;
 
 const { isActive, title, isEditMode, isInitialState, filteredOptions } =
   defineComputed({
@@ -181,7 +149,7 @@ const { isActive, title, isEditMode, isInitialState, filteredOptions } =
     isInitialState() {
       return (
         JSON.stringify(initialFormData.value) ===
-        JSON.stringify(currentFormData)
+        JSON.stringify(CURRENT_FORM_DATA)
       );
     },
 
@@ -202,7 +170,7 @@ defineWatchers({
 
       setFormData(cloneDeep(itemToEdit.value || defaultFormData));
 
-      initialFormData.value = cloneDeep(currentFormData);
+      initialFormData.value = cloneDeep(CURRENT_FORM_DATA);
     },
   },
 
@@ -213,7 +181,7 @@ defineWatchers({
 
       setFormData(cloneDeep(itemToEdit.value || defaultFormData));
 
-      initialFormData.value = cloneDeep(currentFormData);
+      initialFormData.value = cloneDeep(CURRENT_FORM_DATA);
     },
   },
 });
@@ -222,16 +190,38 @@ const dismissDrawer = () => {
   drawerStore.setActiveDrawer(null);
 };
 
-const onSubmit = handleSubmit.withControlled(async formData => {
-  if (isLoading.value) {
-    return;
-  }
+const {
+  vModel: { name, description, tags },
+  isLoading,
+  getError,
+  hasError,
+  resetForm,
+  setFormData,
+  CURRENT_FORM_DATA,
+  onSubmit,
+} = defineFormApiRequest<AddEditWorkspaceDto>({
+  data: {
+    name: "",
+    description: "",
+    tags: [],
+  },
 
-  isLoading.value = true;
+  schema: object({
+    name: string().required(),
+    description: string().defined().max(255),
+    tags: array()
+      .of(
+        string()
+          .matches(/^[a-zA-Z0-9]*$/)
+          .required()
+      )
+      .required()
+      .min(1),
+  }),
 
-  const isEdit = cloneDeep(isEditMode.value);
+  formCallHandler: async (formData, printSuccess) => {
+    const isEdit = cloneDeep(isEditMode.value);
 
-  try {
     isEdit
       ? await workspacesStore.update(formData)
       : await workspacesStore.store(formData);
@@ -243,18 +233,14 @@ const onSubmit = handleSubmit.withControlled(async formData => {
       });
     }
 
-    generalStore.messageProvider.success(
-      `Workspace successfully ${isEdit ? "updated" : "added"}.`
-    );
+    printSuccess(`Workspace successfully ${isEdit ? "updated" : "added"}.`);
 
     dismissDrawer();
-  } catch (error) {
-    console.error(error);
+  },
 
-    setValidationErrors(error);
-  } finally {
-    isLoading.value = false;
-  }
+  errorHandler: (error, printError) => {
+    printError(`Failed to perform operation.`);
+  },
 });
 
 function onTagInputChange(input: string) {

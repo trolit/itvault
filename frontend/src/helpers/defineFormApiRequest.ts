@@ -62,7 +62,7 @@ export const defineFormApiRequest = <T extends GenericObject>(config: {
     resetForm,
     isLoading,
     setFormData,
-    currentFormData,
+    CURRENT_FORM_DATA: currentFormData,
     onSubmit: handleSubmit.withControlled(async formData => {
       if (isLoading.value) {
         return;
