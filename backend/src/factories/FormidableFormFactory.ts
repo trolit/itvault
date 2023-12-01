@@ -30,10 +30,7 @@ export class FormidableFormFactory implements IFormidableFormFactory {
 
     const regex = new RegExp(/^[a-zA-Z0-9/._-]+$/);
 
-    const filter = ({ name, originalFilename, mimetype }: formidable.Part) => {
-      const withoutDoubleExtension =
-        !!originalFilename && originalFilename.split(".").length === 2;
-
+    const filter = ({ name, mimetype }: formidable.Part) => {
       const withValidNamePattern = !!name && regex.test(name);
 
       // @TODO add more mimetype rules
@@ -45,7 +42,6 @@ export class FormidableFormFactory implements IFormidableFormFactory {
         customFilterFlag &&
         isNotImage &&
         withValidNamePattern &&
-        withoutDoubleExtension &&
         isNameWithoutDoubleSlash
       );
     };
