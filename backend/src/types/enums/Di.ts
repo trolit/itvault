@@ -1,6 +1,7 @@
 export enum Di {
   Redis = "Redis",
   RabbitMQ = "RabbitMQ",
+  EngineIO = "Engine.IO",
   Publisher = "RabbitMQ Publisher",
   MailTransporter = "MailTransporter",
 
@@ -10,6 +11,7 @@ export enum Di {
   RoleService = "IRoleService",
   UserService = "IUserService",
   FileService = "IFileService",
+  SocketService = "ISocketService",
   VariantService = "IVariantService",
   DataStoreService = "IDataStoreService",
   WorkspaceService = "IWorkspaceService",

@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import { Server } from "engine.io";
 import Redis from "ioredis/built/Redis";
 import { Transporter } from "nodemailer";
 import { container, DependencyContainer } from "tsyringe";
@@ -15,9 +16,14 @@ import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHan
 
 export const setupDi = (services: {
   redis?: Redis;
+  engineIo?: Server;
   mailTransporter?: Transporter;
 }): Promise<DependencyContainer> => {
-  const { mailTransporter, redis } = services;
+  const { mailTransporter, redis, engineIo } = services;
+
+  if (engineIo) {
+    container.register(Di.EngineIO, { useValue: engineIo });
+  }
 
   if (redis) {
     container.register(Di.Redis, { useValue: redis });
