@@ -63,14 +63,16 @@ export const setupDi = (services: {
 
   registerMailViewBuilders();
 
-  return new Promise(resolve =>
-    setInterval(() => {
+  return new Promise(resolve => {
+    const interval = setInterval(() => {
       // @NOTE wait for dependencies that must be available instantly
       if (container.isRegistered(Di.RoleRepository)) {
+        clearInterval(interval);
+
         resolve(container);
       }
-    }, 1000)
-  );
+    }, 1000);
+  });
 };
 
 function registerMailViewBuilders() {
