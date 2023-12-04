@@ -75,6 +75,7 @@ export class SignInController extends BaseController {
     }
 
     response.cookie(JWT.COOKIE_KEY, token, {
+      path: "/",
       httpOnly: true,
       secure: APP.ENV === Environment.Production,
     });
