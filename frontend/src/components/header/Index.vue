@@ -34,12 +34,14 @@ import { useRoute, type RouteRecordName } from "vue-router";
 import { ref, computed, type ComputedRef, watch } from "vue";
 import { NPageHeader, useThemeVars, NButton, NIcon } from "naive-ui";
 
+import { useAuthStore } from "@/store/auth";
 import Brand from "@/components/common/Brand.vue";
 import ProfileDropdown from "./ProfileDropdown.vue";
 import Location from "@/components/header/Location.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
+const authStore = useAuthStore();
 const themeVars = useThemeVars();
 
 let isBrandHovered = ref<boolean>(false);
@@ -60,4 +62,6 @@ watch(
 const isInDashboardView: ComputedRef<boolean> = computed(
   (): boolean => route.name === ROUTE_DASHBOARD_NAME
 );
+
+authStore.initializeSocket();
 </script>
