@@ -1,17 +1,21 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import { Socket } from "engine.io-client";
 
+import { WEBSOCKETS } from "@/config";
 import type { SignInDto } from "@shared/types/dtos/SignInDto";
 import type { Permission } from "@shared/types/enums/Permission";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 interface IState {
+  socket: Socket | null;
   profile: ILoggedUserDto;
 }
 
 export const useAuthStore = defineStore("auth", {
   state: (): IState => ({
+    socket: null,
     profile: {
       id: -1,
       email: "",
@@ -23,7 +27,9 @@ export const useAuthStore = defineStore("auth", {
   }),
 
   getters: {
-    loggedUserId: state => state.profile.id,
+    loggedUserId(): number {
+      return this.profile.id;
+    },
   },
 
   actions: {
@@ -57,6 +63,22 @@ export const useAuthStore = defineStore("auth", {
       this.profile = data;
 
       return data;
+    },
+
+    initializeSocket() {
+      if (this.loggedUserId <= 0) {
+        console.log("Sign in before attempting to initialize socket!");
+
+        return;
+      }
+
+      const socket = new Socket(WEBSOCKETS, {
+        withCredentials: true,
+      });
+
+      socket.on("open", () => {
+        this.socket = socket;
+      });
     },
   },
 });
