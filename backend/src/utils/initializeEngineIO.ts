@@ -6,6 +6,7 @@ export const initializeEngineIO = () => {
   return new Server({
     cors: {
       origin: APP.URL,
+      credentials: true,
     },
 
     allowRequest: (request, callback) => {
