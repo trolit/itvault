@@ -10,6 +10,7 @@ import { APP, FILES } from "@config";
 import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
+import { SocketServiceManager } from "@services/SocketService/Manager";
 import { LocalFileService } from "@services/FileService/LocalFileService";
 import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
 import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
@@ -33,6 +34,8 @@ export const setupDi = (services: {
     container.register(Di.MailTransporter, { useValue: mailTransporter });
   }
 
+  container.register(Di.SockerServiceManager, SocketServiceManager);
+
   registerFileService();
 
   registerConsumerHandlers();
@@ -48,7 +51,8 @@ export const setupDi = (services: {
   registerDependenciesByInterfaces({
     sourceFiles: {
       dirname: "services",
-      excludedFilenames: ["FileService"],
+      excludedFilenames: ["FileService", "SocketService"],
+      // @TODO allow to declare custom registers (e.g. SocketServiceManager)
     },
     interfacesDirname: "services",
   });
