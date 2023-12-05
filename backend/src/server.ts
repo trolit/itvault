@@ -1,13 +1,19 @@
+import http from "http";
 import express from "express";
+import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 
 import { dataSource } from "@config/data-source";
+
+import { Di } from "@enums/Di";
 
 import { setupDi } from "@utils/setupDi";
 import { setupJobs } from "@utils/setupJobs";
 import { setupRedis } from "@utils/setupRedis";
 import { setupExpress } from "@utils/setupExpress";
 import { loadYupUtils } from "@utils/loadYupUtils";
+import { getInstanceOf } from "@helpers/getInstanceOf";
 import { setupPublisher } from "@utils/setupPublisher";
+import { initializeEngineIO } from "@utils/initializeEngineIO";
 
 export const server = async () => {
   const app = express();
@@ -17,14 +23,20 @@ export const server = async () => {
   try {
     await dataSource.initialize();
 
-    console.info("DataSource initialized.");
+    console.log("TypeORM: DataSource initialized.");
   } catch (error) {
     console.error(error);
   }
 
+  const engineIo = initializeEngineIO();
+
+  const serverInstance = http.createServer(app);
+
+  engineIo.attach(serverInstance);
+
   const redis = setupRedis();
 
-  await setupDi({ redis: redis.instance });
+  await setupDi({ redis: redis.instance, engineIo });
 
   await setupPublisher();
 
@@ -34,5 +46,11 @@ export const server = async () => {
 
   await setupExpress(app);
 
-  return app;
+  const socketServiceManager = getInstanceOf<ISocketServiceManager>(
+    Di.SocketServiceManager
+  );
+
+  socketServiceManager.initialize();
+
+  return serverInstance;
 };
