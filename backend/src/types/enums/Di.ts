@@ -15,7 +15,7 @@ export enum Di {
   DataStoreService = "IDataStoreService",
   WorkspaceService = "IWorkspaceService",
   EntityMapperService = "IEntityMapperService",
-  SockerServiceManager = "ISockerServiceManager",
+  SocketServiceManager = "ISocketServiceManager",
 
   TagRepository = "ITagRepository",
   FileRepository = "IFileRepository",

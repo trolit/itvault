@@ -34,7 +34,7 @@ export const setupDi = (services: {
     container.register(Di.MailTransporter, { useValue: mailTransporter });
   }
 
-  container.register(Di.SockerServiceManager, SocketServiceManager);
+  container.register(Di.SocketServiceManager, SocketServiceManager);
 
   registerFileService();
 
