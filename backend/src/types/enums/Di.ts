@@ -11,11 +11,11 @@ export enum Di {
   RoleService = "IRoleService",
   UserService = "IUserService",
   FileService = "IFileService",
-  SocketService = "ISocketService",
   VariantService = "IVariantService",
   DataStoreService = "IDataStoreService",
   WorkspaceService = "IWorkspaceService",
   EntityMapperService = "IEntityMapperService",
+  SockerServiceManager = "ISockerServiceManager",
 
   TagRepository = "ITagRepository",
   FileRepository = "IFileRepository",
