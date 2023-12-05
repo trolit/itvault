@@ -4,6 +4,7 @@ import { Socket } from "engine.io-client";
 
 import { WEBSOCKETS } from "@/config";
 import type { SignInDto } from "@shared/types/dtos/SignInDto";
+import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
@@ -29,6 +30,10 @@ export const useAuthStore = defineStore("auth", {
   getters: {
     loggedUserId(): number {
       return this.profile.id;
+    },
+
+    SOCKET_MESSAGE_TYPE() {
+      return SOCKET_MESSAGES;
     },
   },
 
@@ -79,6 +84,14 @@ export const useAuthStore = defineStore("auth", {
       socket.on("open", () => {
         this.socket = socket;
       });
+    },
+
+    socketSendMessage<T>(type: string, value?: T) {
+      if (!this.socket) {
+        return;
+      }
+
+      this.socket.send(type, value);
     },
   },
 });
