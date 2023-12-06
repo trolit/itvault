@@ -6,6 +6,7 @@ import { WEBSOCKETS } from "@/config";
 import type { SignInDto } from "@shared/types/dtos/SignInDto";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
+import type { SocketMessage } from "@shared/types/SocketMessage";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
@@ -94,20 +95,10 @@ export const useAuthStore = defineStore("auth", {
       });
     },
 
-    async socketSendMessage<T>(type: string, value?: T): Promise<void> {
-      if (!this.wasSocketInitialized) {
-        console.log("Initialize socket before sending message!");
-
-        return;
-      }
-
-      return new Promise(resolve => {
-        if (this.socket) {
-          this.socket.send(type, value);
-
-          resolve();
-        }
-      });
+    socketSendMessage<T = void>(data: SocketMessage<T>) {
+      this.socket
+        ? this.socket.send(JSON.stringify(data))
+        : console.log("Socket not opened yet!");
     },
   },
 });
