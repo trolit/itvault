@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { RainDrop as RainDropIcon } from "@vicons/carbon";
 import { useRoute, type RouteRecordName } from "vue-router";
-import { ref, computed, type ComputedRef, watch } from "vue";
+import { ref, computed, type ComputedRef, watch, onBeforeMount } from "vue";
 import { NPageHeader, useThemeVars, NButton, NIcon } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
@@ -43,6 +43,10 @@ import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
 const authStore = useAuthStore();
 const themeVars = useThemeVars();
+
+onBeforeMount(() => {
+  authStore.initializeSocket();
+});
 
 let isBrandHovered = ref<boolean>(false);
 
@@ -62,6 +66,4 @@ watch(
 const isInDashboardView: ComputedRef<boolean> = computed(
   (): boolean => route.name === ROUTE_DASHBOARD_NAME
 );
-
-authStore.initializeSocket();
 </script>
