@@ -1,4 +1,4 @@
-export = {
+export default {
   WORKSPACE: {
     VIEW: "view-workspace",
     CREATE: "create-workspace",
