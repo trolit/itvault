@@ -12,6 +12,7 @@ import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 interface IState {
   socket: Socket | null;
   profile: ILoggedUserDto;
+  wasSocketInitialized: boolean;
 }
 
 export const useAuthStore = defineStore("auth", {
@@ -25,6 +26,7 @@ export const useAuthStore = defineStore("auth", {
       roleName: "",
       permissions: [],
     },
+    wasSocketInitialized: false,
   }),
 
   getters: {
@@ -70,7 +72,9 @@ export const useAuthStore = defineStore("auth", {
       return data;
     },
 
-    initializeSocket() {
+    async initializeSocket(): Promise<void> {
+      this.wasSocketInitialized = true;
+
       if (this.loggedUserId <= 0) {
         console.log("Sign in before attempting to initialize socket!");
 
@@ -81,17 +85,29 @@ export const useAuthStore = defineStore("auth", {
         withCredentials: true,
       });
 
-      socket.on("open", () => {
-        this.socket = socket;
+      return new Promise(resolve => {
+        socket.on("open", () => {
+          this.socket = socket;
+
+          resolve();
+        });
       });
     },
 
-    socketSendMessage<T>(type: string, value?: T) {
-      if (!this.socket) {
+    async socketSendMessage<T>(type: string, value?: T): Promise<void> {
+      if (!this.wasSocketInitialized) {
+        console.log("Initialize socket before sending message!");
+
         return;
       }
 
-      this.socket.send(type, value);
+      return new Promise(resolve => {
+        if (this.socket) {
+          this.socket.send(type, value);
+
+          resolve();
+        }
+      });
     },
   },
 });
