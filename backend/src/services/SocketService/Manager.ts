@@ -5,6 +5,7 @@ import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { SocketServiceMember } from "./Member";
 
 import { Di } from "@enums/Di";
+import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 
 @singleton()
 export class SocketServiceManager implements ISocketServiceManager {
@@ -41,17 +42,31 @@ export class SocketServiceManager implements ISocketServiceManager {
     this._initialized = true;
   }
 
-  sendMessage<T = void>(type: string, data?: T | undefined): void {
+  sendMessage<T = void>(action: string, data?: T | undefined): void {
     if (!this._initialized) {
       throw Error("SocketService manager not initialized!");
     }
 
+    const socketMessageKey = Object.keys(SOCKET_MESSAGES).find(message => {
+      const actions =
+        SOCKET_MESSAGES[message as keyof typeof SOCKET_MESSAGES].ACTIONS;
+
+      return Object.values(actions).includes(action);
+    });
+
+    if (!socketMessageKey) {
+      throw Error("Unknown action!");
+    }
+
     const eligibleMembers = this._members.filter(
-      member => member.latestMessage && member.latestMessage.type === type
+      member =>
+        member.latestMessage &&
+        member.latestMessage.type ===
+          SOCKET_MESSAGES[socketMessageKey as keyof typeof SOCKET_MESSAGES].TYPE
     );
 
     for (const member of eligibleMembers) {
-      member.sendMessage({ type, value: data });
+      member.sendMessage({ type: action, value: data });
     }
   }
 }
