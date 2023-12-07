@@ -35,8 +35,6 @@ export class SocketServiceMember implements ISocketServiceMember {
     socket.on("message", (message: string) => {
       let parsedMessage: SocketMessage | null = null;
 
-      // xd; token=eyJhb
-
       try {
         parsedMessage = JSON.parse(message);
       } catch (error) {
