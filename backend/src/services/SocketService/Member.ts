@@ -1,32 +1,59 @@
+import assert from "assert";
 import { Socket } from "engine.io";
+import { IAuthService } from "types/services/IAuthService";
 import { ISocketServiceMember } from "types/services/ISocketServiceMember";
 
-import SOCKET_MESSAGES from "@shared/constants/socket-messages";
+import { Di } from "@enums/Di";
+import type { SocketMessage } from "@shared/types/SocketMessage";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
+import { getTokenCookieValue } from "@helpers/getTokenCookieValue";
 
 export class SocketServiceMember implements ISocketServiceMember {
   sid: string;
 
   socket: Socket;
 
-  currentPage: string;
+  private _cookie: string;
+
+  latestMessage?: SocketMessage;
 
   // @NOTE we could also add here "rooms" in case we want some "events" to be global (nevertheless of page)
 
   constructor(socket: Socket) {
     this.socket = socket;
-    this.currentPage = "";
     this.sid = socket.transport.sid;
+
+    const cookie = getTokenCookieValue(socket.request.headers.cookie);
+
+    assert(cookie);
+
+    this._cookie = cookie;
 
     this.printMessage("Connected.");
 
-    socket.on("message", (type, value) => {
-      this.printMessage(`Sent message of type: '${type}'`);
+    socket.on("message", (message: string) => {
+      let parsedMessage: SocketMessage | null = null;
 
-      if (type === SOCKET_MESSAGES.WORKSPACE.VIEW) {
-        console.log("view..");
+      // xd; token=eyJhb
+
+      try {
+        parsedMessage = JSON.parse(message);
+      } catch (error) {
+        this.printMessage(<string>error);
       }
 
-      // socket.request.headers.cookie
+      if (!parsedMessage) {
+        this.printMessage("Sent unparseable message. Ignoring..");
+
+        return;
+      }
+
+      const { type } = parsedMessage;
+
+      this.latestMessage = parsedMessage;
+
+      this.printMessage(`Sent message of type: '${type}'`);
     });
 
     socket.on("close", () => {
@@ -37,14 +64,30 @@ export class SocketServiceMember implements ISocketServiceMember {
     });
   }
 
-  sendMessage<T>(type: string, value?: T | undefined): void {
-    this.printMessage(`Should receive '${type}' message.`);
+  async sendMessage<T>(data: SocketMessage<T>): Promise<void> {
+    const canReceiveMessage = await this.isEligibleToReceiveMessage();
 
-    if (value) {
-      this.socket.send(type, value);
-    } else {
-      this.socket.send(type);
+    if (!canReceiveMessage) {
+      this.printMessage("Cannot receive message (token expired)");
+
+      return;
     }
+
+    this.printMessage(`Should receive '${data.type}' message.`);
+
+    this.socket.send(JSON.stringify(data));
+  }
+
+  private async isEligibleToReceiveMessage() {
+    const authService = getInstanceOf<IAuthService>(Di.AuthService);
+
+    const result = authService.verifyToken(this._cookie);
+
+    if (result.error) {
+      return false;
+    }
+
+    return true;
   }
 
   private printMessage(message: string) {
