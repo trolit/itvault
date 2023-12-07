@@ -40,4 +40,18 @@ export class SocketServiceManager implements ISocketServiceManager {
 
     this._initialized = true;
   }
+
+  sendMessage<T = void>(type: string, data?: T | undefined): void {
+    if (!this._initialized) {
+      throw Error("SocketService manager not initialized!");
+    }
+
+    const eligibleMembers = this._members.filter(
+      member => member.latestMessage && member.latestMessage.type === type
+    );
+
+    for (const member of eligibleMembers) {
+      member.sendMessage({ type, value: data });
+    }
+  }
 }
