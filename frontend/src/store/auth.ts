@@ -9,6 +9,7 @@ import type { Permission } from "@shared/types/enums/Permission";
 import type { SocketMessage } from "@shared/types/SocketMessage";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
+import type { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
 
 interface IState {
   socket: Socket | null;
@@ -73,7 +74,9 @@ export const useAuthStore = defineStore("auth", {
       return data;
     },
 
-    async initializeSocket(): Promise<void> {
+    async initializeSocket(options: {
+      onMessage?: <T>(data: UserReceiveMessage<T>) => void;
+    }): Promise<void> {
       this.wasSocketInitialized = true;
 
       if (this.loggedUserId <= 0) {
@@ -86,9 +89,25 @@ export const useAuthStore = defineStore("auth", {
         withCredentials: true,
       });
 
+      const { onMessage } = options;
+
       return new Promise(resolve => {
         socket.on("open", () => {
           this.socket = socket;
+
+          if (onMessage) {
+            socket.on("message", data => {
+              let parsedData;
+
+              try {
+                parsedData = JSON.parse(data);
+
+                onMessage(parsedData);
+              } catch (error) {
+                console.log("Failed to parse response!");
+              }
+            });
+          }
 
           resolve();
         });
