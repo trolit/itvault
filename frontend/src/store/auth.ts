@@ -6,9 +6,9 @@ import { WEBSOCKETS } from "@/config";
 import type { SignInDto } from "@shared/types/dtos/SignInDto";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
-import type { SocketMessage } from "@shared/types/SocketMessage";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
+import type { UserSendMessage } from "@shared/types/transport/UserSendMessage";
 import type { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
 
 interface IState {
@@ -114,7 +114,7 @@ export const useAuthStore = defineStore("auth", {
       });
     },
 
-    socketSendMessage<T = void>(data: SocketMessage<T>) {
+    socketSendMessage<T = void>(data: UserSendMessage<T>) {
       this.socket
         ? this.socket.send(JSON.stringify(data))
         : console.log("Socket not opened yet!");
