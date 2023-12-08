@@ -2,6 +2,7 @@ import assert from "assert";
 import { Socket } from "engine.io";
 import { IAuthService } from "types/services/IAuthService";
 import { ISocketServiceMember } from "types/services/ISocketServiceMember";
+import { IncomingAllowRequestMessage } from "types/IncomingAllowRequestMessage";
 
 import { Di } from "@enums/Di";
 import type { SocketMessage } from "@shared/types/SocketMessage";
@@ -12,6 +13,8 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { getTokenCookieValue } from "@helpers/getTokenCookieValue";
 
 export class SocketServiceMember implements ISocketServiceMember {
+  uid: number;
+
   sid: string;
 
   socket: Socket;
@@ -26,6 +29,12 @@ export class SocketServiceMember implements ISocketServiceMember {
   constructor(socket: Socket) {
     this.socket = socket;
     this.sid = socket.transport.sid;
+
+    const castedRequest = <IncomingAllowRequestMessage>socket.request;
+
+    assert(castedRequest.userId);
+
+    this.uid = castedRequest.userId;
 
     const cookie = getTokenCookieValue(socket.request.headers.cookie);
 

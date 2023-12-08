@@ -1,5 +1,6 @@
 import { Server } from "engine.io";
 import { IAuthService } from "types/services/IAuthService";
+import { IncomingAllowRequestMessage } from "types/IncomingAllowRequestMessage";
 
 import { APP } from "@config";
 
@@ -16,7 +17,7 @@ export const initializeEngineIO = () => {
     },
 
     // @NOTE handshake (only) on valid token
-    allowRequest: async (request, callback) => {
+    allowRequest: async (request: IncomingAllowRequestMessage, callback) => {
       const cookie = request.headers.cookie;
 
       if (!cookie) {
@@ -36,6 +37,10 @@ export const initializeEngineIO = () => {
       if (result.error) {
         return callback(null, false);
       }
+
+      const userId = result.payload.id;
+
+      request.userId = userId;
 
       return callback(null, true);
     },
