@@ -1,11 +1,12 @@
-import { SocketMessage } from "@shared/types/SocketMessage";
+import { UserSendMessage } from "@shared/types/transport/UserSendMessage";
+import { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
 
 export interface ISocketServiceManager {
   initialize(): void;
 
-  sendMessage<T = void, Y = void>(options: {
-    data?: Y;
-    action: string;
-    condition: (latestMessage: SocketMessage<T>) => boolean; // @NOTE specify which sockets should receive message
-  }): void;
+  sendMessage<T, Y = void>(
+    options: UserReceiveMessage<T> & {
+      condition: (latestMessage: UserSendMessage<Y>) => boolean;
+    }
+  ): void;
 }

@@ -5,8 +5,9 @@ import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { SocketServiceMember } from "./Member";
 
 import { Di } from "@enums/Di";
-import { SocketMessage } from "@shared/types/SocketMessage";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
+import { UserSendMessage } from "@shared/types/transport/UserSendMessage";
+import { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
 
 @singleton()
 export class SocketServiceManager implements ISocketServiceManager {
@@ -43,11 +44,11 @@ export class SocketServiceManager implements ISocketServiceManager {
     this._initialized = true;
   }
 
-  sendMessage<T = void, Y = void>(options: {
-    data?: Y;
-    action: string;
-    condition: (latestMessage: SocketMessage<T>) => boolean;
-  }): void {
+  sendMessage<T, Y = void>(
+    options: UserReceiveMessage<T> & {
+      condition: (latestMessage: UserSendMessage<Y>) => boolean;
+    }
+  ): void {
     const { action, condition, data } = options;
 
     if (!this._initialized) {
@@ -76,7 +77,7 @@ export class SocketServiceManager implements ISocketServiceManager {
     );
 
     for (const member of eligibleMembers) {
-      member.sendMessage({ type: action, value: data });
+      member.sendMessage<T>({ action, data });
     }
   }
 }
