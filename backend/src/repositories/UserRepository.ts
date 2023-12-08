@@ -1,3 +1,4 @@
+import { In } from "typeorm";
 import { injectable } from "tsyringe";
 import { IUserRepository } from "types/repositories/IUserRepository";
 
@@ -42,6 +43,20 @@ export class UserRepository
         isSignedUp: true,
       },
       ...permissionsRelation,
+    });
+  }
+
+  filterUsersWithAccessToWorkspace(
+    workspaceId: number,
+    userIds: number[]
+  ): Promise<User[]> {
+    return this.database.find({
+      where: {
+        userToWorkspace: {
+          userId: In(userIds),
+          workspaceId,
+        },
+      },
     });
   }
 }
