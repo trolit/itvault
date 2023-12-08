@@ -19,16 +19,19 @@ import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 
+import { useAuthStore } from "@/store/auth";
 import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import Sider from "@/components/workspace/Sider/Index.vue";
 import LoadingPage from "@/components/common/LoadingPage.vue";
+import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
 import MainContent from "@/components/workspace/MainContent/Index.vue";
 
 const route = useRoute();
+const authStore = useAuthStore();
 const filesStore = useFilesStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
@@ -58,7 +61,12 @@ onBeforeMount(async () => {
   isLoading.value = true;
 
   try {
-    await workspacesStore.getBySlug(slug as string);
+    const workspace = await workspacesStore.getBySlug(slug as string);
+
+    authStore.socketSendMessage({
+      type: SOCKET_MESSAGES.VIEW_WORKSPACE.TYPE,
+      value: workspace.id,
+    });
   } catch (error) {
     // @TODO create API errors handler/parser
     if (error instanceof AxiosError && error.response) {
