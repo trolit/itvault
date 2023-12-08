@@ -6,7 +6,6 @@ import { SocketServiceMember } from "./Member";
 
 import { Di } from "@enums/Di";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
-import { UserSendMessage } from "@shared/types/transport/UserSendMessage";
 import { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
 
 @singleton()
@@ -44,17 +43,20 @@ export class SocketServiceManager implements ISocketServiceManager {
     this._initialized = true;
   }
 
-  sendMessage<T, Y = void>(
+  async sendMessage<T>(
     options: UserReceiveMessage<T> & {
-      condition: (latestMessage: UserSendMessage<Y>) => boolean;
+      restrictMembers?: (
+        members: SocketServiceMember[]
+      ) => Promise<SocketServiceMember[]> | SocketServiceMember[];
     }
-  ): void {
-    const { action, condition, data } = options;
+  ): Promise<void> {
+    const { action, restrictMembers, data } = options;
 
     if (!this._initialized) {
       throw Error("SocketService manager not initialized!");
     }
 
+    // @NOTE [1] determine TYPE and filter members with it
     const socketMessageKey = Object.keys(SOCKET_MESSAGES).find(message => {
       const actions =
         SOCKET_MESSAGES[message as keyof typeof SOCKET_MESSAGES].ACTIONS;
@@ -69,14 +71,22 @@ export class SocketServiceManager implements ISocketServiceManager {
     const type =
       SOCKET_MESSAGES[socketMessageKey as keyof typeof SOCKET_MESSAGES].TYPE;
 
-    const eligibleMembers = this._members.filter(
-      ({ latestMessage }) =>
-        !!latestMessage &&
-        latestMessage.type === type &&
-        !!condition(latestMessage)
+    let validMembers: SocketServiceMember[] = [];
+
+    validMembers = this._members.filter(
+      ({ latestMessage }) => !!latestMessage && latestMessage.type === type
     );
 
-    for (const member of eligibleMembers) {
+    if (!validMembers.length) {
+      return;
+    }
+
+    // @NOTE [2] handle additional filter (if provided)
+    if (restrictMembers) {
+      validMembers = await restrictMembers(validMembers);
+    }
+
+    for (const member of validMembers) {
       member.sendMessage<T>({ action, data });
     }
   }

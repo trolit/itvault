@@ -1,5 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IUserRepository } from "types/repositories/IUserRepository";
 import { IWorkspaceService } from "types/services/IWorkspaceService";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { UpdateControllerTypes } from "types/controllers/Workspace/UpdateController";
@@ -16,6 +17,8 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 @injectable()
 export class UpdateController extends BaseController {
   constructor(
+    @inject(Di.UserRepository)
+    private _userRepository: IUserRepository,
     @inject(Di.WorkspaceService)
     private _workspaceService: IWorkspaceService,
     @inject(Di.SocketServiceManager)
@@ -48,9 +51,23 @@ export class UpdateController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
-    this._socketServiceManager.sendMessage<UpdateWorkspaceMessage, number>({
-      action: SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS.UPDATE_WORKSPACE,
-      condition: latestMessage => latestMessage.data === id,
+    const { UPDATE_WORKSPACE } = SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS;
+
+    this._socketServiceManager.sendMessage<UpdateWorkspaceMessage>({
+      action: UPDATE_WORKSPACE,
+      restrictMembers: async members => {
+        const userIds = members.map(member => member.uid);
+
+        const usersWithAccess =
+          await this._userRepository.filterUsersWithAccessToWorkspace(
+            id,
+            userIds
+          );
+
+        return members.filter(member =>
+          usersWithAccess.some(user => user.id === member.uid)
+        );
+      },
       data: { id, ...body },
     });
 
