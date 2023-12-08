@@ -2,9 +2,12 @@ import { In } from "typeorm";
 import { injectable } from "tsyringe";
 import { IUserRepository } from "types/repositories/IUserRepository";
 
+import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
+
 import { BaseRepository } from "./BaseRepository";
 
 import { User } from "@entities/User";
+import { Permission } from "@shared/types/enums/Permission";
 
 @injectable()
 export class UserRepository
@@ -51,12 +54,29 @@ export class UserRepository
     userIds: number[]
   ): Promise<User[]> {
     return this.database.find({
-      where: {
-        userToWorkspace: {
-          userId: In(userIds),
-          workspaceId,
+      where: [
+        {
+          userToWorkspace: {
+            userId: In(userIds),
+            workspaceId,
+          },
         },
-      },
+        {
+          role: {
+            id: HEAD_ADMIN_ROLE_ID,
+          },
+        },
+        {
+          role: {
+            permissionToRole: {
+              permission: {
+                signature: Permission.ViewAllWorkspaces,
+              },
+              enabled: true,
+            },
+          },
+        },
+      ],
     });
   }
 }
