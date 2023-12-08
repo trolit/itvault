@@ -21,6 +21,7 @@ import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { WorkspaceSearchParams } from "@/types/WorkspaceSearchParams";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 import { getUniqueTreeRelativePaths } from "@/helpers/getUniqueTreeRelativePaths";
+import type { UpdateWorkspaceMessage } from "@shared/types/transport/UpdateWorkspaceMessage";
 
 interface IState {
   total: number;
@@ -263,15 +264,17 @@ export const useWorkspacesStore = defineStore("workspaces", {
       await axios.put(`v1/workspaces/${id}`, payload, {
         params: { version: 1 },
       });
+    },
 
+    onUpdate(data: UpdateWorkspaceMessage) {
       const updatedWorkspaceIndex = this.items.findIndex(
-        item => item.id === id
+        item => item.id === data.id
       );
 
       if (~updatedWorkspaceIndex) {
         this.items.splice(updatedWorkspaceIndex, 1, {
-          ...this.itemToEdit,
-          ...payload,
+          ...this.items[updatedWorkspaceIndex],
+          ...data,
         });
       }
     },

@@ -26,7 +26,6 @@ import { useWorkspacesStore } from "@/store/workspaces";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import Sider from "@/components/workspace/Sider/Index.vue";
 import LoadingPage from "@/components/common/LoadingPage.vue";
-import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
 import MainContent from "@/components/workspace/MainContent/Index.vue";
 
@@ -64,8 +63,8 @@ onBeforeMount(async () => {
     const workspace = await workspacesStore.getBySlug(slug as string);
 
     authStore.socketSendMessage({
-      type: SOCKET_MESSAGES.VIEW_WORKSPACE.TYPE,
-      value: workspace.id,
+      type: authStore.SOCKET_MESSAGE_TYPE.VIEW_WORKSPACE.TYPE,
+      data: workspace.id,
     });
   } catch (error) {
     // @TODO create API errors handler/parser
