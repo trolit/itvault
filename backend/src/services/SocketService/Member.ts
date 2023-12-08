@@ -23,6 +23,10 @@ export class SocketServiceMember implements ISocketServiceMember {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   latestMessage?: UserSendMessage<any>;
 
+  getLatestMessageValue<T>(): T | undefined {
+    return this.latestMessage?.data;
+  }
+
   // @NOTE we could also add here "rooms" in case we want some "events" to be global (nevertheless of page)
 
   constructor(socket: Socket) {
