@@ -3,7 +3,7 @@ import path from "path";
 import { Server } from "engine.io";
 import Redis from "ioredis/built/Redis";
 import { Transporter } from "nodemailer";
-import { container, DependencyContainer } from "tsyringe";
+import { container, DependencyContainer, Lifecycle } from "tsyringe";
 
 import { APP, FILES } from "@config";
 
@@ -34,7 +34,9 @@ export const setupDi = (services: {
     container.register(Di.MailTransporter, { useValue: mailTransporter });
   }
 
-  container.register(Di.SocketServiceManager, SocketServiceManager);
+  container.register(Di.SocketServiceManager, SocketServiceManager, {
+    lifecycle: Lifecycle.Singleton,
+  });
 
   registerFileService();
 
