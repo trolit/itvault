@@ -5,7 +5,6 @@ import { ISocketServiceMember } from "types/services/ISocketServiceMember";
 import { IncomingAllowRequestMessage } from "types/IncomingAllowRequestMessage";
 
 import { Di } from "@enums/Di";
-import type { SocketMessage } from "@shared/types/SocketMessage";
 import { UserSendMessage } from "@shared/types/transport/UserSendMessage";
 import { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
 
@@ -45,7 +44,7 @@ export class SocketServiceMember implements ISocketServiceMember {
     this.printMessage("Connected.");
 
     socket.on("message", (message: string) => {
-      let parsedMessage: SocketMessage | null = null;
+      let parsedMessage: UserSendMessage | null = null;
 
       try {
         parsedMessage = JSON.parse(message);
