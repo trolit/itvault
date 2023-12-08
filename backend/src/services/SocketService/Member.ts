@@ -5,6 +5,8 @@ import { ISocketServiceMember } from "types/services/ISocketServiceMember";
 
 import { Di } from "@enums/Di";
 import type { SocketMessage } from "@shared/types/SocketMessage";
+import { UserSendMessage } from "@shared/types/transport/UserSendMessage";
+import { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { getTokenCookieValue } from "@helpers/getTokenCookieValue";
@@ -16,7 +18,8 @@ export class SocketServiceMember implements ISocketServiceMember {
 
   private _cookie: string;
 
-  latestMessage?: SocketMessage;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  latestMessage?: UserSendMessage<any>;
 
   // @NOTE we could also add here "rooms" in case we want some "events" to be global (nevertheless of page)
 
@@ -62,7 +65,7 @@ export class SocketServiceMember implements ISocketServiceMember {
     });
   }
 
-  async sendMessage<T>(data: SocketMessage<T>): Promise<void> {
+  async sendMessage<T>(data: UserReceiveMessage<T>): Promise<void> {
     const canReceiveMessage = await this.isEligibleToReceiveMessage();
 
     if (!canReceiveMessage) {
@@ -71,7 +74,7 @@ export class SocketServiceMember implements ISocketServiceMember {
       return;
     }
 
-    this.printMessage(`Should receive '${data.type}' message.`);
+    this.printMessage(`Should receive '${data.action}' message.`);
 
     this.socket.send(JSON.stringify(data));
   }
