@@ -16,7 +16,7 @@ export class SocketServiceMember implements ISocketServiceMember {
 
   sid: string;
 
-  socket: Socket;
+  private socket: Socket;
 
   private _cookie: string;
 
