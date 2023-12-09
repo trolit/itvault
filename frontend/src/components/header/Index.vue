@@ -41,7 +41,7 @@ import Location from "@/components/header/Location.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
-import type { UpdateWorkspaceMessage } from "@shared/types/transport/UpdateWorkspaceMessage";
+import type { UpdateWorkspaceData } from "@shared/types/transport/WorkspaceMessages";
 
 const authStore = useAuthStore();
 const themeVars = useThemeVars();
@@ -54,7 +54,7 @@ onBeforeMount(() => {
         action ===
         authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.ACTIONS.UPDATE_WORKSPACE
       ) {
-        workspacesStore.onUpdate(data as UpdateWorkspaceMessage);
+        workspacesStore.onUpdate(data as UpdateWorkspaceData);
 
         return;
       }

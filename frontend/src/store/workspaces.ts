@@ -21,7 +21,7 @@ import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { WorkspaceSearchParams } from "@/types/WorkspaceSearchParams";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 import { getUniqueTreeRelativePaths } from "@/helpers/getUniqueTreeRelativePaths";
-import type { UpdateWorkspaceMessage } from "@shared/types/transport/UpdateWorkspaceMessage";
+import type { UpdateWorkspaceData } from "@shared/types/transport/WorkspaceMessages";
 
 interface IState {
   total: number;
@@ -266,7 +266,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       });
     },
 
-    onUpdate(data: UpdateWorkspaceMessage) {
+    onUpdate(data: UpdateWorkspaceData) {
       const updatedWorkspaceIndex = this.items.findIndex(
         item => item.id === data.id
       );

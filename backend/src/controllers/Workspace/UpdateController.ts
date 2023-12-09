@@ -8,7 +8,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
-import { UpdateWorkspaceMessage } from "@shared/types/transport/UpdateWorkspaceMessage";
+import { UpdateWorkspaceData } from "@shared/types/transport/WorkspaceMessages";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -53,7 +53,7 @@ export class UpdateController extends BaseController {
 
     const { UPDATE_WORKSPACE } = SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS;
 
-    this._socketServiceManager.sendMessage<UpdateWorkspaceMessage>({
+    this._socketServiceManager.sendMessage<UpdateWorkspaceData>({
       action: UPDATE_WORKSPACE,
 
       data: { id, ...body },
