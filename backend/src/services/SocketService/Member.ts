@@ -27,8 +27,6 @@ export class SocketServiceMember implements ISocketServiceMember {
     return this.latestMessage?.data;
   }
 
-  // @NOTE we could also add here "rooms" in case we want some "events" to be global (nevertheless of page)
-
   constructor(socket: Socket) {
     this.socket = socket;
     this.sid = socket.transport.sid;
