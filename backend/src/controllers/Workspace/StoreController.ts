@@ -3,10 +3,14 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
 import { IWorkspaceService } from "types/services/IWorkspaceService";
+import { IUserRepository } from "types/repositories/IUserRepository";
+import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { StoreControllerTypes } from "types/controllers/Workspace/StoreController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
+import SOCKET_MESSAGES from "@shared/constants/socket-messages";
+import { CreateWorkspaceData } from "@shared/types/transport/WorkspaceMessages";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -15,8 +19,12 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 @injectable()
 export class StoreController extends BaseController {
   constructor(
+    @inject(Di.UserRepository)
+    private _userRepository: IUserRepository,
     @inject(Di.WorkspaceService)
-    private _workspaceService: IWorkspaceService
+    private _workspaceService: IWorkspaceService,
+    @inject(Di.SocketServiceManager)
+    private _socketServiceManager: ISocketServiceManager
   ) {
     super();
   }
@@ -45,6 +53,28 @@ export class StoreController extends BaseController {
     assert(result.value);
 
     const mappedResult = this.mapper.map(result.value).to(WorkspaceMapper);
+
+    const { CREATE_WORKSPACE } = SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS;
+
+    this._socketServiceManager.sendMessage<CreateWorkspaceData>({
+      action: CREATE_WORKSPACE,
+
+      data: mappedResult,
+
+      filter: async members => {
+        const userIds = members.map(member => member.uid);
+
+        const permittedUsers =
+          await this._userRepository.filterUsersWithAccessToWorkspace(
+            mappedResult.id,
+            userIds
+          );
+
+        return members.filter(member =>
+          permittedUsers.some(user => user.id === member.uid)
+        );
+      },
+    });
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }
