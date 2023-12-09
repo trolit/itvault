@@ -98,10 +98,6 @@ import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawe
 
 const authStore = useAuthStore();
 
-authStore.socketSendMessage({
-  type: authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.TYPE,
-});
-
 interface OtherCard {
   title: string;
   to: string;
@@ -148,4 +144,8 @@ const topCards: Ref<OtherCard[]> = ref([
     description: "Manage vault role(s)",
   },
 ]);
+
+authStore.socketSendMessage({
+  type: authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.TYPE,
+});
 </script>
