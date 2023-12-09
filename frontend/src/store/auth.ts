@@ -73,7 +73,7 @@ export const useAuthStore = defineStore("auth", {
       return data;
     },
 
-    async initializeSocket(): Promise<void> {
+    initializeSocket() {
       this.wasSocketInitialized = true;
 
       if (this.loggedUserId <= 0) {
@@ -86,12 +86,8 @@ export const useAuthStore = defineStore("auth", {
         withCredentials: true,
       });
 
-      return new Promise(resolve => {
-        socket.on("open", () => {
-          this.socket = socket;
-
-          resolve();
-        });
+      socket.on("open", () => {
+        this.socket = socket;
       });
     },
 
