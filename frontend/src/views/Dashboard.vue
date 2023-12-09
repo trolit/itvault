@@ -80,7 +80,6 @@ import {
   UserRole as RolesIcon,
   UpdateNow as UpdatesIcon,
 } from "@vicons/carbon";
-import { storeToRefs } from "pinia";
 import { NGrid, NGridItem } from "naive-ui";
 import { ref, shallowRef, type Component, type Ref } from "vue";
 
@@ -92,15 +91,13 @@ import {
 } from "@/assets/constants/routes";
 import { useAuthStore } from "@/store/auth";
 import Welcome from "@/components/dashboard/Welcome.vue";
-import { defineWatchers } from "@/helpers/defineWatchers";
 import LinkCard from "@/components/dashboard/LinkCard.vue";
 import Permissions from "@/components/dashboard/Permissions.vue";
 import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
 import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
+import { onSocketOpen } from "@/helpers/onSocketOpen";
 
 const authStore = useAuthStore();
-
-const { socket } = storeToRefs(authStore);
 
 interface OtherCard {
   title: string;
@@ -149,18 +146,9 @@ const topCards: Ref<OtherCard[]> = ref([
   },
 ]);
 
-defineWatchers({
-  socket: {
-    source: socket,
-    handler: value => {
-      if (!value) {
-        return;
-      }
-
-      authStore.socketSendMessage({
-        type: authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.TYPE,
-      });
-    },
-  },
+onSocketOpen(() => {
+  authStore.socketSendMessage({
+    type: authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.TYPE,
+  });
 });
 </script>
