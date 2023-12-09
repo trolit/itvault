@@ -123,7 +123,7 @@ import LoadingSection from "@/components/common/LoadingSection.vue";
 import { sortArrayByPinnedAt } from "@/helpers/sortArrayByPinnedAt";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
-import { defineSocketMessageListener } from "@/helpers/defineSocketMessageListener";
+import { onSocketReceiveMessage } from "@/helpers/onSocketReceiveMessage";
 import type { UpdateWorkspaceData } from "@shared/types/transport/WorkspaceMessages";
 
 const router = useRouter();
@@ -192,7 +192,7 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
   drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
 }
 
-defineSocketMessageListener({
+onSocketReceiveMessage({
   onMessage: ({ action, data }) => {
     if (
       action ===
