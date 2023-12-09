@@ -97,11 +97,19 @@ export const useAuthStore = defineStore("auth", {
 
     socketSendMessage<T = void>(data: SocketSendMessage<T>): Promise<void> {
       return new Promise(resolve => {
-        if (this.socket) {
-          this.socket.send(JSON.stringify(data));
+        const interval = setInterval(() => {
+          if (!this.socket) {
+            return;
+          }
 
-          resolve();
-        }
+          if (this.socket) {
+            clearInterval(interval);
+
+            this.socket.send(JSON.stringify(data));
+
+            resolve();
+          }
+        }, 1000);
       });
     },
   },
