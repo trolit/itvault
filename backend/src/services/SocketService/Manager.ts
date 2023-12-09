@@ -33,14 +33,20 @@ export class SocketServiceManager implements ISocketServiceManager {
 
       this._members.push(member);
 
+      this.printMembersLength();
+
       socket.on("close", () => {
         this._members = this._members.filter(member => !!member.sid);
 
-        console.log(`Active sockets: ${this._members.length}`);
+        this.printMembersLength();
       });
     });
 
     this._initialized = true;
+  }
+
+  private printMembersLength() {
+    console.log(`Active sockets: ${this._members.length}`);
   }
 
   async sendMessage<T>(
