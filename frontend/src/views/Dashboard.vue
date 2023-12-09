@@ -95,9 +95,12 @@ import LinkCard from "@/components/dashboard/LinkCard.vue";
 import Permissions from "@/components/dashboard/Permissions.vue";
 import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
 import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
-import { onSocketOpen } from "@/helpers/onSocketOpen";
 
 const authStore = useAuthStore();
+
+authStore.socketSendMessage({
+  type: authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.TYPE,
+});
 
 interface OtherCard {
   title: string;
@@ -145,10 +148,4 @@ const topCards: Ref<OtherCard[]> = ref([
     description: "Manage vault role(s)",
   },
 ]);
-
-onSocketOpen(() => {
-  authStore.socketSendMessage({
-    type: authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.TYPE,
-  });
-});
 </script>
