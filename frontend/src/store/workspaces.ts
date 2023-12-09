@@ -275,7 +275,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       if (~updatedWorkspaceIndex) {
         const currentItem = this.items[updatedWorkspaceIndex];
 
-        // @TODO (at this moment) slug depends on workspace name. At BE Workspace/UpdateController send to users viewing that workspace message to update URL
+        // @TODO (at this moment) slug depends on workspace name. At BE Workspace/UpdateController send to users (viewing that workspace) message to update their URLs
         this.items.splice(updatedWorkspaceIndex, 1, {
           ...currentItem,
           slug: kebabCase(data.name),
