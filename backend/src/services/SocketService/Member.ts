@@ -28,23 +28,23 @@ export class SocketServiceMember implements ISocketServiceMember {
   }
 
   constructor(socket: Socket) {
+    // @NOTE [1] assign information
     this.socket = socket;
     this.sid = socket.transport.sid;
 
+    const cookie = getTokenCookieValue(socket.request.headers.cookie);
     const castedRequest = <IncomingAllowRequestMessage>socket.request;
 
+    assert(cookie);
     assert(castedRequest.userId);
 
     this.uid = castedRequest.userId;
-
-    const cookie = getTokenCookieValue(socket.request.headers.cookie);
-
-    assert(cookie);
 
     this._cookie = cookie;
 
     this.printMessage("Connected.");
 
+    // @NOTE [2] configure events
     socket.on("message", (message: string) => {
       let parsedMessage: SocketSendMessage | null = null;
 
@@ -76,10 +76,12 @@ export class SocketServiceMember implements ISocketServiceMember {
   }
 
   async sendMessage<T>(data: SocketReceiveMessage<T>): Promise<void> {
-    const canReceiveMessage = await this.isEligibleToReceiveMessage();
+    const authService = getInstanceOf<IAuthService>(Di.AuthService);
 
-    if (!canReceiveMessage) {
-      this.printMessage("Cannot receive message (token expired)");
+    const result = authService.verifyToken(this._cookie);
+
+    if (result.error) {
+      this.printMessage("Won't receive message (token expired)");
 
       return;
     }
@@ -87,18 +89,6 @@ export class SocketServiceMember implements ISocketServiceMember {
     this.printMessage(`Should receive '${data.action}' message.`);
 
     this.socket.send(JSON.stringify(data));
-  }
-
-  private async isEligibleToReceiveMessage() {
-    const authService = getInstanceOf<IAuthService>(Di.AuthService);
-
-    const result = authService.verifyToken(this._cookie);
-
-    if (result.error) {
-      return false;
-    }
-
-    return true;
   }
 
   private printMessage(message: string) {
