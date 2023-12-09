@@ -102,6 +102,7 @@ export const useAuthStore = defineStore("auth", {
             return;
           }
 
+          // @TODO maybe some error after e.g. 10 seconds of waiting?
           if (this.socket) {
             clearInterval(interval);
 
