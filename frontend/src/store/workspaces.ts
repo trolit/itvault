@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import kebabCase from "lodash/kebabCase";
 import type { TreeOption } from "naive-ui";
 import type { RouteLocationNormalizedLoaded } from "vue-router";
 
@@ -272,8 +273,12 @@ export const useWorkspacesStore = defineStore("workspaces", {
       );
 
       if (~updatedWorkspaceIndex) {
+        const currentItem = this.items[updatedWorkspaceIndex];
+
+        // @TODO (at this moment) slug depends on workspace name. At BE Workspace/UpdateController send to users viewing that workspace message to update URL
         this.items.splice(updatedWorkspaceIndex, 1, {
-          ...this.items[updatedWorkspaceIndex],
+          ...currentItem,
+          slug: kebabCase(data.name),
           ...data,
         });
       }
