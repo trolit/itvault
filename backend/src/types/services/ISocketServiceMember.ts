@@ -1,5 +1,5 @@
-import { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
+import { SocketReceiveMessage } from "@shared/types/transport/SocketReceiveMessage";
 
 export interface ISocketServiceMember {
-  sendMessage<T>(data: UserReceiveMessage<T>): Promise<void>;
+  sendMessage<T>(data: SocketReceiveMessage<T>): Promise<void>;
 }

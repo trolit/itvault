@@ -8,8 +8,8 @@ import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
-import type { UserSendMessage } from "@shared/types/transport/UserSendMessage";
-import type { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
+import type { SocketSendMessage } from "@shared/types/transport/SocketSendMessage";
+import type { SocketReceiveMessage } from "@shared/types/transport/SocketReceiveMessage";
 
 interface IState {
   socket: Socket | null;
@@ -75,7 +75,7 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async initializeSocket(options: {
-      onMessage?: <T>(data: UserReceiveMessage<T>) => void;
+      onMessage?: <T>(data: SocketReceiveMessage<T>) => void;
     }): Promise<void> {
       this.wasSocketInitialized = true;
 
@@ -114,7 +114,7 @@ export const useAuthStore = defineStore("auth", {
       });
     },
 
-    socketSendMessage<T = void>(data: UserSendMessage<T>) {
+    socketSendMessage<T = void>(data: SocketSendMessage<T>) {
       this.socket
         ? this.socket.send(JSON.stringify(data))
         : console.log("Socket not opened yet!");

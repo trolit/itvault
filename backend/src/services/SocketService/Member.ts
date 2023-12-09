@@ -5,8 +5,8 @@ import { ISocketServiceMember } from "types/services/ISocketServiceMember";
 import { IncomingAllowRequestMessage } from "types/IncomingAllowRequestMessage";
 
 import { Di } from "@enums/Di";
-import { UserSendMessage } from "@shared/types/transport/UserSendMessage";
-import { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
+import { SocketSendMessage } from "@shared/types/transport/SocketSendMessage";
+import { SocketReceiveMessage } from "@shared/types/transport/SocketReceiveMessage";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { getTokenCookieValue } from "@helpers/getTokenCookieValue";
@@ -21,7 +21,7 @@ export class SocketServiceMember implements ISocketServiceMember {
   private _cookie: string;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  latestMessage?: UserSendMessage<any>;
+  latestMessage?: SocketSendMessage<any>;
 
   getLatestMessageValue<T>(): T | undefined {
     return this.latestMessage?.data;
@@ -48,7 +48,7 @@ export class SocketServiceMember implements ISocketServiceMember {
     this.printMessage("Connected.");
 
     socket.on("message", (message: string) => {
-      let parsedMessage: UserSendMessage | null = null;
+      let parsedMessage: SocketSendMessage | null = null;
 
       try {
         parsedMessage = JSON.parse(message);
@@ -77,7 +77,7 @@ export class SocketServiceMember implements ISocketServiceMember {
     });
   }
 
-  async sendMessage<T>(data: UserReceiveMessage<T>): Promise<void> {
+  async sendMessage<T>(data: SocketReceiveMessage<T>): Promise<void> {
     const canReceiveMessage = await this.isEligibleToReceiveMessage();
 
     if (!canReceiveMessage) {

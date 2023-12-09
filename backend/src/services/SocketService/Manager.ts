@@ -6,7 +6,7 @@ import { SocketServiceMember } from "./Member";
 
 import { Di } from "@enums/Di";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
-import { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
+import { SocketReceiveMessage } from "@shared/types/transport/SocketReceiveMessage";
 
 @singleton()
 export class SocketServiceManager implements ISocketServiceManager {
@@ -44,7 +44,7 @@ export class SocketServiceManager implements ISocketServiceManager {
   }
 
   async sendMessage<T>(
-    options: UserReceiveMessage<T> & {
+    options: SocketReceiveMessage<T> & {
       restrictMembers?: (
         members: SocketServiceMember[]
       ) => Promise<SocketServiceMember[]> | SocketServiceMember[];

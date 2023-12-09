@@ -1,12 +1,12 @@
-import { UserSendMessage } from "@shared/types/transport/UserSendMessage";
-import { UserReceiveMessage } from "@shared/types/transport/UserReceiveMessage";
+import { SocketSendMessage } from "@shared/types/transport/SocketSendMessage";
+import { SocketReceiveMessage } from "@shared/types/transport/SocketReceiveMessage";
 import { SocketServiceMember } from "@services/SocketService/Member";
 
 export interface ISocketServiceManager {
   initialize(): void;
 
   sendMessage<T>(
-    options: UserReceiveMessage<T> & {
+    options: SocketReceiveMessage<T> & {
       restrictMembers?: (
         members: SocketServiceMember[]
       ) => Promise<SocketServiceMember[]> | SocketServiceMember[];
