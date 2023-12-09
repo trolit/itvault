@@ -141,6 +141,7 @@ onBeforeMount(async () => {
 });
 
 const { sortedItems } = defineComputed({
+  // @TODO include "createdAt" in IWorkspaceDto and sort here (if not pinned)
   sortedItems() {
     return sortArrayByPinnedAt(workspacesStore.items);
   },
