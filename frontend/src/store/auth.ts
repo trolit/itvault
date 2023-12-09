@@ -95,10 +95,14 @@ export const useAuthStore = defineStore("auth", {
       });
     },
 
-    socketSendMessage<T = void>(data: SocketSendMessage<T>) {
-      this.socket
-        ? this.socket.send(JSON.stringify(data))
-        : console.log("Socket not opened yet!");
+    socketSendMessage<T = void>(data: SocketSendMessage<T>): Promise<void> {
+      return new Promise(resolve => {
+        if (this.socket) {
+          this.socket.send(JSON.stringify(data));
+
+          resolve();
+        }
+      });
     },
   },
 });
