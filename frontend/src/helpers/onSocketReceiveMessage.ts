@@ -4,13 +4,11 @@ import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/store/auth";
 import type { SocketReceiveMessage } from "@shared/types/transport/SocketReceiveMessage";
 
-export const onSocketReceiveMessage = (options: {
-  onMessage: <T>(data: SocketReceiveMessage<T>) => void;
-}) => {
+export const onSocketReceiveMessage = (
+  onMessage: <T>(data: SocketReceiveMessage<T>) => void
+) => {
   const authStore = useAuthStore();
   const { socket } = storeToRefs(authStore);
-
-  const { onMessage } = options;
 
   watch(socket, value => {
     if (!value) {

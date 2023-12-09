@@ -192,27 +192,25 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
   drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
 }
 
-onSocketReceiveMessage({
-  onMessage: ({ action, data }) => {
-    if (
-      action ===
-      authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.ACTIONS.UPDATE_WORKSPACE
-    ) {
-      workspacesStore.onUpdate(data as UpdateWorkspaceData);
+onSocketReceiveMessage(({ action, data }) => {
+  if (
+    action ===
+    authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.ACTIONS.UPDATE_WORKSPACE
+  ) {
+    workspacesStore.onUpdate(data as UpdateWorkspaceData);
 
-      return;
+    return;
+  }
+
+  if (
+    action ===
+    authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.ACTIONS.CREATE_WORKSPACE
+  ) {
+    if (page.value === 1) {
+      getWorkspaces(1);
     }
 
-    if (
-      action ===
-      authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.ACTIONS.CREATE_WORKSPACE
-    ) {
-      if (page.value === 1) {
-        getWorkspaces(1);
-      }
-
-      return;
-    }
-  },
+    return;
+  }
 });
 </script>
