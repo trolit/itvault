@@ -1,17 +1,24 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import { Socket } from "engine.io-client";
 
+import { WEBSOCKETS } from "@/config";
 import type { SignInDto } from "@shared/types/dtos/SignInDto";
+import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
+import type { SocketSendMessage } from "@shared/types/transport/SocketSendMessage";
 
 interface IState {
+  socket: Socket | null;
   profile: ILoggedUserDto;
+  wasSocketInitialized: boolean;
 }
 
 export const useAuthStore = defineStore("auth", {
   state: (): IState => ({
+    socket: null,
     profile: {
       id: -1,
       email: "",
@@ -20,10 +27,17 @@ export const useAuthStore = defineStore("auth", {
       roleName: "",
       permissions: [],
     },
+    wasSocketInitialized: false,
   }),
 
   getters: {
-    loggedUserId: state => state.profile.id,
+    loggedUserId(): number {
+      return this.profile.id;
+    },
+
+    SOCKET_MESSAGE_TYPE() {
+      return SOCKET_MESSAGES;
+    },
   },
 
   actions: {
@@ -57,6 +71,43 @@ export const useAuthStore = defineStore("auth", {
       this.profile = data;
 
       return data;
+    },
+
+    initializeSocket() {
+      this.wasSocketInitialized = true;
+
+      if (this.loggedUserId <= 0) {
+        console.log("Sign in before attempting to initialize socket!");
+
+        return;
+      }
+
+      const socket = new Socket(WEBSOCKETS, {
+        withCredentials: true,
+      });
+
+      socket.on("open", () => {
+        this.socket = socket;
+      });
+    },
+
+    socketSendMessage<T = void>(data: SocketSendMessage<T>): Promise<void> {
+      return new Promise(resolve => {
+        const interval = setInterval(() => {
+          if (!this.socket) {
+            return;
+          }
+
+          // @TODO maybe some error after e.g. 10 seconds of waiting?
+          if (this.socket) {
+            clearInterval(interval);
+
+            this.socket.send(JSON.stringify(data));
+
+            resolve();
+          }
+        }, 1000);
+      });
     },
   },
 });

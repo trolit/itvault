@@ -89,11 +89,14 @@ import {
   ROUTE_ROLES_NAME,
   ROUTE_UPDATES_NAME,
 } from "@/assets/constants/routes";
+import { useAuthStore } from "@/store/auth";
 import Welcome from "@/components/dashboard/Welcome.vue";
 import LinkCard from "@/components/dashboard/LinkCard.vue";
 import Permissions from "@/components/dashboard/Permissions.vue";
 import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
 import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
+
+const authStore = useAuthStore();
 
 interface OtherCard {
   title: string;
@@ -141,4 +144,8 @@ const topCards: Ref<OtherCard[]> = ref([
     description: "Manage vault role(s)",
   },
 ]);
+
+authStore.socketSendMessage({
+  type: authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.TYPE,
+});
 </script>

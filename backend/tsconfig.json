@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "dom"], // @NOTE - dom fixes engineio build problem
     "target": "ES2022",
     "useDefineForClassFields": true,
     "module": "commonjs",

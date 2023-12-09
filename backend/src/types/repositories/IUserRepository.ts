@@ -6,4 +6,9 @@ export interface IUserRepository extends IBaseRepository<User> {
     email: string,
     options?: { includePermissions: boolean }
   ): Promise<User | null>;
+
+  filterUsersWithAccessToWorkspace(
+    workspaceId: number,
+    userIds: number[]
+  ): Promise<User[]>;
 }

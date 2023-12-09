@@ -19,6 +19,7 @@ import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 
+import { useAuthStore } from "@/store/auth";
 import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
@@ -29,6 +30,7 @@ import GeneralLayout from "@/components/workspace/GeneralLayout.vue";
 import MainContent from "@/components/workspace/MainContent/Index.vue";
 
 const route = useRoute();
+const authStore = useAuthStore();
 const filesStore = useFilesStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
@@ -52,6 +54,8 @@ onBeforeMount(async () => {
   const { activeItem } = workspacesStore;
 
   if (activeItem.id) {
+    sendViewWorkspaceMessage();
+
     return;
   }
 
@@ -59,6 +63,8 @@ onBeforeMount(async () => {
 
   try {
     await workspacesStore.getBySlug(slug as string);
+
+    sendViewWorkspaceMessage();
   } catch (error) {
     // @TODO create API errors handler/parser
     if (error instanceof AxiosError && error.response) {
@@ -114,4 +120,11 @@ defineWatchers({
     },
   },
 });
+
+async function sendViewWorkspaceMessage() {
+  await authStore.socketSendMessage({
+    type: authStore.SOCKET_MESSAGE_TYPE.VIEW_WORKSPACE.TYPE,
+    data: workspacesStore.activeItemId,
+  });
+}
 </script>

@@ -1,23 +1,30 @@
 import fs from "fs";
 import path from "path";
+import { Server } from "engine.io";
 import Redis from "ioredis/built/Redis";
 import { Transporter } from "nodemailer";
-import { container, DependencyContainer } from "tsyringe";
+import { container, DependencyContainer, Lifecycle } from "tsyringe";
 
 import { APP, FILES } from "@config";
 
 import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
+import { SocketServiceManager } from "@services/SocketService/Manager";
 import { LocalFileService } from "@services/FileService/LocalFileService";
 import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
 import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
 export const setupDi = (services: {
   redis?: Redis;
+  engineIo?: Server;
   mailTransporter?: Transporter;
 }): Promise<DependencyContainer> => {
-  const { mailTransporter, redis } = services;
+  const { mailTransporter, redis, engineIo } = services;
+
+  if (engineIo) {
+    container.register(Di.EngineIO, { useValue: engineIo });
+  }
 
   if (redis) {
     container.register(Di.Redis, { useValue: redis });
@@ -26,6 +33,10 @@ export const setupDi = (services: {
   if (mailTransporter) {
     container.register(Di.MailTransporter, { useValue: mailTransporter });
   }
+
+  container.register(Di.SocketServiceManager, SocketServiceManager, {
+    lifecycle: Lifecycle.Singleton,
+  });
 
   registerFileService();
 
@@ -42,7 +53,8 @@ export const setupDi = (services: {
   registerDependenciesByInterfaces({
     sourceFiles: {
       dirname: "services",
-      excludedFilenames: ["FileService"],
+      excludedFilenames: ["FileService", "SocketService"],
+      // @TODO allow to declare custom registers (e.g. SocketServiceManager)
     },
     interfacesDirname: "services",
   });
@@ -57,14 +69,16 @@ export const setupDi = (services: {
 
   registerMailViewBuilders();
 
-  return new Promise(resolve =>
-    setInterval(() => {
+  return new Promise(resolve => {
+    const interval = setInterval(() => {
       // @NOTE wait for dependencies that must be available instantly
       if (container.isRegistered(Di.RoleRepository)) {
+        clearInterval(interval);
+
         resolve(container);
       }
-    }, 1000)
-  );
+    }, 1000);
+  });
 };
 
 function registerMailViewBuilders() {

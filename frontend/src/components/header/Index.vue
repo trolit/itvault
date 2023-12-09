@@ -31,16 +31,22 @@
 <script setup lang="ts">
 import { RainDrop as RainDropIcon } from "@vicons/carbon";
 import { useRoute, type RouteRecordName } from "vue-router";
-import { ref, computed, type ComputedRef, watch } from "vue";
+import { ref, computed, type ComputedRef, watch, onBeforeMount } from "vue";
 import { NPageHeader, useThemeVars, NButton, NIcon } from "naive-ui";
 
+import { useAuthStore } from "@/store/auth";
 import Brand from "@/components/common/Brand.vue";
 import ProfileDropdown from "./ProfileDropdown.vue";
 import Location from "@/components/header/Location.vue";
-import ThemeSelector from "@/components/common/ThemeSelector.vue";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
+import ThemeSelector from "@/components/common/ThemeSelector.vue";
 
+const authStore = useAuthStore();
 const themeVars = useThemeVars();
+
+onBeforeMount(() => {
+  authStore.initializeSocket();
+});
 
 let isBrandHovered = ref<boolean>(false);
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import kebabCase from "lodash/kebabCase";
 import type { TreeOption } from "naive-ui";
 import type { RouteLocationNormalizedLoaded } from "vue-router";
 
@@ -21,6 +22,7 @@ import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { WorkspaceSearchParams } from "@/types/WorkspaceSearchParams";
 import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 import { getUniqueTreeRelativePaths } from "@/helpers/getUniqueTreeRelativePaths";
+import type { UpdateWorkspaceData } from "@shared/types/transport/WorkspaceMessages";
 
 interface IState {
   total: number;
@@ -263,15 +265,21 @@ export const useWorkspacesStore = defineStore("workspaces", {
       await axios.put(`v1/workspaces/${id}`, payload, {
         params: { version: 1 },
       });
+    },
 
+    onUpdate(data: UpdateWorkspaceData) {
       const updatedWorkspaceIndex = this.items.findIndex(
-        item => item.id === id
+        item => item.id === data.id
       );
 
       if (~updatedWorkspaceIndex) {
+        const currentItem = this.items[updatedWorkspaceIndex];
+
+        // @TODO (at this moment) slug depends on workspace name. At BE Workspace/UpdateController send to users (viewing that workspace) message to update their URLs
         this.items.splice(updatedWorkspaceIndex, 1, {
-          ...this.itemToEdit,
-          ...payload,
+          ...currentItem,
+          slug: kebabCase(data.name),
+          ...data,
         });
       }
     },
