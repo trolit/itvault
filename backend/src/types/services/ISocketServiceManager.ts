@@ -7,9 +7,9 @@ export interface ISocketServiceManager {
 
   sendMessage<T>(
     options: SocketReceiveMessage<T> & {
-      restrictMembers?: (
+      filter?: (
         members: SocketServiceMember[]
       ) => Promise<SocketServiceMember[]> | SocketServiceMember[];
     }
-  ): void | Promise<void>;
+  ): Promise<void>;
 }

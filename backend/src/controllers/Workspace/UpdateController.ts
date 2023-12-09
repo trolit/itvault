@@ -55,20 +55,22 @@ export class UpdateController extends BaseController {
 
     this._socketServiceManager.sendMessage<UpdateWorkspaceMessage>({
       action: UPDATE_WORKSPACE,
-      restrictMembers: async members => {
+
+      data: { id, ...body },
+
+      filter: async members => {
         const userIds = members.map(member => member.uid);
 
-        const usersWithAccess =
+        const permittedUsers =
           await this._userRepository.filterUsersWithAccessToWorkspace(
             id,
             userIds
           );
 
         return members.filter(member =>
-          usersWithAccess.some(user => user.id === member.uid)
+          permittedUsers.some(user => user.id === member.uid)
         );
       },
-      data: { id, ...body },
     });
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

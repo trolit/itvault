@@ -45,12 +45,12 @@ export class SocketServiceManager implements ISocketServiceManager {
 
   async sendMessage<T>(
     options: SocketReceiveMessage<T> & {
-      restrictMembers?: (
+      filter?: (
         members: SocketServiceMember[]
       ) => Promise<SocketServiceMember[]> | SocketServiceMember[];
     }
   ): Promise<void> {
-    const { action, restrictMembers, data } = options;
+    const { action, filter, data } = options;
 
     if (!this._initialized) {
       throw Error("SocketService manager not initialized!");
@@ -82,8 +82,8 @@ export class SocketServiceManager implements ISocketServiceManager {
     }
 
     // @NOTE [2] handle additional filter (if provided)
-    if (restrictMembers) {
-      validMembers = await restrictMembers(validMembers);
+    if (filter) {
+      validMembers = await filter(validMembers);
     }
 
     for (const member of validMembers) {
