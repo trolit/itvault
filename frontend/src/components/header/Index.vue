@@ -38,28 +38,14 @@ import { useAuthStore } from "@/store/auth";
 import Brand from "@/components/common/Brand.vue";
 import ProfileDropdown from "./ProfileDropdown.vue";
 import Location from "@/components/header/Location.vue";
-import { useWorkspacesStore } from "@/store/workspaces";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
-import type { UpdateWorkspaceData } from "@shared/types/transport/WorkspaceMessages";
 
 const authStore = useAuthStore();
 const themeVars = useThemeVars();
-const workspacesStore = useWorkspacesStore();
 
 onBeforeMount(() => {
-  authStore.initializeSocket({
-    onMessage: ({ action, data }) => {
-      if (
-        action ===
-        authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.ACTIONS.UPDATE_WORKSPACE
-      ) {
-        workspacesStore.onUpdate(data as UpdateWorkspaceData);
-
-        return;
-      }
-    },
-  });
+  authStore.initializeSocket();
 });
 
 let isBrandHovered = ref<boolean>(false);

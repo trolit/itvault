@@ -110,6 +110,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { ref, onBeforeMount } from "vue";
 
 import ContentCard from "./ContentCard.vue";
+import { useAuthStore } from "@/store/auth";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
@@ -122,8 +123,11 @@ import LoadingSection from "@/components/common/LoadingSection.vue";
 import { sortArrayByPinnedAt } from "@/helpers/sortArrayByPinnedAt";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import { defineSocketMessageListener } from "@/helpers/defineSocketMessageListener";
+import type { UpdateWorkspaceData } from "@shared/types/transport/WorkspaceMessages";
 
 const router = useRouter();
+const authStore = useAuthStore();
 const drawerStore = useDrawerStore();
 const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
@@ -186,4 +190,28 @@ function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
 
   drawerStore.setActiveDrawer(Drawer.AddEditWorkspace);
 }
+
+defineSocketMessageListener({
+  onMessage: ({ action, data }) => {
+    if (
+      action ===
+      authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.ACTIONS.UPDATE_WORKSPACE
+    ) {
+      workspacesStore.onUpdate(data as UpdateWorkspaceData);
+
+      return;
+    }
+
+    if (
+      action ===
+      authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.ACTIONS.CREATE_WORKSPACE
+    ) {
+      if (page.value === 1) {
+        getWorkspaces(1);
+      }
+
+      return;
+    }
+  },
+});
 </script>
