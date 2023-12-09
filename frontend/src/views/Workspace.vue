@@ -54,18 +54,17 @@ onBeforeMount(async () => {
   const { activeItem } = workspacesStore;
 
   if (activeItem.id) {
+    sendViewWorkspaceMessage();
+
     return;
   }
 
   isLoading.value = true;
 
   try {
-    const workspace = await workspacesStore.getBySlug(slug as string);
+    await workspacesStore.getBySlug(slug as string);
 
-    authStore.socketSendMessage({
-      type: authStore.SOCKET_MESSAGE_TYPE.VIEW_WORKSPACE.TYPE,
-      data: workspace.id,
-    });
+    sendViewWorkspaceMessage();
   } catch (error) {
     // @TODO create API errors handler/parser
     if (error instanceof AxiosError && error.response) {
@@ -121,4 +120,11 @@ defineWatchers({
     },
   },
 });
+
+async function sendViewWorkspaceMessage() {
+  await authStore.socketSendMessage({
+    type: authStore.SOCKET_MESSAGE_TYPE.VIEW_WORKSPACE.TYPE,
+    data: workspacesStore.activeItemId,
+  });
+}
 </script>
