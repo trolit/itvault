@@ -226,13 +226,6 @@ const {
       ? await workspacesStore.update(formData)
       : await workspacesStore.store(formData);
 
-    if (!isEdit) {
-      workspacesStore.getAll({
-        page: 1,
-        perPage: workspacesStore.ITEMS_PER_PAGE,
-      });
-    }
-
     printSuccess(`Workspace successfully ${isEdit ? "updated" : "added"}.`);
 
     dismissDrawer();
