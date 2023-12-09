@@ -13,6 +13,8 @@ export default {
       CREATE_BLUEPRINT: "create-blueprint",
       UPDATE_BLUEPRINT: "update-blueprint",
       DELETE_BLUEPRINT: "delete-blueprint",
+
+      UPLOAD_FILES: "upload-files",
     },
   },
 };
