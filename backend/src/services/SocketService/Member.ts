@@ -55,7 +55,7 @@ export class SocketServiceMember implements ISocketServiceMember {
       }
 
       if (!parsedMessage) {
-        this.printMessage("Sent unparseable message. Ignoring..");
+        this.printMessage("Sent unparseable message. Ignoring...");
 
         return;
       }
@@ -92,6 +92,6 @@ export class SocketServiceMember implements ISocketServiceMember {
   }
 
   private printMessage(message: string) {
-    console.log(`[socket-${this.sid}]: ${message}`);
+    console.log(`[SOCKET---${this.sid}]: ${message}`);
   }
 }
