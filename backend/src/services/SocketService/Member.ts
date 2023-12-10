@@ -16,9 +16,9 @@ export class SocketServiceMember implements ISocketServiceMember {
 
   sid: string;
 
-  private _socket: Socket;
+  private _token: string;
 
-  private _cookie: string;
+  private _socket: Socket;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   latestMessage?: SocketSendMessage<any>;
@@ -32,15 +32,15 @@ export class SocketServiceMember implements ISocketServiceMember {
     this._socket = socket;
     this.sid = socket.transport.sid;
 
-    const cookie = getTokenCookieValue(socket.request.headers.cookie);
+    const token = getTokenCookieValue(socket.request.headers.cookie);
     const castedRequest = <IncomingAllowRequestMessage>socket.request;
 
-    assert(cookie);
+    assert(token);
     assert(castedRequest.userId);
 
     this.uid = castedRequest.userId;
 
-    this._cookie = cookie;
+    this._token = token;
 
     this.printMessage("Connected.");
 
@@ -78,7 +78,7 @@ export class SocketServiceMember implements ISocketServiceMember {
   async sendMessage<T>(data: SocketReceiveMessage<T>): Promise<void> {
     const authService = getInstanceOf<IAuthService>(Di.AuthService);
 
-    const result = authService.verifyToken(this._cookie);
+    const result = authService.verifyToken(this._token);
 
     if (result.error) {
       this.printMessage("Won't receive message (token expired)");
