@@ -16,7 +16,7 @@ export class SocketServiceMember implements ISocketServiceMember {
 
   sid: string;
 
-  private socket: Socket;
+  private _socket: Socket;
 
   private _cookie: string;
 
@@ -29,7 +29,7 @@ export class SocketServiceMember implements ISocketServiceMember {
 
   constructor(socket: Socket) {
     // @NOTE [1] assign information
-    this.socket = socket;
+    this._socket = socket;
     this.sid = socket.transport.sid;
 
     const cookie = getTokenCookieValue(socket.request.headers.cookie);
@@ -88,7 +88,7 @@ export class SocketServiceMember implements ISocketServiceMember {
 
     this.printMessage(`Should receive '${data.action}' message.`);
 
-    this.socket.send(JSON.stringify(data));
+    this._socket.send(JSON.stringify(data));
   }
 
   private printMessage(message: string) {
