@@ -34,7 +34,7 @@
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"],
       "@consumer-handlers/*": ["consumer-handlers/*"],
-      "@shared/*": ["../../shared/dist/*"]
+      "@shared/*": ["../../shared/src/*"]
     }
   },
   "references": [
