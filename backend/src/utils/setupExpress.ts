@@ -13,7 +13,7 @@ import { requireAuthentication } from "@middleware/requireAuthentication";
 export const setupExpress = async (app: Application) => {
   app.use(
     cors({
-      credentials: true,
+      credentials: false,
       origin: APP.URL,
     })
   );
