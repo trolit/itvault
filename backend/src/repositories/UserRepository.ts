@@ -2,8 +2,6 @@ import { In } from "typeorm";
 import { injectable } from "tsyringe";
 import { IUserRepository } from "types/repositories/IUserRepository";
 
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-
 import { BaseRepository } from "./BaseRepository";
 
 import { User } from "@entities/User";
@@ -59,11 +57,6 @@ export class UserRepository
           userToWorkspace: {
             userId: In(userIds),
             workspaceId,
-          },
-        },
-        {
-          role: {
-            id: HEAD_ADMIN_ROLE_ID,
           },
         },
         {

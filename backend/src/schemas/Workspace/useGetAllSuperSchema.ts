@@ -1,4 +1,4 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetAllControllerTypes } from "types/controllers/Workspace/GetAllController";
 
@@ -7,8 +7,15 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
   object({
-    page: pageSchema,
-    perPage: perPageSchema,
+    page: pageSchema.optional(),
+    perPage: perPageSchema.optional(),
+    filters: object()
+      .default({})
+      .transform(value => JSON.parse(value))
+      .required()
+      .shape({
+        userId: number().optional().min(1),
+      }),
   });
 
 export const useGetAllSuperSchema: SuperSchema.Runner<
