@@ -3,7 +3,7 @@ import { IPaginationOptions } from "types/IPaginationOptions";
 
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 
-export const transformPagination = <P, B, Q extends IPaginationQuery>(
+export const transformPagination = <P, B, Q extends Partial<IPaginationQuery>>(
   options: {
     defaultPerPage: number;
   } = { defaultPerPage: 5 }
