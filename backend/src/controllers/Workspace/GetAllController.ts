@@ -39,20 +39,36 @@ export class GetAllController extends BaseController {
     const {
       userId,
       permissions,
-      query: { skip, take },
+      query: { skip, take, filters },
     } = request;
 
+    const isUserIdFilterDefined = !!filters.userId;
+
+    if (
+      isUserIdFilterDefined &&
+      (!isPermissionEnabled(Permission.ViewAllUsers, permissions) ||
+        !isPermissionEnabled(Permission.ViewAllWorkspaces, permissions))
+    ) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    const userIdQuery = isUserIdFilterDefined
+      ? { userId: filters.userId }
+      : {
+          userId: isPermissionEnabled(Permission.ViewAllWorkspaces, permissions)
+            ? undefined
+            : userId,
+        };
+
     const [result, total] = await this._workspaceRepository.getAllAndCount({
-      skip,
-      take,
+      skip: isUserIdFilterDefined ? undefined : skip,
+      take: isUserIdFilterDefined ? undefined : take,
       order: {
         pinnedAt: "desc",
       },
       where: {
         userToWorkspace: {
-          userId: isPermissionEnabled(Permission.ViewAllWorkspaces, permissions)
-            ? undefined
-            : userId,
+          ...userIdQuery,
         },
       },
       relations: {
