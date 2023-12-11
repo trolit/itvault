@@ -11,6 +11,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
     perPage: perPageSchema.optional(),
     filters: object()
       .default({})
+      .transform(value => JSON.parse(value))
       .required()
       .shape({
         userId: number().optional().min(1),
