@@ -33,10 +33,14 @@ export class UpdateWorkspacesAccessController extends BaseController {
     response: UpdateWorkspacesAccessControllerTypes.v1.Response
   ) {
     const {
+      userId,
       body: { ids },
     } = request;
 
-    const result = await this._userRepository.updateWorkspacesAccess(ids);
+    const result = await this._userRepository.updateWorkspacesAccess(
+      userId,
+      ids
+    );
 
     if (!result.isSuccess) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
