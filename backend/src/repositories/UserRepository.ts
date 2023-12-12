@@ -1,11 +1,13 @@
 import { In } from "typeorm";
 import { injectable } from "tsyringe";
+import { TransactionResult } from "types/TransactionResult";
 import { IUserRepository } from "types/repositories/IUserRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
 import { User } from "@entities/User";
 import { Permission } from "@shared/types/enums/Permission";
+import { UserToWorkspace } from "@entities/UserToWorkspace";
 
 @injectable()
 export class UserRepository
@@ -71,5 +73,62 @@ export class UserRepository
         },
       ],
     });
+  }
+
+  async updateWorkspacesAccess(
+    userId: number,
+    workspaceIds: number[]
+  ): Promise<TransactionResult<void>> {
+    const transaction = await this.useTransaction();
+
+    try {
+      const userToWorkspaceCollection = await transaction.manager.find(
+        UserToWorkspace,
+        {
+          where: {
+            userId,
+          },
+          withDeleted: true,
+        }
+      );
+
+      for (const userToWorkspaceItem of userToWorkspaceCollection) {
+        if (
+          !!userToWorkspaceItem.deletedAt &&
+          workspaceIds.includes(userToWorkspaceItem.workspaceId)
+        ) {
+          await transaction.manager.recover(userToWorkspaceItem);
+
+          continue;
+        }
+
+        if (!workspaceIds.includes(userToWorkspaceItem.workspaceId)) {
+          await transaction.manager.softRemove(userToWorkspaceItem);
+        }
+      }
+
+      const idsToAdd = workspaceIds.filter(workspaceId =>
+        userToWorkspaceCollection.every(
+          item => item.workspaceId !== workspaceId
+        )
+      );
+
+      for (const idToAdd of idsToAdd) {
+        await transaction.manager.save(UserToWorkspace, {
+          userId,
+          workspaceId: idToAdd,
+        });
+      }
+
+      await transaction.commitTransaction();
+
+      return TransactionResult.success();
+    } catch (error) {
+      await transaction.rollbackTransaction();
+
+      return TransactionResult.failure();
+    } finally {
+      await transaction.release();
+    }
   }
 }
