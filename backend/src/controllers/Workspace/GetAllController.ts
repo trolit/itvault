@@ -49,7 +49,8 @@ export class GetAllController extends BaseController {
     if (
       isUserIdFilterDefined &&
       filters.userId !== userId &&
-      !isPermissionEnabled(Permission.ViewAllUsers, permissions)
+      (!isPermissionEnabled(Permission.ViewAllUsers, permissions) ||
+        !isPermissionEnabled(Permission.ViewAllWorkspaces, permissions))
     ) {
       return response.status(HTTP.FORBIDDEN).send();
     }
