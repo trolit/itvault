@@ -74,6 +74,12 @@
       @select-filter="onAsynchronousSelectFilter"
       @update:is-visible="isCreateAccountModalVisible = false"
     />
+
+    <manage-workspaces-drawer
+      :user="userWorkspacesToEdit"
+      :is-visible="isManageWorkspacesDrawerVisible"
+      @close="isManageWorkspacesDrawerVisible = false"
+    />
   </div>
 </template>
 
@@ -112,6 +118,7 @@ import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import CreateAccountModal from "@/components/users/CreateAccountModal.vue";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
+import ManageWorkspacesDrawer from "@/components/users/ManageWorkspacesDrawer.vue";
 
 const authStore = useAuthStore();
 const rolesStore = useRolesStore();
@@ -122,6 +129,8 @@ const isLoadingUsers = ref(true);
 const isLoadingRoles = ref(false);
 const rolessSearchTimeoutId = ref(0);
 const isCreateAccountModalVisible = ref(false);
+const isManageWorkspacesDrawerVisible = ref(false);
+const userWorkspacesToEdit: Ref<IUserDto | null> = ref(null);
 let filteredRoles: { value: IRoleDto[] } = reactive({ value: [] });
 let allFetchedRoles: { value: IRoleDto[] } = reactive({ value: [] });
 
@@ -319,6 +328,10 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
               text: true,
               onClick: event => {
                 event.stopPropagation();
+
+                userWorkspacesToEdit.value = user;
+
+                isManageWorkspacesDrawerVisible.value = true;
               },
             },
             {
