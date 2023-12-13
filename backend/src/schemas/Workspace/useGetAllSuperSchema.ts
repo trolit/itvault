@@ -16,7 +16,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
       .required()
       .shape({
         userId: number().optional().min(1),
-        name: string().optional(),
+        name: string().optional().min(1),
       }),
   });
 
