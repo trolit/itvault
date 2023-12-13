@@ -1,3 +1,4 @@
+import { Like } from "typeorm";
 import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
@@ -39,15 +40,23 @@ export class GetAllController extends BaseController {
     const {
       userId,
       permissions,
-      query: { skip, take, filters },
+      query: { skip, take, filters, ignorePagination },
     } = request;
 
+    const isNameFilterDefined = !!filters.name;
     const isUserIdFilterDefined = !!filters.userId;
 
     if (
       isUserIdFilterDefined &&
-      (!isPermissionEnabled(Permission.ViewAllUsers, permissions) ||
-        !isPermissionEnabled(Permission.ViewAllWorkspaces, permissions))
+      filters.userId !== userId &&
+      !isPermissionEnabled(Permission.ViewAllUsers, permissions)
+    ) {
+      return response.status(HTTP.FORBIDDEN).send();
+    }
+
+    if (
+      ignorePagination &&
+      !isPermissionEnabled(Permission.ManageUserWorkspaces, permissions)
     ) {
       return response.status(HTTP.FORBIDDEN).send();
     }
@@ -60,13 +69,18 @@ export class GetAllController extends BaseController {
             : userId,
         };
 
+    const nameQuery = {
+      name: isNameFilterDefined ? Like(`%${filters.name}%`) : undefined,
+    };
+
     const [result, total] = await this._workspaceRepository.getAllAndCount({
-      skip: isUserIdFilterDefined ? undefined : skip,
-      take: isUserIdFilterDefined ? undefined : take,
+      skip: ignorePagination ? undefined : skip,
+      take: ignorePagination ? undefined : take,
       order: {
         pinnedAt: "desc",
       },
       where: {
+        ...nameQuery,
         userToWorkspace: {
           ...userIdQuery,
         },
