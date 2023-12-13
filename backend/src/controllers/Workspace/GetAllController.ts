@@ -55,9 +55,12 @@ export class GetAllController extends BaseController {
       return response.status(HTTP.FORBIDDEN).send();
     }
 
+    // @NOTE super specific check for "manage user workspaces"
     if (
       ignorePagination &&
-      !isPermissionEnabled(Permission.ManageUserWorkspaces, permissions)
+      (!isUserIdFilterDefined ||
+        filters.userId === userId ||
+        !isPermissionEnabled(Permission.ManageUserWorkspaces, permissions))
     ) {
       return response.status(HTTP.FORBIDDEN).send();
     }
