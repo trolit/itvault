@@ -45,7 +45,7 @@ import type { IUserDto } from "@shared/types/dtos/IUserDto";
 interface IProps {
   isVisible: boolean;
 
-  userToEdit: IUserDto | null;
+  user: IUserDto | null;
 }
 
 const props = defineProps<IProps>();
