@@ -6,7 +6,7 @@ import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 export namespace GetAllControllerTypes {
   export namespace v1 {
     type Filters = {
-      filters: { userId?: number };
+      filters: { userId?: number; name?: string };
     };
 
     export type QueryInput = Partial<IPaginationQuery> & Filters;
