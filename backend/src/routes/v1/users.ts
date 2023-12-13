@@ -64,9 +64,9 @@ usersRouter.post(
   processRequestWith(SignUpController)
 );
 
-// @TODO hide behind permission
 usersRouter.patch(
   "/:id/workspaces",
+  requirePermissions([Permission.ManageUserWorkspaces]),
   validateRequestWith({ [v1]: usePatchUserToWorkspaceSuperSchema }),
   processRequestWith(PatchUserToWorkspaceController)
 );
