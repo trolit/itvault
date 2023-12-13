@@ -2,12 +2,11 @@
   <n-drawer
     :show="isVisible"
     resizable
-    :default-height="300"
-    :min-height="300"
-    placement="bottom"
+    :min-width="400"
+    :default-width="400"
+    placement="right"
     :show-mask="false"
     :trap-focus="false"
-    to="#notes-drawer-content"
   >
     <n-drawer-content
       :footer-style="{
