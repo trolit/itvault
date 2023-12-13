@@ -15,13 +15,13 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const useQuerySchema: (
+const useParamsSchema: (
   requestUserId: number
-) => SuperSchema.Fragment<PatchUserToWorkspaceControllerTypes.v1.Query> = (
+) => SuperSchema.Fragment<PatchUserToWorkspaceControllerTypes.v1.Params> = (
   requestUserId: number
 ) =>
   object({
-    userId: number()
+    id: number()
       .required()
       .test(async (userId: number, ctx) => {
         if (userId === requestUserId) {
@@ -82,12 +82,12 @@ const bodySchema: SuperSchema.Fragment<PatchUserToWorkspaceControllerTypes.v1.Bo
   });
 
 export const usePatchUserToWorkspaceSuperSchema: SuperSchema.Runner<
-  void,
+  PatchUserToWorkspaceControllerTypes.v1.Params,
   PatchUserToWorkspaceControllerTypes.v1.Body,
-  PatchUserToWorkspaceControllerTypes.v1.Query
+  void
 > = defineSuperSchemaRunner(({ request }) => {
   return {
     body: bodySchema,
-    query: useQuerySchema(request.userId),
+    params: useParamsSchema(request.userId),
   };
 });

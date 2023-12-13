@@ -18,7 +18,7 @@ import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useGetNotesSuperSchema } from "@schemas/User/useGetNotesSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
-import { usePatchUserToWorkspaceSuperSchema } from "@schemas/User/useUpdateWorkspaceAccessSuperSchema";
+import { usePatchUserToWorkspaceSuperSchema } from "@schemas/User/usePatchUserToWorkspaceSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/User/StoreController";

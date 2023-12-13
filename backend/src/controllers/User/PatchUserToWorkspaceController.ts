@@ -34,13 +34,10 @@ export class PatchUserToWorkspaceController extends BaseController {
   ) {
     const {
       body: { ids },
-      query: { userId },
+      params: { id },
     } = request;
 
-    const result = await this._userRepository.updateWorkspacesAccess(
-      userId,
-      ids
-    );
+    const result = await this._userRepository.updateWorkspacesAccess(id, ids);
 
     if (!result.isSuccess) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
