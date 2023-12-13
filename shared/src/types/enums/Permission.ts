@@ -35,6 +35,7 @@ export enum Permission {
   ChangeUserRole = "UR-CR",
   RestoreUserAccount = "UR-RA",
   DeactivateUserAccount = "UR-DA",
+  SetUserWorkspaces = "UR-SUS",
 
   /* VARIANTS */
   CreateVariant = "VT-C",
