@@ -1,4 +1,4 @@
-export namespace UpdateWorkspacesAccessControllerTypes {
+export namespace PatchUserToWorkspaceControllerTypes {
   export namespace v1 {
     export type Query = {
       userId: number;

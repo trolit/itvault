@@ -3,7 +3,7 @@ import { array, number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { IUserRepository } from "types/repositories/IUserRepository";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
-import { UpdateWorkspacesAccessControllerTypes } from "types/controllers/User/UpdateWorkspacesAccessController";
+import { PatchUserToWorkspaceControllerTypes } from "types/controllers/User/PatchUserToWorkspaceController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
@@ -17,7 +17,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const useQuerySchema: (
   requestUserId: number
-) => SuperSchema.Fragment<UpdateWorkspacesAccessControllerTypes.v1.Query> = (
+) => SuperSchema.Fragment<PatchUserToWorkspaceControllerTypes.v1.Query> = (
   requestUserId: number
 ) =>
   object({
@@ -55,7 +55,7 @@ const useQuerySchema: (
       }),
   });
 
-const bodySchema: SuperSchema.Fragment<UpdateWorkspacesAccessControllerTypes.v1.Body> =
+const bodySchema: SuperSchema.Fragment<PatchUserToWorkspaceControllerTypes.v1.Body> =
   object({
     ids: array()
       .of(number().required())
@@ -81,10 +81,10 @@ const bodySchema: SuperSchema.Fragment<UpdateWorkspacesAccessControllerTypes.v1.
       }),
   });
 
-export const useUpdateWorkspaceAccessSuperSchema: SuperSchema.Runner<
+export const usePatchUserToWorkspaceSuperSchema: SuperSchema.Runner<
   void,
-  UpdateWorkspacesAccessControllerTypes.v1.Body,
-  UpdateWorkspacesAccessControllerTypes.v1.Query
+  PatchUserToWorkspaceControllerTypes.v1.Body,
+  PatchUserToWorkspaceControllerTypes.v1.Query
 > = defineSuperSchemaRunner(({ request }) => {
   return {
     body: bodySchema,
