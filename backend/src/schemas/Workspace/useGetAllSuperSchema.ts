@@ -1,4 +1,4 @@
-import { number, object } from "yup";
+import { number, object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetAllControllerTypes } from "types/controllers/Workspace/GetAllController";
 
@@ -15,6 +15,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
       .required()
       .shape({
         userId: number().optional().min(1),
+        name: string().optional(),
       }),
   });
 
