@@ -80,21 +80,28 @@
 <script setup lang="ts">
 import {
   NTag,
+  NText,
   NIcon,
   NEmpty,
   NInput,
   NButton,
   NSwitch,
+  NTooltip,
   NDataTable,
   NPopconfirm,
   type PaginationProps,
   type DataTableColumns,
 } from "naive-ui";
+import {
+  Add as AddIcon,
+  Search as SearchIcon,
+  Workspace as WorkspacesIcon,
+} from "@vicons/carbon";
 import uniqBy from "lodash/uniqBy";
 import cloneDeep from "lodash/cloneDeep";
-import { Add as AddIcon, Search as SearchIcon } from "@vicons/carbon";
 import { h, onBeforeMount, reactive, ref, type Ref } from "vue";
 
+import { useAuthStore } from "@/store/auth";
 import { useRolesStore } from "@/store/roles";
 import { useUsersStore } from "@/store/users";
 import { useGeneralStore } from "@/store/general";
@@ -106,6 +113,7 @@ import RequirePermission from "@/components/common/RequirePermission.vue";
 import CreateAccountModal from "@/components/users/CreateAccountModal.vue";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 
+const authStore = useAuthStore();
 const rolesStore = useRolesStore();
 const usersStore = useUsersStore();
 const generalStore = useGeneralStore();
@@ -282,6 +290,51 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
             usersStore.setIsActive(id, value),
         },
         { checked: () => "Yes", unchecked: () => "No" }
+      );
+    },
+  },
+
+  {
+    title: "Action(s)",
+    key: "actions",
+    width: 140,
+    render(user) {
+      if (!authStore.hasPermission(Permission.ManageUserWorkspaces)) {
+        return h(NText, { depth: 3 }, { default: () => "Not available" });
+      }
+
+      return h(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          },
+        },
+        [
+          h(
+            NButton,
+            {
+              text: true,
+              onClick: event => {
+                event.stopPropagation();
+              },
+            },
+            {
+              default: () =>
+                h(
+                  NTooltip,
+                  {},
+                  {
+                    default: () => "Manage workspaces",
+                    trigger: () =>
+                      h(NIcon, { component: WorkspacesIcon, size: 20 }),
+                  }
+                ),
+            }
+          ),
+        ]
       );
     },
   },
