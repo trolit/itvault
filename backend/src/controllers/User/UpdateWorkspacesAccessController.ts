@@ -33,8 +33,8 @@ export class UpdateWorkspacesAccessController extends BaseController {
     response: UpdateWorkspacesAccessControllerTypes.v1.Response
   ) {
     const {
-      userId,
       body: { ids },
+      query: { userId },
     } = request;
 
     const result = await this._userRepository.updateWorkspacesAccess(
