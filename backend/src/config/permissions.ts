@@ -167,7 +167,7 @@ const DEACTIVATE_USER_ACCOUNT_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Users,
 };
 
-const MANAGE_USER_WORKSPACES: IPermissionDefinition = {
+const MANAGE_USER_WORKSPACES_PERMISSION: IPermissionDefinition = {
   signature: Permission.ManageUserWorkspaces,
   name: "Manage workspaces accessible by user",
   group: PermissionGroup.Users,
@@ -252,7 +252,7 @@ export const ALL_PERMISSIONS = [
   CHANGE_USER_ROLE_PERMISSION,
   RESTORE_USER_ACCOUNT_PERMISSION,
   DEACTIVATE_USER_ACCOUNT_PERMISSION,
-  MANAGE_USER_WORKSPACES,
+  MANAGE_USER_WORKSPACES_PERMISSION,
 
   CREATE_VARIANT_PERMISSION,
   DELETE_VARIANT_PERMISSION,
