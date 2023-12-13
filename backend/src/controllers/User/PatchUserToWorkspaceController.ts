@@ -11,7 +11,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class UpdateWorkspacesAccessController extends BaseController {
+export class PatchUserToWorkspaceController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository
