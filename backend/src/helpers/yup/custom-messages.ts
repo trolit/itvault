@@ -54,6 +54,7 @@ export const CUSTOM_MESSAGES = {
 
   USER: {
     NO_PERSONAL_ACCOUNT_CHANGES: "Can't change personal account.",
+    INVALID_WORKSPACES: "One or more workspaces do not exist!",
   },
 
   VARIANT: {
