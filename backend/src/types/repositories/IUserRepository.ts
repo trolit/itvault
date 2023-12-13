@@ -1,5 +1,6 @@
 import { User } from "@entities/User";
 import { IBaseRepository } from "./IBaseRepository";
+import { TransactionResult } from "types/TransactionResult";
 
 export interface IUserRepository extends IBaseRepository<User> {
   findByEmail(
@@ -11,4 +12,9 @@ export interface IUserRepository extends IBaseRepository<User> {
     workspaceId: number,
     userIds: number[]
   ): Promise<User[]>;
+
+  updateWorkspacesAccess(
+    userId: number,
+    workspaceIds: number[]
+  ): Promise<TransactionResult<void>>;
 }

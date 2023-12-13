@@ -5,8 +5,8 @@ import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { processRequestWith } from "@helpers/processRequestWith";
-import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import {
   requirePermissions,
@@ -18,6 +18,7 @@ import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useGetNotesSuperSchema } from "@schemas/User/useGetNotesSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
+import { usePatchUserToWorkspaceSuperSchema } from "@schemas/User/usePatchUserToWorkspaceSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { StoreController } from "@controllers/User/StoreController";
@@ -25,6 +26,7 @@ import { GetAllController } from "@controllers/User/GetAllController";
 import { SignUpController } from "@controllers/User/SignUpController";
 import { GetNotesController } from "@controllers/User/GetNotesController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
+import { PatchUserToWorkspaceController } from "@controllers/User/PatchUserToWorkspaceController";
 
 const usersRouter = Router();
 
@@ -60,6 +62,13 @@ usersRouter.post(
   "/sign-up",
   validateRequestWith({ [v1]: useSignUpSuperSchema }),
   processRequestWith(SignUpController)
+);
+
+// @TODO hide behind permission
+usersRouter.patch(
+  "/:id/workspaces",
+  validateRequestWith({ [v1]: usePatchUserToWorkspaceSuperSchema }),
+  processRequestWith(PatchUserToWorkspaceController)
 );
 
 usersRouter.patch(
