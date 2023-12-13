@@ -5,13 +5,15 @@ import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    type Filters = {
+    type CommonQuery = {
+      ignorePagination: boolean;
+
       filters: { userId?: number; name?: string };
     };
 
-    export type QueryInput = Partial<IPaginationQuery> & Filters;
+    export type QueryInput = Partial<IPaginationQuery> & CommonQuery;
 
-    export type QueryOutput = IPaginationOptions & Filters;
+    export type QueryOutput = IPaginationOptions & CommonQuery;
 
     export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 

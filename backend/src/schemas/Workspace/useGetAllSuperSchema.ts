@@ -1,5 +1,5 @@
-import { number, object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
+import { boolean, number, object, string } from "yup";
 import { GetAllControllerTypes } from "types/controllers/Workspace/GetAllController";
 
 import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
@@ -9,6 +9,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
   object({
     page: pageSchema.optional(),
     perPage: perPageSchema.optional(),
+    ignorePagination: boolean().default(false),
     filters: object()
       .default({})
       .transform(value => JSON.parse(value))
