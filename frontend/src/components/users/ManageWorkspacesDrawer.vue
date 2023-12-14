@@ -64,6 +64,7 @@
 
         <n-button
           type="info"
+          :loading="isUpdatingUser"
           :disabled="isLoading || isInitialValue"
           @click="setWorkspaces"
         >
@@ -115,6 +116,7 @@ const { isVisible } = toRefs(props);
 const emits = defineEmits(["close"]);
 
 const isLoading = ref(false);
+const isUpdatingUser = ref(false);
 const data: { initialValue: IWorkspaceDto[]; value: IWorkspaceDto[] } =
   reactive({ initialValue: [], value: [] });
 
@@ -181,7 +183,7 @@ async function setWorkspaces() {
     return;
   }
 
-  isLoading.value = true;
+  isUpdatingUser.value = true;
 
   try {
     await usersStore.patchWorkspacesAccessibleByUser(props.user.id, data.value);
@@ -198,7 +200,7 @@ async function setWorkspaces() {
       "There was an error when setting user workspaces."
     );
   } finally {
-    isLoading.value = false;
+    isUpdatingUser.value = false;
   }
 }
 </script>
