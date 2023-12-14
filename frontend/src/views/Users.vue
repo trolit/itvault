@@ -187,6 +187,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
       tooltip: true,
     },
     resizable: true,
+    width: "20%",
   },
 
   {
@@ -248,14 +249,14 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     ellipsis: {
       tooltip: true,
     },
-    width: 140,
+    width: "10%",
     render: row => row.invitedBy || "-",
   },
 
   {
     title: "Signed up?",
     key: "isSignedUp",
-    width: 100,
+    width: "10%",
     render: rowData => {
       const isSignedUp = !!rowData.isSignedUp;
 
@@ -274,7 +275,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Active?",
     key: "isActive",
-    width: 80,
+    width: "10%",
     cellProps: rowData => {
       const { id } = rowData;
 
