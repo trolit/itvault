@@ -62,7 +62,11 @@
           </n-button>
         </n-space>
 
-        <n-button type="info" :disabled="isLoading || isInitialValue">
+        <n-button
+          type="info"
+          :disabled="isLoading || isInitialValue"
+          @click="setWorkspaces"
+        >
           Save
         </n-button>
       </template>
@@ -85,6 +89,7 @@ import {
 import cloneDeep from "lodash/cloneDeep";
 import { reactive, ref, toRefs } from "vue";
 
+import { useUsersStore } from "@/store/users";
 import { useGeneralStore } from "@/store/general";
 import Empty from "@/components/common/Empty.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
@@ -100,17 +105,37 @@ interface IProps {
   user: IUserDto | null;
 }
 
+const usersStore = useUsersStore();
 const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
 const props = defineProps<IProps>();
 const { isVisible } = toRefs(props);
 
-defineEmits(["close"]);
+const emits = defineEmits(["close"]);
 
 const isLoading = ref(false);
 const data: { initialValue: IWorkspaceDto[]; value: IWorkspaceDto[] } =
   reactive({ initialValue: [], value: [] });
+
+const { isInitialValue } = defineComputed({
+  isInitialValue() {
+    return JSON.stringify(data.value) === JSON.stringify(data.initialValue);
+  },
+});
+
+defineWatchers({
+  isVisible: {
+    source: isVisible,
+    handler: () => {
+      if (!isVisible.value) {
+        return;
+      }
+
+      fetchWorkspaces();
+    },
+  },
+});
 
 function onReset() {
   data.value = cloneDeep(data.initialValue);
@@ -151,22 +176,29 @@ async function fetchWorkspaces(name?: string) {
   }
 }
 
-const { isInitialValue } = defineComputed({
-  isInitialValue() {
-    return JSON.stringify(data.value) === JSON.stringify(data.initialValue);
-  },
-});
+async function setWorkspaces() {
+  if (!props.user) {
+    return;
+  }
 
-defineWatchers({
-  isVisible: {
-    source: isVisible,
-    handler: () => {
-      if (!isVisible.value) {
-        return;
-      }
+  isLoading.value = true;
 
-      fetchWorkspaces();
-    },
-  },
-});
+  try {
+    await usersStore.patchWorkspacesAccessibleByUser(props.user.id, data.value);
+
+    generalStore.messageProvider.success(
+      `${props.user.fullName} workspaces access updated!`
+    );
+
+    emits("close");
+  } catch (error) {
+    console.log(error);
+
+    generalStore.messageProvider.error(
+      "There was an error when setting user workspaces."
+    );
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>
