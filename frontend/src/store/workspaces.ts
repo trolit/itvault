@@ -141,7 +141,13 @@ export const useWorkspacesStore = defineStore("workspaces", {
       return data;
     },
 
-    async getAll(query: IPaginationQuery) {
+    async getAll(
+      query: IPaginationQuery & {
+        ignorePagination?: boolean;
+
+        filters: { userId?: number; name?: string };
+      }
+    ) {
       const params = {
         version: 1,
         ...query,
