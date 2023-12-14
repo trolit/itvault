@@ -19,8 +19,6 @@
 
       <loading-section v-if="isLoading" />
 
-      <empty v-else-if="!data.value.length" title="Workspaces not found." />
-
       <div v-else>
         <small>
           <n-text :depth="3">
@@ -31,9 +29,13 @@
 
         <n-divider />
 
-        <n-h4>List of workspaces</n-h4>
+        <n-h4>List of workspaces:</n-h4>
 
-        <n-space :size="[10, 15]">
+        <n-text v-if="!data.value.length" :depth="3" :italic="true">
+          Empty (add workspace using section below)
+        </n-text>
+
+        <n-space v-else :size="[10, 15]">
           <n-tag
             v-for="(workspace, index) in data.value"
             :key="index"
@@ -92,7 +94,6 @@ import { reactive, ref, toRefs } from "vue";
 
 import { useUsersStore } from "@/store/users";
 import { useGeneralStore } from "@/store/general";
-import Empty from "@/components/common/Empty.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
