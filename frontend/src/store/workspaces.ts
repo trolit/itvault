@@ -28,6 +28,7 @@ interface IState {
   total: number;
   treeData: TreeOption[];
   items: IWorkspaceDto[];
+  recentlyFilteredItems: IWorkspaceDto[];
   isSiderCollapsed: boolean;
   activeItem: IWorkspaceDto;
   itemToEdit: IWorkspaceDto | null;
@@ -43,6 +44,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     tree: [],
     total: 0,
     items: [],
+    recentlyFilteredItems: [],
     treeData: [],
     itemToEdit: null,
     isSiderCollapsed: false,
@@ -141,10 +143,21 @@ export const useWorkspacesStore = defineStore("workspaces", {
       return data;
     },
 
-    async getAll(query: IPaginationQuery) {
+    async getAll(
+      query: Partial<IPaginationQuery> & {
+        ignorePagination?: boolean;
+
+        filters: { userId?: number; name?: string };
+      }
+    ) {
+      const { page, perPage, ignorePagination, filters } = query;
+
       const params = {
         version: 1,
-        ...query,
+        page,
+        perPage,
+        ignorePagination,
+        filters: JSON.stringify(filters),
       };
 
       const { data } = await axios.get<PaginatedResponse<IWorkspaceDto>>(

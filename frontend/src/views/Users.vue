@@ -74,27 +74,40 @@
       @select-filter="onAsynchronousSelectFilter"
       @update:is-visible="isCreateAccountModalVisible = false"
     />
+
+    <manage-workspaces-drawer
+      :user="userWorkspacesToEdit"
+      :is-visible="isManageWorkspacesDrawerVisible"
+      @close="isManageWorkspacesDrawerVisible = false"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import {
   NTag,
+  NText,
   NIcon,
   NEmpty,
   NInput,
   NButton,
   NSwitch,
+  NTooltip,
   NDataTable,
   NPopconfirm,
   type PaginationProps,
   type DataTableColumns,
 } from "naive-ui";
+import {
+  Add as AddIcon,
+  Search as SearchIcon,
+  Workspace as WorkspacesIcon,
+} from "@vicons/carbon";
 import uniqBy from "lodash/uniqBy";
 import cloneDeep from "lodash/cloneDeep";
-import { Add as AddIcon, Search as SearchIcon } from "@vicons/carbon";
 import { h, onBeforeMount, reactive, ref, type Ref } from "vue";
 
+import { useAuthStore } from "@/store/auth";
 import { useRolesStore } from "@/store/roles";
 import { useUsersStore } from "@/store/users";
 import { useGeneralStore } from "@/store/general";
@@ -105,7 +118,9 @@ import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 import CreateAccountModal from "@/components/users/CreateAccountModal.vue";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
+import ManageWorkspacesDrawer from "@/components/users/ManageWorkspacesDrawer.vue";
 
+const authStore = useAuthStore();
 const rolesStore = useRolesStore();
 const usersStore = useUsersStore();
 const generalStore = useGeneralStore();
@@ -114,6 +129,8 @@ const isLoadingUsers = ref(true);
 const isLoadingRoles = ref(false);
 const rolessSearchTimeoutId = ref(0);
 const isCreateAccountModalVisible = ref(false);
+const isManageWorkspacesDrawerVisible = ref(false);
+const userWorkspacesToEdit: Ref<IUserDto | null> = ref(null);
 let filteredRoles: { value: IRoleDto[] } = reactive({ value: [] });
 let allFetchedRoles: { value: IRoleDto[] } = reactive({ value: [] });
 
@@ -170,6 +187,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
       tooltip: true,
     },
     resizable: true,
+    width: "20%",
   },
 
   {
@@ -231,14 +249,14 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     ellipsis: {
       tooltip: true,
     },
-    width: 140,
+    width: "10%",
     render: row => row.invitedBy || "-",
   },
 
   {
     title: "Signed up?",
     key: "isSignedUp",
-    width: 100,
+    width: "10%",
     render: rowData => {
       const isSignedUp = !!rowData.isSignedUp;
 
@@ -257,7 +275,7 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
   {
     title: "Active?",
     key: "isActive",
-    width: 80,
+    width: "10%",
     cellProps: rowData => {
       const { id } = rowData;
 
@@ -282,6 +300,71 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
             usersStore.setIsActive(id, value),
         },
         { checked: () => "Yes", unchecked: () => "No" }
+      );
+    },
+  },
+
+  {
+    title: "Action(s)",
+    key: "actions",
+    width: 140,
+    render(user) {
+      if (
+        !authStore.hasPermission(Permission.ManageUserWorkspaces) ||
+        !user.isActive
+      ) {
+        return h(
+          "div",
+          {
+            class: "text-center",
+            style: { fontSize: "13px" },
+          },
+          h(
+            NText,
+            {
+              depth: 3,
+            },
+            { default: () => "(Not available)" }
+          )
+        );
+      }
+
+      return h(
+        "div",
+        {
+          style: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          },
+        },
+        [
+          h(
+            NButton,
+            {
+              text: true,
+              onClick: event => {
+                event.stopPropagation();
+
+                userWorkspacesToEdit.value = user;
+
+                isManageWorkspacesDrawerVisible.value = true;
+              },
+            },
+            {
+              default: () =>
+                h(
+                  NTooltip,
+                  {},
+                  {
+                    default: () => "Manage workspaces",
+                    trigger: () =>
+                      h(NIcon, { component: WorkspacesIcon, size: 20 }),
+                  }
+                ),
+            }
+          ),
+        ]
       );
     },
   },
