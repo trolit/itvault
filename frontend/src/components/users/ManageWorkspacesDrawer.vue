@@ -2,8 +2,8 @@
   <n-drawer
     :show="isVisible"
     resizable
-    :min-width="500"
-    :default-width="500"
+    :min-width="400"
+    :default-width="400"
     placement="right"
     :show-mask="false"
     :trap-focus="false"
