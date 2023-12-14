@@ -15,13 +15,24 @@
         justifyContent: 'space-between',
       }"
     >
-      <n-h2 v-if="!!user">{{ user.fullName }} workspaces</n-h2>
+      <n-h2 v-if="!!user">{{ user.fullName }}</n-h2>
 
       <loading-section v-if="isLoading" />
 
       <empty v-else-if="!data.value.length" title="Workspaces not found." />
 
       <div v-else>
+        <small>
+          <n-text :depth="3">
+            Please note that if user has role that enables to view all
+            workspaces, this configuration is not taken into account.
+          </n-text>
+        </small>
+
+        <n-divider />
+
+        <n-h4>List of workspaces</n-h4>
+
         <n-space :size="[10, 15]">
           <n-tag
             v-for="(workspace, index) in data.value"
@@ -60,9 +71,19 @@
 </template>
 
 <script setup lang="ts">
+import {
+  NH2,
+  NH4,
+  NTag,
+  NText,
+  NSpace,
+  NButton,
+  NDrawer,
+  NDivider,
+  NDrawerContent,
+} from "naive-ui";
 import cloneDeep from "lodash/cloneDeep";
 import { reactive, ref, toRefs } from "vue";
-import { NButton, NDrawer, NDrawerContent, NH2, NTag, NSpace } from "naive-ui";
 
 import { useGeneralStore } from "@/store/general";
 import Empty from "@/components/common/Empty.vue";
