@@ -142,15 +142,20 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     async getAll(
-      query: IPaginationQuery & {
+      query: Partial<IPaginationQuery> & {
         ignorePagination?: boolean;
 
         filters: { userId?: number; name?: string };
       }
     ) {
+      const { page, perPage, ignorePagination, filters } = query;
+
       const params = {
         version: 1,
-        ...query,
+        page,
+        perPage,
+        ignorePagination,
+        filters: JSON.stringify(filters),
       };
 
       const { data } = await axios.get<PaginatedResponse<IWorkspaceDto>>(
