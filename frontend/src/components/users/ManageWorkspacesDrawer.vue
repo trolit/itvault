@@ -15,24 +15,35 @@
         justifyContent: 'space-between',
       }"
     >
-      <n-h2 v-if="!!user">{{ user.fullName }}</n-h2>
+      <div v-if="!!user">
+        <n-space vertical :size="0">
+          <span :style="{ fontSize: '35px' }">{{ user.fullName }}</span>
+
+          <span>
+            <n-text :depth="3">
+              {{ user.email }}
+            </n-text>
+            /
+            {{ user.roleName }}
+          </span>
+        </n-space>
+
+        <n-divider />
+      </div>
 
       <loading-section v-if="isLoading" />
 
       <div v-else>
-        <small>
+        <small :style="{ marginBottom: '20px', display: 'block' }">
           <n-text :depth="3">
-            Please note that if user has role that enables to view all
-            workspaces, this configuration is not taken into account.
+            List of workspaces that can be accessed by user. Keep in mind that
+            if user has role with 'view all workspaces' permission, this list is
+            not taken into account!
           </n-text>
         </small>
 
-        <n-divider />
-
-        <n-h4>List of workspaces</n-h4>
-
         <n-text v-if="!data.value.length" :depth="3" :italic="true">
-          Empty (add workspace using section below)
+          &lt; List is empty &gt;
         </n-text>
 
         <n-space v-else :size="[10, 15]">
@@ -49,13 +60,11 @@
         </n-space>
 
         <div :style="{ marginTop: '20px' }">
-          <n-text :depth="3">Add workspace</n-text>
-
           <asynchronous-select
             :value="null"
             :options="options"
             :loading="isLoadingOptions"
-            placeholder="Type to find"
+            placeholder="Type to find workspace"
             :consistent-menu-width="false"
             :style="{ marginTop: '5px' }"
             @select="onSelect"
@@ -94,8 +103,6 @@
 
 <script setup lang="ts">
 import {
-  NH2,
-  NH4,
   NTag,
   NText,
   NSpace,
