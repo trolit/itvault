@@ -38,25 +38,20 @@
 
       <template #footer>
         <n-space>
-          <n-button secondary :loading="isLoading" @click="$emit('close')">
+          <n-button secondary :disabled="isLoading" @click="$emit('close')">
             Cancel
           </n-button>
 
           <n-button
             type="warning"
-            :loading="isLoading"
             @click="onReset"
-            :disabled="isInitialValue"
+            :disabled="isLoading || isInitialValue"
           >
             Reset
           </n-button>
         </n-space>
 
-        <n-button
-          type="info"
-          :loading="isLoading"
-          :disabled="isLoading || isInitialValue"
-        >
+        <n-button type="info" :disabled="isLoading || isInitialValue">
           Save
         </n-button>
       </template>
