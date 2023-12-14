@@ -29,7 +29,7 @@
 
         <n-divider />
 
-        <n-h4>List of workspaces:</n-h4>
+        <n-h4>List of workspaces</n-h4>
 
         <n-text v-if="!data.value.length" :depth="3" :italic="true">
           Empty (add workspace using section below)
@@ -47,6 +47,21 @@
             {{ workspace.name }}
           </n-tag>
         </n-space>
+
+        <div :style="{ marginTop: '20px' }">
+          <n-text :depth="3">Add workspace</n-text>
+
+          <asynchronous-select
+            :value="null"
+            :options="options"
+            :loading="isLoadingOptions"
+            placeholder="Type to find"
+            :consistent-menu-width="false"
+            :style="{ marginTop: '5px' }"
+            @select="onSelect"
+            @filter="onWorkspacesFilter"
+          />
+        </div>
       </div>
 
       <template #footer>
@@ -100,6 +115,7 @@ import { defineWatchers } from "@/helpers/defineWatchers";
 import type { IUserDto } from "@shared/types/dtos/IUserDto";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
+import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 
 interface IProps {
   isVisible: boolean;
@@ -118,12 +134,23 @@ const emits = defineEmits(["close"]);
 
 const isLoading = ref(false);
 const isUpdatingUser = ref(false);
+const isLoadingOptions = ref(false);
+const workspacesSearchTimeoutId = ref(0);
 const data: { initialValue: IWorkspaceDto[]; value: IWorkspaceDto[] } =
   reactive({ initialValue: [], value: [] });
 
-const { isInitialValue } = defineComputed({
+const { isInitialValue, options } = defineComputed({
   isInitialValue() {
     return JSON.stringify(data.value) === JSON.stringify(data.initialValue);
+  },
+
+  options() {
+    return workspacesStore.items
+      .map(workspace => ({
+        label: workspace.name,
+        value: workspace.id,
+      }))
+      .filter(item => data.value.every(element => element.id !== item.value));
   },
 });
 
@@ -139,6 +166,16 @@ defineWatchers({
     },
   },
 });
+
+function onSelect(workspaceId: number) {
+  const workspace = workspacesStore.items.find(
+    workspace => workspace.id === workspaceId
+  );
+
+  if (workspace) {
+    data.value.push(workspace);
+  }
+}
 
 function onReset() {
   data.value = cloneDeep(data.initialValue);
@@ -203,5 +240,43 @@ async function setWorkspaces() {
   } finally {
     isUpdatingUser.value = false;
   }
+}
+
+function onWorkspacesFilter(value: string) {
+  if (workspacesSearchTimeoutId.value) {
+    clearTimeout(workspacesSearchTimeoutId.value);
+  }
+
+  if (!value) {
+    return;
+  }
+
+  workspacesSearchTimeoutId.value = setTimeout(async () => {
+    isLoadingOptions.value = true;
+
+    try {
+      const { result } = await workspacesStore.getAll({
+        page: 1,
+        perPage: 5,
+        filters: {
+          name: value,
+        },
+      });
+
+      if (!result.length) {
+        generalStore.messageProvider.info(
+          `No workspaces found with name: ${value}`
+        );
+      }
+    } catch (error) {
+      console.log(error);
+
+      generalStore.messageProvider.error(
+        "There was an error when trying to find workspaces!"
+      );
+    } finally {
+      isLoadingOptions.value = false;
+    }
+  }, 250);
 }
 </script>
