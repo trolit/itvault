@@ -308,8 +308,24 @@ const columns: Ref<DataTableColumns<IUserDto>> = ref<
     key: "actions",
     width: 140,
     render(user) {
-      if (!authStore.hasPermission(Permission.ManageUserWorkspaces)) {
-        return h(NText, { depth: 3 }, { default: () => "Not available" });
+      if (
+        !authStore.hasPermission(Permission.ManageUserWorkspaces) ||
+        !user.isActive
+      ) {
+        return h(
+          "div",
+          {
+            class: "text-center",
+            style: { fontSize: "13px" },
+          },
+          h(
+            NText,
+            {
+              depth: 3,
+            },
+            { default: () => "(Not available)" }
+          )
+        );
       }
 
       return h(
