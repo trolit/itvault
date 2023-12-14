@@ -163,6 +163,10 @@ defineWatchers({
       }
 
       fetchWorkspaces();
+
+      if (!options.value.length) {
+        onWorkspacesFilter("");
+      }
     },
   },
 });
@@ -247,10 +251,6 @@ function onWorkspacesFilter(value: string) {
     clearTimeout(workspacesSearchTimeoutId.value);
   }
 
-  if (!value) {
-    return;
-  }
-
   workspacesSearchTimeoutId.value = setTimeout(async () => {
     isLoadingOptions.value = true;
 
@@ -259,7 +259,7 @@ function onWorkspacesFilter(value: string) {
         page: 1,
         perPage: 5,
         filters: {
-          name: value,
+          name: value || undefined,
         },
       });
 
