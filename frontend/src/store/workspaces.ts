@@ -28,6 +28,7 @@ interface IState {
   total: number;
   treeData: TreeOption[];
   items: IWorkspaceDto[];
+  recentlyFilteredItems: IWorkspaceDto[];
   isSiderCollapsed: boolean;
   activeItem: IWorkspaceDto;
   itemToEdit: IWorkspaceDto | null;
@@ -43,6 +44,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     tree: [],
     total: 0,
     items: [],
+    recentlyFilteredItems: [],
     treeData: [],
     itemToEdit: null,
     isSiderCollapsed: false,

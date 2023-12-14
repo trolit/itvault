@@ -145,7 +145,7 @@ const { isInitialValue, options } = defineComputed({
   },
 
   options() {
-    return workspacesStore.items
+    return workspacesStore.recentlyFilteredItems
       .map(workspace => ({
         label: workspace.name,
         value: workspace.id,
@@ -172,7 +172,7 @@ defineWatchers({
 });
 
 function onSelect(workspaceId: number) {
-  const workspace = workspacesStore.items.find(
+  const workspace = workspacesStore.recentlyFilteredItems.find(
     workspace => workspace.id === workspaceId
   );
 
@@ -262,6 +262,8 @@ function onWorkspacesFilter(value: string) {
           name: value || undefined,
         },
       });
+
+      workspacesStore.recentlyFilteredItems = result;
 
       if (!result.length) {
         generalStore.messageProvider.info(
