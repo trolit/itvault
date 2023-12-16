@@ -27,7 +27,7 @@ export const mockRepository = <T>(
     useTransaction: sandbox.stub().returnsThis(),
     where: sandbox.stub().returnsThis(),
     find: sandbox.stub().returnsThis(),
-    create: sandbox.stub().returnsThis(),
+    create: sandbox.stub().callsFake((Entity, data) => ({ ...data })),
     save: sandbox.stub().callsFake(() => <T>[]),
     ...fakeManagerOverrides,
   };
