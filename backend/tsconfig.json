@@ -1,11 +1,13 @@
 {
+  "ts-node": {
+    "files": true
+  },
   "compilerOptions": {
     "lib": ["ES2022", "dom"], // @NOTE - dom fixes engineio build problem
     "target": "ES2022",
     "useDefineForClassFields": true,
     "module": "commonjs",
     "skipLibCheck": false,
-    "rootDir": "src",
     "outDir": "dist",
     "esModuleInterop": true,
     "moduleResolution": "node",

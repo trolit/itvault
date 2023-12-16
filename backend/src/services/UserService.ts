@@ -24,6 +24,7 @@ export class UserService implements IUserService {
     private _dataStoreService: IDataStoreService
   ) {}
 
+  // @TODO move to DataStoreService
   async reflectChangesInDataStore(
     entitiesToUpdate: UpdateUserDto[]
   ): Promise<void> {
@@ -59,12 +60,18 @@ export class UserService implements IUserService {
       "data.roleId"
     );
 
+    const roles: Role[] = [];
+
     try {
-      const roles = await manager.find(Role, {
-        where: {
-          id: In(uniqueRoleIds),
-        },
-      });
+      if (uniqueRoleIds.length) {
+        roles.push(
+          ...(await manager.find(Role, {
+            where: {
+              id: In(uniqueRoleIds),
+            },
+          }))
+        );
+      }
 
       if (roles.length !== uniqueRoleIds.length) {
         throw new TransactionError(
@@ -76,8 +83,11 @@ export class UserService implements IUserService {
         ({ id, data: { isActive, roleId } }) => {
           const userData: User = manager.create(User, {
             id,
-            deletedAt: isActive ? null : new Date(),
           });
+
+          if (typeof isActive === "boolean") {
+            userData.deletedAt = isActive ? null : new Date();
+          }
 
           if (roleId) {
             const role = roles.find(role => role.id === roleId);
