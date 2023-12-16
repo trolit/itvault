@@ -60,12 +60,18 @@ export class UserService implements IUserService {
       "data.roleId"
     );
 
+    const roles: Role[] = [];
+
     try {
-      const roles = await manager.find(Role, {
-        where: {
-          id: In(uniqueRoleIds),
-        },
-      });
+      if (uniqueRoleIds.length) {
+        roles.push(
+          ...(await manager.find(Role, {
+            where: {
+              id: In(uniqueRoleIds),
+            },
+          }))
+        );
+      }
 
       if (roles.length !== uniqueRoleIds.length) {
         throw new TransactionError(
