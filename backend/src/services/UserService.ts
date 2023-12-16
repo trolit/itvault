@@ -77,8 +77,11 @@ export class UserService implements IUserService {
         ({ id, data: { isActive, roleId } }) => {
           const userData: User = manager.create(User, {
             id,
-            deletedAt: isActive ? null : new Date(),
           });
+
+          if (typeof isActive === "boolean") {
+            userData.deletedAt = isActive ? null : new Date();
+          }
 
           if (roleId) {
             const role = roles.find(role => role.id === roleId);
