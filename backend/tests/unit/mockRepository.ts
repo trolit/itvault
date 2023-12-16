@@ -21,7 +21,7 @@ export const mockRepository = <T>(
     where: sandbox.stub().returnsThis(),
     find: sandbox.stub().returnsThis(),
     create: sandbox.stub().returnsThis(),
-    save: sandbox.stub().returnsThis(),
+    save: sandbox.stub().callsFake(() => <T>[]),
     ...fakeManagerOverrides,
   };
 

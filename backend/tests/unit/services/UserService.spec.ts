@@ -66,8 +66,6 @@ describe("UserService tests", () => {
     // Act
     const result = await userService.updateMany(usersToUpdate);
 
-    console.log(result.value);
-
     // Assert
     assert.equal(result.isSuccess, true);
 
