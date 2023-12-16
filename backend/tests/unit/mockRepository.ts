@@ -5,13 +5,11 @@ export const mockRepository = <T>(
   Class: { new (): T },
   sandbox: SinonSandbox,
   overrides: {
-    fakeManager?: Record<
-      keyof typeorm.EntityManager,
-      SinonStub<unknown[], unknown>
+    fakeManager?: Partial<
+      Record<keyof typeorm.EntityManager, SinonStub<unknown[], unknown>>
     >;
-    fakeQueryRunner?: Record<
-      keyof typeorm.QueryRunner,
-      SinonStub<unknown[], unknown>
+    fakeQueryRunner?: Partial<
+      Record<keyof typeorm.QueryRunner, SinonStub<unknown[], unknown>>
     >;
   } = {}
 ): {
