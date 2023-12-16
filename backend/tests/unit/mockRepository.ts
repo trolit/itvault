@@ -20,12 +20,15 @@ export const mockRepository = <T>(
     useTransaction: sandbox.stub().returnsThis(),
     where: sandbox.stub().returnsThis(),
     find: sandbox.stub().returnsThis(),
+    create: sandbox.stub().returnsThis(),
+    save: sandbox.stub().returnsThis(),
     ...fakeManagerOverrides,
   };
 
   const fakeQueryRunner = {
     manager: fakeManager,
     release: sandbox.stub().returnsThis(),
+    commitTransaction: sandbox.stub().returnsThis(),
     rollbackTransaction: sandbox.stub().returnsThis(),
     ...fakeQueryRunnerOverrides,
   };
