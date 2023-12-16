@@ -5,24 +5,12 @@ import { SinonFakeTimers, SinonSandbox, createSandbox } from "sinon";
 
 import { User } from "@entities/User";
 import { Role } from "@entities/Role";
-import { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 
 import { UserService } from "@services/UserService";
 import { DataStoreService } from "@services/DataStoreService";
 import { UserRepository } from "@repositories/UserRepository";
 
-const roleId = 1;
-
-const usersToUpdate: UpdateUserDto[] = [
-  {
-    id: 1,
-    data: { isActive: true, roleId },
-  },
-  {
-    id: 2,
-    data: { isActive: false },
-  },
-];
+const roleId = 2;
 
 describe("UserService tests", () => {
   let sandbox: SinonSandbox;
@@ -50,33 +38,140 @@ describe("UserService tests", () => {
     // Arrange
     const { repository: userRepository, manager } = mockRepository(
       UserRepository,
-      sandbox
+      sandbox,
+      {
+        fakeManager: {
+          find: sandbox.stub().callsFake(() => []),
+        },
+      }
     );
 
     const userService = new UserService(userRepository, dataStoreService);
 
     // Act
-    const result = await userService.updateMany(usersToUpdate);
+    const result = await userService.updateMany([
+      {
+        id: 1,
+        data: { roleId },
+      },
+    ]);
 
     // Assert
     assert.equal(
       manager.find.calledOnceWith(Role, {
         where: {
-          id: In([1]),
+          id: In([roleId]),
         },
       }),
       true
     );
 
     assert.equal(result.isSuccess, false);
-
     assert.equal(
       result.error,
       "Not all roles are available to perform operation."
     );
   });
 
-  it("should save users", async () => {
+  it("should restore users (isActive=true)", async () => {
+    // Arrange
+    const { repository: userRepository, manager } = mockRepository(
+      UserRepository,
+      sandbox,
+      {
+        fakeManager: {
+          find: sandbox.stub().callsFake(() => []),
+        },
+      }
+    );
+
+    const userService = new UserService(userRepository, dataStoreService);
+
+    // Act
+    const result = await userService.updateMany([
+      {
+        id: 1,
+        data: { isActive: true },
+      },
+      {
+        id: 2,
+        data: { isActive: true },
+      },
+    ]);
+
+    // Assert
+    assert.equal(manager.find.notCalled, true);
+
+    assert.equal(manager.create.calledTwice, true);
+
+    assert.equal(
+      manager.save.calledOnceWith(User, [
+        {
+          id: 1,
+          deletedAt: null,
+        },
+        {
+          id: 2,
+          deletedAt: null,
+        },
+      ]),
+      true
+    );
+
+    assert.equal(result.isSuccess, true);
+    assert.equal(result.error, undefined);
+  });
+
+  it("should deactivate users (isActive=false)", async () => {
+    // Arrange
+    const { repository: userRepository, manager } = mockRepository(
+      UserRepository,
+      sandbox,
+      {
+        fakeManager: {
+          find: sandbox.stub().callsFake(() => []),
+        },
+      }
+    );
+
+    const userService = new UserService(userRepository, dataStoreService);
+
+    // Act
+    const result = await userService.updateMany([
+      {
+        id: 1,
+        data: { isActive: false },
+      },
+      {
+        id: 2,
+        data: { isActive: false },
+      },
+    ]);
+
+    // Assert
+    assert.equal(manager.find.notCalled, true);
+
+    assert.equal(manager.create.calledTwice, true);
+
+    assert.equal(
+      manager.save.calledOnceWith(User, [
+        {
+          id: 1,
+          deletedAt: fakeDate,
+        },
+        {
+          id: 2,
+          deletedAt: fakeDate,
+        },
+      ]),
+      true
+    );
+
+    assert.equal(result.isSuccess, true);
+    assert.equal(result.error, undefined);
+  });
+
+  it("should save users with new role", async () => {
     // Arrange
     const { repository: userRepository, manager } = mockRepository(
       UserRepository,
@@ -91,13 +186,22 @@ describe("UserService tests", () => {
     const userService = new UserService(userRepository, dataStoreService);
 
     // Act
-    const result = await userService.updateMany(usersToUpdate);
+    const result = await userService.updateMany([
+      {
+        id: 1,
+        data: { roleId },
+      },
+      {
+        id: 2,
+        data: { roleId },
+      },
+    ]);
 
     // Assert
     assert.equal(
       manager.find.calledOnceWith(Role, {
         where: {
-          id: In([1]),
+          id: In([roleId]),
         },
       }),
       true
@@ -109,19 +213,17 @@ describe("UserService tests", () => {
       manager.save.calledOnceWith(User, [
         {
           id: 1,
-          deletedAt: null,
           role: { id: roleId },
         },
         {
           id: 2,
-          deletedAt: fakeDate,
+          role: { id: roleId },
         },
       ]),
       true
     );
 
     assert.equal(result.isSuccess, true);
-
     assert.equal(result.error, undefined);
   });
 });
