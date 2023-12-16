@@ -1,14 +1,23 @@
 import * as typeorm from "typeorm";
-import { SinonSandbox, SinonStubbedInstance } from "sinon";
+import { SinonSandbox, SinonStubbedInstance, SinonStub } from "sinon";
 
 export const mockRepository = <T>(
   Class: { new (): T },
   sandbox: SinonSandbox,
   overrides: {
-    fakeManager?: Partial<typeorm.EntityManager>;
-    fakeQueryRunner?: Partial<typeorm.QueryRunner>;
+    fakeManager?: Record<
+      keyof typeorm.EntityManager,
+      SinonStub<unknown[], unknown>
+    >;
+    fakeQueryRunner?: Record<
+      keyof typeorm.QueryRunner,
+      SinonStub<unknown[], unknown>
+    >;
   } = {}
-): SinonStubbedInstance<T> => {
+): {
+  repository: SinonStubbedInstance<T>;
+  manager: Record<string, SinonStub<unknown[], unknown>>;
+} => {
   const {
     fakeManager: fakeManagerOverrides,
     fakeQueryRunner: fakeQueryRunnerOverrides,
@@ -37,5 +46,5 @@ export const mockRepository = <T>(
 
   (repository as any).useTransaction = () => fakeQueryRunner;
 
-  return repository;
+  return { repository, manager: fakeManager };
 };
