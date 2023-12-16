@@ -24,6 +24,7 @@ export class UserService implements IUserService {
     private _dataStoreService: IDataStoreService
   ) {}
 
+  // @TODO move to DataStoreService
   async reflectChangesInDataStore(
     entitiesToUpdate: UpdateUserDto[]
   ): Promise<void> {
