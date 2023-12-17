@@ -162,6 +162,7 @@ async function getWorkspaces(newPage: number) {
     await workspacesStore.getAll({
       page: newPage,
       perPage,
+      filters: {},
     });
   } catch (error) {
     console.log(error);
