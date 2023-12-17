@@ -84,6 +84,7 @@ import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/users";
 import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
+import { AUTH_RULES } from "@shared/constants/rules";
 import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
 
 const router = useRouter();
@@ -117,11 +118,11 @@ const { fields, getError, hasError, handleSubmit, setValidationErrors } =
     object({
       password: string()
         .required()
-        .min(7)
-        .matches(/[a-z]/)
-        .matches(/[A-Z]/)
-        .matches(/[*.!@#$%^&(){}[\]:;<>,.?/~_+-=|]/)
-        .matches(/\d/),
+        .min(AUTH_RULES.MIN_PASSWORD_LENGTH)
+        .matches(AUTH_RULES.ONE_LOWERCASE_LETTER_REGEX)
+        .matches(AUTH_RULES.ONE_UPPERCASE_LETTER_REGEX)
+        .matches(AUTH_RULES.ONE_SPECIAL_CHARACTER_REGEX)
+        .matches(AUTH_RULES.ONE_DIGIT_LETTER_REGEX),
       confirmPassword: string()
         .required()
         .oneOf([yupRef("password")]),
