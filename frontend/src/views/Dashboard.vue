@@ -18,7 +18,7 @@
             <welcome />
           </n-grid-item>
 
-          <n-grid-item span="3">
+          <n-grid-item :span="3">
             <n-grid
               x-gap="20"
               y-gap="20"
@@ -27,13 +27,14 @@
             >
               <n-grid-item
                 v-for="(
-                  { title, to, icon, description, props }, index
+                  { title, to, icon, description, props, isPermitted }, index
                 ) of topCards"
                 v-bind="props"
                 class="other-card-wrapper"
                 :key="index"
               >
                 <link-card
+                  v-if="isPermitted"
                   :to="to"
                   :icon="icon"
                   :title="title"
@@ -95,6 +96,7 @@ import LinkCard from "@/components/dashboard/LinkCard.vue";
 import Permissions from "@/components/dashboard/Permissions.vue";
 import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
 import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
+import { Permission } from "@shared/types/enums/Permission";
 
 const authStore = useAuthStore();
 
@@ -104,6 +106,7 @@ interface OtherCard {
   icon: Component;
   props?: object;
   description: string;
+  isPermitted?: boolean;
 }
 
 const bottomCards: Ref<OtherCard[]> = ref([
@@ -135,6 +138,7 @@ const topCards: Ref<OtherCard[]> = ref([
     to: ROUTE_USERS_NAME,
     icon: shallowRef(UsersIcon),
     description: "Manage vault user(s)",
+    isPermitted: authStore.hasPermission(Permission.ViewAllUsers),
   },
 
   {
@@ -142,6 +146,10 @@ const topCards: Ref<OtherCard[]> = ref([
     to: ROUTE_ROLES_NAME,
     icon: shallowRef(RolesIcon),
     description: "Manage vault role(s)",
+    isPermitted: authStore.hasAtLeastOnePermission([
+      Permission.CreateRole,
+      Permission.UpdateRole,
+    ]),
   },
 ]);
 
