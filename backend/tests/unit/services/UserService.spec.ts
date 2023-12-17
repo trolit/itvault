@@ -7,7 +7,6 @@ import { User } from "@entities/User";
 import { Role } from "@entities/Role";
 
 import { UserService } from "@services/UserService";
-import { DataStoreService } from "@services/DataStoreService";
 import { UserRepository } from "@repositories/UserRepository";
 
 const roleId = 2;
@@ -16,7 +15,6 @@ describe("UserService tests", () => {
   let sandbox: SinonSandbox;
   let clock: SinonFakeTimers;
   const fakeDate = new Date(2019, 1, 1, 0, 0);
-  let dataStoreService: DataStoreService;
 
   beforeEach(() => {
     sandbox = createSandbox();
@@ -24,8 +22,6 @@ describe("UserService tests", () => {
     clock = sandbox.useFakeTimers({
       now: fakeDate,
     });
-
-    dataStoreService = sandbox.createStubInstance(DataStoreService);
   });
 
   afterEach(() => {
@@ -46,7 +42,7 @@ describe("UserService tests", () => {
       }
     );
 
-    const userService = new UserService(userRepository, dataStoreService);
+    const userService = new UserService(userRepository);
 
     // Act
     const result = await userService.updateMany([
@@ -85,7 +81,7 @@ describe("UserService tests", () => {
       }
     );
 
-    const userService = new UserService(userRepository, dataStoreService);
+    const userService = new UserService(userRepository);
 
     // Act
     const result = await userService.updateMany([
@@ -134,7 +130,7 @@ describe("UserService tests", () => {
       }
     );
 
-    const userService = new UserService(userRepository, dataStoreService);
+    const userService = new UserService(userRepository);
 
     // Act
     const result = await userService.updateMany([
@@ -183,7 +179,7 @@ describe("UserService tests", () => {
       }
     );
 
-    const userService = new UserService(userRepository, dataStoreService);
+    const userService = new UserService(userRepository);
 
     // Act
     const result = await userService.updateMany([

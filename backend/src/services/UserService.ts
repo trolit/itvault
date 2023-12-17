@@ -1,11 +1,9 @@
 import assert from "assert";
 import { In } from "typeorm";
-import { DataStore } from "types/DataStore";
 import { inject, injectable } from "tsyringe";
 import { IUserService } from "types/services/IUserService";
 import { TransactionResult } from "types/TransactionResult";
 import { IUserRepository } from "types/repositories/IUserRepository";
-import { IDataStoreService } from "types/services/IDataStoreService";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
@@ -19,35 +17,8 @@ import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromColle
 export class UserService implements IUserService {
   constructor(
     @inject(Di.UserRepository)
-    private _userRepository: IUserRepository,
-    @inject(Di.DataStoreService)
-    private _dataStoreService: IDataStoreService
+    private _userRepository: IUserRepository
   ) {}
-
-  // @TODO move to DataStoreService
-  async reflectChangesInDataStore(
-    entitiesToUpdate: UpdateUserDto[]
-  ): Promise<void> {
-    for (const entityToUpdate of entitiesToUpdate) {
-      const { id, data } = entityToUpdate;
-
-      const key: DataStore.Key = [id, DataStore.KeyType.AuthenticatedUser];
-
-      if (data.isActive !== undefined && !data.isActive) {
-        this._dataStoreService.deleteHash(key);
-
-        continue;
-      }
-
-      if (data.roleId) {
-        this._dataStoreService.updateHashField<DataStore.User>(
-          key,
-          "roleId",
-          data.roleId.toString()
-        );
-      }
-    }
-  }
 
   async updateMany(
     usersToUpdate: UpdateUserDto[]
