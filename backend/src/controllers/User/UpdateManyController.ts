@@ -47,25 +47,25 @@ export class UpdateManyController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
-    await this.reflectChangesInDataStore(values);
+    this.reflectChangesInDataStore(values);
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
 
-  private async reflectChangesInDataStore(entitiesToUpdate: UpdateUserDto[]) {
+  private reflectChangesInDataStore(entitiesToUpdate: UpdateUserDto[]) {
     for (const entityToUpdate of entitiesToUpdate) {
       const { id, data } = entityToUpdate;
 
       const key: DataStore.Key = [id, DataStore.KeyType.AuthenticatedUser];
 
       if (data.isActive !== undefined && !data.isActive) {
-        await this._dataStoreService.deleteHash(key);
+        this._dataStoreService.deleteHash(key);
 
         continue;
       }
 
       if (data.roleId) {
-        await this._dataStoreService.updateHashField<DataStore.User>(
+        this._dataStoreService.updateHashField<DataStore.User>(
           key,
           "roleId",
           data.roleId.toString()
