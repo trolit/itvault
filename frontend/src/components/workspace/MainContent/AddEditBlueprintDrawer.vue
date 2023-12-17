@@ -122,6 +122,7 @@ import { useDrawerStore } from "@/store/drawer";
 import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
 import { useBlueprintsStore } from "@/store/blueprints";
+import { BLUEPRINT_RULES } from "@shared/constants/rules";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { Permission } from "@shared/types/enums/Permission";
@@ -146,6 +147,8 @@ const initialFormData: Ref<Partial<AddEditBlueprintDto>> = ref(
   cloneDeep(defaultFormData)
 );
 
+const { DESCRIPTION, COLOR } = BLUEPRINT_RULES;
+
 const {
   fields,
   getError,
@@ -159,8 +162,8 @@ const {
   defaultFormData,
   object({
     name: string().required(),
-    color: string().required(),
-    description: string().required(),
+    color: string().required().matches(COLOR.REGEX),
+    description: string().required().min(DESCRIPTION.MIN_LENGTH),
   })
 );
 

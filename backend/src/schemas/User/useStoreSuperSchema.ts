@@ -6,6 +6,7 @@ import { StoreControllerTypes } from "types/controllers/User/StoreController";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
+import { ACCOUNT_RULES } from "@shared/constants/rules";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -14,10 +15,12 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
+const { EMAIL, FIRST_NAME, LAST_NAME } = ACCOUNT_RULES;
+
 const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
   email: string()
     .email()
-    .max(254)
+    .max(EMAIL.MAX_LENGTH)
     .required()
     .transform(value => value.toLowerCase())
     .test(async (value, ctx) => {
@@ -39,9 +42,9 @@ const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
       return true;
     }),
 
-  firstName: string().required().min(2),
+  firstName: string().required().min(FIRST_NAME.MIN_LENGTH),
 
-  lastName: string().required().min(2),
+  lastName: string().required().min(LAST_NAME.MIN_LENGTH),
 
   roleId: useIdNumberSchema(Di.RoleRepository).test((value, ctx) => {
     if (value === HEAD_ADMIN_ROLE_ID) {

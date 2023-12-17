@@ -124,6 +124,7 @@ import { useUsersStore } from "@/store/users";
 import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
 
+import { ACCOUNT_RULES } from "@shared/constants/rules";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
@@ -159,6 +160,8 @@ const defaultUser: AddEditUserDto & { confirmEmail: string } = {
   roleId: 0,
 };
 
+const { EMAIL, FIRST_NAME, LAST_NAME } = ACCOUNT_RULES;
+
 const {
   fields,
   getError,
@@ -170,13 +173,13 @@ const {
 } = defineForm<AddEditUserDto & { confirmEmail: string }>(
   defaultUser,
   object({
-    email: string().email().required(),
+    email: string().email().required().max(EMAIL.MAX_LENGTH),
     confirmEmail: string()
       .email()
       .required()
       .oneOf([yupRef("email")]),
-    firstName: string().required(),
-    lastName: string().required(),
+    firstName: string().required().min(FIRST_NAME.MIN_LENGTH),
+    lastName: string().required().min(LAST_NAME.MIN_LENGTH),
     roleId: number().required(),
   })
 );
