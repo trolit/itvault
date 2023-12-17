@@ -8,7 +8,7 @@
   >
     <div :style="{ fontSize: '25px' }">
       Welcome
-      <n-gradient-text> {{ authStore.profile.fullName }} </n-gradient-text>
+      <n-gradient-text> {{ authStore.profile.fullName }} </n-gradient-text>,
     </div>
 
     <div class="text-center">
