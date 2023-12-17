@@ -4,6 +4,7 @@ import { IFileRepository } from "types/repositories/IFileRepository";
 import { PatchFilenameControllerTypes } from "types/controllers/File/PatchFilenameController";
 
 import { Di } from "@enums/Di";
+import { FILE_RULES } from "@shared/constants/rules";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -11,6 +12,8 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
+
+const { FILENAME } = FILE_RULES;
 
 const paramsSchema: SuperSchema.Fragment<PatchFilenameControllerTypes.v1.Params> =
   object({
@@ -33,7 +36,7 @@ const useBodySchema: (
     filename: string()
       .trim()
       .required()
-      .matches(/^[^<>:;,?"*|]+$/)
+      .matches(FILENAME.REGEX)
       .test(async (value: string, ctx) => {
         const fileRepository = getInstanceOf<IFileRepository>(
           Di.FileRepository

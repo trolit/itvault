@@ -46,6 +46,7 @@ import { NForm, NFormItem, NInput, NModal, NSpace, NButton } from "naive-ui";
 
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
+import { FILE_RULES } from "@shared/constants/rules";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 
@@ -87,7 +88,7 @@ const {
   },
 
   schema: object({
-    filename: string().required(),
+    filename: string().required().matches(FILE_RULES.FILENAME.REGEX),
   }),
 
   formCallHandler: async (formData, printSuccess) => {

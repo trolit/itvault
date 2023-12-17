@@ -106,6 +106,7 @@ import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
+import { WORKSPACE_RULES } from "@shared/constants/rules";
 import { Permission } from "@shared/types/enums/Permission";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 import RequirePermission from "@/components/common/RequirePermission.vue";
@@ -190,6 +191,8 @@ const dismissDrawer = () => {
   drawerStore.setActiveDrawer(null);
 };
 
+const { NAME, DESCRIPTION, TAGS } = WORKSPACE_RULES;
+
 const {
   vModel: { name, description, tags },
   isLoading,
@@ -207,16 +210,12 @@ const {
   },
 
   schema: object({
-    name: string().required(),
-    description: string().defined().max(255),
+    name: string().required().matches(NAME.REGEX),
+    description: string().defined().max(DESCRIPTION.MAX_LENGTH),
     tags: array()
-      .of(
-        string()
-          .matches(/^[a-zA-Z0-9]*$/)
-          .required()
-      )
+      .of(string().matches(TAGS.REGEX).required())
       .required()
-      .min(1),
+      .min(TAGS.MIN_LENGTH),
   }),
 
   formCallHandler: async (formData, printSuccess) => {

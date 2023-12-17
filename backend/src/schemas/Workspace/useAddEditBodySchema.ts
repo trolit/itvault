@@ -5,11 +5,14 @@ import { SuperSchema } from "types/SuperSchema";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
+import { WORKSPACE_RULES } from "@shared/constants/rules";
 import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
+
+const { NAME, DESCRIPTION, TAGS } = WORKSPACE_RULES;
 
 export const useAddEditBodySchema: (
   id?: number
@@ -18,7 +21,7 @@ export const useAddEditBodySchema: (
     name: string()
       .trim()
       .required()
-      .matches(/^[a-zA-Z0-9- ]*$/)
+      .matches(NAME.REGEX)
       .test(async (value, ctx) => {
         const workspaceRepository = getInstanceOf<IWorkspaceRepository>(
           Di.WorkspaceRepository
@@ -45,15 +48,11 @@ export const useAddEditBodySchema: (
       .trim()
       .defined()
       .transform(value => sanitizeHtml(value))
-      .max(255),
+      .max(DESCRIPTION.MAX_LENGTH),
 
     tags: array()
-      .of(
-        string()
-          .matches(/^[a-zA-Z0-9]*$/)
-          .required()
-      )
+      .of(string().matches(TAGS.REGEX).required())
       .required()
-      .min(1)
+      .min(TAGS.MIN_LENGTH)
       .transform(value => uniq(value)),
   });

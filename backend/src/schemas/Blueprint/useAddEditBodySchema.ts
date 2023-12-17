@@ -4,11 +4,14 @@ import { SuperSchema } from "types/SuperSchema";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 
 import { Di } from "@enums/Di";
+import { BLUEPRINT_RULES } from "@shared/constants/rules";
 import { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
+
+const { DESCRIPTION, COLOR } = BLUEPRINT_RULES;
 
 export const useAddEditBodySchema: (
   workspaceId: number,
@@ -44,11 +47,11 @@ export const useAddEditBodySchema: (
         }
       ),
 
-    description: string().required().min(10),
+    description: string().required().min(DESCRIPTION.MIN_LENGTH),
 
     color: string()
       .required()
-      .matches(/^#[a-zA-Z0-9]{6}$/, {
+      .matches(COLOR.REGEX, {
         message: setYupError(
           CUSTOM_MESSAGES.GENERAL.HEXADECIMAL_FORMAT,
           "Color"
