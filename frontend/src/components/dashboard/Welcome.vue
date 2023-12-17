@@ -1,11 +1,5 @@
 <template>
-  <span
-    :style="{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    }"
-  >
+  <n-space justify="space-between" align="center">
     <div :style="{ fontSize: '25px' }">
       Welcome
       <n-gradient-text> {{ authStore.profile.fullName }} </n-gradient-text>,
@@ -24,11 +18,11 @@
         </n-text>
       </div>
     </div>
-  </span>
+  </n-space>
 </template>
 
 <script setup lang="ts">
-import { NGradientText, NText, NTag } from "naive-ui";
+import { NGradientText, NText, NTag, NSpace } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import { useDateService } from "@/services/useDateService";
