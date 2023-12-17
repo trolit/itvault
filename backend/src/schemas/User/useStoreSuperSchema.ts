@@ -6,6 +6,7 @@ import { StoreControllerTypes } from "types/controllers/User/StoreController";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
+import { ACCOUNT_RULES } from "@shared/constants/rules";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -17,7 +18,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
   email: string()
     .email()
-    .max(254)
+    .max(ACCOUNT_RULES.EMAIL.MAX_LENGTH)
     .required()
     .transform(value => value.toLowerCase())
     .test(async (value, ctx) => {
