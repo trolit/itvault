@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="to" class="extra-button">
+  <router-link :to="to" class="navigation-router-link">
     <n-button size="large">
       <n-icon :component="icon" :size="35" />
 
