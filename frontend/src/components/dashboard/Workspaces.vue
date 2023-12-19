@@ -16,63 +16,59 @@
         </template>
       </n-input>
 
-      <n-scrollbar trigger="none">
-        <n-list v-if="!isLoading">
-          <n-list-item
-            v-for="(item, index) in sortedItems"
-            :key="`workspace-${index}`"
-          >
-            <n-thing :title="item.name">
-              <template #header-extra>
-                <pin-manager
-                  :pinned-at="item.pinnedAt"
-                  :is-loading="
-                    workspacesStore.pinStatusUpdateItemId === item.id
-                  "
-                  @pin="workspacesStore.pin(item.id)"
-                  @unpin="workspacesStore.unpin(item.id)"
-                />
-              </template>
+      <n-list v-if="!isLoading">
+        <n-list-item
+          v-for="(item, index) in sortedItems"
+          :key="`workspace-${index}`"
+        >
+          <n-thing :title="item.name">
+            <template #header-extra>
+              <pin-manager
+                :pinned-at="item.pinnedAt"
+                :is-loading="workspacesStore.pinStatusUpdateItemId === item.id"
+                @pin="workspacesStore.pin(item.id)"
+                @unpin="workspacesStore.unpin(item.id)"
+              />
+            </template>
+
+            <div>
+              <n-space size="small" :style="{ marginBottom: '15px' }">
+                <n-tag
+                  size="small"
+                  type="success"
+                  :key="`tag-${index}`"
+                  v-for="(tag, index) in item.tags"
+                >
+                  {{ tag }}
+                </n-tag>
+              </n-space>
 
               <div>
-                <n-space size="small" :style="{ marginBottom: '15px' }">
-                  <n-tag
-                    size="small"
-                    type="success"
-                    :key="`tag-${index}`"
-                    v-for="(tag, index) in item.tags"
-                  >
-                    {{ tag }}
-                  </n-tag>
-                </n-space>
-
-                <div>
-                  <n-text :depth="3">
-                    {{ item.description }}
-                  </n-text>
-                </div>
-
-                <n-space :style="{ marginTop: '20px' }" justify="end">
-                  <n-button secondary type="success" @click="open(item)">
-                    Go to
-                  </n-button>
-
-                  <require-permission :permission="Permission.UpdateWorkspace">
-                    <n-button
-                      tertiary
-                      @click="toggleAddEditWorkspaceDrawer(item)"
-                    >
-                      Edit information
-                    </n-button>
-                  </require-permission>
-                </n-space>
+                <n-text :depth="3">
+                  {{ item.description }}
+                </n-text>
               </div>
-            </n-thing>
-          </n-list-item>
-        </n-list>
 
-        <loading-section v-else />
-      </n-scrollbar>
+              <n-space :style="{ marginTop: '20px' }" justify="end">
+                <n-button secondary type="success" @click="open(item)">
+                  Go to
+                </n-button>
+
+                <require-permission :permission="Permission.UpdateWorkspace">
+                  <n-button
+                    tertiary
+                    @click="toggleAddEditWorkspaceDrawer(item)"
+                  >
+                    Edit information
+                  </n-button>
+                </require-permission>
+              </n-space>
+            </div>
+          </n-thing>
+        </n-list-item>
+      </n-list>
+
+      <loading-section v-else />
 
       <n-pagination
         size="medium"
@@ -97,7 +93,6 @@ import {
   NThing,
   NButton,
   NListItem,
-  NScrollbar,
   NPagination,
 } from "naive-ui";
 import {
@@ -132,7 +127,7 @@ const drawerStore = useDrawerStore();
 const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
-const perPage = 11;
+const perPage = 6;
 const page = ref(1);
 const isLoading = ref(true);
 

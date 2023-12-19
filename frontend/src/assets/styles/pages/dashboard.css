@@ -163,22 +163,16 @@
                   height: var(--workspaces-card-list-height);
                 }
 
-                .n-scrollbar {
-                  max-height: var(--workspaces-card-list-height);
+                .n-list {
+                  width: 100%;
 
-                  .n-scrollbar-content {
-                    .n-list {
-                      width: 100%;
+                  .n-list-item {
+                    margin-right: 20px;
 
-                      .n-list-item {
-                        margin-right: 20px;
-
-                        .n-thing {
-                          .n-thing-main {
-                            .n-thing-avatar-header-wrapper {
-                              height: auto;
-                            }
-                          }
+                    .n-thing {
+                      .n-thing-main {
+                        .n-thing-avatar-header-wrapper {
+                          height: auto;
                         }
                       }
                     }
