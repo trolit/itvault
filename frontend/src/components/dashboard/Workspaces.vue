@@ -16,7 +16,7 @@
         </template>
       </n-input>
 
-      <n-scrollbar>
+      <n-scrollbar trigger="none">
         <n-list v-if="!isLoading">
           <n-list-item
             v-for="(item, index) in sortedItems"

@@ -166,12 +166,13 @@
                 .n-scrollbar {
                   max-height: var(--workspaces-card-list-height);
 
-                  .n-list {
-                    width: 100%;
-                    height: var(--workspaces-card-list-height);
+                  .n-scrollbar-content {
+                    .n-list {
+                      width: 100%;
 
-                    .n-list-item {
-                      margin-right: 15px;
+                      .n-list-item {
+                        margin-right: 15px;
+                      }
                     }
                   }
                 }
