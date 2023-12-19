@@ -3,7 +3,7 @@
     <n-button size="large">
       <n-icon :component="icon" :size="35" />
 
-      <div class="xd">
+      <div class="text-wrapper">
         <span class="title">
           {{ title }}
         </span>
