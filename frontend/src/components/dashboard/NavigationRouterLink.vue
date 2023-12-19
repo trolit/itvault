@@ -1,7 +1,7 @@
 <template>
   <router-link :to="to" class="extra-button">
     <n-button size="large">
-      <n-icon :component="icon" :size="50" />
+      <n-icon :component="icon" :size="35" />
 
       <div class="xd">
         <span class="title">
