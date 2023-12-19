@@ -31,8 +31,8 @@
 <script setup lang="ts">
 import { RainDrop as RainDropIcon } from "@vicons/carbon";
 import { useRoute, type RouteRecordName } from "vue-router";
-import { ref, computed, type ComputedRef, watch, onBeforeMount } from "vue";
 import { NPageHeader, useThemeVars, NButton, NIcon } from "naive-ui";
+import { ref, computed, type ComputedRef, watch, onBeforeMount } from "vue";
 
 import { useAuthStore } from "@/store/auth";
 import Brand from "@/components/common/Brand.vue";
