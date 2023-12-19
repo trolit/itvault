@@ -1,72 +1,44 @@
 <template>
   <div class="dashboard-page page">
     <n-grid
-      x-gap="20"
+      x-gap="10"
       y-gap="20"
       class="grid"
       responsive="screen"
-      cols="1 s:1 m:3 l:3 xl:3 2xl:3"
+      cols="1 s:1 m:6 l:6 xl:6 2xl:6"
     >
-      <n-grid-item class="other-cards-wrapper" span="5">
+      <n-grid-item :span="6">
+        <welcome />
+      </n-grid-item>
+
+      <n-grid-item span="1">
         <n-grid
+          cols="1"
           x-gap="20"
           y-gap="20"
           responsive="screen"
-          cols="1 s:1 m:5 l:5 xl:5 2xl:5"
+          class="navigation-grid"
         >
-          <n-grid-item :span="2" class="text-center">
-            <welcome />
-          </n-grid-item>
-
-          <n-grid-item :span="3">
-            <n-grid
-              x-gap="20"
-              y-gap="20"
-              responsive="screen"
-              cols="1 s:1 m:2 l:2 xl:2 2xl:2"
-            >
-              <n-grid-item
-                v-for="(
-                  { title, to, icon, description, props, isPermitted }, index
-                ) of topCards"
-                v-bind="props"
-                class="other-card-wrapper"
-                :key="index"
-              >
-                <link-card
-                  v-if="isPermitted"
-                  :to="to"
-                  :icon="icon"
-                  :title="title"
-                  :description="description"
-                />
-              </n-grid-item>
-            </n-grid>
+          <n-grid-item
+            v-for="({ title, to, icon, description, props }, index) of navItems"
+            v-bind="props"
+            :key="index"
+          >
+            <navigation-router-link
+              :to="to"
+              :icon="icon"
+              :title="title"
+              :description="description"
+            />
           </n-grid-item>
         </n-grid>
       </n-grid-item>
 
-      <n-grid-item class="workspaces-card-wrapper" span="2">
+      <n-grid-item class="workspaces-card-wrapper" span="5">
         <workspaces-card />
       </n-grid-item>
 
-      <n-grid-item class="permissions-wrapper" span="1">
-        <permissions />
-      </n-grid-item>
-
-      <n-grid-item
-        v-for="({ title, to, icon, description, props }, index) of bottomCards"
-        v-bind="props"
-        class="other-card-wrapper"
-        :key="index"
-      >
-        <link-card
-          :to="to"
-          :icon="icon"
-          :title="title"
-          :description="description"
-        />
-      </n-grid-item>
+      <!-- @TODO consider "global" chat -->
     </n-grid>
 
     <add-edit-workspace-drawer />
@@ -92,11 +64,10 @@ import {
 } from "@/assets/constants/routes";
 import { useAuthStore } from "@/store/auth";
 import Welcome from "@/components/dashboard/Welcome.vue";
-import LinkCard from "@/components/dashboard/LinkCard.vue";
-import Permissions from "@/components/dashboard/Permissions.vue";
-import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
-import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
 import { Permission } from "@shared/types/enums/Permission";
+import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
+import NavigationRouterLink from "@/components/dashboard/NavigationRouterLink.vue";
+import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
 
 const authStore = useAuthStore();
 
@@ -109,30 +80,7 @@ interface OtherCard {
   isPermitted?: boolean;
 }
 
-const bottomCards: Ref<OtherCard[]> = ref([
-  {
-    title: "Guide",
-    to: ROUTE_GUIDE_NAME,
-    icon: shallowRef(HelpIcon),
-    description: "Available features description",
-  },
-
-  {
-    title: "Updates",
-    to: ROUTE_UPDATES_NAME,
-    icon: shallowRef(UpdatesIcon),
-    description: "Changes made to the project",
-  },
-
-  {
-    title: "Contact",
-    to: ROUTE_UPDATES_NAME,
-    icon: shallowRef(EmailIcon),
-    description: "Need help? Found an issue?",
-  },
-]);
-
-const topCards: Ref<OtherCard[]> = ref([
+const navItems: Ref<OtherCard[]> = ref([
   {
     title: "Users",
     to: ROUTE_USERS_NAME,
@@ -150,6 +98,27 @@ const topCards: Ref<OtherCard[]> = ref([
       Permission.CreateRole,
       Permission.UpdateRole,
     ]),
+  },
+
+  {
+    title: "Guide",
+    to: ROUTE_GUIDE_NAME,
+    icon: shallowRef(HelpIcon),
+    description: "Features description",
+  },
+
+  {
+    title: "Updates",
+    to: ROUTE_UPDATES_NAME,
+    icon: shallowRef(UpdatesIcon),
+    description: "Changes made to the project",
+  },
+
+  {
+    title: "Contact",
+    to: ROUTE_UPDATES_NAME,
+    icon: shallowRef(EmailIcon),
+    description: "Need help? Found an issue?",
   },
 ]);
 
