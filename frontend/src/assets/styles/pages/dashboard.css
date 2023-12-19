@@ -172,6 +172,14 @@
 
                       .n-list-item {
                         margin-right: 20px;
+
+                        .n-thing {
+                          .n-thing-main {
+                            .n-thing-avatar-header-wrapper {
+                              height: auto;
+                            }
+                          }
+                        }
                       }
                     }
                   }

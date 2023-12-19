@@ -34,8 +34,8 @@
                 />
               </template>
 
-              <template #description>
-                <n-space size="small" style="margin-top: 4px">
+              <div>
+                <n-space size="small" :style="{ marginBottom: '15px' }">
                   <n-tag
                     size="small"
                     type="success"
@@ -45,28 +45,28 @@
                     {{ tag }}
                   </n-tag>
                 </n-space>
-              </template>
 
-              <div :style="{ marginTop: '20px' }">
-                <n-text :depth="3">
-                  {{ item.description }}
-                </n-text>
-              </div>
+                <div>
+                  <n-text :depth="3">
+                    {{ item.description }}
+                  </n-text>
+                </div>
 
-              <n-space :style="{ marginTop: '20px' }" justify="end">
-                <n-button secondary type="success" @click="open(item)">
-                  Go to
-                </n-button>
-
-                <require-permission :permission="Permission.UpdateWorkspace">
-                  <n-button
-                    tertiary
-                    @click="toggleAddEditWorkspaceDrawer(item)"
-                  >
-                    Edit information
+                <n-space :style="{ marginTop: '20px' }" justify="end">
+                  <n-button secondary type="success" @click="open(item)">
+                    Go to
                   </n-button>
-                </require-permission>
-              </n-space>
+
+                  <require-permission :permission="Permission.UpdateWorkspace">
+                    <n-button
+                      tertiary
+                      @click="toggleAddEditWorkspaceDrawer(item)"
+                    >
+                      Edit information
+                    </n-button>
+                  </require-permission>
+                </n-space>
+              </div>
             </n-thing>
           </n-list-item>
         </n-list>
