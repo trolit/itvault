@@ -13,6 +13,7 @@
 import {
   ScreenOff as LogoutIcon,
   Settings as SettingsIcon,
+  Locked as PermissionsIcon,
   UserProfile as UserProfileIcon,
 } from "@vicons/carbon";
 import { h, ref } from "vue";
@@ -31,6 +32,8 @@ import { LoadingState } from "@/types/enums/LoadingState";
 const router = useRouter();
 const authStore = useAuthStore();
 const generalStore = useGeneralStore();
+
+const emits = defineEmits(["toggle-permissions-modal"]);
 
 function renderCustomHeader() {
   return h(
@@ -77,6 +80,11 @@ const options = ref([
     type: "divider",
   },
   {
+    label: "My permissions",
+    key: "permissions",
+    icon: renderIcon(PermissionsIcon),
+  },
+  {
     label: "Settings",
     key: "settings",
     icon: renderIcon(SettingsIcon),
@@ -101,6 +109,14 @@ function handleSelect(key: string) {
 
   if (key === "logout") {
     logout();
+
+    return;
+  }
+
+  if (key === "permissions") {
+    emits("toggle-permissions-modal", true);
+
+    return;
   }
 }
 
