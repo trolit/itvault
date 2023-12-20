@@ -44,19 +44,12 @@
   }
 
   .grid {
-    .other-cards-wrapper,
-    .permissions-wrapper,
     .workspaces-card-wrapper {
       display: inherit;
     }
 
-    .permissions-wrapper,
     .workspaces-card-wrapper {
       min-height: 20vh;
-    }
-
-    .other-cards-wrapper {
-      min-height: 6vh;
     }
 
     .content-card {
@@ -85,61 +78,6 @@
           .n-icon {
             margin-left: 3px;
           }
-        }
-      }
-    }
-
-    .other-cards-wrapper {
-      .n-grid {
-        .other-card-wrapper {
-          .n-card {
-            height: 100%;
-
-            .n-thing {
-              .n-thing-main {
-                .n-thing-main__content {
-                  .content {
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-
-                    .description {
-                      height: inherit;
-                      display: inherit;
-                      align-items: center;
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .permissions-wrapper {
-      .n-card {
-        .n-scrollbar {
-          max-height: var(--workspaces-card-content-height);
-        }
-      }
-
-      .permissions-grid {
-        width: 100%;
-
-        .label {
-          display: flex;
-          text-align: left;
-          align-items: center;
-          justify-content: flex-start;
-        }
-
-        .empty-wrapper {
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
         }
       }
     }
