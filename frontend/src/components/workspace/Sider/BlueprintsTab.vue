@@ -42,7 +42,7 @@
 
               <small>
                 <n-text depth="3" :style="{ whiteSpace: 'pre-wrap' }">
-                  <n-ellipsis :line-clamp="2">
+                  <n-ellipsis :line-clamp="2" :tooltip="false">
                     {{ blueprint.description }}
                   </n-ellipsis>
                 </n-text>
