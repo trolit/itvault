@@ -23,8 +23,15 @@
         </template>
       </theme-selector>
 
-      <profile-dropdown />
+      <profile-dropdown
+        @toggle-permissions-modal="isPermissionsModalVisible = true"
+      />
     </div>
+
+    <permissions-modal
+      :is-visible="isPermissionsModalVisible"
+      @update:is-visible="isPermissionsModalVisible = $event"
+    />
   </n-page-header>
 </template>
 
@@ -37,6 +44,7 @@ import { ref, computed, type ComputedRef, watch, onBeforeMount } from "vue";
 import { useAuthStore } from "@/store/auth";
 import Brand from "@/components/common/Brand.vue";
 import ProfileDropdown from "./ProfileDropdown.vue";
+import PermissionsModal from "./PermissionsModal.vue";
 import Location from "@/components/header/Location.vue";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
@@ -49,6 +57,7 @@ onBeforeMount(() => {
 });
 
 let isBrandHovered = ref<boolean>(false);
+const isPermissionsModalVisible = ref(false);
 
 const textColor = computed<string>((): string => {
   return themeVars.value.primaryColor;
