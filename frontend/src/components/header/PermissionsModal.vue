@@ -2,81 +2,96 @@
   <n-modal
     :show="isVisible"
     segmented
-    title="Your permissions"
+    title="Permissions"
     preset="card"
     :closable="true"
     :mask-closable="false"
     :style="{ width: '600px' }"
     @close="$emit('update:is-visible', false)"
   >
-    <div v-for="(group, index) in groupedPermissions" :key="index">
-      <n-row>
-        <n-col :span="6">
-          <div>
-            <n-text
-              :style="{
-                fontSize: '14px',
-                textTransform: 'uppercase',
-              }"
-            >
-              {{ group.name }}</n-text
-            >
-
+    <n-scrollbar :style="{ maxHeight: '70vh' }" trigger="none">
+      <div
+        v-for="(group, index) in groupedPermissions"
+        :key="index"
+        :style="{ marginRight: '20px' }"
+      >
+        <n-row>
+          <n-col :span="6">
             <div>
-              <small>
-                <n-text depth="3"> Total = {{ group.total }} </n-text>
-              </small>
+              <n-text
+                :style="{
+                  fontSize: '14px',
+                  textTransform: 'uppercase',
+                }"
+              >
+                {{ group.name }}</n-text
+              >
+
+              <div>
+                <small>
+                  <n-text depth="3"> Total = {{ group.total }} </n-text>
+                </small>
+              </div>
+
+              <div>
+                <small>
+                  <n-text depth="3">
+                    Enabled = {{ group.enabled.length }}
+                  </n-text>
+                </small>
+              </div>
+
+              <div>
+                <small>
+                  <n-text depth="3">
+                    Disabled = {{ group.disabled.length }}
+                  </n-text>
+                </small>
+              </div>
             </div>
+          </n-col>
 
-            <div>
-              <small>
-                <n-text depth="3">
-                  Enabled = {{ group.enabled.length }}
-                </n-text>
-              </small>
-            </div>
+          <n-col :span="18">
+            <n-space>
+              <n-tag
+                v-for="({ name }, permissionIndex) in group.enabled"
+                size="small"
+                type="success"
+                :key="`${group}-${index}-permission-${permissionIndex}`"
+              >
+                {{ name }}
+              </n-tag>
 
-            <div>
-              <small>
-                <n-text depth="3">
-                  Disabled = {{ group.disabled.length }}
-                </n-text>
-              </small>
-            </div>
-          </div>
-        </n-col>
+              <n-tag
+                v-for="({ name }, permissionIndex) in group.disabled"
+                size="small"
+                type="error"
+                :key="`${group}-${index}-permission-${permissionIndex}`"
+              >
+                {{ name }}
+              </n-tag>
+            </n-space>
+          </n-col>
+        </n-row>
 
-        <n-col :span="18">
-          <n-space>
-            <n-tag
-              v-for="({ name }, permissionIndex) in group.enabled"
-              size="small"
-              type="success"
-              :key="`${group}-${index}-permission-${permissionIndex}`"
-            >
-              {{ name }}
-            </n-tag>
-
-            <n-tag
-              v-for="({ name }, permissionIndex) in group.disabled"
-              size="small"
-              type="error"
-              :key="`${group}-${index}-permission-${permissionIndex}`"
-            >
-              {{ name }}
-            </n-tag>
-          </n-space>
-        </n-col>
-      </n-row>
-
-      <n-divider v-if="index !== groupedPermissions.length - 1" />
-    </div>
+        <n-divider v-if="index !== groupedPermissions.length - 1" />
+      </div>
+    </n-scrollbar>
   </n-modal>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { NModal, NSpace, NRow, NCol, NDivider, NTag, NText } from "naive-ui";
+import {
+  NModal,
+  NSpace,
+  NRow,
+  NCol,
+  NDivider,
+  NTag,
+  NText,
+  NScrollbar,
+} from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 
