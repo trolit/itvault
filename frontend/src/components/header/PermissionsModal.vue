@@ -81,27 +81,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import {
+  NCol,
+  NTag,
+  NRow,
+  NText,
   NModal,
   NSpace,
-  NRow,
-  NCol,
   NDivider,
-  NTag,
-  NText,
   NScrollbar,
 } from "naive-ui";
+import { computed } from "vue";
 
 import { useAuthStore } from "@/store/auth";
+import type { Emits, Props } from "@/types/CommonModalTypes";
 
-interface IProps {
-  isVisible: boolean;
-}
-
-defineProps<IProps>();
-
-defineEmits(["update:is-visible"]);
+defineProps<Props>();
+defineEmits<Emits>();
 
 const {
   profile: { permissions },

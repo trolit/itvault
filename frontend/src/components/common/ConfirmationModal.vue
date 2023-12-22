@@ -28,17 +28,11 @@
 <script setup lang="ts">
 import { NModal, NSpace, NButton } from "naive-ui";
 
-interface IProps {
-  text: string;
+import type { Emits, Props } from "@/types/CommonModalTypes";
 
-  isVisible: boolean;
+defineProps<Props & { text: string; isLoading: boolean }>();
 
-  isLoading: boolean;
-}
-
-defineProps<IProps>();
-
-const emits = defineEmits(["update:is-visible", "confirm"]);
+const emits = defineEmits<Emits & { (event: "confirm"): void }>();
 
 function close() {
   emits("update:is-visible", false);

@@ -4,6 +4,7 @@ import { IVariantRepository } from "types/repositories/IVariantRepository";
 import { StoreControllerTypes } from "types/controllers/Variant/StoreController";
 
 import { Di } from "@enums/Di";
+import { VARIANT_RULES } from "@shared/constants/rules";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -14,7 +15,9 @@ import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 export const storeSchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> =
   object({
     name: string()
+      .trim()
       .required()
+      .min(VARIANT_RULES.NAME.MIN_LENGTH)
       .when("fileId", ([fileId], schema) => {
         return schema.test(async (value, ctx) => {
           if (!fileId) {

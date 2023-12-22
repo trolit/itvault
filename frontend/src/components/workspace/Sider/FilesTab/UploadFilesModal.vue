@@ -124,24 +124,20 @@ import { useFilesStore } from "@/store/files";
 import { Add as UploadIcon } from "@vicons/carbon";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
+import type { Emits, Props } from "@/types/CommonModalTypes";
 import { DIRS_TO_IGNORE_FROM_UPLOAD } from "@shared/constants/config";
 
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
-interface IProps {
-  isVisible: boolean;
-}
-
-defineProps<IProps>();
+defineProps<Props>();
+const emits = defineEmits<Emits & { (event: "on-upload"): void }>();
 
 const isLoading = ref(false);
 const MAX_FILES_PER_UPLOAD = 30;
 const customPathValue = ref("");
 const fileUploadDir = ref(filesStore.ROOT);
 const data: Ref<UploadFileInfo[]> = ref([]);
-
-const emits = defineEmits(["on-upload", "update:is-visible"]);
 
 const customPathValueRegex = new RegExp(/^\.(\/[.a-z0-9-]+)*$/);
 

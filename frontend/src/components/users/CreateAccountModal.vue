@@ -117,40 +117,48 @@ import {
   NButton,
   NFormItem,
 } from "naive-ui";
-import { ref, toRefs } from "vue";
+import { toRefs } from "vue";
 import { number, object, string, ref as yupRef } from "yup";
 
 import { useUsersStore } from "@/store/users";
-import { defineForm } from "@/helpers/defineForm";
-import { useGeneralStore } from "@/store/general";
 
 import { ACCOUNT_RULES } from "@shared/constants/rules";
-import { defineWatchers } from "@/helpers/defineWatchers";
+import { useModalHelpers } from "@/helpers/useModalHelpers";
+import type { Emits, Props } from "@/types/CommonModalTypes";
+import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 
+const props = defineProps<
+  Props & {
+    isLoadingRoles: boolean;
+
+    roles: PrimitiveSelectOption[];
+  }
+>();
+const emits = defineEmits<
+  Emits & {
+    (event: "select-blur"): void;
+
+    (event: "select-filter", intput: string): void;
+  }
+>();
+
+const { roles } = toRefs(props);
+
 const usersStore = useUsersStore();
-const generalStore = useGeneralStore();
 
-interface IProps {
-  isVisible: boolean;
-
-  isLoadingRoles: boolean;
-
-  roles: PrimitiveSelectOption[];
-}
-
-const props = defineProps<IProps>();
-const { isVisible, roles } = toRefs(props);
-
-const emits = defineEmits([
-  "update:is-visible",
-  "select-blur",
-  "select-filter",
-]);
-
-const isLoading = ref(false);
+const { isVisible } = useModalHelpers(props, {
+  onShow: () => {
+    setFormData({
+      ...defaultUser,
+      roleId: roles.value.length
+        ? parseInt(roles.value[0].value.toString())
+        : null,
+    });
+  },
+});
 
 const defaultUser: AddEditUserDto & { confirmEmail: string } = {
   email: "",
@@ -162,54 +170,6 @@ const defaultUser: AddEditUserDto & { confirmEmail: string } = {
 
 const { EMAIL, FIRST_NAME, LAST_NAME } = ACCOUNT_RULES;
 
-const {
-  fields,
-  getError,
-  hasError,
-  resetForm,
-  setFormData,
-  handleSubmit,
-  setValidationErrors,
-} = defineForm<AddEditUserDto & { confirmEmail: string }>(
-  defaultUser,
-  object({
-    email: string().email().required().max(EMAIL.MAX_LENGTH),
-    confirmEmail: string()
-      .email()
-      .required()
-      .oneOf([yupRef("email")]),
-    firstName: string().required().min(FIRST_NAME.MIN_LENGTH),
-    lastName: string().required().min(LAST_NAME.MIN_LENGTH),
-    roleId: number().required(),
-  })
-);
-
-defineWatchers({
-  isVisible: {
-    source: isVisible,
-    handler(value: boolean) {
-      if (!value) {
-        return;
-      }
-
-      setFormData({
-        ...defaultUser,
-        roleId: roles.value.length
-          ? parseInt(roles.value[0].value.toString())
-          : null,
-      });
-    },
-  },
-});
-
-const {
-  email: { value: email },
-  confirmEmail: { value: confirmEmail },
-  firstName: { value: firstName },
-  lastName: { value: lastName },
-  roleId: { value: roleId },
-} = fields;
-
 function close() {
   emits("update:is-visible", false);
 
@@ -218,30 +178,40 @@ function close() {
   }, 200);
 }
 
-const onSubmit = handleSubmit.withControlled(async formData => {
-  if (isLoading.value) {
-    return;
-  }
+const {
+  isLoading,
+  vModel: { email, confirmEmail, firstName, lastName, roleId },
+  getError,
+  hasError,
+  resetForm,
+  setFormData,
+  onSubmit,
+} = defineFormApiRequest<AddEditUserDto & { confirmEmail: string }>({
+  data: defaultUser,
 
-  isLoading.value = true;
+  schema: object({
+    email: string().email().required().max(EMAIL.MAX_LENGTH),
+    confirmEmail: string()
+      .email()
+      .required()
+      .oneOf([yupRef("email")]),
+    firstName: string().required().min(FIRST_NAME.MIN_LENGTH),
+    lastName: string().required().min(LAST_NAME.MIN_LENGTH),
+    roleId: number().required(),
+  }),
 
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  formCallHandler: async (formData, printSuccess) => {
     const { confirmEmail, ...payload } = formData;
 
     await usersStore.store(payload);
 
-    generalStore.messageProvider.success(`Account created!`);
+    printSuccess(`Account '${confirmEmail}' created!`);
 
     close();
-  } catch (error) {
-    console.error(error);
+  },
 
-    setValidationErrors(error);
-
-    generalStore.messageProvider.error(`Failed to create account!`);
-  } finally {
-    isLoading.value = false;
-  }
+  errorHandler: (error, printError) => {
+    printError(`Failed to create account!`);
+  },
 });
 </script>
