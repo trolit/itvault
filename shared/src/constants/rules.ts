@@ -36,6 +36,12 @@ export const FILE_RULES = {
   },
 };
 
+export const VARIANT_RULES = {
+  NAME: {
+    MIN_LENGTH: 2,
+  },
+};
+
 export const WORKSPACE_RULES = {
   NAME: {
     REGEX: /^[a-zA-Z0-9- ]*$/,

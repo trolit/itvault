@@ -26,9 +26,9 @@
         :validation-status="hasError('file')"
       >
         <n-upload
-          v-model:file-list="data"
+          v-model:file-list="uploadedFiles"
           :disabled="isLoading"
-          @before-upload="data = []"
+          @before-upload="uploadedFiles = []"
           @update-file-list="onFileListUpdate"
         >
           <n-button>Select file</n-button>
@@ -39,7 +39,7 @@
     <template #footer>
       <n-button
         :loading="isLoading"
-        :disabled="data.length === 0 || !name"
+        :disabled="uploadedFiles.length === 0 || !name"
         @click="onSubmit"
       >
         Submit
@@ -59,14 +59,13 @@ import {
   type UploadFileInfo,
 } from "naive-ui";
 import { ref, type Ref } from "vue";
-import cloneDeep from "lodash/cloneDeep";
 import { mixed, object, string } from "yup";
 
-import { defineForm } from "@/helpers/defineForm";
-import { useGeneralStore } from "@/store/general";
 import { useVariantsStore } from "@/store/variants";
+import { VARIANT_RULES } from "@shared/constants/rules";
 import { useModalHelpers } from "@/helpers/useModalHelpers";
 import type { AddVariantForm } from "@/types/AddVariantForm";
+import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 
 interface IProps {
   isVisible: boolean;
@@ -79,71 +78,58 @@ interface IEmits {
 const props = defineProps<IProps>();
 const emits = defineEmits<IEmits>();
 
-const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 
-const isLoading = ref(false);
-const data: Ref<UploadFileInfo[]> = ref([]);
-const defaultFormData: AddVariantForm = {
-  name: "",
-  file: null,
-};
+const uploadedFiles: Ref<UploadFileInfo[]> = ref([]);
 
 const { isVisible } = useModalHelpers(props, {
   onShow: () => {
     resetForm();
 
-    data.value = [];
+    uploadedFiles.value = [];
 
-    setFormData(cloneDeep(defaultFormData));
+    setFormData({
+      name: "",
+      file: null,
+    });
   },
 });
 
 const {
-  fields,
+  vModel: { name },
+  isLoading,
   getError,
   hasError,
   resetForm,
   setFormData,
-  handleSubmit,
-  setValidationErrors,
-} = defineForm<AddVariantForm>(
-  defaultFormData,
-  object({
-    name: string().required(),
+  onSubmit,
+} = defineFormApiRequest<AddVariantForm>({
+  data: {
+    name: "",
+    file: null,
+  },
+
+  schema: object({
+    name: string().trim().required().min(VARIANT_RULES.NAME.MIN_LENGTH),
     file: mixed<File>().required(),
-  })
-);
+  }),
 
-const {
-  name: { value: name },
-} = fields;
+  formCallHandler: async (value, printSuccess) => {
+    const formData = new FormData();
 
-const onSubmit = handleSubmit.withControlled(async value => {
-  if (isLoading.value || !value.file) {
-    return;
-  }
+    formData.append("name", value.name);
+    formData.append("file", value.file || "");
 
-  isLoading.value = true;
-
-  const formData = new FormData();
-
-  formData.append("name", value.name);
-  formData.append("file", value.file);
-
-  try {
     await variantsStore.store(formData);
 
-    generalStore.messageProvider.success(`Variant successfully added!`);
+    printSuccess(`Variant successfully added!`);
 
     emits("update:is-visible", false);
-  } catch (error) {
-    console.error(error);
+  },
 
-    setValidationErrors(error);
-  } finally {
-    isLoading.value = false;
-  }
+  errorHandler: (error, printError) => {
+    printError(`Failed to add variant!`);
+  },
 });
 
 function onFileListUpdate(fileList: UploadFileInfo[]) {
