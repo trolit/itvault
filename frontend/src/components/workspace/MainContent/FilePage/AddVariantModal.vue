@@ -7,7 +7,7 @@
     :bordered="true"
     :mask-closable="false"
     :style="{ width: '100vh' }"
-    @close="emit('update:is-visible', false)"
+    @close="$emit('update:is-visible', false)"
   >
     <n-form>
       <n-form-item
@@ -58,15 +58,26 @@ import {
   NFormItem,
   type UploadFileInfo,
 } from "naive-ui";
+import { ref, type Ref } from "vue";
 import cloneDeep from "lodash/cloneDeep";
-import { ref, toRefs, type Ref } from "vue";
 import { mixed, object, string } from "yup";
 
 import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
 import { useVariantsStore } from "@/store/variants";
-import { defineWatchers } from "@/helpers/defineWatchers";
+import { useModalHelpers } from "@/helpers/useModalHelpers";
 import type { AddVariantForm } from "@/types/AddVariantForm";
+
+interface IProps {
+  isVisible: boolean;
+}
+
+interface IEmits {
+  (event: "update:is-visible", state: boolean): void;
+}
+
+const props = defineProps<IProps>();
+const emits = defineEmits<IEmits>();
 
 const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
@@ -78,31 +89,13 @@ const defaultFormData: AddVariantForm = {
   file: null,
 };
 
-const props = defineProps({
-  isVisible: {
-    type: Boolean,
-    required: true,
-  },
-});
+const { isVisible } = useModalHelpers(props, {
+  onShow: () => {
+    resetForm();
 
-const emit = defineEmits(["update:is-visible"]);
+    data.value = [];
 
-const { isVisible } = toRefs(props);
-
-defineWatchers({
-  isVisible: {
-    source: isVisible,
-    handler(value: boolean) {
-      if (!value) {
-        return;
-      }
-
-      resetForm();
-
-      data.value = [];
-
-      setFormData(cloneDeep(defaultFormData));
-    },
+    setFormData(cloneDeep(defaultFormData));
   },
 });
 
@@ -143,7 +136,7 @@ const onSubmit = handleSubmit.withControlled(async value => {
 
     generalStore.messageProvider.success(`Variant successfully added!`);
 
-    emit("update:is-visible", false);
+    emits("update:is-visible", false);
   } catch (error) {
     console.error(error);
 
