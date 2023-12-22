@@ -124,29 +124,26 @@ import { useUsersStore } from "@/store/users";
 
 import { ACCOUNT_RULES } from "@shared/constants/rules";
 import { useModalHelpers } from "@/helpers/useModalHelpers";
+import type { Emits, Props } from "@/types/CommonModalTypes";
+import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
-import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 
-interface IProps {
-  isVisible: boolean;
+const props = defineProps<
+  Props & {
+    isLoadingRoles: boolean;
 
-  isLoadingRoles: boolean;
+    roles: PrimitiveSelectOption[];
+  }
+>();
+const emits = defineEmits<
+  Emits & {
+    (event: "select-blur"): void;
 
-  roles: PrimitiveSelectOption[];
-}
-
-interface IEmits {
-  (event: "select-blur"): void;
-
-  (event: "select-filter", intput: string): void;
-
-  (event: "update:is-visible", state: boolean): void;
-}
-
-const props = defineProps<IProps>();
-const emits = defineEmits<IEmits>();
+    (event: "select-filter", intput: string): void;
+  }
+>();
 
 const { roles } = toRefs(props);
 

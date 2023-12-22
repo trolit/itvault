@@ -94,17 +94,10 @@ import {
 import { computed } from "vue";
 
 import { useAuthStore } from "@/store/auth";
+import type { Emits, Props } from "@/types/CommonModalTypes";
 
-interface IProps {
-  isVisible: boolean;
-}
-
-interface IEmits {
-  (event: "update:is-visible", state: boolean): void;
-}
-
-defineProps<IProps>();
-defineEmits<IEmits>();
+defineProps<Props>();
+defineEmits<Emits>();
 
 const {
   profile: { permissions },

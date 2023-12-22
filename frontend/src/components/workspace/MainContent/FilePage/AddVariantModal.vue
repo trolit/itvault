@@ -65,18 +65,11 @@ import { useVariantsStore } from "@/store/variants";
 import { VARIANT_RULES } from "@shared/constants/rules";
 import { useModalHelpers } from "@/helpers/useModalHelpers";
 import type { AddVariantForm } from "@/types/AddVariantForm";
+import type { Emits, Props } from "@/types/CommonModalTypes";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 
-interface IProps {
-  isVisible: boolean;
-}
-
-interface IEmits {
-  (event: "update:is-visible", state: boolean): void;
-}
-
-const props = defineProps<IProps>();
-const emits = defineEmits<IEmits>();
+const props = defineProps<Props>();
+const emits = defineEmits<Emits>();
 
 const variantsStore = useVariantsStore();
 

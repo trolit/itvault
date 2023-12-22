@@ -41,20 +41,11 @@ import { NForm, NFormItem, NInput, NModal, NSpace, NButton } from "naive-ui";
 import { useFilesStore } from "@/store/files";
 import { useVariantsStore } from "@/store/variants";
 import { useModalHelpers } from "@/helpers/useModalHelpers";
+import type { Emits, Props } from "@/types/CommonModalTypes";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 
-interface IProps {
-  isVisible: boolean;
-
-  variantId: string;
-}
-
-interface IEmits {
-  (event: "update:is-visible", state: boolean): void;
-}
-
-const props = defineProps<IProps>();
-const emits = defineEmits<IEmits>();
+const props = defineProps<Props & { variantId: string }>();
+const emits = defineEmits<Emits>();
 
 const filesStore = useFilesStore();
 const variantsStore = useVariantsStore();

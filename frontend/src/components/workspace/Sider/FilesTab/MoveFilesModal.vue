@@ -98,20 +98,11 @@ import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { useDirectoriesStore } from "@/store/directories";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
+import type { Emits, Props } from "@/types/CommonModalTypes";
 import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
 
-interface IProps {
-  isVisible: boolean;
-
-  treeDropInfo: TreeDropInfo;
-}
-
-interface IEmits {
-  (event: "update:is-visible", state: boolean): void;
-}
-
-const props = defineProps<IProps>();
-const emits = defineEmits<IEmits>();
+const props = defineProps<Props & { treeDropInfo: TreeDropInfo }>();
+const emits = defineEmits<Emits>();
 
 const filesStore = useFilesStore();
 const generalStore = useGeneralStore();

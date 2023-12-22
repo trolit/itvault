@@ -48,20 +48,11 @@ import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
 import { FILE_RULES } from "@shared/constants/rules";
 import { useWorkspacesStore } from "@/store/workspaces";
+import type { Emits, Props } from "@/types/CommonModalTypes";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 
-interface IProps {
-  isVisible: boolean;
-
-  fileId: number;
-}
-
-interface IEmits {
-  (event: "update:is-visible", state: boolean): void;
-}
-
-const props = defineProps<IProps>();
-const emits = defineEmits<IEmits>();
+const props = defineProps<Props & { fileId: number }>();
+const emits = defineEmits<Emits>();
 
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();

@@ -124,23 +124,14 @@ import { useFilesStore } from "@/store/files";
 import { Add as UploadIcon } from "@vicons/carbon";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
+import type { Emits, Props } from "@/types/CommonModalTypes";
 import { DIRS_TO_IGNORE_FROM_UPLOAD } from "@shared/constants/config";
 
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
-interface IProps {
-  isVisible: boolean;
-}
-
-interface IEmits {
-  (event: "on-upload"): void;
-
-  (event: "update:is-visible", state: boolean): void;
-}
-
-defineProps<IProps>();
-const emits = defineEmits<IEmits>();
+defineProps<Props>();
+const emits = defineEmits<Emits & { (event: "on-upload"): void }>();
 
 const isLoading = ref(false);
 const MAX_FILES_PER_UPLOAD = 30;
