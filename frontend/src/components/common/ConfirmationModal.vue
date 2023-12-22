@@ -36,9 +36,14 @@ interface IProps {
   isLoading: boolean;
 }
 
-defineProps<IProps>();
+interface IEmits {
+  (event: "confirm"): void;
 
-const emits = defineEmits(["update:is-visible", "confirm"]);
+  (event: "update:is-visible", state: boolean): void;
+}
+
+defineProps<IProps>();
+const emits = defineEmits<IEmits>();
 
 function close() {
   emits("update:is-visible", false);

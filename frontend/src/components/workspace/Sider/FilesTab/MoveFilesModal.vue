@@ -106,14 +106,17 @@ interface IProps {
   treeDropInfo: TreeDropInfo;
 }
 
+interface IEmits {
+  (event: "update:is-visible", state: boolean): void;
+}
+
+const props = defineProps<IProps>();
+const emits = defineEmits<IEmits>();
+
 const filesStore = useFilesStore();
 const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 const directoriesStore = useDirectoriesStore();
-
-const props = defineProps<IProps>();
-
-const emits = defineEmits(["update:is-visible"]);
 
 const isLoading = ref(false);
 const { treeDropInfo } = toRefs(props);

@@ -56,12 +56,15 @@ interface IProps {
   fileId: number;
 }
 
-const filesStore = useFilesStore();
-const workspacesStore = useWorkspacesStore();
+interface IEmits {
+  (event: "update:is-visible", state: boolean): void;
+}
 
 const props = defineProps<IProps>();
+const emits = defineEmits<IEmits>();
 
-const emits = defineEmits(["update:is-visible"]);
+const filesStore = useFilesStore();
+const workspacesStore = useWorkspacesStore();
 
 const { fileId } = toRefs(props);
 
