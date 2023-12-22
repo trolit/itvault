@@ -35,15 +35,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRefs } from "vue";
 import { object, string } from "yup";
 import { NForm, NFormItem, NInput, NModal, NSpace, NButton } from "naive-ui";
 
 import { useFilesStore } from "@/store/files";
-import { defineForm } from "@/helpers/defineForm";
-import { useGeneralStore } from "@/store/general";
 import { useVariantsStore } from "@/store/variants";
-import { defineWatchers } from "@/helpers/defineWatchers";
+import { useModalHelpers } from "@/helpers/useModalHelpers";
+import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 
 interface IProps {
   isVisible: boolean;
@@ -51,78 +49,59 @@ interface IProps {
   variantId: string;
 }
 
-const filesStore = useFilesStore();
-const generalStore = useGeneralStore();
-const variantsStore = useVariantsStore();
+interface IEmits {
+  (event: "update:is-visible", state: boolean): void;
+}
 
 const props = defineProps<IProps>();
+const emits = defineEmits<IEmits>();
 
-const { isVisible } = toRefs(props);
+const filesStore = useFilesStore();
+const variantsStore = useVariantsStore();
 
-const emits = defineEmits(["update:is-visible"]);
+const { isVisible } = useModalHelpers(props, {
+  onShow: () => {
+    const tab = filesStore.activeTab
+      ? filesStore.activeTab.variantTabs.find(
+          tab => tab.variant.id === props.variantId
+        )
+      : undefined;
 
-const isLoading = ref(false);
-
-const { fields, getError, hasError, handleSubmit, setValidationErrors } =
-  defineForm(
-    {
-      name: "",
-    },
-    object({
-      name: string().required(),
-    })
-  );
+    if (tab) {
+      name.value = tab.variant.name;
+    }
+  },
+});
 
 const {
-  name: { value: name },
-} = fields;
+  isLoading,
+  vModel: { name },
+  getError,
+  hasError,
+  onSubmit,
+} = defineFormApiRequest<{ name: string }>({
+  data: {
+    name: "",
+  },
 
-defineWatchers({
-  isVisible: {
-    source: isVisible,
-    handler: (value: boolean) => {
-      if (!value) {
-        return;
-      }
+  schema: object({
+    name: string().trim().required(),
+  }),
 
-      const tab = filesStore.activeTab
-        ? filesStore.activeTab.variantTabs.find(
-            tab => tab.variant.id === props.variantId
-          )
-        : undefined;
+  formCallHandler: async (formData, printSuccess) => {
+    await variantsStore.patchName(props.variantId, formData.name);
 
-      if (tab) {
-        name.value = tab.variant.name;
-      }
-    },
+    printSuccess(`Variant renamed!`);
+
+    close();
+  },
+
+  errorHandler: (error, printError) => {
+    printError(`Variant rename operation failed!`);
   },
 });
 
 function close() {
   emits("update:is-visible", false);
 }
-
-const onSubmit = handleSubmit.withControlled(async formData => {
-  if (isLoading.value) {
-    return;
-  }
-
-  isLoading.value = true;
-
-  try {
-    await variantsStore.patchName(props.variantId, formData.name);
-
-    generalStore.messageProvider.success(`Variant renamed!`);
-
-    close();
-  } catch (error) {
-    console.error(error);
-
-    setValidationErrors(error);
-
-    generalStore.messageProvider.error(`Variant rename operation failed!`);
-  } finally {
-    isLoading.value = false;
-  }
-});
 </script>

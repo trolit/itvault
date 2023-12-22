@@ -72,24 +72,20 @@ import { defineWatchers } from "@/helpers/defineWatchers";
 import { useMarkdownService } from "@/services/useMarkdownService";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
+interface IProps {
+  id: number;
+
+  fullName: string;
+}
+
+const props = defineProps<IProps>();
+
 const usersStore = useUsersStore();
 const dateService = useDateService();
 const markdown = useMarkdownService();
 
 const page = ref(1);
 const isLoading = ref(false);
-
-const props = defineProps({
-  id: {
-    type: Number,
-    required: true,
-  },
-
-  fullName: {
-    type: String,
-    required: true,
-  },
-});
 
 const { id } = toRefs(props);
 

@@ -117,7 +117,7 @@ import {
   NButton,
   NFormItem,
 } from "naive-ui";
-import { ref, toRefs } from "vue";
+import { toRefs } from "vue";
 import { number, object, string, ref as yupRef } from "yup";
 
 import { useUsersStore } from "@/store/users";
@@ -163,8 +163,6 @@ const { isVisible } = useModalHelpers(props, {
   },
 });
 
-const isLoading = ref(false);
-
 const defaultUser: AddEditUserDto & { confirmEmail: string } = {
   email: "",
   confirmEmail: "",
@@ -184,6 +182,7 @@ function close() {
 }
 
 const {
+  isLoading,
   vModel: { email, confirmEmail, firstName, lastName, roleId },
   getError,
   hasError,

@@ -133,15 +133,20 @@ interface IProps {
   isVisible: boolean;
 }
 
+interface IEmits {
+  (event: "on-upload"): void;
+
+  (event: "update:is-visible", state: boolean): void;
+}
+
 defineProps<IProps>();
+const emits = defineEmits<IEmits>();
 
 const isLoading = ref(false);
 const MAX_FILES_PER_UPLOAD = 30;
 const customPathValue = ref("");
 const fileUploadDir = ref(filesStore.ROOT);
 const data: Ref<UploadFileInfo[]> = ref([]);
-
-const emits = defineEmits(["on-upload", "update:is-visible"]);
 
 const customPathValueRegex = new RegExp(/^\.(\/[.a-z0-9-]+)*$/);
 
