@@ -1,4 +1,4 @@
-import { INoteAddDto } from "@shared/types/dtos/Note";
+import { IAddNoteDto } from "@shared/types/dtos/Note";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {
@@ -6,7 +6,7 @@ export namespace UpdateControllerTypes {
       id: number;
     };
 
-    export type Body = Pick<INoteAddDto, "text">;
+    export type Body = Pick<IAddNoteDto, "text">;
 
     export type Request = CustomRequest<Params, Body>;
   }

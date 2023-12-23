@@ -14,7 +14,7 @@ export interface INoteDto {
   isDeleted: boolean;
 }
 
-export interface INoteAddDto {
+export interface IAddNoteDto {
   text: string;
 
   resource: ResourceDto;
