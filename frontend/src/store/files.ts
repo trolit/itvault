@@ -1,11 +1,15 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import type {
+  IFileDto,
+  IFileVariantDto,
+  IPatchFilenameDto,
+} from "@shared/types/dtos/File";
 import { useVariantsStore } from "./variants";
 import type { FileTab } from "@/types/FileTab";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBundleFileDto } from "@shared/types/dtos/Bundle";
-import type { IFileDto, IFileVariantDto } from "@shared/types/dtos/File";
 
 interface IState {
   ROOT: string;
@@ -84,7 +88,7 @@ export const useFilesStore = defineStore("files", {
         workspaceId,
       };
 
-      const payload = {
+      const payload: IPatchFilenameDto = {
         filename,
       };
 

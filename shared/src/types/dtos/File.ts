@@ -31,3 +31,7 @@ export interface IMoveFilesDto {
 
   targetDirectoryId: number;
 }
+
+export interface IPatchFilenameDto {
+  filename: string;
+}
