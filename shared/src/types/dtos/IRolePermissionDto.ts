@@ -1,4 +1,4 @@
-import { IPermissionDto } from "./IPermissionDto";
+import { IPermissionDto } from "./Permission";
 
 export interface IRolePermissionDto extends IPermissionDto {
   enabled: boolean;

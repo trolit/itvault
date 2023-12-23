@@ -1,7 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import type { IPermissionDto } from "@shared/types/dtos/IPermissionDto";
+import type { IPermissionDto } from "@shared/types/dtos/Permission";
 
 interface IState {
   items: IPermissionDto[];
