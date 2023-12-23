@@ -12,4 +12,6 @@ export interface IBlueprintDto {
   createdAt: string;
 
   updatedAt: string;
+
+  isDeleted: boolean;
 }

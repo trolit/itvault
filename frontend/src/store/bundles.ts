@@ -7,10 +7,10 @@ import { Drawer } from "@/types/enums/Drawer";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBundleDto } from "@shared/types/dtos/Bundle";
 import type { IAddBundleDto } from "@shared/types/dtos/Bundle";
+import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import type { IBundleBlueprintDto } from "@shared/types/dtos/IBundleBlueprintDto";
 
 interface IState {
   total: number;
@@ -79,7 +79,7 @@ export const useBundlesStore = defineStore("bundles", {
         workspaceId,
       };
 
-      const { data } = await axios.get<IBundleBlueprintDto[]>(
+      const { data } = await axios.get<IBlueprintDto[]>(
         `v1/bundles/${bundleId}/blueprints`,
         {
           params,
@@ -170,7 +170,7 @@ export const useBundlesStore = defineStore("bundles", {
       return axios.delete(`v1/bundles/${id}`, { params });
     },
 
-    setBundleBlueprints(id: number, blueprints: IBundleBlueprintDto[]) {
+    setBundleBlueprints(id: number, blueprints: IBlueprintDto[]) {
       const bundle = this.findBundleById(id);
 
       if (!bundle) {

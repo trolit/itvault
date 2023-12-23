@@ -1,6 +1,6 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
-import { BundleBlueprintMapper } from "@mappers/BundleBlueprintMapper";
+import { BlueprintMapper } from "@mappers/BlueprintMapper";
 
 export namespace GetBlueprintsControllerTypes {
   export namespace v1 {
@@ -12,6 +12,6 @@ export namespace GetBlueprintsControllerTypes {
 
     export type Request = CustomRequest<Params, undefined, Query>;
 
-    export type Response = CustomResponse<BundleBlueprintMapper[]>;
+    export type Response = CustomResponse<BlueprintMapper[]>;
   }
 }
