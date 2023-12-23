@@ -5,8 +5,8 @@ import cloneDeep from "lodash/cloneDeep";
 import { useFilesStore } from "./files";
 import { useWorkspacesStore } from "./workspaces";
 import type { VariantTab } from "@/types/VariantTab";
+import type { IBucketDto } from "@shared/types/dtos/Bucket";
 import type { IVariantDto } from "@shared/types/dtos/Variant";
-import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 
 interface IState {}

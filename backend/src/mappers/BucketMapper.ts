@@ -1,7 +1,7 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Bucket } from "@entities/Bucket";
-import { IBucketDto } from "@shared/types/dtos/IBucketDto";
+import { IBucketDto } from "@shared/types/dtos/Bucket";
 import { BucketContent } from "@shared/types/BucketContent";
 
 export class BucketMapper extends BaseMapper<Bucket> implements IBucketDto {
