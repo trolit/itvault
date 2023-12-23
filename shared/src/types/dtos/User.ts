@@ -1,3 +1,5 @@
+import { IRolePermissionDto } from "./Role";
+
 export interface IUserDto {
   id: number;
 
@@ -14,6 +16,20 @@ export interface IUserDto {
   isActive: boolean;
 
   invitedBy: string | null;
+}
+
+export interface ILoggedUserDto {
+  id: number;
+
+  email: string;
+
+  fullName: string;
+
+  roleId: number;
+
+  roleName: string;
+
+  permissions: IRolePermissionDto[];
 }
 
 export interface IAuthorDto {

@@ -3,10 +3,9 @@ import { defineStore } from "pinia";
 import { Socket } from "engine.io-client";
 
 import { WEBSOCKETS } from "@/config";
-import type { ISignInDto } from "@shared/types/dtos/User";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
-import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
+import type { ISignInDto, ILoggedUserDto } from "@shared/types/dtos/User";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 import type { SocketSendMessage } from "@shared/types/transport/SocketSendMessage";
 
