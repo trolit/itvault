@@ -1,7 +1,7 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { User } from "@entities/User";
-import { IUserDto } from "@shared/types/dtos/IUserDto";
+import { IUserDto } from "@shared/types/dtos/User";
 
 export class UserMapper extends BaseMapper<User> implements IUserDto {
   id: number;

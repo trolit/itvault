@@ -2,8 +2,8 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
+import type { IUserDto } from "@shared/types/dtos/User";
 import type { INoteDto } from "@shared/types/dtos/Note";
-import type { IUserDto } from "@shared/types/dtos/IUserDto";
 import type { SignUpDto } from "@shared/types/dtos/SignUpDto";
 import type { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
