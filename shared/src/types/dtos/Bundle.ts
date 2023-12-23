@@ -25,6 +25,18 @@ export interface IBundleDto {
   createdAt: string;
 }
 
+export interface IBundleFileDto {
+  fileId: number;
+
+  variantId: string;
+
+  name: string;
+
+  version: string;
+
+  isDeleted: boolean;
+}
+
 export interface IAddBundleDtoValue {
   blueprintId: number;
 
@@ -37,16 +49,4 @@ export interface IAddBundleDto {
   values: IAddBundleDtoValue[];
 
   expiration: BundleExpire;
-}
-
-export interface IBundleFileDto {
-  fileId: number;
-
-  variantId: string;
-
-  name: string;
-
-  version: string;
-
-  isDeleted: boolean;
 }
