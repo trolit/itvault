@@ -7,7 +7,7 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { Permission } from "@entities/Permission";
-import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
+import { IRoleAddEditDto } from "@shared/types/dtos/Role";
 import { IPermissionUpdateDto } from "@shared/types/dtos/Permission";
 
 @injectable()
@@ -19,7 +19,7 @@ export class RoleService implements IRoleService {
 
   async create(
     userId: number,
-    data: AddEditRoleDto
+    data: IRoleAddEditDto
   ): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
@@ -69,7 +69,7 @@ export class RoleService implements IRoleService {
   async update(
     id: number,
     userId: number,
-    data: AddEditRoleDto
+    data: IRoleAddEditDto
   ): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
