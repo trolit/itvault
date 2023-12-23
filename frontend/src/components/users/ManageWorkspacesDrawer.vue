@@ -120,8 +120,8 @@ import type { IUserDto } from "@shared/types/dtos/User";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
+import type { IWorkspaceDto } from "@shared/types/dtos/Workspace";
 import LoadingSection from "@/components/common/LoadingSection.vue";
-import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 
 interface IProps {

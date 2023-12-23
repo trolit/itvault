@@ -5,7 +5,7 @@ import cloneDeep from "lodash/cloneDeep";
 import type { IUserDto } from "@shared/types/dtos/User";
 import type { INoteDto } from "@shared/types/dtos/Note";
 import type { IAddUserDto } from "@shared/types/dtos/User";
-import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
+import type { IWorkspaceDto } from "@shared/types/dtos/Workspace";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { IUpdateUserDto, ISignUpDto } from "@shared/types/dtos/User";
