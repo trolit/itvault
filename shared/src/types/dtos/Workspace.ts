@@ -11,3 +11,11 @@ export interface IWorkspaceDto {
 
   tags: string[];
 }
+
+export interface IAddEditWorkspaceDto {
+  name: string;
+
+  description: string;
+
+  tags: string[];
+}

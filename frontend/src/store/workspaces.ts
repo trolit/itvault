@@ -4,6 +4,10 @@ import kebabCase from "lodash/kebabCase";
 import type { TreeOption } from "naive-ui";
 import type { RouteLocationNormalizedLoaded } from "vue-router";
 
+import type {
+  IWorkspaceDto,
+  IAddEditWorkspaceDto,
+} from "@shared/types/dtos/Workspace";
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
@@ -15,12 +19,10 @@ import type { IFileDto } from "@shared/types/dtos/File";
 import { useDateService } from "@/services/useDateService";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import type { IDirectoryDto } from "@shared/types/dtos/Directory";
-import type { IWorkspaceDto } from "@shared/types/dtos/Workspace";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { WorkspaceSearchParams } from "@/types/WorkspaceSearchParams";
-import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 import { getUniqueTreeRelativePaths } from "@/helpers/getUniqueTreeRelativePaths";
 import type { UpdateWorkspaceData } from "@shared/types/transport/WorkspaceMessages";
 
@@ -262,13 +264,13 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
-    async store(payload: AddEditWorkspaceDto) {
-      return axios.post<AddEditWorkspaceDto>("v1/workspaces", payload, {
+    async store(payload: IAddEditWorkspaceDto) {
+      return axios.post<IAddEditWorkspaceDto>("v1/workspaces", payload, {
         params: { version: 1 },
       });
     },
 
-    async update(payload: AddEditWorkspaceDto) {
+    async update(payload: IAddEditWorkspaceDto) {
       if (!this.itemToEdit || !this.itemToEdit.id) {
         return;
       }

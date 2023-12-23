@@ -8,7 +8,7 @@ import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
-import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
+import { IAddEditWorkspaceDto } from "@shared/types/dtos/Workspace";
 
 @injectable()
 export class WorkspaceService implements IWorkspaceService {
@@ -20,7 +20,7 @@ export class WorkspaceService implements IWorkspaceService {
   ) {}
 
   async create(
-    data: AddEditWorkspaceDto
+    data: IAddEditWorkspaceDto
   ): Promise<TransactionResult<Workspace>> {
     const transaction = await this._workspaceRepository.useTransaction();
 
@@ -57,7 +57,7 @@ export class WorkspaceService implements IWorkspaceService {
 
   async update(
     id: number,
-    data: AddEditWorkspaceDto
+    data: IAddEditWorkspaceDto
   ): Promise<TransactionResult<Workspace>> {
     const transaction = await this._workspaceRepository.useTransaction();
 
