@@ -5,7 +5,7 @@ import { useVariantsStore } from "./variants";
 import type { FileTab } from "@/types/FileTab";
 import { useWorkspacesStore } from "./workspaces";
 import type { IFileDto } from "@shared/types/dtos/IFileDto";
-import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
+import type { IBundleFileDto } from "@shared/types/dtos/Bundle";
 import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
 
 interface IState {
