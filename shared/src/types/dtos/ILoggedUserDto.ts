@@ -1,4 +1,4 @@
-import { IRolePermissionDto } from "./Permission";
+import { IRolePermissionDto } from "./Role";
 
 export interface ILoggedUserDto {
   id: number;
