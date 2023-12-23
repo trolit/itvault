@@ -5,8 +5,8 @@ import { useDrawerStore } from "./drawer";
 import type { Bundle } from "@/types/Bundle";
 import { Drawer } from "@/types/enums/Drawer";
 import { useWorkspacesStore } from "./workspaces";
+import type { IAddBundleDto } from "@shared/types/dtos/Bundle";
 import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
-import type { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
@@ -126,7 +126,7 @@ export const useBundlesStore = defineStore("bundles", {
       });
     },
 
-    async store(payload: AddBundleDto) {
+    async store(payload: IAddBundleDto) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {

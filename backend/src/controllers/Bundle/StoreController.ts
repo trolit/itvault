@@ -8,7 +8,7 @@ import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsume
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { Value } from "@shared/types/dtos/AddBundleDto";
+import { IAddBundleDtoValue } from "@shared/types/dtos/Bundle";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 
 import { sendToQueue } from "@helpers/sendToQueue";
@@ -46,10 +46,10 @@ export class StoreController extends BaseController {
       body: { values, note, expiration },
     } = request;
 
-    const variantIds = getUniqueValuesFromCollection<Value, string>(
-      values,
-      "variantIds"
-    );
+    const variantIds = getUniqueValuesFromCollection<
+      IAddBundleDtoValue,
+      string
+    >(values, "variantIds");
 
     const bundle = await this._bundleRepository.primitiveSave({
       note,

@@ -6,7 +6,7 @@ import { IFileRepository } from "types/repositories/IFileRepository";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
-import { Value } from "@shared/types/dtos/AddBundleDto";
+import { IAddBundleDtoValue } from "@shared/types/dtos/Bundle";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 import { setYupError } from "@helpers/yup/setError";
@@ -23,7 +23,7 @@ const querySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Query> = object(
   }
 );
 
-const valueSchema: SuperSchema.Fragment<Value> = object({
+const valueSchema: SuperSchema.Fragment<IAddBundleDtoValue> = object({
   blueprintId: number().integer().required(),
   variantIds: array().of(string().required()).required(),
 });
@@ -34,11 +34,11 @@ const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
     .of(valueSchema)
     .min(1)
     .required()
-    .test(async (values: Value[], ctx) => {
-      const uniqueVariantIds = getUniqueValuesFromCollection<Value, string>(
-        values,
-        "variantIds"
-      );
+    .test(async (values: IAddBundleDtoValue[], ctx) => {
+      const uniqueVariantIds = getUniqueValuesFromCollection<
+        IAddBundleDtoValue,
+        string
+      >(values, "variantIds");
 
       const fileRepository = getInstanceOf<IFileRepository>(Di.FileRepository);
 

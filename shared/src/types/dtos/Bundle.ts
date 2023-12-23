@@ -1,15 +1,15 @@
 import { BundleExpire } from "../enums/BundleExpire";
 
-export type Value = {
+export interface IAddBundleDtoValue {
   blueprintId: number;
 
   variantIds: string[];
-};
+}
 
-export type AddBundleDto = {
+export interface IAddBundleDto {
   note?: string;
 
-  values: Value[];
+  values: IAddBundleDtoValue[];
 
   expiration: BundleExpire;
-};
+}
