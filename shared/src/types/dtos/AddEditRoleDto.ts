@@ -1,9 +1,9 @@
-import { UpdatePermissionDto } from "./UpdatePermissionDto";
+import { IPermissionUpdateDto } from "./Permission";
 
 export type AddEditRoleDto = {
   name: string;
 
   description: string;
 
-  permissions: UpdatePermissionDto[];
+  permissions: IPermissionUpdateDto[];
 };

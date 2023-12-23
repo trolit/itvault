@@ -9,3 +9,9 @@ export interface IPermissionDto {
 export interface IRolePermissionDto extends IPermissionDto {
   enabled: boolean;
 }
+
+export interface IPermissionUpdateDto {
+  signature: string;
+
+  enabled: boolean;
+}

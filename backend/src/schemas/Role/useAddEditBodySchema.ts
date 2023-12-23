@@ -8,13 +8,13 @@ import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
 import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
-import { UpdatePermissionDto } from "@shared/types/dtos/UpdatePermissionDto";
+import { IPermissionUpdateDto } from "@shared/types/dtos/Permission";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
-const permissionSchema: SuperSchema.Fragment<UpdatePermissionDto> = object({
+const permissionSchema: SuperSchema.Fragment<IPermissionUpdateDto> = object({
   signature: string().required(),
 
   enabled: boolean().required(),
