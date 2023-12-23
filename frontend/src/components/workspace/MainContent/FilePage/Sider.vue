@@ -128,7 +128,7 @@ import RenameVariantModal from "./RenameVariantModal.vue";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
-import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
+import type { IVariantDto } from "@shared/types/dtos/Variant";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 

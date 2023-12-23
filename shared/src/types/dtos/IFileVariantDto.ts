@@ -1,4 +1,4 @@
-import { IVariantDto } from "./IVariantDto";
+import { IVariantDto } from "./Variant";
 
 export interface IFileVariantDto {
   id: number;
