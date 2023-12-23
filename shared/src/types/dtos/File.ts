@@ -35,3 +35,7 @@ export interface IMoveFilesDto {
 export interface IPatchFilenameDto {
   filename: string;
 }
+
+export interface IPatchRelativePathDto {
+  relativePath: string;
+}

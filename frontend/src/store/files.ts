@@ -5,6 +5,7 @@ import type {
   IFileDto,
   IFileVariantDto,
   IPatchFilenameDto,
+  IPatchRelativePathDto,
 } from "@shared/types/dtos/File";
 import { useVariantsStore } from "./variants";
 import type { FileTab } from "@/types/FileTab";
@@ -105,7 +106,7 @@ export const useFilesStore = defineStore("files", {
         workspaceId,
       };
 
-      const payload = {
+      const payload: IPatchRelativePathDto = {
         relativePath,
       };
 
