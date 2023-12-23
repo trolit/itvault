@@ -21,7 +21,7 @@ export interface IRolePermissionDto extends IPermissionDto {
   enabled: boolean;
 }
 
-export interface IRoleAddEditDto {
+export interface IAddEditRoleDto {
   name: string;
 
   description: string;

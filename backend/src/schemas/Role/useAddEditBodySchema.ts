@@ -7,7 +7,7 @@ import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
-import { IRoleAddEditDto } from "@shared/types/dtos/Role";
+import { IAddEditRoleDto } from "@shared/types/dtos/Role";
 import { IPermissionUpdateDto } from "@shared/types/dtos/Permission";
 
 import { setYupError } from "@helpers/yup/setError";
@@ -22,7 +22,7 @@ const permissionSchema: SuperSchema.Fragment<IPermissionUpdateDto> = object({
 
 export const useAddEditBodySchema: (
   id?: number
-) => SuperSchema.Fragment<IRoleAddEditDto> = (id?: number) =>
+) => SuperSchema.Fragment<IAddEditRoleDto> = (id?: number) =>
   object({
     name: string()
       .required()

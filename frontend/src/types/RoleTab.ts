@@ -1,9 +1,9 @@
 import type {
-  IRoleAddEditDto,
+  IAddEditRoleDto,
   IRolePermissionDto,
 } from "@shared/types/dtos/Role";
 
-export type Form = Pick<IRoleAddEditDto, "name" | "description"> & {
+export type Form = Pick<IAddEditRoleDto, "name" | "description"> & {
   permissions: IRolePermissionDto[];
 };
 
