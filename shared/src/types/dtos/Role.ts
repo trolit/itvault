@@ -1,4 +1,4 @@
-import { IAuthorDto } from "./IAuthorDto";
+import { IAuthorDto } from "./User";
 import { IPermissionDto, IPermissionUpdateDto } from "./Permission";
 
 export interface IRoleDto {
