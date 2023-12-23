@@ -1,20 +1,6 @@
 import { BundleExpire } from "../enums/BundleExpire";
 import { BundleStatus } from "../enums/BundleStatus";
 
-export interface IAddBundleDtoValue {
-  blueprintId: number;
-
-  variantIds: string[];
-}
-
-export interface IAddBundleDto {
-  note?: string;
-
-  values: IAddBundleDtoValue[];
-
-  expiration: BundleExpire;
-}
-
 export interface IBundleDto {
   id: number;
 
@@ -37,6 +23,20 @@ export interface IBundleDto {
   };
 
   createdAt: string;
+}
+
+export interface IAddBundleDtoValue {
+  blueprintId: number;
+
+  variantIds: string[];
+}
+
+export interface IAddBundleDto {
+  note?: string;
+
+  values: IAddBundleDtoValue[];
+
+  expiration: BundleExpire;
 }
 
 export interface IBundleFileDto {

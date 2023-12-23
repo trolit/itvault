@@ -126,8 +126,8 @@ import { BLUEPRINT_RULES } from "@shared/constants/rules";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { Permission } from "@shared/types/enums/Permission";
+import type { IAddEditBlueprintDto } from "@shared/types/dtos/Blueprint";
 import RequirePermission from "@/components/common/RequirePermission.vue";
-import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 
 const authStore = useAuthStore();
 const drawerStore = useDrawerStore();
@@ -137,13 +137,13 @@ const blueprintsStore = useBlueprintsStore();
 const isLoading = ref(false);
 const { itemToEdit } = storeToRefs(blueprintsStore);
 
-const defaultFormData: AddEditBlueprintDto = {
+const defaultFormData: IAddEditBlueprintDto = {
   name: "",
   color: "#D0A056",
   description: "",
 };
 
-const initialFormData: Ref<Partial<AddEditBlueprintDto>> = ref(
+const initialFormData: Ref<Partial<IAddEditBlueprintDto>> = ref(
   cloneDeep(defaultFormData)
 );
 
@@ -158,7 +158,7 @@ const {
   handleSubmit,
   currentFormData,
   setValidationErrors,
-} = defineForm<AddEditBlueprintDto>(
+} = defineForm<IAddEditBlueprintDto>(
   defaultFormData,
   object({
     name: string().required(),

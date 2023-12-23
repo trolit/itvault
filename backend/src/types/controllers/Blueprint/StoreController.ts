@@ -1,13 +1,13 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
-import { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
+import { IAddEditBlueprintDto } from "@shared/types/dtos/Blueprint";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
     export type Query = WorkspaceId;
 
-    export type Body = AddEditBlueprintDto;
+    export type Body = IAddEditBlueprintDto;
 
     export type Request = CustomRequest<undefined, Body, Query>;
 
