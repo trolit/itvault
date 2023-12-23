@@ -1,6 +1,6 @@
 import type { VariantTab } from "./VariantTab";
+import type { IFileDto } from "@shared/types/dtos/File";
 import type { INoteDto } from "@shared/types/dtos/Note";
-import type { IFileDto } from "@shared/types/dtos/IFileDto";
 
 export type FileTab = {
   file: IFileDto;

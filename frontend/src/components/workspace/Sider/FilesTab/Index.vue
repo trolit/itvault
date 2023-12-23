@@ -44,8 +44,8 @@ import { NScrollbar, NAlert, NButton, NIcon } from "naive-ui";
 import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
 import UploadFilesModal from "./UploadFilesModal.vue";
+import type { IFileDto } from "@shared/types/dtos/File";
 import { useWorkspacesStore } from "@/store/workspaces";
-import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
