@@ -104,8 +104,8 @@ import {
 } from "naive-ui";
 
 import { useBlueprintsStore } from "@/store/blueprints";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 import LoadingSection from "@/components/common/LoadingSection.vue";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const props = defineProps({
   selectedBlueprints: {

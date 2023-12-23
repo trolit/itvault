@@ -1,4 +1,4 @@
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
 
 export type BundleModalItem = {

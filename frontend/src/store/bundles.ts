@@ -6,7 +6,7 @@ import type { Bundle } from "@/types/Bundle";
 import { Drawer } from "@/types/enums/Drawer";
 import { useWorkspacesStore } from "./workspaces";
 import type { IBundleDto } from "@shared/types/dtos/Bundle";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { IAddBundleDto, IBundleFileDto } from "@shared/types/dtos/Bundle";

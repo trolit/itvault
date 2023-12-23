@@ -50,9 +50,9 @@ import { useGeneralStore } from "@/store/general";
 import type { BundleModalItem } from "@/types/BundleModalItem";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
 import type { IAddBundleDtoValue } from "@shared/types/dtos/Bundle";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
 
 const bundlesStore = useBundlesStore();

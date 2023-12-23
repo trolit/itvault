@@ -6,8 +6,8 @@ import { useFilesStore } from "./files";
 import { useWorkspacesStore } from "./workspaces";
 import type { VariantTab } from "@/types/VariantTab";
 import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 import type { IVariantDto } from "@shared/types/dtos/IVariantDto";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 interface IState {}
 
