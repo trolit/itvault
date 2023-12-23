@@ -109,8 +109,8 @@ import { defineWatchers } from "@/helpers/defineWatchers";
 import { WORKSPACE_RULES } from "@shared/constants/rules";
 import { Permission } from "@shared/types/enums/Permission";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
+import type { IAddEditWorkspaceDto } from "@shared/types/dtos/Workspace";
 import RequirePermission from "@/components/common/RequirePermission.vue";
-import type { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
 
 const tagsStore = useTagsStore();
 const drawerStore = useDrawerStore();
@@ -123,13 +123,13 @@ const isLoadingTags = ref(false);
 const options: Ref<string[]> = ref([]);
 const { itemToEdit } = storeToRefs(workspacesStore);
 
-const defaultFormData: AddEditWorkspaceDto = {
+const defaultFormData: IAddEditWorkspaceDto = {
   name: "",
   description: "",
   tags: [],
 };
 
-const initialFormData: Ref<Partial<AddEditWorkspaceDto>> = ref(
+const initialFormData: Ref<Partial<IAddEditWorkspaceDto>> = ref(
   cloneDeep(defaultFormData)
 );
 
@@ -202,7 +202,7 @@ const {
   setFormData,
   CURRENT_FORM_DATA,
   onSubmit,
-} = defineFormApiRequest<AddEditWorkspaceDto>({
+} = defineFormApiRequest<IAddEditWorkspaceDto>({
   data: {
     name: "",
     description: "",

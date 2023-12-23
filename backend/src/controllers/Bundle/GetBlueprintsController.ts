@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { BundleBlueprintMapper } from "@mappers/BundleBlueprintMapper";
+import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { GetBlueprintsControllerTypes } from "types/controllers/Bundle/GetBlueprintsController";
@@ -52,9 +52,7 @@ export class GetBlueprintsController extends BaseController {
       },
     });
 
-    const result = this.mapper
-      .map<Blueprint>(blueprints)
-      .to(BundleBlueprintMapper);
+    const result = this.mapper.map<Blueprint>(blueprints).to(BlueprintMapper);
 
     return this.finalizeRequest(response, HTTP.OK, result);
   }

@@ -2,19 +2,18 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
-import type { INoteDto } from "@shared/types/dtos/INoteDto";
-import type { IUserDto } from "@shared/types/dtos/IUserDto";
-import type { SignUpDto } from "@shared/types/dtos/SignUpDto";
-import type { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
-import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
+import type { IUserDto } from "@shared/types/dtos/User";
+import type { INoteDto } from "@shared/types/dtos/Note";
+import type { IAddUserDto } from "@shared/types/dtos/User";
+import type { IWorkspaceDto } from "@shared/types/dtos/Workspace";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
-import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { IUpdateUserDto, ISignUpDto } from "@shared/types/dtos/User";
 
 interface IState {
   total: number;
   items: IUserDto[];
-  itemsToUpdate: UpdateUserDto[];
+  itemsToUpdate: IUpdateUserDto[];
   notes: PaginatedResponse<INoteDto>;
 }
 
@@ -67,7 +66,7 @@ export const useUsersStore = defineStore("users", {
       this.notes.total = total;
     },
 
-    async store(payload: AddEditUserDto) {
+    async store(payload: IAddUserDto) {
       return axios.post<IUserDto>("v1/users", payload, {
         params: { version: 1 },
       });
@@ -88,7 +87,7 @@ export const useUsersStore = defineStore("users", {
       );
     },
 
-    async signUp(payload: SignUpDto) {
+    async signUp(payload: ISignUpDto) {
       return axios.post(`v1/users/sign-up`, payload, {
         params: { version: 1 },
       });
@@ -132,7 +131,7 @@ export const useUsersStore = defineStore("users", {
       return this.itemsToUpdate.find(itemToUpdate => itemToUpdate.id === id);
     },
 
-    removeDataKey(key: "roleId" | "isActive", item: UpdateUserDto) {
+    removeDataKey(key: "roleId" | "isActive", item: IUpdateUserDto) {
       delete item.data[key];
 
       if (!Object.keys(item.data).length) {

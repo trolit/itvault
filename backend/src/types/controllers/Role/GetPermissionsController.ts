@@ -1,4 +1,4 @@
-import { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
+import { IRolePermissionDto } from "@shared/types/dtos/Role";
 
 export namespace GetPermissionsControllerTypes {
   export namespace v1 {

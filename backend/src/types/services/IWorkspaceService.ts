@@ -1,12 +1,12 @@
 import { Workspace } from "@entities/Workspace";
 import { TransactionResult } from "types/TransactionResult";
-import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
+import { IAddEditWorkspaceDto } from "@shared/types/dtos/Workspace";
 
 export interface IWorkspaceService {
-  create(data: AddEditWorkspaceDto): Promise<TransactionResult<Workspace>>;
+  create(data: IAddEditWorkspaceDto): Promise<TransactionResult<Workspace>>;
 
   update(
     id: number,
-    data: AddEditWorkspaceDto
+    data: IAddEditWorkspaceDto
   ): Promise<TransactionResult<Workspace>>;
 }

@@ -19,7 +19,7 @@ import type { PropType } from "vue";
 import { NThing, NIcon, NAvatar } from "naive-ui";
 import { Growth as SizeIcon } from "@vicons/carbon";
 
-import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
+import type { IBundleDto } from "@shared/types/dtos/Bundle";
 
 defineProps({
   bundle: {

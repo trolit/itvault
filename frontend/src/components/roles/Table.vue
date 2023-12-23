@@ -29,8 +29,8 @@ import {
 import { ref, onBeforeMount, type Ref, h } from "vue";
 
 import { useRolesStore } from "@/store/roles";
+import type { IRoleDto } from "@shared/types/dtos/Role";
 import { useDateService } from "@/services/useDateService";
-import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 
 const rolesStore = useRolesStore();
 const dateService = useDateService();

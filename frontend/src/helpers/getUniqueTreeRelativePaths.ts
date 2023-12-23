@@ -1,7 +1,7 @@
 import orderBy from "lodash/orderBy";
 
-import type { IFileDto } from "@shared/types/dtos/IFileDto";
-import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
+import type { IFileDto } from "@shared/types/dtos/File";
+import type { IDirectoryDto } from "@shared/types/dtos/Directory";
 
 export const getUniqueTreeRelativePaths = (
   tree: (IDirectoryDto | IFileDto)[]

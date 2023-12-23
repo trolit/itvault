@@ -9,7 +9,7 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 import { Di } from "@enums/Di";
 import { User } from "@entities/User";
 import { Role } from "@entities/Role";
-import { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
+import { IUpdateUserDto } from "@shared/types/dtos/User";
 
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
@@ -21,12 +21,12 @@ export class UserService implements IUserService {
   ) {}
 
   async updateMany(
-    usersToUpdate: UpdateUserDto[]
+    usersToUpdate: IUpdateUserDto[]
   ): Promise<TransactionResult<User[]>> {
     const transaction = await this._userRepository.useTransaction();
     const { manager } = transaction;
 
-    const uniqueRoleIds = getUniqueValuesFromCollection<UpdateUserDto, number>(
+    const uniqueRoleIds = getUniqueValuesFromCollection<IUpdateUserDto, number>(
       usersToUpdate,
       "data.roleId"
     );

@@ -1,9 +1,9 @@
-import { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
+import { IUpdateUserDto } from "@shared/types/dtos/User";
 
 export namespace UpdateManyControllerTypes {
   export namespace v1 {
     export type Body = {
-      values: UpdateUserDto[];
+      values: IUpdateUserDto[];
     };
 
     export type Request = CustomRequest<void, Body>;

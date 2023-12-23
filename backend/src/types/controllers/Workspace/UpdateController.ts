@@ -1,4 +1,4 @@
-import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
+import { IAddEditWorkspaceDto } from "@shared/types/dtos/Workspace";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {
@@ -6,9 +6,9 @@ export namespace UpdateControllerTypes {
       id: number;
     };
 
-    export type Body = AddEditWorkspaceDto;
+    export type Body = IAddEditWorkspaceDto;
 
-    export type Request = CustomRequest<Params, AddEditWorkspaceDto>;
+    export type Request = CustomRequest<Params, IAddEditWorkspaceDto>;
 
     export type Response = CustomResponse<string>;
   }

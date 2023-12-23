@@ -1,11 +1,11 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { BundleMapper } from "@mappers/BundleMapper";
-import { AddBundleDto } from "@shared/types/dtos/AddBundleDto";
+import { IAddBundleDto } from "@shared/types/dtos/Bundle";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = AddBundleDto;
+    export type Body = IAddBundleDto;
 
     export type Query = WorkspaceId;
 

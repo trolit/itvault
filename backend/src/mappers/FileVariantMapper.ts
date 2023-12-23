@@ -6,8 +6,8 @@ import { VariantMapper } from "./VariantMapper";
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
-import { IVariantDto } from "@shared/types/dtos/IVariantDto";
-import { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
+import { IVariantDto } from "@shared/types/dtos/Variant";
+import { IFileVariantDto } from "@shared/types/dtos/File";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

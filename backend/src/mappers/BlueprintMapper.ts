@@ -1,7 +1,7 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Blueprint } from "@entities/Blueprint";
-import { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 
 export class BlueprintMapper
   extends BaseMapper<Blueprint>
@@ -14,6 +14,7 @@ export class BlueprintMapper
   color: string;
   createdAt: string;
   updatedAt: string;
+  isDeleted: boolean;
 
   constructor(data: Blueprint) {
     super(data, [
@@ -27,6 +28,8 @@ export class BlueprintMapper
     ]);
 
     this.assignInitialKeys();
+
+    this.isDeleted = !!data.deletedAt;
 
     return this;
   }

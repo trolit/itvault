@@ -1,9 +1,9 @@
 import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
-import { AddEditWorkspaceDto } from "@shared/types/dtos/AddEditWorkspaceDto";
+import { IAddEditWorkspaceDto } from "@shared/types/dtos/Workspace";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = AddEditWorkspaceDto;
+    export type Body = IAddEditWorkspaceDto;
 
     export type Request = CustomRequest<undefined, Body>;
 

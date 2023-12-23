@@ -1,7 +1,7 @@
 import { BaseMapper } from "./BaseMapper";
 
+import { IRolePermissionDto } from "@shared/types/dtos/Role";
 import { PermissionToRole } from "@entities/PermissionToRole";
-import { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
 export class RolePermissionMapper
   extends BaseMapper<PermissionToRole>

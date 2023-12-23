@@ -58,10 +58,10 @@ import { useRolesStore } from "@/store/roles";
 import { useGeneralStore } from "@/store/general";
 import RolesTabs from "@/components/roles/Tabs.vue";
 import RolesTable from "@/components/roles/Table.vue";
+import type { IRoleDto } from "@shared/types/dtos/Role";
 import { useDateService } from "@/services/useDateService";
-import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import { Permission } from "@shared/types/enums/Permission";
-import type { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
+import type { IAddEditRoleDto } from "@shared/types/dtos/Role";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const authStore = useAuthStore();
@@ -82,7 +82,7 @@ function onRoleCreate(id: number) {
   getRoles(1);
 }
 
-function onRoleUpdate(id: number, payload: AddEditRoleDto) {
+function onRoleUpdate(id: number, payload: IAddEditRoleDto) {
   const item = data.value.find(item => item.id === id);
 
   if (item) {

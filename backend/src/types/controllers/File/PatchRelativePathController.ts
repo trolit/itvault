@@ -1,4 +1,5 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
+import { IPatchRelativePathDto } from "@shared/types/dtos/File";
 
 export namespace PatchRelativePathControllerTypes {
   export namespace v1 {
@@ -6,9 +7,7 @@ export namespace PatchRelativePathControllerTypes {
       id: number;
     };
 
-    export type Body = {
-      relativePath: string;
-    };
+    export type Body = IPatchRelativePathDto;
 
     export type Query = WorkspaceId;
 

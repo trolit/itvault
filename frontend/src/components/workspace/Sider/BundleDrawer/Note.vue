@@ -19,7 +19,7 @@ import { NThing, NIcon, NAvatar } from "naive-ui";
 import { StringText as NoteIcon } from "@vicons/carbon";
 
 import type { PropType } from "vue";
-import type { IBundleDto } from "@shared/types/dtos/IBundleDto";
+import type { IBundleDto } from "@shared/types/dtos/Bundle";
 
 defineProps({
   bundle: {

@@ -20,8 +20,8 @@ import { NIcon, NText, NButton, NDropdown, useDialog } from "naive-ui";
 import { useNotesStore } from "@/store/notes";
 import { useFilesStore } from "@/store/files";
 import { useGeneralStore } from "@/store/general";
+import type { INoteDto } from "@shared/types/dtos/Note";
 import { defineComputed } from "@/helpers/defineComputed";
-import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import { NoteResource } from "@shared/types/enums/NoteResource";
 
 const dialog = useDialog();

@@ -24,3 +24,29 @@ export interface IBundleDto {
 
   createdAt: string;
 }
+
+export interface IBundleFileDto {
+  fileId: number;
+
+  variantId: string;
+
+  name: string;
+
+  version: string;
+
+  isDeleted: boolean;
+}
+
+export interface IAddBundleDtoValue {
+  blueprintId: number;
+
+  variantIds: string[];
+}
+
+export interface IAddBundleDto {
+  note?: string;
+
+  values: IAddBundleDtoValue[];
+
+  expiration: BundleExpire;
+}

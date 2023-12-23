@@ -47,13 +47,13 @@ import { NModal, NSpace, NSteps, NStep, NButton } from "naive-ui";
 import FormStep from "./FormStep.vue";
 import { useBundlesStore } from "@/store/bundles";
 import { useGeneralStore } from "@/store/general";
-import type { Value } from "@shared/types/dtos/AddBundleDto";
 import type { BundleModalItem } from "@/types/BundleModalItem";
+import type { IFileVariantDto } from "@shared/types/dtos/File";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
-import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
+import type { IAddBundleDtoValue } from "@shared/types/dtos/Bundle";
 
 const bundlesStore = useBundlesStore();
 const generalStore = useGeneralStore();
@@ -169,7 +169,7 @@ function onFilesAdd(blueprintId: number, filesToAdd: IFileVariantDto[]) {
 async function onSubmit() {
   isSubmittingForm.value = true;
 
-  const values: Value[] = items.value.map(item => ({
+  const values: IAddBundleDtoValue[] = items.value.map(item => ({
     blueprintId: item.blueprint.id,
     variantIds: item.files.map(file => file.selectedVariantId),
   }));

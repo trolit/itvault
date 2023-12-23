@@ -8,7 +8,7 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
-import { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
+import { IUpdateUserDto } from "@shared/types/dtos/User";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -20,7 +20,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 const useSingleValueSchema: (
   userId: number,
   roles: Role[]
-) => SuperSchema.Fragment<UpdateUserDto> = (userId, roles) =>
+) => SuperSchema.Fragment<IUpdateUserDto> = (userId, roles) =>
   object({
     id: number()
       .integer()
@@ -102,8 +102,8 @@ export const useUpdateManySuperSchema: SuperSchema.Runner<
   };
 });
 
-async function getRolesFromValue(value: UpdateUserDto[]): Promise<Role[]> {
-  const uniqueRoleIds = getUniqueValuesFromCollection<UpdateUserDto, number>(
+async function getRolesFromValue(value: IUpdateUserDto[]): Promise<Role[]> {
+  const uniqueRoleIds = getUniqueValuesFromCollection<IUpdateUserDto, number>(
     value,
     "data.roleId"
   );

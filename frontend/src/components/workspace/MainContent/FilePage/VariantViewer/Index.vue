@@ -41,13 +41,13 @@ import type { VariantTab } from "@/types/VariantTab";
 import { useBlueprintsStore } from "@/store/blueprints";
 import AssignColorPopover from "./AssignColorPopover.vue";
 import { defineComputed } from "@/helpers/defineComputed";
+import type { IBucketDto } from "@shared/types/dtos/Bucket";
 import UnassignColorPopover from "./UnassignColorPopover.vue";
 import decodeLineColoring from "@/helpers/decodeLineColoring";
-import type { IBucketDto } from "@shared/types/dtos/IBucketDto";
 import type { BucketContent } from "@shared/types/BucketContent";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import prepareLineForColoring from "@/helpers/prepareLineForColoring";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
 const text = ref("");

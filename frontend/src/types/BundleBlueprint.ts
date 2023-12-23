@@ -1,4 +1,4 @@
-import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
-import type { IBundleBlueprintDto } from "@shared/types/dtos/IBundleBlueprintDto";
+import type { IBundleFileDto } from "@shared/types/dtos/Bundle";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 
-export type BundleBlueprint = IBundleBlueprintDto & { files: IBundleFileDto[] };
+export type BundleBlueprint = IBlueprintDto & { files: IBundleFileDto[] };

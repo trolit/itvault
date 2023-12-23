@@ -5,3 +5,9 @@ export interface IPermissionDto {
 
   group: string;
 }
+
+export interface IPermissionUpdateDto {
+  signature: string;
+
+  enabled: boolean;
+}

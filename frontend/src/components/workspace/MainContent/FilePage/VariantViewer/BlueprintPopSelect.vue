@@ -64,7 +64,7 @@ import { useVariantsStore } from "@/store/variants";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 
 const filesStore = useFilesStore();
 const bucketsStore = useBucketsStore();

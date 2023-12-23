@@ -1,3 +1,5 @@
+import { ResourceDto } from "./ResourceDto";
+
 export interface INoteDto {
   id: number;
 
@@ -10,4 +12,14 @@ export interface INoteDto {
   updatedBy: string;
 
   isDeleted: boolean;
+}
+
+export interface IAddNoteDto {
+  text: string;
+
+  resource: ResourceDto;
+}
+
+export interface IUpdateNoteDto {
+  text: string;
 }

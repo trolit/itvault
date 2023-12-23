@@ -2,13 +2,15 @@ import axios from "axios";
 import cloneDeep from "lodash/cloneDeep";
 import { defineStore } from "pinia";
 
+import type {
+  IAddEditRoleDto,
+  IRolePermissionDto,
+} from "@shared/types/dtos/Role";
 import type { RoleTab } from "@/types/RoleTab";
-import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
+import type { IRoleDto } from "@shared/types/dtos/Role";
+import type { IPermissionDto } from "@shared/types/dtos/Permission";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
-import type { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
-import type { IPermissionDto } from "@shared/types/dtos/IPermissionDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import type { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
 interface IState {
   total: number;
@@ -61,7 +63,7 @@ export const useRolesStore = defineStore("roles", {
       return data;
     },
 
-    async store(payload: AddEditRoleDto) {
+    async store(payload: IAddEditRoleDto) {
       const params = {
         version: 1,
       };
@@ -73,7 +75,7 @@ export const useRolesStore = defineStore("roles", {
       return data;
     },
 
-    async update(id: number, payload: AddEditRoleDto) {
+    async update(id: number, payload: IAddEditRoleDto) {
       const params = {
         version: 1,
       };

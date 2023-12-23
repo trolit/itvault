@@ -4,11 +4,11 @@ import { defineStore } from "pinia";
 import { useGeneralStore } from "./general";
 import { useVariantsStore } from "./variants";
 import { useWorkspacesStore } from "./workspaces";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
-import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
-import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import type { AddEditBlueprintDto } from "@shared/types/dtos/AddEditBlueprintDto";
 import { useDateService } from "@/services/useDateService";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
+import type { IAddEditBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
   total: number;
@@ -68,7 +68,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
       return data;
     },
 
-    async store(payload: AddEditBlueprintDto) {
+    async store(payload: IAddEditBlueprintDto) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
       return axios.post<IBlueprintDto>("v1/blueprints", payload, {
@@ -90,7 +90,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
       }
     },
 
-    async update(payload: AddEditBlueprintDto) {
+    async update(payload: IAddEditBlueprintDto) {
       if (!this.itemToEdit || !this.itemToEdit.id) {
         return;
       }

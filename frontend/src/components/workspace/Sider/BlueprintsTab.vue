@@ -88,9 +88,9 @@ import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { defineComputed } from "@/helpers/defineComputed";
 import PinManager from "@/components/common/PinManager.vue";
+import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import { sortArrayByPinnedAt } from "@/helpers/sortArrayByPinnedAt";
-import type { IBlueprintDto } from "@shared/types/dtos/IBlueprintDto";
 
 const drawerStore = useDrawerStore();
 const blueprintsStore = useBlueprintsStore();

@@ -62,7 +62,7 @@ import { useBundlesStore } from "@/store/bundles";
 import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
 import type { BundleBlueprint } from "@/types/BundleBlueprint";
-import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
+import type { IBundleFileDto } from "@shared/types/dtos/Bundle";
 
 const props = defineProps({
   value: {

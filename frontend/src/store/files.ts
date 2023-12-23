@@ -1,12 +1,16 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
+import type {
+  IFileDto,
+  IFileVariantDto,
+  IPatchFilenameDto,
+  IPatchRelativePathDto,
+} from "@shared/types/dtos/File";
 import { useVariantsStore } from "./variants";
 import type { FileTab } from "@/types/FileTab";
 import { useWorkspacesStore } from "./workspaces";
-import type { IFileDto } from "@shared/types/dtos/IFileDto";
-import type { IBundleFileDto } from "@shared/types/dtos/IBundleFileDto";
-import type { IFileVariantDto } from "@shared/types/dtos/IFileVariantDto";
+import type { IBundleFileDto } from "@shared/types/dtos/Bundle";
 
 interface IState {
   ROOT: string;
@@ -85,7 +89,7 @@ export const useFilesStore = defineStore("files", {
         workspaceId,
       };
 
-      const payload = {
+      const payload: IPatchFilenameDto = {
         filename,
       };
 
@@ -102,7 +106,7 @@ export const useFilesStore = defineStore("files", {
         workspaceId,
       };
 
-      const payload = {
+      const payload: IPatchRelativePathDto = {
         relativePath,
       };
 

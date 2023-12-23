@@ -123,10 +123,10 @@ import { number, object, string, ref as yupRef } from "yup";
 import { useUsersStore } from "@/store/users";
 
 import { ACCOUNT_RULES } from "@shared/constants/rules";
+import type { IAddUserDto } from "@shared/types/dtos/User";
 import { useModalHelpers } from "@/helpers/useModalHelpers";
 import type { Emits, Props } from "@/types/CommonModalTypes";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
-import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 
@@ -160,7 +160,7 @@ const { isVisible } = useModalHelpers(props, {
   },
 });
 
-const defaultUser: AddEditUserDto & { confirmEmail: string } = {
+const defaultUser: IAddUserDto & { confirmEmail: string } = {
   email: "",
   confirmEmail: "",
   firstName: "",
@@ -186,7 +186,7 @@ const {
   resetForm,
   setFormData,
   onSubmit,
-} = defineFormApiRequest<AddEditUserDto & { confirmEmail: string }>({
+} = defineFormApiRequest<IAddUserDto & { confirmEmail: string }>({
   data: defaultUser,
 
   schema: object({

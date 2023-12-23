@@ -95,11 +95,11 @@ import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
 import isDirectory from "@/helpers/isDirectory";
 import { useGeneralStore } from "@/store/general";
+import type { IFileDto } from "@shared/types/dtos/File";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { useDirectoriesStore } from "@/store/directories";
-import type { IFileDto } from "@shared/types/dtos/IFileDto";
 import type { Emits, Props } from "@/types/CommonModalTypes";
-import type { IDirectoryDto } from "@shared/types/dtos/IDirectoryDto";
+import type { IDirectoryDto } from "@shared/types/dtos/Directory";
 
 const props = defineProps<Props & { treeDropInfo: TreeDropInfo }>();
 const emits = defineEmits<Emits>();

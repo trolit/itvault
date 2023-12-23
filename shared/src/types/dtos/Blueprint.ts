@@ -12,4 +12,14 @@ export interface IBlueprintDto {
   createdAt: string;
 
   updatedAt: string;
+
+  isDeleted: boolean;
+}
+
+export interface IAddEditBlueprintDto {
+  name: string;
+
+  description: string;
+
+  color: string;
 }

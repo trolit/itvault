@@ -42,13 +42,13 @@ import { NInput, NForm, NFormItem, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import { defineForm } from "@/helpers/defineForm";
-import type { SignInDto } from "@shared/types/dtos/SignInDto";
+import type { ISignInDto } from "@shared/types/dtos/User";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
 const router = useRouter();
 const authStore = useAuthStore();
 
-const defaultFormData: SignInDto = {
+const defaultFormData: ISignInDto = {
   email: "",
   password: "",
 };
@@ -56,7 +56,7 @@ const defaultFormData: SignInDto = {
 const isLoading = ref(false);
 
 const { fields, getError, hasError, handleSubmit, setValidationErrors } =
-  defineForm<SignInDto>(
+  defineForm<ISignInDto>(
     defaultFormData,
     object({
       email: string().email().required(),
