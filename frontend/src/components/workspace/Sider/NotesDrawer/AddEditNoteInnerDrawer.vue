@@ -68,9 +68,9 @@ import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
+import type { INoteDto } from "@shared/types/dtos/Note";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
-import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import { NoteResource } from "@shared/types/enums/NoteResource";
 
 interface IProps {

@@ -102,9 +102,9 @@ import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
 import UserNotesModal from "./UserNotesModal.vue";
+import type { INoteDto } from "@shared/types/dtos/Note";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
-import type { INoteDto } from "@shared/types/dtos/INoteDto";
 import AddEditNoteInnerDrawer from "./AddEditNoteInnerDrawer.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 

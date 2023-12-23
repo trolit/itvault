@@ -2,7 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 import { useFilesStore } from "./files";
-import type { INoteDto } from "@shared/types/dtos/INoteDto";
+import type { INoteDto } from "@shared/types/dtos/Note";
 import { NoteResource } from "@shared/types/enums/NoteResource";
 import type { ResourceDto } from "@shared/types/dtos/ResourceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
