@@ -1,7 +1,7 @@
 import { ResourceDto } from "./ResourceDto";
 
-export type AddNoteDto = {
+export interface INoteAddDto {
   text: string;
 
   resource: ResourceDto;
-};
+}

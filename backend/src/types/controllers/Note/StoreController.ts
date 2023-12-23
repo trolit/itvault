@@ -1,9 +1,9 @@
 import { NoteMapper } from "@mappers/NoteMapper";
-import { AddNoteDto } from "@shared/types/dtos/AddNoteDto";
+import { INoteAddDto } from "@shared/types/dtos/Note";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = AddNoteDto;
+    export type Body = INoteAddDto;
 
     export type Request = CustomRequest<undefined, Body>;
 
