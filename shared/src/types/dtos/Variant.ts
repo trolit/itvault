@@ -9,3 +9,9 @@ export interface IVariantDto {
 
   size: { value: number; unit: string };
 }
+
+export interface IAddVariantDto {
+  name: string;
+
+  fileId: number;
+}
