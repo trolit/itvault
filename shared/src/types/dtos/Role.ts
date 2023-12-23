@@ -1,4 +1,21 @@
+import { IAuthorDto } from "./IAuthorDto";
 import { IPermissionDto, IPermissionUpdateDto } from "./Permission";
+
+export interface IRoleDto {
+  id: number;
+
+  name: string;
+
+  description: string;
+
+  createdAt: string;
+
+  updatedAt: string;
+
+  createdBy: IAuthorDto | null;
+
+  updatedBy: IAuthorDto | null;
+}
 
 export interface IRolePermissionDto extends IPermissionDto {
   enabled: boolean;
