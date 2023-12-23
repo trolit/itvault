@@ -9,3 +9,9 @@ export interface IFileDto {
 
   updatedAt: string;
 }
+
+export interface IMoveFilesDto {
+  sourceDirectoryId: number;
+
+  targetDirectoryId: number;
+}
