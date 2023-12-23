@@ -1,4 +1,4 @@
-import { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
+import { IRoleAddEditDto } from "@shared/types/dtos/Role";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {
@@ -6,7 +6,7 @@ export namespace UpdateControllerTypes {
       id: number;
     };
 
-    export type Body = AddEditRoleDto;
+    export type Body = IRoleAddEditDto;
 
     export type Request = CustomRequest<Params, Body>;
 
