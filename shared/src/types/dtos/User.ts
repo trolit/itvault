@@ -22,6 +22,16 @@ export interface IAuthorDto {
   fullName: string;
 }
 
+export interface IAddUserDto {
+  email: string;
+
+  firstName: string;
+
+  lastName: string;
+
+  roleId: number;
+}
+
 export interface IUpdateUserDto {
   id: number;
 

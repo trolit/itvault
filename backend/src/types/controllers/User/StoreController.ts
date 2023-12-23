@@ -1,9 +1,9 @@
 import { UserMapper } from "@mappers/UserMapper";
-import { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
+import { IAddUserDto } from "@shared/types/dtos/User";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = AddEditUserDto;
+    export type Body = IAddUserDto;
 
     export type Request = CustomRequest<undefined, Body>;
 
