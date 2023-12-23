@@ -7,3 +7,11 @@ export interface IBucketDto {
 
   value: BucketContent;
 }
+
+export interface IAddEditBucketDto {
+  value: BucketContent;
+
+  blueprintId: number;
+
+  variantId: string;
+}

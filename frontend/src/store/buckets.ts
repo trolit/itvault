@@ -6,8 +6,7 @@ import type { Bucket } from "@/types/Bucket";
 import { useVariantsStore } from "./variants";
 import { useBlueprintsStore } from "./blueprints";
 import { useWorkspacesStore } from "./workspaces";
-import type { IBucketDto } from "@shared/types/dtos/Bucket";
-import type { AddEditBucketDto } from "@shared/types/dtos/AddEditBucketDto";
+import type { IBucketDto, IAddEditBucketDto } from "@shared/types/dtos/Bucket";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
 interface IState {}
@@ -187,7 +186,7 @@ export const useBucketsStore = defineStore("buckets", {
         workspaceId: activeWorkspace.id,
       };
 
-      const payload: AddEditBucketDto = {
+      const payload: IAddEditBucketDto = {
         value: activeBucket.value,
         blueprintId: activeBlueprint.id,
         variantId: activeVariantTab.variant.id,
