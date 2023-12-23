@@ -19,3 +19,7 @@ export interface IAddNoteDto {
 
   resource: ResourceDto;
 }
+
+export interface IUpdateNoteDto {
+  text: string;
+}
