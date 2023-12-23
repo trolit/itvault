@@ -1,7 +1,7 @@
 import { User } from "@entities/User";
+import { IUpdateUserDto } from "@shared/types/dtos/User";
 import { TransactionResult } from "types/TransactionResult";
-import { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 
 export interface IUserService {
-  updateMany(data: UpdateUserDto[]): Promise<TransactionResult<User[]>>;
+  updateMany(data: IUpdateUserDto[]): Promise<TransactionResult<User[]>>;
 }

@@ -4,8 +4,8 @@ import cloneDeep from "lodash/cloneDeep";
 
 import type { IUserDto } from "@shared/types/dtos/User";
 import type { INoteDto } from "@shared/types/dtos/Note";
+import type { IUpdateUserDto } from "@shared/types/dtos/User";
 import type { SignUpDto } from "@shared/types/dtos/SignUpDto";
-import type { UpdateUserDto } from "@shared/types/dtos/UpdateUserDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
@@ -14,7 +14,7 @@ import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 interface IState {
   total: number;
   items: IUserDto[];
-  itemsToUpdate: UpdateUserDto[];
+  itemsToUpdate: IUpdateUserDto[];
   notes: PaginatedResponse<INoteDto>;
 }
 
@@ -132,7 +132,7 @@ export const useUsersStore = defineStore("users", {
       return this.itemsToUpdate.find(itemToUpdate => itemToUpdate.id === id);
     },
 
-    removeDataKey(key: "roleId" | "isActive", item: UpdateUserDto) {
+    removeDataKey(key: "roleId" | "isActive", item: IUpdateUserDto) {
       delete item.data[key];
 
       if (!Object.keys(item.data).length) {

@@ -21,3 +21,9 @@ export interface IAuthorDto {
 
   fullName: string;
 }
+
+export interface IUpdateUserDto {
+  id: number;
+
+  data: { roleId?: number; isActive?: boolean };
+}
