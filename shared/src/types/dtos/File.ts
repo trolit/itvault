@@ -12,12 +12,6 @@ export interface IFileDto {
   updatedAt: string;
 }
 
-export interface IMoveFilesDto {
-  sourceDirectoryId: number;
-
-  targetDirectoryId: number;
-}
-
 export interface IFileVariantDto {
   id: number;
 
@@ -30,4 +24,10 @@ export interface IFileVariantDto {
   updatedAt: string;
 
   variants: IVariantDto[];
+}
+
+export interface IMoveFilesDto {
+  sourceDirectoryId: number;
+
+  targetDirectoryId: number;
 }
