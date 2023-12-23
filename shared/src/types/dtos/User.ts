@@ -27,3 +27,19 @@ export interface IUpdateUserDto {
 
   data: { roleId?: number; isActive?: boolean };
 }
+
+export interface ISignUpDto {
+  id: number;
+
+  email: string;
+
+  signUpCode: string;
+
+  password: string;
+}
+
+export interface ISignInDto {
+  email: string;
+
+  password: string;
+}

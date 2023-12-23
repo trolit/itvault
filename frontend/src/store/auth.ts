@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 import { Socket } from "engine.io-client";
 
 import { WEBSOCKETS } from "@/config";
-import type { SignInDto } from "@shared/types/dtos/SignInDto";
+import type { ISignInDto } from "@shared/types/dtos/User";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
 import type { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
@@ -51,7 +51,7 @@ export const useAuthStore = defineStore("auth", {
       );
     },
 
-    async login(payload: SignInDto) {
+    async login(payload: ISignInDto) {
       return axios.post<ILoggedUserDto>("v1/auth/sign-in", payload, {
         params: { version: 1 },
       });

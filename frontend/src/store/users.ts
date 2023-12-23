@@ -4,12 +4,11 @@ import cloneDeep from "lodash/cloneDeep";
 
 import type { IUserDto } from "@shared/types/dtos/User";
 import type { INoteDto } from "@shared/types/dtos/Note";
-import type { IUpdateUserDto } from "@shared/types/dtos/User";
-import type { SignUpDto } from "@shared/types/dtos/SignUpDto";
 import type { IWorkspaceDto } from "@shared/types/dtos/IWorkspaceDto";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { AddEditUserDto } from "@shared/types/dtos/AddEditUserDto";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { IUpdateUserDto, ISignUpDto } from "@shared/types/dtos/User";
 
 interface IState {
   total: number;
@@ -88,7 +87,7 @@ export const useUsersStore = defineStore("users", {
       );
     },
 
-    async signUp(payload: SignUpDto) {
+    async signUp(payload: ISignUpDto) {
       return axios.post(`v1/users/sign-up`, payload, {
         params: { version: 1 },
       });
