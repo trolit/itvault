@@ -7,8 +7,8 @@ import type { IRoleDto } from "@shared/types/dtos/IRoleDto";
 import type { IPermissionDto } from "@shared/types/dtos/Permission";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { AddEditRoleDto } from "@shared/types/dtos/AddEditRoleDto";
+import type { IRolePermissionDto } from "@shared/types/dtos/Permission";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import type { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
 
 interface IState {
   total: number;

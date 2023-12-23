@@ -1,4 +1,4 @@
-import { IRolePermissionDto } from "./IRolePermissionDto";
+import { IRolePermissionDto } from "./Permission";
 
 export type UpdatePermissionDto = Pick<
   IRolePermissionDto,

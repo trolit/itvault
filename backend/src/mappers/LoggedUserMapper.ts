@@ -2,7 +2,7 @@ import { BaseMapper } from "./BaseMapper";
 
 import { User } from "@entities/User";
 import { ILoggedUserDto } from "@shared/types/dtos/ILoggedUserDto";
-import { IRolePermissionDto } from "@shared/types/dtos/IRolePermissionDto";
+import { IRolePermissionDto } from "@shared/types/dtos/Permission";
 
 export class LoggedUserMapper
   extends BaseMapper<User>

@@ -5,3 +5,7 @@ export interface IPermissionDto {
 
   group: string;
 }
+
+export interface IRolePermissionDto extends IPermissionDto {
+  enabled: boolean;
+}
