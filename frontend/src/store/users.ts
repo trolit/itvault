@@ -2,13 +2,17 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
-import type { IUserDto } from "@shared/types/dtos/User";
+import type {
+  IUserDto,
+  ISignUpDto,
+  IUpdateUserDto,
+  IPatchUserToWorkspaceDto,
+} from "@shared/types/dtos/User";
 import type { INoteDto } from "@shared/types/dtos/Note";
 import type { IAddUserDto } from "@shared/types/dtos/User";
 import type { IWorkspaceDto } from "@shared/types/dtos/Workspace";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import type { IUpdateUserDto, ISignUpDto } from "@shared/types/dtos/User";
 
 interface IState {
   total: number;
@@ -76,15 +80,13 @@ export const useUsersStore = defineStore("users", {
       userId: number,
       workspaces: IWorkspaceDto[]
     ) {
-      return axios.patch(
-        `v1/users/${userId}/workspaces`,
-        {
-          ids: workspaces.map(workspace => workspace.id),
-        },
-        {
-          params: { version: 1 },
-        }
-      );
+      const payload: IPatchUserToWorkspaceDto = {
+        ids: workspaces.map(workspace => workspace.id),
+      };
+
+      return axios.patch(`v1/users/${userId}/workspaces`, payload, {
+        params: { version: 1 },
+      });
     },
 
     async signUp(payload: ISignUpDto) {
