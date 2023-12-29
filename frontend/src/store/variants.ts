@@ -7,6 +7,7 @@ import { useWorkspacesStore } from "./workspaces";
 import type { VariantTab } from "@/types/VariantTab";
 import type { IBucketDto } from "@shared/types/dtos/Bucket";
 import type { IVariantDto } from "@shared/types/dtos/Variant";
+import type { IPatchNameDto } from "@shared/types/dtos/shared";
 import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
 
 interface IState {}
@@ -142,13 +143,13 @@ export const useVariantsStore = defineStore("variants", {
         workspaceId,
       };
 
-      return axios.put(
-        `v1/variants/${id}/name`,
-        { name },
-        {
-          params,
-        }
-      );
+      const payload: IPatchNameDto = {
+        name,
+      };
+
+      return axios.put(`v1/variants/${id}/name`, payload, {
+        params,
+      });
     },
 
     async delete(id: string) {

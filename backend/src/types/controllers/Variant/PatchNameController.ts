@@ -1,3 +1,4 @@
+import { IPatchNameDto } from "@shared/types/dtos/shared";
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 export namespace PatchNameControllerTypes {
@@ -6,9 +7,7 @@ export namespace PatchNameControllerTypes {
       id: string;
     };
 
-    export type Body = {
-      name: string;
-    };
+    export type Body = IPatchNameDto;
 
     export type Query = { fileId: number } & WorkspaceId;
 

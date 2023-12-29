@@ -69,3 +69,7 @@ export interface ISignInDto {
 
   password: string;
 }
+
+export interface IPatchUserToWorkspaceDto {
+  ids: number[];
+}
