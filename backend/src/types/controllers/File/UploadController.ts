@@ -2,7 +2,7 @@ import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { FileMapper } from "@mappers/FileMapper";
 
-export namespace StoreControllerTypes {
+export namespace UploadControllerTypes {
   export namespace v1 {
     type Query = WorkspaceId;
 
