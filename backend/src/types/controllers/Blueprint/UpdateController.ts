@@ -1,6 +1,6 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
-import { IAddEditBlueprintDTO } from "@shared/types/dtos/Blueprint";
+import { IAddEditBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {

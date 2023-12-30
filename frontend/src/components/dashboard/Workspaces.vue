@@ -113,7 +113,7 @@ import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
 import PinManager from "@/components/common/PinManager.vue";
-import type { IWorkspaceDTO } from "@shared/types/dtos/Workspace";
+import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import { sortArrayByPinnedAt } from "@/helpers/sortArrayByPinnedAt";

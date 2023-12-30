@@ -1,6 +1,6 @@
 import { WorkspaceId } from "../WorkspaceId";
 import { BucketMapper } from "@mappers/BucketMapper";
-import { IAddEditBucketDTO } from "@shared/types/dtos/Bucket";
+import { IAddEditBucketDTO } from "@shared/types/DTOs/Bucket";
 
 export namespace UpsertControllerTypes {
   export namespace v1 {

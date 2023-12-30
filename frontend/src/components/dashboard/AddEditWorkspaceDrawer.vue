@@ -109,7 +109,7 @@ import { defineWatchers } from "@/helpers/defineWatchers";
 import { WORKSPACE_RULES } from "@shared/constants/rules";
 import { Permission } from "@shared/types/enums/Permission";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
-import type { IAddEditWorkspaceDTO } from "@shared/types/dtos/Workspace";
+import type { IAddEditWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const tagsStore = useTagsStore();

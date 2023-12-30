@@ -1,4 +1,4 @@
-import { IUpdateNoteDTO } from "@shared/types/dtos/Note";
+import { IUpdateNoteDTO } from "@shared/types/DTOs/Note";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {

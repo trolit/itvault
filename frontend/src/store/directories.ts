@@ -2,7 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 import { useWorkspacesStore } from "./workspaces";
-import type { IMoveFilesDTO } from "@shared/types/dtos/File";
+import type { IMoveFilesDTO } from "@shared/types/DTOs/File";
 
 interface IState {}
 

@@ -8,7 +8,7 @@ import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
-import { IUpdateUserDTO } from "@shared/types/dtos/User";
+import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

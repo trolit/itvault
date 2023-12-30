@@ -126,7 +126,7 @@ import { BLUEPRINT_RULES } from "@shared/constants/rules";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { Permission } from "@shared/types/enums/Permission";
-import type { IAddEditBlueprintDTO } from "@shared/types/dtos/Blueprint";
+import type { IAddEditBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const authStore = useAuthStore();

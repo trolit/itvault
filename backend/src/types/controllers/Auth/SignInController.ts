@@ -1,4 +1,4 @@
-import { ISignInDTO } from "@shared/types/dtos/User";
+import { ISignInDTO } from "@shared/types/DTOs/User";
 import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
 
 export namespace SignInControllerTypes {

@@ -7,7 +7,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
 import { Di } from "@enums/Di";
-import { IUpdateUserDTO } from "@shared/types/dtos/User";
+import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 import { BaseController } from "@controllers/BaseController";
 

@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import { computed, ref, type PropType } from "vue";
-import type { IBundleDTO } from "@shared/types/dtos/Bundle";
+import type { IBundleDTO } from "@shared/types/DTOs/Bundle";
 import { NCard, NThing, NButton, NEllipsis, NPopconfirm } from "naive-ui";
 
 import Status from "./Status.vue";

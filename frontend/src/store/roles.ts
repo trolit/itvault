@@ -5,10 +5,10 @@ import { defineStore } from "pinia";
 import type {
   IAddEditRoleDto,
   IRolePermissionDTO,
-} from "@shared/types/dtos/Role";
+} from "@shared/types/DTOs/Role";
 import type { RoleTab } from "@/types/RoleTab";
-import type { IRoleDto } from "@shared/types/dtos/Role";
-import type { IPermissionDTO } from "@shared/types/dtos/Permission";
+import type { IRoleDto } from "@shared/types/DTOs/Role";
+import type { IPermissionDTO } from "@shared/types/DTOs/Permission";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 

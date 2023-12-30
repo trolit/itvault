@@ -1,5 +1,5 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
-import { IPatchRelativePathDTO } from "@shared/types/dtos/File";
+import { IPatchRelativePathDTO } from "@shared/types/DTOs/File";
 
 export namespace PatchRelativePathControllerTypes {
   export namespace v1 {

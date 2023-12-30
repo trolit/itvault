@@ -68,7 +68,7 @@ import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { defineForm } from "@/helpers/defineForm";
 import { useGeneralStore } from "@/store/general";
-import type { INoteDTO } from "@shared/types/dtos/Note";
+import type { INoteDTO } from "@shared/types/DTOs/Note";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { NoteResource } from "@shared/types/enums/NoteResource";

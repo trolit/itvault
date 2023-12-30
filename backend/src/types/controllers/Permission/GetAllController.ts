@@ -1,4 +1,4 @@
-import { IPermissionDTO } from "@shared/types/dtos/Permission";
+import { IPermissionDTO } from "@shared/types/DTOs/Permission";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {

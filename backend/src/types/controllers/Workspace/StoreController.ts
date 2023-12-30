@@ -1,5 +1,5 @@
 import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
-import { IAddEditWorkspaceDTO } from "@shared/types/dtos/Workspace";
+import { IAddEditWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 
 export namespace StoreControllerTypes {
   export namespace v1 {

@@ -1,5 +1,5 @@
 import { UserMapper } from "@mappers/UserMapper";
-import { IAddUserDTO } from "@shared/types/dtos/User";
+import { IAddUserDTO } from "@shared/types/DTOs/User";
 
 export namespace StoreControllerTypes {
   export namespace v1 {

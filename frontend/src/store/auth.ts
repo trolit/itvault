@@ -5,7 +5,7 @@ import { Socket } from "engine.io-client";
 import { WEBSOCKETS } from "@/config";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
-import type { ISignInDTO, ILoggedUserDTO } from "@shared/types/dtos/User";
+import type { ISignInDTO, ILoggedUserDTO } from "@shared/types/DTOs/User";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 import type { SocketSendMessage } from "@shared/types/transport/SocketSendMessage";
 

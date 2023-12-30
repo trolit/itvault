@@ -1,4 +1,4 @@
-import { IUpdateUserDTO } from "@shared/types/dtos/User";
+import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 export namespace UpdateManyControllerTypes {
   export namespace v1 {

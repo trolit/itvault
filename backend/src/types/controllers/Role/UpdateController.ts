@@ -1,4 +1,4 @@
-import { IAddEditRoleDto } from "@shared/types/dtos/Role";
+import { IAddEditRoleDto } from "@shared/types/DTOs/Role";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {

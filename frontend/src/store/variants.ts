@@ -5,10 +5,10 @@ import cloneDeep from "lodash/cloneDeep";
 import { useFilesStore } from "./files";
 import { useWorkspacesStore } from "./workspaces";
 import type { VariantTab } from "@/types/VariantTab";
-import type { IBucketDTO } from "@shared/types/dtos/Bucket";
-import type { IVariantDTO } from "@shared/types/dtos/Variant";
-import type { IPatchNameDTO } from "@shared/types/dtos/shared";
-import type { IBlueprintDTO } from "@shared/types/dtos/Blueprint";
+import type { IBucketDTO } from "@shared/types/DTOs/Bucket";
+import type { IVariantDTO } from "@shared/types/DTOs/Variant";
+import type { IPatchNameDTO } from "@shared/types/DTOs/shared";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 interface IState {}
 

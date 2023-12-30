@@ -57,7 +57,7 @@ import { Information as InfoIcon } from "@vicons/carbon";
 
 import type { NaiveStatus } from "@/types/NaiveStatus";
 import { useDateService } from "@/services/useDateService";
-import type { IBundleDTO } from "@shared/types/dtos/Bundle";
+import type { IBundleDTO } from "@shared/types/DTOs/Bundle";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 

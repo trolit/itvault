@@ -6,11 +6,11 @@ import type {
   IFileVariantDTO,
   IPatchFilenameDTO,
   IPatchRelativePathDTO,
-} from "@shared/types/dtos/File";
+} from "@shared/types/DTOs/File";
 import { useVariantsStore } from "./variants";
 import type { FileTab } from "@/types/FileTab";
 import { useWorkspacesStore } from "./workspaces";
-import type { IBundleFileDTO } from "@shared/types/dtos/Bundle";
+import type { IBundleFileDTO } from "@shared/types/DTOs/Bundle";
 
 interface IState {
   ROOT: string;

@@ -8,7 +8,7 @@ import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
 import { Workspace } from "@entities/Workspace";
-import { IAddEditWorkspaceDTO } from "@shared/types/dtos/Workspace";
+import { IAddEditWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 
 @injectable()
 export class WorkspaceService implements IWorkspaceService {

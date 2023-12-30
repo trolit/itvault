@@ -1,7 +1,7 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Workspace } from "@entities/Workspace";
-import { IWorkspaceDTO } from "@shared/types/dtos/Workspace";
+import { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 
 export class WorkspaceMapper
   extends BaseMapper<Workspace>

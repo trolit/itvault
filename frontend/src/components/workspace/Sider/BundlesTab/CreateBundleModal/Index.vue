@@ -48,12 +48,12 @@ import FormStep from "./FormStep.vue";
 import { useBundlesStore } from "@/store/bundles";
 import { useGeneralStore } from "@/store/general";
 import type { BundleModalItem } from "@/types/BundleModalItem";
-import type { IFileVariantDTO } from "@shared/types/dtos/File";
+import type { IFileVariantDTO } from "@shared/types/DTOs/File";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
-import type { IBlueprintDTO } from "@shared/types/dtos/Blueprint";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
-import type { IAddBundleValueDTO } from "@shared/types/dtos/Bundle";
+import type { IAddBundleValueDTO } from "@shared/types/DTOs/Bundle";
 
 const bundlesStore = useBundlesStore();
 const generalStore = useGeneralStore();

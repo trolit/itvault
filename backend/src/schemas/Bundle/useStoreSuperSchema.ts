@@ -6,7 +6,7 @@ import { IFileRepository } from "types/repositories/IFileRepository";
 import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
 
 import { Di } from "@enums/Di";
-import { IAddBundleValueDTO } from "@shared/types/dtos/Bundle";
+import { IAddBundleValueDTO } from "@shared/types/DTOs/Bundle";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
 import { setYupError } from "@helpers/yup/setError";

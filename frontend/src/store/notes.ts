@@ -2,9 +2,9 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 import { useFilesStore } from "./files";
-import type { INoteDTO } from "@shared/types/dtos/Note";
+import type { INoteDTO } from "@shared/types/DTOs/Note";
 import { NoteResource } from "@shared/types/enums/NoteResource";
-import type { ResourceDTO } from "@shared/types/dtos/ResourceDTO";
+import type { ResourceDTO } from "@shared/types/DTOs/ResourceDTO";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 

@@ -1,5 +1,5 @@
 import { NoteMapper } from "@mappers/NoteMapper";
-import { IAddNoteDTO } from "@shared/types/dtos/Note";
+import { IAddNoteDTO } from "@shared/types/DTOs/Note";
 
 export namespace StoreControllerTypes {
   export namespace v1 {

@@ -7,8 +7,8 @@ import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { Di } from "@enums/Di";
-import { IAddEditRoleDto } from "@shared/types/dtos/Role";
-import { IPermissionUpdateDTO } from "@shared/types/dtos/Permission";
+import { IAddEditRoleDto } from "@shared/types/DTOs/Role";
+import { IPermissionUpdateDTO } from "@shared/types/DTOs/Permission";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

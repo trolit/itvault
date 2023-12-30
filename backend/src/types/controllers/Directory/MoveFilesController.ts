@@ -1,4 +1,4 @@
-import { IMoveFilesDTO } from "@shared/types/dtos/File";
+import { IMoveFilesDTO } from "@shared/types/DTOs/File";
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 export namespace MoveFilesControllerTypes {

@@ -1,6 +1,6 @@
 import type { Bucket } from "./Bucket";
-import type { IVariantDTO } from "@shared/types/dtos/Variant";
-import type { IBlueprintDTO } from "@shared/types/dtos/Blueprint";
+import type { IVariantDTO } from "@shared/types/DTOs/Variant";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 export type VariantTab = {
   variant: IVariantDTO;

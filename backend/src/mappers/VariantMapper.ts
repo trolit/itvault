@@ -1,7 +1,7 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Variant } from "@entities/Variant";
-import { IVariantDTO } from "@shared/types/dtos/Variant";
+import { IVariantDTO } from "@shared/types/DTOs/Variant";
 
 export class VariantMapper extends BaseMapper<Variant> implements IVariantDTO {
   id: string;

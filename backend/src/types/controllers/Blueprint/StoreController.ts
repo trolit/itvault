@@ -1,7 +1,7 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
-import { IAddEditBlueprintDTO } from "@shared/types/dtos/Blueprint";
+import { IAddEditBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 export namespace StoreControllerTypes {
   export namespace v1 {

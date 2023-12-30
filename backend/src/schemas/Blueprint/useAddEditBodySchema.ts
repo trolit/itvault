@@ -5,7 +5,7 @@ import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 
 import { Di } from "@enums/Di";
 import { BLUEPRINT_RULES } from "@shared/constants/rules";
-import { IAddEditBlueprintDTO } from "@shared/types/dtos/Blueprint";
+import { IAddEditBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

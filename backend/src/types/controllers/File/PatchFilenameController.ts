@@ -1,4 +1,4 @@
-import { IPatchFilenameDTO } from "@shared/types/dtos/File";
+import { IPatchFilenameDTO } from "@shared/types/DTOs/File";
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 export namespace PatchFilenameControllerTypes {

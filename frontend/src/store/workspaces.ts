@@ -7,7 +7,7 @@ import type { RouteLocationNormalizedLoaded } from "vue-router";
 import type {
   IWorkspaceDTO,
   IAddEditWorkspaceDTO,
-} from "@shared/types/dtos/Workspace";
+} from "@shared/types/DTOs/Workspace";
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
@@ -15,10 +15,10 @@ import { useGeneralStore } from "./general";
 import { useVariantsStore } from "./variants";
 import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
-import type { IFileDTO } from "@shared/types/dtos/File";
+import type { IFileDTO } from "@shared/types/DTOs/File";
 import { useDateService } from "@/services/useDateService";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
-import type { IDirectoryDTO } from "@shared/types/dtos/Directory";
+import type { IDirectoryDTO } from "@shared/types/DTOs/Directory";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";

@@ -1,4 +1,4 @@
-import { IPatchUserToWorkspaceDTO } from "@shared/types/dtos/User";
+import { IPatchUserToWorkspaceDTO } from "@shared/types/DTOs/User";
 
 export namespace PatchUserToWorkspaceControllerTypes {
   export namespace v1 {

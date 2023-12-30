@@ -116,11 +116,11 @@ import { reactive, ref, toRefs } from "vue";
 
 import { useUsersStore } from "@/store/users";
 import { useGeneralStore } from "@/store/general";
-import type { IUserDTO } from "@shared/types/dtos/User";
+import type { IUserDTO } from "@shared/types/DTOs/User";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
-import type { IWorkspaceDTO } from "@shared/types/dtos/Workspace";
+import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 

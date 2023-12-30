@@ -1,5 +1,5 @@
 import { Role } from "@entities/Role";
-import { IAddEditRoleDto } from "@shared/types/dtos/Role";
+import { IAddEditRoleDto } from "@shared/types/DTOs/Role";
 import { TransactionResult } from "types/TransactionResult";
 
 export interface IRoleService {

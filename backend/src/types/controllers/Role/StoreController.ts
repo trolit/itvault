@@ -1,5 +1,5 @@
 import { RoleMapper } from "@mappers/RoleMapper";
-import { IAddEditRoleDto } from "@shared/types/dtos/Role";
+import { IAddEditRoleDto } from "@shared/types/DTOs/Role";
 
 export namespace StoreControllerTypes {
   export namespace v1 {

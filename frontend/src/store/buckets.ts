@@ -6,7 +6,7 @@ import type { Bucket } from "@/types/Bucket";
 import { useVariantsStore } from "./variants";
 import { useBlueprintsStore } from "./blueprints";
 import { useWorkspacesStore } from "./workspaces";
-import type { IBucketDTO, IAddEditBucketDTO } from "@shared/types/dtos/Bucket";
+import type { IBucketDTO, IAddEditBucketDTO } from "@shared/types/DTOs/Bucket";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
 
 interface IState {}

@@ -1,7 +1,7 @@
 import { BaseMapper } from "./BaseMapper";
 
 import type { Bundle } from "@entities/Bundle";
-import type { IBundleDTO } from "@shared/types/dtos/Bundle";
+import type { IBundleDTO } from "@shared/types/DTOs/Bundle";
 import type { BundleStatus } from "@shared/types/enums/BundleStatus";
 import type { BundleExpire } from "@shared/types/enums/BundleExpire";
 

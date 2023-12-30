@@ -7,10 +7,10 @@ import type {
   ISignUpDTO,
   IUpdateUserDTO,
   IPatchUserToWorkspaceDTO,
-} from "@shared/types/dtos/User";
-import type { INoteDTO } from "@shared/types/dtos/Note";
-import type { IAddUserDTO } from "@shared/types/dtos/User";
-import type { IWorkspaceDTO } from "@shared/types/dtos/Workspace";
+} from "@shared/types/DTOs/User";
+import type { INoteDTO } from "@shared/types/DTOs/Note";
+import type { IAddUserDTO } from "@shared/types/DTOs/User";
+import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 

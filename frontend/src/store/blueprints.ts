@@ -5,9 +5,9 @@ import { useGeneralStore } from "./general";
 import { useVariantsStore } from "./variants";
 import { useWorkspacesStore } from "./workspaces";
 import { useDateService } from "@/services/useDateService";
-import type { IBlueprintDTO } from "@shared/types/dtos/Blueprint";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
-import type { IAddEditBlueprintDTO } from "@shared/types/dtos/Blueprint";
+import type { IAddEditBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {

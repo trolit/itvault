@@ -9,7 +9,7 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 import { Di } from "@enums/Di";
 import { User } from "@entities/User";
 import { Role } from "@entities/Role";
-import { IUpdateUserDTO } from "@shared/types/dtos/User";
+import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 

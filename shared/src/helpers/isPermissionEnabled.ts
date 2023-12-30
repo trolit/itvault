@@ -1,5 +1,5 @@
 import { Permission } from "../types/enums/Permission";
-import { IRolePermissionDTO } from "../types/dtos/Role";
+import { IRolePermissionDTO } from "../types/DTOs/Role";
 
 export const isPermissionEnabled = <T = void>(
   permission: Permission,

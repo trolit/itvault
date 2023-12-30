@@ -22,7 +22,7 @@ import { UserAvatar as UserAvatarIcon } from "@vicons/carbon";
 
 import { useAuthStore } from "@/store/auth";
 import { useDateService } from "@/services/useDateService";
-import type { IBundleDTO } from "@shared/types/dtos/Bundle";
+import type { IBundleDTO } from "@shared/types/DTOs/Bundle";
 
 const props = defineProps({
   bundle: {

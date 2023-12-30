@@ -1,7 +1,7 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import type { ITagDTO } from "@shared/types/dtos/Tag";
+import type { ITagDTO } from "@shared/types/DTOs/Tag";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {}

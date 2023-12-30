@@ -6,7 +6,7 @@ import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
 import { WORKSPACE_RULES } from "@shared/constants/rules";
-import { IAddEditWorkspaceDTO } from "@shared/types/dtos/Workspace";
+import { IAddEditWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";

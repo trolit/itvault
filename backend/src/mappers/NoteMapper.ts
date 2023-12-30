@@ -1,7 +1,7 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Note } from "@entities/Note";
-import { INoteDTO } from "@shared/types/dtos/Note";
+import { INoteDTO } from "@shared/types/DTOs/Note";
 
 export class NoteMapper extends BaseMapper<Note> implements INoteDTO {
   id: number;
