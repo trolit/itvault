@@ -103,7 +103,7 @@ const props = defineProps<IProps>();
 
 const isLoading = ref(false);
 
-type FixedSignUpDto = {
+type SignUpForm = {
   password: string;
 
   confirmPassword: string;
@@ -112,7 +112,7 @@ type FixedSignUpDto = {
 const { PASSWORD } = ACCOUNT_RULES;
 
 const { fields, getError, hasError, handleSubmit, setValidationErrors } =
-  defineForm<FixedSignUpDto>(
+  defineForm<SignUpForm>(
     {
       password: "",
       confirmPassword: "",
