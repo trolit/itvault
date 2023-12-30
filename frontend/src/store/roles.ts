@@ -3,7 +3,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { defineStore } from "pinia";
 
 import type {
-  IAddEditRoleDto,
+  IAddEditRoleDTO,
   IRolePermissionDTO,
 } from "@shared/types/DTOs/Role";
 import type { RoleTab } from "@/types/RoleTab";
@@ -63,7 +63,7 @@ export const useRolesStore = defineStore("roles", {
       return data;
     },
 
-    async store(payload: IAddEditRoleDto) {
+    async store(payload: IAddEditRoleDTO) {
       const params = {
         version: 1,
       };
@@ -75,7 +75,7 @@ export const useRolesStore = defineStore("roles", {
       return data;
     },
 
-    async update(id: number, payload: IAddEditRoleDto) {
+    async update(id: number, payload: IAddEditRoleDTO) {
       const params = {
         version: 1,
       };

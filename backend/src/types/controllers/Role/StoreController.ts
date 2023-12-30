@@ -1,9 +1,9 @@
 import { RoleMapper } from "@mappers/RoleMapper";
-import { IAddEditRoleDto } from "@shared/types/DTOs/Role";
+import { IAddEditRoleDTO } from "@shared/types/DTOs/Role";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = IAddEditRoleDto;
+    export type Body = IAddEditRoleDTO;
 
     export type Request = CustomRequest<undefined, Body>;
 
