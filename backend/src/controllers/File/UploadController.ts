@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { FileMapper } from "@mappers/FileMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IFileService } from "types/services/IFileService";
-import { StoreControllerTypes } from "types/controllers/File/StoreController";
+import { UploadControllerTypes } from "types/controllers/File/UploadController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
@@ -14,7 +14,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class StoreController extends BaseController {
+export class UploadController extends BaseController {
   constructor(
     @inject(Di.FileService)
     private _fileService: IFileService
@@ -32,8 +32,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(
-    request: StoreControllerTypes.v1.Request,
-    response: StoreControllerTypes.v1.Response
+    request: UploadControllerTypes.v1.Request,
+    response: UploadControllerTypes.v1.Response
   ) {
     const {
       files,
