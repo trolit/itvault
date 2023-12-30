@@ -1,4 +1,4 @@
-export interface IDirectoryDto {
+export interface IDirectoryDTO {
   id: number;
 
   relativePath: string;

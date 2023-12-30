@@ -7,8 +7,8 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { Permission } from "@entities/Permission";
-import { IAddEditRoleDto } from "@shared/types/dtos/Role";
-import { IPermissionUpdateDto } from "@shared/types/dtos/Permission";
+import { IAddEditRoleDTO } from "@shared/types/DTOs/Role";
+import { IPermissionUpdateDTO } from "@shared/types/DTOs/Permission";
 
 @injectable()
 export class RoleService implements IRoleService {
@@ -19,7 +19,7 @@ export class RoleService implements IRoleService {
 
   async create(
     userId: number,
-    data: IAddEditRoleDto
+    data: IAddEditRoleDTO
   ): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
@@ -69,7 +69,7 @@ export class RoleService implements IRoleService {
   async update(
     id: number,
     userId: number,
-    data: IAddEditRoleDto
+    data: IAddEditRoleDTO
   ): Promise<TransactionResult<Role>> {
     const transaction = await this._roleRepository.useTransaction();
     const { manager } = transaction;
@@ -123,7 +123,7 @@ export class RoleService implements IRoleService {
 
   private _findPermissionBySignatureOrThrowError(
     signature: string,
-    permissions: IPermissionUpdateDto[]
+    permissions: IPermissionUpdateDTO[]
   ) {
     const permission = permissions.find(
       element => element.signature === signature

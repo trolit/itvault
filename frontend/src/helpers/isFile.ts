@@ -1,6 +1,6 @@
-import type { IFileDto } from "@shared/types/dtos/File";
-import type { IDirectoryDto } from "@shared/types/dtos/Directory";
+import type { IFileDTO } from "@shared/types/DTOs/File";
+import type { IDirectoryDTO } from "@shared/types/DTOs/Directory";
 
-export default (object: IFileDto | IDirectoryDto): object is IFileDto => {
+export default (object: IFileDTO | IDirectoryDTO): object is IFileDTO => {
   return "originalFilename" in object;
 };

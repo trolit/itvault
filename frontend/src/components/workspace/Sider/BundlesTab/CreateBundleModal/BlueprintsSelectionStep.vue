@@ -104,12 +104,12 @@ import {
 } from "naive-ui";
 
 import { useBlueprintsStore } from "@/store/blueprints";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const props = defineProps({
   selectedBlueprints: {
-    type: Object as PropType<IBlueprintDto[]>,
+    type: Object as PropType<IBlueprintDTO[]>,
     required: true,
   },
 });
@@ -122,7 +122,7 @@ const total = ref(0);
 const isLoading = ref(false);
 const { selectedBlueprints } = toRefs(props);
 const blueprintsStore = useBlueprintsStore();
-const blueprints: Ref<IBlueprintDto[]> = ref([]);
+const blueprints: Ref<IBlueprintDTO[]> = ref([]);
 
 onBeforeMount(async () => {
   await fetchBlueprints();

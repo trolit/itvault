@@ -1,4 +1,4 @@
-import { IPatchFilenameDto } from "@shared/types/dtos/File";
+import { IPatchFilenameDTO } from "@shared/types/DTOs/File";
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 export namespace PatchFilenameControllerTypes {
@@ -7,7 +7,7 @@ export namespace PatchFilenameControllerTypes {
       id: number;
     };
 
-    export type Body = IPatchFilenameDto;
+    export type Body = IPatchFilenameDTO;
 
     export type Query = WorkspaceId;
 

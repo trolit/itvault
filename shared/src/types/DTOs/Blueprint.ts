@@ -1,4 +1,4 @@
-export interface IBlueprintDto {
+export interface IBlueprintDTO {
   id: number;
 
   name: string;
@@ -16,7 +16,7 @@ export interface IBlueprintDto {
   isDeleted: boolean;
 }
 
-export interface IAddEditBlueprintDto {
+export interface IAddEditBlueprintDTO {
   name: string;
 
   description: string;

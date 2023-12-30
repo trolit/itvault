@@ -1,10 +1,10 @@
 import type {
-  IAddEditRoleDto,
-  IRolePermissionDto,
-} from "@shared/types/dtos/Role";
+  IAddEditRoleDTO,
+  IRolePermissionDTO,
+} from "@shared/types/DTOs/Role";
 
-export type Form = Pick<IAddEditRoleDto, "name" | "description"> & {
-  permissions: IRolePermissionDto[];
+export type Form = Pick<IAddEditRoleDTO, "name" | "description"> & {
+  permissions: IRolePermissionDTO[];
 };
 
 export type RoleTab = {

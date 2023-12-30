@@ -41,11 +41,11 @@ import type { VariantTab } from "@/types/VariantTab";
 import { useBlueprintsStore } from "@/store/blueprints";
 import AssignColorPopover from "./AssignColorPopover.vue";
 import { defineComputed } from "@/helpers/defineComputed";
-import type { IBucketDto } from "@shared/types/dtos/Bucket";
+import type { IBucketDTO } from "@shared/types/DTOs/Bucket";
 import UnassignColorPopover from "./UnassignColorPopover.vue";
 import decodeLineColoring from "@/helpers/decodeLineColoring";
 import type { BucketContent } from "@shared/types/BucketContent";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import prepareLineForColoring from "@/helpers/prepareLineForColoring";
 import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData";
@@ -154,8 +154,8 @@ function renderText(content: string) {
 function parseLineWithBucket(
   index: number,
   line: string,
-  bucket: IBucketDto,
-  blueprint: IBlueprintDto
+  bucket: IBucketDTO,
+  blueprint: IBlueprintDTO
 ) {
   const { value } = bucket;
   const { color } = blueprint;

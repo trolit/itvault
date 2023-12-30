@@ -5,10 +5,10 @@ import cloneDeep from "lodash/cloneDeep";
 import { useFilesStore } from "./files";
 import { useWorkspacesStore } from "./workspaces";
 import type { VariantTab } from "@/types/VariantTab";
-import type { IBucketDto } from "@shared/types/dtos/Bucket";
-import type { IVariantDto } from "@shared/types/dtos/Variant";
-import type { IPatchNameDto } from "@shared/types/dtos/shared";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IBucketDTO } from "@shared/types/DTOs/Bucket";
+import type { IVariantDTO } from "@shared/types/DTOs/Variant";
+import type { IPatchNameDTO } from "@shared/types/DTOs/shared";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 interface IState {}
 
@@ -44,7 +44,7 @@ export const useVariantsStore = defineStore("variants", {
         workspaceId,
       };
 
-      const { data } = await axios.get<IVariantDto[]>("v1/variants", {
+      const { data } = await axios.get<IVariantDTO[]>("v1/variants", {
         params,
       });
 
@@ -61,7 +61,7 @@ export const useVariantsStore = defineStore("variants", {
         workspaceId,
       };
 
-      const { data } = await axios.get<IBlueprintDto[]>(
+      const { data } = await axios.get<IBlueprintDTO[]>(
         `v1/variants/${id}/blueprints`,
         {
           params,
@@ -104,7 +104,7 @@ export const useVariantsStore = defineStore("variants", {
         workspaceId,
       };
 
-      const { data } = await axios.get<IBucketDto>(`v1/variants/${id}/bucket`, {
+      const { data } = await axios.get<IBucketDTO>(`v1/variants/${id}/bucket`, {
         params,
       });
 
@@ -124,7 +124,7 @@ export const useVariantsStore = defineStore("variants", {
         workspaceId,
       };
 
-      const { data } = await axios.post<IVariantDto>("v1/variants", formData, {
+      const { data } = await axios.post<IVariantDTO>("v1/variants", formData, {
         params,
       });
 
@@ -143,7 +143,7 @@ export const useVariantsStore = defineStore("variants", {
         workspaceId,
       };
 
-      const payload: IPatchNameDto = {
+      const payload: IPatchNameDTO = {
         name,
       };
 
@@ -163,7 +163,7 @@ export const useVariantsStore = defineStore("variants", {
       return axios.delete(`v1/variants/${id}`, { params });
     },
 
-    initializeTab(variant: IVariantDto, options?: { unshift: boolean }) {
+    initializeTab(variant: IVariantDTO, options?: { unshift: boolean }) {
       const { activeTab } = useFilesStore();
 
       if (!activeTab) {
@@ -189,7 +189,7 @@ export const useVariantsStore = defineStore("variants", {
       activeTab.variantTabs.push(variantTab);
     },
 
-    initializeActiveTabBlueprints(blueprints: IBlueprintDto[]) {
+    initializeActiveTabBlueprints(blueprints: IBlueprintDTO[]) {
       if (!this.activeTab) {
         return;
       }
@@ -197,7 +197,7 @@ export const useVariantsStore = defineStore("variants", {
       this.activeTab.blueprints = blueprints;
     },
 
-    initializeActiveTabBlueprintWithBucket(blueprint: IBlueprintDto) {
+    initializeActiveTabBlueprintWithBucket(blueprint: IBlueprintDTO) {
       if (!this.activeTab) {
         return;
       }
@@ -303,7 +303,7 @@ export const useVariantsStore = defineStore("variants", {
       this.activeTab.content = content;
     },
 
-    setActiveTabBucket(bucket: IBucketDto) {
+    setActiveTabBucket(bucket: IBucketDTO) {
       if (!this.activeTab) {
         return;
       }

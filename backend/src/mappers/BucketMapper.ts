@@ -1,10 +1,10 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Bucket } from "@entities/Bucket";
-import { IBucketDto } from "@shared/types/dtos/Bucket";
+import { IBucketDTO } from "@shared/types/DTOs/Bucket";
 import { BucketContent } from "@shared/types/BucketContent";
 
-export class BucketMapper extends BaseMapper<Bucket> implements IBucketDto {
+export class BucketMapper extends BaseMapper<Bucket> implements IBucketDTO {
   id: number;
   blueprintId: number;
   value: BucketContent;

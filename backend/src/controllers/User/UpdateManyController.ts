@@ -7,7 +7,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
 import { Di } from "@enums/Di";
-import { IUpdateUserDto } from "@shared/types/dtos/User";
+import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -52,7 +52,7 @@ export class UpdateManyController extends BaseController {
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
 
-  private reflectChangesInDataStore(entitiesToUpdate: IUpdateUserDto[]) {
+  private reflectChangesInDataStore(entitiesToUpdate: IUpdateUserDTO[]) {
     for (const entityToUpdate of entitiesToUpdate) {
       const { id, data } = entityToUpdate;
 

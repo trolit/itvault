@@ -1,4 +1,4 @@
-export interface IVariantDto {
+export interface IVariantDTO {
   id: string;
 
   name: string;
@@ -10,7 +10,7 @@ export interface IVariantDto {
   size: { value: number; unit: string };
 }
 
-export interface IAddVariantDto {
+export interface IAddVariantDTO {
   name: string;
 
   fileId: number;

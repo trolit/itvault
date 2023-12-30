@@ -113,7 +113,7 @@ import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
 import PinManager from "@/components/common/PinManager.vue";
-import type { IWorkspaceDto } from "@shared/types/dtos/Workspace";
+import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import { sortArrayByPinnedAt } from "@/helpers/sortArrayByPinnedAt";
@@ -136,13 +136,13 @@ onBeforeMount(async () => {
 });
 
 const { sortedItems } = defineComputed({
-  // @TODO include "createdAt" in IWorkspaceDto and sort here (if not pinned)
+  // @TODO include "createdAt" in IWorkspaceDTO and sort here (if not pinned)
   sortedItems() {
     return sortArrayByPinnedAt(workspacesStore.items);
   },
 });
 
-function open(workspace: IWorkspaceDto) {
+function open(workspace: IWorkspaceDTO) {
   workspacesStore.setActiveItem(workspace);
 
   router.push({ path: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}` });
@@ -171,7 +171,7 @@ async function getWorkspaces(newPage: number) {
 }
 
 // @NOTE consider extracting to helper (?)
-function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDto) {
+function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDTO) {
   const isSameItemToEdit = !!(
     workspacesStore.itemToEdit?.id === newItemToEdit?.id
   );

@@ -8,7 +8,7 @@
     :single-column="false"
     :pagination="{ page, pageSize: perPage, itemCount: total }"
     :loading="isLoading"
-    :row-key="(row: IRoleDto) => row.id"
+    :row-key="(row: IRoleDTO) => row.id"
     @update:page="$event => $emit('get-roles', $event)"
   >
     <template #empty>
@@ -29,7 +29,7 @@ import {
 import { ref, onBeforeMount, type Ref, h } from "vue";
 
 import { useRolesStore } from "@/store/roles";
-import type { IRoleDto } from "@shared/types/dtos/Role";
+import type { IRoleDTO } from "@shared/types/DTOs/Role";
 import { useDateService } from "@/services/useDateService";
 
 const rolesStore = useRolesStore();
@@ -42,7 +42,7 @@ interface IProps {
 
   isLoading: boolean;
 
-  data: IRoleDto[];
+  data: IRoleDTO[];
 
   total: number;
 }
@@ -55,8 +55,8 @@ onBeforeMount(async () => {
   emits("get-roles", props.page);
 });
 
-const columns: Ref<DataTableColumns<IRoleDto>> = ref<
-  DataTableColumns<IRoleDto>
+const columns: Ref<DataTableColumns<IRoleDTO>> = ref<
+  DataTableColumns<IRoleDTO>
 >([
   {
     title: "Name",

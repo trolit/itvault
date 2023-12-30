@@ -5,11 +5,11 @@ import { useDrawerStore } from "./drawer";
 import type { Bundle } from "@/types/Bundle";
 import { Drawer } from "@/types/enums/Drawer";
 import { useWorkspacesStore } from "./workspaces";
-import type { IBundleDto } from "@shared/types/dtos/Bundle";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IBundleDTO } from "@shared/types/DTOs/Bundle";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import type { IAddBundleDto, IBundleFileDto } from "@shared/types/dtos/Bundle";
+import type { IAddBundleDTO, IBundleFileDTO } from "@shared/types/DTOs/Bundle";
 
 interface IState {
   total: number;
@@ -43,7 +43,7 @@ export const useBundlesStore = defineStore("bundles", {
         ...options,
       };
 
-      const { data } = await axios.get<PaginatedResponse<IBundleDto>>(
+      const { data } = await axios.get<PaginatedResponse<IBundleDTO>>(
         "v1/bundles",
         {
           params,
@@ -78,7 +78,7 @@ export const useBundlesStore = defineStore("bundles", {
         workspaceId,
       };
 
-      const { data } = await axios.get<IBlueprintDto[]>(
+      const { data } = await axios.get<IBlueprintDTO[]>(
         `v1/bundles/${bundleId}/blueprints`,
         {
           params,
@@ -100,7 +100,7 @@ export const useBundlesStore = defineStore("bundles", {
         workspaceId,
       };
 
-      const { data } = await axios.get<IBundleFileDto[]>(
+      const { data } = await axios.get<IBundleFileDTO[]>(
         `v1/bundles/${bundleId}/files`,
         {
           params,
@@ -125,7 +125,7 @@ export const useBundlesStore = defineStore("bundles", {
       });
     },
 
-    async store(payload: IAddBundleDto) {
+    async store(payload: IAddBundleDTO) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {
@@ -133,7 +133,7 @@ export const useBundlesStore = defineStore("bundles", {
         workspaceId,
       };
 
-      const { data } = await axios.post<IBundleDto>(`v1/bundles`, payload, {
+      const { data } = await axios.post<IBundleDTO>(`v1/bundles`, payload, {
         params,
       });
 
@@ -169,7 +169,7 @@ export const useBundlesStore = defineStore("bundles", {
       return axios.delete(`v1/bundles/${id}`, { params });
     },
 
-    setBundleBlueprints(id: number, blueprints: IBlueprintDto[]) {
+    setBundleBlueprints(id: number, blueprints: IBlueprintDTO[]) {
       const bundle = this.findBundleById(id);
 
       if (!bundle) {
@@ -185,7 +185,7 @@ export const useBundlesStore = defineStore("bundles", {
     setBundleBlueprintFiles(
       id: number,
       blueprintId: number,
-      files: IBundleFileDto[]
+      files: IBundleFileDTO[]
     ) {
       const bundle = this.findBundleById(id);
 

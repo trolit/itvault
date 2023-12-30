@@ -1,11 +1,11 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Variant } from "@entities/Variant";
-import { IBundleFileDto } from "@shared/types/dtos/Bundle";
+import { IBundleFileDTO } from "@shared/types/DTOs/Bundle";
 
 export class BundleFileMapper
   extends BaseMapper<Variant>
-  implements IBundleFileDto
+  implements IBundleFileDTO
 {
   fileId: number;
   variantId: string;

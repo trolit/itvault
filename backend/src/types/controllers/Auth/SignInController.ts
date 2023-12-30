@@ -1,9 +1,9 @@
-import { ISignInDto } from "@shared/types/dtos/User";
+import { ISignInDTO } from "@shared/types/DTOs/User";
 import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
 
 export namespace SignInControllerTypes {
   export namespace v1 {
-    export type Body = ISignInDto;
+    export type Body = ISignInDTO;
 
     export type Request = CustomRequest<undefined, Body>;
 

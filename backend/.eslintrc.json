@@ -51,7 +51,7 @@
 
             "same-directory": ["./**"],
 
-            "types": ["@dtos/**", "@shared/**", "@enums/**", "@entities/**"],
+            "types": ["@shared/**", "@enums/**", "@entities/**"],
 
             "tools": [
               "@helpers/**",

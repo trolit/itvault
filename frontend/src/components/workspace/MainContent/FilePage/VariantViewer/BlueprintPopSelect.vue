@@ -64,7 +64,7 @@ import { useVariantsStore } from "@/store/variants";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 const filesStore = useFilesStore();
 const bucketsStore = useBucketsStore();
@@ -84,7 +84,7 @@ const selectedBlueprintId = ref(0);
 const isFetchingBucket = ref(false);
 const isFetchingBlueprints = ref(false);
 const blueprintSearchTimeoutId = ref(0);
-const blueprints: Ref<IBlueprintDto[]> = ref([]);
+const blueprints: Ref<IBlueprintDTO[]> = ref([]);
 
 const { blueprintOptions, isBlueprintAlreadyIncluded, data } = defineComputed({
   blueprintOptions() {

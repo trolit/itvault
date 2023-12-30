@@ -60,7 +60,7 @@ import { NTag, NCard, NText, NThing, NAvatar, NTooltip } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import ActionsDropdown from "./ActionsDropdown.vue";
-import type { INoteDto } from "@shared/types/dtos/Note";
+import type { INoteDTO } from "@shared/types/DTOs/Note";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
@@ -72,7 +72,7 @@ const markdown = useMarkdownService();
 
 const props = defineProps({
   note: {
-    type: Object as PropType<INoteDto>,
+    type: Object as PropType<INoteDTO>,
     required: true,
   },
 });

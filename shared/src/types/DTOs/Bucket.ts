@@ -1,6 +1,6 @@
 import { BucketContent } from "../BucketContent";
 
-export interface IBucketDto {
+export interface IBucketDTO {
   id: number;
 
   blueprintId: number;
@@ -8,7 +8,7 @@ export interface IBucketDto {
   value: BucketContent;
 }
 
-export interface IAddEditBucketDto {
+export interface IAddEditBucketDTO {
   value: BucketContent;
 
   blueprintId: number;

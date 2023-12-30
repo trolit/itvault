@@ -1,8 +1,8 @@
-import type { IFileVariantDto } from "@shared/types/dtos/File";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IFileVariantDTO } from "@shared/types/DTOs/File";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 export type BundleModalItem = {
-  blueprint: IBlueprintDto;
+  blueprint: IBlueprintDTO;
 
-  files: (IFileVariantDto & { selectedVariantId: string })[];
+  files: (IFileVariantDTO & { selectedVariantId: string })[];
 };

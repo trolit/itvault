@@ -3,12 +3,12 @@ import cloneDeep from "lodash/cloneDeep";
 import { defineStore } from "pinia";
 
 import type {
-  IAddEditRoleDto,
-  IRolePermissionDto,
-} from "@shared/types/dtos/Role";
+  IAddEditRoleDTO,
+  IRolePermissionDTO,
+} from "@shared/types/DTOs/Role";
 import type { RoleTab } from "@/types/RoleTab";
-import type { IRoleDto } from "@shared/types/dtos/Role";
-import type { IPermissionDto } from "@shared/types/dtos/Permission";
+import type { IRoleDTO } from "@shared/types/DTOs/Role";
+import type { IPermissionDTO } from "@shared/types/DTOs/Permission";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
@@ -38,7 +38,7 @@ export const useRolesStore = defineStore("roles", {
         ...options,
       };
 
-      const { data } = await axios.get<PaginatedResponse<IRoleDto>>(
+      const { data } = await axios.get<PaginatedResponse<IRoleDTO>>(
         `v1/roles`,
         { params }
       );
@@ -53,7 +53,7 @@ export const useRolesStore = defineStore("roles", {
         version: 1,
       };
 
-      const { data } = await axios.get<IRolePermissionDto[]>(
+      const { data } = await axios.get<IRolePermissionDTO[]>(
         `v1/roles/${id}/permissions`,
         {
           params,
@@ -63,19 +63,19 @@ export const useRolesStore = defineStore("roles", {
       return data;
     },
 
-    async store(payload: IAddEditRoleDto) {
+    async store(payload: IAddEditRoleDTO) {
       const params = {
         version: 1,
       };
 
-      const { data } = await axios.post<IRoleDto>("v1/roles", payload, {
+      const { data } = await axios.post<IRoleDTO>("v1/roles", payload, {
         params,
       });
 
       return data;
     },
 
-    async update(id: number, payload: IAddEditRoleDto) {
+    async update(id: number, payload: IAddEditRoleDTO) {
       const params = {
         version: 1,
       };
@@ -133,7 +133,7 @@ export const useRolesStore = defineStore("roles", {
       }
     },
 
-    setActiveTab(role: IRoleDto) {
+    setActiveTab(role: IRoleDTO) {
       const tab = this.tabs.find(tab => tab.roleId === role.id);
 
       this.activeRoleId = role.id;
@@ -169,7 +169,7 @@ export const useRolesStore = defineStore("roles", {
 
     updateTabCurrentFormPermissions(
       id: number,
-      permissions: IRolePermissionDto[]
+      permissions: IRolePermissionDTO[]
     ) {
       const tab = this.tabs.find(tab => tab.roleId === id);
 
@@ -192,7 +192,7 @@ export const useRolesStore = defineStore("roles", {
 
     setTabPermissions(
       id: number,
-      permissions: IRolePermissionDto[] | IPermissionDto[]
+      permissions: IRolePermissionDTO[] | IPermissionDTO[]
     ) {
       const tab = this.tabs.find(tab => tab.roleId === id);
 

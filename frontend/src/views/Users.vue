@@ -58,7 +58,7 @@
       :columns="columns"
       :loading="isLoadingUsers"
       :pagination="pagination"
-      :row-key="(row: IUserDto) => row.id"
+      :row-key="(row: IUserDTO) => row.id"
       @update:page="getUsers"
     >
       <template #empty>
@@ -111,8 +111,8 @@ import { useAuthStore } from "@/store/auth";
 import { useRolesStore } from "@/store/roles";
 import { useUsersStore } from "@/store/users";
 import { useGeneralStore } from "@/store/general";
-import type { IRoleDto } from "@shared/types/dtos/Role";
-import type { IUserDto } from "@shared/types/dtos/User";
+import type { IRoleDTO } from "@shared/types/DTOs/Role";
+import type { IUserDTO } from "@shared/types/DTOs/User";
 import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
 import RequirePermission from "@/components/common/RequirePermission.vue";
@@ -130,9 +130,9 @@ const isLoadingRoles = ref(false);
 const rolessSearchTimeoutId = ref(0);
 const isCreateAccountModalVisible = ref(false);
 const isManageWorkspacesDrawerVisible = ref(false);
-const userWorkspacesToEdit: Ref<IUserDto | null> = ref(null);
-let filteredRoles: { value: IRoleDto[] } = reactive({ value: [] });
-let allFetchedRoles: { value: IRoleDto[] } = reactive({ value: [] });
+const userWorkspacesToEdit: Ref<IUserDTO | null> = ref(null);
+let filteredRoles: { value: IRoleDTO[] } = reactive({ value: [] });
+let allFetchedRoles: { value: IRoleDTO[] } = reactive({ value: [] });
 
 const defaultPagination = {
   page: 1,
@@ -177,8 +177,8 @@ onBeforeMount(async () => {
   getUsers();
 });
 
-const columns: Ref<DataTableColumns<IUserDto>> = ref<
-  DataTableColumns<IUserDto>
+const columns: Ref<DataTableColumns<IUserDTO>> = ref<
+  DataTableColumns<IUserDTO>
 >([
   {
     title: "Full name",

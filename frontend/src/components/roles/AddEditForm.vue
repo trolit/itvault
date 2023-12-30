@@ -130,8 +130,8 @@ import type { Form, RoleTab } from "@/types/RoleTab";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { usePermissionsStore } from "@/store/permissions";
-import type { IAddEditRoleDto } from "@shared/types/dtos/Role";
-import type { IRolePermissionDto } from "@shared/types/dtos/Role";
+import type { IAddEditRoleDTO } from "@shared/types/DTOs/Role";
+import type { IRolePermissionDTO } from "@shared/types/DTOs/Role";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const rolesStore = useRolesStore();
@@ -234,7 +234,7 @@ defineWatchers({
 
   permissions: {
     source: permissions,
-    handler: (value: IRolePermissionDto[]) => {
+    handler: (value: IRolePermissionDTO[]) => {
       rolesStore.updateTabCurrentFormPermissions(roleTab.value.roleId, value);
     },
     options: {
@@ -274,7 +274,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   let roleId = rolesStore.activeRoleId;
   const isEdit = roleId !== 0;
 
-  const payload: IAddEditRoleDto = {
+  const payload: IAddEditRoleDTO = {
     name: formData.name,
     description: formData.description,
     permissions: formData.permissions.map(({ signature, enabled }) => ({

@@ -1,9 +1,9 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Tag } from "@entities/Tag";
-import { ITagDto } from "@shared/types/dtos/Tag";
+import { ITagDTO } from "@shared/types/DTOs/Tag";
 
-export class TagMapper extends BaseMapper<Tag> implements ITagDto {
+export class TagMapper extends BaseMapper<Tag> implements ITagDTO {
   id: number;
   value: string;
 

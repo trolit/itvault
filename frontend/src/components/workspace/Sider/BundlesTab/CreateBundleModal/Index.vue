@@ -48,12 +48,12 @@ import FormStep from "./FormStep.vue";
 import { useBundlesStore } from "@/store/bundles";
 import { useGeneralStore } from "@/store/general";
 import type { BundleModalItem } from "@/types/BundleModalItem";
-import type { IFileVariantDto } from "@shared/types/dtos/File";
+import type { IFileVariantDTO } from "@shared/types/DTOs/File";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import VariantsSelectionStep from "./VariantsSelectionStep.vue";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import BlueprintsSelectionStep from "./BlueprintsSelectionStep.vue";
-import type { IAddBundleDtoValue } from "@shared/types/dtos/Bundle";
+import type { IAddBundleValueDTO } from "@shared/types/DTOs/Bundle";
 
 const bundlesStore = useBundlesStore();
 const generalStore = useGeneralStore();
@@ -128,7 +128,7 @@ const currentStep = computed(
 
 const isFinalStep = computed(() => current.value === steps.length);
 
-function onBlueprintSelect(blueprintToAdd: IBlueprintDto) {
+function onBlueprintSelect(blueprintToAdd: IBlueprintDTO) {
   const index = items.value.findIndex(
     element => element.blueprint.id === blueprintToAdd.id
   );
@@ -142,7 +142,7 @@ function onBlueprintSelect(blueprintToAdd: IBlueprintDto) {
   items.value.push({ blueprint: blueprintToAdd, files: [] });
 }
 
-function onBlueprintDeselect(blueprintToDeselect: IBlueprintDto) {
+function onBlueprintDeselect(blueprintToDeselect: IBlueprintDTO) {
   const index = items.value.findIndex(
     element => element.blueprint.id === blueprintToDeselect.id
   );
@@ -152,7 +152,7 @@ function onBlueprintDeselect(blueprintToDeselect: IBlueprintDto) {
   }
 }
 
-function onFilesAdd(blueprintId: number, filesToAdd: IFileVariantDto[]) {
+function onFilesAdd(blueprintId: number, filesToAdd: IFileVariantDTO[]) {
   const item = items.value.find(item => item.blueprint.id === blueprintId);
 
   if (!item) {
@@ -169,7 +169,7 @@ function onFilesAdd(blueprintId: number, filesToAdd: IFileVariantDto[]) {
 async function onSubmit() {
   isSubmittingForm.value = true;
 
-  const values: IAddBundleDtoValue[] = items.value.map(item => ({
+  const values: IAddBundleValueDTO[] = items.value.map(item => ({
     blueprintId: item.blueprint.id,
     variantIds: item.files.map(file => file.selectedVariantId),
   }));

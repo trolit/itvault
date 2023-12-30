@@ -95,11 +95,11 @@ import isFile from "@/helpers/isFile";
 import { useFilesStore } from "@/store/files";
 import isDirectory from "@/helpers/isDirectory";
 import { useGeneralStore } from "@/store/general";
-import type { IFileDto } from "@shared/types/dtos/File";
+import type { IFileDTO } from "@shared/types/DTOs/File";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { useDirectoriesStore } from "@/store/directories";
 import type { Emits, Props } from "@/types/CommonModalTypes";
-import type { IDirectoryDto } from "@shared/types/dtos/Directory";
+import type { IDirectoryDTO } from "@shared/types/DTOs/Directory";
 
 const props = defineProps<Props & { treeDropInfo: TreeDropInfo }>();
 const emits = defineEmits<Emits>();
@@ -252,7 +252,7 @@ function checkIfFilenameIsUniqueInRelativePath(
   filename: string,
   relativePath: string
 ) {
-  const item: IDirectoryDto | IFileDto | undefined = workspacesStore.tree.find(
+  const item: IDirectoryDTO | IFileDTO | undefined = workspacesStore.tree.find(
     elem =>
       isFile(elem) &&
       elem.relativePath === relativePath &&
@@ -265,7 +265,7 @@ function checkIfFilenameIsUniqueInRelativePath(
 function handleInsideDrop(nodeId: string) {
   targetId = parseInt(nodeId);
 
-  const item: IDirectoryDto | IFileDto | undefined = workspacesStore.tree.find(
+  const item: IDirectoryDTO | IFileDTO | undefined = workspacesStore.tree.find(
     elem => elem.id == targetId && isDirectory(elem)
   );
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 import { useWorkspacesStore } from "./workspaces";
-import type { IMoveFilesDto } from "@shared/types/dtos/File";
+import type { IMoveFilesDTO } from "@shared/types/DTOs/File";
 
 interface IState {}
 
@@ -12,7 +12,7 @@ export const useDirectoriesStore = defineStore("directories", {
   getters: {},
 
   actions: {
-    moveFiles(payload: IMoveFilesDto) {
+    moveFiles(payload: IMoveFilesDTO) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {

@@ -1,11 +1,11 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Permission } from "@entities/Permission";
-import { IPermissionDto } from "@shared/types/dtos/Permission";
+import { IPermissionDTO } from "@shared/types/DTOs/Permission";
 
 export class PermissionMapper
   extends BaseMapper<Permission>
-  implements IPermissionDto
+  implements IPermissionDTO
 {
   signature: string;
   name: string;

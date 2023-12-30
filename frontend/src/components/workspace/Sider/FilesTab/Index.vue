@@ -44,7 +44,7 @@ import { NScrollbar, NAlert, NButton, NIcon } from "naive-ui";
 import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
 import UploadFilesModal from "./UploadFilesModal.vue";
-import type { IFileDto } from "@shared/types/dtos/File";
+import type { IFileDTO } from "@shared/types/DTOs/File";
 import { useWorkspacesStore } from "@/store/workspaces";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
@@ -79,7 +79,7 @@ async function initTree(isReload?: boolean) {
   const value = workspacesStore.getUrlSearchParamValue(route, "fileId");
 
   try {
-    let file: IFileDto | null = null;
+    let file: IFileDTO | null = null;
 
     if (value && typeof value === "string" && !isReload) {
       file = await initTreeByProvidedFileId(parseInt(value));

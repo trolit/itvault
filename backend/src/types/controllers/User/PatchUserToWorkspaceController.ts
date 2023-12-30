@@ -1,4 +1,4 @@
-import { IPatchUserToWorkspaceDto } from "@shared/types/dtos/User";
+import { IPatchUserToWorkspaceDTO } from "@shared/types/DTOs/User";
 
 export namespace PatchUserToWorkspaceControllerTypes {
   export namespace v1 {
@@ -6,7 +6,7 @@ export namespace PatchUserToWorkspaceControllerTypes {
       id: number;
     };
 
-    export type Body = IPatchUserToWorkspaceDto;
+    export type Body = IPatchUserToWorkspaceDTO;
 
     export type Request = CustomRequest<Params, Body>;
 

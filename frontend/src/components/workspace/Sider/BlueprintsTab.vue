@@ -88,7 +88,7 @@ import { useDrawerStore } from "@/store/drawer";
 import { useBlueprintsStore } from "@/store/blueprints";
 import { defineComputed } from "@/helpers/defineComputed";
 import PinManager from "@/components/common/PinManager.vue";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import { sortArrayByPinnedAt } from "@/helpers/sortArrayByPinnedAt";
 
@@ -123,7 +123,7 @@ onMounted(() => {
   }
 });
 
-function toggleAddEditBlueprintDrawer(newItemToEdit?: IBlueprintDto) {
+function toggleAddEditBlueprintDrawer(newItemToEdit?: IBlueprintDTO) {
   const isSameItemToEdit = !!(
     blueprintsStore.itemToEdit?.id === newItemToEdit?.id
   );
