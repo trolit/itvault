@@ -1,7 +1,7 @@
 import { IAuthorDTO } from "./User";
 import { IPermissionDTO, IPermissionUpdateDTO } from "./Permission";
 
-export interface IRoleDto {
+export interface IRoleDTO {
   id: number;
 
   name: string;

@@ -1,10 +1,10 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Role } from "@entities/Role";
-import { IRoleDto } from "@shared/types/DTOs/Role";
+import { IRoleDTO } from "@shared/types/DTOs/Role";
 import { IAuthorDTO } from "@shared/types/DTOs/User";
 
-export class RoleMapper extends BaseMapper<Role> implements IRoleDto {
+export class RoleMapper extends BaseMapper<Role> implements IRoleDTO {
   id: number;
   name: string;
   description: string;

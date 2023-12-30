@@ -7,7 +7,7 @@ import type {
   IRolePermissionDTO,
 } from "@shared/types/DTOs/Role";
 import type { RoleTab } from "@/types/RoleTab";
-import type { IRoleDto } from "@shared/types/DTOs/Role";
+import type { IRoleDTO } from "@shared/types/DTOs/Role";
 import type { IPermissionDTO } from "@shared/types/DTOs/Permission";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
@@ -38,7 +38,7 @@ export const useRolesStore = defineStore("roles", {
         ...options,
       };
 
-      const { data } = await axios.get<PaginatedResponse<IRoleDto>>(
+      const { data } = await axios.get<PaginatedResponse<IRoleDTO>>(
         `v1/roles`,
         { params }
       );
@@ -68,7 +68,7 @@ export const useRolesStore = defineStore("roles", {
         version: 1,
       };
 
-      const { data } = await axios.post<IRoleDto>("v1/roles", payload, {
+      const { data } = await axios.post<IRoleDTO>("v1/roles", payload, {
         params,
       });
 
@@ -133,7 +133,7 @@ export const useRolesStore = defineStore("roles", {
       }
     },
 
-    setActiveTab(role: IRoleDto) {
+    setActiveTab(role: IRoleDTO) {
       const tab = this.tabs.find(tab => tab.roleId === role.id);
 
       this.activeRoleId = role.id;
