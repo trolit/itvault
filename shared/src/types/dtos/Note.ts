@@ -1,4 +1,4 @@
-import { ResourceDTO } from "./ResourceDto";
+import { ResourceDTO } from "./ResourceDTO";
 
 export interface INoteDTO {
   id: number;
