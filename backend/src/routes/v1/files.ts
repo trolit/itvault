@@ -19,7 +19,7 @@ import { usePatchFilenameSuperSchema } from "@schemas/File/usePatchFilenameSuper
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { StoreController } from "@controllers/File/StoreController";
+import { UploadController } from "@controllers/File/UploadController";
 import { GetAllController } from "@controllers/File/GetAllController";
 import { GetByIdController } from "@controllers/File/GetByIdController";
 import { SoftDeleteController } from "@controllers/File/SoftDeleteController";
@@ -51,13 +51,13 @@ filesRouter.get(
 filesRouter.post(
   "",
   requirePermissions([Permission.UploadFiles]),
-  requireEndpointVersion(StoreController.ALL_VERSIONS),
+  requireEndpointVersion(UploadController.ALL_VERSIONS),
   IsWorkspaceAvailable,
   parseUploadFormData({
     multiples: true,
     basePath: FILES.BASE_TEMPORARY_UPLOADS_PATH,
   }),
-  processRequestWith(StoreController)
+  processRequestWith(UploadController)
 );
 
 filesRouter.patch(
