@@ -131,7 +131,7 @@ import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { usePermissionsStore } from "@/store/permissions";
 import type { IAddEditRoleDto } from "@shared/types/dtos/Role";
-import type { IRolePermissionDto } from "@shared/types/dtos/Role";
+import type { IRolePermissionDTO } from "@shared/types/dtos/Role";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const rolesStore = useRolesStore();
@@ -234,7 +234,7 @@ defineWatchers({
 
   permissions: {
     source: permissions,
-    handler: (value: IRolePermissionDto[]) => {
+    handler: (value: IRolePermissionDTO[]) => {
       rolesStore.updateTabCurrentFormPermissions(roleTab.value.roleId, value);
     },
     options: {

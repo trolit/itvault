@@ -2,9 +2,9 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 import { useFilesStore } from "./files";
-import type { INoteDto } from "@shared/types/dtos/Note";
+import type { INoteDTO } from "@shared/types/dtos/Note";
 import { NoteResource } from "@shared/types/enums/NoteResource";
-import type { ResourceDto } from "@shared/types/dtos/ResourceDto";
+import type { ResourceDTO } from "@shared/types/dtos/ResourceDTO";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
@@ -29,7 +29,7 @@ export const useNotesStore = defineStore("notes", {
         ...options,
       };
 
-      const { data } = await axios.get<PaginatedResponse<INoteDto>>(
+      const { data } = await axios.get<PaginatedResponse<INoteDTO>>(
         "v1/notes",
         {
           params,
@@ -42,7 +42,7 @@ export const useNotesStore = defineStore("notes", {
       return data;
     },
 
-    async store(text: string, resource: ResourceDto) {
+    async store(text: string, resource: ResourceDTO) {
       const params = {
         version: 1,
       };
@@ -52,7 +52,7 @@ export const useNotesStore = defineStore("notes", {
         resource,
       };
 
-      const { data: item } = await axios.post<INoteDto>(`v1/notes`, payload, {
+      const { data: item } = await axios.post<INoteDTO>(`v1/notes`, payload, {
         params,
       });
 
@@ -74,7 +74,7 @@ export const useNotesStore = defineStore("notes", {
       });
     },
 
-    async delete(id: number, resource: ResourceDto) {
+    async delete(id: number, resource: ResourceDTO) {
       const params = {
         version: 1,
       };

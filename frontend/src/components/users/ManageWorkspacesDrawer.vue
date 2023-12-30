@@ -116,18 +116,18 @@ import { reactive, ref, toRefs } from "vue";
 
 import { useUsersStore } from "@/store/users";
 import { useGeneralStore } from "@/store/general";
-import type { IUserDto } from "@shared/types/dtos/User";
+import type { IUserDTO } from "@shared/types/dtos/User";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
-import type { IWorkspaceDto } from "@shared/types/dtos/Workspace";
+import type { IWorkspaceDTO } from "@shared/types/dtos/Workspace";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 
 interface IProps {
   isVisible: boolean;
 
-  user: IUserDto | null;
+  user: IUserDTO | null;
 }
 
 const usersStore = useUsersStore();
@@ -143,7 +143,7 @@ const isLoading = ref(false);
 const isUpdatingUser = ref(false);
 const isLoadingOptions = ref(false);
 const workspacesSearchTimeoutId = ref(0);
-const data: { initialValue: IWorkspaceDto[]; value: IWorkspaceDto[] } =
+const data: { initialValue: IWorkspaceDTO[]; value: IWorkspaceDTO[] } =
   reactive({ initialValue: [], value: [] });
 
 const { isInitialValue, options } = defineComputed({

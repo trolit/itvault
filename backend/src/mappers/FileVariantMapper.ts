@@ -6,21 +6,21 @@ import { VariantMapper } from "./VariantMapper";
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
-import { IVariantDto } from "@shared/types/dtos/Variant";
-import { IFileVariantDto } from "@shared/types/dtos/File";
+import { IVariantDTO } from "@shared/types/dtos/Variant";
+import { IFileVariantDTO } from "@shared/types/dtos/File";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export class FileVariantMapper
   extends BaseMapper<File>
-  implements IFileVariantDto
+  implements IFileVariantDTO
 {
   id: number;
   originalFilename: string;
   relativePath: string;
   createdAt: string;
   updatedAt: string;
-  variants: IVariantDto[];
+  variants: IVariantDTO[];
 
   // @TODO consider passing mapper instance here
   constructor(data: File) {

@@ -1,19 +1,19 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { User } from "@entities/User";
-import { ILoggedUserDto } from "@shared/types/dtos/User";
-import { IRolePermissionDto } from "@shared/types/dtos/Role";
+import { ILoggedUserDTO } from "@shared/types/dtos/User";
+import { IRolePermissionDTO } from "@shared/types/dtos/Role";
 
 export class LoggedUserMapper
   extends BaseMapper<User>
-  implements ILoggedUserDto
+  implements ILoggedUserDTO
 {
   id: number;
   email: string;
   fullName: string;
   roleId: number;
   roleName: string;
-  permissions: IRolePermissionDto[];
+  permissions: IRolePermissionDTO[];
 
   constructor(data: User) {
     super(data, ["id", "email", "fullName"]);

@@ -62,7 +62,7 @@ import { useBundlesStore } from "@/store/bundles";
 import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
 import type { BundleBlueprint } from "@/types/BundleBlueprint";
-import type { IBundleFileDto } from "@shared/types/dtos/Bundle";
+import type { IBundleFileDTO } from "@shared/types/dtos/Bundle";
 
 const props = defineProps({
   value: {
@@ -88,7 +88,7 @@ async function fetchFiles() {
   }
 }
 
-async function openFile(file: IBundleFileDto) {
+async function openFile(file: IBundleFileDTO) {
   generalStore.setLoadingState(LoadingState.Start);
 
   try {

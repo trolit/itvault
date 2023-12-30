@@ -1,6 +1,6 @@
-import { IWorkspaceDto } from "../dtos/Workspace";
-import { IAddEditWorkspaceDto } from "../dtos/Workspace";
+import { IWorkspaceDTO } from "../dtos/Workspace";
+import { IAddEditWorkspaceDTO } from "../dtos/Workspace";
 
-export type CreateWorkspaceData = IWorkspaceDto;
+export type CreateWorkspaceData = IWorkspaceDTO;
 
-export type UpdateWorkspaceData = IAddEditWorkspaceDto & { id: number };
+export type UpdateWorkspaceData = IAddEditWorkspaceDTO & { id: number };

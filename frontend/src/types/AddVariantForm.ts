@@ -1,5 +1,5 @@
-import type { IAddVariantDto } from "@shared/types/dtos/Variant";
+import type { IAddVariantDTO } from "@shared/types/dtos/Variant";
 
-export type AddVariantForm = Pick<IAddVariantDto, "name"> & {
+export type AddVariantForm = Pick<IAddVariantDTO, "name"> & {
   file: File | null;
 };

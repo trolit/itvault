@@ -5,8 +5,8 @@ import type { TreeOption } from "naive-ui";
 import type { RouteLocationNormalizedLoaded } from "vue-router";
 
 import type {
-  IWorkspaceDto,
-  IAddEditWorkspaceDto,
+  IWorkspaceDTO,
+  IAddEditWorkspaceDTO,
 } from "@shared/types/dtos/Workspace";
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
@@ -15,10 +15,10 @@ import { useGeneralStore } from "./general";
 import { useVariantsStore } from "./variants";
 import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
-import type { IFileDto } from "@shared/types/dtos/File";
+import type { IFileDTO } from "@shared/types/dtos/File";
 import { useDateService } from "@/services/useDateService";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
-import type { IDirectoryDto } from "@shared/types/dtos/Directory";
+import type { IDirectoryDTO } from "@shared/types/dtos/Directory";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
@@ -29,12 +29,12 @@ import type { UpdateWorkspaceData } from "@shared/types/transport/WorkspaceMessa
 interface IState {
   total: number;
   treeData: TreeOption[];
-  items: IWorkspaceDto[];
-  recentlyFilteredItems: IWorkspaceDto[];
+  items: IWorkspaceDTO[];
+  recentlyFilteredItems: IWorkspaceDTO[];
   isSiderCollapsed: boolean;
-  activeItem: IWorkspaceDto;
-  itemToEdit: IWorkspaceDto | null;
-  tree: (IDirectoryDto | IFileDto)[];
+  activeItem: IWorkspaceDTO;
+  itemToEdit: IWorkspaceDTO | null;
+  tree: (IDirectoryDTO | IFileDTO)[];
   generalLayoutSiderKey: string;
   treeDataExpandedKeys: (string | number)[];
   initialSearchParams: Partial<WorkspaceSearchParams>;
@@ -70,7 +70,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     TRIGGER_STYLE_HEIGHT: () => "17px",
     DEFAULT_GENERAL_LAYOUT_SIDER_KEY: () => "blueprints",
     activeItemId: state => state.activeItem.id,
-    ALL_DIRS(): IDirectoryDto[] {
+    ALL_DIRS(): IDirectoryDTO[] {
       return this.tree.filter(item => isDirectory(item));
     },
     ARE_ALL_INITIAL_SEARCH_PARAMS_LOADED(): boolean {
@@ -117,7 +117,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       this.isSiderCollapsed = !this.isSiderCollapsed;
     },
 
-    setActiveItem(item: IWorkspaceDto) {
+    setActiveItem(item: IWorkspaceDTO) {
       this.activeItem = item;
 
       this.tree = [];
@@ -136,7 +136,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         version: 1,
       };
 
-      const { data } = await axios.get<IWorkspaceDto>(`v1/workspaces/${slug}`, {
+      const { data } = await axios.get<IWorkspaceDTO>(`v1/workspaces/${slug}`, {
         params,
       });
 
@@ -162,7 +162,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         filters: JSON.stringify(filters),
       };
 
-      const { data } = await axios.get<PaginatedResponse<IWorkspaceDto>>(
+      const { data } = await axios.get<PaginatedResponse<IWorkspaceDTO>>(
         "v1/workspaces",
         {
           params,
@@ -183,7 +183,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         ...options,
       };
 
-      const { data } = await axios.get<(IFileDto | IDirectoryDto)[]>(
+      const { data } = await axios.get<(IFileDTO | IDirectoryDTO)[]>(
         `v1/workspaces/${this.activeItem.id}/tree`,
         {
           params,
@@ -264,13 +264,13 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
-    async store(payload: IAddEditWorkspaceDto) {
-      return axios.post<IAddEditWorkspaceDto>("v1/workspaces", payload, {
+    async store(payload: IAddEditWorkspaceDTO) {
+      return axios.post<IAddEditWorkspaceDTO>("v1/workspaces", payload, {
         params: { version: 1 },
       });
     },
 
-    async update(payload: IAddEditWorkspaceDto) {
+    async update(payload: IAddEditWorkspaceDTO) {
       if (!this.itemToEdit || !this.itemToEdit.id) {
         return;
       }

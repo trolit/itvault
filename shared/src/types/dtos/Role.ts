@@ -1,5 +1,5 @@
-import { IAuthorDto } from "./User";
-import { IPermissionDto, IPermissionUpdateDto } from "./Permission";
+import { IAuthorDTO } from "./User";
+import { IPermissionDTO, IPermissionUpdateDTO } from "./Permission";
 
 export interface IRoleDto {
   id: number;
@@ -12,12 +12,12 @@ export interface IRoleDto {
 
   updatedAt: string;
 
-  createdBy: IAuthorDto | null;
+  createdBy: IAuthorDTO | null;
 
-  updatedBy: IAuthorDto | null;
+  updatedBy: IAuthorDTO | null;
 }
 
-export interface IRolePermissionDto extends IPermissionDto {
+export interface IRolePermissionDTO extends IPermissionDTO {
   enabled: boolean;
 }
 
@@ -26,5 +26,5 @@ export interface IAddEditRoleDto {
 
   description: string;
 
-  permissions: IPermissionUpdateDto[];
+  permissions: IPermissionUpdateDTO[];
 }

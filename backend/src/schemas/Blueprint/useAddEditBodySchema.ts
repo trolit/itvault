@@ -5,7 +5,7 @@ import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 
 import { Di } from "@enums/Di";
 import { BLUEPRINT_RULES } from "@shared/constants/rules";
-import { IAddEditBlueprintDto } from "@shared/types/dtos/Blueprint";
+import { IAddEditBlueprintDTO } from "@shared/types/dtos/Blueprint";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -16,7 +16,7 @@ const { DESCRIPTION, COLOR } = BLUEPRINT_RULES;
 export const useAddEditBodySchema: (
   workspaceId: number,
   id?: number
-) => SuperSchema.Fragment<IAddEditBlueprintDto> = (
+) => SuperSchema.Fragment<IAddEditBlueprintDTO> = (
   workspaceId: number,
   id?: number
 ) => {

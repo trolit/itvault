@@ -1,4 +1,4 @@
-export interface IPermissionDto {
+export interface IPermissionDTO {
   signature: string;
 
   name: string;
@@ -6,7 +6,7 @@ export interface IPermissionDto {
   group: string;
 }
 
-export interface IPermissionUpdateDto {
+export interface IPermissionUpdateDTO {
   signature: string;
 
   enabled: boolean;

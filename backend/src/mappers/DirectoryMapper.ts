@@ -1,11 +1,11 @@
 import { BaseMapper } from "./BaseMapper";
 
 import { Directory } from "@entities/Directory";
-import { IDirectoryDto } from "@shared/types/dtos/Directory";
+import { IDirectoryDTO } from "@shared/types/dtos/Directory";
 
 export class DirectoryMapper
   extends BaseMapper<Directory>
-  implements IDirectoryDto
+  implements IDirectoryDTO
 {
   id: number;
   relativePath: string;

@@ -1,6 +1,6 @@
-import { IRolePermissionDto } from "./Role";
+import { IRolePermissionDTO } from "./Role";
 
-export interface IUserDto {
+export interface IUserDTO {
   id: number;
 
   email: string;
@@ -18,7 +18,7 @@ export interface IUserDto {
   invitedBy: string | null;
 }
 
-export interface ILoggedUserDto {
+export interface ILoggedUserDTO {
   id: number;
 
   email: string;
@@ -29,16 +29,16 @@ export interface ILoggedUserDto {
 
   roleName: string;
 
-  permissions: IRolePermissionDto[];
+  permissions: IRolePermissionDTO[];
 }
 
-export interface IAuthorDto {
+export interface IAuthorDTO {
   id: number;
 
   fullName: string;
 }
 
-export interface IAddUserDto {
+export interface IAddUserDTO {
   email: string;
 
   firstName: string;
@@ -48,13 +48,13 @@ export interface IAddUserDto {
   roleId: number;
 }
 
-export interface IUpdateUserDto {
+export interface IUpdateUserDTO {
   id: number;
 
   data: { roleId?: number; isActive?: boolean };
 }
 
-export interface ISignUpDto {
+export interface ISignUpDTO {
   id: number;
 
   email: string;
@@ -64,12 +64,12 @@ export interface ISignUpDto {
   password: string;
 }
 
-export interface ISignInDto {
+export interface ISignInDTO {
   email: string;
 
   password: string;
 }
 
-export interface IPatchUserToWorkspaceDto {
+export interface IPatchUserToWorkspaceDTO {
   ids: number[];
 }

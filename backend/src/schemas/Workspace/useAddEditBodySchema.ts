@@ -6,7 +6,7 @@ import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
 import { WORKSPACE_RULES } from "@shared/constants/rules";
-import { IAddEditWorkspaceDto } from "@shared/types/dtos/Workspace";
+import { IAddEditWorkspaceDTO } from "@shared/types/dtos/Workspace";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -16,7 +16,7 @@ const { NAME, DESCRIPTION, TAGS } = WORKSPACE_RULES;
 
 export const useAddEditBodySchema: (
   id?: number
-) => SuperSchema.Fragment<IAddEditWorkspaceDto> = (id?: number) =>
+) => SuperSchema.Fragment<IAddEditWorkspaceDTO> = (id?: number) =>
   object({
     name: string()
       .trim()

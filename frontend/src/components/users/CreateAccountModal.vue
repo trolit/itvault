@@ -123,7 +123,7 @@ import { number, object, string, ref as yupRef } from "yup";
 import { useUsersStore } from "@/store/users";
 
 import { ACCOUNT_RULES } from "@shared/constants/rules";
-import type { IAddUserDto } from "@shared/types/dtos/User";
+import type { IAddUserDTO } from "@shared/types/dtos/User";
 import { useModalHelpers } from "@/helpers/useModalHelpers";
 import type { Emits, Props } from "@/types/CommonModalTypes";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
@@ -160,7 +160,7 @@ const { isVisible } = useModalHelpers(props, {
   },
 });
 
-const defaultUser: IAddUserDto & { confirmEmail: string } = {
+const defaultUser: IAddUserDTO & { confirmEmail: string } = {
   email: "",
   confirmEmail: "",
   firstName: "",
@@ -186,7 +186,7 @@ const {
   resetForm,
   setFormData,
   onSubmit,
-} = defineFormApiRequest<IAddUserDto & { confirmEmail: string }>({
+} = defineFormApiRequest<IAddUserDTO & { confirmEmail: string }>({
   data: defaultUser,
 
   schema: object({

@@ -57,13 +57,13 @@ import { Information as InfoIcon } from "@vicons/carbon";
 
 import type { NaiveStatus } from "@/types/NaiveStatus";
 import { useDateService } from "@/services/useDateService";
-import type { IBundleDto } from "@shared/types/dtos/Bundle";
+import type { IBundleDTO } from "@shared/types/dtos/Bundle";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 
 const props = defineProps({
   bundle: {
-    type: Object as PropType<IBundleDto>,
+    type: Object as PropType<IBundleDTO>,
     required: true,
   },
 });

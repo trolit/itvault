@@ -5,15 +5,15 @@ import { useGeneralStore } from "./general";
 import { useVariantsStore } from "./variants";
 import { useWorkspacesStore } from "./workspaces";
 import { useDateService } from "@/services/useDateService";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IBlueprintDTO } from "@shared/types/dtos/Blueprint";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
-import type { IAddEditBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IAddEditBlueprintDTO } from "@shared/types/dtos/Blueprint";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
   total: number;
-  items: IBlueprintDto[];
-  itemToEdit: IBlueprintDto | null;
+  items: IBlueprintDTO[];
+  itemToEdit: IBlueprintDTO | null;
   pinStatusUpdateItemId: number;
 }
 
@@ -27,7 +27,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
 
   getters: {
     ITEMS_PER_PAGE: () => 13,
-    activeItem(): IBlueprintDto | undefined {
+    activeItem(): IBlueprintDTO | undefined {
       const { activeTab: activeVariantTab } = useVariantsStore();
 
       if (!activeVariantTab) {
@@ -52,7 +52,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
         ...options,
       };
 
-      const { data } = await axios.get<PaginatedResponse<IBlueprintDto>>(
+      const { data } = await axios.get<PaginatedResponse<IBlueprintDTO>>(
         "v1/blueprints",
         {
           params,
@@ -68,10 +68,10 @@ export const useBlueprintsStore = defineStore("blueprints", {
       return data;
     },
 
-    async store(payload: IAddEditBlueprintDto) {
+    async store(payload: IAddEditBlueprintDTO) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
-      return axios.post<IBlueprintDto>("v1/blueprints", payload, {
+      return axios.post<IBlueprintDTO>("v1/blueprints", payload, {
         params: { version: 1, workspaceId },
       });
     },
@@ -90,7 +90,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
       }
     },
 
-    async update(payload: IAddEditBlueprintDto) {
+    async update(payload: IAddEditBlueprintDTO) {
       if (!this.itemToEdit || !this.itemToEdit.id) {
         return;
       }

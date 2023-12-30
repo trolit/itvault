@@ -1,10 +1,10 @@
 import axios from "axios";
 import { defineStore } from "pinia";
 
-import type { IPermissionDto } from "@shared/types/dtos/Permission";
+import type { IPermissionDTO } from "@shared/types/dtos/Permission";
 
 interface IState {
-  items: IPermissionDto[];
+  items: IPermissionDTO[];
 }
 
 export const usePermissionsStore = defineStore("permissions", {
@@ -20,7 +20,7 @@ export const usePermissionsStore = defineStore("permissions", {
         version: 1,
       };
 
-      const { data } = await axios.get<IPermissionDto[]>(`v1/permissions`, {
+      const { data } = await axios.get<IPermissionDTO[]>(`v1/permissions`, {
         params,
       });
 

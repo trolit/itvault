@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import { computed, ref, type PropType } from "vue";
-import type { IBundleDto } from "@shared/types/dtos/Bundle";
+import type { IBundleDTO } from "@shared/types/dtos/Bundle";
 import { NCard, NThing, NButton, NEllipsis, NPopconfirm } from "naive-ui";
 
 import Status from "./Status.vue";
@@ -94,7 +94,7 @@ import { BundleStatus as BundleStatusEnum } from "@shared/types/enums/BundleStat
 
 const props = defineProps({
   item: {
-    type: Object as PropType<IBundleDto>,
+    type: Object as PropType<IBundleDTO>,
     required: true,
   },
 });

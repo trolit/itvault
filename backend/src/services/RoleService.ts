@@ -8,7 +8,7 @@ import { Di } from "@enums/Di";
 import { Role } from "@entities/Role";
 import { Permission } from "@entities/Permission";
 import { IAddEditRoleDto } from "@shared/types/dtos/Role";
-import { IPermissionUpdateDto } from "@shared/types/dtos/Permission";
+import { IPermissionUpdateDTO } from "@shared/types/dtos/Permission";
 
 @injectable()
 export class RoleService implements IRoleService {
@@ -123,7 +123,7 @@ export class RoleService implements IRoleService {
 
   private _findPermissionBySignatureOrThrowError(
     signature: string,
-    permissions: IPermissionUpdateDto[]
+    permissions: IPermissionUpdateDTO[]
   ) {
     const permission = permissions.find(
       element => element.signature === signature

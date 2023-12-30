@@ -20,7 +20,7 @@ import { NIcon, NText, NButton, NDropdown, useDialog } from "naive-ui";
 import { useNotesStore } from "@/store/notes";
 import { useFilesStore } from "@/store/files";
 import { useGeneralStore } from "@/store/general";
-import type { INoteDto } from "@shared/types/dtos/Note";
+import type { INoteDTO } from "@shared/types/dtos/Note";
 import { defineComputed } from "@/helpers/defineComputed";
 import { NoteResource } from "@shared/types/enums/NoteResource";
 
@@ -30,7 +30,7 @@ const notesStore = useNotesStore();
 const generalStore = useGeneralStore();
 
 interface IProps {
-  note: INoteDto;
+  note: INoteDTO;
 
   isNoteOwner: boolean;
 

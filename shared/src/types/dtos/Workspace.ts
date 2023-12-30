@@ -1,4 +1,4 @@
-export interface IWorkspaceDto {
+export interface IWorkspaceDTO {
   id: number;
 
   name: string;
@@ -12,7 +12,7 @@ export interface IWorkspaceDto {
   tags: string[];
 }
 
-export interface IAddEditWorkspaceDto {
+export interface IAddEditWorkspaceDTO {
   name: string;
 
   description: string;

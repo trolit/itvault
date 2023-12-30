@@ -3,22 +3,22 @@ import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
 import type {
-  IUserDto,
-  ISignUpDto,
-  IUpdateUserDto,
-  IPatchUserToWorkspaceDto,
+  IUserDTO,
+  ISignUpDTO,
+  IUpdateUserDTO,
+  IPatchUserToWorkspaceDTO,
 } from "@shared/types/dtos/User";
-import type { INoteDto } from "@shared/types/dtos/Note";
-import type { IAddUserDto } from "@shared/types/dtos/User";
-import type { IWorkspaceDto } from "@shared/types/dtos/Workspace";
+import type { INoteDTO } from "@shared/types/dtos/Note";
+import type { IAddUserDTO } from "@shared/types/dtos/User";
+import type { IWorkspaceDTO } from "@shared/types/dtos/Workspace";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 interface IState {
   total: number;
-  items: IUserDto[];
-  itemsToUpdate: IUpdateUserDto[];
-  notes: PaginatedResponse<INoteDto>;
+  items: IUserDTO[];
+  itemsToUpdate: IUpdateUserDTO[];
+  notes: PaginatedResponse<INoteDTO>;
 }
 
 export const useUsersStore = defineStore("users", {
@@ -36,7 +36,7 @@ export const useUsersStore = defineStore("users", {
         ...options,
       };
 
-      const { data } = await axios.get<PaginatedResponse<IUserDto>>(
+      const { data } = await axios.get<PaginatedResponse<IUserDTO>>(
         `v1/users`,
         { params }
       );
@@ -53,7 +53,7 @@ export const useUsersStore = defineStore("users", {
         this.notes = { total: 0, result: [] };
       }
 
-      const { data } = await axios.get<PaginatedResponse<INoteDto>>(
+      const { data } = await axios.get<PaginatedResponse<INoteDTO>>(
         `v1/users/${userId}/notes`,
         {
           params: { page, version: 1 },
@@ -70,17 +70,17 @@ export const useUsersStore = defineStore("users", {
       this.notes.total = total;
     },
 
-    async store(payload: IAddUserDto) {
-      return axios.post<IUserDto>("v1/users", payload, {
+    async store(payload: IAddUserDTO) {
+      return axios.post<IUserDTO>("v1/users", payload, {
         params: { version: 1 },
       });
     },
 
     async patchWorkspacesAccessibleByUser(
       userId: number,
-      workspaces: IWorkspaceDto[]
+      workspaces: IWorkspaceDTO[]
     ) {
-      const payload: IPatchUserToWorkspaceDto = {
+      const payload: IPatchUserToWorkspaceDTO = {
         ids: workspaces.map(workspace => workspace.id),
       };
 
@@ -89,7 +89,7 @@ export const useUsersStore = defineStore("users", {
       });
     },
 
-    async signUp(payload: ISignUpDto) {
+    async signUp(payload: ISignUpDTO) {
       return axios.post(`v1/users/sign-up`, payload, {
         params: { version: 1 },
       });
@@ -133,7 +133,7 @@ export const useUsersStore = defineStore("users", {
       return this.itemsToUpdate.find(itemToUpdate => itemToUpdate.id === id);
     },
 
-    removeDataKey(key: "roleId" | "isActive", item: IUpdateUserDto) {
+    removeDataKey(key: "roleId" | "isActive", item: IUpdateUserDTO) {
       delete item.data[key];
 
       if (!Object.keys(item.data).length) {

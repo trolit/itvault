@@ -1,6 +1,6 @@
-import { ResourceDto } from "./ResourceDto";
+import { ResourceDTO } from "./ResourceDto";
 
-export interface INoteDto {
+export interface INoteDTO {
   id: number;
 
   value: string;
@@ -14,12 +14,12 @@ export interface INoteDto {
   isDeleted: boolean;
 }
 
-export interface IAddNoteDto {
+export interface IAddNoteDTO {
   text: string;
 
-  resource: ResourceDto;
+  resource: ResourceDTO;
 }
 
-export interface IUpdateNoteDto {
+export interface IUpdateNoteDTO {
   text: string;
 }

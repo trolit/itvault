@@ -1,6 +1,6 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
-import { IAddEditBlueprintDto } from "@shared/types/dtos/Blueprint";
+import { IAddEditBlueprintDTO } from "@shared/types/dtos/Blueprint";
 
 export namespace UpdateControllerTypes {
   export namespace v1 {
@@ -8,7 +8,7 @@ export namespace UpdateControllerTypes {
       id: number;
     };
 
-    export type Body = IAddEditBlueprintDto;
+    export type Body = IAddEditBlueprintDTO;
 
     export type Query = WorkspaceId;
 

@@ -1,3 +1,3 @@
-export interface IPatchNameDto {
+export interface IPatchNameDTO {
   name: string;
 }

@@ -4,11 +4,11 @@ import { defineStore } from "pinia";
 
 import type {
   IAddEditRoleDto,
-  IRolePermissionDto,
+  IRolePermissionDTO,
 } from "@shared/types/dtos/Role";
 import type { RoleTab } from "@/types/RoleTab";
 import type { IRoleDto } from "@shared/types/dtos/Role";
-import type { IPermissionDto } from "@shared/types/dtos/Permission";
+import type { IPermissionDTO } from "@shared/types/dtos/Permission";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
@@ -53,7 +53,7 @@ export const useRolesStore = defineStore("roles", {
         version: 1,
       };
 
-      const { data } = await axios.get<IRolePermissionDto[]>(
+      const { data } = await axios.get<IRolePermissionDTO[]>(
         `v1/roles/${id}/permissions`,
         {
           params,
@@ -169,7 +169,7 @@ export const useRolesStore = defineStore("roles", {
 
     updateTabCurrentFormPermissions(
       id: number,
-      permissions: IRolePermissionDto[]
+      permissions: IRolePermissionDTO[]
     ) {
       const tab = this.tabs.find(tab => tab.roleId === id);
 
@@ -192,7 +192,7 @@ export const useRolesStore = defineStore("roles", {
 
     setTabPermissions(
       id: number,
-      permissions: IRolePermissionDto[] | IPermissionDto[]
+      permissions: IRolePermissionDTO[] | IPermissionDTO[]
     ) {
       const tab = this.tabs.find(tab => tab.roleId === id);
 

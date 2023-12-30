@@ -94,7 +94,7 @@ import { ref, type PropType, computed, watch, toRefs } from "vue";
 
 import { useFilesStore } from "@/store/files";
 import type { BundleModalItem } from "@/types/BundleModalItem";
-import type { IBlueprintDto } from "@shared/types/dtos/Blueprint";
+import type { IBlueprintDTO } from "@shared/types/dtos/Blueprint";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const props = defineProps({
@@ -104,7 +104,7 @@ const props = defineProps({
   },
 
   selectedBlueprints: {
-    type: Object as PropType<IBlueprintDto[]>,
+    type: Object as PropType<IBlueprintDTO[]>,
     required: true,
   },
 });

@@ -2,15 +2,15 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 import type {
-  IFileDto,
-  IFileVariantDto,
-  IPatchFilenameDto,
-  IPatchRelativePathDto,
+  IFileDTO,
+  IFileVariantDTO,
+  IPatchFilenameDTO,
+  IPatchRelativePathDTO,
 } from "@shared/types/dtos/File";
 import { useVariantsStore } from "./variants";
 import type { FileTab } from "@/types/FileTab";
 import { useWorkspacesStore } from "./workspaces";
-import type { IBundleFileDto } from "@shared/types/dtos/Bundle";
+import type { IBundleFileDTO } from "@shared/types/dtos/Bundle";
 
 interface IState {
   ROOT: string;
@@ -43,7 +43,7 @@ export const useFilesStore = defineStore("files", {
         workspaceId,
       };
 
-      const { data } = await axios.get<IFileDto>(`v1/files/${id}`, {
+      const { data } = await axios.get<IFileDTO>(`v1/files/${id}`, {
         params,
       });
 
@@ -59,7 +59,7 @@ export const useFilesStore = defineStore("files", {
         workspaceId,
       };
 
-      return axios.get<IFileVariantDto[]>(`v1/files`, {
+      return axios.get<IFileVariantDTO[]>(`v1/files`, {
         params,
       });
     },
@@ -72,7 +72,7 @@ export const useFilesStore = defineStore("files", {
         workspaceId,
       };
 
-      const { data } = await axios.post<IFileDto[]>("v1/files", formData, {
+      const { data } = await axios.post<IFileDTO[]>("v1/files", formData, {
         params,
       });
 
@@ -89,7 +89,7 @@ export const useFilesStore = defineStore("files", {
         workspaceId,
       };
 
-      const payload: IPatchFilenameDto = {
+      const payload: IPatchFilenameDTO = {
         filename,
       };
 
@@ -106,7 +106,7 @@ export const useFilesStore = defineStore("files", {
         workspaceId,
       };
 
-      const payload: IPatchRelativePathDto = {
+      const payload: IPatchRelativePathDTO = {
         relativePath,
       };
 
@@ -130,7 +130,7 @@ export const useFilesStore = defineStore("files", {
       return this.tabs.find(tab => tab.file.id === id);
     },
 
-    setActiveTab(file: IFileDto) {
+    setActiveTab(file: IFileDTO) {
       const tab = this.findTabById(file.id);
 
       this.activeFileId = file.id;
@@ -147,7 +147,7 @@ export const useFilesStore = defineStore("files", {
       });
     },
 
-    async setActiveTabFromBundle(bundle: IBundleFileDto, blueprintId: number) {
+    async setActiveTabFromBundle(bundle: IBundleFileDTO, blueprintId: number) {
       const { fileId, variantId } = bundle;
       const variantsStore = useVariantsStore();
 

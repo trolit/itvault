@@ -1,11 +1,11 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { VariantMapper } from "@mappers/VariantMapper";
-import { IAddVariantDto } from "@shared/types/dtos/Variant";
+import { IAddVariantDTO } from "@shared/types/dtos/Variant";
 
 export namespace StoreControllerTypes {
   export namespace v1 {
-    export type Body = IAddVariantDto;
+    export type Body = IAddVariantDTO;
 
     type Query = WorkspaceId;
 

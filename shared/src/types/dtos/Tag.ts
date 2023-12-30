@@ -1,4 +1,4 @@
-export interface ITagDto {
+export interface ITagDTO {
   id: number;
 
   value: string;

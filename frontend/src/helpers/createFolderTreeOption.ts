@@ -2,9 +2,9 @@ import { h } from "vue";
 import { NIcon, type TreeOption } from "naive-ui";
 import { Folder as OpenedFolderIcon } from "@vicons/carbon";
 
-import type { IDirectoryDto } from "@shared/types/dtos/Directory";
+import type { IDirectoryDTO } from "@shared/types/dtos/Directory";
 
-export default (folder: IDirectoryDto, overrides?: TreeOption) => {
+export default (folder: IDirectoryDTO, overrides?: TreeOption) => {
   const { id, relativePath } = folder;
   const [, ...relativePathExceptRoot] = relativePath.split("/");
   const label = relativePathExceptRoot.pop();

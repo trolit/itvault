@@ -102,7 +102,7 @@ import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
 import UserNotesModal from "./UserNotesModal.vue";
-import type { INoteDto } from "@shared/types/dtos/Note";
+import type { INoteDTO } from "@shared/types/dtos/Note";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import AddEditNoteInnerDrawer from "./AddEditNoteInnerDrawer.vue";
@@ -118,7 +118,7 @@ const isLoading = ref(true);
 const userFullName = ref("");
 const isUserNotesModalVisible = ref(false);
 const isAddEditNoteDrawerVisible = ref(false);
-const noteToEdit: Ref<INoteDto | null> = ref(null);
+const noteToEdit: Ref<INoteDTO | null> = ref(null);
 
 const { activeTab } = storeToRefs(filesStore);
 
@@ -203,7 +203,7 @@ async function fetchNotes() {
   }
 }
 
-function onNoteEdit(note: INoteDto) {
+function onNoteEdit(note: INoteDTO) {
   isAddEditNoteDrawerVisible.value = true;
 
   noteToEdit.value = note;

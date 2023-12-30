@@ -8,7 +8,7 @@ import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsume
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { IAddBundleDtoValue } from "@shared/types/dtos/Bundle";
+import { IAddBundleValueDTO } from "@shared/types/dtos/Bundle";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 
 import { sendToQueue } from "@helpers/sendToQueue";
@@ -47,7 +47,7 @@ export class StoreController extends BaseController {
     } = request;
 
     const variantIds = getUniqueValuesFromCollection<
-      IAddBundleDtoValue,
+      IAddBundleValueDTO,
       string
     >(values, "variantIds");
 

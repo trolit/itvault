@@ -1,6 +1,6 @@
 import { NoteResource } from "../enums/NoteResource";
 
-export type ResourceDto = {
+export type ResourceDTO = {
   id: number | string;
 
   name: NoteResource;

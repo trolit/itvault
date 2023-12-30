@@ -1,6 +1,6 @@
-import { IVariantDto } from "./Variant";
+import { IVariantDTO } from "./Variant";
 
-export interface IFileDto {
+export interface IFileDTO {
   id: number;
 
   originalFilename: string;
@@ -12,7 +12,7 @@ export interface IFileDto {
   updatedAt: string;
 }
 
-export interface IFileVariantDto {
+export interface IFileVariantDTO {
   id: number;
 
   originalFilename: string;
@@ -23,19 +23,19 @@ export interface IFileVariantDto {
 
   updatedAt: string;
 
-  variants: IVariantDto[];
+  variants: IVariantDTO[];
 }
 
-export interface IMoveFilesDto {
+export interface IMoveFilesDTO {
   sourceDirectoryId: number;
 
   targetDirectoryId: number;
 }
 
-export interface IPatchFilenameDto {
+export interface IPatchFilenameDTO {
   filename: string;
 }
 
-export interface IPatchRelativePathDto {
+export interface IPatchRelativePathDTO {
   relativePath: string;
 }
