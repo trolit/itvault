@@ -12,7 +12,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 
-export const storeSchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> =
+export const addSchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> =
   object({
     name: string()
       .trim()

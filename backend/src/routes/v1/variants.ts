@@ -13,7 +13,7 @@ import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
-import { storeSchema } from "@schemas/Variant/storeSchema";
+import { addSchema } from "@schemas/Variant/addSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 import { usePatchNameSuperSchema } from "@schemas/Variant/usePatchNameSuperSchema";
 import { useGetBlueprintsSuperSchema } from "@schemas/Variant/useGetBlueprintsSuperSchema";
@@ -74,7 +74,7 @@ variantsRouter.post(
       fieldsOrder: ["name", "fileId"],
     },
     {
-      fields: storeSchema,
+      fields: addSchema,
     }
   ),
   processRequestWith(AddController)
