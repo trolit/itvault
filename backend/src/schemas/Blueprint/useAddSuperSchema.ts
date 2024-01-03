@@ -13,7 +13,7 @@ const querySchema: SuperSchema.Fragment<AddControllerTypes.v1.Query> = object({
   workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
 });
 
-export const useStoreSuperSchema: SuperSchema.Runner<
+export const useAddSuperSchema: SuperSchema.Runner<
   void,
   AddControllerTypes.v1.Body,
   AddControllerTypes.v1.Query

@@ -13,7 +13,7 @@ import {
   requirePermissionsCustomHandler,
 } from "@middleware/requirePermissions";
 
-import { useStoreSuperSchema } from "@schemas/User/useStoreSuperSchema";
+import { useAddSuperSchema } from "@schemas/User/useAddSuperSchema";
 import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useGetNotesSuperSchema } from "@schemas/User/useGetNotesSuperSchema";
@@ -54,7 +54,7 @@ usersRouter.post(
   "",
   requireAuthentication,
   requirePermissions([Permission.CreateUser]),
-  validateRequestWith({ [v1]: useStoreSuperSchema }),
+  validateRequestWith({ [v1]: useAddSuperSchema }),
   processRequestWith(AddController)
 );
 

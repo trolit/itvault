@@ -57,7 +57,7 @@ const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
   }),
 });
 
-export const useStoreSuperSchema: SuperSchema.Runner<
+export const useAddSuperSchema: SuperSchema.Runner<
   void,
   AddControllerTypes.v1.Body,
   void

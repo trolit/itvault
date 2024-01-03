@@ -11,7 +11,7 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
-import { useStoreSuperSchema } from "@schemas/Blueprint/useStoreSuperSchema";
+import { useAddSuperSchema } from "@schemas/Blueprint/useAddSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Blueprint/useUpdateSuperSchema";
 import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema";
@@ -44,7 +44,7 @@ blueprintsRouter.get(
 blueprintsRouter.post(
   "",
   requirePermissions([Permission.CreateBlueprint]),
-  validateRequestWith({ [v1]: useStoreSuperSchema }),
+  validateRequestWith({ [v1]: useAddSuperSchema }),
   processRequestWith(AddController)
 );
 

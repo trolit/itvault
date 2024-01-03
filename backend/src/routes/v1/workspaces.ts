@@ -10,10 +10,10 @@ import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
+import { useAddSuperSchema } from "@schemas/Workspace/useAddSuperSchema";
 import { useGetBySlugSchema } from "@schemas/Workspace/useGetBySlugSchema";
-import { useStoreSuperSchema } from "@schemas/Workspace/useStoreSuperSchema";
-import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
+import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
 import { useGetTreeSuperSchema } from "@schemas/Workspace/useGetTreeSuperSchema";
 import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema";
 
@@ -21,8 +21,8 @@ import { PinController } from "@controllers/PinController";
 import { BaseController } from "@controllers/BaseController";
 import { UnpinController } from "@controllers/UnpinController";
 import { AddController } from "@controllers/Workspace/AddController";
-import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { UpdateController } from "@controllers/Workspace/UpdateController";
+import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
 import { GetBySlugController } from "@controllers/Workspace/GetBySlugController";
 
@@ -55,7 +55,7 @@ workspacesRouter.get(
 workspacesRouter.post(
   "",
   requirePermissions([Permission.CreateWorkspace]),
-  validateRequestWith({ [v1]: useStoreSuperSchema }),
+  validateRequestWith({ [v1]: useAddSuperSchema }),
   processRequestWith(AddController)
 );
 

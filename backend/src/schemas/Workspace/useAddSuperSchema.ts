@@ -5,7 +5,7 @@ import { useAddEditBodySchema } from "./useAddEditBodySchema";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const useStoreSuperSchema: SuperSchema.Runner<
+export const useAddSuperSchema: SuperSchema.Runner<
   void,
   AddControllerTypes.v1.Body,
   void
