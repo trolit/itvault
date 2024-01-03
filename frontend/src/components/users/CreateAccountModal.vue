@@ -203,7 +203,7 @@ const {
   formCallHandler: async (formData, printSuccess) => {
     const { confirmEmail, ...payload } = formData;
 
-    await usersStore.store(payload);
+    await usersStore.add(payload);
 
     printSuccess(`Account '${confirmEmail}' created!`);
 

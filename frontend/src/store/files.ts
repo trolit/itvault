@@ -64,7 +64,7 @@ export const useFilesStore = defineStore("files", {
       });
     },
 
-    async store(formData: FormData) {
+    async upload(formData: FormData) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {

@@ -125,7 +125,7 @@ export const useBundlesStore = defineStore("bundles", {
       });
     },
 
-    async store(payload: IAddBundleDTO) {
+    async add(payload: IAddBundleDTO) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const params = {

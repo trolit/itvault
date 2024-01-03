@@ -223,7 +223,7 @@ const {
 
     isEdit
       ? await workspacesStore.update(formData)
-      : await workspacesStore.store(formData);
+      : await workspacesStore.add(formData);
 
     printSuccess(`Workspace successfully ${isEdit ? "updated" : "added"}.`);
 

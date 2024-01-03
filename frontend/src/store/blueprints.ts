@@ -68,7 +68,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
       return data;
     },
 
-    async store(payload: IAddEditBlueprintDTO) {
+    async add(payload: IAddEditBlueprintDTO) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
       return axios.post<IBlueprintDTO>("v1/blueprints", payload, {

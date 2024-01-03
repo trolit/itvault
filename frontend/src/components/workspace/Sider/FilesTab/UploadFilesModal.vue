@@ -217,7 +217,7 @@ async function upload() {
   }
 
   try {
-    await filesStore.store(formData);
+    await filesStore.upload(formData);
 
     emits("on-upload");
 
