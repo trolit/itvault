@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { UserMapper } from "@mappers/UserMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IUserRepository } from "types/repositories/IUserRepository";
-import { StoreControllerTypes } from "types/controllers/User/StoreController";
+import { AddControllerTypes } from "types/controllers/User/AddController";
 import { SignUpMailViewBuilder as VB } from "types/mail/SignUpMailViewBuilder";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { MailConsumerHandlerData } from "types/consumer-handlers/MailConsumerHandlerData";
@@ -20,7 +20,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class StoreController extends BaseController {
+export class AddController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
     private _userRepository: IUserRepository
@@ -37,7 +37,7 @@ export class StoreController extends BaseController {
 
   static ALL_VERSIONS = [v1];
 
-  async v1(request: StoreControllerTypes.v1.Request, response: Response) {
+  async v1(request: AddControllerTypes.v1.Request, response: Response) {
     const {
       userId,
       body: { email, firstName, lastName, roleId },

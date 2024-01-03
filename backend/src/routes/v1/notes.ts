@@ -13,7 +13,7 @@ import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Note/useUpdateSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { StoreController } from "@controllers/Note/StoreController";
+import { AddController } from "@controllers/Note/AddController";
 import { GetAllController } from "@controllers/Note/GetAllController";
 import { UpdateController } from "@controllers/Note/UpdateController";
 import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
@@ -35,7 +35,7 @@ notesRouter.post(
   "",
   requirePermissions([Permission.CreateNote]),
   validateRequestWith({ [v1]: useStoreSuperSchema }),
-  processRequestWith(StoreController)
+  processRequestWith(AddController)
 );
 
 notesRouter.put(

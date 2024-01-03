@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
-import { StoreControllerTypes } from "types/controllers/Blueprint/StoreController";
+import { AddControllerTypes } from "types/controllers/Blueprint/AddController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
@@ -12,7 +12,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class StoreController extends BaseController {
+export class AddController extends BaseController {
   constructor(
     @inject(Di.BlueprintRepository)
     private _blueprintRepository: IBlueprintRepository
@@ -30,8 +30,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(
-    request: StoreControllerTypes.v1.Request,
-    response: StoreControllerTypes.v1.Response
+    request: AddControllerTypes.v1.Request,
+    response: AddControllerTypes.v1.Response
   ) {
     const {
       body,

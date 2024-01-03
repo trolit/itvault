@@ -21,7 +21,7 @@ import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema
 import { usePatchUserToWorkspaceSuperSchema } from "@schemas/User/usePatchUserToWorkspaceSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { StoreController } from "@controllers/User/StoreController";
+import { AddController } from "@controllers/User/AddController";
 import { GetAllController } from "@controllers/User/GetAllController";
 import { SignUpController } from "@controllers/User/SignUpController";
 import { GetNotesController } from "@controllers/User/GetNotesController";
@@ -55,7 +55,7 @@ usersRouter.post(
   requireAuthentication,
   requirePermissions([Permission.CreateUser]),
   validateRequestWith({ [v1]: useStoreSuperSchema }),
-  processRequestWith(StoreController)
+  processRequestWith(AddController)
 );
 
 usersRouter.post(

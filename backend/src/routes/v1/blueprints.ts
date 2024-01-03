@@ -6,10 +6,10 @@ import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useStoreSuperSchema } from "@schemas/Blueprint/useStoreSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Blueprint/useGetAllSuperSchema";
@@ -19,10 +19,10 @@ import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema
 import { PinController } from "@controllers/PinController";
 import { BaseController } from "@controllers/BaseController";
 import { UnpinController } from "@controllers/UnpinController";
+import { AddController } from "@controllers/Blueprint/AddController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
-import { StoreController } from "@controllers/Blueprint/StoreController";
-import { GetAllController } from "@controllers/Blueprint/GetAllController";
 import { UpdateController } from "@controllers/Blueprint/UpdateController";
+import { GetAllController } from "@controllers/Blueprint/GetAllController";
 
 const blueprintsRouter = Router();
 
@@ -45,7 +45,7 @@ blueprintsRouter.post(
   "",
   requirePermissions([Permission.CreateBlueprint]),
   validateRequestWith({ [v1]: useStoreSuperSchema }),
-  processRequestWith(StoreController)
+  processRequestWith(AddController)
 );
 
 blueprintsRouter.delete(

@@ -20,7 +20,7 @@ import { useGetBlueprintsSuperSchema } from "@schemas/Variant/useGetBlueprintsSu
 import { useGetBucketControllerSuperSchema } from "@schemas/Variant/useGetBucketController";
 
 import { BaseController } from "@controllers/BaseController";
-import { StoreController } from "@controllers/Variant/StoreController";
+import { AddController } from "@controllers/Variant/AddController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
 import { GetBucketController } from "@controllers/Variant/GetBucketController";
@@ -65,7 +65,7 @@ variantsRouter.get(
 variantsRouter.post(
   "",
   requirePermissions([Permission.CreateVariant]),
-  requireEndpointVersion(StoreController.ALL_VERSIONS),
+  requireEndpointVersion(AddController.ALL_VERSIONS),
   IsWorkspaceAvailable,
   parseUploadFormData(
     {
@@ -77,7 +77,7 @@ variantsRouter.post(
       fields: storeSchema,
     }
   ),
-  processRequestWith(StoreController)
+  processRequestWith(AddController)
 );
 
 variantsRouter.delete(

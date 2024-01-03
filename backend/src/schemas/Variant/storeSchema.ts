@@ -1,7 +1,7 @@
 import { object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
-import { StoreControllerTypes } from "types/controllers/Variant/StoreController";
+import { AddControllerTypes } from "types/controllers/Variant/AddController";
 
 import { Di } from "@enums/Di";
 import { VARIANT_RULES } from "@shared/constants/rules";
@@ -12,7 +12,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 
-export const storeSchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> =
+export const storeSchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> =
   object({
     name: string()
       .trim()

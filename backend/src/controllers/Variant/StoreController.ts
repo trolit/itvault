@@ -3,7 +3,7 @@ import { VariantMapper } from "@mappers/VariantMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IFileService } from "types/services/IFileService";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
-import { StoreControllerTypes } from "types/controllers/Variant/StoreController";
+import { AddControllerTypes } from "types/controllers/Variant/AddController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
@@ -13,7 +13,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class StoreController extends BaseController {
+export class AddController extends BaseController {
   constructor(
     @inject(Di.VariantRepository)
     private _variantRepository: IVariantRepository,
@@ -33,8 +33,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(
-    request: StoreControllerTypes.v1.Request,
-    response: StoreControllerTypes.v1.Response
+    request: AddControllerTypes.v1.Request,
+    response: AddControllerTypes.v1.Response
   ) {
     const {
       body,

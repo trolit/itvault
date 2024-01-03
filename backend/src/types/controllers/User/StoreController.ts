@@ -1,7 +1,7 @@
 import { UserMapper } from "@mappers/UserMapper";
 import { IAddUserDTO } from "@shared/types/DTOs/User";
 
-export namespace StoreControllerTypes {
+export namespace AddControllerTypes {
   export namespace v1 {
     export type Body = IAddUserDTO;
 

@@ -20,7 +20,7 @@ import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema
 import { PinController } from "@controllers/PinController";
 import { BaseController } from "@controllers/BaseController";
 import { UnpinController } from "@controllers/UnpinController";
-import { StoreController } from "@controllers/Workspace/StoreController";
+import { AddController } from "@controllers/Workspace/AddController";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { UpdateController } from "@controllers/Workspace/UpdateController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
@@ -56,7 +56,7 @@ workspacesRouter.post(
   "",
   requirePermissions([Permission.CreateWorkspace]),
   validateRequestWith({ [v1]: useStoreSuperSchema }),
-  processRequestWith(StoreController)
+  processRequestWith(AddController)
 );
 
 workspacesRouter.post(
