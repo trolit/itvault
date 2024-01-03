@@ -193,7 +193,7 @@ onSocketReceiveMessage(({ action, data }) => {
     action ===
     authStore.SOCKET_MESSAGE_TYPE.VIEW_DASHBOARD.ACTIONS.UPDATE_WORKSPACE
   ) {
-    workspacesStore.onUpdate(data as UpdateWorkspaceData);
+    workspacesStore.onUpdate(data as unknown as UpdateWorkspaceData);
 
     return;
   }
