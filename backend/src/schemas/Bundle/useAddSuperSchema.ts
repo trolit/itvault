@@ -3,7 +3,7 @@ import uniq from "lodash/uniq";
 import { SuperSchema } from "types/SuperSchema";
 import { array, number, object, string } from "yup";
 import { IFileRepository } from "types/repositories/IFileRepository";
-import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
+import { AddControllerTypes } from "types/controllers/Bundle/AddController";
 
 import { Di } from "@enums/Di";
 import { IAddBundleValueDTO } from "@shared/types/DTOs/Bundle";
@@ -17,18 +17,16 @@ import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromColle
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const querySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Query> = object(
-  {
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
-  }
-);
+const querySchema: SuperSchema.Fragment<AddControllerTypes.v1.Query> = object({
+  workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+});
 
 const valueSchema: SuperSchema.Fragment<IAddBundleValueDTO> = object({
   blueprintId: number().integer().required(),
   variantIds: array().of(string().required()).required(),
 });
 
-const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
+const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
   note: string().optional(),
   values: array()
     .of(valueSchema)
@@ -80,10 +78,10 @@ const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
   expiration: string().required().oneOf(Object.values(BundleExpire)),
 });
 
-export const useStoreSuperSchema: SuperSchema.Runner<
+export const useAddSuperSchema: SuperSchema.Runner<
   void,
-  StoreControllerTypes.v1.Body,
-  StoreControllerTypes.v1.Query
+  AddControllerTypes.v1.Body,
+  AddControllerTypes.v1.Query
 > = defineSuperSchemaRunner(() => {
   return {
     query: querySchema,

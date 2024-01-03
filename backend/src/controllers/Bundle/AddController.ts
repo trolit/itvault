@@ -2,7 +2,7 @@ import { inject, injectable } from "tsyringe";
 import { BundleMapper } from "@mappers/BundleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IBundleRepository } from "types/repositories/IBundleRepository";
-import { StoreControllerTypes } from "types/controllers/Bundle/StoreController";
+import { AddControllerTypes } from "types/controllers/Bundle/AddController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsumerHandlerData";
 
@@ -19,7 +19,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class StoreController extends BaseController {
+export class AddController extends BaseController {
   constructor(
     @inject(Di.BundleRepository)
     private _bundleRepository: IBundleRepository
@@ -37,8 +37,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(
-    request: StoreControllerTypes.v1.Request,
-    response: StoreControllerTypes.v1.Response
+    request: AddControllerTypes.v1.Request,
+    response: AddControllerTypes.v1.Response
   ) {
     const {
       userId,

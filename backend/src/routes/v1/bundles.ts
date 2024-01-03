@@ -12,13 +12,13 @@ import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useRequeueSchema } from "@schemas/Bundle/useRequeueSchema";
-import { useStoreSuperSchema } from "@schemas/Bundle/useStoreSuperSchema";
+import { useAddSuperSchema } from "@schemas/Bundle/useAddSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Bundle/useGetAllSuperSchema";
 import { useGetFilesSuperSchema } from "@schemas/Bundle/useGetFilesSuperSchema";
 import { useGetBlueprintsSuperSchema } from "@schemas/Bundle/useGetBlueprintsSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { StoreController } from "@controllers/Bundle/StoreController";
+import { AddController } from "@controllers/Bundle/AddController";
 import { GetAllController } from "@controllers/Bundle/GetAllController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { RequeueController } from "@controllers/Bundle/RequeueController";
@@ -66,8 +66,8 @@ bundlesRouter.get(
 bundlesRouter.post(
   "",
   requirePermissions([Permission.CreateBundle]),
-  validateRequestWith({ [v1]: useStoreSuperSchema }),
-  processRequestWith(StoreController)
+  validateRequestWith({ [v1]: useAddSuperSchema }),
+  processRequestWith(AddController)
 );
 
 bundlesRouter.post(
