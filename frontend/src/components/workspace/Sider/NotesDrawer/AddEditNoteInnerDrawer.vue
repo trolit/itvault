@@ -172,7 +172,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   try {
     noteId
       ? await notesStore.update(noteId, formData.text)
-      : await notesStore.store(formData.text, {
+      : await notesStore.add(formData.text, {
           id: fileId.value,
           name: NoteResource.File,
         });

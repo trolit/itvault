@@ -1,7 +1,7 @@
 import { object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { IUserRepository } from "types/repositories/IUserRepository";
-import { StoreControllerTypes } from "types/controllers/User/StoreController";
+import { AddControllerTypes } from "types/controllers/User/AddController";
 
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
@@ -17,7 +17,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const { EMAIL, FIRST_NAME, LAST_NAME } = ACCOUNT_RULES;
 
-const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
+const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
   email: string()
     .email()
     .max(EMAIL.MAX_LENGTH)
@@ -57,9 +57,9 @@ const bodySchema: SuperSchema.Fragment<StoreControllerTypes.v1.Body> = object({
   }),
 });
 
-export const useStoreSuperSchema: SuperSchema.Runner<
+export const useAddSuperSchema: SuperSchema.Runner<
   void,
-  StoreControllerTypes.v1.Body,
+  AddControllerTypes.v1.Body,
   void
 > = defineSuperSchemaRunner(() => {
   return {

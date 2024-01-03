@@ -113,7 +113,7 @@ const {
     formData.append("name", value.name);
     formData.append("file", value.file || "");
 
-    await variantsStore.store(formData);
+    await variantsStore.add(formData);
 
     printSuccess(`Variant successfully added!`);
 

@@ -113,7 +113,7 @@ export const useVariantsStore = defineStore("variants", {
       return data;
     },
 
-    async store(formData: FormData) {
+    async add(formData: FormData) {
       const { activeFileId } = useFilesStore();
       const { activeItemId: workspaceId } = useWorkspacesStore();
 

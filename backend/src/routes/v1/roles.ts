@@ -13,12 +13,12 @@ import { transformPagination } from "@middleware/transformPagination";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
-import { useStoreSuperSchema } from "@schemas/Role/useStoreSuperSchema";
+import { useAddSuperSchema } from "@schemas/Role/useAddSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Role/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Role/useGetAllSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { StoreController } from "@controllers/Role/StoreController";
+import { AddController } from "@controllers/Role/AddController";
 import { GetAllController } from "@controllers/Role/GetAllController";
 import { UpdateController } from "@controllers/Role/UpdateController";
 import { GetPermissionsController } from "@controllers/Role/GetPermissionsController";
@@ -52,8 +52,8 @@ rolesRouter.post(
   "",
   requirePermissions([Permission.CreateRole]),
   isLimitNotReached(Di.RoleRepository, APP.TOTAL_ROLES_LIMIT),
-  validateRequestWith({ [v1]: useStoreSuperSchema }),
-  processRequestWith(StoreController)
+  validateRequestWith({ [v1]: useAddSuperSchema }),
+  processRequestWith(AddController)
 );
 
 rolesRouter.put(

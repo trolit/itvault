@@ -63,7 +63,7 @@ export const useRolesStore = defineStore("roles", {
       return data;
     },
 
-    async store(payload: IAddEditRoleDTO) {
+    async add(payload: IAddEditRoleDTO) {
       const params = {
         version: 1,
       };

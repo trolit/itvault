@@ -287,7 +287,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
     if (isEdit) {
       await rolesStore.update(roleId, payload);
     } else {
-      const result = await rolesStore.store(payload);
+      const result = await rolesStore.add(payload);
 
       roleId = result.id;
     }

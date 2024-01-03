@@ -175,7 +175,7 @@ async function onSubmit() {
   }));
 
   try {
-    await bundlesStore.store({
+    await bundlesStore.add({
       values,
       note: note.value,
       expiration: expiration.value,

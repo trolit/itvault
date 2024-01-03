@@ -13,14 +13,14 @@ import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
-import { storeSchema } from "@schemas/Variant/storeSchema";
+import { addSchema } from "@schemas/Variant/addSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
 import { usePatchNameSuperSchema } from "@schemas/Variant/usePatchNameSuperSchema";
 import { useGetBlueprintsSuperSchema } from "@schemas/Variant/useGetBlueprintsSuperSchema";
 import { useGetBucketControllerSuperSchema } from "@schemas/Variant/useGetBucketController";
 
 import { BaseController } from "@controllers/BaseController";
-import { StoreController } from "@controllers/Variant/StoreController";
+import { AddController } from "@controllers/Variant/AddController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
 import { GetBucketController } from "@controllers/Variant/GetBucketController";
@@ -65,7 +65,7 @@ variantsRouter.get(
 variantsRouter.post(
   "",
   requirePermissions([Permission.CreateVariant]),
-  requireEndpointVersion(StoreController.ALL_VERSIONS),
+  requireEndpointVersion(AddController.ALL_VERSIONS),
   IsWorkspaceAvailable,
   parseUploadFormData(
     {
@@ -74,10 +74,10 @@ variantsRouter.post(
       fieldsOrder: ["name", "fileId"],
     },
     {
-      fields: storeSchema,
+      fields: addSchema,
     }
   ),
-  processRequestWith(StoreController)
+  processRequestWith(AddController)
 );
 
 variantsRouter.delete(

@@ -70,7 +70,7 @@ export const useUsersStore = defineStore("users", {
       this.notes.total = total;
     },
 
-    async store(payload: IAddUserDTO) {
+    async add(payload: IAddUserDTO) {
       return axios.post<IUserDTO>("v1/users", payload, {
         params: { version: 1 },
       });

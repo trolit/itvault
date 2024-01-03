@@ -1,13 +1,13 @@
 import { SuperSchema } from "types/SuperSchema";
-import { StoreControllerTypes } from "types/controllers/Role/StoreController";
+import { AddControllerTypes } from "types/controllers/Role/AddController";
 
 import { useAddEditBodySchema } from "./useAddEditBodySchema";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-export const useStoreSuperSchema: SuperSchema.Runner<
+export const useAddSuperSchema: SuperSchema.Runner<
   void,
-  StoreControllerTypes.v1.Body,
+  AddControllerTypes.v1.Body,
   void
 > = defineSuperSchemaRunner(() => {
   return {

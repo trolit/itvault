@@ -264,7 +264,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
       }
     },
 
-    async store(payload: IAddEditWorkspaceDTO) {
+    async add(payload: IAddEditWorkspaceDTO) {
       return axios.post<IAddEditWorkspaceDTO>("v1/workspaces", payload, {
         params: { version: 1 },
       });

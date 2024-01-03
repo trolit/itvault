@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { RoleMapper } from "@mappers/RoleMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IRoleService } from "types/services/IRoleService";
-import { StoreControllerTypes } from "types/controllers/Role/StoreController";
+import { AddControllerTypes } from "types/controllers/Role/AddController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
@@ -13,7 +13,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class StoreController extends BaseController {
+export class AddController extends BaseController {
   constructor(
     @inject(Di.RoleService)
     private _roleService: IRoleService
@@ -31,8 +31,8 @@ export class StoreController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(
-    request: StoreControllerTypes.v1.Request,
-    response: StoreControllerTypes.v1.Response
+    request: AddControllerTypes.v1.Request,
+    response: AddControllerTypes.v1.Response
   ) {
     const { userId, body } = request;
 

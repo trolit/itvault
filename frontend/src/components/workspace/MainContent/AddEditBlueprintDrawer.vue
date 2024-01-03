@@ -237,7 +237,7 @@ const onSubmit = handleSubmit.withControlled(async formData => {
   try {
     isEdit
       ? await blueprintsStore.update(formData)
-      : await blueprintsStore.store(formData);
+      : await blueprintsStore.add(formData);
 
     if (!isEdit) {
       blueprintsStore.getAll({

@@ -8,12 +8,12 @@ import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
-import { useStoreSuperSchema } from "@schemas/Note/useStoreSuperSchema";
+import { useAddSuperSchema } from "@schemas/Note/useAddSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Note/useUpdateSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { StoreController } from "@controllers/Note/StoreController";
+import { AddController } from "@controllers/Note/AddController";
 import { GetAllController } from "@controllers/Note/GetAllController";
 import { UpdateController } from "@controllers/Note/UpdateController";
 import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
@@ -34,8 +34,8 @@ notesRouter.get(
 notesRouter.post(
   "",
   requirePermissions([Permission.CreateNote]),
-  validateRequestWith({ [v1]: useStoreSuperSchema }),
-  processRequestWith(StoreController)
+  validateRequestWith({ [v1]: useAddSuperSchema }),
+  processRequestWith(AddController)
 );
 
 notesRouter.put(

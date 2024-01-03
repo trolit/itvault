@@ -3,7 +3,7 @@ import { WorkspaceId } from "types/controllers/WorkspaceId";
 import { VariantMapper } from "@mappers/VariantMapper";
 import { IAddVariantDTO } from "@shared/types/DTOs/Variant";
 
-export namespace StoreControllerTypes {
+export namespace AddControllerTypes {
   export namespace v1 {
     export type Body = IAddVariantDTO;
 

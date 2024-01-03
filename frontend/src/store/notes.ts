@@ -42,7 +42,7 @@ export const useNotesStore = defineStore("notes", {
       return data;
     },
 
-    async store(text: string, resource: ResourceDTO) {
+    async add(text: string, resource: ResourceDTO) {
       const params = {
         version: 1,
       };
