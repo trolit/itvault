@@ -210,6 +210,16 @@ async function fetchNotes() {
 }
 
 function onNoteEdit(note: INoteDTO) {
+  if (
+    noteToEdit.value &&
+    noteToEdit.value.id === note.id &&
+    isAddEditNoteDrawerVisible.value === true
+  ) {
+    onAddEditNoteInnerDrawerClose();
+
+    return;
+  }
+
   isAddEditNoteDrawerVisible.value = true;
 
   noteToEdit.value = note;
