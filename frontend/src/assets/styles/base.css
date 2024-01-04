@@ -58,8 +58,12 @@ body {
     }
 
     .location {
+      margin: 0 10px;
+      overflow: hidden;
       text-align: center;
+      white-space: nowrap;
       align-items: center;
+      text-overflow: ellipsis;
     }
 
     .actions {
