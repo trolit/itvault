@@ -37,7 +37,9 @@
         <n-list-item v-for="note in notes.data" :key="`note-${note.id}`">
           <single-note
             :note="note"
+            :note-to-delete-id="noteToDeleteId"
             @edit-note="onNoteEdit(note)"
+            @delete-note="deleteNote(note)"
             @toggle-user-comments-modal="onToggleUserCommentsModal"
           />
         </n-list-item>
@@ -101,21 +103,25 @@ import { Drawer } from "@/types/enums/Drawer";
 import { useFilesStore } from "@/store/files";
 import { useNotesStore } from "@/store/notes";
 import { useDrawerStore } from "@/store/drawer";
+import { useGeneralStore } from "@/store/general";
 import UserNotesModal from "./UserNotesModal.vue";
 import type { INoteDTO } from "@shared/types/DTOs/Note";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import AddEditNoteInnerDrawer from "./AddEditNoteInnerDrawer.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
+import { NoteResource } from "@shared/types/enums/NoteResource";
 
 const filesStore = useFilesStore();
 const notesStore = useNotesStore();
 const drawerStore = useDrawerStore();
+const generalStore = useGeneralStore();
 
 const perPage = 5;
 const userId = ref(0);
 const isLoading = ref(true);
 const userFullName = ref("");
+const noteToDeleteId = ref(0);
 const isUserNotesModalVisible = ref(false);
 const isAddEditNoteDrawerVisible = ref(false);
 const noteToEdit: Ref<INoteDTO | null> = ref(null);
@@ -212,6 +218,35 @@ function onNoteEdit(note: INoteDTO) {
 function onNoteUpdate(text: string) {
   if (noteToEdit.value) {
     noteToEdit.value.value = text;
+  }
+}
+
+async function deleteNote(note: INoteDTO) {
+  const fileId = filesStore.activeFileId;
+
+  if (!fileId) {
+    generalStore.messageProvider.error(
+      "Failed to delete note (file tab not found)!"
+    );
+
+    return;
+  }
+
+  noteToDeleteId.value = note.id;
+
+  try {
+    await notesStore.delete(note.id, {
+      id: fileId,
+      name: NoteResource.File,
+    });
+
+    generalStore.messageProvider.success("Note deleted.");
+  } catch (error) {
+    console.log(error);
+
+    generalStore.messageProvider.error("Failed to delete note!");
+  } finally {
+    noteToDeleteId.value = 0;
   }
 }
 
