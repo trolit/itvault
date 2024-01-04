@@ -1,65 +1,70 @@
 <template>
   <n-thing class="single-note" :style="{ opacity: note.isDeleted ? 0.4 : 1 }">
-    <template #avatar>
-      <n-avatar size="small"> {{ initials }} </n-avatar>
-    </template>
+    <n-card size="small" embedded>
+      <template #header-extra> #header-extra </template>
 
-    <template #header>
-      <span>
-        {{ createdBy.fullName }}
-      </span>
-
-      <br />
-
-      <n-tag size="small">
-        {{ createdBy.role }}
-      </n-tag>
-    </template>
-
-    <template #header-extra>
-      <actions-dropdown
-        v-if="
-          isNoteOwner ||
-          canViewUserNotes ||
-          canDeleteAnyNote ||
-          canUpdateAnyNote
-        "
-        :note="note"
-        :is-note-owner="isNoteOwner"
-        :can-view-user-notes="canViewUserNotes"
-        :can-delete-any-note="canDeleteAnyNote"
-        :can-update-any-note="canUpdateAnyNote"
-        @toggle-note-update="$emit('edit-note')"
-        @toggle-user-comments-modal="
-          emits('toggle-user-comments-modal', createdBy.id, createdBy.fullName)
-        "
-      />
-    </template>
-
-    <template #description>
-      <n-tooltip trigger="hover" placement="right">
-        <template #trigger>
-          <n-text depth="3">
-            <small>{{ dateService.fromNow(note.createdAt) }}</small>
-          </n-text>
-        </template>
-
-        {{ dateService.format(note.createdAt, "YYYY-MM-DD HH:mm") }}
-      </n-tooltip>
-    </template>
-
-    <n-card>
       <div v-html="markdown.render(note.value)" class="note-render-area" />
+
+      <n-space justify="end">
+        <n-text depth="3">
+          <small>
+            <!-- @TODO if proper permission is owned, it should be clickable (to view user profile) -->
+            {{ createdBy.fullName }}
+
+            <n-tooltip trigger="hover" placement="right">
+              <template #trigger>
+                ({{ dateService.fromNow(note.createdAt) }})
+              </template>
+
+              {{ dateService.format(note.createdAt, "YYYY-MM-DD HH:mm") }}
+            </n-tooltip>
+          </small>
+        </n-text>
+      </n-space>
+
+      <n-space justify="end" :style="{ marginTop: '5px' }">
+        <n-button
+          v-if="isNoteOwner || canEditAnyNote"
+          size="tiny"
+          type="info"
+          :disabled="noteToDeleteId === note.id"
+          @click="$emit('edit-note')"
+        >
+          Edit
+        </n-button>
+
+        <n-popconfirm @positive-click="$emit('delete-note')">
+          <template #trigger>
+            <n-button
+              v-if="canDeleteAnyNote"
+              size="tiny"
+              type="error"
+              :disabled="noteToDeleteId === note.id"
+            >
+              Delete
+            </n-button>
+          </template>
+
+          Are you sure?
+        </n-popconfirm>
+      </n-space>
     </n-card>
   </n-thing>
 </template>
 
 <script setup lang="ts">
-import { toRefs, type PropType } from "vue";
-import { NTag, NCard, NText, NThing, NAvatar, NTooltip } from "naive-ui";
+import {
+  NCard,
+  NText,
+  NThing,
+  NSpace,
+  NButton,
+  NTooltip,
+  NPopconfirm,
+} from "naive-ui";
+import { toRefs } from "vue";
 
 import { useAuthStore } from "@/store/auth";
-import ActionsDropdown from "./ActionsDropdown.vue";
 import type { INoteDTO } from "@shared/types/DTOs/Note";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
@@ -70,49 +75,38 @@ const authStore = useAuthStore();
 const dateService = useDateService();
 const markdown = useMarkdownService();
 
-const props = defineProps({
-  note: {
-    type: Object as PropType<INoteDTO>,
-    required: true,
-  },
-});
+interface IProps {
+  note: INoteDTO;
 
-const emits = defineEmits(["toggle-user-comments-modal", "edit-note"]);
+  noteToDeleteId: number;
+}
+
+const props = defineProps<IProps>();
+
+defineEmits(["edit-note", "delete-note", "toggle-user-comments-modal"]);
 
 const { note } = toRefs(props);
 
-const {
-  initials,
-  createdBy,
-  isNoteOwner,
-  canViewUserNotes,
-  canUpdateAnyNote,
-  canDeleteAnyNote,
-} = defineComputed({
-  initials() {
-    const [name, surname] = props.note.createdBy.fullName.split(" ");
+const { createdBy, isNoteOwner, canEditAnyNote, canDeleteAnyNote } =
+  defineComputed({
+    createdBy() {
+      return props.note.createdBy;
+    },
 
-    return `${name[0]}${surname[0]}`;
-  },
+    isNoteOwner() {
+      return authStore.loggedUserId === createdBy.value.id;
+    },
 
-  createdBy() {
-    return props.note.createdBy;
-  },
+    canViewUserNotes() {
+      return authStore.hasPermission(Permission.ViewUserNotes);
+    },
 
-  isNoteOwner() {
-    return authStore.loggedUserId === createdBy.value.id;
-  },
+    canEditAnyNote() {
+      return authStore.hasPermission(Permission.UpdateAnyNote);
+    },
 
-  canViewUserNotes() {
-    return authStore.hasPermission(Permission.ViewUserNotes);
-  },
-
-  canUpdateAnyNote() {
-    return authStore.hasPermission(Permission.UpdateAnyNote);
-  },
-
-  canDeleteAnyNote() {
-    return authStore.hasPermission(Permission.DeleteAnyNote);
-  },
-});
+    canDeleteAnyNote() {
+      return authStore.hasPermission(Permission.DeleteAnyNote);
+    },
+  });
 </script>
