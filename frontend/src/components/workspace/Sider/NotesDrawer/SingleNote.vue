@@ -22,7 +22,11 @@
         </n-text>
       </n-space>
 
-      <n-space justify="end" :style="{ marginTop: '5px' }">
+      <n-space
+        v-if="!note.isDeleted"
+        justify="end"
+        :style="{ marginTop: '5px' }"
+      >
         <n-button
           v-if="isNoteOwner || canEditAnyNote"
           size="tiny"
