@@ -87,9 +87,10 @@ const { selectedKeys, removeFileText } = defineComputed({
 
   removeFileText() {
     const treeItem = workspacesStore.tree.find(
-      item => item.id === fileToDeleteId.value
+      item => item.id === fileToDeleteId.value && isFile(item)
     );
 
+    // @TODO isFile called twice should be refactored..
     return treeItem && isFile(treeItem)
       ? `Do you really want to remove file "${
           treeItem.originalFilename
@@ -98,7 +99,7 @@ const { selectedKeys, removeFileText } = defineComputed({
             ? "root"
             : `${treeItem.relativePath}`
         }" and it's variants?`
-      : "";
+      : "ERR";
   },
 });
 
