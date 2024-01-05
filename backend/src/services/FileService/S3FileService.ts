@@ -1,7 +1,5 @@
 import path from "path";
 import { inject, injectable } from "tsyringe";
-import { IFormDataFile } from "types/IFormDataFile";
-import { TransactionResult } from "types/TransactionResult";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import {
   S3Client,
@@ -72,13 +70,5 @@ export class S3FileService extends BaseFileService {
 
       return null;
     }
-  }
-
-  async handleUpload(
-    userId: number,
-    workspaceId: number,
-    formDataFiles: IFormDataFile[]
-  ): Promise<TransactionResult<File[]>> {
-    throw Error("NOT IMPLEMENTED");
   }
 }
