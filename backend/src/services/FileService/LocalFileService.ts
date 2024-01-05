@@ -73,9 +73,7 @@ export class LocalFileService extends BaseFileService {
     try {
       await fs.writeFile(fullPath, buffer);
 
-      const stats = await fs.stat(fullPath);
-
-      return { size: stats.size };
+      return { size: Buffer.byteLength(buffer) };
     } catch (error) {
       console.log(error);
 
