@@ -12,6 +12,7 @@ import { initializeS3Client } from "./initializeS3Client";
 import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
+import { S3FileService } from "@services/FileService/S3FileService";
 import { SocketServiceManager } from "@services/SocketService/Manager";
 import { LocalFileService } from "@services/FileService/LocalFileService";
 import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
@@ -162,7 +163,9 @@ function registerFileService() {
     container.register(Di.FileService, LocalFileService);
   }
 
-  // @TODO register S3FileService
+  if (FILES.ACTIVE_MODE === FileStorageMode.AWS) {
+    container.register(Di.FileService, S3FileService);
+  }
 }
 
 function registerConsumerHandlers() {
