@@ -1,5 +1,6 @@
 export enum Di {
   Redis = "Redis",
+  S3Client = "S3Client",
   RabbitMQ = "RabbitMQ",
   EngineIO = "Engine.IO",
   Publisher = "RabbitMQ Publisher",
@@ -32,7 +33,6 @@ export enum Di {
 
   JobFactory = "IJobFactory",
   ConsumerFactory = "IConsumerFactory",
-  S3ClientFactory = "IS3ClientFactory",
   FormidableFormFactory = "IFormidableFormFactory",
 
   SendMailConsumerHandler = "MailConsumerHandler",
