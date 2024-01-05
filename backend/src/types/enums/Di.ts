@@ -32,6 +32,7 @@ export enum Di {
 
   JobFactory = "IJobFactory",
   ConsumerFactory = "IConsumerFactory",
+  S3ClientFactory = "IS3ClientFactory",
   FormidableFormFactory = "IFormidableFormFactory",
 
   SendMailConsumerHandler = "MailConsumerHandler",
