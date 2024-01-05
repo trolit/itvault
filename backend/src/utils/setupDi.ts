@@ -3,6 +3,7 @@ import path from "path";
 import { Server } from "engine.io";
 import Redis from "ioredis/built/Redis";
 import { Transporter } from "nodemailer";
+import { S3Client } from "@aws-sdk/client-s3";
 import { container, DependencyContainer, Lifecycle } from "tsyringe";
 
 import { APP, FILES } from "@config";
@@ -15,12 +16,17 @@ import { LocalFileService } from "@services/FileService/LocalFileService";
 import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
 import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
 
-export const setupDi = (services: {
+export const setupDi = (externalServices: {
   redis?: Redis;
   engineIo?: Server;
+  s3Client?: S3Client;
   mailTransporter?: Transporter;
 }): Promise<DependencyContainer> => {
-  const { mailTransporter, redis, engineIo } = services;
+  const { mailTransporter, redis, engineIo, s3Client } = externalServices;
+
+  if (s3Client) {
+    container.register(Di.S3Client, { useValue: s3Client });
+  }
 
   if (engineIo) {
     container.register(Di.EngineIO, { useValue: engineIo });

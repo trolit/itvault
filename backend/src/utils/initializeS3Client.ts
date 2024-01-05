@@ -1,12 +1,11 @@
 import { S3Client } from "@aws-sdk/client-s3";
-import { IS3ClientFactory } from "types/factories/IS3ClientFactory";
 
 import { FILES } from "@config";
 
-export class S3ClientFactory implements IS3ClientFactory {
-  create(): S3Client {
-    const { S3 } = FILES;
+export const initializeS3Client = () => {
+  const { S3 } = FILES;
 
+  try {
     return new S3Client({
       // @NOTE - endpoint + forcePathStyle are required for localstack
       region: "eu-central-1",
@@ -17,5 +16,9 @@ export class S3ClientFactory implements IS3ClientFactory {
       },
       forcePathStyle: true,
     });
+  } catch (error) {
+    console.log(error);
+
+    throw Error("Failed to initialize S3 CLIENT!");
   }
-}
+};
