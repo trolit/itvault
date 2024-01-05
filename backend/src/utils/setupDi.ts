@@ -161,6 +161,8 @@ function registerFileService() {
   if (FILES.ACTIVE_MODE === FileStorageMode.Local) {
     container.register(Di.FileService, LocalFileService);
   }
+
+  // @TODO register S3FileService
 }
 
 function registerConsumerHandlers() {
@@ -170,6 +172,8 @@ function registerConsumerHandlers() {
       LocalBundleConsumerHandler
     );
   }
+
+  // @TODO register S3ConsumerHandler
 
   container.register(Di.SendMailConsumerHandler, MailConsumerHandler);
 }
