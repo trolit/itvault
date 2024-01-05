@@ -6,7 +6,7 @@ export const initializeS3Client = () => {
   const { S3 } = FILES;
 
   try {
-    return new S3Client({
+    const client = new S3Client({
       // @NOTE - endpoint + forcePathStyle are required for localstack
       region: "eu-central-1",
       endpoint: S3.endpoint,
@@ -16,9 +16,13 @@ export const initializeS3Client = () => {
       },
       forcePathStyle: true,
     });
+
+    console.log("AWS: S3 Client initialized!");
+
+    return client;
   } catch (error) {
     console.log(error);
 
-    throw Error("Failed to initialize S3 CLIENT!");
+    throw Error("AWS: Failed to initialize S3 Client!");
   }
 };
