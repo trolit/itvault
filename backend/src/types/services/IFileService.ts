@@ -1,4 +1,3 @@
-import { Variant } from "@entities/Variant";
 import { IBaseFileService } from "./IBaseFileService";
 import { IFormDataFile } from "types/IFormDataFile";
 
