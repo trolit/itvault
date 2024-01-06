@@ -4,7 +4,10 @@ import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 
 export interface IBaseFileService {
-  readWorkspaceFile(workspaceId: number, variant: Variant): Promise<string>;
+  readWorkspaceFile(
+    workspaceId: number,
+    variant: Variant
+  ): Promise<string | null>;
 
   saveFiles(
     userId: number,

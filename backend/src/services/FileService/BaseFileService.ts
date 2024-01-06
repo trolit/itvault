@@ -20,7 +20,7 @@ export abstract class BaseFileService implements IBaseFileService {
   abstract readWorkspaceFile(
     workspaceId: number,
     variant: Variant
-  ): Promise<string>;
+  ): Promise<string | null>;
 
   abstract saveFiles(
     userId: number,

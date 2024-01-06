@@ -56,16 +56,20 @@ export class LocalFileService extends BaseFileService {
   async readWorkspaceFile(
     workspaceId: number,
     variant: Variant
-  ): Promise<string> {
-    const file = await fs.readFile(
-      path.join(
-        FILES.BASE_UPLOADS_PATH,
-        `workspace-${workspaceId}`,
-        variant.filename
-      )
-    );
+  ): Promise<string | null> {
+    try {
+      const file = await fs.readFile(
+        path.join(
+          FILES.BASE_UPLOADS_PATH,
+          `workspace-${workspaceId}`,
+          variant.filename
+        )
+      );
 
-    return file.toString();
+      return file.toString();
+    } catch (error) {
+      return null;
+    }
   }
 
   async writeFile(
