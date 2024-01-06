@@ -1,8 +1,8 @@
+import assert from "assert";
 import { inject, injectable } from "tsyringe";
 import { VariantMapper } from "@mappers/VariantMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { IFileService } from "types/services/IFileService";
-import { IVariantRepository } from "types/repositories/IVariantRepository";
+import { IVariantService } from "types/services/IVariantService";
 import { AddControllerTypes } from "types/controllers/Variant/AddController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
@@ -15,10 +15,8 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 @injectable()
 export class AddController extends BaseController {
   constructor(
-    @inject(Di.VariantRepository)
-    private _variantRepository: IVariantRepository,
-    @inject(Di.FileService)
-    private _fileService: IFileService
+    @inject(Di.VariantService)
+    private _variantService: IVariantService
   ) {
     super();
   }
@@ -37,26 +35,29 @@ export class AddController extends BaseController {
     response: AddControllerTypes.v1.Response
   ) {
     const {
-      body,
+      body: { name, fileId },
       files,
       userId,
       query: { workspaceId },
     } = request;
 
-    const variant = await this._variantRepository.save(userId, body, files);
+    const [formDataFile] = files;
 
-    if (!variant) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+    const result = await this._variantService.save({
+      name,
+      workspaceId,
+      formDataFile,
+      author: { userId },
+      variantOf: { fileId },
+    });
+
+    if (!result.isSuccess) {
+      return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    if (files.length) {
-      this._fileService.moveWorkspaceFilesFromTemporaryDir({
-        files,
-        workspaceId,
-      });
-    }
+    assert(result.value);
 
-    const mappedResult = this.mapper.map(variant).to(VariantMapper);
+    const mappedResult = this.mapper.map(result.value).to(VariantMapper);
 
     return this.finalizeRequest(response, HTTP.CREATED, mappedResult);
   }
