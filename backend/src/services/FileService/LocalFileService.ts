@@ -106,13 +106,13 @@ export class LocalFileService extends BaseFileService {
 
   handleUpload(arg: {
     files: IFormDataFile[];
-    uploadBy: { userId: number };
-    uploadTo: { workspaceId: number };
+    author: { userId: number };
+    target: { workspaceId: number };
   }): Promise<TransactionResult<File[]>> {
     const {
       files,
-      uploadBy: { userId },
-      uploadTo: { workspaceId },
+      author: { userId },
+      target: { workspaceId },
     } = arg;
 
     return this.saveHandler(userId, workspaceId, files, {

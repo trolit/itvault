@@ -43,8 +43,8 @@ export class UploadController extends BaseController {
 
     const result = await this._fileService.handleUpload({
       files,
-      uploadBy: { userId },
-      uploadTo: { workspaceId },
+      author: { userId },
+      target: { workspaceId },
     });
 
     if (!result.isSuccess) {

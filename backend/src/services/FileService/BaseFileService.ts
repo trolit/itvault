@@ -30,8 +30,8 @@ export abstract class BaseFileService implements IBaseFileService {
 
   abstract handleUpload(arg: {
     files: IFormDataFile[];
-    uploadBy: { userId: number };
-    uploadTo: { workspaceId: number };
+    author: { userId: number };
+    target: { workspaceId: number };
   }): Promise<TransactionResult<File[]>>;
 
   async removeAllFromTemporaryDir(): Promise<void> {

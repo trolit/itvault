@@ -11,8 +11,8 @@ export interface IBaseFileService {
 
   handleUpload(arg: {
     files: IFormDataFile[];
-    uploadBy: { userId: number };
-    uploadTo: { workspaceId: number };
+    author: { userId: number };
+    target: { workspaceId: number };
   }): Promise<TransactionResult<File[]>>;
 
   removeAllFromTemporaryDir(): Promise<void>;
