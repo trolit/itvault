@@ -86,7 +86,6 @@ export const FILES = {
   BASE_DOWNLOADS_PATH: FILES_BASE_DOWNLOADS_PATH,
   BASE_TEMPORARY_UPLOADS_PATH: FILES_BASE_TEMPORARY_UPLOADS_PATH,
   S3: {
-    // @TODO "create bucket if does not exist" flag?
     bucket: "itvault-bucket",
     endpoint: envString("S3_ENDPOINT"),
     accessKeyId: envString("S3_ACCESS_KEY_ID"),
