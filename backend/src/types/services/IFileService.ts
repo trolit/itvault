@@ -15,6 +15,4 @@ export interface IFileService extends IBaseFileService {
     location: string,
     buffer: Buffer
   ): Promise<{ size: number } | null>;
-
-  clearTemporaryDir(): Promise<void>;
 }

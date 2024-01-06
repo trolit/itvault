@@ -9,6 +9,8 @@ export interface IBaseFileService {
     formDataFiles: IFormDataFile[]
   ): Promise<TransactionResult<File[]>>;
 
+  clearTemporaryDir(): Promise<void>;
+
   moveFilesFromDirToDir(
     workspaceId: number,
     sourceDirectoryId: number,

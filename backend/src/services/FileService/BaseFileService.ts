@@ -1,3 +1,5 @@
+import path from "path";
+import fs from "fs-extra";
 import uniq from "lodash/uniq";
 import { Like, QueryRunner } from "typeorm";
 import { IFormDataFile } from "types/IFormDataFile";
@@ -5,6 +7,8 @@ import { TransactionResult } from "types/TransactionResult";
 import { IBaseFileService } from "types/services/IBaseFileService";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
+
+import { FILES } from "@config";
 
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
@@ -18,6 +22,22 @@ export abstract class BaseFileService implements IBaseFileService {
     workspaceId: number,
     formDataFiles: IFormDataFile[]
   ): Promise<TransactionResult<File[]>>;
+
+  async clearTemporaryDir(): Promise<void> {
+    const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;
+
+    try {
+      const files = await fs.readdir(BASE_TEMPORARY_UPLOADS_PATH);
+
+      for (const source of files) {
+        const fullPath = path.join(BASE_TEMPORARY_UPLOADS_PATH, source);
+
+        await fs.remove(fullPath);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async moveFilesFromDirToDir(
     workspaceId: number,

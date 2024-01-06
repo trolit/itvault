@@ -83,22 +83,6 @@ export class LocalFileService extends BaseFileService {
     }
   }
 
-  async clearTemporaryDir(): Promise<void> {
-    const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;
-
-    try {
-      const files = await fs.readdir(BASE_TEMPORARY_UPLOADS_PATH);
-
-      for (const source of files) {
-        const fullPath = path.join(BASE_TEMPORARY_UPLOADS_PATH, source);
-
-        await fs.remove(fullPath);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   saveFiles(
     userId: number,
     workspaceId: number,
