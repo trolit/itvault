@@ -29,7 +29,10 @@ export class S3FileService extends BaseFileService {
     super(fileRepository);
   }
 
-  async readFile(workspaceId: number, variant: Variant): Promise<string> {
+  async readWorkspaceFile(
+    workspaceId: number,
+    variant: Variant
+  ): Promise<string | null> {
     const key = `${FILES.BASE_UPLOADS_PATH}/workspace-${workspaceId}/${variant.filename}`;
 
     const command = new GetObjectCommand({
@@ -48,7 +51,7 @@ export class S3FileService extends BaseFileService {
     } catch (err) {
       console.error(err);
 
-      return "ERR!";
+      return null;
     }
   }
 
