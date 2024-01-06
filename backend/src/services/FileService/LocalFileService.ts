@@ -89,11 +89,15 @@ export class LocalFileService extends BaseFileService {
     formDataFiles: IFormDataFile[]
   ): Promise<TransactionResult<File[]>> {
     return this.saveFilesInDatabase(userId, workspaceId, formDataFiles, {
-      onTry: () => {
-        this.moveFilesFromTemporaryDir(workspaceId, formDataFiles);
+      onTry: async () => {
+        await this.moveFilesFromTemporaryDir(workspaceId, formDataFiles);
       },
-      onCatch: () => {
-        // @TODO remove files from temporary dir
+
+      onCatch: async () => {
+        await this.clearSpecificFilesFromTemporaryDir(
+          workspaceId,
+          formDataFiles
+        );
       },
     });
   }
