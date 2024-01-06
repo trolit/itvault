@@ -41,7 +41,7 @@ export class UploadController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const result = await this._fileService.handleUpload(
+    const result = await this._fileService.saveFiles(
       userId,
       workspaceId,
       files
@@ -50,8 +50,6 @@ export class UploadController extends BaseController {
     if (!result.isSuccess) {
       return response.status(HTTP.BAD_REQUEST).send();
     }
-
-    this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
 
     assert(result.value);
 
