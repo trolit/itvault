@@ -84,6 +84,28 @@ export class S3FileService extends BaseFileService {
     }
   }
 
+  async writeVariantFile(arg: {
+    filename: string;
+    workspaceId: number;
+    formDataFile: IFormDataFile;
+  }): Promise<void> {
+    const { filename, workspaceId } = arg;
+
+    const location = path.join(
+      FILES.BASE_TEMPORARY_UPLOADS_PATH,
+      `workspace-${workspaceId}`,
+      filename
+    );
+
+    const buffer = await fs.readFile(location);
+
+    await this.writeFile({
+      buffer,
+      filename,
+      pathToFile: `workspace-${workspaceId}`,
+    });
+  }
+
   handleUpload(arg: {
     files: IFormDataFile[];
     author: { userId: number };

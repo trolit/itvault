@@ -35,4 +35,10 @@ export interface IBaseFileService {
     filename: string;
     pathToFile: string;
   }): Promise<{ size: number } | null>;
+
+  writeVariantFile(arg: {
+    filename: string;
+    workspaceId: number;
+    formDataFile: IFormDataFile;
+  }): Promise<void>;
 }

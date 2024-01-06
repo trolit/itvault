@@ -104,6 +104,19 @@ export class LocalFileService extends BaseFileService {
     }
   }
 
+  async writeVariantFile(arg: {
+    filename: string;
+    workspaceId: number;
+    formDataFile: IFormDataFile;
+  }): Promise<void> {
+    const { workspaceId, formDataFile } = arg;
+
+    await this.moveWorkspaceFilesFromTemporaryDir({
+      files: [formDataFile],
+      workspaceId,
+    });
+  }
+
   handleUpload(arg: {
     files: IFormDataFile[];
     author: { userId: number };

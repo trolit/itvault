@@ -23,6 +23,12 @@ export abstract class BaseFileService implements IBaseFileService {
     pathToFile: string;
   }): Promise<{ size: number } | null>;
 
+  abstract writeVariantFile(arg: {
+    filename: string;
+    workspaceId: number;
+    formDataFile: IFormDataFile;
+  }): Promise<void>;
+
   abstract getContent(arg: {
     variant: Variant;
     from: { workspaceId: number };
