@@ -39,6 +39,28 @@ export abstract class BaseFileService implements IBaseFileService {
     }
   }
 
+  async clearSpecificFilesFromTemporaryDir(
+    workspaceId: number,
+    formDataFiles: IFormDataFile[]
+  ): Promise<void> {
+    const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;
+
+    const basePath = path.join(
+      BASE_TEMPORARY_UPLOADS_PATH,
+      `workspace-${workspaceId}`
+    );
+
+    try {
+      for (const { file } of formDataFiles) {
+        const fullPath = path.join(basePath, file.newFilename);
+
+        await fs.remove(fullPath);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async moveFilesFromDirToDir(
     workspaceId: number,
     sourceDirectoryId: number,

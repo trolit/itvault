@@ -11,6 +11,11 @@ export interface IBaseFileService {
 
   clearTemporaryDir(): Promise<void>;
 
+  clearSpecificFilesFromTemporaryDir(
+    workspaceId: number,
+    formDataFiles: IFormDataFile[]
+  ): Promise<void>;
+
   moveFilesFromDirToDir(
     workspaceId: number,
     sourceDirectoryId: number,
