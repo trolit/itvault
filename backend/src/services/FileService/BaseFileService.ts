@@ -243,7 +243,7 @@ export abstract class BaseFileService implements IBaseFileService {
         );
 
         if (!directory) {
-          continue;
+          throw Error("Failed to resolve directory during files save!");
         }
 
         filesToSave.push(
