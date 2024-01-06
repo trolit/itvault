@@ -53,7 +53,10 @@ export class LocalFileService extends BaseFileService {
     }
   }
 
-  async readFile(workspaceId: number, variant: Variant): Promise<string> {
+  async readWorkspaceFile(
+    workspaceId: number,
+    variant: Variant
+  ): Promise<string> {
     const file = await fs.readFile(
       path.join(
         FILES.BASE_UPLOADS_PATH,

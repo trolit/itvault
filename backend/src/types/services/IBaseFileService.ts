@@ -1,8 +1,11 @@
 import { File } from "@entities/File";
+import { Variant } from "@entities/Variant";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 
 export interface IBaseFileService {
+  readWorkspaceFile(workspaceId: number, variant: Variant): Promise<string>;
+
   saveFiles(
     userId: number,
     workspaceId: number,

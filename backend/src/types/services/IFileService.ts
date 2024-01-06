@@ -8,8 +8,6 @@ export interface IFileService extends IBaseFileService {
     formDataFiles: IFormDataFile[]
   ): Promise<void>;
 
-  readFile(workspaceId: number, variant: Variant): Promise<string>;
-
   writeFile(
     filename: string,
     location: string,

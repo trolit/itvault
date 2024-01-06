@@ -17,6 +17,11 @@ import { Directory } from "@entities/Directory";
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}
 
+  abstract readWorkspaceFile(
+    workspaceId: number,
+    variant: Variant
+  ): Promise<string>;
+
   abstract saveFiles(
     userId: number,
     workspaceId: number,
