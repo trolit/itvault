@@ -40,8 +40,10 @@ export class VariantService implements IVariantService {
     const { manager } = transaction;
 
     try {
-      const partialEntity = manager.create(Variant, {
+      const entity = manager.create(Variant, {
         name,
+        size: file.size,
+        filename: file.newFilename,
         file: {
           id: fileId,
         },
@@ -50,11 +52,7 @@ export class VariantService implements IVariantService {
         },
       });
 
-      const variant = await manager.save({
-        ...partialEntity,
-        size: file.size,
-        filename: file.newFilename,
-      });
+      const variant = await manager.save(Variant, entity);
 
       await this._fileService.writeVariantFile({
         workspaceId,
