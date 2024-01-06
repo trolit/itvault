@@ -46,10 +46,10 @@ export class GetContentByIdController extends BaseController {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    const content = await this._fileService.readWorkspaceFile(
-      workspaceId,
-      variant
-    );
+    const content = await this._fileService.getContent({
+      variant,
+      from: { workspaceId },
+    });
 
     if (!content) {
       return response.status(HTTP.NOT_FOUND).send();

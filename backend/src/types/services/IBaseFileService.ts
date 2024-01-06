@@ -4,29 +4,35 @@ import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 
 export interface IBaseFileService {
-  readWorkspaceFile(
-    workspaceId: number,
-    variant: Variant
-  ): Promise<string | null>;
+  getContent(arg: {
+    variant: Variant;
+    from: { workspaceId: number };
+  }): Promise<string | null>;
 
-  saveFiles(
-    userId: number,
-    workspaceId: number,
-    formDataFiles: IFormDataFile[]
-  ): Promise<TransactionResult<File[]>>;
+  handleUpload(arg: {
+    files: IFormDataFile[];
+    uploadBy: { userId: number };
+    uploadTo: { workspaceId: number };
+  }): Promise<TransactionResult<File[]>>;
 
-  clearTemporaryDir(): Promise<void>;
+  removeAllFromTemporaryDir(): Promise<void>;
 
-  clearSpecificFilesFromTemporaryDir(
-    workspaceId: number,
-    formDataFiles: IFormDataFile[]
-  ): Promise<void>;
+  removeFromTemporaryDir(arg: {
+    files: IFormDataFile[];
+    from: { workspaceId: number };
+  }): Promise<void>;
 
-  moveFilesFromDirToDir(
-    workspaceId: number,
-    sourceDirectoryId: number,
-    targetDirectoryId: number
-  ): Promise<TransactionResult<void>>;
+  moveFromDirToDir(arg: {
+    workspaceId: number;
+    from: { directoryId: number };
+    to: { directoryId: number };
+  }): Promise<TransactionResult<void>>;
 
   softDeleteFileAndVariants(id: number): Promise<TransactionResult<void>>;
+
+  writeFile(arg: {
+    buffer: Buffer;
+    filename: string;
+    pathToFile: string;
+  }): Promise<{ size: number } | null>;
 }

@@ -50,7 +50,10 @@ export class AddController extends BaseController {
     }
 
     if (files.length) {
-      this._fileService.moveFilesFromTemporaryDir(workspaceId, files);
+      this._fileService.moveWorkspaceFilesFromTemporaryDir({
+        files,
+        workspaceId,
+      });
     }
 
     const mappedResult = this.mapper.map(variant).to(VariantMapper);

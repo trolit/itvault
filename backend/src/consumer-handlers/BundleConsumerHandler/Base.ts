@@ -150,7 +150,7 @@ export abstract class BaseBundleConsumerHandler {
   protected async generateZipFile(
     workspaceId: number,
     bundle: Bundle,
-    readFile: (variant: Variant) => Promise<string>,
+    readFile: (variant: Variant) => Promise<string | null>,
     onError: () => Promise<void>
   ) {
     const { variantToBundle, blueprintToBundle } = bundle;
@@ -211,6 +211,12 @@ export abstract class BaseBundleConsumerHandler {
       }
 
       const fileContent = await readFile(variant);
+
+      if (!fileContent) {
+        await onError();
+
+        return;
+      }
 
       const data = this._generateData(fileContent, buckets);
 

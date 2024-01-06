@@ -12,6 +12,7 @@ import { BaseFileService } from "./BaseFileService";
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
+import { FileStorageMode } from "@enums/FileStorageMode";
 
 @injectable()
 export class LocalFileService extends BaseFileService {
@@ -22,15 +23,21 @@ export class LocalFileService extends BaseFileService {
     super(fileRepository);
   }
 
-  async moveFilesFromTemporaryDir(
-    workspaceId: number,
-    formDataFiles: IFormDataFile[]
-  ): Promise<void> {
+  async moveWorkspaceFilesFromTemporaryDir(arg: {
+    files: IFormDataFile[];
+    workspaceId: number;
+  }): Promise<void> {
+    if (FILES.ACTIVE_MODE !== FileStorageMode.Local) {
+      return;
+    }
+
+    const { files, workspaceId } = arg;
+
     const { BASE_TEMPORARY_UPLOADS_PATH, BASE_UPLOADS_PATH } = FILES;
 
     await fs.ensureDir(FILES.BASE_UPLOADS_PATH);
 
-    for (const { file } of formDataFiles) {
+    for (const { file } of files) {
       const { newFilename } = file;
 
       const src = path.join(
@@ -53,10 +60,15 @@ export class LocalFileService extends BaseFileService {
     }
   }
 
-  async readWorkspaceFile(
-    workspaceId: number,
-    variant: Variant
-  ): Promise<string | null> {
+  async getContent(arg: {
+    variant: Variant;
+    from: { workspaceId: number };
+  }): Promise<string | null> {
+    const {
+      variant,
+      from: { workspaceId },
+    } = arg;
+
     try {
       const file = await fs.readFile(
         path.join(
@@ -72,12 +84,14 @@ export class LocalFileService extends BaseFileService {
     }
   }
 
-  async writeFile(
-    filename: string,
-    location: string,
-    buffer: Buffer
-  ): Promise<{ size: number } | null> {
-    const fullPath = path.join(location, filename);
+  async writeFile(arg: {
+    buffer: Buffer;
+    filename: string;
+    pathToFile: string;
+  }): Promise<{ size: number } | null> {
+    const { buffer, filename, pathToFile } = arg;
+
+    const fullPath = path.join(pathToFile, filename);
 
     try {
       await fs.writeFile(fullPath, buffer);
@@ -90,21 +104,24 @@ export class LocalFileService extends BaseFileService {
     }
   }
 
-  saveFiles(
-    userId: number,
-    workspaceId: number,
-    formDataFiles: IFormDataFile[]
-  ): Promise<TransactionResult<File[]>> {
-    return this.saveFilesInDatabase(userId, workspaceId, formDataFiles, {
+  handleUpload(arg: {
+    files: IFormDataFile[];
+    uploadBy: { userId: number };
+    uploadTo: { workspaceId: number };
+  }): Promise<TransactionResult<File[]>> {
+    const {
+      files,
+      uploadBy: { userId },
+      uploadTo: { workspaceId },
+    } = arg;
+
+    return this.saveHandler(userId, workspaceId, files, {
       onTry: async () => {
-        await this.moveFilesFromTemporaryDir(workspaceId, formDataFiles);
+        await this.moveWorkspaceFilesFromTemporaryDir({ files, workspaceId });
       },
 
       onCatch: async () => {
-        await this.clearSpecificFilesFromTemporaryDir(
-          workspaceId,
-          formDataFiles
-        );
+        await this.removeFromTemporaryDir({ files, from: { workspaceId } });
       },
     });
   }

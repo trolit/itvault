@@ -41,11 +41,11 @@ export class UploadController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const result = await this._fileService.saveFiles(
-      userId,
-      workspaceId,
-      files
-    );
+    const result = await this._fileService.handleUpload({
+      files,
+      uploadBy: { userId },
+      uploadTo: { workspaceId },
+    });
 
     if (!result.isSuccess) {
       return response.status(HTTP.BAD_REQUEST).send();

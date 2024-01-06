@@ -33,7 +33,7 @@ export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
 
     const fileService = getInstanceOf<IFileService>(Di.FileService);
 
-    await fileService.clearTemporaryDir();
+    await fileService.removeAllFromTemporaryDir();
 
     this.onComplete();
   }

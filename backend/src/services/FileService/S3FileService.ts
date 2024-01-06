@@ -29,10 +29,15 @@ export class S3FileService extends BaseFileService {
     super(fileRepository);
   }
 
-  async readWorkspaceFile(
-    workspaceId: number,
-    variant: Variant
-  ): Promise<string | null> {
+  async getContent(arg: {
+    variant: Variant;
+    from: { workspaceId: number };
+  }): Promise<string | null> {
+    const {
+      variant,
+      from: { workspaceId },
+    } = arg;
+
     const key = `workspace-${workspaceId}/${variant.filename}`;
 
     const command = new GetObjectCommand({
@@ -55,14 +60,16 @@ export class S3FileService extends BaseFileService {
     }
   }
 
-  async writeFile(
-    filename: string,
-    location: string,
-    buffer: Buffer
-  ): Promise<{ size: number } | null> {
+  async writeFile(arg: {
+    buffer: Buffer;
+    filename: string;
+    pathToFile: string;
+  }): Promise<{ size: number } | null> {
+    const { buffer, filename, pathToFile } = arg;
+
     const command = new PutObjectCommand({
       Bucket: FILES.S3.bucket,
-      Key: `${location}/${filename}`,
+      Key: `${pathToFile}/${filename}`,
       Body: buffer,
     });
 
@@ -77,14 +84,20 @@ export class S3FileService extends BaseFileService {
     }
   }
 
-  saveFiles(
-    userId: number,
-    workspaceId: number,
-    formDataFiles: IFormDataFile[]
-  ): Promise<TransactionResult<File[]>> {
-    return this.saveFilesInDatabase(userId, workspaceId, formDataFiles, {
+  handleUpload(arg: {
+    files: IFormDataFile[];
+    uploadBy: { userId: number };
+    uploadTo: { workspaceId: number };
+  }): Promise<TransactionResult<File[]>> {
+    const {
+      files,
+      uploadBy: { userId },
+      uploadTo: { workspaceId },
+    } = arg;
+
+    return this.saveHandler(userId, workspaceId, files, {
       onTry: async () => {
-        for (const { file } of formDataFiles) {
+        for (const { file } of files) {
           if (!file.originalFilename) {
             continue;
           }
@@ -97,11 +110,11 @@ export class S3FileService extends BaseFileService {
 
           const buffer = await fs.readFile(location);
 
-          const result = await this.writeFile(
-            file.newFilename,
-            `workspace-${workspaceId}`,
-            buffer
-          );
+          const result = await this.writeFile({
+            buffer,
+            filename: file.newFilename,
+            pathToFile: `workspace-${workspaceId}`,
+          });
 
           if (!result) {
             throw Error(
@@ -110,17 +123,11 @@ export class S3FileService extends BaseFileService {
           }
         }
 
-        await this.clearSpecificFilesFromTemporaryDir(
-          workspaceId,
-          formDataFiles
-        );
+        await this.removeFromTemporaryDir({ files, from: { workspaceId } });
       },
 
       onCatch: async () => {
-        await this.clearSpecificFilesFromTemporaryDir(
-          workspaceId,
-          formDataFiles
-        );
+        await this.removeFromTemporaryDir({ files, from: { workspaceId } });
       },
     });
   }

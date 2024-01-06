@@ -17,18 +17,24 @@ import { Directory } from "@entities/Directory";
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}
 
-  abstract readWorkspaceFile(
-    workspaceId: number,
-    variant: Variant
-  ): Promise<string | null>;
+  abstract writeFile(arg: {
+    buffer: Buffer;
+    filename: string;
+    pathToFile: string;
+  }): Promise<{ size: number } | null>;
 
-  abstract saveFiles(
-    userId: number,
-    workspaceId: number,
-    formDataFiles: IFormDataFile[]
-  ): Promise<TransactionResult<File[]>>;
+  abstract getContent(arg: {
+    variant: Variant;
+    from: { workspaceId: number };
+  }): Promise<string | null>;
 
-  async clearTemporaryDir(): Promise<void> {
+  abstract handleUpload(arg: {
+    files: IFormDataFile[];
+    uploadBy: { userId: number };
+    uploadTo: { workspaceId: number };
+  }): Promise<TransactionResult<File[]>>;
+
+  async removeAllFromTemporaryDir(): Promise<void> {
     const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;
 
     try {
@@ -44,10 +50,15 @@ export abstract class BaseFileService implements IBaseFileService {
     }
   }
 
-  async clearSpecificFilesFromTemporaryDir(
-    workspaceId: number,
-    formDataFiles: IFormDataFile[]
-  ): Promise<void> {
+  async removeFromTemporaryDir(arg: {
+    files: IFormDataFile[];
+    from: { workspaceId: number };
+  }): Promise<void> {
+    const {
+      files,
+      from: { workspaceId },
+    } = arg;
+
     const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;
 
     const basePath = path.join(
@@ -56,7 +67,7 @@ export abstract class BaseFileService implements IBaseFileService {
     );
 
     try {
-      for (const { file } of formDataFiles) {
+      for (const { file } of files) {
         const fullPath = path.join(basePath, file.newFilename);
 
         await fs.remove(fullPath);
@@ -66,11 +77,17 @@ export abstract class BaseFileService implements IBaseFileService {
     }
   }
 
-  async moveFilesFromDirToDir(
-    workspaceId: number,
-    sourceDirectoryId: number,
-    targetDirectoryId: number
-  ): Promise<TransactionResult<void>> {
+  async moveFromDirToDir(arg: {
+    workspaceId: number;
+    from: { directoryId: number };
+    to: { directoryId: number };
+  }): Promise<TransactionResult<void>> {
+    const {
+      workspaceId,
+      from: { directoryId: sourceDirectoryId },
+      to: { directoryId: targetDirectoryId },
+    } = arg;
+
     const transaction = await this.fileRepository.useTransaction();
 
     try {
@@ -181,7 +198,7 @@ export abstract class BaseFileService implements IBaseFileService {
     }
   }
 
-  async saveFilesInDatabase(
+  async saveHandler(
     userId: number,
     workspaceId: number,
     formDataFiles: IFormDataFile[],

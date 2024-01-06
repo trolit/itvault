@@ -64,11 +64,11 @@ export class LocalBundleConsumerHandler
 
     const filename = `${crypto.randomUUID()}.zip`;
 
-    const file = await this.fileService.writeFile(
+    const file = await this.fileService.writeFile({
+      buffer,
       filename,
-      FILES.BASE_DOWNLOADS_PATH,
-      buffer
-    );
+      pathToFile: FILES.BASE_DOWNLOADS_PATH,
+    });
 
     if (!file) {
       return false;
@@ -108,7 +108,7 @@ export class LocalBundleConsumerHandler
 
   private _readFile(workspaceId: number) {
     return (variant: Variant) => {
-      return this.fileService.readFile(workspaceId, variant);
+      return this.fileService.getContent({ variant, from: { workspaceId } });
     };
   }
 }
