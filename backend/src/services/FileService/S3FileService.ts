@@ -1,5 +1,8 @@
 import path from "path";
+import fs from "fs-extra";
 import { inject, injectable } from "tsyringe";
+import { IFormDataFile } from "types/IFormDataFile";
+import { TransactionResult } from "types/TransactionResult";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import {
   S3Client,
@@ -12,6 +15,7 @@ import { FILES } from "@config";
 import { BaseFileService } from "./BaseFileService";
 
 import { Di } from "@enums/Di";
+import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 
 @injectable()
@@ -70,5 +74,52 @@ export class S3FileService extends BaseFileService {
 
       return null;
     }
+  }
+
+  saveFiles(
+    userId: number,
+    workspaceId: number,
+    formDataFiles: IFormDataFile[]
+  ): Promise<TransactionResult<File[]>> {
+    return this.saveFilesInDatabase(userId, workspaceId, formDataFiles, {
+      onTry: async () => {
+        for (const { file } of formDataFiles) {
+          if (!file.originalFilename) {
+            continue;
+          }
+
+          const location = path.join(
+            FILES.BASE_TEMPORARY_UPLOADS_PATH,
+            `workspace-${workspaceId}`
+          );
+
+          const buffer = await fs.readFile(`${location}/${file.newFilename}`);
+
+          const result = await this.writeFile(
+            file.originalFilename,
+            location,
+            buffer
+          );
+
+          if (!result) {
+            throw Error(
+              `Failed to write file ${file.newFilename} (${file.originalFilename})`
+            );
+          }
+        }
+
+        await this.clearSpecificFilesFromTemporaryDir(
+          workspaceId,
+          formDataFiles
+        );
+      },
+
+      onCatch: async () => {
+        await this.clearSpecificFilesFromTemporaryDir(
+          workspaceId,
+          formDataFiles
+        );
+      },
+    });
   }
 }
