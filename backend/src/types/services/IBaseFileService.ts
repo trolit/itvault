@@ -3,9 +3,7 @@ import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 
 export interface IBaseFileService {
-  softDeleteFileAndVariants(id: number): Promise<TransactionResult<void>>;
-
-  handleUpload(
+  saveFiles(
     userId: number,
     workspaceId: number,
     formDataFiles: IFormDataFile[]
@@ -16,4 +14,6 @@ export interface IBaseFileService {
     sourceDirectoryId: number,
     targetDirectoryId: number
   ): Promise<TransactionResult<void>>;
+
+  softDeleteFileAndVariants(id: number): Promise<TransactionResult<void>>;
 }

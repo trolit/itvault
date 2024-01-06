@@ -13,6 +13,12 @@ import { Directory } from "@entities/Directory";
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}
 
+  abstract saveFiles(
+    userId: number,
+    workspaceId: number,
+    formDataFiles: IFormDataFile[]
+  ): Promise<TransactionResult<File[]>>;
+
   async moveFilesFromDirToDir(
     workspaceId: number,
     sourceDirectoryId: number,
@@ -128,11 +134,17 @@ export abstract class BaseFileService implements IBaseFileService {
     }
   }
 
-  async handleUpload(
+  async saveFilesInDatabase(
     userId: number,
     workspaceId: number,
-    formDataFiles: IFormDataFile[]
+    formDataFiles: IFormDataFile[],
+    callbacks: {
+      onTry: () => void | Promise<void>;
+      onCatch: () => void | Promise<void>;
+    }
   ): Promise<TransactionResult<File[]>> {
+    const { onTry, onCatch } = callbacks;
+
     const transaction = await this.fileRepository.useTransaction();
 
     const uniqueRelativePaths = uniq(formDataFiles.map(file => file.key));
@@ -213,11 +225,15 @@ export abstract class BaseFileService implements IBaseFileService {
         chunk: 1000,
       });
 
+      await onTry();
+
       await transaction.commitTransaction();
 
       return TransactionResult.success(files);
     } catch (error) {
       console.log(error);
+
+      await onCatch();
 
       await transaction.rollbackTransaction();
 

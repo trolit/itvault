@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs-extra";
 import { inject, injectable } from "tsyringe";
 import { IFormDataFile } from "types/IFormDataFile";
+import { TransactionResult } from "types/TransactionResult";
 import { IFileRepository } from "types/repositories/IFileRepository";
 
 import { FILES } from "@config";
@@ -9,6 +10,7 @@ import { FILES } from "@config";
 import { BaseFileService } from "./BaseFileService";
 
 import { Di } from "@enums/Di";
+import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 
 @injectable()
@@ -95,5 +97,20 @@ export class LocalFileService extends BaseFileService {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  saveFiles(
+    userId: number,
+    workspaceId: number,
+    formDataFiles: IFormDataFile[]
+  ): Promise<TransactionResult<File[]>> {
+    return this.saveFilesInDatabase(userId, workspaceId, formDataFiles, {
+      onTry: () => {
+        this.moveFilesFromTemporaryDir(workspaceId, formDataFiles);
+      },
+      onCatch: () => {
+        // @TODO remove files from temporary dir
+      },
+    });
   }
 }
