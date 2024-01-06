@@ -1,10 +1,8 @@
 # backend
 
-https://docs.localstack.cloud/user-guide/aws/s3/
+## Simulating s3 using LocalStack
 
-```sh
-localstack start -d
-```
+https://docs.localstack.cloud/user-guide/aws/s3/
 
 ```sh
 awslocal s3api create-bucket --bucket itvault-bucket
