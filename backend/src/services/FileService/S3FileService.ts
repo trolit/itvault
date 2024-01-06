@@ -60,11 +60,9 @@ export class S3FileService extends BaseFileService {
     location: string,
     buffer: Buffer
   ): Promise<{ size: number } | null> {
-    const fullPath = path.join(location, filename);
-
     const command = new PutObjectCommand({
       Bucket: FILES.S3.bucket,
-      Key: fullPath,
+      Key: `${location}/${filename}`,
       Body: buffer,
     });
 
@@ -93,14 +91,15 @@ export class S3FileService extends BaseFileService {
 
           const location = path.join(
             FILES.BASE_TEMPORARY_UPLOADS_PATH,
-            `workspace-${workspaceId}`
+            `workspace-${workspaceId}`,
+            file.newFilename
           );
 
-          const buffer = await fs.readFile(`${location}/${file.newFilename}`);
+          const buffer = await fs.readFile(location);
 
           const result = await this.writeFile(
             file.originalFilename,
-            location,
+            `workspace-${workspaceId}`,
             buffer
           );
 
