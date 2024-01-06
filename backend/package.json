@@ -10,6 +10,8 @@
     "test": "mocha -r ts-node/esm -r tsconfig-paths/register \"tests/**/*.ts\"",
     "docker:start": "docker compose up -d",
     "docker:stop": "docker compose down",
+    "docker:local-stack:start": "docker compose -f local-stack-compose.yml up -d",
+    "docker:local-stack:stop": "docker compose -f local-stack-compose.yml down",
     "queues:prod": "node ./dist/scripts/queues.js",
     "queues:dev": "ts-node -r tsconfig-paths/register --transpile-only ./src/scripts/queues.ts",
     "build": "npx tsc --build & copyfiles -f src/services/MailService/templates/*.mustache dist/services/MailService/templates",

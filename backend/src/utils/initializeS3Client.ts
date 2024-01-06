@@ -9,15 +9,13 @@ export const initializeS3Client = () => {
     const client = new S3Client({
       // @NOTE - endpoint + forcePathStyle are required for localstack
       region: "eu-central-1",
-      endpoint: S3.endpoint,
+      endpoint: `https://${S3.endpoint}`,
       credentials: {
         accessKeyId: S3.accessKeyId,
         secretAccessKey: S3.secretAccessKey,
       },
       forcePathStyle: true,
     });
-
-    console.log("AWS: S3 Client initialized!");
 
     return client;
   } catch (error) {
