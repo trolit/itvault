@@ -33,7 +33,7 @@ export class S3FileService extends BaseFileService {
     workspaceId: number,
     variant: Variant
   ): Promise<string | null> {
-    const key = `${FILES.BASE_UPLOADS_PATH}/workspace-${workspaceId}/${variant.filename}`;
+    const key = `workspace-${workspaceId}/${variant.filename}`;
 
     const command = new GetObjectCommand({
       Bucket: FILES.S3.bucket,
@@ -98,7 +98,7 @@ export class S3FileService extends BaseFileService {
           const buffer = await fs.readFile(location);
 
           const result = await this.writeFile(
-            file.originalFilename,
+            file.newFilename,
             `workspace-${workspaceId}`,
             buffer
           );
