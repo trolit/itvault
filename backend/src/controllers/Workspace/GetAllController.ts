@@ -82,6 +82,7 @@ export class GetAllController extends BaseController {
       take: ignorePagination ? undefined : take,
       order: {
         pinnedAt: "desc",
+        createdAt: "desc",
       },
       where: {
         ...nameQuery,

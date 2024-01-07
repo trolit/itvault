@@ -1,5 +1,13 @@
 import { Variant } from "@entities/Variant";
+import { IFormDataFile } from "types/IFormDataFile";
+import { TransactionResult } from "types/TransactionResult";
 
 export interface IVariantService {
-  getContent(variant: Variant, directory: string): Promise<string>;
+  save(arg: {
+    name: string;
+    workspaceId: number;
+    file: IFormDataFile;
+    author: { userId: number };
+    variantOf: { fileId: number };
+  }): Promise<TransactionResult<Variant>>;
 }

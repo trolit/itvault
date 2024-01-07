@@ -1,25 +1,76 @@
-import path from "path";
-import fs from "fs-extra";
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
+import { IFormDataFile } from "types/IFormDataFile";
+import { IFileService } from "types/services/IFileService";
+import { TransactionResult } from "types/TransactionResult";
 import { IVariantService } from "types/services/IVariantService";
+import { TransactionError } from "types/custom-errors/TransactionError";
+import { IVariantRepository } from "types/repositories/IVariantRepository";
 
-import { FILES } from "@config";
-
+import { Di } from "@enums/Di";
 import { Variant } from "@entities/Variant";
 
 @injectable()
 export class VariantService implements IVariantService {
-  async getContent(variant: Variant, directory: string): Promise<string> {
-    try {
-      const file = await fs.readFile(
-        path.join(FILES.BASE_UPLOADS_PATH, directory, variant.filename)
-      );
+  constructor(
+    @inject(Di.VariantRepository)
+    private _variantRepository: IVariantRepository,
+    @inject(Di.FileService)
+    private _fileService: IFileService
+  ) {}
 
-      return file.toString();
+  async save(arg: {
+    name: string;
+    workspaceId: number;
+    file: IFormDataFile;
+    author: { userId: number };
+    variantOf: { fileId: number };
+  }): Promise<TransactionResult<Variant>> {
+    const {
+      name,
+      workspaceId,
+      file,
+      author: { userId },
+      variantOf: { fileId },
+    } = arg;
+
+    const transaction = await this._variantRepository.useTransaction();
+
+    const { manager } = transaction;
+
+    try {
+      const entity = manager.create(Variant, {
+        name,
+        size: file.value.size,
+        filename: file.value.newFilename,
+        file: {
+          id: fileId,
+        },
+        createdBy: {
+          id: userId,
+        },
+      });
+
+      const variant = await manager.save(Variant, entity);
+
+      await this._fileService.writeVariantFile({
+        workspaceId,
+        file,
+        filename: file.value.newFilename,
+      });
+
+      await transaction.commitTransaction();
+
+      return TransactionResult.success(variant);
     } catch (error) {
       console.log(error);
 
-      return "";
+      await transaction.rollbackTransaction();
+
+      return TransactionResult.failure(
+        error instanceof TransactionError ? error.message : undefined
+      );
+    } finally {
+      await transaction.release();
     }
   }
 }

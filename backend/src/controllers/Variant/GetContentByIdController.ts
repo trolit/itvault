@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { IVariantService } from "types/services/IVariantService";
+import { IFileService } from "types/services/IFileService";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { GetContentByIdControllerTypes } from "types/controllers/Variant/GetContentByIdController";
@@ -16,8 +16,8 @@ export class GetContentByIdController extends BaseController {
   constructor(
     @inject(Di.VariantRepository)
     private _variantRepository: IVariantRepository,
-    @inject(Di.VariantService)
-    private _variantService: IVariantService
+    @inject(Di.FileService)
+    private _fileService: IFileService
   ) {
     super();
   }
@@ -46,10 +46,10 @@ export class GetContentByIdController extends BaseController {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    const content = await this._variantService.getContent(
+    const content = await this._fileService.getContent({
       variant,
-      `workspace-${workspaceId}`
-    );
+      from: { workspaceId },
+    });
 
     if (!content) {
       return response.status(HTTP.NOT_FOUND).send();

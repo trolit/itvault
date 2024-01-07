@@ -1,3 +1,5 @@
+import path from "path";
+import fs from "fs-extra";
 import uniq from "lodash/uniq";
 import { Like, QueryRunner } from "typeorm";
 import { IFormDataFile } from "types/IFormDataFile";
@@ -6,6 +8,8 @@ import { IBaseFileService } from "types/services/IBaseFileService";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
+import { FILES } from "@config";
+
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { Directory } from "@entities/Directory";
@@ -13,11 +17,83 @@ import { Directory } from "@entities/Directory";
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}
 
-  async moveFilesFromDirToDir(
-    workspaceId: number,
-    sourceDirectoryId: number,
-    targetDirectoryId: number
-  ): Promise<TransactionResult<void>> {
+  abstract getContent(arg: {
+    variant: Variant;
+    from: { workspaceId: number };
+  }): Promise<string | null>;
+
+  abstract handleUpload(arg: {
+    files: IFormDataFile[];
+    author: { userId: number };
+    target: { workspaceId: number };
+  }): Promise<TransactionResult<File[]>>;
+
+  abstract writeFile(arg: {
+    buffer: Buffer;
+    filename: string;
+    pathToFile: string;
+  }): Promise<{ size: number } | null>;
+
+  abstract writeVariantFile(arg: {
+    filename: string;
+    workspaceId: number;
+    file: IFormDataFile;
+  }): Promise<void>;
+
+  async removeAllFromTemporaryDir(): Promise<void> {
+    const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;
+
+    try {
+      const files = await fs.readdir(BASE_TEMPORARY_UPLOADS_PATH);
+
+      for (const source of files) {
+        const fullPath = path.join(BASE_TEMPORARY_UPLOADS_PATH, source);
+
+        await fs.remove(fullPath);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async removeFromTemporaryDir(arg: {
+    files: IFormDataFile[];
+    from: { workspaceId: number };
+  }): Promise<void> {
+    const {
+      files,
+      from: { workspaceId },
+    } = arg;
+
+    const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;
+
+    const basePath = path.join(
+      BASE_TEMPORARY_UPLOADS_PATH,
+      `workspace-${workspaceId}`
+    );
+
+    try {
+      for (const file of files) {
+        const fullPath = path.join(basePath, file.value.newFilename);
+
+        await fs.remove(fullPath);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async moveFromDirToDir(arg: {
+    workspaceId: number;
+    from: { directoryId: number };
+    to: { directoryId: number };
+  }): Promise<TransactionResult<void>> {
+    const {
+      workspaceId,
+      from: { directoryId: sourceDirectoryId },
+      to: { directoryId: targetDirectoryId },
+    } = arg;
+
     const transaction = await this.fileRepository.useTransaction();
 
     try {
@@ -128,14 +204,20 @@ export abstract class BaseFileService implements IBaseFileService {
     }
   }
 
-  async handleUpload(
+  async saveHandler(
     userId: number,
     workspaceId: number,
-    formDataFiles: IFormDataFile[]
+    files: IFormDataFile[],
+    callbacks: {
+      onTry: () => void | Promise<void>;
+      onCatch: () => void | Promise<void>;
+    }
   ): Promise<TransactionResult<File[]>> {
+    const { onTry, onCatch } = callbacks;
+
     const transaction = await this.fileRepository.useTransaction();
 
-    const uniqueRelativePaths = uniq(formDataFiles.map(file => file.key));
+    const uniqueRelativePaths = uniq(files.map(file => file.relativePath));
 
     const dirs: Directory[] = [];
 
@@ -154,10 +236,12 @@ export abstract class BaseFileService implements IBaseFileService {
         dirs.push({ ...directory });
       }
 
-      const filesToSave = [];
+      const fileRecordsToSave = [];
 
-      for (const { key, file } of formDataFiles) {
-        const { originalFilename: filename } = file;
+      for (const file of files) {
+        const {
+          value: { originalFilename: filename },
+        } = file;
 
         if (!filename) {
           continue;
@@ -185,14 +269,14 @@ export abstract class BaseFileService implements IBaseFileService {
         });
 
         const directory = dirs.find(
-          directory => directory.relativePath === key
+          directory => directory.relativePath === file.relativePath
         );
 
         if (!directory) {
-          continue;
+          throw Error("Failed to resolve directory during files save!");
         }
 
-        filesToSave.push(
+        fileRecordsToSave.push(
           this._buildFileRecord(
             transaction,
             fileRecord || {
@@ -202,22 +286,30 @@ export abstract class BaseFileService implements IBaseFileService {
               userId,
               directory,
               workspaceId,
-              size: file.size,
-              filename: file.newFilename,
+              size: file.value.size,
+              filename: file.value.newFilename,
             }
           )
         );
       }
 
-      const files = await transaction.manager.save(File, filesToSave, {
-        chunk: 1000,
-      });
+      const fileRecords = await transaction.manager.save(
+        File,
+        fileRecordsToSave,
+        {
+          chunk: 1000,
+        }
+      );
+
+      await onTry();
 
       await transaction.commitTransaction();
 
-      return TransactionResult.success(files);
+      return TransactionResult.success(fileRecords);
     } catch (error) {
       console.log(error);
+
+      await onCatch();
 
       await transaction.rollbackTransaction();
 

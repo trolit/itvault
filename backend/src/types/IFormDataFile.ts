@@ -1,7 +1,7 @@
 import formidable from "formidable";
 
 export interface IFormDataFile {
-  key: string;
+  relativePath: string;
 
-  file: formidable.File;
+  value: formidable.File;
 }

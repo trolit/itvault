@@ -35,11 +35,11 @@ export class MoveFilesController extends BaseController {
       body: { sourceDirectoryId, targetDirectoryId },
     } = request;
 
-    const result = await this._fileService.moveFilesFromDirToDir(
+    const result = await this._fileService.moveFromDirToDir({
       workspaceId,
-      sourceDirectoryId,
-      targetDirectoryId
-    );
+      from: { directoryId: sourceDirectoryId },
+      to: { directoryId: targetDirectoryId },
+    });
 
     if (!result.isSuccess) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);

@@ -85,6 +85,12 @@ export const FILES = {
   BASE_UPLOADS_PATH: FILES_BASE_UPLOADS_PATH,
   BASE_DOWNLOADS_PATH: FILES_BASE_DOWNLOADS_PATH,
   BASE_TEMPORARY_UPLOADS_PATH: FILES_BASE_TEMPORARY_UPLOADS_PATH,
+  S3: {
+    bucket: "itvault-bucket",
+    endpoint: envString("S3_ENDPOINT"),
+    accessKeyId: envString("S3_ACCESS_KEY_ID"),
+    secretAccessKey: envString("S3_SECRET_ACCESS_KEY"),
+  },
 };
 
 if (FILES_STORAGE_MODE === FileStorageMode.Local) {

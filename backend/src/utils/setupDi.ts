@@ -7,9 +7,12 @@ import { container, DependencyContainer, Lifecycle } from "tsyringe";
 
 import { APP, FILES } from "@config";
 
+import { initializeS3Client } from "./initializeS3Client";
+
 import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
+import { S3FileService } from "@services/FileService/S3FileService";
 import { SocketServiceManager } from "@services/SocketService/Manager";
 import { LocalFileService } from "@services/FileService/LocalFileService";
 import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
@@ -21,6 +24,10 @@ export const setupDi = (services: {
   mailTransporter?: Transporter;
 }): Promise<DependencyContainer> => {
   const { mailTransporter, redis, engineIo } = services;
+
+  if (FILES.ACTIVE_MODE === FileStorageMode.AWS) {
+    container.register(Di.S3Client, { useValue: initializeS3Client() });
+  }
 
   if (engineIo) {
     container.register(Di.EngineIO, { useValue: engineIo });
@@ -155,6 +162,10 @@ function registerFileService() {
   if (FILES.ACTIVE_MODE === FileStorageMode.Local) {
     container.register(Di.FileService, LocalFileService);
   }
+
+  if (FILES.ACTIVE_MODE === FileStorageMode.AWS) {
+    container.register(Di.FileService, S3FileService);
+  }
 }
 
 function registerConsumerHandlers() {
@@ -164,6 +175,8 @@ function registerConsumerHandlers() {
       LocalBundleConsumerHandler
     );
   }
+
+  // @TODO register S3ConsumerHandler
 
   container.register(Di.SendMailConsumerHandler, MailConsumerHandler);
 }

@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs-extra";
 import { inject, injectable } from "tsyringe";
 import { IFormDataFile } from "types/IFormDataFile";
+import { TransactionResult } from "types/TransactionResult";
 import { IFileRepository } from "types/repositories/IFileRepository";
 
 import { FILES } from "@config";
@@ -9,7 +10,9 @@ import { FILES } from "@config";
 import { BaseFileService } from "./BaseFileService";
 
 import { Di } from "@enums/Di";
+import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
+import { FileStorageMode } from "@enums/FileStorageMode";
 
 @injectable()
 export class LocalFileService extends BaseFileService {
@@ -20,16 +23,104 @@ export class LocalFileService extends BaseFileService {
     super(fileRepository);
   }
 
-  async moveFilesFromTemporaryDir(
-    workspaceId: number,
-    formDataFiles: IFormDataFile[]
-  ): Promise<void> {
+  async getContent(arg: {
+    variant: Variant;
+    from: { workspaceId: number };
+  }): Promise<string | null> {
+    const {
+      variant,
+      from: { workspaceId },
+    } = arg;
+
+    try {
+      const file = await fs.readFile(
+        path.join(
+          FILES.BASE_UPLOADS_PATH,
+          `workspace-${workspaceId}`,
+          variant.filename
+        )
+      );
+
+      return file.toString();
+    } catch (error) {
+      return null;
+    }
+  }
+
+  handleUpload(arg: {
+    files: IFormDataFile[];
+    author: { userId: number };
+    target: { workspaceId: number };
+  }): Promise<TransactionResult<File[]>> {
+    const {
+      files,
+      author: { userId },
+      target: { workspaceId },
+    } = arg;
+
+    return this.saveHandler(userId, workspaceId, files, {
+      onTry: async () => {
+        await this.moveWorkspaceFilesFromTemporaryDir({ files, workspaceId });
+      },
+
+      onCatch: async () => {
+        // @NOTE we could remove those files but we have job that on each day removes files from TMP dir?
+        // await this.removeFromTemporaryDir({ files, from: { workspaceId } });
+      },
+    });
+  }
+
+  async writeFile(arg: {
+    buffer: Buffer;
+    filename: string;
+    pathToFile: string;
+  }): Promise<{ size: number } | null> {
+    const { buffer, filename, pathToFile } = arg;
+
+    const fullPath = path.join(pathToFile, filename);
+
+    try {
+      await fs.writeFile(fullPath, buffer);
+
+      return { size: Buffer.byteLength(buffer) };
+    } catch (error) {
+      console.log(error);
+
+      return null;
+    }
+  }
+
+  async writeVariantFile(arg: {
+    filename: string;
+    workspaceId: number;
+    file: IFormDataFile;
+  }): Promise<void> {
+    const { workspaceId, file } = arg;
+
+    await this.moveWorkspaceFilesFromTemporaryDir({
+      files: [file],
+      workspaceId,
+    });
+  }
+
+  async moveWorkspaceFilesFromTemporaryDir(arg: {
+    files: IFormDataFile[];
+    workspaceId: number;
+  }): Promise<void> {
+    if (FILES.ACTIVE_MODE !== FileStorageMode.Local) {
+      return;
+    }
+
+    const { files, workspaceId } = arg;
+
     const { BASE_TEMPORARY_UPLOADS_PATH, BASE_UPLOADS_PATH } = FILES;
 
     await fs.ensureDir(FILES.BASE_UPLOADS_PATH);
 
-    for (const { file } of formDataFiles) {
-      const { newFilename } = file;
+    for (const file of files) {
+      const {
+        value: { newFilename },
+      } = file;
 
       const src = path.join(
         BASE_TEMPORARY_UPLOADS_PATH,
@@ -48,54 +139,6 @@ export class LocalFileService extends BaseFileService {
       } catch (error) {
         console.error(error);
       }
-    }
-  }
-
-  async readFile(workspaceId: number, variant: Variant): Promise<string> {
-    const file = await fs.readFile(
-      path.join(
-        FILES.BASE_UPLOADS_PATH,
-        `workspace-${workspaceId}`,
-        variant.filename
-      )
-    );
-
-    return file.toString();
-  }
-
-  async writeFile(
-    filename: string,
-    location: string,
-    buffer: Buffer
-  ): Promise<{ size: number } | null> {
-    const fullPath = path.join(location, filename);
-
-    try {
-      await fs.writeFile(fullPath, buffer);
-
-      const stats = await fs.stat(fullPath);
-
-      return { size: stats.size };
-    } catch (error) {
-      console.log(error);
-
-      return null;
-    }
-  }
-
-  async clearTemporaryDir(): Promise<void> {
-    const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;
-
-    try {
-      const files = await fs.readdir(BASE_TEMPORARY_UPLOADS_PATH);
-
-      for (const source of files) {
-        const fullPath = path.join(BASE_TEMPORARY_UPLOADS_PATH, source);
-
-        await fs.remove(fullPath);
-      }
-    } catch (error) {
-      console.log(error);
     }
   }
 }
