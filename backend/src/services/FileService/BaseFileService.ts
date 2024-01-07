@@ -217,7 +217,9 @@ export abstract class BaseFileService implements IBaseFileService {
 
     const transaction = await this.fileRepository.useTransaction();
 
-    const uniqueRelativePaths = uniq(formDataFiles.map(file => file.key));
+    const uniqueRelativePaths = uniq(
+      formDataFiles.map(file => file.relativePath)
+    );
 
     const dirs: Directory[] = [];
 
@@ -238,7 +240,7 @@ export abstract class BaseFileService implements IBaseFileService {
 
       const filesToSave = [];
 
-      for (const { key, file } of formDataFiles) {
+      for (const { relativePath, file } of formDataFiles) {
         const { originalFilename: filename } = file;
 
         if (!filename) {
@@ -267,7 +269,7 @@ export abstract class BaseFileService implements IBaseFileService {
         });
 
         const directory = dirs.find(
-          directory => directory.relativePath === key
+          directory => directory.relativePath === relativePath
         );
 
         if (!directory) {
