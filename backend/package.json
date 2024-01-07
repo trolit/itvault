@@ -11,7 +11,7 @@
     "docker:start": "docker compose up -d",
     "docker:stop": "docker compose stop",
     "docker:down": "docker compose down",
-    "docker:local-stack:start": "docker compose -f local-stack-compose.yml up -d",
+    "docker:local-stack:start": "docker compose -f local-stack-compose.yml -p ls up -d",
     "docker:local-stack:stop": "docker compose -f local-stack-compose.yml stop",
     "docker:local-stack:down": "docker compose -f local-stack-compose.yml down",
     "queues:prod": "node ./dist/scripts/queues.js",
