@@ -12,7 +12,7 @@
     "docker:stop": "docker compose stop",
     "docker:down": "docker compose down",
     "docker:ls:start": "docker compose -f local-stack-compose.yml -p ls up -d",
-    "docker:ls:stop": "docker compose -f local-stack-compose.yml stop",
+    "docker:ls:stop": "docker compose -f local-stack-compose.yml -p ls stop",
     "docker:ls:down": "docker compose -f local-stack-compose.yml down",
     "queues:prod": "node ./dist/scripts/queues.js",
     "queues:dev": "ts-node -r tsconfig-paths/register --transpile-only ./src/scripts/queues.ts",
