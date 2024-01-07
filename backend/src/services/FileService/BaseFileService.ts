@@ -17,6 +17,17 @@ import { Directory } from "@entities/Directory";
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}
 
+  abstract getContent(arg: {
+    variant: Variant;
+    from: { workspaceId: number };
+  }): Promise<string | null>;
+
+  abstract handleUpload(arg: {
+    files: IFormDataFile[];
+    author: { userId: number };
+    target: { workspaceId: number };
+  }): Promise<TransactionResult<File[]>>;
+
   abstract writeFile(arg: {
     buffer: Buffer;
     filename: string;
@@ -28,17 +39,6 @@ export abstract class BaseFileService implements IBaseFileService {
     workspaceId: number;
     formDataFile: IFormDataFile;
   }): Promise<void>;
-
-  abstract getContent(arg: {
-    variant: Variant;
-    from: { workspaceId: number };
-  }): Promise<string | null>;
-
-  abstract handleUpload(arg: {
-    files: IFormDataFile[];
-    author: { userId: number };
-    target: { workspaceId: number };
-  }): Promise<TransactionResult<File[]>>;
 
   async removeAllFromTemporaryDir(): Promise<void> {
     const { BASE_TEMPORARY_UPLOADS_PATH } = FILES;

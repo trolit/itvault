@@ -15,6 +15,18 @@ export interface IBaseFileService {
     target: { workspaceId: number };
   }): Promise<TransactionResult<File[]>>;
 
+  writeFile(arg: {
+    buffer: Buffer;
+    filename: string;
+    pathToFile: string;
+  }): Promise<{ size: number } | null>;
+
+  writeVariantFile(arg: {
+    filename: string;
+    workspaceId: number;
+    formDataFile: IFormDataFile;
+  }): Promise<void>;
+
   removeAllFromTemporaryDir(): Promise<void>;
 
   removeFromTemporaryDir(arg: {
@@ -29,16 +41,4 @@ export interface IBaseFileService {
   }): Promise<TransactionResult<void>>;
 
   softDeleteFileAndVariants(id: number): Promise<TransactionResult<void>>;
-
-  writeFile(arg: {
-    buffer: Buffer;
-    filename: string;
-    pathToFile: string;
-  }): Promise<{ size: number } | null>;
-
-  writeVariantFile(arg: {
-    filename: string;
-    workspaceId: number;
-    formDataFile: IFormDataFile;
-  }): Promise<void>;
 }

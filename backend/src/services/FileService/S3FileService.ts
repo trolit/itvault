@@ -60,52 +60,6 @@ export class S3FileService extends BaseFileService {
     }
   }
 
-  async writeFile(arg: {
-    buffer: Buffer;
-    filename: string;
-    pathToFile: string;
-  }): Promise<{ size: number } | null> {
-    const { buffer, filename, pathToFile } = arg;
-
-    const command = new PutObjectCommand({
-      Bucket: FILES.S3.bucket,
-      Key: `${pathToFile}/${filename}`,
-      Body: buffer,
-    });
-
-    try {
-      await this._s3Client.send(command);
-
-      return { size: Buffer.byteLength(buffer) };
-    } catch (error) {
-      console.error(error);
-
-      return null;
-    }
-  }
-
-  async writeVariantFile(arg: {
-    filename: string;
-    workspaceId: number;
-    formDataFile: IFormDataFile;
-  }): Promise<void> {
-    const { filename, workspaceId } = arg;
-
-    const location = path.join(
-      FILES.BASE_TEMPORARY_UPLOADS_PATH,
-      `workspace-${workspaceId}`,
-      filename
-    );
-
-    const buffer = await fs.readFile(location);
-
-    await this.writeFile({
-      buffer,
-      filename,
-      pathToFile: `workspace-${workspaceId}`,
-    });
-  }
-
   handleUpload(arg: {
     files: IFormDataFile[];
     author: { userId: number };
@@ -149,8 +103,55 @@ export class S3FileService extends BaseFileService {
       },
 
       onCatch: async () => {
-        await this.removeFromTemporaryDir({ files, from: { workspaceId } });
+        // @NOTE we could remove those files but we have job that on each day removes files from TMP dir?
+        // await this.removeFromTemporaryDir({ files, from: { workspaceId } });
       },
+    });
+  }
+
+  async writeFile(arg: {
+    buffer: Buffer;
+    filename: string;
+    pathToFile: string;
+  }): Promise<{ size: number } | null> {
+    const { buffer, filename, pathToFile } = arg;
+
+    const command = new PutObjectCommand({
+      Bucket: FILES.S3.bucket,
+      Key: `${pathToFile}/${filename}`,
+      Body: buffer,
+    });
+
+    try {
+      await this._s3Client.send(command);
+
+      return { size: Buffer.byteLength(buffer) };
+    } catch (error) {
+      console.error(error);
+
+      return null;
+    }
+  }
+
+  async writeVariantFile(arg: {
+    filename: string;
+    workspaceId: number;
+    formDataFile: IFormDataFile;
+  }): Promise<void> {
+    const { filename, workspaceId } = arg;
+
+    const location = path.join(
+      FILES.BASE_TEMPORARY_UPLOADS_PATH,
+      `workspace-${workspaceId}`,
+      filename
+    );
+
+    const buffer = await fs.readFile(location);
+
+    await this.writeFile({
+      buffer,
+      filename,
+      pathToFile: `workspace-${workspaceId}`,
     });
   }
 }

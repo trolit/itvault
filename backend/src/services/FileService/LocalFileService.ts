@@ -23,43 +23,6 @@ export class LocalFileService extends BaseFileService {
     super(fileRepository);
   }
 
-  async moveWorkspaceFilesFromTemporaryDir(arg: {
-    files: IFormDataFile[];
-    workspaceId: number;
-  }): Promise<void> {
-    if (FILES.ACTIVE_MODE !== FileStorageMode.Local) {
-      return;
-    }
-
-    const { files, workspaceId } = arg;
-
-    const { BASE_TEMPORARY_UPLOADS_PATH, BASE_UPLOADS_PATH } = FILES;
-
-    await fs.ensureDir(FILES.BASE_UPLOADS_PATH);
-
-    for (const { file } of files) {
-      const { newFilename } = file;
-
-      const src = path.join(
-        BASE_TEMPORARY_UPLOADS_PATH,
-        `workspace-${workspaceId}`,
-        newFilename
-      );
-
-      const dest = path.join(
-        BASE_UPLOADS_PATH,
-        `workspace-${workspaceId}`,
-        newFilename
-      );
-
-      try {
-        await fs.move(src, dest);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
-
   async getContent(arg: {
     variant: Variant;
     from: { workspaceId: number };
@@ -82,6 +45,29 @@ export class LocalFileService extends BaseFileService {
     } catch (error) {
       return null;
     }
+  }
+
+  handleUpload(arg: {
+    files: IFormDataFile[];
+    author: { userId: number };
+    target: { workspaceId: number };
+  }): Promise<TransactionResult<File[]>> {
+    const {
+      files,
+      author: { userId },
+      target: { workspaceId },
+    } = arg;
+
+    return this.saveHandler(userId, workspaceId, files, {
+      onTry: async () => {
+        await this.moveWorkspaceFilesFromTemporaryDir({ files, workspaceId });
+      },
+
+      onCatch: async () => {
+        // @NOTE we could remove those files but we have job that on each day removes files from TMP dir?
+        // await this.removeFromTemporaryDir({ files, from: { workspaceId } });
+      },
+    });
   }
 
   async writeFile(arg: {
@@ -117,25 +103,40 @@ export class LocalFileService extends BaseFileService {
     });
   }
 
-  handleUpload(arg: {
+  async moveWorkspaceFilesFromTemporaryDir(arg: {
     files: IFormDataFile[];
-    author: { userId: number };
-    target: { workspaceId: number };
-  }): Promise<TransactionResult<File[]>> {
-    const {
-      files,
-      author: { userId },
-      target: { workspaceId },
-    } = arg;
+    workspaceId: number;
+  }): Promise<void> {
+    if (FILES.ACTIVE_MODE !== FileStorageMode.Local) {
+      return;
+    }
 
-    return this.saveHandler(userId, workspaceId, files, {
-      onTry: async () => {
-        await this.moveWorkspaceFilesFromTemporaryDir({ files, workspaceId });
-      },
+    const { files, workspaceId } = arg;
 
-      onCatch: async () => {
-        await this.removeFromTemporaryDir({ files, from: { workspaceId } });
-      },
-    });
+    const { BASE_TEMPORARY_UPLOADS_PATH, BASE_UPLOADS_PATH } = FILES;
+
+    await fs.ensureDir(FILES.BASE_UPLOADS_PATH);
+
+    for (const { file } of files) {
+      const { newFilename } = file;
+
+      const src = path.join(
+        BASE_TEMPORARY_UPLOADS_PATH,
+        `workspace-${workspaceId}`,
+        newFilename
+      );
+
+      const dest = path.join(
+        BASE_UPLOADS_PATH,
+        `workspace-${workspaceId}`,
+        newFilename
+      );
+
+      try {
+        await fs.move(src, dest);
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 }
