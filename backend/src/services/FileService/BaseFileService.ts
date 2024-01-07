@@ -37,7 +37,7 @@ export abstract class BaseFileService implements IBaseFileService {
   abstract writeVariantFile(arg: {
     filename: string;
     workspaceId: number;
-    formDataFile: IFormDataFile;
+    file: IFormDataFile;
   }): Promise<void>;
 
   async removeAllFromTemporaryDir(): Promise<void> {
@@ -73,8 +73,8 @@ export abstract class BaseFileService implements IBaseFileService {
     );
 
     try {
-      for (const { file } of files) {
-        const fullPath = path.join(basePath, file.newFilename);
+      for (const file of files) {
+        const fullPath = path.join(basePath, file.value.newFilename);
 
         await fs.remove(fullPath);
       }
@@ -207,7 +207,7 @@ export abstract class BaseFileService implements IBaseFileService {
   async saveHandler(
     userId: number,
     workspaceId: number,
-    formDataFiles: IFormDataFile[],
+    files: IFormDataFile[],
     callbacks: {
       onTry: () => void | Promise<void>;
       onCatch: () => void | Promise<void>;
@@ -217,9 +217,7 @@ export abstract class BaseFileService implements IBaseFileService {
 
     const transaction = await this.fileRepository.useTransaction();
 
-    const uniqueRelativePaths = uniq(
-      formDataFiles.map(file => file.relativePath)
-    );
+    const uniqueRelativePaths = uniq(files.map(file => file.relativePath));
 
     const dirs: Directory[] = [];
 
@@ -238,10 +236,12 @@ export abstract class BaseFileService implements IBaseFileService {
         dirs.push({ ...directory });
       }
 
-      const filesToSave = [];
+      const fileRecordsToSave = [];
 
-      for (const { relativePath, file } of formDataFiles) {
-        const { originalFilename: filename } = file;
+      for (const file of files) {
+        const {
+          value: { originalFilename: filename },
+        } = file;
 
         if (!filename) {
           continue;
@@ -269,14 +269,14 @@ export abstract class BaseFileService implements IBaseFileService {
         });
 
         const directory = dirs.find(
-          directory => directory.relativePath === relativePath
+          directory => directory.relativePath === file.relativePath
         );
 
         if (!directory) {
           throw Error("Failed to resolve directory during files save!");
         }
 
-        filesToSave.push(
+        fileRecordsToSave.push(
           this._buildFileRecord(
             transaction,
             fileRecord || {
@@ -286,22 +286,26 @@ export abstract class BaseFileService implements IBaseFileService {
               userId,
               directory,
               workspaceId,
-              size: file.size,
-              filename: file.newFilename,
+              size: file.value.size,
+              filename: file.value.newFilename,
             }
           )
         );
       }
 
-      const files = await transaction.manager.save(File, filesToSave, {
-        chunk: 1000,
-      });
+      const fileRecords = await transaction.manager.save(
+        File,
+        fileRecordsToSave,
+        {
+          chunk: 1000,
+        }
+      );
 
       await onTry();
 
       await transaction.commitTransaction();
 
-      return TransactionResult.success(files);
+      return TransactionResult.success(fileRecords);
     } catch (error) {
       console.log(error);
 

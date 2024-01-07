@@ -21,19 +21,17 @@ export class VariantService implements IVariantService {
   async save(arg: {
     name: string;
     workspaceId: number;
-    formDataFile: IFormDataFile;
+    file: IFormDataFile;
     author: { userId: number };
     variantOf: { fileId: number };
   }): Promise<TransactionResult<Variant>> {
     const {
       name,
       workspaceId,
-      formDataFile,
+      file,
       author: { userId },
       variantOf: { fileId },
     } = arg;
-
-    const { file } = formDataFile;
 
     const transaction = await this._variantRepository.useTransaction();
 
@@ -42,8 +40,8 @@ export class VariantService implements IVariantService {
     try {
       const entity = manager.create(Variant, {
         name,
-        size: file.size,
-        filename: file.newFilename,
+        size: file.value.size,
+        filename: file.value.newFilename,
         file: {
           id: fileId,
         },
@@ -56,8 +54,8 @@ export class VariantService implements IVariantService {
 
       await this._fileService.writeVariantFile({
         workspaceId,
-        formDataFile,
-        filename: file.newFilename,
+        file,
+        filename: file.value.newFilename,
       });
 
       await transaction.commitTransaction();

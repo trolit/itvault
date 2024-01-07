@@ -93,12 +93,12 @@ export class LocalFileService extends BaseFileService {
   async writeVariantFile(arg: {
     filename: string;
     workspaceId: number;
-    formDataFile: IFormDataFile;
+    file: IFormDataFile;
   }): Promise<void> {
-    const { workspaceId, formDataFile } = arg;
+    const { workspaceId, file } = arg;
 
     await this.moveWorkspaceFilesFromTemporaryDir({
-      files: [formDataFile],
+      files: [file],
       workspaceId,
     });
   }
@@ -117,8 +117,10 @@ export class LocalFileService extends BaseFileService {
 
     await fs.ensureDir(FILES.BASE_UPLOADS_PATH);
 
-    for (const { file } of files) {
-      const { newFilename } = file;
+    for (const file of files) {
+      const {
+        value: { newFilename },
+      } = file;
 
       const src = path.join(
         BASE_TEMPORARY_UPLOADS_PATH,

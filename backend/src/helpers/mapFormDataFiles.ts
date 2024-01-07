@@ -10,7 +10,7 @@ export const mapFormDataFiles = (files: formidable.Files): IFormDataFile[] => {
     for (const file of arrayOfFiles) {
       result.push({
         relativePath,
-        file,
+        value: file,
       });
     }
   }

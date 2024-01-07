@@ -6,7 +6,7 @@ export interface IVariantService {
   save(arg: {
     name: string;
     workspaceId: number;
-    formDataFile: IFormDataFile;
+    file: IFormDataFile;
     author: { userId: number };
     variantOf: { fileId: number };
   }): Promise<TransactionResult<Variant>>;

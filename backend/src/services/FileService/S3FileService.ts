@@ -73,28 +73,32 @@ export class S3FileService extends BaseFileService {
 
     return this.saveHandler(userId, workspaceId, files, {
       onTry: async () => {
-        for (const { file } of files) {
-          if (!file.originalFilename) {
+        for (const file of files) {
+          const {
+            value: { originalFilename, newFilename },
+          } = file;
+
+          if (!originalFilename) {
             continue;
           }
 
           const location = path.join(
             FILES.BASE_TEMPORARY_UPLOADS_PATH,
             `workspace-${workspaceId}`,
-            file.newFilename
+            newFilename
           );
 
           const buffer = await fs.readFile(location);
 
           const result = await this.writeFile({
             buffer,
-            filename: file.newFilename,
+            filename: newFilename,
             pathToFile: `workspace-${workspaceId}`,
           });
 
           if (!result) {
             throw Error(
-              `Failed to write file ${file.newFilename} (${file.originalFilename})`
+              `Failed to write file ${newFilename} (${originalFilename})`
             );
           }
         }
@@ -136,7 +140,7 @@ export class S3FileService extends BaseFileService {
   async writeVariantFile(arg: {
     filename: string;
     workspaceId: number;
-    formDataFile: IFormDataFile;
+    file: IFormDataFile;
   }): Promise<void> {
     const { filename, workspaceId } = arg;
 

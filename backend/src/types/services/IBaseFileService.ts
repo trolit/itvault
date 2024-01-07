@@ -24,7 +24,7 @@ export interface IBaseFileService {
   writeVariantFile(arg: {
     filename: string;
     workspaceId: number;
-    formDataFile: IFormDataFile;
+    file: IFormDataFile;
   }): Promise<void>;
 
   removeAllFromTemporaryDir(): Promise<void>;

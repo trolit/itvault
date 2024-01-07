@@ -41,12 +41,12 @@ export class AddController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const [formDataFile] = files;
+    const [file] = files;
 
     const result = await this._variantService.save({
       name,
+      file,
       workspaceId,
-      formDataFile,
       author: { userId },
       variantOf: { fileId },
     });
