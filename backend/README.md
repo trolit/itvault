@@ -8,6 +8,8 @@ https://docs.localstack.cloud/user-guide/aws/s3/
 pip3 install "awscli-local[ver1]"
 ```
 
+Create bucket manually with following command:
+
 ```sh
 awslocal s3api create-bucket --bucket itvault-bucket
 ```
