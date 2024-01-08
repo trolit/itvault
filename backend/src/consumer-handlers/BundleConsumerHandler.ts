@@ -1,27 +1,105 @@
 import path from "path";
 import JSZip from "jszip";
+import crypto from "crypto";
 import { In } from "typeorm";
+import { inject } from "tsyringe";
 import { IFileService } from "types/services/IFileService";
+import { IDateService } from "types/services/IDateService";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
+import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandler";
+import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsumerHandlerData";
 
-import { FILES } from "@config/index";
+import { FILES } from "@config";
 
+import { Di } from "@enums/Di";
 import { Bucket } from "@entities/Bucket";
-import { Bundle } from "@entities/Bundle";
-import { Variant } from "@entities/Variant";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
+import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
-export abstract class BaseBundleConsumerHandler {
+export class BundleConsumerHandler
+  implements IBaseConsumerHandler<BundleConsumerHandlerData>
+{
   constructor(
-    protected fileRepository: IFileRepository,
-    protected bucketRepository: IBucketRepository,
-    protected fileService: IFileService,
-    protected bundleRepository: IBundleRepository
+    @inject(Di.FileRepository)
+    private _fileRepository: IFileRepository,
+    @inject(Di.BucketRepository)
+    private _bucketRepository: IBucketRepository,
+    @inject(Di.FileService)
+    private _fileService: IFileService,
+    @inject(Di.BundleRepository)
+    private _bundleRepository: IBundleRepository,
+    @inject(Di.DateService)
+    private _dateService: IDateService
   ) {}
 
+  async onError(data: BundleConsumerHandlerData): Promise<void> {
+    const {
+      bundle: { id },
+    } = data;
+
+    await this._bundleRepository.setStatus(id, BundleStatus.Failed);
+  }
+
+  async handle(data: BundleConsumerHandlerData): Promise<boolean> {
+    const { bundle } = data;
+
+    const bundleRecord = this._bundleRepository.getOne({
+      where: { id: bundle.id },
+    });
+
+    if (!bundleRecord) {
+      // @NOTE do not process request as bundle was probably removed (cancelled)
+      return true;
+    }
+
+    await this._bundleRepository.setStatus(bundle.id, BundleStatus.Building);
+
+    const buffer = await this.generateZipFile(data);
+
+    if (!buffer) {
+      return false;
+    }
+
+    const filename = `${crypto.randomUUID()}.zip`;
+
+    const file = await this._fileService.writeFile({
+      buffer,
+      filename,
+      pathToFile: FILES.BASE_DOWNLOADS_PATH,
+    });
+
+    if (!file) {
+      return false;
+    }
+
+    const { expire } = bundle;
+
+    const result = await this._bundleRepository.primitiveUpdate(
+      {
+        id: bundle.id,
+      },
+      {
+        filename,
+        expiresAt:
+          expire !== BundleExpire.Never
+            ? this._dateService.getExpirationDate(expire)
+            : null,
+        size: file.size,
+        status: BundleStatus.Ready,
+      }
+    );
+
+    if (!result.affected) {
+      return false;
+    }
+
+    return true;
+  }
+
   private _getFiles(workspaceId: number, variantIds: string[]) {
-    return this.fileRepository.getAllAndCount({
+    return this._fileRepository.getAllAndCount({
       where: {
         workspace: {
           id: workspaceId,
@@ -147,16 +225,14 @@ export abstract class BaseBundleConsumerHandler {
     return result;
   }
 
-  protected async generateZipFile(
-    workspaceId: number,
-    bundle: Bundle,
-    readFile: (variant: Variant) => Promise<string | null>,
-    onError: () => Promise<void>
-  ) {
-    const { variantToBundle, blueprintToBundle } = bundle;
+  protected async generateZipFile(handlerData: BundleConsumerHandlerData) {
+    const {
+      workspaceId,
+      bundle: { variantToBundle, blueprintToBundle },
+    } = handlerData;
 
     if (!variantToBundle || !blueprintToBundle) {
-      await onError();
+      await this.onError(handlerData);
 
       return;
     }
@@ -166,7 +242,7 @@ export abstract class BaseBundleConsumerHandler {
     const blueprintIds = blueprintToBundle.map(({ blueprint }) => blueprint.id);
 
     if (!variantIds.length || !blueprintIds.length) {
-      await onError();
+      await this.onError(handlerData);
 
       return;
     }
@@ -174,7 +250,7 @@ export abstract class BaseBundleConsumerHandler {
     const [files] = await this._getFiles(workspaceId, variantIds);
 
     if (!files.length) {
-      await onError();
+      await this.onError(handlerData);
 
       return;
     }
@@ -183,7 +259,7 @@ export abstract class BaseBundleConsumerHandler {
 
     for (const file of files) {
       if (file.variants.length !== 1) {
-        await onError();
+        await this.onError(handlerData);
 
         return;
       }
@@ -193,7 +269,7 @@ export abstract class BaseBundleConsumerHandler {
         variants: [variant],
       } = file;
 
-      const buckets = await this.bucketRepository.getAll({
+      const buckets = await this._bucketRepository.getAll({
         where: {
           blueprint: {
             id: In(blueprintIds),
@@ -205,15 +281,18 @@ export abstract class BaseBundleConsumerHandler {
       });
 
       if (!buckets) {
-        await onError();
+        await this.onError(handlerData);
 
         return;
       }
 
-      const fileContent = await readFile(variant);
+      const fileContent = await this._fileService.getContent({
+        variant,
+        from: { workspaceId },
+      });
 
       if (!fileContent) {
-        await onError();
+        await this.onError(handlerData);
 
         return;
       }
