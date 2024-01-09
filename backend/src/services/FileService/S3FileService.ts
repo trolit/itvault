@@ -143,7 +143,7 @@ export class S3FileService extends BaseFileService {
   async writeFile(arg: {
     buffer: Buffer;
     filename: string;
-    pathToFile: string;
+    pathToFile?: string;
   }): Promise<{ size: number } | null> {
     const { buffer, filename, pathToFile } = arg;
 

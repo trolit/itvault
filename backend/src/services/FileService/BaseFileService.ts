@@ -38,7 +38,7 @@ export abstract class BaseFileService implements IBaseFileService {
   abstract writeFile(arg: {
     buffer: Buffer;
     filename: string;
-    pathToFile: string;
+    pathToFile?: string;
   }): Promise<{ size: number } | null>;
 
   abstract writeVariantFile(arg: {

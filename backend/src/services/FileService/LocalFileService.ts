@@ -84,11 +84,11 @@ export class LocalFileService extends BaseFileService {
   async writeFile(arg: {
     buffer: Buffer;
     filename: string;
-    pathToFile: string;
+    pathToFile?: string;
   }): Promise<{ size: number } | null> {
     const { buffer, filename, pathToFile } = arg;
 
-    const fullPath = path.join(pathToFile, filename);
+    const fullPath = pathToFile ? path.join(pathToFile, filename) : filename;
 
     try {
       await fs.writeFile(fullPath, buffer);

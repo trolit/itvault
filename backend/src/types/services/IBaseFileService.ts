@@ -27,7 +27,7 @@ export interface IBaseFileService {
   writeFile(arg: {
     buffer: Buffer;
     filename: string;
-    pathToFile: string;
+    pathToFile?: string;
   }): Promise<{ size: number } | null>;
 
   writeVariantFile(arg: {
