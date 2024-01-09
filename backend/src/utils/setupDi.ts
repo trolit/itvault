@@ -16,7 +16,7 @@ import { S3FileService } from "@services/FileService/S3FileService";
 import { SocketServiceManager } from "@services/SocketService/Manager";
 import { LocalFileService } from "@services/FileService/LocalFileService";
 import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
-import { LocalBundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler/Local";
+import { BundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler";
 
 export const setupDi = (services: {
   redis?: Redis;
@@ -169,14 +169,7 @@ function registerFileService() {
 }
 
 function registerConsumerHandlers() {
-  if (FILES.ACTIVE_MODE === FileStorageMode.Local) {
-    container.register(
-      Di.GenerateBundleConsumerHandler,
-      LocalBundleConsumerHandler
-    );
-  }
-
-  // @TODO register S3ConsumerHandler
+  container.register(Di.GenerateBundleConsumerHandler, BundleConsumerHandler);
 
   container.register(Di.SendMailConsumerHandler, MailConsumerHandler);
 }

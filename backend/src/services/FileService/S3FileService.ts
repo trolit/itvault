@@ -1,5 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
+import { Response } from "express";
+import { Readable } from "node:stream";
 import { inject, injectable } from "tsyringe";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
@@ -16,6 +18,7 @@ import { BaseFileService } from "./BaseFileService";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
+import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 
 @injectable()
@@ -27,6 +30,30 @@ export class S3FileService extends BaseFileService {
     protected fileRepository: IFileRepository
   ) {
     super(fileRepository);
+  }
+
+  async downloadBundle(arg: { bundle: Bundle; response: Response }) {
+    const {
+      response,
+      bundle: { filename },
+    } = arg;
+
+    const command = new GetObjectCommand({
+      Bucket: FILES.S3.bucket,
+      Key: filename,
+    });
+
+    try {
+      const result = await this._s3Client.send(command);
+
+      if (!result || !result.Body) {
+        throw Error("Failed to get file!");
+      }
+
+      (result.Body as Readable).pipe(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async getContent(arg: {
@@ -116,13 +143,15 @@ export class S3FileService extends BaseFileService {
   async writeFile(arg: {
     buffer: Buffer;
     filename: string;
-    pathToFile: string;
+    pathToFile?: string;
   }): Promise<{ size: number } | null> {
     const { buffer, filename, pathToFile } = arg;
 
+    const key = pathToFile ? `${pathToFile}/${filename}` : filename;
+
     const command = new PutObjectCommand({
       Bucket: FILES.S3.bucket,
-      Key: `${pathToFile}/${filename}`,
+      Key: key,
       Body: buffer,
     });
 

@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs-extra";
+import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
@@ -11,6 +12,7 @@ import { BaseFileService } from "./BaseFileService";
 
 import { Di } from "@enums/Di";
 import { File } from "@entities/File";
+import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
@@ -21,6 +23,15 @@ export class LocalFileService extends BaseFileService {
     protected fileRepository: IFileRepository
   ) {
     super(fileRepository);
+  }
+
+  downloadBundle(arg: { bundle: Bundle; response: Response }) {
+    const {
+      response,
+      bundle: { filename },
+    } = arg;
+
+    response.download(path.join(FILES.BASE_DOWNLOADS_PATH, filename));
   }
 
   async getContent(arg: {
@@ -73,11 +84,11 @@ export class LocalFileService extends BaseFileService {
   async writeFile(arg: {
     buffer: Buffer;
     filename: string;
-    pathToFile: string;
+    pathToFile?: string;
   }): Promise<{ size: number } | null> {
     const { buffer, filename, pathToFile } = arg;
 
-    const fullPath = path.join(pathToFile, filename);
+    const fullPath = pathToFile ? path.join(pathToFile, filename) : filename;
 
     try {
       await fs.writeFile(fullPath, buffer);

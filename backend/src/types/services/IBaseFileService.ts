@@ -1,9 +1,18 @@
+import { Response } from "express";
+
+import { GetObjectCommandOutput, S3 } from "@aws-sdk/client-s3";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
+import { Bundle } from "@entities/Bundle";
 
 export interface IBaseFileService {
+  downloadBundle(arg: {
+    bundle: Bundle;
+    response: Response;
+  }): void | Promise<void>;
+
   getContent(arg: {
     variant: Variant;
     from: { workspaceId: number };
@@ -15,10 +24,11 @@ export interface IBaseFileService {
     target: { workspaceId: number };
   }): Promise<TransactionResult<File[]>>;
 
+  // @NOTE consider refactor to be less generic, but more readable (because for now we only use it to write "bundle" zip)
   writeFile(arg: {
     buffer: Buffer;
     filename: string;
-    pathToFile: string;
+    pathToFile?: string;
   }): Promise<{ size: number } | null>;
 
   writeVariantFile(arg: {
