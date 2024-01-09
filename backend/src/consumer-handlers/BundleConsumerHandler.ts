@@ -2,7 +2,7 @@ import path from "path";
 import JSZip from "jszip";
 import crypto from "crypto";
 import { In } from "typeorm";
-import { inject } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { IFileService } from "types/services/IFileService";
 import { IDateService } from "types/services/IDateService";
 import { IFileRepository } from "types/repositories/IFileRepository";
@@ -18,6 +18,7 @@ import { Bucket } from "@entities/Bucket";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
+@injectable()
 export class BundleConsumerHandler
   implements IBaseConsumerHandler<BundleConsumerHandlerData>
 {
