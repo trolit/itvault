@@ -1,9 +1,18 @@
+import { Response } from "express";
+
+import { GetObjectCommandOutput, S3 } from "@aws-sdk/client-s3";
 import { File } from "@entities/File";
 import { Variant } from "@entities/Variant";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
+import { Bundle } from "@entities/Bundle";
 
 export interface IBaseFileService {
+  downloadBundle(arg: {
+    bundle: Bundle;
+    response: Response;
+  }): void | Promise<void>;
+
   getContent(arg: {
     variant: Variant;
     from: { workspaceId: number };

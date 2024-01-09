@@ -1,12 +1,10 @@
-import path from "path";
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IFileService } from "types/services/IFileService";
 import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { DownloadControllerTypes } from "types/controllers/Bundle/DownloadController";
-
-import { FILES } from "@config/index";
 
 import { Di } from "@enums/Di";
 
@@ -18,7 +16,9 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class DownloadController extends BaseController {
   constructor(
     @inject(Di.BundleRepository)
-    private _bundleRepository: IBundleRepository
+    private _bundleRepository: IBundleRepository,
+    @inject(Di.FileService)
+    private _fileService: IFileService
   ) {
     super();
   }
@@ -43,8 +43,9 @@ export class DownloadController extends BaseController {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    return response.download(
-      path.join(FILES.BASE_DOWNLOADS_PATH, bundle.filename)
-    );
+    await this._fileService.downloadBundle({
+      bundle,
+      response,
+    });
   }
 }

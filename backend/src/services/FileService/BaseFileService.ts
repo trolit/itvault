@@ -1,6 +1,7 @@
 import path from "path";
 import fs from "fs-extra";
 import uniq from "lodash/uniq";
+import { Response } from "express";
 import { Like, QueryRunner } from "typeorm";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
@@ -11,11 +12,17 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 import { FILES } from "@config";
 
 import { File } from "@entities/File";
+import { Bundle } from "@entities/Bundle";
 import { Variant } from "@entities/Variant";
 import { Directory } from "@entities/Directory";
 
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}
+
+  abstract downloadBundle(arg: {
+    bundle: Bundle;
+    response: Response;
+  }): void | Promise<void>;
 
   abstract getContent(arg: {
     variant: Variant;
