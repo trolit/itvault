@@ -24,6 +24,7 @@ export interface IBaseFileService {
     target: { workspaceId: number };
   }): Promise<TransactionResult<File[]>>;
 
+  // @NOTE consider refactor to be less generic, but more readable (because for now we only use it to write "bundle" zip)
   writeFile(arg: {
     buffer: Buffer;
     filename: string;
