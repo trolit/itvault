@@ -6,8 +6,8 @@ import { inject, injectable } from "tsyringe";
 import { IFileService } from "types/services/IFileService";
 import { IDateService } from "types/services/IDateService";
 import { IFileRepository } from "types/repositories/IFileRepository";
-import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
+import { IBundleRepository } from "types/repositories/IBundleRepository";
 import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandler";
 import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsumerHandlerData";
 
@@ -15,6 +15,7 @@ import { FILES } from "@config";
 
 import { Di } from "@enums/Di";
 import { Bucket } from "@entities/Bucket";
+import { FileStorageMode } from "@enums/FileStorageMode";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
 
@@ -68,7 +69,10 @@ export class BundleConsumerHandler
     const file = await this._fileService.writeFile({
       buffer,
       filename,
-      pathToFile: FILES.BASE_DOWNLOADS_PATH,
+      pathToFile:
+        FILES.ACTIVE_MODE === FileStorageMode.Local
+          ? FILES.BASE_DOWNLOADS_PATH
+          : undefined,
     });
 
     if (!file) {
