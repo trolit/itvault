@@ -43,7 +43,10 @@
           >
             <n-card :bordered="false">
               <template #default>
-                <variants v-if="variantId" :active-tab="variantId" />
+                <variants
+                  v-if="activeVariantId"
+                  :active-tab="activeVariantId"
+                />
 
                 <empty v-else title="Select variant" />
               </template>
@@ -81,7 +84,7 @@ const filesStore = useFilesStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
-const variantId = computed((): string => {
+const activeVariantId = computed((): string => {
   const tab = filesStore.activeTab;
 
   if (!tab) {
@@ -104,7 +107,7 @@ function getTabTitle(tab: FileTab) {
           h(
             NButton,
             {
-              disabled: tab.variant.id === variantId.value,
+              disabled: tab.variant.id === activeVariantId.value,
               size: "tiny",
               onClick: () => {
                 variantsStore.setActiveTab(tab.variant.id);
