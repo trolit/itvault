@@ -34,15 +34,25 @@
         }
 
         .n-list {
-          .color {
-            width: 65px;
+          .wrapper {
+            display: flex;
+            align-items: center;
 
-            .n-tag,
-            .thumbnail {
+            .color {
+              width: 65px;
+
+              .n-tag,
+              .thumbnail {
+                width: 100%;
+                height: 20px;
+                display: flex;
+                justify-content: center;
+              }
+            }
+
+            .details {
               width: 100%;
-              height: 20px;
-              display: flex;
-              justify-content: center;
+              margin-left: 10px;
             }
           }
         }

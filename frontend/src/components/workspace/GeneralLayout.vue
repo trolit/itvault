@@ -3,12 +3,12 @@
     <n-layout-sider
       bordered
       :show-trigger="!isNotesDrawerActive && !isBundleDrawerActive"
-      :width="340"
+      :width="workspacesStore.GENERAL_SIDER_WIDTH"
       :collapsed-width="0"
       collapse-mode="transform"
       :native-scrollbar="false"
       :inverted="inverted"
-      :collapsed="workspacesStore.isSiderCollapsed"
+      :collapsed="workspacesStore.isGeneralSiderCollapsed"
       :style="{ zIndex: 1000 }"
       :trigger-style="{
         borderRadius: 0,
@@ -22,8 +22,8 @@
         height: workspacesStore.TRIGGER_STYLE_HEIGHT,
         transform: 'translateX(100%) translateY(0%)',
       }"
-      @expand="workspacesStore.toggleSider"
-      @collapse="workspacesStore.toggleSider"
+      @expand="workspacesStore.toggleGeneralSider"
+      @collapse="workspacesStore.toggleGeneralSider"
     >
       <div class="sider">
         <slot name="sider"></slot>

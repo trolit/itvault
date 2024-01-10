@@ -60,7 +60,10 @@
                 .n-tab-pane {
                   .variant-viewer {
                     height: 100%;
-                    width: 100%;
+                    transition-delay: 0.2s;
+                    transition-duration: 0.1s;
+                    transition-property: width;
+                    transition-timing-function: linear;
 
                     .loading,
                     .empty-section {
@@ -72,6 +75,7 @@
 
                     .toolbar {
                       padding: 0px 8px;
+                      background: rgba(153, 165, 184, 0.3);
                       height: var(--file-page-variant-toolbar-height);
 
                       .n-card__content {
@@ -93,7 +97,7 @@
                           .line-numbers {
                             min-width: 35px;
                             text-align: right;
-                            margin-right: 10px;
+                            margin-right: 30px;
 
                             span {
                               counter-increment: linenumber;
@@ -101,7 +105,7 @@
                               &::before {
                                 content: counter(linenumber);
                                 display: block;
-                                color: #0a75ad;
+                                color: #656f78;
                               }
                             }
                           }
@@ -109,6 +113,7 @@
                           .text-render {
                             margin: 0;
                             width: 100%;
+                            margin: 0 15px 15px 0px;
                           }
                         }
                       }

@@ -20,6 +20,16 @@
           <n-input v-model:value="name" type="text" placeholder="Name" />
         </n-form-item>
 
+        <div
+          v-if="isEditMode && initialFormData.name !== CURRENT_FORM_DATA.name"
+        >
+          <n-alert type="warning">
+            Name is used to provide verbose URL to the user. It is advised to
+            not change it unless you have to. In case of change, please inform
+            other users so they can update e.g. their bookmarks.
+          </n-alert>
+        </div>
+
         <n-form-item
           label="Description"
           :required="false"
@@ -89,6 +99,7 @@ import {
   NSpace,
   NButton,
   NDrawer,
+  NAlert,
   NFormItem,
   NDynamicTags,
   NAutoComplete,

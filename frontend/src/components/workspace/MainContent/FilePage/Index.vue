@@ -4,9 +4,10 @@
       <n-layout-sider
         bordered
         show-trigger
-        :width="250"
+        :width="workspacesStore.FILE_PAGE_SIDER_WIDTH"
         :collapsed-width="0"
         collapse-mode="transform"
+        :collapsed="workspacesStore.isFilePageSiderCollapsed"
         :trigger-style="{
           left: 0,
           borderRadius: 0,
@@ -21,6 +22,8 @@
           height: workspacesStore.TRIGGER_STYLE_HEIGHT,
           transform: 'translateX(0%) translateY(0%)',
         }"
+        @expand="workspacesStore.toggleFilePageSider"
+        @collapse="workspacesStore.toggleFilePageSider"
       >
         <sider />
       </n-layout-sider>

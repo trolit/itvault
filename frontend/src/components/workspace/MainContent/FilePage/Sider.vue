@@ -157,8 +157,8 @@ const isBundleDrawerActive = computed(() => {
 });
 
 function toggleNotesDrawer() {
-  if (workspacesStore.isSiderCollapsed) {
-    workspacesStore.toggleSider();
+  if (workspacesStore.isGeneralSiderCollapsed) {
+    workspacesStore.toggleGeneralSider();
   }
 
   drawerStore.setActiveDrawer(Drawer.Notes);

@@ -31,7 +31,6 @@ interface IState {
   treeData: TreeOption[];
   items: IWorkspaceDTO[];
   recentlyFilteredItems: IWorkspaceDTO[];
-  isSiderCollapsed: boolean;
   activeItem: IWorkspaceDTO;
   itemToEdit: IWorkspaceDTO | null;
   tree: (IDirectoryDTO | IFileDTO)[];
@@ -39,6 +38,8 @@ interface IState {
   treeDataExpandedKeys: (string | number)[];
   initialSearchParams: Partial<WorkspaceSearchParams>;
   pinStatusUpdateItemId: number;
+  isGeneralSiderCollapsed: boolean;
+  isFilePageSiderCollapsed: boolean;
 }
 
 export const useWorkspacesStore = defineStore("workspaces", {
@@ -49,7 +50,6 @@ export const useWorkspacesStore = defineStore("workspaces", {
     recentlyFilteredItems: [],
     treeData: [],
     itemToEdit: null,
-    isSiderCollapsed: false,
     generalLayoutSiderKey: "",
     activeItem: {
       id: 0,
@@ -62,9 +62,26 @@ export const useWorkspacesStore = defineStore("workspaces", {
     treeDataExpandedKeys: [],
     initialSearchParams: {},
     pinStatusUpdateItemId: 0,
+    isGeneralSiderCollapsed: false,
+    isFilePageSiderCollapsed: false,
   }),
 
   getters: {
+    GENERAL_SIDER_WIDTH: () => 340,
+    FILE_PAGE_SIDER_WIDTH: () => 250,
+    VARIANT_VIEWER_WIDTH(): string {
+      let toSubtract = 0;
+
+      if (!this.isGeneralSiderCollapsed) {
+        toSubtract += this.GENERAL_SIDER_WIDTH;
+      }
+
+      if (!this.isFilePageSiderCollapsed) {
+        toSubtract += this.FILE_PAGE_SIDER_WIDTH;
+      }
+
+      return `calc(100vw - ${toSubtract}px)`;
+    },
     ITEMS_PER_PAGE: () => 10,
     TRIGGER_STYLE_TOP: () => "31px",
     TRIGGER_STYLE_HEIGHT: () => "17px",
@@ -113,8 +130,12 @@ export const useWorkspacesStore = defineStore("workspaces", {
   },
 
   actions: {
-    toggleSider() {
-      this.isSiderCollapsed = !this.isSiderCollapsed;
+    toggleGeneralSider() {
+      this.isGeneralSiderCollapsed = !this.isGeneralSiderCollapsed;
+    },
+
+    toggleFilePageSider() {
+      this.isFilePageSiderCollapsed = !this.isFilePageSiderCollapsed;
     },
 
     setActiveItem(item: IWorkspaceDTO) {
