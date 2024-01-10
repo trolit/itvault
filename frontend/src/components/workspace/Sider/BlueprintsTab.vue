@@ -14,7 +14,7 @@
           :key="index"
           @click="toggleAddEditBlueprintDrawer(blueprint)"
         >
-          <n-space align="center" :wrap="false" size="large">
+          <div class="wrapper">
             <div class="color">
               <div
                 class="thumbnail"
@@ -26,7 +26,7 @@
               <n-tag size="tiny">{{ blueprint.color }}</n-tag>
             </div>
 
-            <n-space vertical size="small">
+            <div class="details">
               <n-space justify="space-between">
                 {{ blueprint.name }}
 
@@ -47,8 +47,8 @@
                   </n-ellipsis>
                 </n-text>
               </small>
-            </n-space>
-          </n-space>
+            </div>
+          </div>
         </n-list-item>
       </n-list>
 
