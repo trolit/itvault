@@ -103,17 +103,21 @@ function getTabTitle(tab: FileTab) {
     {
       trigger: () => tab.file.originalFilename,
       default: () => {
-        const buttons = tab.variantTabs.map(tab =>
+        const buttons = tab.variantTabs.map(variantTab =>
           h(
             NButton,
             {
-              disabled: tab.variant.id === activeVariantId.value,
+              disabled: variantTab.variant.id === activeVariantId.value,
               size: "tiny",
               onClick: () => {
-                variantsStore.setActiveTab(tab.variant.id);
+                if (variantTab.variant.id !== activeVariantId.value) {
+                  filesStore.setActiveTab(tab.file);
+                }
+
+                variantsStore.setActiveTab(variantTab.variant.id);
               },
             },
-            { default: () => tab.variant.name }
+            { default: () => variantTab.variant.name }
           )
         );
 
