@@ -5,7 +5,7 @@
     :width="250"
     @select="handleSelect"
   >
-    <n-button quaternary>{{ authStore.profile.email }}</n-button>
+    <n-button quaternary>{{ authStore.profile.fullName }}</n-button>
   </n-dropdown>
 </template>
 
