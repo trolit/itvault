@@ -71,6 +71,7 @@
 
                     .toolbar {
                       padding: 0px 8px;
+                      background: rgba(153, 165, 184, 0.3);
                       height: var(--file-page-variant-toolbar-height);
 
                       .n-card__content {
