@@ -60,7 +60,6 @@
                 .n-tab-pane {
                   .variant-viewer {
                     height: 100%;
-                    width: 100%;
 
                     .loading,
                     .empty-section {
