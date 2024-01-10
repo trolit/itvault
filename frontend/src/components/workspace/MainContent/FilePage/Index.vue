@@ -36,14 +36,17 @@
           @close="filesStore.closeTab"
         >
           <n-tab-pane
-            v-for="{ file } in filesStore.tabs"
-            :key="file.id"
-            :tab="file.originalFilename"
-            :name="file.id"
+            v-for="tab in filesStore.tabs"
+            :key="tab.file.id"
+            :tab="getTabTitle(tab)"
+            :name="tab.file.id"
           >
             <n-card :bordered="false">
               <template #default>
-                <variants v-if="variantId" :active-tab="variantId" />
+                <variants
+                  v-if="activeVariantId"
+                  :active-tab="activeVariantId"
+                />
 
                 <empty v-else title="Select variant" />
               </template>
@@ -56,26 +59,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import {
   NCard,
   NTabs,
+  NSpace,
+  NButton,
   NLayout,
+  NPopover,
   NTabPane,
   NLayoutSider,
   NLayoutContent,
 } from "naive-ui";
+import { computed, h } from "vue";
 
 import Sider from "./Sider.vue";
 import Variants from "./Variants.vue";
 import { useFilesStore } from "@/store/files";
+import type { FileTab } from "@/types/FileTab";
 import Empty from "@/components/common/Empty.vue";
+import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
 
 const filesStore = useFilesStore();
+const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
-const variantId = computed((): string => {
+const activeVariantId = computed((): string => {
   const tab = filesStore.activeTab;
 
   if (!tab) {
@@ -84,4 +93,43 @@ const variantId = computed((): string => {
 
   return tab.activeVariantId;
 });
+
+function getTabTitle(tab: FileTab) {
+  return h(
+    NPopover,
+    {
+      placement: "bottom",
+    },
+    {
+      trigger: () => tab.file.originalFilename,
+      default: () => {
+        const buttons = tab.variantTabs.map(variantTab =>
+          h(
+            NButton,
+            {
+              disabled: variantTab.variant.id === activeVariantId.value,
+              size: "tiny",
+              onClick: () => {
+                if (variantTab.variant.id !== activeVariantId.value) {
+                  filesStore.setActiveTab(tab.file);
+                }
+
+                variantsStore.setActiveTab(variantTab.variant.id);
+              },
+            },
+            { default: () => variantTab.variant.name }
+          )
+        );
+
+        return h(
+          NSpace,
+          {},
+          {
+            default: () => buttons,
+          }
+        );
+      },
+    }
+  );
+}
 </script>
