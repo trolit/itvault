@@ -36,6 +36,7 @@
 
 <script setup lang="ts">
 import { NScrollbar } from "naive-ui";
+import { useRoute } from "vue-router";
 import { h, onBeforeMount, ref, type PropType, type Ref } from "vue";
 
 import Toolbar from "./Toolbar.vue";
@@ -58,6 +59,7 @@ import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData"
 
 const text = ref("");
 const isLoading = ref(false);
+const route = useRoute();
 const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
@@ -109,10 +111,19 @@ onBeforeMount(async () => {
 
     isLoading.value = true;
 
+    const blueprintId = workspacesStore.getUrlSearchParamValue(
+      route,
+      "blueprintId"
+    );
+
     try {
       text.value = await variantsStore.getContentById(id);
 
       await variantsStore.getBlueprintsById(id);
+
+      if (blueprintId) {
+        variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
+      }
 
       variantsStore.overwriteActiveInformationIfPossible({
         blueprint: true,
