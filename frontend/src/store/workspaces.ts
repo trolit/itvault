@@ -338,7 +338,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     getUrlSearchParamValue(
       route: RouteLocationNormalizedLoaded,
       key: keyof WorkspaceSearchParams
-    ) {
+    ): string | null {
       const { query } = route;
 
       const { [key]: value } = query;
@@ -347,7 +347,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         return null;
       }
 
-      return value;
+      return value.toString();
     },
 
     updateUrlSearchParams() {
