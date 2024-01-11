@@ -188,16 +188,18 @@ defineWatchers({
           });
 
           // @TODO handle case when variantId or blueprintId do not exist
-          if (
-            variantId &&
-            typeof variantId === "string" &&
-            variants.some(variant => variant.id === variantId)
-          ) {
+          if (variantId && variants.some(variant => variant.id === variantId)) {
             variantsStore.setActiveTab(variantId);
 
-            if (blueprintId && typeof blueprintId === "string") {
+            if (blueprintId) {
               variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
             }
+
+            return;
+          }
+
+          if (!variantId && variants.length) {
+            variantsStore.setActiveTab(variants[0].id);
           }
         } catch (error) {
           console.log(error);

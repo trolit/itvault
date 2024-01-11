@@ -81,7 +81,7 @@ async function initTree(isReload?: boolean) {
   try {
     let file: IFileDTO | null = null;
 
-    if (value && typeof value === "string" && !isReload) {
+    if (value && !isReload) {
       file = await initTreeByProvidedFileId(parseInt(value));
     } else {
       await workspacesStore.getTree(
