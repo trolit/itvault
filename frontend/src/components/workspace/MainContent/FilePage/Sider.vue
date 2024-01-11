@@ -175,10 +175,6 @@ defineWatchers({
           route,
           "variantId"
         );
-        const blueprintId = workspacesStore.getUrlSearchParamValue(
-          route,
-          "blueprintId"
-        );
 
         try {
           const variants = await variantsStore.getAll();
@@ -190,10 +186,6 @@ defineWatchers({
           // @TODO handle case when variantId or blueprintId do not exist
           if (variantId && variants.some(variant => variant.id === variantId)) {
             variantsStore.setActiveTab(variantId);
-
-            if (blueprintId) {
-              variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
-            }
 
             return;
           }
