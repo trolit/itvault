@@ -191,7 +191,7 @@ defineWatchers({
           if (variantId && variants.some(variant => variant.id === variantId)) {
             variantsStore.setActiveTab(variantId);
 
-            if (blueprintId && typeof blueprintId === "string") {
+            if (blueprintId) {
               variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
             }
 
