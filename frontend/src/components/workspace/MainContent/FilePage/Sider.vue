@@ -198,6 +198,12 @@ defineWatchers({
             if (blueprintId && typeof blueprintId === "string") {
               variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
             }
+
+            return;
+          }
+
+          if (!variantId && variants.length) {
+            variantsStore.setActiveTab(variants[0].id);
           }
         } catch (error) {
           console.log(error);
