@@ -74,10 +74,12 @@
 
         <n-divider />
 
-        <n-text depth="3">Actions</n-text>
-
         <div>
-          <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
+          <n-button
+            round
+            :disabled="isBundleDrawerActive"
+            @click="toggleNotesDrawer"
+          >
             Notes
           </n-button>
         </div>
