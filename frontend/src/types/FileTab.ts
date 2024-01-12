@@ -10,4 +10,7 @@ export type FileTab = {
   notes: { page: number; data: INoteDTO[]; total: number };
 
   variantTabs: VariantTab[];
+
+  // @NOTE for file load through bundle
+  blueprintIdToLoad?: number;
 };

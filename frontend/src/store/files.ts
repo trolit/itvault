@@ -148,10 +148,10 @@ export const useFilesStore = defineStore("files", {
         const variantsStore = useVariantsStore();
 
         if (toLoad?.variantId) {
-          variantsStore.setActiveTab(toLoad.variantId, {
-            blueprintId: toLoad.blueprintId,
-          });
+          variantsStore.setActiveTab(toLoad.variantId);
         }
+
+        tab.blueprintIdToLoad = toLoad?.blueprintId;
 
         return;
       }
@@ -160,6 +160,7 @@ export const useFilesStore = defineStore("files", {
         file,
         variantTabs: [],
         activeVariantId: toLoad?.variantId || "",
+        blueprintIdToLoad: toLoad?.blueprintId,
         notes: { page: 1, data: [], total: 0 },
       });
     },
