@@ -28,7 +28,7 @@
 
               <div>
                 <n-gradient-text type="warning">
-                  {{ size.value }}{{ size.unit }}
+                  {{ formatBytes(size.value) }}
                 </n-gradient-text>
               </div>
 
@@ -136,6 +136,7 @@ import { useFilesStore } from "@/store/files";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
 import AddVariantModal from "./AddVariantModal.vue";
+import { formatBytes } from "@/helpers/formatBytes";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
 import RenameVariantModal from "./RenameVariantModal.vue";
