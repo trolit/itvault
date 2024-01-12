@@ -32,6 +32,11 @@ export const useFilesStore = defineStore("files", {
       state.tabs.find(
         tab => !!state.activeFileId && tab.file.id === state.activeFileId
       ),
+    activeTabVariants(): IVariantDTO[] {
+      return this.activeTab
+        ? this.activeTab.variantTabs.map(({ variant }) => variant)
+        : [];
+    },
   },
 
   actions: {
