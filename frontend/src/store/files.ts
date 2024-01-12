@@ -10,6 +10,7 @@ import type {
 import { useVariantsStore } from "./variants";
 import type { FileTab } from "@/types/FileTab";
 import { useWorkspacesStore } from "./workspaces";
+import type { IVariantDTO } from "@shared/types/DTOs/Variant";
 import type { IBundleFileDTO } from "@shared/types/DTOs/Bundle";
 
 interface IState {
@@ -135,19 +136,30 @@ export const useFilesStore = defineStore("files", {
       return this.tabs.find(tab => tab.file.id === id);
     },
 
-    setActiveTab(file: IFileDTO) {
+    setActiveTab(
+      file: IFileDTO,
+      toLoad?: { blueprintId?: number; variantId?: string }
+    ) {
       const tab = this.findTabById(file.id);
 
       this.activeFileId = file.id;
 
       if (tab) {
+        const variantsStore = useVariantsStore();
+
+        if (toLoad?.variantId) {
+          variantsStore.setActiveTab(toLoad.variantId, {
+            blueprintId: toLoad.blueprintId,
+          });
+        }
+
         return;
       }
 
       this.tabs.push({
         file,
         variantTabs: [],
-        activeVariantId: "",
+        activeVariantId: toLoad?.variantId || "",
         notes: { page: 1, data: [], total: 0 },
       });
     },
