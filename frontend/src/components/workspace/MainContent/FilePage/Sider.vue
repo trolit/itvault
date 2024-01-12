@@ -45,7 +45,11 @@
                 align="center"
                 :style="{ marginTop: '5px' }"
               >
-                <n-button text @click="variantsStore.setActiveTab(id)">
+                <n-button
+                  text
+                  @click="variantsStore.setActiveTab(id)"
+                  :disabled="isVariantVisible(id)"
+                >
                   <n-icon :component="ViewIcon" :size="20" />
                 </n-button>
 
@@ -149,8 +153,12 @@ const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
+const {
+  activeTab,
+  activeFileId,
+  activeTabVariants: variants,
+} = storeToRefs(filesStore);
 const { activeVariantId } = storeToRefs(variantsStore);
-const { activeFileId, activeTabVariants: variants } = storeToRefs(filesStore);
 
 const isLoading = ref(false);
 const variantToEditId = ref("");
@@ -203,6 +211,16 @@ function toggleNotesDrawer() {
   }
 
   drawerStore.setActiveDrawer(Drawer.Notes);
+}
+
+function isVariantVisible(variantId: string) {
+  if (!activeTab.value) {
+    return false;
+  }
+
+  return activeTab.value.variantTabs.some(
+    variantTab => variantTab.variant.id === variantId && variantTab.isVisible
+  );
 }
 
 async function loadVariantsIfNotFetchedYet() {
