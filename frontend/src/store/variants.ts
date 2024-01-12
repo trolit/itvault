@@ -217,29 +217,6 @@ export const useVariantsStore = defineStore("variants", {
       });
     },
 
-    overwriteActiveInformationIfPossible(data: {
-      variant?: boolean;
-      blueprint?: boolean;
-    }) {
-      const filesStore = useFilesStore();
-      const { variant, blueprint } = data;
-      const { tabToOpenData } = filesStore;
-
-      if (!tabToOpenData) {
-        return;
-      }
-
-      if (variant) {
-        this.setActiveTab(tabToOpenData.variantId);
-      }
-
-      if (blueprint) {
-        this.setActiveTabBlueprint(tabToOpenData.blueprintId);
-
-        filesStore.tabToOpenData = null;
-      }
-    },
-
     setActiveTab(id: string) {
       const { activeTab } = useFilesStore();
 
