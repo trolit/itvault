@@ -36,9 +36,11 @@
 
 <script setup lang="ts">
 import { NScrollbar } from "naive-ui";
+import { useRoute } from "vue-router";
 import { h, ref, type PropType, type Ref, onBeforeMount } from "vue";
 
 import Toolbar from "./Toolbar.vue";
+import { useFilesStore } from "@/store/files";
 import Empty from "@/components/common/Empty.vue";
 import { useBucketsStore } from "@/store/buckets";
 import { useVariantsStore } from "@/store/variants";
@@ -58,6 +60,8 @@ import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData"
 
 const text = ref("");
 const isLoading = ref(false);
+const route = useRoute();
+const filesStore = useFilesStore();
 const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
@@ -100,16 +104,31 @@ const { numberOfLines, isBucketModified } = defineComputed({
 });
 
 onBeforeMount(async () => {
-  const { variant, activeBlueprintId } = props.variantTab;
+  const { variant } = props.variantTab;
 
-  await loadData(variant.id);
+  await loadVariantData(variant.id);
 
-  if (activeBlueprintId) {
-    variantsStore.setActiveTabBlueprint(activeBlueprintId);
+  // @NOTE load from bundle
+  if (filesStore.activeTab?.blueprintIdToLoad) {
+    variantsStore.setActiveTabBlueprint(filesStore.activeTab.blueprintIdToLoad);
+
+    filesStore.activeTab.blueprintIdToLoad = undefined;
+
+    return;
+  }
+
+  // @NOTE attempt to laod from url
+  const blueprintIdFromUrl = workspacesStore.getUrlSearchParamValue(
+    route,
+    "blueprintId"
+  );
+
+  if (blueprintIdFromUrl) {
+    variantsStore.setActiveTabBlueprint(parseInt(blueprintIdFromUrl));
   }
 });
 
-async function loadData(variantId: string) {
+async function loadVariantData(variantId: string) {
   const { content } = props.variantTab;
 
   if (!content) {
