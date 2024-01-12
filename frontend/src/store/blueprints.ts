@@ -38,6 +38,13 @@ export const useBlueprintsStore = defineStore("blueprints", {
         blueprint => blueprint.id === activeVariantTab.activeBlueprintId
       );
     },
+    activeBlueprintId(): number | undefined {
+      if (!this.activeItem) {
+        return undefined;
+      }
+
+      return this.activeItem.id;
+    },
   },
 
   actions: {

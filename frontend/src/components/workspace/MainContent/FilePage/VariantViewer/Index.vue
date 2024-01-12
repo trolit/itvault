@@ -35,9 +35,10 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from "pinia";
 import { NScrollbar } from "naive-ui";
 import { useRoute } from "vue-router";
-import { h, onBeforeMount, ref, type PropType, type Ref } from "vue";
+import { h, ref, type PropType, type Ref, onBeforeMount } from "vue";
 
 import Toolbar from "./Toolbar.vue";
 import Empty from "@/components/common/Empty.vue";
@@ -48,6 +49,7 @@ import { useBlueprintsStore } from "@/store/blueprints";
 import { useWorkspacesStore } from "@/store/workspaces";
 import AssignColorPopover from "./AssignColorPopover.vue";
 import { defineComputed } from "@/helpers/defineComputed";
+import { defineWatchers } from "@/helpers/defineWatchers";
 import type { IBucketDTO } from "@shared/types/DTOs/Bucket";
 import UnassignColorPopover from "./UnassignColorPopover.vue";
 import decodeLineColoring from "@/helpers/decodeLineColoring";
@@ -67,6 +69,8 @@ const blueprintsStore = useBlueprintsStore();
 const assignColorPopoverX = ref(0);
 const assignColorPopoverY = ref(0);
 const isAssignColorPopoverVisible = ref(false);
+const { activeVariantId } = storeToRefs(variantsStore);
+const { activeBlueprintId } = storeToRefs(blueprintsStore);
 const selectionData: Ref<AssignColorSelectionData> = ref({
   startLineIndex: 0,
   endLineIndex: 0,
@@ -102,41 +106,63 @@ const { numberOfLines, isBucketModified } = defineComputed({
 });
 
 onBeforeMount(async () => {
-  const { variantTab } = props;
+  if (!activeVariantId.value) {
+    return;
+  }
 
-  if (!variantTab.content) {
-    const {
-      variant: { id },
-    } = variantTab;
+  await loadData(activeVariantId.value);
 
-    isLoading.value = true;
+  const blueprintId = workspacesStore.getUrlSearchParamValue(
+    route,
+    "blueprintId"
+  );
 
-    const blueprintId = workspacesStore.getUrlSearchParamValue(
-      route,
-      "blueprintId"
-    );
+  if (blueprintId) {
+    variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
+  }
+});
 
-    try {
-      text.value = await variantsStore.getContentById(id);
-
-      await variantsStore.getBlueprintsById(id);
-
-      if (blueprintId) {
-        variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
+defineWatchers({
+  activeVariantId: {
+    source: activeVariantId,
+    handler: (variantId: string | undefined) => {
+      if (!variantId) {
+        return;
       }
 
-      variantsStore.overwriteActiveInformationIfPossible({
-        blueprint: true,
-      });
+      loadData(variantId);
+    },
+  },
+
+  activeBlueprintId: {
+    source: activeBlueprintId,
+    handler: (blueprintId: number | undefined) => {
+      if (!blueprintId) {
+        return;
+      }
+
+      variantsStore.setActiveTabBlueprint(blueprintId);
+    },
+  },
+});
+
+async function loadData(variantId: string) {
+  const { content } = props.variantTab;
+
+  if (!content) {
+    try {
+      text.value = await variantsStore.getContentById(variantId);
+
+      await variantsStore.getBlueprintsById(variantId);
     } catch (error) {
       console.log(error);
     } finally {
       isLoading.value = false;
     }
+  } else {
+    text.value = content;
   }
-
-  text.value = variantTab.content;
-});
+}
 
 function renderText(content: string) {
   let value = content;
