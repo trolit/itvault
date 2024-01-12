@@ -106,9 +106,11 @@ const { numberOfLines, isBucketModified } = defineComputed({
 onBeforeMount(async () => {
   const { variant } = props.variantTab;
 
+  isLoading.value = true;
+
   await loadVariantData(variant.id);
 
-  // @NOTE load from bundle
+  // @NOTE load blueprint (bundle)
   if (filesStore.activeTab?.blueprintIdToLoad) {
     variantsStore.setActiveTabBlueprint(filesStore.activeTab.blueprintIdToLoad);
 
@@ -117,7 +119,7 @@ onBeforeMount(async () => {
     return;
   }
 
-  // @NOTE attempt to laod from url
+  // @NOTE load blueprint (URL)
   const blueprintIdFromUrl = workspacesStore.getUrlSearchParamValue(
     route,
     "blueprintId"
