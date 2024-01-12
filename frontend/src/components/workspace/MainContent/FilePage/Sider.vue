@@ -171,7 +171,7 @@ defineWatchers({
 
   activeVariantId: {
     source: activeVariantId,
-    handler: async (variantId: string | undefined) => {
+    handler: (variantId: string | undefined) => {
       if (!variantId) {
         return;
       }
