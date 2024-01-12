@@ -2,19 +2,9 @@
   <div class="sider">
     <div class="wrapper">
       <n-card :bordered="false">
-        <n-text depth="3">/actions/</n-text>
+        <n-text depth="3">Variants</n-text>
 
-        <div>
-          <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
-            Notes
-          </n-button>
-        </div>
-
-        <br />
-
-        <n-text depth="3">/variants/</n-text>
-
-        <n-timeline v-if="!isLoading">
+        <n-timeline v-if="!isLoading" item-placement="right">
           <n-timeline-item type="success" line-type="dashed">
             <template #default>
               <n-button
@@ -32,42 +22,48 @@
             :key="index"
           >
             <template #default>
-              <n-button @click="variantsStore.setActiveTab(id)" tertiary>
+              <n-ellipsis :line-clamp="1">
                 {{ name }}
-              </n-button>
-
-              <n-divider vertical />
-
-              <require-permission :permission="Permission.UpdateVariantName">
-                <n-button text @click="variantToEditId = id">
-                  <small>Rename</small>
-                </n-button>
-              </require-permission>
+              </n-ellipsis>
 
               <div>
-                <n-space justify="center">
-                  <n-gradient-text type="info" :size="12">
-                    {{ size.value }}{{ size.unit }}
-                  </n-gradient-text>
-
-                  <n-text :depth="3" :style="{ fontSize: '13px' }">
-                    <small>
-                      {{ dateService.format(createdAt, "DD-MM-YYYY HH:mm") }}
-                    </small>
-                  </n-text>
-                </n-space>
+                <n-gradient-text type="warning">
+                  {{ formatBytes(size.value) }}
+                </n-gradient-text>
               </div>
 
-              <n-space justify="end">
+              <div>
+                <n-text :depth="3" :style="{ fontSize: '13px' }">
+                  <small>
+                    {{ dateService.format(createdAt, "DD-MM-YYYY HH:mm") }}
+                  </small>
+                </n-text>
+              </div>
+
+              <n-space
+                justify="end"
+                align="center"
+                :style="{ marginTop: '5px' }"
+              >
+                <n-button
+                  text
+                  @click="variantsStore.setActiveTab(id)"
+                  :disabled="isVariantVisible(id)"
+                >
+                  <n-icon :component="ViewIcon" :size="20" />
+                </n-button>
+
+                <require-permission :permission="Permission.UpdateVariantName">
+                  <n-button text @click="variantToEditId = id">
+                    <n-icon :component="EditIcon" :size="20" />
+                  </n-button>
+                </require-permission>
+
                 <require-permission :permission="Permission.DeleteVariant">
                   <n-popconfirm @positive-click="deleteVariant(id)">
                     <template #trigger>
-                      <n-button
-                        text
-                        type="error"
-                        :loading="variantToDeleteId === id"
-                      >
-                        <small>DELETE</small>
+                      <n-button text type="error">
+                        <n-icon :component="DeleteIcon" :size="20" />
                       </n-button>
                     </template>
 
@@ -83,6 +79,18 @@
         </n-timeline>
 
         <loading-section v-else spin-size="medium" />
+
+        <n-divider />
+
+        <div>
+          <n-button
+            round
+            :disabled="isBundleDrawerActive"
+            @click="toggleNotesDrawer"
+          >
+            Notes
+          </n-button>
+        </div>
       </n-card>
     </div>
 
@@ -107,14 +115,20 @@ import {
   NSpace,
   NButton,
   NDivider,
+  NEllipsis,
   NTimeline,
   NPopconfirm,
   NTimelineItem,
   NGradientText,
 } from "naive-ui";
+import {
+  Add as AddIcon,
+  Pen as EditIcon,
+  View as ViewIcon,
+  TrashCan as DeleteIcon,
+} from "@vicons/carbon";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-import { Add as AddIcon } from "@vicons/carbon";
 import { computed, onBeforeMount, ref } from "vue";
 
 import { Drawer } from "@/types/enums/Drawer";
@@ -122,6 +136,7 @@ import { useFilesStore } from "@/store/files";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
 import AddVariantModal from "./AddVariantModal.vue";
+import { formatBytes } from "@/helpers/formatBytes";
 import { useVariantsStore } from "@/store/variants";
 import { useWorkspacesStore } from "@/store/workspaces";
 import RenameVariantModal from "./RenameVariantModal.vue";
@@ -139,8 +154,12 @@ const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
+const {
+  activeTab,
+  activeFileId,
+  activeTabVariants: variants,
+} = storeToRefs(filesStore);
 const { activeVariantId } = storeToRefs(variantsStore);
-const { activeFileId, activeTabVariants: variants } = storeToRefs(filesStore);
 
 const isLoading = ref(false);
 const variantToEditId = ref("");
@@ -193,6 +212,16 @@ function toggleNotesDrawer() {
   }
 
   drawerStore.setActiveDrawer(Drawer.Notes);
+}
+
+function isVariantVisible(variantId: string) {
+  if (!activeTab.value) {
+    return false;
+  }
+
+  return activeTab.value.variantTabs.some(
+    variantTab => variantTab.variant.id === variantId && variantTab.isVisible
+  );
 }
 
 async function loadVariantsIfNotFetchedYet() {
