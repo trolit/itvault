@@ -149,17 +149,7 @@ const isAddVariantModalVisible = ref(false);
 let variantIdFromUrl: string | null = "";
 
 onBeforeMount(async () => {
-  await loadVariantsIfNotFetchedYet();
-
   variantIdFromUrl = workspacesStore.getUrlSearchParamValue(route, "variantId");
-
-  await new Promise(resolve => {
-    if (!isLoading.value && variantIdFromUrl) {
-      variantsStore.setActiveTab(variantIdFromUrl);
-
-      return resolve("");
-    }
-  });
 });
 
 defineWatchers({
@@ -168,9 +158,16 @@ defineWatchers({
     handler: async () => {
       await loadVariantsIfNotFetchedYet();
 
-      if (!activeVariantId.value) {
+      if (variantIdFromUrl) {
+        variantsStore.setActiveTab(variantIdFromUrl);
+
+        variantIdFromUrl = null;
+      } else if (!activeVariantId.value) {
         variantsStore.setActiveTab(variants.value[0].id);
       }
+    },
+    options: {
+      immediate: true,
     },
   },
 
