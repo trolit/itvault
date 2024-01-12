@@ -37,9 +37,10 @@
 <script setup lang="ts">
 import { NScrollbar } from "naive-ui";
 import { useRoute } from "vue-router";
-import { h, onBeforeMount, ref, type PropType, type Ref } from "vue";
+import { h, ref, type PropType, type Ref, onBeforeMount } from "vue";
 
 import Toolbar from "./Toolbar.vue";
+import { useFilesStore } from "@/store/files";
 import Empty from "@/components/common/Empty.vue";
 import { useBucketsStore } from "@/store/buckets";
 import { useVariantsStore } from "@/store/variants";
@@ -60,6 +61,7 @@ import type { AssignColorSelectionData } from "@/types/AssignColorSelectionData"
 const text = ref("");
 const isLoading = ref(false);
 const route = useRoute();
+const filesStore = useFilesStore();
 const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
@@ -102,41 +104,49 @@ const { numberOfLines, isBucketModified } = defineComputed({
 });
 
 onBeforeMount(async () => {
-  const { variantTab } = props;
+  const { variant } = props.variantTab;
 
-  if (!variantTab.content) {
-    const {
-      variant: { id },
-    } = variantTab;
+  isLoading.value = true;
 
-    isLoading.value = true;
+  await loadVariantData(variant.id);
 
-    const blueprintId = workspacesStore.getUrlSearchParamValue(
-      route,
-      "blueprintId"
-    );
+  // @NOTE load blueprint (bundle)
+  if (filesStore.activeTab?.blueprintIdToLoad) {
+    variantsStore.setActiveTabBlueprint(filesStore.activeTab.blueprintIdToLoad);
 
+    filesStore.activeTab.blueprintIdToLoad = undefined;
+
+    return;
+  }
+
+  // @NOTE load blueprint (URL)
+  const blueprintIdFromUrl = workspacesStore.getUrlSearchParamValue(
+    route,
+    "blueprintId"
+  );
+
+  if (blueprintIdFromUrl) {
+    variantsStore.setActiveTabBlueprint(parseInt(blueprintIdFromUrl));
+  }
+});
+
+async function loadVariantData(variantId: string) {
+  const { content } = props.variantTab;
+
+  if (!content) {
     try {
-      text.value = await variantsStore.getContentById(id);
+      text.value = await variantsStore.getContentById(variantId);
 
-      await variantsStore.getBlueprintsById(id);
-
-      if (blueprintId) {
-        variantsStore.setActiveTabBlueprint(parseInt(blueprintId));
-      }
-
-      variantsStore.overwriteActiveInformationIfPossible({
-        blueprint: true,
-      });
+      await variantsStore.getBlueprintsById(variantId);
     } catch (error) {
       console.log(error);
     } finally {
       isLoading.value = false;
     }
+  } else {
+    text.value = content;
   }
-
-  text.value = variantTab.content;
-});
+}
 
 function renderText(content: string) {
   let value = content;

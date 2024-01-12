@@ -112,10 +112,10 @@ import {
   NTimelineItem,
   NGradientText,
 } from "naive-ui";
-import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { Add as AddIcon } from "@vicons/carbon";
+import { computed, onBeforeMount, ref } from "vue";
 
 import { Drawer } from "@/types/enums/Drawer";
 import { useFilesStore } from "@/store/files";
@@ -128,7 +128,6 @@ import RenameVariantModal from "./RenameVariantModal.vue";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
-import type { IVariantDTO } from "@shared/types/DTOs/Variant";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
@@ -140,16 +139,48 @@ const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
+const { activeVariantId } = storeToRefs(variantsStore);
+const { activeFileId, activeTabVariants: variants } = storeToRefs(filesStore);
+
 const isLoading = ref(false);
 const variantToEditId = ref("");
 const variantToDeleteId = ref("");
 const isAddVariantModalVisible = ref(false);
-const { activeTab } = storeToRefs(filesStore);
+let variantIdFromUrl: string | null = "";
 
-const variants = computed((): IVariantDTO[] => {
-  return activeTab.value
-    ? activeTab.value.variantTabs.map(({ variant }) => variant)
-    : [];
+onBeforeMount(async () => {
+  variantIdFromUrl = workspacesStore.getUrlSearchParamValue(route, "variantId");
+});
+
+defineWatchers({
+  activeFileId: {
+    source: activeFileId,
+    handler: async () => {
+      await loadVariantsIfNotFetchedYet();
+
+      if (variantIdFromUrl) {
+        variantsStore.setActiveTab(variantIdFromUrl);
+
+        variantIdFromUrl = null;
+      } else if (!activeVariantId.value) {
+        variantsStore.setActiveTab(variants.value[0].id);
+      }
+    },
+    options: {
+      immediate: true,
+    },
+  },
+
+  activeVariantId: {
+    source: activeVariantId,
+    handler: (variantId: string | undefined) => {
+      if (!variantId) {
+        return;
+      }
+
+      variantsStore.setActiveTab(variantId);
+    },
+  },
 });
 
 const isBundleDrawerActive = computed(() => {
@@ -164,47 +195,19 @@ function toggleNotesDrawer() {
   drawerStore.setActiveDrawer(Drawer.Notes);
 }
 
-defineWatchers({
-  activeTab: {
-    source: activeTab,
-    handler: async () => {
-      if (!variants.value.length) {
-        isLoading.value = true;
+async function loadVariantsIfNotFetchedYet() {
+  if (!variants.value.length) {
+    isLoading.value = true;
 
-        const variantId = workspacesStore.getUrlSearchParamValue(
-          route,
-          "variantId"
-        );
-
-        try {
-          const variants = await variantsStore.getAll();
-
-          variantsStore.overwriteActiveInformationIfPossible({
-            variant: true,
-          });
-
-          // @TODO handle case when variantId or blueprintId do not exist
-          if (variantId && variants.some(variant => variant.id === variantId)) {
-            variantsStore.setActiveTab(variantId);
-
-            return;
-          }
-
-          if (!variantId && variants.length) {
-            variantsStore.setActiveTab(variants[0].id);
-          }
-        } catch (error) {
-          console.log(error);
-        } finally {
-          isLoading.value = false;
-        }
-      }
-    },
-    options: {
-      immediate: true,
-    },
-  },
-});
+    try {
+      await variantsStore.getAll();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+}
 
 async function deleteVariant(id: string) {
   if (variantToDeleteId.value) {

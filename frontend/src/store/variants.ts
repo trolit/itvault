@@ -29,6 +29,10 @@ export const useVariantsStore = defineStore("variants", {
       );
     },
 
+    activeVariantId(): string | undefined {
+      return this.activeTab?.variant.id;
+    },
+
     isActiveTabInWriteMode(): boolean {
       return !!this.activeTab?.isWriteModeActive || false;
     },
@@ -213,29 +217,6 @@ export const useVariantsStore = defineStore("variants", {
       });
     },
 
-    overwriteActiveInformationIfPossible(data: {
-      variant?: boolean;
-      blueprint?: boolean;
-    }) {
-      const filesStore = useFilesStore();
-      const { variant, blueprint } = data;
-      const { tabToOpenData } = filesStore;
-
-      if (!tabToOpenData) {
-        return;
-      }
-
-      if (variant) {
-        this.setActiveTab(tabToOpenData.variantId);
-      }
-
-      if (blueprint) {
-        this.setActiveTabBlueprint(tabToOpenData.blueprintId);
-
-        filesStore.tabToOpenData = null;
-      }
-    },
-
     setActiveTab(id: string) {
       const { activeTab } = useFilesStore();
 
@@ -247,7 +228,11 @@ export const useVariantsStore = defineStore("variants", {
         variantTab => variantTab.variant.id === id
       );
 
-      if (variantTab && !variantTab.isVisible) {
+      if (!variantTab) {
+        return;
+      }
+
+      if (!variantTab.isVisible) {
         variantTab.isVisible = true;
       }
 

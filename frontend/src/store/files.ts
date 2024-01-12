@@ -10,6 +10,7 @@ import type {
 import { useVariantsStore } from "./variants";
 import type { FileTab } from "@/types/FileTab";
 import { useWorkspacesStore } from "./workspaces";
+import type { IVariantDTO } from "@shared/types/DTOs/Variant";
 import type { IBundleFileDTO } from "@shared/types/DTOs/Bundle";
 
 interface IState {
@@ -32,6 +33,11 @@ export const useFilesStore = defineStore("files", {
       state.tabs.find(
         tab => !!state.activeFileId && tab.file.id === state.activeFileId
       ),
+    activeTabVariants(): IVariantDTO[] {
+      return this.activeTab
+        ? this.activeTab.variantTabs.map(({ variant }) => variant)
+        : [];
+    },
   },
 
   actions: {
@@ -130,49 +136,54 @@ export const useFilesStore = defineStore("files", {
       return this.tabs.find(tab => tab.file.id === id);
     },
 
-    setActiveTab(file: IFileDTO) {
+    setActiveTab(
+      file: IFileDTO,
+      toLoad?: { blueprintId?: number; variantId?: string }
+    ) {
       const tab = this.findTabById(file.id);
 
       this.activeFileId = file.id;
 
       if (tab) {
+        const variantsStore = useVariantsStore();
+
+        if (toLoad?.variantId) {
+          variantsStore.setActiveTab(toLoad.variantId);
+        }
+
+        tab.blueprintIdToLoad = toLoad?.blueprintId;
+
         return;
       }
 
       this.tabs.push({
         file,
         variantTabs: [],
-        activeVariantId: "",
+        activeVariantId: toLoad?.variantId || "",
+        blueprintIdToLoad: toLoad?.blueprintId,
         notes: { page: 1, data: [], total: 0 },
       });
     },
 
-    async setActiveTabFromBundle(bundle: IBundleFileDTO, blueprintId: number) {
-      const { fileId, variantId } = bundle;
-      const variantsStore = useVariantsStore();
+    async setActiveTabWithBundle(arg: {
+      blueprintId: number;
+      bundleFile: IBundleFileDTO;
+    }) {
+      const {
+        blueprintId,
+        bundleFile: { fileId, variantId },
+      } = arg;
 
       const fileTab = this.findTabById(fileId);
       let file = fileTab?.file;
-      let isFileAvailable = true;
 
       if (!file) {
-        isFileAvailable = false;
-
         const filesStore = useFilesStore();
 
         file = await filesStore.getById(fileId);
       }
 
-      this.setActiveTab(file);
-
-      this.tabToOpenData = { blueprintId, variantId };
-
-      if (isFileAvailable) {
-        variantsStore.overwriteActiveInformationIfPossible({
-          variant: true,
-          blueprint: true,
-        });
-      }
+      this.setActiveTab(file, { variantId, blueprintId });
     },
 
     closeTab(id: number) {
