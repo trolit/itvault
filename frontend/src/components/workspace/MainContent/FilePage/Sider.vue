@@ -22,15 +22,15 @@
             :key="index"
           >
             <template #default>
-              <n-gradient-text type="warning" :size="14">
-                {{ size.value }}{{ size.unit }}
-              </n-gradient-text>
-
-              <n-divider vertical />
-
-              <n-button @click="variantsStore.setActiveTab(id)" tertiary>
+              <n-ellipsis :line-clamp="1">
                 {{ name }}
-              </n-button>
+              </n-ellipsis>
+
+              <div>
+                <n-gradient-text type="warning">
+                  {{ size.value }}{{ size.unit }}
+                </n-gradient-text>
+              </div>
 
               <div>
                 <n-text :depth="3" :style="{ fontSize: '13px' }">
@@ -45,6 +45,10 @@
                 align="center"
                 :style="{ marginTop: '5px' }"
               >
+                <n-button text @click="variantsStore.setActiveTab(id)">
+                  <n-icon :component="ViewIcon" :size="20" />
+                </n-button>
+
                 <require-permission :permission="Permission.UpdateVariantName">
                   <n-button text @click="variantToEditId = id">
                     <n-icon :component="EditIcon" :size="20" />
@@ -107,6 +111,7 @@ import {
   NSpace,
   NButton,
   NDivider,
+  NEllipsis,
   NTimeline,
   NPopconfirm,
   NTimelineItem,
@@ -115,6 +120,7 @@ import {
 import {
   Add as AddIcon,
   Pen as EditIcon,
+  View as ViewIcon,
   TrashCan as DeleteIcon,
 } from "@vicons/carbon";
 import { storeToRefs } from "pinia";
