@@ -148,8 +148,18 @@ const variantToDeleteId = ref("");
 const isAddVariantModalVisible = ref(false);
 let variantIdFromUrl: string | null = "";
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  await loadVariantsIfNotFetchedYet();
+
   variantIdFromUrl = workspacesStore.getUrlSearchParamValue(route, "variantId");
+
+  await new Promise(resolve => {
+    if (!isLoading.value && variantIdFromUrl) {
+      variantsStore.setActiveTab(variantIdFromUrl);
+
+      return resolve("");
+    }
+  });
 });
 
 defineWatchers({
@@ -158,25 +168,9 @@ defineWatchers({
     handler: async () => {
       await loadVariantsIfNotFetchedYet();
 
-      if (variantIdFromUrl) {
-        const blueprintIdFromUrl = workspacesStore.getUrlSearchParamValue(
-          route,
-          "blueprintId"
-        );
-
-        variantsStore.setActiveTab(variantIdFromUrl, {
-          blueprintId: blueprintIdFromUrl
-            ? parseInt(blueprintIdFromUrl)
-            : undefined,
-        });
-
-        variantIdFromUrl = null;
-      } else if (!activeVariantId.value) {
+      if (!activeVariantId.value) {
         variantsStore.setActiveTab(variants.value[0].id);
       }
-    },
-    options: {
-      immediate: true,
     },
   },
 
