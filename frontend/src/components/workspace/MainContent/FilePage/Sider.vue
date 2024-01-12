@@ -159,7 +159,16 @@ defineWatchers({
       await loadVariantsIfNotFetchedYet();
 
       if (variantIdFromUrl) {
-        variantsStore.setActiveTab(variantIdFromUrl);
+        const blueprintIdFromUrl = workspacesStore.getUrlSearchParamValue(
+          route,
+          "blueprintId"
+        );
+
+        variantsStore.setActiveTab(variantIdFromUrl, {
+          blueprintId: blueprintIdFromUrl
+            ? parseInt(blueprintIdFromUrl)
+            : undefined,
+        });
 
         variantIdFromUrl = null;
       } else if (!activeVariantId.value) {
