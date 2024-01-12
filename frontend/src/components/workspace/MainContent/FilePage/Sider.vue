@@ -112,10 +112,10 @@ import {
   NTimelineItem,
   NGradientText,
 } from "naive-ui";
-import { computed, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { Add as AddIcon } from "@vicons/carbon";
+import { computed, onBeforeMount, ref } from "vue";
 
 import { Drawer } from "@/types/enums/Drawer";
 import { useFilesStore } from "@/store/files";
@@ -146,6 +146,11 @@ const isLoading = ref(false);
 const variantToEditId = ref("");
 const variantToDeleteId = ref("");
 const isAddVariantModalVisible = ref(false);
+let variantIdFromUrl: string | null = "";
+
+onBeforeMount(() => {
+  variantIdFromUrl = workspacesStore.getUrlSearchParamValue(route, "variantId");
+});
 
 defineWatchers({
   activeFileId: {
@@ -153,13 +158,10 @@ defineWatchers({
     handler: async () => {
       await loadVariantsIfNotFetchedYet();
 
-      const variantIdFromUrl = workspacesStore.getUrlSearchParamValue(
-        route,
-        "variantId"
-      );
-
       if (variantIdFromUrl) {
         variantsStore.setActiveTab(variantIdFromUrl);
+
+        variantIdFromUrl = null;
       } else if (!activeVariantId.value) {
         variantsStore.setActiveTab(variants.value[0].id);
       }
