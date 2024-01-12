@@ -2,19 +2,9 @@
   <div class="sider">
     <div class="wrapper">
       <n-card :bordered="false">
-        <n-text depth="3">/actions/</n-text>
+        <n-text depth="3">Variants</n-text>
 
-        <div>
-          <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
-            Notes
-          </n-button>
-        </div>
-
-        <br />
-
-        <n-text depth="3">/variants/</n-text>
-
-        <n-timeline v-if="!isLoading">
+        <n-timeline v-if="!isLoading" item-placement="right">
           <n-timeline-item type="success" line-type="dashed">
             <template #default>
               <n-button
@@ -32,42 +22,40 @@
             :key="index"
           >
             <template #default>
+              <n-gradient-text type="warning" :size="14">
+                {{ size.value }}{{ size.unit }}
+              </n-gradient-text>
+
+              <n-divider vertical />
+
               <n-button @click="variantsStore.setActiveTab(id)" tertiary>
                 {{ name }}
               </n-button>
 
-              <n-divider vertical />
-
-              <require-permission :permission="Permission.UpdateVariantName">
-                <n-button text @click="variantToEditId = id">
-                  <small>Rename</small>
-                </n-button>
-              </require-permission>
-
               <div>
-                <n-space justify="center">
-                  <n-gradient-text type="info" :size="12">
-                    {{ size.value }}{{ size.unit }}
-                  </n-gradient-text>
-
-                  <n-text :depth="3" :style="{ fontSize: '13px' }">
-                    <small>
-                      {{ dateService.format(createdAt, "DD-MM-YYYY HH:mm") }}
-                    </small>
-                  </n-text>
-                </n-space>
+                <n-text :depth="3" :style="{ fontSize: '13px' }">
+                  <small>
+                    {{ dateService.format(createdAt, "DD-MM-YYYY HH:mm") }}
+                  </small>
+                </n-text>
               </div>
 
-              <n-space justify="end">
+              <n-space
+                justify="end"
+                align="center"
+                :style="{ marginTop: '5px' }"
+              >
+                <require-permission :permission="Permission.UpdateVariantName">
+                  <n-button text @click="variantToEditId = id">
+                    <n-icon :component="EditIcon" :size="20" />
+                  </n-button>
+                </require-permission>
+
                 <require-permission :permission="Permission.DeleteVariant">
                   <n-popconfirm @positive-click="deleteVariant(id)">
                     <template #trigger>
-                      <n-button
-                        text
-                        type="error"
-                        :loading="variantToDeleteId === id"
-                      >
-                        <small>DELETE</small>
+                      <n-button text type="error">
+                        <n-icon :component="DeleteIcon" :size="20" />
                       </n-button>
                     </template>
 
@@ -83,6 +71,16 @@
         </n-timeline>
 
         <loading-section v-else spin-size="medium" />
+
+        <n-divider />
+
+        <n-text depth="3">Actions</n-text>
+
+        <div>
+          <n-button :disabled="isBundleDrawerActive" @click="toggleNotesDrawer">
+            Notes
+          </n-button>
+        </div>
       </n-card>
     </div>
 
@@ -112,9 +110,13 @@ import {
   NTimelineItem,
   NGradientText,
 } from "naive-ui";
+import {
+  Add as AddIcon,
+  Pen as EditIcon,
+  TrashCan as DeleteIcon,
+} from "@vicons/carbon";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-import { Add as AddIcon } from "@vicons/carbon";
 import { computed, onBeforeMount, ref } from "vue";
 
 import { Drawer } from "@/types/enums/Drawer";
