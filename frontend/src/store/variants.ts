@@ -29,6 +29,10 @@ export const useVariantsStore = defineStore("variants", {
       );
     },
 
+    activeVariantId(): string | undefined {
+      return this.activeTab?.variant.id;
+    },
+
     isActiveTabInWriteMode(): boolean {
       return !!this.activeTab?.isWriteModeActive || false;
     },
