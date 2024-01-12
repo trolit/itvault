@@ -240,7 +240,7 @@ export const useVariantsStore = defineStore("variants", {
       }
     },
 
-    setActiveTab(id: string) {
+    setActiveTab(id: string, toLoad?: { blueprintId?: number }) {
       const { activeTab } = useFilesStore();
 
       if (!activeTab) {
@@ -251,8 +251,16 @@ export const useVariantsStore = defineStore("variants", {
         variantTab => variantTab.variant.id === id
       );
 
-      if (variantTab && !variantTab.isVisible) {
+      if (!variantTab) {
+        return;
+      }
+
+      if (!variantTab.isVisible) {
         variantTab.isVisible = true;
+      }
+
+      if (toLoad?.blueprintId) {
+        variantTab.activeBlueprintId = toLoad.blueprintId;
       }
 
       activeTab.activeVariantId = id;
