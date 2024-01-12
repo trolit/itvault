@@ -147,32 +147,25 @@ export const useFilesStore = defineStore("files", {
       });
     },
 
-    async setActiveTabFromBundle(bundle: IBundleFileDTO, blueprintId: number) {
-      const { fileId, variantId } = bundle;
-      const variantsStore = useVariantsStore();
+    async setActiveTabWithBundle(arg: {
+      blueprintId: number;
+      bundleFile: IBundleFileDTO;
+    }) {
+      const {
+        blueprintId,
+        bundleFile: { fileId, variantId },
+      } = arg;
 
       const fileTab = this.findTabById(fileId);
       let file = fileTab?.file;
-      let isFileAvailable = true;
 
       if (!file) {
-        isFileAvailable = false;
-
         const filesStore = useFilesStore();
 
         file = await filesStore.getById(fileId);
       }
 
-      this.setActiveTab(file);
-
-      this.tabToOpenData = { blueprintId, variantId };
-
-      if (isFileAvailable) {
-        variantsStore.overwriteActiveInformationIfPossible({
-          variant: true,
-          blueprint: true,
-        });
-      }
+      this.setActiveTab(file, { variantId, blueprintId });
     },
 
     closeTab(id: number) {

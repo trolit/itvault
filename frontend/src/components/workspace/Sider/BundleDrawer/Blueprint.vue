@@ -92,7 +92,10 @@ async function openFile(file: IBundleFileDTO) {
   generalStore.setLoadingState(LoadingState.Start);
 
   try {
-    await filesStore.setActiveTabFromBundle(file, props.value.id);
+    await filesStore.setActiveTabWithBundle({
+      bundleFile: file,
+      blueprintId: props.value.id,
+    });
 
     generalStore.setLoadingState(LoadingState.Finish);
   } catch (error) {
