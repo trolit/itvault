@@ -1,6 +1,8 @@
 <template>
   <div id="main-content">
-    <empty v-if="!tabs.length" title="Nothing to display 😢">
+    <loading-section v-if="isLoadingFileFromUrl" />
+
+    <empty v-else-if="!tabs.length" title="Nothing to display 😢">
       <template #extra>
         <n-grid :x-gap="100" :cols="2">
           <n-grid-item v-for="(item, index) in gridItems" :key="index">
@@ -29,8 +31,15 @@ import { useFilesStore } from "@/store/files";
 import Empty from "@/components/common/Empty.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import AddEditBlueprintDrawer from "./AddEditBlueprintDrawer.vue";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const filesStore = useFilesStore();
+
+interface IProps {
+  isLoadingFileFromUrl: boolean;
+}
+
+defineProps<IProps>();
 
 const gridItems = [
   {

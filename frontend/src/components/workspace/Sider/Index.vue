@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import { NTabs, NTabPane } from "naive-ui";
 
 import FilesTab from "./FilesTab/Index.vue";
@@ -42,6 +42,14 @@ import BundleDrawer from "./BundleDrawer/Index.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 
 const workspacesStore = useWorkspacesStore();
+
+interface IProps {
+  isLoadingFileFromUrl: boolean;
+}
+
+const props = defineProps<IProps>();
+
+const { isLoadingFileFromUrl } = toRefs(props);
 
 const bundlePage = ref(1);
 const blueprintPage = ref(1);
@@ -63,7 +71,9 @@ const tabs = [
     key: "files",
     text: "Files",
     tab: FilesTab,
-    props: {},
+    props: {
+      isLoadingFileFromUrl: isLoadingFileFromUrl.value,
+    },
     events: {},
   },
   {
@@ -79,7 +89,9 @@ const tabs = [
   },
 ];
 
-function updateLoadingState(value: boolean) {
-  isLoading.value = value;
+function updateLoadingState(value: unknown) {
+  if (typeof value === "boolean") {
+    isLoading.value = value;
+  }
 }
 </script>

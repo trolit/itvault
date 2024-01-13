@@ -45,6 +45,7 @@ import { useDrawerStore } from "@/store/drawer";
 import { useWorkspacesStore } from "@/store/workspaces";
 
 const inverted = ref(false);
+
 const drawerStore = useDrawerStore();
 const workspacesStore = useWorkspacesStore();
 

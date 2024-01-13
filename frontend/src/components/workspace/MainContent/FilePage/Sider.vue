@@ -128,8 +128,7 @@ import {
   TrashCan as DeleteIcon,
 } from "@vicons/carbon";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, ref } from "vue";
 
 import { Drawer } from "@/types/enums/Drawer";
 import { useFilesStore } from "@/store/files";
@@ -146,7 +145,6 @@ import { Permission } from "@shared/types/enums/Permission";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
-const route = useRoute();
 const filesStore = useFilesStore();
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
@@ -165,11 +163,6 @@ const isLoading = ref(false);
 const variantToEditId = ref("");
 const variantToDeleteId = ref("");
 const isAddVariantModalVisible = ref(false);
-let variantIdFromUrl: string | null = "";
-
-onBeforeMount(async () => {
-  variantIdFromUrl = workspacesStore.getUrlSearchParamValue(route, "variantId");
-});
 
 defineWatchers({
   activeFileId: {
@@ -177,11 +170,7 @@ defineWatchers({
     handler: async () => {
       await loadVariantsIfNotFetchedYet();
 
-      if (variantIdFromUrl) {
-        variantsStore.setActiveTab(variantIdFromUrl);
-
-        variantIdFromUrl = null;
-      } else if (!activeVariantId.value) {
+      if (!activeVariantId.value) {
         variantsStore.setActiveTab(variants.value[0].id);
       }
     },
