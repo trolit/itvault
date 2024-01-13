@@ -41,6 +41,18 @@ export const useFilesStore = defineStore("files", {
   },
 
   actions: {
+    async waitForActiveTabFile(): Promise<IFileDTO> {
+      return new Promise(resolve => {
+        const interval = setInterval(() => {
+          if (this.activeTab && this.activeTab.file) {
+            clearInterval(interval);
+
+            return resolve(this.activeTab.file);
+          }
+        }, 1000);
+      });
+    },
+
     async getById(id: number) {
       const { activeItemId: workspaceId } = useWorkspacesStore();
 
