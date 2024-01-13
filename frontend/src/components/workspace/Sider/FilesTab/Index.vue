@@ -36,7 +36,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
 import { onBeforeMount, ref } from "vue";
 import { Reset as ResetIcon } from "@vicons/carbon";
 import { NScrollbar, NAlert, NButton, NIcon } from "naive-ui";
@@ -44,21 +43,21 @@ import { NScrollbar, NAlert, NButton, NIcon } from "naive-ui";
 import { useFilesStore } from "@/store/files";
 import FileHierarchy from "./FileHierarchy.vue";
 import UploadFilesModal from "./UploadFilesModal.vue";
-import type { IFileDTO } from "@shared/types/DTOs/File";
 import { useWorkspacesStore } from "@/store/workspaces";
+import type { IFileDTO } from "@shared/types/DTOs/File";
 import Toolbar from "@/components/workspace/Sider/Toolbar.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
-const route = useRoute();
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
-defineProps({
-  isLoading: {
-    type: Boolean,
-    required: true,
-  },
-});
+interface IProps {
+  isLoading: boolean;
+
+  isLoadingFileFromUrl: boolean;
+}
+
+const props = defineProps<IProps>();
 
 const emit = defineEmits(["update:is-loading"]);
 
@@ -76,13 +75,11 @@ onBeforeMount(async () => {
 async function initTree(isReload?: boolean) {
   emit("update:is-loading", true);
 
-  const value = workspacesStore.getUrlSearchParamValue(route, "fileId");
-
   try {
-    let file: IFileDTO | null = null;
+    if (props.isLoadingFileFromUrl && !isReload) {
+      const file = await filesStore.waitForActiveTabFile();
 
-    if (value && !isReload) {
-      file = await initTreeByProvidedFileId(parseInt(value));
+      await getTreeByActiveFile(file);
     } else {
       await workspacesStore.getTree(
         { relativePath: filesStore.ROOT },
@@ -91,18 +88,16 @@ async function initTree(isReload?: boolean) {
     }
 
     workspacesStore.initTree();
-
-    if (file) {
-      workspacesStore.setTreeDataExpandedKeysByRelativePath(file.relativePath);
-
-      filesStore.setActiveTab(file);
-
-      // @NOTE consider to refactor variants to create variant tabs in different way (?)
-    }
   } catch (error) {
     console.log(error);
   } finally {
     emit("update:is-loading", false);
+  }
+
+  if (filesStore.activeTab?.file) {
+    workspacesStore.setTreeDataExpandedKeysByRelativePath(
+      filesStore.activeTab.file.relativePath
+    );
   }
 }
 
@@ -112,11 +107,7 @@ function onUpload() {
   isFileUploadAlertVisible.value = true;
 }
 
-async function initTreeByProvidedFileId(fileId: number) {
-  filesStore.activeFileId = fileId;
-
-  const file = await filesStore.getById(fileId);
-
+async function getTreeByActiveFile(file: IFileDTO) {
   const splitRelativePath = file.relativePath.split("/");
   const splitRelativePathLength = splitRelativePath.length;
 
