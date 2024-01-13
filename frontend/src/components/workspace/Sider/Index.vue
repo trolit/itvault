@@ -72,7 +72,7 @@ const tabs = [
     text: "Files",
     tab: FilesTab,
     props: {
-      isLoadingFileFromUrl,
+      isLoadingFileFromUrl: isLoadingFileFromUrl.value,
     },
     events: {},
   },
