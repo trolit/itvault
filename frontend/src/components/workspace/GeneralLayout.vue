@@ -37,14 +37,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
+import { useRoute } from "vue-router";
 import { NLayout, NLayoutSider } from "naive-ui";
 
 import { Drawer } from "@/types/enums/Drawer";
+import { useFilesStore } from "@/store/files";
 import { useDrawerStore } from "@/store/drawer";
 import { useWorkspacesStore } from "@/store/workspaces";
 
 const inverted = ref(false);
+
+const route = useRoute();
+const filesStore = useFilesStore();
 const drawerStore = useDrawerStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -55,4 +60,41 @@ const isNotesDrawerActive = computed(() => {
 const isBundleDrawerActive = computed(() => {
   return drawerStore.isDrawerActive(Drawer.Bundle) || false;
 });
+
+onBeforeMount(() => {
+  loadFileAndRelatedDataIfSpecified();
+});
+
+async function loadFileAndRelatedDataIfSpecified() {
+  const fileId = workspacesStore.getUrlSearchParamValue(route, "fileId");
+
+  if (!fileId) {
+    return;
+  }
+
+  const variantIdFromUrl = workspacesStore.getUrlSearchParamValue(
+    route,
+    "variantId"
+  );
+
+  const blueprintIdFromUrl = workspacesStore.getUrlSearchParamValue(
+    route,
+    "blueprintId"
+  );
+
+  try {
+    const file = await filesStore.getById(parseInt(fileId));
+
+    filesStore.setActiveTab(file, {
+      variantId: variantIdFromUrl || undefined,
+      blueprintId: blueprintIdFromUrl
+        ? parseInt(blueprintIdFromUrl)
+        : undefined,
+    });
+  } catch (error) {
+    console.log(error);
+
+    // @TODO error notification
+  }
+}
 </script>
