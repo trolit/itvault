@@ -89,7 +89,9 @@ const tabs = [
   },
 ];
 
-function updateLoadingState(value: boolean) {
-  isLoading.value = value;
+function updateLoadingState(value: unknown) {
+  if (typeof value === "boolean") {
+    isLoading.value = value;
+  }
 }
 </script>
