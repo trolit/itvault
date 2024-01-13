@@ -64,11 +64,9 @@ const emit = defineEmits(["update:is-loading"]);
 const isFileUploadAlertVisible = ref(false);
 const isUploadFilesModalVisible = ref(false);
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
   if (workspacesStore.tree.length === 0) {
-    await initTree();
-
-    return;
+    initTree();
   }
 });
 
