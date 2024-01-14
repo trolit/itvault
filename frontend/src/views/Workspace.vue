@@ -44,15 +44,12 @@ const isLoading = ref(false);
 const isLoadingFileFromUrl = ref(false);
 const { activeTab } = storeToRefs(variantsStore);
 const { activeFileId } = storeToRefs(filesStore);
-const { generalLayoutSiderKey, ARE_ALL_INITIAL_SEARCH_PARAMS_LOADED } =
-  storeToRefs(workspacesStore);
+const { generalLayoutSiderKey } = storeToRefs(workspacesStore);
 
 onBeforeMount(async () => {
   const {
     params: { slug },
   } = route;
-
-  workspacesStore.readInitialSearchParamsFromUrl(route);
 
   loadGeneralLayoutSiderKeyFromUrl();
 
@@ -151,15 +148,6 @@ defineWatchers({
     },
     options: {
       deep: true,
-    },
-  },
-
-  areAllInitialSearchParamsInitialized: {
-    source: ARE_ALL_INITIAL_SEARCH_PARAMS_LOADED,
-    handler: (value: boolean) => {
-      if (value) {
-        workspacesStore.initialSearchParams = {};
-      }
     },
   },
 });
