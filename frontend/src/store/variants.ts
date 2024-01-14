@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import cloneDeep from "lodash/cloneDeep";
 
 import { useFilesStore } from "./files";
-import { useGeneralStore } from "./general";
 import { useWorkspacesStore } from "./workspaces";
 import type { VariantTab } from "@/types/VariantTab";
 import type { IBucketDTO } from "@shared/types/DTOs/Bucket";
@@ -273,30 +272,12 @@ export const useVariantsStore = defineStore("variants", {
       this.activeTab.isWriteModeActive = value;
     },
 
-    setActiveTabBlueprint(id: number) {
-      const generalStore = useGeneralStore();
-
+    setActiveTabBlueprint(id: number | null) {
       if (!this.activeTab) {
-        generalStore.messageProvider.error(
-          `Attempted to set blueprint but variant tab is not open!`
-        );
-
         return;
       }
 
-      const isBlueprintAvailable = this.activeTab.blueprints.some(
-        blueprint => blueprint.id === id
-      );
-
-      if (!isBlueprintAvailable) {
-        generalStore.messageProvider.error(
-          `Requested blueprint was not found!`
-        );
-
-        return;
-      }
-
-      this.activeTab.activeBlueprintId = id;
+      this.activeTab.activeBlueprintId = id || 0;
     },
 
     setActiveTabContent(content: string) {
