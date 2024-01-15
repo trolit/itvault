@@ -1,14 +1,10 @@
 import { SeederOptions } from "typeorm-extension";
 import { DataSource, DataSourceOptions } from "typeorm";
 
-import { APP, DATABASE } from "@config";
+import { DATABASE, APP } from "@config";
 
-import { Environment } from "@enums/Environment";
-
-const { ENV, BASE_DIR } = APP;
+const { BASE_DIR } = APP;
 const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
-
-const isProduction = ENV === Environment.Production;
 
 const options: DataSourceOptions & SeederOptions = {
   type: TYPE,
@@ -22,10 +18,6 @@ const options: DataSourceOptions & SeederOptions = {
   subscribers: [`${BASE_DIR}/subscribers/*`],
   logging: true,
   synchronize: false,
-
-  // @TODO
-  seeds: isProduction ? [] : [`${BASE_DIR}/config/data-source/seeds/*`],
-  factories: isProduction ? [] : [`${BASE_DIR}/config/data-source/factories/*`],
 };
 
 export const dataSource = new DataSource(options);
