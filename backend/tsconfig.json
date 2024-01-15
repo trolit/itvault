@@ -3,12 +3,13 @@
     "files": true
   },
   "compilerOptions": {
-    "lib": ["ES2022", "dom"], // @NOTE - dom fixes engineio build problem
+    "lib": ["ES2022", "dom"],
     "target": "ES2022",
     "useDefineForClassFields": true,
     "module": "commonjs",
     "skipLibCheck": false,
     "outDir": "dist",
+    "rootDir": "src",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -36,12 +37,13 @@
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"],
       "@consumer-handlers/*": ["consumer-handlers/*"],
-      "@shared/*": ["../../shared/src/*"]
+      "@shared/*": ["../../shared/dist/*"]
     }
   },
   "references": [
     {
       "path": "../shared/tsconfig.json"
     }
-  ]
+  ],
+  "exclude": ["tests/**"]
 }
