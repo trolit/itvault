@@ -9,6 +9,7 @@
     "module": "commonjs",
     "skipLibCheck": false,
     "outDir": "dist",
+    "rootDir": "src",
     "esModuleInterop": true,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -43,5 +44,6 @@
     {
       "path": "../shared/tsconfig.json"
     }
-  ]
+  ],
+  "exclude": ["tests/**"]
 }
