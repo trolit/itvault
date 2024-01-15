@@ -3,7 +3,7 @@
     "files": true
   },
   "compilerOptions": {
-    "lib": ["ES2022", "dom"], // @NOTE - dom fixes engineio build problem
+    "lib": ["ES2022", "dom"],
     "target": "ES2022",
     "useDefineForClassFields": true,
     "module": "commonjs",
@@ -37,7 +37,7 @@
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"],
       "@consumer-handlers/*": ["consumer-handlers/*"],
-      "@shared/*": ["../../shared/src/*"]
+      "@shared/*": ["../../shared/dist/*"]
     }
   },
   "references": [
