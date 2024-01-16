@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
 import { Base } from "./Base";
 import { User } from "./User";
@@ -21,5 +21,11 @@ export class ChatMessage extends Base {
     default: 0,
     type: "integer",
   })
-  replies: number;
+  repliesCount: number;
+
+  @ManyToOne(() => ChatMessage, service => service.replies, { nullable: true })
+  replyTo: ChatMessage;
+
+  @OneToMany(() => ChatMessage, service => service.replyTo, { nullable: true })
+  replies: ChatMessage[];
 }
