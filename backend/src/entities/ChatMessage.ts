@@ -16,4 +16,10 @@ export class ChatMessage extends Base {
 
   @ManyToOne(() => User, user => user.chatMessages)
   createdBy: User;
+
+  @Column({
+    default: 0,
+    type: "integer",
+  })
+  replies: number;
 }
