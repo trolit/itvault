@@ -7,10 +7,12 @@ import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useAddSuperSchema } from "@schemas/ChatMessage/useAddSuperSchema";
+import { useUpdateSuperSchema } from "@schemas/ChatMessage/useUpdateSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/ChatMessage/useGetAllSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/ChatMessage/AddController";
+import { UpdateController } from "@controllers/ChatMessage/UpdateController";
 import { GetAllController } from "@controllers/ChatMessage/GetAllController";
 
 const chatMessagesRouter = Router();
@@ -34,6 +36,12 @@ chatMessagesRouter.post(
   "",
   validateRequestWith({ [v1]: useAddSuperSchema }),
   processRequestWith(AddController)
+);
+
+chatMessagesRouter.put(
+  "/:id",
+  validateRequestWith({ [v1]: useUpdateSuperSchema }),
+  processRequestWith(UpdateController)
 );
 
 export = chatMessagesRouter;
