@@ -1,6 +1,6 @@
 import { object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
-import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
+import { UpdateControllerTypes } from "types/controllers/ChatMessage/UpdateController";
 
 import { textSchema } from "@schemas/common/textSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
