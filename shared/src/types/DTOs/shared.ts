@@ -5,7 +5,7 @@ export interface IPatchNameDTO {
 export interface ITimestampsDTO {
   createdAt: string;
 
-  editedAt: string;
+  updatedAt: string;
 
   deletedAt: string;
 }
