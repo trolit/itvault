@@ -6,6 +6,8 @@ export interface IChatMessageDTO {
 
   value: string;
 
+  depth: number;
+
   repliesCount: number;
 
   author: IAuthorDTO;
