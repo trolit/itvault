@@ -55,6 +55,7 @@ export class User extends Base {
   @OneToMany(() => Variant, variant => variant.createdBy, { cascade: false })
   variants: Variant[];
 
+  // @TODO move to subscriber!
   @BeforeInsert()
   async hashPassword() {
     if (this.password) {
