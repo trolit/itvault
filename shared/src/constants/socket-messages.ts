@@ -14,6 +14,10 @@ export default {
       UPDATE_BLUEPRINT: "update-blueprint",
       DELETE_BLUEPRINT: "delete-blueprint",
 
+      CREATE_MESSAGE: "create-message",
+      UPDATE_MESSAGE: "update-message",
+      DELETE_MESSAGE: "delete-message",
+
       UPLOAD_FILES: "upload-files",
     },
   },
