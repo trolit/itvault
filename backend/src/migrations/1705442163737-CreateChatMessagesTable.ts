@@ -7,7 +7,7 @@ export class CreateChatMessagesTable1705442163737
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE \`chat_messages\` (\`id\` int NOT NULL AUTO_INCREMENT, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`updatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), \`deletedAt\` datetime(6) NULL, \`value\` longtext NOT NULL, \`repliesCount\` int NOT NULL DEFAULT '0', \`workspaceId\` int NULL, \`createdById\` int NULL, \`replyToId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
+      `CREATE TABLE \`chat_messages\` (\`id\` int NOT NULL AUTO_INCREMENT, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`updatedAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6), \`deletedAt\` datetime(6) NULL, \`value\` longtext NOT NULL, \`depth\` int NOT NULL DEFAULT '1', \`repliesCount\` int NOT NULL DEFAULT '0', \`workspaceId\` int NULL, \`createdById\` int NULL, \`replyToId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
     );
 
     await queryRunner.query(
