@@ -39,14 +39,19 @@ export class AddController extends BaseController {
       body: { text, replyToId },
     } = request;
 
+    const parentMessage = replyToId
+      ? await this._chatMessageRepository.getById(replyToId)
+      : null;
+
     const chatMessage = await this._chatMessageRepository.primitiveSave(
       {
         value: text,
+        depth: parentMessage ? parentMessage.depth + 1 : 1,
         createdBy: {
           id: userId,
         },
         replyTo: {
-          id: replyToId || undefined,
+          id: parentMessage ? replyToId : undefined,
         },
         workspace: {
           id: workspaceId,
