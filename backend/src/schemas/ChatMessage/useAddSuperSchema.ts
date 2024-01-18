@@ -25,13 +25,17 @@ const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
   replyToId: number()
     .optional()
     .test(async (value: number | undefined, ctx) => {
+      if (!value) {
+        return true;
+      }
+
       const chatMessageRepository = getInstanceOf<IChatMessageRepository>(
         Di.ChatMessageRepository
       );
 
       const message = await chatMessageRepository.getOne({
         where: {
-          id: value || 0,
+          id: value,
         },
       });
 
