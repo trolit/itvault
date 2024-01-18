@@ -48,6 +48,12 @@ const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
         });
       }
 
+      if (!WORKSPACE_CHAT_MAX_DEPTH) {
+        throw Error(
+          `It seems like project wasn't build properly. WORKSPACE_CHAT_MAX_DEPTH = ${WORKSPACE_CHAT_MAX_DEPTH}.`
+        );
+      }
+
       if (message.depth + 1 > WORKSPACE_CHAT_MAX_DEPTH) {
         return ctx.createError({
           message: setYupError(CUSTOM_MESSAGES.CHAT_MESSAGE.MAX_DEPTH_REACHED),
