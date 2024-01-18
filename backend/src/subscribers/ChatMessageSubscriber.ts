@@ -4,6 +4,7 @@ import {
   EntitySubscriberInterface,
 } from "typeorm";
 
+import { User } from "@entities/User";
 import { ChatMessage } from "@entities/ChatMessage";
 
 @EventSubscriber()
@@ -16,7 +17,7 @@ export class ChatMessageSubscriber
 
   async beforeInsert(event: InsertEvent<ChatMessage>) {
     const { manager, entity } = event;
-    const { replyTo } = entity;
+    const { replyTo, createdBy } = entity;
 
     const parentMessage = replyTo.id
       ? await manager.findOneByOrFail(ChatMessage, {
@@ -33,5 +34,9 @@ export class ChatMessageSubscriber
     } else {
       entity.depth = 1;
     }
+
+    entity.createdBy = await manager.findOneByOrFail(User, {
+      id: createdBy.id,
+    });
   }
 }
