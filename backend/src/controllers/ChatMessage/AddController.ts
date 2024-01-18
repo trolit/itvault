@@ -43,22 +43,19 @@ export class AddController extends BaseController {
       ? await this._chatMessageRepository.getById(replyToId)
       : null;
 
-    const chatMessage = await this._chatMessageRepository.primitiveSave(
-      {
-        value: text,
-        depth: parentMessage ? parentMessage.depth + 1 : 1,
-        createdBy: {
-          id: userId,
-        },
-        replyTo: {
-          id: parentMessage ? replyToId : undefined,
-        },
-        workspace: {
-          id: workspaceId,
-        },
+    const chatMessage = await this._chatMessageRepository.primitiveSave({
+      value: text,
+      depth: parentMessage ? parentMessage.depth + 1 : 1,
+      createdBy: {
+        id: userId,
       },
-      { reload: true }
-    );
+      replyTo: {
+        id: parentMessage ? replyToId : undefined,
+      },
+      workspace: {
+        id: workspaceId,
+      },
+    });
 
     if (!chatMessage) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
