@@ -35,6 +35,7 @@ export class GetAllController extends BaseController {
     return {
       id: true,
       value: true,
+      repliesCount: true,
       createdAt: true,
       updatedAt: true,
       deletedAt: true,
