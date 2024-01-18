@@ -1,5 +1,7 @@
 import { FILES } from "@config";
 
+import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
+
 export const CUSTOM_MESSAGES = {
   GENERAL: {
     UNIQUE: "%s must be unique!",
@@ -37,6 +39,10 @@ export const CUSTOM_MESSAGES = {
   NOTE: {
     RESOURCE_NOT_SPECIFIED: "Resource not specified.",
     RESOURCE_NOT_AVAILABLE: "Resource is not available.",
+  },
+
+  CHAT_MESSAGE: {
+    MAX_DEPTH_REACHED: `Can't add reply to that comment. Max depth reached (${WORKSPACE_CHAT_MAX_DEPTH})!`,
   },
 
   PERMISSION: {

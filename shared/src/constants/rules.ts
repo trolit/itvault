@@ -36,6 +36,18 @@ export const FILE_RULES = {
   },
 };
 
+export const CHAT_MESSAGE_RULES = {
+  VALUE: {
+    MAX_LENGTH: 600,
+  },
+};
+
+export const NOTE_RULES = {
+  VALUE: {
+    MAX_LENGTH: 1000,
+  },
+};
+
 export const VARIANT_RULES = {
   NAME: {
     MIN_LENGTH: 2,

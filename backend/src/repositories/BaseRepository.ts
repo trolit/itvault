@@ -4,6 +4,7 @@ import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity
 import {
   Repository,
   DeepPartial,
+  SaveOptions,
   QueryRunner,
   UpdateResult,
   FindOneOptions,
@@ -66,8 +67,8 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.softRemove(entity);
   }
 
-  primitiveSave(entity: DeepPartial<T>): Promise<T> {
-    return this.database.save(entity);
+  primitiveSave(entity: DeepPartial<T>, options?: SaveOptions): Promise<T> {
+    return this.database.save(entity, options);
   }
 
   primitiveUpdate(

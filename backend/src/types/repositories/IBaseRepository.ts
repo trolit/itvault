@@ -1,5 +1,6 @@
 import {
   DeepPartial,
+  SaveOptions,
   QueryRunner,
   UpdateResult,
   FindOneOptions,
@@ -23,7 +24,7 @@ export interface IBaseRepository<T> {
 
   softDeleteEntity(entity: T): Promise<T>;
 
-  primitiveSave(entity: DeepPartial<T>): Promise<T>;
+  primitiveSave(entity: DeepPartial<T>, options?: SaveOptions): Promise<T>;
 
   primitiveUpdate(
     options: FindOptionsWhere<T>,

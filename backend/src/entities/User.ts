@@ -3,10 +3,11 @@ import { Entity, Column, ManyToOne, OneToMany, BeforeInsert } from "typeorm";
 
 import { BCRYPT } from "@config";
 
-import { Role } from "./Role";
 import { Base } from "./Base";
+import { Role } from "./Role";
 import { Bundle } from "./Bundle";
 import { Variant } from "./Variant";
+import { ChatMessage } from "./ChatMessage";
 import { UserToWorkspace } from "./UserToWorkspace";
 
 @Entity("users")
@@ -54,6 +55,7 @@ export class User extends Base {
   @OneToMany(() => Variant, variant => variant.createdBy, { cascade: false })
   variants: Variant[];
 
+  // @TODO move to subscriber!
   @BeforeInsert()
   async hashPassword() {
     if (this.password) {
@@ -66,4 +68,9 @@ export class User extends Base {
     cascade: false,
   })
   createdBy: User | null;
+
+  @OneToMany(() => ChatMessage, chatMessage => chatMessage.createdBy, {
+    cascade: ["soft-remove"],
+  })
+  chatMessages: ChatMessage[];
 }
