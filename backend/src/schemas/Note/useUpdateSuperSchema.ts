@@ -2,7 +2,7 @@ import { object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
 
-import { textSchema } from "@schemas/common/textSchema";
+import { textSchema } from "@schemas/common/useTextSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const bodySchema: SuperSchema.Fragment<UpdateControllerTypes.v1.Body> = object({

@@ -1,16 +1,17 @@
-import sanitizeHtml from "sanitize-html";
-import { number, object, string } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { AddControllerTypes } from "types/controllers/ChatMessage/AddController";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 
 import { Di } from "@enums/Di";
+import { CHAT_MESSAGE_RULES } from "@shared/constants/rules";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
+import { useTextSchema } from "@schemas/common/useTextSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const querySchema: SuperSchema.Fragment<AddControllerTypes.v1.Query> = object({
@@ -18,9 +19,7 @@ const querySchema: SuperSchema.Fragment<AddControllerTypes.v1.Query> = object({
 });
 
 const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
-  text: string()
-    .required()
-    .transform(value => sanitizeHtml(value)),
+  text: useTextSchema(CHAT_MESSAGE_RULES.VALUE.MAX_LENGTH),
 
   replyToId: number()
     .optional()
