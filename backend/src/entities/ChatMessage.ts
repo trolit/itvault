@@ -11,6 +11,12 @@ export class ChatMessage extends Base {
   })
   value: string;
 
+  @Column({
+    default: 1,
+    type: "integer",
+  })
+  depth: number;
+
   @ManyToOne(() => Workspace, workspace => workspace.chatMessages)
   workspace: Workspace;
 
