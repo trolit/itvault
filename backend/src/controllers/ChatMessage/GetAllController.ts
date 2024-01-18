@@ -53,11 +53,16 @@ export class GetAllController extends BaseController {
       query: { skip, take, messageId },
     } = request;
 
+    const parentMessage = messageId
+      ? await this._chatMessageRepository.getById(messageId)
+      : null;
+
     const [result, total] = await this._chatMessageRepository.getAllAndCount({
       select: this._select,
       skip,
       take,
       where: {
+        depth: parentMessage && messageId ? parentMessage.depth + 1 : 1,
         replyTo: {
           id: messageId || undefined,
         },
