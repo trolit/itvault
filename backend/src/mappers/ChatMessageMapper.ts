@@ -20,7 +20,11 @@ export class ChatMessageMapper
 
     this.assignInitialKeys();
 
-    const { createdBy, createdAt, updatedAt, deletedAt } = data;
+    const { createdBy, createdAt, updatedAt, deletedAt, repliesCount } = data;
+
+    if (!repliesCount) {
+      this.repliesCount = 0;
+    }
 
     this.author = {
       id: createdBy.id,
