@@ -1,7 +1,4 @@
-import bcrypt from "bcrypt";
-import { Entity, Column, ManyToOne, OneToMany, BeforeInsert } from "typeorm";
-
-import { BCRYPT } from "@config";
+import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 
 import { Base } from "./Base";
 import { Role } from "./Role";
@@ -54,14 +51,6 @@ export class User extends Base {
 
   @OneToMany(() => Variant, variant => variant.createdBy, { cascade: false })
   variants: Variant[];
-
-  // @TODO move to subscriber!
-  @BeforeInsert()
-  async hashPassword() {
-    if (this.password) {
-      this.password = await bcrypt.hash(this.password, BCRYPT.SALT_ROUNDS);
-    }
-  }
 
   @ManyToOne(() => User, User => User.createdBy, {
     nullable: true,
