@@ -7,5 +7,5 @@ export interface ITimestampsDTO {
 
   updatedAt: string;
 
-  deletedAt: string;
+  deletedAt?: string;
 }
