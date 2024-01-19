@@ -37,6 +37,7 @@ export class UpdateController extends BaseController {
   async v1(request: UpdateControllerTypes.v1.Request, response: Response) {
     const {
       userId,
+      query: { workspaceId },
       params: { id },
       body: { text },
     } = request;
@@ -44,6 +45,9 @@ export class UpdateController extends BaseController {
     const message = await this._chatMessageRepository.getOne({
       where: {
         id,
+        workspace: {
+          id: workspaceId,
+        },
         createdBy: {
           id: userId,
         },

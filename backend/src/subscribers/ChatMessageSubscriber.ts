@@ -15,6 +15,8 @@ export class ChatMessageSubscriber
     return ChatMessage;
   }
 
+  // @TODO on delete check if repliesCount should be decreased
+
   async beforeInsert(event: InsertEvent<ChatMessage>) {
     const { manager, entity } = event;
     const { replyTo, createdBy } = entity;

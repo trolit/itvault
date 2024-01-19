@@ -26,6 +26,10 @@ export const requireWorkspaceAccess = <T>(
       return response.status(HTTP.FORBIDDEN).send();
     }
 
+    if (isNaN(workspaceId)) {
+      return response.status(HTTP.BAD_REQUEST).send();
+    }
+
     if (
       isPermissionEnabled(Permission.ViewAllWorkspaces, request.permissions)
     ) {
