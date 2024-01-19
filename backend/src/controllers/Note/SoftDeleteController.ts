@@ -3,7 +3,7 @@ import isInteger from "lodash/isInteger";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { INoteRepository } from "types/repositories/INoteRepository";
-import { SoftDeleteControllerTypes } from "types/controllers/SoftDeleteController";
+import { DeleteControllerTypes } from "types/controllers/DeleteController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
@@ -32,7 +32,7 @@ export class SoftDeleteController extends BaseController {
 
   static ALL_VERSIONS = [v1];
 
-  async v1(request: SoftDeleteControllerTypes.v1.Request, response: Response) {
+  async v1(request: DeleteControllerTypes.v1.Request, response: Response) {
     const {
       userId,
       permissions,

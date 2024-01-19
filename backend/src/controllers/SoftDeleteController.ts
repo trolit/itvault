@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { SoftDeleteControllerTypes } from "types/controllers/SoftDeleteController";
+import { DeleteControllerTypes } from "types/controllers/DeleteController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { BaseController } from "./BaseController";
@@ -21,7 +21,7 @@ export class SoftDeleteController extends BaseController {
     },
   ];
 
-  async v1(request: SoftDeleteControllerTypes.v1.Request, response: Response) {
+  async v1(request: DeleteControllerTypes.v1.Request, response: Response) {
     const {
       originalUrl,
       params: { id },
