@@ -1,11 +1,14 @@
 import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { UpdateControllerTypes } from "types/controllers/ChatMessage/UpdateController";
 
 import { Di } from "@enums/Di";
+import SOCKET_MESSAGES from "@shared/constants/socket-messages";
+import { UpdateChatMessageData } from "@shared/types/transport/ChatMessages";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -15,7 +18,9 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class UpdateController extends BaseController {
   constructor(
     @inject(Di.ChatMessageRepository)
-    private _chatMessageRepository: IChatMessageRepository
+    private _chatMessageRepository: IChatMessageRepository,
+    @inject(Di.SocketServiceManager)
+    private _socketServiceManager: ISocketServiceManager
   ) {
     super();
   }
@@ -57,6 +62,14 @@ export class UpdateController extends BaseController {
     if (!isUpdated?.affected) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
+
+    const { UPDATE_MESSAGE } = SOCKET_MESSAGES.VIEW_WORKSPACE.ACTIONS;
+
+    this._socketServiceManager.sendMessage<UpdateChatMessageData>({
+      action: UPDATE_MESSAGE,
+
+      data: { id, value: text },
+    });
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }

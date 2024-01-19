@@ -8,7 +8,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
-import { AddEditChatMessageData } from "@shared/types/transport/ChatMessages";
+import { AddChatMessageData } from "@shared/types/transport/ChatMessages";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -65,7 +65,7 @@ export class AddController extends BaseController {
 
     const { CREATE_MESSAGE } = SOCKET_MESSAGES.VIEW_WORKSPACE.ACTIONS;
 
-    this._socketServiceManager.sendMessage<AddEditChatMessageData>({
+    this._socketServiceManager.sendMessage<AddChatMessageData>({
       action: CREATE_MESSAGE,
 
       data: result,
