@@ -76,6 +76,7 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.save(entity, options);
   }
 
+  // @NOTE OUTPUT or RETURNING clause only supported by Microsoft SQL Server or PostgreSQL or MariaDB databases.
   primitiveUpdate(
     options: FindOptionsWhere<T>,
     partialEntity: QueryDeepPartialEntity<T>
