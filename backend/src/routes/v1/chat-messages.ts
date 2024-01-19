@@ -4,12 +4,12 @@ import { WorkspaceId } from "types/controllers/WorkspaceId";
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useAddSuperSchema } from "@schemas/ChatMessage/useAddSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/ChatMessage/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/ChatMessage/useUpdateSuperSchema";
+import { useHardDeleteSuperSchema } from "@schemas/ChatMessage/useHardDeleteSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/ChatMessage/AddController";
@@ -48,7 +48,7 @@ chatMessagesRouter.put(
 
 chatMessagesRouter.delete(
   "/:id",
-  requireEndpointVersion(HardDeleteController.ALL_VERSIONS),
+  validateRequestWith({ [v1]: useHardDeleteSuperSchema }),
   processRequestWith(HardDeleteController)
 );
 
