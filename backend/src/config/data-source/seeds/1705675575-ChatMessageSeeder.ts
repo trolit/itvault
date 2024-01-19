@@ -19,7 +19,7 @@ export default class ChatMessageSeeder implements Seeder {
     const workspaces = await workspaceRepository.find();
 
     for (const workspace of workspaces) {
-      const mainCommentsCount = random(10, 15);
+      const mainCommentsCount = random(8, 12);
 
       // @NOTE DEPTH 1 comments
       for (let index = 0; index < mainCommentsCount; index++) {
@@ -36,12 +36,12 @@ export default class ChatMessageSeeder implements Seeder {
 
       // @NOTE DEPTH 2+
       for (let depth = 2; depth < WORKSPACE_CHAT_MAX_DEPTH; depth++) {
-        const previousDepthMessagesCount = random(3, 9);
+        const previousDepthMessagesCount = random(6, 9);
 
         const previousDepthMessages = await getRandomRecords(
           chatMessageRepository,
           previousDepthMessagesCount,
-          undefined,
+          ["workspace"],
           qb =>
             qb.where("workspace.id = :workspaceId AND depth = :depth", {
               depth: depth - 1,
