@@ -6,6 +6,7 @@ import {
   DeepPartial,
   SaveOptions,
   QueryRunner,
+  DeleteResult,
   UpdateResult,
   FindOneOptions,
   FindManyOptions,
@@ -59,6 +60,10 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.findOneBy({ id } as FindOptionsWhere<T>);
   }
 
+  hardDelete(options: FindOptionsWhere<T>): Promise<DeleteResult> {
+    return this.database.delete(options);
+  }
+
   softDelete(options: FindOptionsWhere<T>): Promise<UpdateResult> {
     return this.database.softDelete(options);
   }
@@ -71,6 +76,7 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.save(entity, options);
   }
 
+  // @NOTE OUTPUT or RETURNING clause only supported by Microsoft SQL Server or PostgreSQL or MariaDB databases.
   primitiveUpdate(
     options: FindOptionsWhere<T>,
     partialEntity: QueryDeepPartialEntity<T>

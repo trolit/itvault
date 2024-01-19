@@ -2,11 +2,14 @@ import { Response } from "express";
 import isInteger from "lodash/isInteger";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
+import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { SoftDeleteControllerTypes } from "types/controllers/SoftDeleteController";
+import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
+import SOCKET_MESSAGES from "@shared/constants/socket-messages";
+import { DeleteChatMessageData } from "@shared/types/transport/ChatMessages";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -16,7 +19,9 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class SoftDeleteController extends BaseController {
   constructor(
     @inject(Di.ChatMessageRepository)
-    private _chatMessageRepository: IChatMessageRepository
+    private _chatMessageRepository: IChatMessageRepository,
+    @inject(Di.SocketServiceManager)
+    private _socketServiceManager: ISocketServiceManager
   ) {
     super();
   }
@@ -60,6 +65,14 @@ export class SoftDeleteController extends BaseController {
     }
 
     await this._chatMessageRepository.softDeleteEntity(message);
+
+    const { DELETE_MESSAGE } = SOCKET_MESSAGES.VIEW_WORKSPACE.ACTIONS;
+
+    this._socketServiceManager.sendMessage<DeleteChatMessageData>({
+      action: DELETE_MESSAGE,
+
+      data: { id: parsedId },
+    });
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
