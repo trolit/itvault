@@ -6,6 +6,7 @@ import {
   DeepPartial,
   SaveOptions,
   QueryRunner,
+  DeleteResult,
   UpdateResult,
   FindOneOptions,
   FindManyOptions,
@@ -57,6 +58,10 @@ export class BaseRepository<T extends { id: number | string }>
 
   getById(id: number | string): Promise<T | null> {
     return this.database.findOneBy({ id } as FindOptionsWhere<T>);
+  }
+
+  hardDelete(options: FindOptionsWhere<T>): Promise<DeleteResult> {
+    return this.database.delete(options);
   }
 
   softDelete(options: FindOptionsWhere<T>): Promise<UpdateResult> {
