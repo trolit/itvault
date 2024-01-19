@@ -2,7 +2,6 @@ import {
   DeepPartial,
   SaveOptions,
   QueryRunner,
-  DeleteResult,
   UpdateResult,
   FindOneOptions,
   FindManyOptions,
@@ -21,7 +20,7 @@ export interface IBaseRepository<T> {
 
   getById(id: number | string): Promise<T | null>;
 
-  hardDelete(options: FindOptionsWhere<T>): Promise<DeleteResult>;
+  hardDeleteEntity(entity: T): Promise<T>;
 
   softDelete(options: FindOptionsWhere<T>): Promise<UpdateResult>;
 

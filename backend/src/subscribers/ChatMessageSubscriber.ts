@@ -1,5 +1,6 @@
 import {
   InsertEvent,
+  RemoveEvent,
   EventSubscriber,
   EntitySubscriberInterface,
 } from "typeorm";
@@ -15,7 +16,29 @@ export class ChatMessageSubscriber
     return ChatMessage;
   }
 
-  // @TODO on delete check if repliesCount should be decreased
+  async beforeRemove(event: RemoveEvent<ChatMessage>) {
+    const { manager, entity } = event;
+
+    if (!entity) {
+      // @NOTE entity removed without being loaded (e.g. removed through criteria or cascades)
+      return;
+    }
+
+    const { replyTo } = await manager.findOneOrFail(ChatMessage, {
+      where: {
+        id: entity.id,
+      },
+      relations: {
+        replyTo: true,
+      },
+    });
+
+    if (replyTo.repliesCount >= 1) {
+      replyTo.repliesCount = replyTo.repliesCount - 1;
+
+      await manager.save(ChatMessage, replyTo);
+    }
+  }
 
   async beforeInsert(event: InsertEvent<ChatMessage>) {
     const { manager, entity } = event;
