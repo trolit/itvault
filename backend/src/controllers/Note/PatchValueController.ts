@@ -2,8 +2,8 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { INoteRepository } from "types/repositories/INoteRepository";
-import { UpdateControllerTypes } from "types/controllers/Note/UpdateController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
+import { PatchValueControllerTypes } from "types/controllers/Note/PatchValueController";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
@@ -14,7 +14,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class UpdateController extends BaseController {
+export class PatchValueController extends BaseController {
   constructor(
     @inject(Di.NoteRepository)
     private _noteRepository: INoteRepository
@@ -31,7 +31,7 @@ export class UpdateController extends BaseController {
 
   static ALL_VERSIONS = [v1];
 
-  async v1(request: UpdateControllerTypes.v1.Request, response: Response) {
+  async v1(request: PatchValueControllerTypes.v1.Request, response: Response) {
     const {
       userId,
       permissions,

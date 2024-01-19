@@ -8,14 +8,14 @@ import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useAddSuperSchema } from "@schemas/ChatMessage/useAddSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/ChatMessage/useGetAllSuperSchema";
-import { useUpdateSuperSchema } from "@schemas/ChatMessage/useUpdateSuperSchema";
 import { useHardDeleteSuperSchema } from "@schemas/ChatMessage/useHardDeleteSuperSchema";
+import { usePatchValueSuperSchema } from "@schemas/ChatMessage/usePatchValueSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/ChatMessage/AddController";
-import { UpdateController } from "@controllers/ChatMessage/UpdateController";
 import { GetAllController } from "@controllers/ChatMessage/GetAllController";
 import { HardDeleteController } from "@controllers/ChatMessage/HardDeleteController";
+import { PatchValueController } from "@controllers/ChatMessage/PatchValueController";
 
 const chatMessagesRouter = Router();
 
@@ -40,10 +40,10 @@ chatMessagesRouter.post(
   processRequestWith(AddController)
 );
 
-chatMessagesRouter.put(
-  "/:id",
-  validateRequestWith({ [v1]: useUpdateSuperSchema }),
-  processRequestWith(UpdateController)
+chatMessagesRouter.patch(
+  "/:id/value",
+  validateRequestWith({ [v1]: usePatchValueSuperSchema }),
+  processRequestWith(PatchValueController)
 );
 
 chatMessagesRouter.delete(
