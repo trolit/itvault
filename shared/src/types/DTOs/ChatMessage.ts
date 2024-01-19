@@ -19,6 +19,6 @@ export interface IAddChatMessageDTO {
   replyToId?: number;
 }
 
-export interface IUpdateChatMessageDTO {
+export interface IPatchChatMessageValueDTO {
   text: string;
 }

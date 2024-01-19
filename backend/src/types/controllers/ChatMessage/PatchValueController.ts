@@ -1,7 +1,7 @@
 import { WorkspaceId } from "types/controllers/WorkspaceId";
-import { IUpdateChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
+import { IPatchChatMessageValueDTO } from "@shared/types/DTOs/ChatMessage";
 
-export namespace UpdateControllerTypes {
+export namespace PatchValueControllerTypes {
   export namespace v1 {
     export type Query = WorkspaceId;
 
@@ -9,7 +9,7 @@ export namespace UpdateControllerTypes {
       id: number;
     };
 
-    export type Body = IUpdateChatMessageDTO;
+    export type Body = IPatchChatMessageValueDTO;
 
     export type Request = CustomRequest<Params, Body, Query>;
   }

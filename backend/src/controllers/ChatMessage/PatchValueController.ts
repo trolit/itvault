@@ -4,7 +4,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
-import { UpdateControllerTypes } from "types/controllers/ChatMessage/UpdateController";
+import { PatchValueControllerTypes } from "types/controllers/ChatMessage/PatchValueController";
 
 import { Di } from "@enums/Di";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
@@ -15,7 +15,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class UpdateController extends BaseController {
+export class PatchValueController extends BaseController {
   constructor(
     @inject(Di.ChatMessageRepository)
     private _chatMessageRepository: IChatMessageRepository,
@@ -34,7 +34,7 @@ export class UpdateController extends BaseController {
 
   static ALL_VERSIONS = [v1];
 
-  async v1(request: UpdateControllerTypes.v1.Request, response: Response) {
+  async v1(request: PatchValueControllerTypes.v1.Request, response: Response) {
     const {
       userId,
       query: { workspaceId },
