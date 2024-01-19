@@ -61,7 +61,13 @@ export class HardDeleteController extends BaseController {
       return response.sendStatus(HTTP.FORBIDDEN);
     }
 
-    await this._chatMessageRepository.hardDelete({ id });
+    if (message.repliesCount !== 0) {
+      return response.sendStatus(HTTP.BAD_REQUEST);
+    }
+
+    await this._chatMessageRepository.hardDelete({
+      id,
+    });
 
     const { DELETE_MESSAGE } = SOCKET_MESSAGES.VIEW_WORKSPACE.ACTIONS;
 
