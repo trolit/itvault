@@ -10,12 +10,12 @@ import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useAddSuperSchema } from "@schemas/Note/useAddSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
-import { useUpdateSuperSchema } from "@schemas/Note/useUpdateSuperSchema";
+import { usePatchValueSuperSchema } from "@schemas/Note/usePatchValueSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/Note/AddController";
 import { GetAllController } from "@controllers/Note/GetAllController";
-import { UpdateController } from "@controllers/Note/UpdateController";
+import { PatchValueController } from "@controllers/Note/PatchValueController";
 import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
 
 const notesRouter = Router();
@@ -38,10 +38,10 @@ notesRouter.post(
   processRequestWith(AddController)
 );
 
-notesRouter.put(
-  "/:id",
-  validateRequestWith({ [v1]: useUpdateSuperSchema }),
-  processRequestWith(UpdateController)
+notesRouter.patch(
+  "/:id/value",
+  validateRequestWith({ [v1]: usePatchValueSuperSchema }),
+  processRequestWith(PatchValueController)
 );
 
 notesRouter.delete(

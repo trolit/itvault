@@ -20,6 +20,6 @@ export interface IAddNoteDTO {
   resource: ResourceDTO;
 }
 
-export interface IUpdateNoteDTO {
+export interface IPatchNoteValueDTO {
   text: string;
 }
