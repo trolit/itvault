@@ -2,8 +2,8 @@ import { Response } from "express";
 import isInteger from "lodash/isInteger";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { DeleteControllerTypes } from "types/controllers/DeleteController";
+import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
@@ -16,7 +16,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class SoftDeleteController extends BaseController {
+export class HardDeleteController extends BaseController {
   constructor(
     @inject(Di.ChatMessageRepository)
     private _chatMessageRepository: IChatMessageRepository,
@@ -64,7 +64,7 @@ export class SoftDeleteController extends BaseController {
       return response.sendStatus(HTTP.FORBIDDEN);
     }
 
-    await this._chatMessageRepository.softDeleteEntity(message);
+    await this._chatMessageRepository.hardDelete({ id: parsedId });
 
     const { DELETE_MESSAGE } = SOCKET_MESSAGES.VIEW_WORKSPACE.ACTIONS;
 
