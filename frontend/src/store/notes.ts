@@ -69,6 +69,7 @@ export const useNotesStore = defineStore("notes", {
         text,
       };
 
+      // @TODO change after turning request into PATCH type
       return axios.put(`v1/notes/${id}`, payload, {
         params,
       });
