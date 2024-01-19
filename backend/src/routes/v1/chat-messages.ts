@@ -15,7 +15,7 @@ import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/ChatMessage/AddController";
 import { UpdateController } from "@controllers/ChatMessage/UpdateController";
 import { GetAllController } from "@controllers/ChatMessage/GetAllController";
-import { SoftDeleteController } from "@controllers/ChatMessage/SoftDeleteController";
+import { HardDeleteController } from "@controllers/ChatMessage/HardDeleteController";
 
 const chatMessagesRouter = Router();
 
@@ -48,8 +48,8 @@ chatMessagesRouter.put(
 
 chatMessagesRouter.delete(
   "/:id",
-  requireEndpointVersion(SoftDeleteController.ALL_VERSIONS),
-  processRequestWith(SoftDeleteController)
+  requireEndpointVersion(HardDeleteController.ALL_VERSIONS),
+  processRequestWith(HardDeleteController)
 );
 
 export = chatMessagesRouter;
