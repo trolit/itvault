@@ -51,7 +51,7 @@ export class GetAllController extends BaseController {
     response: GetAllControllerTypes.v1.Response
   ) {
     const {
-      query: { skip, take, messageId },
+      query: { skip, take, messageId, workspaceId },
     } = request;
 
     const parentMessage = messageId
@@ -63,6 +63,7 @@ export class GetAllController extends BaseController {
       skip,
       take,
       where: {
+        workspace: { id: workspaceId },
         depth: parentMessage && messageId ? parentMessage.depth + 1 : 1,
         replyTo: {
           id: messageId || undefined,
