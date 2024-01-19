@@ -44,7 +44,7 @@ export class ChatMessageSubscriber
     const { manager, entity } = event;
     const { replyTo, createdBy } = entity;
 
-    const parentMessage = replyTo.id
+    const parentMessage = replyTo?.id
       ? await manager.findOneByOrFail(ChatMessage, {
           id: replyTo.id,
         })

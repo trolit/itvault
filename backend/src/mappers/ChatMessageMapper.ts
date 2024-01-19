@@ -20,7 +20,7 @@ export class ChatMessageMapper
 
     this.assignInitialKeys();
 
-    const { createdBy, createdAt, updatedAt, deletedAt } = data;
+    const { createdBy, createdAt, updatedAt } = data;
 
     this.author = {
       id: createdBy.id,
@@ -30,7 +30,6 @@ export class ChatMessageMapper
     this.timestamps = {
       createdAt: createdAt.toISOString(),
       updatedAt: updatedAt.toISOString(),
-      deletedAt: deletedAt?.toISOString() || "",
     };
 
     return this;
