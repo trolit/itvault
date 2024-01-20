@@ -59,9 +59,8 @@ export const useNotesStore = defineStore("notes", {
       return item;
     },
 
-    update(id: number, text: string) {
+    updateText(id: number, text: string) {
       const params = {
-        id,
         version: 1,
       };
 
@@ -69,8 +68,7 @@ export const useNotesStore = defineStore("notes", {
         text,
       };
 
-      // @TODO change after turning request into PATCH type
-      return axios.put(`v1/notes/${id}`, payload, {
+      return axios.patch(`v1/notes/${id}/value`, payload, {
         params,
       });
     },
