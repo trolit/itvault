@@ -2,7 +2,6 @@ import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 
 import { Base } from "./Base";
 import { User } from "./User";
-import { Workspace } from "./Workspace";
 
 @Entity("chat_messages")
 export class ChatMessage extends Base {
@@ -16,9 +15,6 @@ export class ChatMessage extends Base {
     type: "integer",
   })
   depth: number;
-
-  @ManyToOne(() => Workspace, workspace => workspace.chatMessages)
-  workspace: Workspace;
 
   @ManyToOne(() => User, user => user.chatMessages)
   createdBy: User;
