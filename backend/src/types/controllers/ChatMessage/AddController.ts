@@ -5,7 +5,7 @@ export namespace AddControllerTypes {
   export namespace v1 {
     export type Body = IAddChatMessageDTO;
 
-    export type Request = CustomRequest<undefined, Body, undefined>;
+    export type Request = CustomRequest<undefined, Body>;
 
     export type Response = CustomResponse<ChatMessageMapper>;
   }

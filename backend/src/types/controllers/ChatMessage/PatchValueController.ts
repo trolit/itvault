@@ -8,6 +8,6 @@ export namespace PatchValueControllerTypes {
 
     export type Body = IPatchChatMessageValueDTO;
 
-    export type Request = CustomRequest<Params, Body, undefined>;
+    export type Request = CustomRequest<Params, Body>;
   }
 }

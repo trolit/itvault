@@ -4,6 +4,6 @@ export namespace HardDeleteControllerTypes {
       id: number;
     };
 
-    export type Request = CustomRequest<Params, undefined, undefined>;
+    export type Request = CustomRequest<Params>;
   }
 }
