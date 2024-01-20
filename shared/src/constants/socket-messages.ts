@@ -4,6 +4,10 @@ export default {
     ACTIONS: {
       CREATE_WORKSPACE: "create-workspace",
       UPDATE_WORKSPACE: "update-workspace",
+
+      CREATE_MESSAGE: "create-message",
+      UPDATE_MESSAGE: "update-message",
+      DELETE_MESSAGE: "delete-message",
     },
   },
 
@@ -13,10 +17,6 @@ export default {
       CREATE_BLUEPRINT: "create-blueprint",
       UPDATE_BLUEPRINT: "update-blueprint",
       DELETE_BLUEPRINT: "delete-blueprint",
-
-      CREATE_MESSAGE: "create-message",
-      UPDATE_MESSAGE: "update-message",
-      DELETE_MESSAGE: "delete-message",
 
       UPLOAD_FILES: "upload-files",
     },

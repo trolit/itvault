@@ -10,7 +10,6 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
     page: pageSchema,
     perPage: number().required().integer().min(5).max(10),
     messageId: number().optional(),
-    workspaceId: number().required(),
   });
 
 export const useGetAllSuperSchema: SuperSchema.Runner<

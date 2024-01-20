@@ -37,16 +37,12 @@ export class HardDeleteController extends BaseController {
   async v1(request: HardDeleteControllerTypes.v1.Request, response: Response) {
     const {
       userId,
-      query: { workspaceId },
       params: { id },
     } = request;
 
     const message = await this._chatMessageRepository.getOne({
       where: {
         id,
-        workspace: {
-          id: workspaceId,
-        },
       },
       relations: {
         createdBy: true,
@@ -67,7 +63,7 @@ export class HardDeleteController extends BaseController {
 
     await this._chatMessageRepository.hardDeleteEntity(message);
 
-    const { DELETE_MESSAGE } = SOCKET_MESSAGES.VIEW_WORKSPACE.ACTIONS;
+    const { DELETE_MESSAGE } = SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS;
 
     this._socketServiceManager.sendMessage<DeleteChatMessageData>({
       action: DELETE_MESSAGE,

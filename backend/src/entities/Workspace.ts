@@ -4,7 +4,6 @@ import { Base } from "./Base";
 import { File } from "./File";
 import { Bundle } from "./Bundle";
 import { Blueprint } from "./Blueprint";
-import { ChatMessage } from "./ChatMessage";
 import { TagToWorkspace } from "./TagToWorkspace";
 import { UserToWorkspace } from "./UserToWorkspace";
 
@@ -49,9 +48,4 @@ export class Workspace extends Base {
     cascade: ["insert", "update"],
   })
   tagToWorkspace: TagToWorkspace[];
-
-  @OneToMany(() => ChatMessage, chatMessage => chatMessage.workspace, {
-    cascade: ["soft-remove"],
-  })
-  chatMessages: ChatMessage[];
 }

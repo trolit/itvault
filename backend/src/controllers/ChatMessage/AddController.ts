@@ -40,7 +40,6 @@ export class AddController extends BaseController {
   ) {
     const {
       userId,
-      query: { workspaceId },
       body: { text, replyToId },
     } = request;
 
@@ -52,9 +51,6 @@ export class AddController extends BaseController {
       replyTo: {
         id: replyToId,
       },
-      workspace: {
-        id: workspaceId,
-      },
     });
 
     if (!message) {
@@ -63,7 +59,7 @@ export class AddController extends BaseController {
 
     const result = this.mapper.map(message).to(ChatMessageMapper);
 
-    const { CREATE_MESSAGE } = SOCKET_MESSAGES.VIEW_WORKSPACE.ACTIONS;
+    const { CREATE_MESSAGE } = SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS;
 
     this._socketServiceManager.sendMessage<AddChatMessageData>({
       action: CREATE_MESSAGE,

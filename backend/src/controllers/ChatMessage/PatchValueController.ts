@@ -37,7 +37,6 @@ export class PatchValueController extends BaseController {
   async v1(request: PatchValueControllerTypes.v1.Request, response: Response) {
     const {
       userId,
-      query: { workspaceId },
       params: { id },
       body: { text },
     } = request;
@@ -45,9 +44,6 @@ export class PatchValueController extends BaseController {
     const message = await this._chatMessageRepository.getOne({
       where: {
         id,
-        workspace: {
-          id: workspaceId,
-        },
         createdBy: {
           id: userId,
         },
@@ -67,7 +63,7 @@ export class PatchValueController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    const { UPDATE_MESSAGE } = SOCKET_MESSAGES.VIEW_WORKSPACE.ACTIONS;
+    const { UPDATE_MESSAGE } = SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS;
 
     this._socketServiceManager.sendMessage<UpdateChatMessageData>({
       action: UPDATE_MESSAGE,
