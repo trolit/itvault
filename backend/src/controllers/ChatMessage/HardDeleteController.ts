@@ -37,16 +37,12 @@ export class HardDeleteController extends BaseController {
   async v1(request: HardDeleteControllerTypes.v1.Request, response: Response) {
     const {
       userId,
-      query: { workspaceId },
       params: { id },
     } = request;
 
     const message = await this._chatMessageRepository.getOne({
       where: {
         id,
-        workspace: {
-          id: workspaceId,
-        },
       },
       relations: {
         createdBy: true,

@@ -14,10 +14,6 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useTextSchema } from "@schemas/common/useTextSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const querySchema: SuperSchema.Fragment<AddControllerTypes.v1.Query> = object({
-  workspaceId: number().required(),
-});
-
 const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
   text: useTextSchema(CHAT_MESSAGE_RULES.VALUE.MAX_LENGTH),
 
@@ -66,10 +62,9 @@ const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
 export const useAddSuperSchema: SuperSchema.Runner<
   void,
   AddControllerTypes.v1.Body,
-  AddControllerTypes.v1.Query
+  void
 > = defineSuperSchemaRunner(() => {
   return {
     body: bodySchema,
-    query: querySchema,
   };
 });

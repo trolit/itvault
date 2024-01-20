@@ -9,18 +9,12 @@ const paramsSchema: SuperSchema.Fragment<HardDeleteControllerTypes.v1.Params> =
     id: number().required(),
   });
 
-const querySchema: SuperSchema.Fragment<HardDeleteControllerTypes.v1.Query> =
-  object({
-    workspaceId: number().required(),
-  });
-
 export const useHardDeleteSuperSchema: SuperSchema.Runner<
   HardDeleteControllerTypes.v1.Params,
   void,
-  HardDeleteControllerTypes.v1.Query
+  void
 > = defineSuperSchemaRunner(() => {
   return {
-    query: querySchema,
     params: paramsSchema,
   };
 });

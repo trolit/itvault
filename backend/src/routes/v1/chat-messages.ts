@@ -1,10 +1,7 @@
 import { Router } from "express";
-import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
-import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useAddSuperSchema } from "@schemas/ChatMessage/useAddSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/ChatMessage/useGetAllSuperSchema";
@@ -22,11 +19,6 @@ const chatMessagesRouter = Router();
 const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
-
-chatMessagesRouter.use(
-  requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
-);
-chatMessagesRouter.use(IsWorkspaceAvailable);
 
 chatMessagesRouter.get(
   "",

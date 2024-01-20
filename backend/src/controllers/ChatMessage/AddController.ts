@@ -40,7 +40,6 @@ export class AddController extends BaseController {
   ) {
     const {
       userId,
-      query: { workspaceId },
       body: { text, replyToId },
     } = request;
 
@@ -51,9 +50,6 @@ export class AddController extends BaseController {
       },
       replyTo: {
         id: replyToId,
-      },
-      workspace: {
-        id: workspaceId,
       },
     });
 

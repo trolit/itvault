@@ -17,19 +17,13 @@ const bodySchema: SuperSchema.Fragment<PatchValueControllerTypes.v1.Body> =
     text: useTextSchema(CHAT_MESSAGE_RULES.VALUE.MAX_LENGTH),
   });
 
-const querySchema: SuperSchema.Fragment<PatchValueControllerTypes.v1.Query> =
-  object({
-    workspaceId: number().required(),
-  });
-
 export const usePatchValueSuperSchema: SuperSchema.Runner<
   PatchValueControllerTypes.v1.Params,
   PatchValueControllerTypes.v1.Body,
-  PatchValueControllerTypes.v1.Query
+  void
 > = defineSuperSchemaRunner(() => {
   return {
     params: paramsSchema,
     body: bodySchema,
-    query: querySchema,
   };
 });
