@@ -43,6 +43,9 @@ export class GetAllController extends BaseController {
         id: true,
         fullName: true,
       },
+      replyTo: {
+        id: true,
+      },
     };
   }
 
@@ -72,6 +75,7 @@ export class GetAllController extends BaseController {
         createdAt: "desc",
       },
       relations: {
+        replyTo: true,
         createdBy: true,
       },
     });
