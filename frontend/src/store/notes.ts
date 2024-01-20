@@ -59,7 +59,7 @@ export const useNotesStore = defineStore("notes", {
       return item;
     },
 
-    updateText(id: number, text: string) {
+    update(id: number, text: string) {
       const params = {
         version: 1,
       };
