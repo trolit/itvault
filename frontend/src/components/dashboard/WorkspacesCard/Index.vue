@@ -1,5 +1,18 @@
 <template>
-  <content-card :icon="WorkspacesIcon" title="Workspaces">
+  <n-card
+    size="medium"
+    :header-extra-style="{ marginLeft: '20px' }"
+    :footer-style="{ display: 'flex', justifyContent: 'center' }"
+  >
+    <template #header>
+      <!-- @TODO show input only when there are at least 3 pages -->
+      <n-input disabled clearable placeholder="Type name or tag to filter">
+        <template #prefix>
+          <n-icon :component="SearchIcon" />
+        </template>
+      </n-input>
+    </template>
+
     <template #header-extra>
       <require-permission :permission="Permission.CreateWorkspace">
         <n-button size="small" @click="toggleAddEditWorkspaceDrawer()">
@@ -8,68 +21,29 @@
       </require-permission>
     </template>
 
-    <template #content>
-      <!-- @TODO show input only when there are at least 3 pages -->
-      <n-input disabled clearable placeholder="Type name or tag to filter">
-        <template #prefix>
-          <n-icon :component="SearchIcon" />
-        </template>
-      </n-input>
+    <n-grid
+      v-if="!isLoading"
+      x-gap="40"
+      y-gap="20"
+      responsive="screen"
+      cols="1 s:1 m:2 l:2 xl:2 2xl:2"
+    >
+      <n-grid-item
+        span="1"
+        v-for="(item, index) in sortedItems"
+        :key="`workspace-${index}`"
+      >
+        <single-item
+          :item="item"
+          @open="open(item)"
+          @toggle-edit-drawer="toggleAddEditWorkspaceDrawer(item)"
+        />
+      </n-grid-item>
+    </n-grid>
 
-      <n-list v-if="!isLoading">
-        <n-list-item
-          v-for="(item, index) in sortedItems"
-          :key="`workspace-${index}`"
-        >
-          <n-thing :title="item.name">
-            <template #header-extra>
-              <pin-manager
-                :pinned-at="item.pinnedAt"
-                :is-loading="workspacesStore.pinStatusUpdateItemId === item.id"
-                @pin="workspacesStore.pin(item.id)"
-                @unpin="workspacesStore.unpin(item.id)"
-              />
-            </template>
+    <loading-section v-else />
 
-            <div>
-              <n-space size="small" :style="{ marginBottom: '15px' }">
-                <n-tag
-                  size="small"
-                  type="success"
-                  :key="`tag-${index}`"
-                  v-for="(tag, index) in item.tags"
-                >
-                  {{ tag }}
-                </n-tag>
-              </n-space>
-
-              <div>
-                <n-text :depth="3">
-                  {{ item.description }}
-                </n-text>
-              </div>
-
-              <n-space :style="{ marginTop: '20px' }" justify="end">
-                <n-button secondary type="success" @click="open(item)">
-                  Go to
-                </n-button>
-
-                <require-permission :permission="Permission.UpdateWorkspace">
-                  <n-button
-                    tertiary
-                    @click="toggleAddEditWorkspaceDrawer(item)"
-                  >
-                    Edit information
-                  </n-button>
-                </require-permission>
-              </n-space>
-            </div>
-          </n-thing>
-        </n-list-item>
-      </n-list>
-
-      <loading-section v-else />
-
+    <template #footer>
       <n-pagination
         size="medium"
         :page-slot="6"
@@ -79,32 +53,25 @@
         @update:page="value => getWorkspaces(value)"
       />
     </template>
-  </content-card>
+  </n-card>
 </template>
 
 <script setup lang="ts">
 import {
-  NTag,
-  NList,
+  NCard,
+  NGrid,
   NIcon,
   NInput,
-  NText,
-  NSpace,
-  NThing,
   NButton,
-  NListItem,
+  NGridItem,
   NPagination,
 } from "naive-ui";
-import {
-  Add as AddIcon,
-  Search as SearchIcon,
-  Workspace as WorkspacesIcon,
-} from "@vicons/carbon";
 import { useRouter } from "vue-router";
 import cloneDeep from "lodash/cloneDeep";
 import { ref, onBeforeMount } from "vue";
+import { Add as AddIcon, Search as SearchIcon } from "@vicons/carbon";
 
-import ContentCard from "./ContentCard.vue";
+import SingleItem from "./SingleItem.vue";
 import { useAuthStore } from "@/store/auth";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
@@ -112,7 +79,6 @@ import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
-import PinManager from "@/components/common/PinManager.vue";
 import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import LoadingSection from "@/components/common/LoadingSection.vue";
