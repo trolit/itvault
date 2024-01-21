@@ -41,36 +41,37 @@ const options = computed(() => [
     label: "Dashboard",
     key: ROUTE_DASHBOARD_NAME,
     icon: renderIcon(BrandIcon),
-    disabled: router.currentRoute.value.name === ROUTE_DASHBOARD_NAME,
+    show: router.currentRoute.value.name !== ROUTE_DASHBOARD_NAME,
   },
   {
     label: "Users",
     key: ROUTE_USERS_NAME,
     icon: renderIcon(UsersIcon),
-    show: authStore.hasPermission(Permission.ViewAllUsers),
-    disabled: router.currentRoute.value.name === ROUTE_USERS_NAME,
+    show:
+      authStore.hasPermission(Permission.ViewAllUsers) &&
+      router.currentRoute.value.name !== ROUTE_USERS_NAME,
   },
   {
     label: "Roles",
     key: ROUTE_ROLES_NAME,
     icon: renderIcon(RolesIcon),
-    show: authStore.hasAtLeastOnePermission([
-      Permission.CreateRole,
-      Permission.UpdateRole,
-    ]),
-    disabled: router.currentRoute.value.name === ROUTE_ROLES_NAME,
+    show:
+      authStore.hasAtLeastOnePermission([
+        Permission.CreateRole,
+        Permission.UpdateRole,
+      ]) && router.currentRoute.value.name !== ROUTE_ROLES_NAME,
   },
   {
     label: "Guide",
     key: ROUTE_GUIDE_NAME,
     icon: renderIcon(HelpIcon),
-    disabled: router.currentRoute.value.name === ROUTE_GUIDE_NAME,
+    show: router.currentRoute.value.name !== ROUTE_GUIDE_NAME,
   },
   {
     label: "Updates",
     key: ROUTE_UPDATES_NAME,
     icon: renderIcon(UpdatesIcon),
-    disabled: router.currentRoute.value.name === ROUTE_UPDATES_NAME,
+    show: router.currentRoute.value.name !== ROUTE_UPDATES_NAME,
   },
 ]);
 
