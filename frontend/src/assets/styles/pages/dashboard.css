@@ -12,37 +12,6 @@
     margin: var(--page-margin);
   }
 
-  .navigation-grid {
-    .navigation-router-link {
-      .n-button {
-        width: 100%;
-        padding: 0 10px;
-        min-height: 100px;
-
-        .n-button__content {
-          width: 100%;
-
-          .n-icon {
-            margin-left: 10px;
-          }
-
-          .text-wrapper {
-            width: 100%;
-            display: flex;
-            text-align: right;
-            flex-direction: column;
-            justify-content: space-evenly;
-
-            .title {
-              font-size: 20px;
-              padding-bottom: 10px;
-            }
-          }
-        }
-      }
-    }
-  }
-
   .grid {
     .workspaces-card-wrapper {
       display: inherit;
