@@ -25,7 +25,7 @@ import { NGrid, NGridItem } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import WelcomeCard from "@/components/dashboard/WelcomeCard.vue";
-import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
+import WorkspacesCard from "@/components/dashboard/WorkspacesCard.vue";
 import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
 
 const authStore = useAuthStore();
