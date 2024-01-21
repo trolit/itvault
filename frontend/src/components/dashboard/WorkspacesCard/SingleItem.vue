@@ -28,13 +28,22 @@
           </n-text>
         </div>
 
-        <n-space :style="{ marginTop: '20px' }" justify="end">
-          <n-button secondary type="success" @click="$emit('open')">
+        <n-space :style="{ marginTop: '20px' }" justify="center">
+          <n-button
+            size="small"
+            secondary
+            type="success"
+            @click="$emit('open')"
+          >
             Go to
           </n-button>
 
           <require-permission :permission="Permission.UpdateWorkspace">
-            <n-button tertiary @click="$emit('toggle-edit-drawer')">
+            <n-button
+              size="small"
+              tertiary
+              @click="$emit('toggle-edit-drawer')"
+            >
               Edit information
             </n-button>
           </require-permission>
