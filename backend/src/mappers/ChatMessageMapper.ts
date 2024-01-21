@@ -11,6 +11,7 @@ export class ChatMessageMapper
 {
   id: number;
   value: string;
+  replyToId?: number;
   repliesCount: number;
   author: IAuthorDTO;
   timestamps: ITimestampsDTO;
@@ -20,7 +21,7 @@ export class ChatMessageMapper
 
     this.assignInitialKeys();
 
-    const { createdBy, createdAt, updatedAt } = data;
+    const { createdBy, createdAt, updatedAt, replyTo } = data;
 
     this.author = {
       id: createdBy.id,
@@ -31,6 +32,10 @@ export class ChatMessageMapper
       createdAt: createdAt.toISOString(),
       updatedAt: updatedAt.toISOString(),
     };
+
+    if (replyTo) {
+      this.replyToId = replyTo.id;
+    }
 
     return this;
   }

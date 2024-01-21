@@ -1,6 +1,6 @@
 <template>
   <n-dropdown
-    trigger="hover"
+    trigger="click"
     :options="options"
     :width="250"
     @select="handleSelect"
