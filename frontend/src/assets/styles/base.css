@@ -55,6 +55,10 @@ body {
 
     .brand {
       font-size: 22px;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     .location {
