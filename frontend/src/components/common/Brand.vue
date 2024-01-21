@@ -1,7 +1,7 @@
 <template>
   <div class="brand">
     <div class="primary-content">
-      <icon v-if="!noIcon" :value="BrandIcon" />
+      <icon v-if="!noIcon" :value="customIcon || BrandIcon" />
 
       <span>itvault</span>
     </div>
@@ -19,6 +19,8 @@ import Icon from "./Icon.vue";
 
 interface IProps {
   noIcon?: boolean;
+
+  customIcon?: Object;
 }
 
 withDefaults(defineProps<IProps>(), {
