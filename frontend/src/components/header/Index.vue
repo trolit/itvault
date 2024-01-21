@@ -1,16 +1,6 @@
 <template>
   <n-page-header class="app-header">
-    <brand v-if="isInDashboardView" />
-
-    <router-link
-      v-else
-      :to="`/${ROUTE_DASHBOARD_NAME}`"
-      :style="{ color: isBrandHovered ? textColor : 'inherit' }"
-      @mouseenter="isBrandHovered = true"
-      @mouseleave="isBrandHovered = false"
-    >
-      <brand />
-    </router-link>
+    <brand-dropdown />
 
     <location />
 
@@ -36,21 +26,19 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch, onBeforeMount } from "vue";
+import { NPageHeader, NButton, NIcon } from "naive-ui";
 import { RainDrop as RainDropIcon } from "@vicons/carbon";
 import { useRoute, type RouteRecordName } from "vue-router";
-import { NPageHeader, useThemeVars, NButton, NIcon } from "naive-ui";
-import { ref, computed, type ComputedRef, watch, onBeforeMount } from "vue";
 
 import { useAuthStore } from "@/store/auth";
-import Brand from "@/components/common/Brand.vue";
+import BrandDropdown from "./BrandDropdown.vue";
 import ProfileDropdown from "./ProfileDropdown.vue";
 import PermissionsModal from "./PermissionsModal.vue";
 import Location from "@/components/header/Location.vue";
-import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
 
 const authStore = useAuthStore();
-const themeVars = useThemeVars();
 
 onBeforeMount(() => {
   authStore.initializeSocket();
@@ -59,10 +47,6 @@ onBeforeMount(() => {
 let isBrandHovered = ref<boolean>(false);
 const isPermissionsModalVisible = ref(false);
 
-const textColor = computed<string>((): string => {
-  return themeVars.value.primaryColor;
-});
-
 const route = useRoute();
 
 watch(
@@ -70,9 +54,5 @@ watch(
   (): void => {
     isBrandHovered.value = false;
   }
-);
-
-const isInDashboardView: ComputedRef<boolean> = computed(
-  (): boolean => route.name === ROUTE_DASHBOARD_NAME
 );
 </script>
