@@ -72,8 +72,7 @@ body {
 
     .actions {
       display: inherit;
-      column-gap: 5px;
-      padding: 0 5px;
+      column-gap: 10px;
       align-items: center;
       justify-content: right;
     }

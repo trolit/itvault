@@ -5,6 +5,14 @@
     <location />
 
     <div class="actions">
+      <n-button text :focusable="false">
+        <n-icon
+          :size="25"
+          :component="generalStore.isChatVisible ? ChatOffIcon : ChatOnIcon"
+          @click="generalStore.toggleChat"
+        />
+      </n-button>
+
       <theme-selector>
         <template #default>
           <n-button text :focusable="false" class="theme-selector">
@@ -26,19 +34,25 @@
 </template>
 
 <script setup lang="ts">
+import {
+  ChatOff as ChatOffIcon,
+  ChatLaunch as ChatOnIcon,
+  RainDrop as RainDropIcon,
+} from "@vicons/carbon";
 import { ref, watch, onBeforeMount } from "vue";
 import { NPageHeader, NButton, NIcon } from "naive-ui";
-import { RainDrop as RainDropIcon } from "@vicons/carbon";
 import { useRoute, type RouteRecordName } from "vue-router";
 
 import { useAuthStore } from "@/store/auth";
 import BrandDropdown from "./BrandDropdown.vue";
+import { useGeneralStore } from "@/store/general";
 import ProfileDropdown from "./ProfileDropdown.vue";
 import PermissionsModal from "./PermissionsModal.vue";
 import Location from "@/components/header/Location.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
 
 const authStore = useAuthStore();
+const generalStore = useGeneralStore();
 
 onBeforeMount(() => {
   authStore.initializeSocket();
