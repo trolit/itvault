@@ -23,7 +23,7 @@
 
     <n-grid
       v-if="!isLoading"
-      x-gap="10"
+      x-gap="40"
       y-gap="20"
       responsive="screen"
       cols="1 s:1 m:2 l:2 xl:2 2xl:2"
