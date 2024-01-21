@@ -7,11 +7,9 @@
       responsive="screen"
       cols="1 s:1 m:6 l:6 xl:6 2xl:6"
     >
-      <n-grid-item :span="6">
-        <welcome />
+      <n-grid-item span="2">
+        <welcome-card />
       </n-grid-item>
-
-      <n-grid-item span="2"> @TODO </n-grid-item>
 
       <n-grid-item class="workspaces-card-wrapper" span="4">
         <workspaces-card />
@@ -26,8 +24,8 @@
 import { NGrid, NGridItem } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
-import Welcome from "@/components/dashboard/Welcome.vue";
-import WorkspacesCard from "@/components/dashboard/Workspaces.vue";
+import WelcomeCard from "@/components/dashboard/WelcomeCard.vue";
+import WorkspacesCard from "@/components/dashboard/WorkspacesCard.vue";
 import AddEditWorkspaceDrawer from "@/components/dashboard/AddEditWorkspaceDrawer.vue";
 
 const authStore = useAuthStore();
