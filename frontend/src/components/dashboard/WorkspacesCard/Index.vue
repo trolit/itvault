@@ -1,5 +1,9 @@
 <template>
-  <n-card size="medium">
+  <n-card
+    size="medium"
+    :header-extra-style="{ marginLeft: '20px' }"
+    :footer-style="{ display: 'flex', justifyContent: 'center' }"
+  >
     <template #header>
       <!-- @TODO show input only when there are at least 3 pages -->
       <n-input disabled clearable placeholder="Type name or tag to filter">
