@@ -5,7 +5,9 @@
     :options="options"
     @select="onSelect"
   >
-    <brand :custom-icon="activeIcon" />
+    <n-button quaternary>
+      <brand :custom-icon="activeIcon" />
+    </n-button>
   </n-dropdown>
 </template>
 
@@ -19,8 +21,8 @@ import {
   Workspace as WorkspacesIcon,
 } from "@vicons/carbon";
 import { computed } from "vue";
-import { NDropdown } from "naive-ui";
 import { useRouter } from "vue-router";
+import { NDropdown, NButton } from "naive-ui";
 
 import {
   ROUTE_USERS_NAME,
