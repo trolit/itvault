@@ -20,7 +20,9 @@ export const useChatMessagesStore = defineStore("chat-messages", {
     items: [],
   }),
 
-  getters: {},
+  getters: {
+    ITEMS_PER_PAGE: () => 10,
+  },
 
   actions: {
     async getAll(options: IPaginationQuery & { messageId?: number }) {
