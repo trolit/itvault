@@ -3,7 +3,7 @@
     <n-layout has-sider sider-placement="left">
       <n-layout-sider
         bordered
-        :width="350"
+        :width="380"
         :collapsed-width="0"
         collapse-mode="transform"
         :collapsed="!generalStore.isChatVisible"
