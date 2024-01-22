@@ -11,13 +11,14 @@ export class ChatMessageMapper
 {
   id: number;
   value: string;
+  depth: number;
   replyToId?: number;
   repliesCount: number;
   author: IAuthorDTO;
   timestamps: ITimestampsDTO;
 
   constructor(data: ChatMessage) {
-    super(data, ["id", "value", "repliesCount"]);
+    super(data, ["id", "value", "repliesCount", "depth"]);
 
     this.assignInitialKeys();
 
