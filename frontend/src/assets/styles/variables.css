@@ -23,4 +23,7 @@
   --roles-header-height: 9vh;
   --roles-tabs-height: 43px;
   --roles-bottom-margin: 20px;
+
+  /* GLOBAL CHAT */
+  --global-chat-footer-height: 50px;
 }
