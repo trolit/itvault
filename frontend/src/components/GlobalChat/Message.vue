@@ -31,11 +31,32 @@
     </template>
 
     {{ item.value }}
+
+    <template #action>
+      <n-space justify="space-between" align="center">
+        <component
+          :is="hasAnyReply ? NButton : 'span'"
+          v-bind="
+            hasAnyReply
+              ? {
+                  size: 'small',
+                  type: 'text',
+                  style: { margin: 0, padding: 0 },
+                }
+              : {}
+          "
+        >
+          <n-text :depth="3">{{ repliesText }}</n-text>
+        </component>
+
+        <n-button secondary size="small">reply</n-button>
+      </n-space>
+    </template>
   </n-thing>
 </template>
 
 <script setup lang="ts">
-import { NText, NThing, NAvatar, NTooltip } from "naive-ui";
+import { NText, NThing, NAvatar, NTooltip, NSpace, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import ActionsDropdown from "./ActionsDropdown.vue";
@@ -52,19 +73,30 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-const { initials, createdBy, isOwner } = defineComputed({
-  initials() {
-    const [name, surname] = props.item.author.fullName.split(" ");
+const { initials, hasAnyReply, repliesText, createdBy, isOwner } =
+  defineComputed({
+    initials() {
+      const [name, surname] = props.item.author.fullName.split(" ");
 
-    return `${name[0]}${surname[0]}`;
-  },
+      return `${name[0]}${surname[0]}`;
+    },
 
-  createdBy() {
-    return props.item.author.fullName;
-  },
+    hasAnyReply() {
+      return props.item.repliesCount > 0;
+    },
 
-  isOwner() {
-    return authStore.loggedUserId === props.item.author.id;
-  },
-});
+    repliesText() {
+      return `${props.item.repliesCount} ${
+        props.item.repliesCount === 1 ? "reply" : "replies"
+      }`;
+    },
+
+    createdBy() {
+      return props.item.author.fullName;
+    },
+
+    isOwner() {
+      return authStore.loggedUserId === props.item.author.id;
+    },
+  });
 </script>
