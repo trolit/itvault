@@ -1,7 +1,8 @@
 <template>
   <div class="dashboard-page page">
+    <!-- @TODO x-gap should share value with --page-margin -->
     <n-grid
-      x-gap="10"
+      x-gap="15"
       y-gap="20"
       class="grid"
       responsive="screen"
