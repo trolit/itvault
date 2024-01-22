@@ -7,7 +7,7 @@
         <message
           v-for="(item, index) in chatMessagesStore.items"
           :key="index"
-          :value="item"
+          :item="item"
         />
       </n-scrollbar>
 

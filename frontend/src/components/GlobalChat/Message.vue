@@ -15,22 +15,22 @@
     </template>
 
     <template #header-extra>
-      <actions-dropdown v-if="isOwner" :message="value" />
+      <actions-dropdown v-if="isOwner" :message="item" />
     </template>
 
     <template #description>
       <n-tooltip trigger="hover" placement="right">
         <template #trigger>
           <n-text depth="3">
-            <small>{{ dateService.fromNow(value.timestamps.createdAt) }}</small>
+            <small>{{ dateService.fromNow(item.timestamps.createdAt) }}</small>
           </n-text>
         </template>
 
-        {{ dateService.format(value.timestamps.createdAt, "YYYY-MM-DD HH:mm") }}
+        {{ dateService.format(item.timestamps.createdAt, "YYYY-MM-DD HH:mm") }}
       </n-tooltip>
     </template>
 
-    {{ value.value }}
+    {{ item.value }}
   </n-thing>
 </template>
 
@@ -47,24 +47,24 @@ const authStore = useAuthStore();
 const dateService = useDateService();
 
 interface IProps {
-  value: IChatMessageDTO;
+  item: IChatMessageDTO;
 }
 
 const props = defineProps<IProps>();
 
 const { initials, createdBy, isOwner } = defineComputed({
   initials() {
-    const [name, surname] = props.value.author.fullName.split(" ");
+    const [name, surname] = props.item.author.fullName.split(" ");
 
     return `${name[0]}${surname[0]}`;
   },
 
   createdBy() {
-    return props.value.author.fullName;
+    return props.item.author.fullName;
   },
 
   isOwner() {
-    return authStore.loggedUserId === props.value.author.id;
+    return authStore.loggedUserId === props.item.author.id;
   },
 });
 </script>
