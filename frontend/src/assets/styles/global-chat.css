@@ -1,0 +1,32 @@
+.global-chat {
+  height: calc(100vh - var(--header-height));
+
+  .loading {
+    display: flex;
+    height: inherit;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wrapper {
+    .n-scrollbar {
+      max-height: calc(
+        100vh - var(--header-height) - var(--global-chat-footer-height)
+      );
+
+      .n-scrollbar-content {
+        padding: 10px 12px 0 8px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+      }
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: var(--global-chat-footer-height);
+    }
+  }
+}
