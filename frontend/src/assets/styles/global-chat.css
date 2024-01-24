@@ -18,7 +18,15 @@
         padding: 10px 12px 0 8px;
         display: flex;
         flex-direction: column;
-        row-gap: 20px;
+        row-gap: 25px;
+
+        .thread {
+          width: 100%;
+
+          .message {
+            margin: 10px 0;
+          }
+        }
       }
     }
 
