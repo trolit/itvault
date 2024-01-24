@@ -20,8 +20,9 @@
       .n-scrollbar-content {
         padding: 10px 15px 0 8px;
         display: flex;
-        flex-direction: column;
         row-gap: 25px;
+        overflow: auto;
+        flex-direction: column-reverse;
 
         .thread {
           width: 100%;
