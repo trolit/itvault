@@ -2,6 +2,8 @@
   <div class="global-chat">
     <loading-section v-if="chatMessagesStore.items.length === 0 && isLoading" />
 
+    <!-- @TODO cover empty chat case -->
+
     <div class="wrapper" v-else>
       <n-scrollbar>
         <thread
@@ -58,7 +60,7 @@ async function onLoad() {
   } catch (error) {
     console.log(error);
 
-    // @TODO
+    generalStore.messageProvider.error("Failed to load chat!");
   } finally {
     isLoading.value = false;
   }
@@ -80,7 +82,7 @@ async function onRepliesLoad(message: ChatMessage, page: number) {
   } catch (error) {
     console.log(error);
 
-    // @TODO
+    generalStore.messageProvider.error("Failed to load replies!");
   } finally {
     const idIndex = messageIdsToLoadRepliesTo.value.findIndex(
       id => id === message.id
