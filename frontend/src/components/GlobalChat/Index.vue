@@ -63,6 +63,16 @@ async function onLoad() {
     generalStore.messageProvider.error("Failed to load chat!");
   } finally {
     isLoading.value = false;
+
+    const [scrollbarContainer] = document.getElementsByClassName(
+      "n-scrollbar-container"
+    );
+
+    scrollbarContainer.scrollTo({
+      left: 0,
+      top: scrollbarContainer.scrollHeight,
+      behavior: "instant",
+    });
   }
 }
 
