@@ -1,11 +1,14 @@
 import axios from "axios";
 import { defineStore } from "pinia";
+import cloneDeep from "lodash/cloneDeep";
 
 import type {
   IChatMessageDTO,
   IAddChatMessageDTO,
   IPatchChatMessageValueDTO,
 } from "@shared/types/DTOs/ChatMessage";
+import type { ChatMessage } from "@/types/ChatMessage";
+import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
@@ -22,6 +25,32 @@ export const useChatMessagesStore = defineStore("chat-messages", {
 
   getters: {
     ITEMS_PER_PAGE: () => 10,
+    MAX_DEPTH: () => WORKSPACE_CHAT_MAX_DEPTH,
+    NESTED_ITEMS_BY_DEPTH(): ChatMessage[] {
+      const firstDepthItems = cloneDeep(
+        this.items.filter(item => item.depth === 1)
+      );
+
+      const createChatMessageItem = (item: IChatMessageDTO) => {
+        const chatMessageItem: ChatMessage = { ...item, replies: [] };
+
+        const replies = this.items.filter(
+          element => element.replyToId === item.id
+        );
+
+        if (!replies.length) {
+          return chatMessageItem;
+        }
+
+        chatMessageItem.replies = replies.map(reply =>
+          createChatMessageItem(reply)
+        );
+
+        return chatMessageItem;
+      };
+
+      return firstDepthItems.map(item => createChatMessageItem(item));
+    },
   },
 
   actions: {
