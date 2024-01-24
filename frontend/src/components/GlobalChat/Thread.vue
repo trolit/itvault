@@ -17,12 +17,9 @@
 
     <div
       v-if="item.replies.length"
+      class="replies"
       :style="{
-        marginTop: '10px',
-        paddingLeft: '15px',
-        borderLeft: '3px dashed gray',
         marginLeft: `${item.depth * 15}px`,
-        position: 'relative',
       }"
     >
       <n-collapse-transition :show="isExpanded">
@@ -39,15 +36,19 @@
           />
 
           <div
+            class="load-more-replies-wrapper"
             v-if="reply.id === lastReplyId && !areAllRepliesLoaded"
-            :style="{ position: 'absolute', left: '-16px' }"
+            :style="{ left: `-${loadMoreRepliesIconSize - 2}px` }"
           >
             <n-button
               size="tiny"
               :loading="messageIdsUnderLoad.includes(item.id)"
               @click="$emit('load-replies', item, nextPage)"
             >
-              <n-icon :component="LoadMoreIcon" :size="18" />
+              <n-icon
+                :component="LoadMoreIcon"
+                :size="loadMoreRepliesIconSize"
+              />
             </n-button>
           </div>
         </div>
@@ -75,6 +76,7 @@ interface IProps {
 
 const isExpanded = ref(true);
 
+const loadMoreRepliesIconSize = 18;
 const props = defineProps<IProps>();
 
 defineEmits<{

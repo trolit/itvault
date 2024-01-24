@@ -23,6 +23,17 @@
         .thread {
           width: 100%;
 
+          .replies {
+            margin-top: 10px;
+            padding-left: 15px;
+            position: relative;
+            border-left: 3px dashed gray;
+
+            .load-more-replies-wrapper {
+              position: absolute;
+            }
+          }
+
           .message {
             margin: 10px 0;
           }
