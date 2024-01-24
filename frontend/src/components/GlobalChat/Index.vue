@@ -1,4 +1,5 @@
 <template>
+  <!-- @TODO on logout should be closed -->
   <div class="global-chat">
     <loading-section v-if="chatMessagesStore.items.length === 0 && isLoading" />
 
