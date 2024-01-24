@@ -26,15 +26,15 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, toRefs, watch } from "vue";
 import { Add as AddIcon } from "@vicons/carbon";
 import { NScrollbar, NButton, NIcon } from "naive-ui";
+import { reactive, ref, toRefs, watch, type Ref } from "vue";
 
 import Thread from "./Thread.vue";
 import { useGeneralStore } from "@/store/general";
+import type { ChatMessage } from "@/types/ChatMessage";
 import { useChatMessagesStore } from "@/store/chat-messages";
 import LoadingSection from "@/components/common/LoadingSection.vue";
-import type { ChatMessage } from "@/types/ChatMessage";
 
 const generalStore = useGeneralStore();
 const chatMessagesStore = useChatMessagesStore();
@@ -46,24 +46,24 @@ const isLoading = ref(false);
 
 const messageIdsToLoadRepliesTo: { value: number[] } = reactive({ value: [] });
 
-async function onLoad() {
-  if (isLoading.value) {
+async function fetchSourceMessages(page = 1, loader: Ref<boolean>) {
+  if (loader.value) {
     return;
   }
 
-  isLoading.value = true;
+  loader.value = true;
 
   try {
     await chatMessagesStore.getAll({
-      page: 1,
+      page,
       perPage: chatMessagesStore.ITEMS_PER_PAGE,
     });
   } catch (error) {
     console.log(error);
 
-    generalStore.messageProvider.error("Failed to load chat!");
+    generalStore.messageProvider.error("Failed to fetch chat messages!");
   } finally {
-    isLoading.value = false;
+    loader.value = false;
 
     const [scrollbarContainer] = document.getElementsByClassName(
       "n-scrollbar-container"
@@ -93,7 +93,7 @@ async function onRepliesLoad(message: ChatMessage, page: number) {
   } catch (error) {
     console.log(error);
 
-    generalStore.messageProvider.error("Failed to load replies!");
+    generalStore.messageProvider.error("Failed to fetch chat replies!");
   } finally {
     const idIndex = messageIdsToLoadRepliesTo.value.findIndex(
       id => id === message.id
@@ -110,6 +110,6 @@ watch(isChatVisible, async () => {
     return;
   }
 
-  onLoad();
+  fetchSourceMessages(1, isLoading);
 });
 </script>
