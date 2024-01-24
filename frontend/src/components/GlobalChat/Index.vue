@@ -5,7 +5,7 @@
     <!-- @TODO cover empty chat case -->
 
     <div class="wrapper" v-else>
-      <n-scrollbar>
+      <n-scrollbar trigger="none">
         <thread
           v-for="(item, index) in NESTED_ITEMS_BY_DEPTH"
           :key="index"

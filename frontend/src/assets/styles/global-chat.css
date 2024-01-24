@@ -15,7 +15,7 @@
       );
 
       .n-scrollbar-content {
-        padding: 10px 12px 0 8px;
+        padding: 10px 15px 0 8px;
         display: flex;
         flex-direction: column;
         row-gap: 25px;
