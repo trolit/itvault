@@ -1,0 +1,102 @@
+<template>
+  <div class="thread">
+    <div>
+      <message
+        :item="item"
+        :is-expanded="isExpanded"
+        :is-loading="
+          wereAnyRepliesFetched ? false : messageIdsUnderLoad.includes(item.id)
+        "
+        @load-replies="
+          wereAnyRepliesFetched
+            ? (isExpanded = !isExpanded)
+            : $emit('load-replies', item, 1)
+        "
+      />
+    </div>
+
+    <div
+      v-if="item.replies.length"
+      :style="{
+        marginTop: '10px',
+        paddingLeft: '15px',
+        borderLeft: '3px dashed gray',
+        marginLeft: `${item.depth * 15}px`,
+        position: 'relative',
+      }"
+    >
+      <n-collapse-transition :show="isExpanded">
+        <div
+          v-for="reply in item.replies"
+          :key="`reply-${reply.id}-to-${item.id}`"
+        >
+          <thread
+            :item="reply"
+            :message-ids-under-load="messageIdsUnderLoad"
+            @load-replies="
+              $emit('load-replies', reply, reply.replies.length ? nextPage : 1)
+            "
+          />
+
+          <div
+            v-if="reply.id === lastReplyId && !areAllRepliesLoaded"
+            :style="{ position: 'absolute', left: '-16px' }"
+          >
+            <n-button
+              size="tiny"
+              :loading="messageIdsUnderLoad.includes(item.id)"
+              @click="$emit('load-replies', item, nextPage)"
+            >
+              <n-icon :component="LoadMoreIcon" :size="18" />
+            </n-button>
+          </div>
+        </div>
+      </n-collapse-transition>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed, ref } from "vue";
+import { Term as LoadMoreIcon } from "@vicons/carbon";
+import { NCollapseTransition, NButton, NIcon } from "naive-ui";
+
+import Message from "./Message.vue";
+import type { ChatMessage } from "@/types/ChatMessage";
+import { useChatMessagesStore } from "@/store/chat-messages";
+
+const chatMessagesStore = useChatMessagesStore();
+
+interface IProps {
+  item: ChatMessage;
+
+  messageIdsUnderLoad: number[];
+}
+
+const isExpanded = ref(true);
+
+const props = defineProps<IProps>();
+
+defineEmits<{
+  (event: "load-replies", item: ChatMessage, page: number): void;
+}>();
+
+const wereAnyRepliesFetched = computed(() => !!props.item.replies.length);
+
+const lastReplyId = computed(() => {
+  return props.item.replies.length
+    ? props.item.replies[props.item.replies.length - 1].id
+    : 0;
+});
+
+const nextPage = computed(() => {
+  return Math.ceil(
+    (props.item.replies.length + chatMessagesStore.ITEMS_PER_PAGE) /
+      chatMessagesStore.ITEMS_PER_PAGE
+  );
+});
+
+const areAllRepliesLoaded = computed(() => {
+  return props.item.replies.length === props.item.repliesCount;
+});
+</script>
