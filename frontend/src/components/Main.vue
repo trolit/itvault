@@ -2,6 +2,7 @@
   <main :class="{ 'with-app-header': withAppHeader }">
     <n-layout has-sider sider-placement="left">
       <n-layout-sider
+        v-if="$route.name !== ROUTE_LOGIN_NAME"
         bordered
         :width="380"
         :collapsed-width="0"
@@ -35,6 +36,7 @@ import { storeToRefs } from "pinia";
 import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
 import GlobalChat from "@/components/GlobalChat/Index.vue";
+import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
 
 defineProps({
   withAppHeader: {
