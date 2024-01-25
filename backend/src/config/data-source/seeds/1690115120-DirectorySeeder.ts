@@ -32,10 +32,6 @@ export default class DirectorySeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const directoryRepository = dataSource.getRepository(Directory);
 
-    await directoryRepository.save({
-      relativePath: FILES.ROOT,
-    });
-
     for (const relativePath of relativePaths) {
       await directoryRepository.save({
         relativePath,
