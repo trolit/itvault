@@ -63,7 +63,7 @@ export class PatchValueController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
-    const { UPDATE_MESSAGE } = SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS;
+    const { UPDATE_MESSAGE } = SOCKET_MESSAGES.GLOBAL.ACTIONS;
 
     this._socketServiceManager.sendMessage<UpdateChatMessageData>({
       action: UPDATE_MESSAGE,

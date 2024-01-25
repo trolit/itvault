@@ -63,7 +63,7 @@ export class HardDeleteController extends BaseController {
 
     await this._chatMessageRepository.hardDeleteEntity(message);
 
-    const { DELETE_MESSAGE } = SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS;
+    const { DELETE_MESSAGE } = SOCKET_MESSAGES.GLOBAL.ACTIONS;
 
     this._socketServiceManager.sendMessage<DeleteChatMessageData>({
       action: DELETE_MESSAGE,
