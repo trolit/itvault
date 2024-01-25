@@ -59,7 +59,7 @@ export class AddController extends BaseController {
 
     const result = this.mapper.map(message).to(ChatMessageMapper);
 
-    const { CREATE_MESSAGE } = SOCKET_MESSAGES.VIEW_DASHBOARD.ACTIONS;
+    const { CREATE_MESSAGE } = SOCKET_MESSAGES.GLOBAL.ACTIONS;
 
     this._socketServiceManager.sendMessage<AddChatMessageData>({
       action: CREATE_MESSAGE,

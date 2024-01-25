@@ -1,13 +1,18 @@
 export default {
+  GLOBAL: {
+    TYPE: "global",
+    ACTIONS: {
+      CREATE_MESSAGE: "create-message",
+      UPDATE_MESSAGE: "update-message",
+      DELETE_MESSAGE: "delete-message",
+    },
+  },
+
   VIEW_DASHBOARD: {
     TYPE: "view-dashboard",
     ACTIONS: {
       CREATE_WORKSPACE: "create-workspace",
       UPDATE_WORKSPACE: "update-workspace",
-
-      CREATE_MESSAGE: "create-message",
-      UPDATE_MESSAGE: "update-message",
-      DELETE_MESSAGE: "delete-message",
     },
   },
 

@@ -42,7 +42,7 @@ export class SocketServiceMember implements ISocketServiceMember {
 
     this._token = token;
 
-    this.printMessage("Connected.");
+    this._printMessage("Connected.");
 
     // @NOTE [2] configure events
     socket.on("message", (message: string) => {
@@ -51,11 +51,11 @@ export class SocketServiceMember implements ISocketServiceMember {
       try {
         parsedMessage = JSON.parse(message);
       } catch (error) {
-        this.printMessage(<string>error);
+        this._printMessage(<string>error);
       }
 
       if (!parsedMessage) {
-        this.printMessage("Sent unparseable message. Ignoring...");
+        this._printMessage("Sent unparseable message. Ignoring...");
 
         return;
       }
@@ -64,11 +64,11 @@ export class SocketServiceMember implements ISocketServiceMember {
 
       this.latestMessage = parsedMessage;
 
-      this.printMessage(`Sent message of type: '${type}'`);
+      this._printMessage(`Sent message of type: '${type}'`);
     });
 
     socket.on("close", () => {
-      this.printMessage("Disconnected.");
+      this._printMessage("Disconnected.");
 
       // @NOTE so Manager can "remove" that member
       this.sid = "";
@@ -81,17 +81,17 @@ export class SocketServiceMember implements ISocketServiceMember {
     const result = authService.verifyToken(this._token);
 
     if (result.error) {
-      this.printMessage("Won't receive message (token expired)");
+      this._printMessage("Won't receive message (token expired)");
 
       return;
     }
 
-    this.printMessage(`Should receive '${data.action}' message.`);
+    this._printMessage(`Should receive '${data.action}' message.`);
 
     this._socket.send(JSON.stringify(data));
   }
 
-  private printMessage(message: string) {
+  private _printMessage(message: string) {
     console.log(`[SOCKET---${this.sid}]: ${message}`);
   }
 }
