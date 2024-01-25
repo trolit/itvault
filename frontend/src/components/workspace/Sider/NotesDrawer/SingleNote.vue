@@ -8,7 +8,7 @@
       <n-space justify="end">
         <n-text depth="3">
           <small>
-            <!-- @TODO if proper permission is owned, it should be clickable (to view user profile) -->
+            <!-- @TODO if proper permission is owned, it should be clickable (to view user profile) - UserNotesModal -->
             {{ createdBy.fullName }}
 
             <n-tooltip trigger="hover" placement="right">

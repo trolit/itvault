@@ -1,5 +1,5 @@
 :root {
-  --page-margin: 20px;
+  --page-margin: 15px;
   --header-height: 60px;
   --primary-color: #8895ff;
   --sidebar-top-panel-height: 60px;
@@ -23,4 +23,7 @@
   --roles-header-height: 9vh;
   --roles-tabs-height: 43px;
   --roles-bottom-margin: 20px;
+
+  /* GLOBAL CHAT */
+  --global-chat-footer-height: 50px;
 }

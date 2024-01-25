@@ -6,6 +6,7 @@ import type { MessageApiInjection } from "naive-ui/es/message/src/MessageProvide
 
 interface IState {
   theme: string;
+  isChatVisible: boolean;
   loadingState: LoadingState;
   message: MessageApiInjection | null;
 }
@@ -14,6 +15,7 @@ export const useGeneralStore = defineStore("general", {
   state: (): IState => ({
     message: null,
     theme: THEME_DARK,
+    isChatVisible: false,
     loadingState: LoadingState.Idle,
   }),
 
@@ -28,6 +30,10 @@ export const useGeneralStore = defineStore("general", {
   },
 
   actions: {
+    toggleChat() {
+      this.isChatVisible = !this.isChatVisible;
+    },
+
     setTheme(theme: string) {
       this.theme = theme;
     },

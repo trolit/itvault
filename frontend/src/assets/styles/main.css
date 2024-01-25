@@ -1,6 +1,7 @@
 @import "./variables.css";
 
 @import "./base.css";
+@import "./global-chat.css";
 
 @import "./pages/guest.css";
 @import "./pages/login.css";

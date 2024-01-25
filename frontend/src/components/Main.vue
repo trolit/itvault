@@ -1,18 +1,42 @@
 <template>
   <main :class="{ 'with-app-header': withAppHeader }">
-    <n-scrollbar>
-      <router-view />
-    </n-scrollbar>
+    <n-layout has-sider sider-placement="left">
+      <n-layout-sider
+        v-if="$route.name !== ROUTE_LOGIN_NAME"
+        bordered
+        :width="380"
+        :collapsed-width="0"
+        collapse-mode="transform"
+        :collapsed="!generalStore.isChatVisible"
+      >
+        <global-chat />
+      </n-layout-sider>
+
+      <n-layout-content>
+        <n-scrollbar>
+          <router-view />
+        </n-scrollbar>
+      </n-layout-content>
+    </n-layout>
   </main>
 </template>
 
 <script setup lang="ts">
+import {
+  NLayout,
+  NScrollbar,
+  useMessage,
+  NLayoutSider,
+  useLoadingBar,
+  NLayoutContent,
+} from "naive-ui";
 import { watch } from "vue";
 import { storeToRefs } from "pinia";
-import { NScrollbar, useLoadingBar, useMessage } from "naive-ui";
 
 import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
+import GlobalChat from "@/components/GlobalChat/Index.vue";
+import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
 
 defineProps({
   withAppHeader: {

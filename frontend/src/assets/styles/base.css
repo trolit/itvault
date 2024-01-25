@@ -12,10 +12,22 @@ body {
       height: inherit;
 
       main {
-        height: 100%;
+        .n-layout {
+          .n-layout-scroll-container {
+            .n-layout-content {
+              height: calc(100vh - var(--header-height));
+            }
+          }
+        }
 
         &.with-app-header {
-          height: calc(100% - var(--header-height));
+          .n-layout {
+            .n-layout-scroll-container {
+              .n-layout-content {
+                height: calc(100vh - var(--header-height));
+              }
+            }
+          }
         }
 
         .n-scrollbar {
@@ -72,8 +84,7 @@ body {
 
     .actions {
       display: inherit;
-      column-gap: 5px;
-      padding: 0 5px;
+      column-gap: 10px;
       align-items: center;
       justify-content: right;
     }
