@@ -1,4 +1,3 @@
-import cloneDeep from "lodash/cloneDeep";
 import { Server, Socket } from "engine.io";
 import { inject, singleton } from "tsyringe";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
@@ -78,7 +77,7 @@ export class SocketServiceManager implements ISocketServiceManager {
     const type =
       SOCKET_MESSAGES[socketMessageKey as keyof typeof SOCKET_MESSAGES].TYPE;
 
-    let validMembers: SocketServiceMember[] = cloneDeep(this._members);
+    let validMembers: SocketServiceMember[] = this._members;
 
     if (type !== SOCKET_MESSAGES.GLOBAL.TYPE) {
       validMembers = validMembers.filter(
