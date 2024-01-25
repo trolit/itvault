@@ -1,12 +1,11 @@
 <template>
   <!-- @TODO on logout should be closed -->
   <div class="global-chat">
-    <loading-section v-if="chatMessagesStore.items.length === 0 && isLoading" />
+    <loading-section v-if="isLoadingSection" />
 
     <!-- @TODO cover empty chat case -->
-
-    <div class="wrapper" v-else>
-      <n-scrollbar trigger="none">
+    <div ref="wrapper" class="wrapper" v-else>
+      <n-scrollbar ref="scrollbar" trigger="none">
         <thread
           v-for="(item, index) in NESTED_ITEMS_BY_DEPTH"
           :key="index"
@@ -14,10 +13,18 @@
           :message-ids-under-load="messageIdsToLoadRepliesTo.value"
           @load-replies="onRepliesLoad"
         />
+
+        <div ref="fetchpoint">
+          <n-spin v-if="isLoadingMoreSourceMessages" />
+
+          <small v-if="areAllMessagesLoaded">
+            <n-text :depth="3"> -- Nothing more to load -- </n-text>
+          </small>
+        </div>
       </n-scrollbar>
 
       <div class="footer">
-        <n-button :disabled="isLoading" size="small" ghost>
+        <n-button :disabled="isLoadingSection" size="small" ghost>
           <n-icon :component="AddIcon" :size="25" />
         </n-button>
       </div>
@@ -27,8 +34,8 @@
 
 <script setup lang="ts">
 import { Add as AddIcon } from "@vicons/carbon";
-import { NScrollbar, NButton, NIcon } from "naive-ui";
 import { reactive, ref, toRefs, watch, type Ref } from "vue";
+import { NScrollbar, NButton, NIcon, NSpin, NText } from "naive-ui";
 
 import Thread from "./Thread.vue";
 import { useGeneralStore } from "@/store/general";
@@ -42,11 +49,21 @@ const chatMessagesStore = useChatMessagesStore();
 const { isChatVisible } = toRefs(generalStore);
 const { NESTED_ITEMS_BY_DEPTH } = toRefs(chatMessagesStore);
 
-const isLoading = ref(false);
+const wrapper = ref(null);
+const fetchpoint = ref(null);
+const scrollbar: Ref<Element | null> = ref(null);
+
+const isLoadingSection = ref(false);
+const isLoadingMoreSourceMessages = ref(false);
+const sourceMessagesPage = ref(1);
+const areAllMessagesLoaded = ref(false);
 
 const messageIdsToLoadRepliesTo: { value: number[] } = reactive({ value: [] });
 
-async function fetchSourceMessages(page = 1, loader: Ref<boolean>) {
+async function fetchSourceMessages(
+  loader: Ref<boolean>,
+  isFirstLoading?: boolean
+) {
   if (loader.value) {
     return;
   }
@@ -55,9 +72,11 @@ async function fetchSourceMessages(page = 1, loader: Ref<boolean>) {
 
   try {
     await chatMessagesStore.getAll({
-      page,
+      page: sourceMessagesPage.value,
       perPage: chatMessagesStore.ITEMS_PER_PAGE,
     });
+
+    sourceMessagesPage.value++;
   } catch (error) {
     console.log(error);
 
@@ -65,15 +84,9 @@ async function fetchSourceMessages(page = 1, loader: Ref<boolean>) {
   } finally {
     loader.value = false;
 
-    const [scrollbarContainer] = document.getElementsByClassName(
-      "n-scrollbar-container"
-    );
-
-    scrollbarContainer.scrollTo({
-      left: 0,
-      top: scrollbarContainer.scrollHeight,
-      behavior: "instant",
-    });
+    if (isFirstLoading) {
+      scrollToTheBottom();
+    }
   }
 }
 
@@ -110,6 +123,42 @@ watch(isChatVisible, async () => {
     return;
   }
 
-  fetchSourceMessages(1, isLoading);
+  await fetchSourceMessages(isLoadingSection, true);
+
+  addScrollObserver();
 });
+
+function addScrollObserver() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(async entry => {
+      if (entry.isIntersecting) {
+        await fetchSourceMessages(isLoadingMoreSourceMessages);
+
+        if (chatMessagesStore.items.length === chatMessagesStore.total) {
+          observer.disconnect();
+
+          areAllMessagesLoaded.value = true;
+        }
+      }
+    });
+  });
+
+  if (fetchpoint.value) {
+    observer.observe(fetchpoint.value);
+  }
+}
+
+function scrollToTheBottom() {
+  const [scrollbarContainer] = document.getElementsByClassName(
+    "n-scrollbar-container"
+  );
+
+  if (scrollbar.value) {
+    scrollbar.value.scrollTo({
+      left: 0,
+      top: scrollbarContainer.scrollHeight,
+      behavior: "instant",
+    });
+  }
+}
 </script>
