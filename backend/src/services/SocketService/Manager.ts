@@ -1,3 +1,4 @@
+import cloneDeep from "lodash/cloneDeep";
 import { Server, Socket } from "engine.io";
 import { inject, singleton } from "tsyringe";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
@@ -62,7 +63,7 @@ export class SocketServiceManager implements ISocketServiceManager {
       throw Error("SocketService manager not initialized!");
     }
 
-    // @NOTE [1] determine TYPE and filter members with it
+    // @NOTE [1] determine TYPE
     const socketMessageKey = Object.keys(SOCKET_MESSAGES).find(message => {
       const actions =
         SOCKET_MESSAGES[message as keyof typeof SOCKET_MESSAGES].ACTIONS;
@@ -77,11 +78,13 @@ export class SocketServiceManager implements ISocketServiceManager {
     const type =
       SOCKET_MESSAGES[socketMessageKey as keyof typeof SOCKET_MESSAGES].TYPE;
 
-    let validMembers: SocketServiceMember[] = [];
+    let validMembers: SocketServiceMember[] = cloneDeep(this._members);
 
-    validMembers = this._members.filter(
-      ({ latestMessage }) => !!latestMessage && latestMessage.type === type
-    );
+    if (type !== SOCKET_MESSAGES.GLOBAL.TYPE) {
+      validMembers = validMembers.filter(
+        ({ latestMessage }) => !!latestMessage && latestMessage.type === type
+      );
+    }
 
     if (!validMembers.length) {
       return;
