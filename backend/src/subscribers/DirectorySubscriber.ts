@@ -16,7 +16,6 @@ export class DirectorySubscriber
     return Directory;
   }
 
-  // @TODO add ROOT dir through (subscriber's) event!
   async beforeInsert(event: InsertEvent<Directory>) {
     const {
       manager,
@@ -32,12 +31,19 @@ export class DirectorySubscriber
 
     console.info(`Insert request received upon ${relativePath}`);
 
-    let previousDirectory: Directory = await manager.findOneByOrFail(
+    let previousDirectory: Directory | null = await manager.findOneBy(
       Directory,
       {
-        relativePath: ".",
+        relativePath: FILES.ROOT,
       }
     );
+
+    if (!previousDirectory) {
+      previousDirectory = await manager.save(
+        manager.create(Directory, { relativePath: FILES.ROOT }),
+        { listeners: false }
+      );
+    }
 
     console.info(`Making sure that partial paths are in DB.`);
 
@@ -49,7 +55,7 @@ export class DirectorySubscriber
       });
 
       if (!currentDirectory && previousDirectory) {
-        const dirToAdd = manager.create(Directory, {
+        const dirToAdd: Directory = manager.create(Directory, {
           relativePath: currentPath,
           parentDirectory: {
             id: previousDirectory.id,
