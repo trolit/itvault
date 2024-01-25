@@ -59,20 +59,31 @@
           {{ repliesText }}
         </n-text>
 
-        <n-button secondary size="tiny"> reply </n-button>
+        <n-button secondary size="tiny">
+          <n-icon :component="AddCommentIcon" :size="20" />
+        </n-button>
       </n-space>
     </template>
   </n-thing>
 </template>
 
 <script setup lang="ts">
-import { NText, NThing, NAvatar, NTooltip, NSpace, NButton } from "naive-ui";
+import {
+  NIcon,
+  NText,
+  NSpace,
+  NThing,
+  NButton,
+  NAvatar,
+  NTooltip,
+} from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import ActionsDropdown from "./ActionsDropdown.vue";
 import type { ChatMessage } from "@/types/ChatMessage";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
+import { AddComment as AddCommentIcon } from "@vicons/carbon";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 
 const authStore = useAuthStore();

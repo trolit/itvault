@@ -1,5 +1,7 @@
 <template>
   <div class="thread">
+    <!-- @TODO consider button to open thread in separate section -->
+
     <div>
       <message
         :item="item"
