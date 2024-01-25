@@ -60,10 +60,7 @@ const areAllMessagesLoaded = ref(false);
 
 const messageIdsToLoadRepliesTo: { value: number[] } = reactive({ value: [] });
 
-async function fetchSourceMessages(
-  loader: Ref<boolean>,
-  isFirstLoading?: boolean
-) {
+async function fetchSourceMessages(loader: Ref<boolean>) {
   if (loader.value) {
     return;
   }
@@ -83,10 +80,6 @@ async function fetchSourceMessages(
     generalStore.messageProvider.error("Failed to fetch chat messages!");
   } finally {
     loader.value = false;
-
-    if (isFirstLoading) {
-      scrollToTheBottom();
-    }
   }
 }
 
@@ -123,7 +116,9 @@ watch(isChatVisible, async () => {
     return;
   }
 
-  await fetchSourceMessages(isLoadingSection, true);
+  await fetchSourceMessages(isLoadingSection);
+
+  scrollToTheBottom();
 
   addScrollObserver();
 });
