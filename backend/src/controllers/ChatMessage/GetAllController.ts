@@ -73,7 +73,7 @@ export class GetAllController extends BaseController {
         },
       },
       order: {
-        createdAt: "desc",
+        createdAt: messageId ? "asc" : "desc",
       },
       relations: {
         replyTo: true,
