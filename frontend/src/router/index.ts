@@ -15,6 +15,7 @@ import {
   ROUTE_USERS_NAME,
   ROUTE_SIGN_UP_NAME,
   ROUTE_UPDATES_NAME,
+  ROUTE_INSIGHTS_NAME,
   ROUTE_SETTINGS_NAME,
   ROUTE_DASHBOARD_NAME,
   ROUTE_WORKSPACES_NAME,
@@ -27,6 +28,7 @@ import Roles from "@/views/Roles.vue";
 import Users from "@/views/Users.vue";
 import SignUp from "@/views/SignUp.vue";
 import Updates from "@/views/Updates.vue";
+import Insights from "@/views/Insights.vue";
 import Settings from "@/views/Settings.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Workspace from "@/views/Workspace.vue";
@@ -92,6 +94,16 @@ const router = createRouter({
       path: `/${ROUTE_WORKSPACES_NAME}/:slug`,
       name: ROUTE_WORKSPACES_NAME,
       component: Workspace,
+      props: {},
+      meta: {
+        requiresAuth: true,
+      },
+    },
+
+    {
+      path: `/${ROUTE_WORKSPACES_NAME}/:slug/${ROUTE_INSIGHTS_NAME}`,
+      name: ROUTE_INSIGHTS_NAME,
+      component: Insights,
       props: {},
       meta: {
         requiresAuth: true,
