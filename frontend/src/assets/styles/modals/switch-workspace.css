@@ -15,6 +15,13 @@
     max-height: var(--switch-workspace-modal-scrollbar-content-height);
 
     .n-scrollbar-content {
+      .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--switch-workspace-modal-scrollbar-content-height);
+      }
+
       .n-empty {
         display: flex;
         align-items: center;

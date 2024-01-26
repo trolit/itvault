@@ -11,10 +11,11 @@
     <template #header> Change workspace </template>
 
     <n-input
-      v-model:value="value"
+      :value="input"
       clearable
       type="text"
       placeholder="start typing"
+      @update:value="onInputChange"
     >
       <template #prefix>
         <n-icon :component="SearchIcon" />
@@ -59,11 +60,12 @@ defineEmits<Emits>();
 
 const { isVisible } = toRefs(props);
 
-const value = ref("");
+const input = ref("");
 const isLoading = ref(false);
+const inputSearchTimeoutId = ref(0);
 const items: Ref<IWorkspaceDTO[]> = ref([]);
 
-async function getWorkspaces() {
+async function getWorkspaces(value?: string) {
   isLoading.value = true;
 
   try {
@@ -71,7 +73,9 @@ async function getWorkspaces() {
       {
         page: 1,
         perPage: 5,
-        filters: {},
+        filters: {
+          name: value,
+        },
       },
       { keepInStore: false }
     );
@@ -93,4 +97,20 @@ watch(isVisible, value => {
     getWorkspaces();
   }
 });
+
+function onInputChange(value: string) {
+  if (!value) {
+    input.value = "";
+
+    return;
+  }
+
+  if (inputSearchTimeoutId.value) {
+    clearTimeout(inputSearchTimeoutId.value);
+  }
+
+  input.value = value;
+
+  inputSearchTimeoutId.value = setTimeout(() => getWorkspaces(value), 250);
+}
 </script>
