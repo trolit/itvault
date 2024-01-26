@@ -29,7 +29,7 @@ const emit = defineEmits(["change-workspace"]);
 
 const options = computed(() => [
   {
-    label: "Change workspace",
+    label: "Change",
     key: "change-workspace",
     icon: renderIcon(WorkspaceIcon),
   },
