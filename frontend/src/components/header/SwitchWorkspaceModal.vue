@@ -81,7 +81,9 @@ async function getWorkspaces(value?: string) {
       { keepInStore: false }
     );
 
-    items.value = response.result;
+    items.value = response.result.filter(
+      item => item.id !== workspacesStore.activeItemId
+    );
   } catch (error) {
     console.log(error);
 
