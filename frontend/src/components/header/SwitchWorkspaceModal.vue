@@ -15,7 +15,11 @@
       clearable
       type="text"
       placeholder="start typing"
-    />
+    >
+      <template #prefix>
+        <n-icon :component="SearchIcon" />
+      </template>
+    </n-input>
 
     <n-scrollbar>
       <loading-section v-if="isLoading" />
@@ -37,9 +41,10 @@
 
 <script setup lang="ts">
 import { ref, watch, type Ref, toRefs } from "vue";
-import { NModal, NInput, NSpace, NScrollbar, NEmpty } from "naive-ui";
+import { NModal, NInput, NSpace, NScrollbar, NEmpty, NIcon } from "naive-ui";
 
 import { useGeneralStore } from "@/store/general";
+import { Search as SearchIcon } from "@vicons/carbon";
 import { useWorkspacesStore } from "@/store/workspaces";
 import type { Emits, Props } from "@/types/CommonModalTypes";
 import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
