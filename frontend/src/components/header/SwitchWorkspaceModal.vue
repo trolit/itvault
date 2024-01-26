@@ -34,6 +34,7 @@
           hide-edit-button
           :key="index"
           :item="item"
+          @open="open(item)"
         />
       </n-space>
     </n-scrollbar>
@@ -56,7 +57,7 @@ const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
 const props = defineProps<Props>();
-defineEmits<Emits>();
+const emit = defineEmits<Emits>();
 
 const { isVisible } = toRefs(props);
 
@@ -112,5 +113,11 @@ function onInputChange(value: string) {
   input.value = value;
 
   inputSearchTimeoutId.value = setTimeout(() => getWorkspaces(value), 250);
+}
+
+function open(workspace: IWorkspaceDTO) {
+  workspacesStore.setActiveItem(workspace);
+
+  emit("update:is-visible", false);
 }
 </script>
