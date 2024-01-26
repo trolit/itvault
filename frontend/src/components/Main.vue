@@ -1,6 +1,6 @@
 <template>
   <main :class="{ 'with-app-header': withAppHeader }">
-    <n-layout has-sider sider-placement="left">
+    <n-layout class="global-layout" has-sider sider-placement="left">
       <n-layout-sider
         v-if="$route.name !== ROUTE_LOGIN_NAME"
         bordered
