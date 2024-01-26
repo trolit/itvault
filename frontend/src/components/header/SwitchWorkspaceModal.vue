@@ -90,7 +90,7 @@ async function getWorkspaces(value?: string) {
     console.log(error);
 
     generalStore.messageProvider.error(
-      "There was an error when trying to load workspaces."
+      "There was an error when trying to fetch workspaces."
     );
   } finally {
     isLoading.value = false;
