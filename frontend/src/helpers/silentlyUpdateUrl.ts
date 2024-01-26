@@ -6,7 +6,11 @@ export const silentlyUpdateUrl = (options: {
     location: { origin, pathname },
   } = window;
 
-  let url = [origin, options?.pathname || pathname].join("/");
+  if (options.pathname && !options.pathname.startsWith("/")) {
+    options.pathname = `/${options.pathname}`;
+  }
+
+  let url = `${origin}${options?.pathname || pathname}`;
 
   if (options.searchParams) {
     url += `?${options.searchParams.toString()}`;
