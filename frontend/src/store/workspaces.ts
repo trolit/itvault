@@ -149,7 +149,8 @@ export const useWorkspacesStore = defineStore("workspaces", {
         ignorePagination?: boolean;
 
         filters: { userId?: number; name?: string };
-      }
+      },
+      options = { keepInStore: true }
     ) {
       const { page, perPage, ignorePagination, filters } = query;
 
@@ -168,9 +169,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
         }
       );
 
-      this.items = data.result;
+      if (options.keepInStore) {
+        this.items = data.result;
 
-      this.total = data.total;
+        this.total = data.total;
+      }
 
       return data;
     },
