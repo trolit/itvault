@@ -17,6 +17,7 @@ import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
 import type { IFileDTO } from "@shared/types/DTOs/File";
 import { useDateService } from "@/services/useDateService";
+import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import type { IDirectoryDTO } from "@shared/types/DTOs/Directory";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
@@ -335,15 +336,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         searchParams.append(key, value.toString());
       }
 
-      const {
-        location: { origin, pathname },
-      } = window;
-
-      history.pushState(
-        {},
-        "",
-        `${origin}${pathname}?${searchParams.toString()}`
-      );
+      silentlyUpdateUrl({ searchParams });
     },
 
     _getTreeOptionChildrenByRelativePath(path: string) {

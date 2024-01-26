@@ -49,6 +49,8 @@ import { useGeneralStore } from "@/store/general";
 import { Search as SearchIcon } from "@vicons/carbon";
 import { useWorkspacesStore } from "@/store/workspaces";
 import type { Emits, Props } from "@/types/CommonModalTypes";
+import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
+import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import SingleItem from "@/components/dashboard/WorkspacesCard/SingleItem.vue";
@@ -121,5 +123,7 @@ function open(workspace: IWorkspaceDTO) {
   workspacesStore.setActiveItem(workspace);
 
   emit("update:is-visible", false);
+
+  silentlyUpdateUrl({ pathname: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}` });
 }
 </script>
