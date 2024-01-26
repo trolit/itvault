@@ -2,7 +2,6 @@
   <n-page-header class="app-header">
     <brand-dropdown />
 
-    <location />
 
     <div class="actions">
       <n-button text :focusable="false">
@@ -48,7 +47,6 @@ import BrandDropdown from "./BrandDropdown.vue";
 import { useGeneralStore } from "@/store/general";
 import ProfileDropdown from "./ProfileDropdown.vue";
 import PermissionsModal from "./PermissionsModal.vue";
-import Location from "@/components/header/Location.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
 
 const authStore = useAuthStore();
