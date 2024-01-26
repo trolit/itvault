@@ -2,7 +2,16 @@
   <n-page-header class="app-header">
     <brand-dropdown />
 
-    <location />
+    <span v-if="isInWorkspace">
+      <workspace-dropdown
+        @change-workspace="isSwitchWorkspaceModalVisible = true"
+      />
+
+      <switch-workspace-modal
+        :is-visible="isSwitchWorkspaceModalVisible"
+        @update:is-visible="isSwitchWorkspaceModalVisible = $event"
+      />
+    </span>
 
     <div class="actions">
       <n-button text :focusable="false">
@@ -39,7 +48,7 @@ import {
   ChatLaunch as ChatOnIcon,
   RainDrop as RainDropIcon,
 } from "@vicons/carbon";
-import { ref, watch, onBeforeMount } from "vue";
+import { ref, watch, onBeforeMount, computed } from "vue";
 import { NPageHeader, NButton, NIcon } from "naive-ui";
 import { useRoute, type RouteRecordName } from "vue-router";
 
@@ -48,8 +57,10 @@ import BrandDropdown from "./BrandDropdown.vue";
 import { useGeneralStore } from "@/store/general";
 import ProfileDropdown from "./ProfileDropdown.vue";
 import PermissionsModal from "./PermissionsModal.vue";
-import Location from "@/components/header/Location.vue";
+import WorkspaceDropdown from "./WorkspaceDropdown.vue";
+import SwitchWorkspaceModal from "./SwitchWorkspaceModal.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
+import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 
 const authStore = useAuthStore();
 const generalStore = useGeneralStore();
@@ -60,6 +71,7 @@ onBeforeMount(() => {
 
 let isBrandHovered = ref<boolean>(false);
 const isPermissionsModalVisible = ref(false);
+const isSwitchWorkspaceModalVisible = ref(false);
 
 const route = useRoute();
 
@@ -69,4 +81,8 @@ watch(
     isBrandHovered.value = false;
   }
 );
+
+const isInWorkspace = computed(() => {
+  return route.name === ROUTE_WORKSPACES_NAME;
+});
 </script>

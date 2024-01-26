@@ -14,7 +14,7 @@
           @load-replies="onRepliesLoad"
         />
 
-        <div ref="fetchpoint">
+        <div ref="fetchpoint" class="fetchpoint">
           <n-spin v-if="isLoadingMoreSourceMessages" />
 
           <small v-if="areAllMessagesLoaded">

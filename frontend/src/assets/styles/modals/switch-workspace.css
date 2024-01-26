@@ -1,0 +1,33 @@
+.switch-workspace-modal {
+  --switch-workspace-modal-height: 80vh;
+  --switch-workspace-modal-scrollbar-content-height: calc(
+    var(--switch-workspace-modal-height) - 110px
+  );
+
+  min-width: 50vw;
+  height: var(--switch-workspace-modal-height);
+
+  .n-input {
+    margin-bottom: 10px;
+  }
+
+  .n-scrollbar {
+    max-height: var(--switch-workspace-modal-scrollbar-content-height);
+
+    .n-scrollbar-content {
+      .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--switch-workspace-modal-scrollbar-content-height);
+      }
+
+      .n-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--switch-workspace-modal-scrollbar-content-height);
+      }
+    }
+  }
+}

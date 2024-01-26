@@ -3,6 +3,7 @@
     <n-thing :title="item.name">
       <template #header-extra>
         <pin-manager
+          v-if="!hidePinManager"
           :pinned-at="item.pinnedAt"
           :is-loading="workspacesStore.pinStatusUpdateItemId === item.id"
           @pin="workspacesStore.pin(item.id)"
@@ -38,7 +39,10 @@
             Go to
           </n-button>
 
-          <require-permission :permission="Permission.UpdateWorkspace">
+          <require-permission
+            v-if="!hideEditButton"
+            :permission="Permission.UpdateWorkspace"
+          >
             <n-button
               size="small"
               tertiary
@@ -64,6 +68,10 @@ import RequirePermission from "@/components/common/RequirePermission.vue";
 
 interface IProps {
   item: IWorkspaceDTO;
+
+  hidePinManager?: boolean;
+
+  hideEditButton?: boolean;
 }
 
 defineProps<IProps>();

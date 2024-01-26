@@ -10,6 +10,7 @@
 @import "./drawers/bundle.css";
 
 @import "./modals/create-bundle/modal.css";
+@import "./modals/switch-workspace.css";
 
 @import "./pages/roles.css";
 @import "./pages/users.css";

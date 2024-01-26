@@ -17,6 +17,7 @@ import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
 import type { IFileDTO } from "@shared/types/DTOs/File";
 import { useDateService } from "@/services/useDateService";
+import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import type { IDirectoryDTO } from "@shared/types/DTOs/Directory";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
@@ -149,7 +150,8 @@ export const useWorkspacesStore = defineStore("workspaces", {
         ignorePagination?: boolean;
 
         filters: { userId?: number; name?: string };
-      }
+      },
+      options = { keepInStore: true }
     ) {
       const { page, perPage, ignorePagination, filters } = query;
 
@@ -168,9 +170,11 @@ export const useWorkspacesStore = defineStore("workspaces", {
         }
       );
 
-      this.items = data.result;
+      if (options.keepInStore) {
+        this.items = data.result;
 
-      this.total = data.total;
+        this.total = data.total;
+      }
 
       return data;
     },
@@ -332,15 +336,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
         searchParams.append(key, value.toString());
       }
 
-      const {
-        location: { origin, pathname },
-      } = window;
-
-      history.pushState(
-        {},
-        "",
-        `${origin}${pathname}?${searchParams.toString()}`
-      );
+      silentlyUpdateUrl({ searchParams });
     },
 
     _getTreeOptionChildrenByRelativePath(path: string) {
