@@ -1,8 +1,9 @@
 <template>
-  <div :class="['page', `${workspacesStore.activePage}-page`]">
+  <div :class="['page', `${IS_INSIGHTS_PAGE ? 'insights' : 'data'}-page`]">
     <component
       v-if="!isLoading"
-      :is="IS_INSIGHTS_PAGE_ACTIVE ? InsightsPage : DataPage"
+      :key="workspacesStore.activeItemId"
+      :is="IS_INSIGHTS_PAGE ? InsightsPage : DataPage"
     />
 
     <!-- @TODO allow to pass custom message -->
@@ -13,30 +14,25 @@
 <script setup lang="ts">
 import { AxiosError } from "axios";
 import { useRoute } from "vue-router";
-import { onBeforeMount, ref, toRefs } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 
 import DataPage from "./Data.vue";
 import InsightsPage from "./Insights.vue";
 import { useAuthStore } from "@/store/auth";
 import { useWorkspacesStore } from "@/store/workspaces";
 import LoadingPage from "@/components/common/LoadingPage.vue";
-import { ROUTE_INSIGHTS_NAME } from "@/assets/constants/routes";
 
 const route = useRoute();
 const authStore = useAuthStore();
 const workspacesStore = useWorkspacesStore();
-const { IS_INSIGHTS_PAGE_ACTIVE } = toRefs(workspacesStore);
 
 const isFailed = ref(false);
 const isLoading = ref(false);
 
 onBeforeMount(async () => {
   const {
-    params: { slug, section },
+    params: { slug },
   } = route;
-
-  workspacesStore.activePage =
-    section.toString() === ROUTE_INSIGHTS_NAME ? "insights" : "data";
 
   const { activeItem } = workspacesStore;
 
@@ -70,4 +66,8 @@ async function sendViewWorkspaceMessage() {
     data: workspacesStore.activeItemId,
   });
 }
+
+const IS_INSIGHTS_PAGE = computed(() => {
+  return route.params.section === "insights";
+});
 </script>
