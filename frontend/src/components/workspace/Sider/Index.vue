@@ -4,8 +4,9 @@
       animated
       type="line"
       size="medium"
-      v-model:value="workspacesStore.generalLayoutSiderKey"
+      :value="workspacesStore.generalLayoutSiderKey"
       justify-content="space-evenly"
+      @update:value="onTabUpdate"
     >
       <n-tab-pane
         :name="key"
@@ -41,6 +42,8 @@ import NotesDrawer from "./NotesDrawer/Index.vue";
 import BundleDrawer from "./BundleDrawer/Index.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
+import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
+import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 
 const workspacesStore = useWorkspacesStore();
 
@@ -94,5 +97,13 @@ function updateLoadingState(value: unknown) {
   if (typeof value === "boolean") {
     isLoading.value = value;
   }
+}
+
+function onTabUpdate(key: string) {
+  workspacesStore.generalLayoutSiderKey = key;
+
+  silentlyUpdateUrl({
+    pathname: `${ROUTE_WORKSPACES_NAME}/${workspacesStore.activeItem.slug}/${workspacesStore.generalLayoutSiderKey}`,
+  });
 }
 </script>
