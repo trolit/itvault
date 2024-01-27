@@ -21,13 +21,16 @@ import { computed } from "vue";
 import { NDropdown, NButton } from "naive-ui";
 import { useRoute, useRouter } from "vue-router";
 
+import { useAuthStore } from "@/store/auth";
 import renderIcon from "@/helpers/renderIcon";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { Permission } from "@shared/types/enums/Permission";
 import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 
 const route = useRoute();
 const router = useRouter();
+const authStore = useAuthStore();
 const workspacesStore = useWorkspacesStore();
 
 const emit = defineEmits(["change-workspace"]);
@@ -42,7 +45,9 @@ const options = computed(() => [
     label: "View insights",
     key: "insights",
     icon: renderIcon(InsightsIcon),
-    show: route.params.section !== "insights",
+    show:
+      route.params.section !== "insights" &&
+      authStore.hasPermission(Permission.ViewWorkspaceInsights),
   },
   {
     label: "View data",
