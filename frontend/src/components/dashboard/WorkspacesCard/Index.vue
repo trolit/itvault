@@ -113,7 +113,8 @@ function open(workspace: IWorkspaceDTO) {
   workspacesStore.setActiveItem(workspace);
 
   router.push({
-    path: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}/${BLUEPRINTS_TAB}`,
+    name: ROUTE_WORKSPACES_NAME,
+    params: { slug: workspace.slug, section: BLUEPRINTS_TAB },
   });
 }
 
