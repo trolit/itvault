@@ -79,6 +79,7 @@ import { useGeneralStore } from "@/store/general";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
+import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
 import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import LoadingSection from "@/components/common/LoadingSection.vue";
@@ -111,7 +112,9 @@ const { sortedItems } = defineComputed({
 function open(workspace: IWorkspaceDTO) {
   workspacesStore.setActiveItem(workspace);
 
-  router.push({ path: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}` });
+  router.push({
+    path: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}/${GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB}`,
+  });
 }
 
 async function getWorkspaces(newPage: number) {

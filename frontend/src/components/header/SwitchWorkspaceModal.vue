@@ -49,6 +49,7 @@ import { useGeneralStore } from "@/store/general";
 import { Search as SearchIcon } from "@vicons/carbon";
 import { useWorkspacesStore } from "@/store/workspaces";
 import type { Emits, Props } from "@/types/CommonModalTypes";
+import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
 import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
@@ -124,6 +125,8 @@ function open(workspace: IWorkspaceDTO) {
 
   emit("update:is-visible", false);
 
-  silentlyUpdateUrl({ pathname: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}` });
+  silentlyUpdateUrl({
+    pathname: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}/${GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB}`,
+  });
 }
 </script>
