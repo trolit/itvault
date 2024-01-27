@@ -5,9 +5,10 @@ export type FormCallHandler<T> = (
   printSuccess: PrintStatus
 ) => void | Promise<void>;
 
-export type CallHandler = <T>(
-  printSuccess: PrintStatus
-) => void | Promise<void> | Promise<T>;
+export type CallHandler<T> = (
+  printSuccess: PrintStatus,
+  data: T
+) => void | Promise<void>;
 
 export type ErrorHandler = (
   error: unknown,

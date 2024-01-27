@@ -3,8 +3,8 @@ import { ref } from "vue";
 import { useGeneralStore } from "@/store/general";
 import type { ErrorHandler, CallHandler } from "@/types/ApiRequestDefinition";
 
-export const defineApiRequest = (config: {
-  callHandler: CallHandler;
+export const defineApiRequest = <T = void>(config: {
+  callHandler: CallHandler<T>;
   errorHandler: ErrorHandler;
 }) => {
   const isLoading = ref(false);
@@ -20,7 +20,7 @@ export const defineApiRequest = (config: {
 
   return {
     isLoading,
-    onSubmit: () => {
+    onSubmit: (data: T) => {
       if (isLoading.value) {
         return;
       }
@@ -29,7 +29,7 @@ export const defineApiRequest = (config: {
 
       (async () => {
         try {
-          await callHandler(printSuccess);
+          await callHandler(printSuccess, data);
         } catch (error) {
           console.error(error);
 
