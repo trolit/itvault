@@ -20,6 +20,7 @@ export const useGeneralStore = defineStore("general", {
   }),
 
   getters: {
+    GLOBAL_CHAT_WIDTH: () => 360,
     messageProvider(): MessageApiInjection {
       if (!this.message) {
         throw Error("Message service not defined!");
