@@ -1,10 +1,5 @@
 <template>
-  <div
-    class="variant-viewer"
-    :style="{
-      width: `${workspacesStore.VARIANT_VIEWER_WIDTH}`,
-    }"
-  >
+  <div class="variant-viewer">
     <template v-if="text">
       <toolbar :is-bucket-modified="isBucketModified" />
 
@@ -45,7 +40,6 @@ import { useBucketsStore } from "@/store/buckets";
 import { useVariantsStore } from "@/store/variants";
 import type { VariantTab } from "@/types/VariantTab";
 import { useBlueprintsStore } from "@/store/blueprints";
-import { useWorkspacesStore } from "@/store/workspaces";
 import AssignColorPopover from "./AssignColorPopover.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import type { IBucketDTO } from "@shared/types/DTOs/Bucket";
@@ -62,7 +56,6 @@ const isLoading = ref(false);
 const filesStore = useFilesStore();
 const bucketsStore = useBucketsStore();
 const variantsStore = useVariantsStore();
-const workspacesStore = useWorkspacesStore();
 const blueprintsStore = useBlueprintsStore();
 const assignColorPopoverX = ref(0);
 const assignColorPopoverY = ref(0);
