@@ -2,6 +2,40 @@
   <div class="sider">
     <div class="wrapper">
       <n-card :bordered="false">
+        <n-space justify="space-between">
+          <require-permission :permission="Permission.UpdateFilename">
+            <n-button
+              round
+              dashed
+              size="small"
+              :disabled="isDeletingFile"
+              @click="isRenameFileModalVisible = true"
+            >
+              Rename
+            </n-button>
+          </require-permission>
+
+          <require-permission :permission="Permission.DeleteFile">
+            <n-popconfirm @positive-click="deleteFile(activeFileId)">
+              <template #trigger>
+                <n-button
+                  size="small"
+                  round
+                  dashed
+                  type="error"
+                  :loading="isDeletingFile"
+                >
+                  Delete
+                </n-button>
+              </template>
+
+              Are you sure? This action cannot be undone.
+            </n-popconfirm>
+          </require-permission>
+        </n-space>
+
+        <n-divider />
+
         <n-text depth="3">Variants</n-text>
 
         <n-timeline v-if="!isLoading" item-placement="right">
@@ -104,6 +138,13 @@
       :variant-id="variantToEditId"
       @update:is-visible="variantToEditId = ''"
     />
+
+    <rename-file-modal
+      v-if="isRenameFileModalVisible"
+      :is-visible="true"
+      :file-id="activeFileId"
+      @update:is-visible="isRenameFileModalVisible = false"
+    />
   </div>
 </template>
 
@@ -133,7 +174,6 @@ import { computed, ref } from "vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useFilesStore } from "@/store/files";
 import { useDrawerStore } from "@/store/drawer";
-import { useGeneralStore } from "@/store/general";
 import AddVariantModal from "./AddVariantModal.vue";
 import { formatBytes } from "@/helpers/formatBytes";
 import { useVariantsStore } from "@/store/variants";
@@ -142,13 +182,14 @@ import RenameVariantModal from "./RenameVariantModal.vue";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
+import { defineApiRequest } from "@/helpers/defineApiRequest";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import RenameFileModal from "@/components/workspace/Sider/FilesTab/RenameFileModal.vue";
 
 const filesStore = useFilesStore();
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
-const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -161,8 +202,8 @@ const { activeVariantId } = storeToRefs(variantsStore);
 
 const isLoading = ref(false);
 const variantToEditId = ref("");
-const variantToDeleteId = ref("");
 const isAddVariantModalVisible = ref(false);
+const isRenameFileModalVisible = ref(false);
 
 defineWatchers({
   activeFileId: {
@@ -227,23 +268,28 @@ async function loadVariantsIfNotFetchedYet() {
   }
 }
 
-async function deleteVariant(id: string) {
-  if (variantToDeleteId.value) {
-    return;
-  }
+const { onSubmit: deleteVariant } = defineApiRequest<string>({
+  callHandler: async (printSuccess, variantId) => {
+    await variantsStore.delete(variantId);
 
-  variantToDeleteId.value = id;
+    printSuccess("Variant removed!");
+  },
+  errorHandler: (error, printError) => {
+    printError("Failed to remove variant!");
+  },
+});
 
-  try {
-    await variantsStore.delete(id);
+const { isLoading: isDeletingFile, onSubmit: deleteFile } =
+  defineApiRequest<number>({
+    callHandler: async (printSuccess, fileId) => {
+      await filesStore.delete(fileId);
 
-    generalStore.messageProvider.success("Variant removed!");
-  } catch (error) {
-    console.log(error);
+      filesStore.closeTab(fileId);
 
-    generalStore.messageProvider.success("Failed to remove variant!");
-  } finally {
-    variantToDeleteId.value = "";
-  }
-}
+      printSuccess("File removed!");
+    },
+    errorHandler: (error, printError) => {
+      printError("Failed to remove file!");
+    },
+  });
 </script>
