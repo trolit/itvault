@@ -4,7 +4,7 @@
       <n-layout-sider
         v-if="$route.name !== ROUTE_LOGIN_NAME"
         bordered
-        :width="380"
+        :width="generalStore.GLOBAL_CHAT_WIDTH"
         :collapsed-width="0"
         collapse-mode="transform"
         :collapsed="!generalStore.isChatVisible"
