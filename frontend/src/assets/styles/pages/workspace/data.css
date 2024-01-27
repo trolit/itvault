@@ -3,7 +3,7 @@
 @import "./sider/blueprints-tab.css";
 @import "./main-content-wrapper/file-page.css";
 
-.workspace-page {
+.data-page {
   height: calc(100vh - var(--header-height)) !important;
 
   .sider {
