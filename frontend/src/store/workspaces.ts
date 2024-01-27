@@ -99,7 +99,6 @@ export const useWorkspacesStore = defineStore("workspaces", {
         : null;
 
       return {
-        sider: this.generalLayoutSiderKey,
         fileId,
         variantId,
         blueprintId,
