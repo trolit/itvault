@@ -46,23 +46,28 @@ const options = computed(() => [
   },
   {
     label: "View data",
-    key: "files",
+    key: "data",
     icon: renderIcon(FilesIcon),
     show: route.params.section === "insights",
   },
 ]);
 
-function handleSelect(key: "change-workspace" | "insights" | "files") {
+function handleSelect(key: "change-workspace" | "insights" | "data") {
   if (key === "change-workspace") {
     emit("change-workspace");
 
     return;
   }
 
-  if (key === "files") {
+  if (key === "data") {
     router.push({
       name: ROUTE_WORKSPACES_NAME,
-      params: { section: GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB },
+      params: {
+        slug: workspacesStore.activeItem.slug,
+        section:
+          workspacesStore.generalLayoutSiderKey ||
+          GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB,
+      },
     });
 
     return;
@@ -71,7 +76,7 @@ function handleSelect(key: "change-workspace" | "insights" | "files") {
   if (key === "insights") {
     router.push({
       name: ROUTE_WORKSPACES_NAME,
-      params: { section: "insights" },
+      params: { slug: workspacesStore.activeItem.slug, section: "insights" },
     });
   }
 }
