@@ -14,23 +14,23 @@ export default class ChatMessageSeeder implements Seeder {
     const userRepository = dataSource.getRepository(User);
     const chatMessageRepository = dataSource.getRepository(ChatMessage);
 
-    const mainCommentsCount = random(8, 12);
+    const mainCommentsCount = random(11, 25);
 
     // @NOTE DEPTH 1 comments
     for (let index = 0; index < mainCommentsCount; index++) {
       const [user] = await getRandomRecords(userRepository, 1);
 
-      const valueCount = random(8, 25);
+      const wordsCount = random(8, 25);
 
       await chatMessageRepository.save({
-        value: faker.random.words(valueCount),
+        value: faker.random.words(wordsCount),
         createdBy: user,
       });
     }
 
     // @NOTE DEPTH 2+
     for (let depth = 2; depth < WORKSPACE_CHAT_MAX_DEPTH; depth++) {
-      const previousDepthMessagesCount = random(6, 9);
+      const previousDepthMessagesCount = random(5, 15);
 
       const previousDepthMessages = await getRandomRecords(
         chatMessageRepository,
@@ -43,19 +43,19 @@ export default class ChatMessageSeeder implements Seeder {
       );
 
       for (const previousDepthMessage of previousDepthMessages) {
-        const repliesCount = random(1, 3);
+        const repliesCount = random(2, 5);
 
         for (
           let replyIterator = 0;
           replyIterator < repliesCount;
           replyIterator++
         ) {
-          const valueCount = random(8, 25);
+          const wordsCount = random(8, 25);
 
           const [user] = await getRandomRecords(userRepository, 1);
 
           await chatMessageRepository.save({
-            value: faker.random.words(valueCount),
+            value: faker.random.words(wordsCount),
             createdBy: user,
             replyTo: previousDepthMessage,
           });

@@ -47,4 +47,5 @@ export enum Permission {
   ViewAllWorkspaces = "WE-VA",
   CreateWorkspace = "WE-C",
   UpdateWorkspace = "WE-U",
+  ViewWorkspaceInsights = "WE-VS",
 }

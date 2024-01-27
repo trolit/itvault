@@ -223,6 +223,12 @@ const UPDATE_WORKSPACE_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Workspaces,
 };
 
+const VIEW_WORKSPACE_INSIGHTS_PERMISSION: IPermissionDefinition = {
+  signature: Permission.ViewWorkspaceInsights,
+  name: "View insights",
+  group: PermissionGroup.Workspaces,
+};
+
 export const ALL_PERMISSIONS = [
   CREATE_BLUEPRINT_PERMISSION,
   UPDATE_BLUEPRINT_PERMISSION,
@@ -262,4 +268,5 @@ export const ALL_PERMISSIONS = [
   VIEW_ALL_WORKSPACES_PERMISSION,
   CREATE_WORKSPACE_PERMISSION,
   UPDATE_WORKSPACE_PERMISSION,
+  VIEW_WORKSPACE_INSIGHTS_PERMISSION,
 ];
