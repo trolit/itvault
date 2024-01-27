@@ -6,7 +6,7 @@ interface IState {
 
 export const useSettingsStore = defineStore("settings", {
   state: (): IState => ({
-    activeKey: "profile",
+    activeKey: "app",
   }),
 
   getters: {},

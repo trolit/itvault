@@ -16,19 +16,11 @@
     <div class="actions">
       <n-button text :focusable="false">
         <n-icon
-          :size="25"
+          :size="20"
           :component="generalStore.isChatVisible ? ChatOffIcon : ChatOnIcon"
           @click="generalStore.toggleChat"
         />
       </n-button>
-
-      <theme-selector>
-        <template #default>
-          <n-button text :focusable="false" class="theme-selector">
-            <n-icon :component="RainDropIcon" :size="25" />
-          </n-button>
-        </template>
-      </theme-selector>
 
       <profile-dropdown
         @toggle-permissions-modal="isPermissionsModalVisible = true"
@@ -46,7 +38,6 @@
 import {
   ChatOff as ChatOffIcon,
   ChatLaunch as ChatOnIcon,
-  RainDrop as RainDropIcon,
 } from "@vicons/carbon";
 import { NPageHeader, NButton, NIcon } from "naive-ui";
 import { ref, watch, onBeforeMount, computed } from "vue";
@@ -59,7 +50,6 @@ import ProfileDropdown from "./ProfileDropdown.vue";
 import PermissionsModal from "./PermissionsModal.vue";
 import WorkspaceDropdown from "./WorkspaceDropdown.vue";
 import SwitchWorkspaceModal from "./SwitchWorkspaceModal.vue";
-import ThemeSelector from "@/components/common/ThemeSelector.vue";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 
 const authStore = useAuthStore();
