@@ -2,7 +2,7 @@
   <n-page-header class="app-header">
     <brand-dropdown />
 
-    <span v-if="isInWorkspace">
+    <span v-if="showWorkspacePanel">
       <workspace-dropdown
         @change-workspace="isSwitchWorkspaceModalVisible = true"
       />
@@ -52,6 +52,10 @@ import { ref, watch, onBeforeMount, computed } from "vue";
 import { NPageHeader, NButton, NIcon } from "naive-ui";
 import { useRoute, type RouteRecordName } from "vue-router";
 
+import {
+  ROUTE_INSIGHTS_NAME,
+  ROUTE_WORKSPACES_NAME,
+} from "@/assets/constants/routes";
 import { useAuthStore } from "@/store/auth";
 import BrandDropdown from "./BrandDropdown.vue";
 import { useGeneralStore } from "@/store/general";
@@ -60,7 +64,6 @@ import PermissionsModal from "./PermissionsModal.vue";
 import WorkspaceDropdown from "./WorkspaceDropdown.vue";
 import SwitchWorkspaceModal from "./SwitchWorkspaceModal.vue";
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
-import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 
 const authStore = useAuthStore();
 const generalStore = useGeneralStore();
@@ -82,7 +85,13 @@ watch(
   }
 );
 
-const isInWorkspace = computed(() => {
-  return route.name === ROUTE_WORKSPACES_NAME;
+const showWorkspacePanel = computed(() => {
+  if (!route.name) {
+    return;
+  }
+
+  return [ROUTE_WORKSPACES_NAME, ROUTE_INSIGHTS_NAME].includes(
+    route.name.toString()
+  );
 });
 </script>
