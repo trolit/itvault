@@ -46,10 +46,10 @@ import { ref, watch, type Ref, toRefs } from "vue";
 import { NModal, NInput, NSpace, NScrollbar, NEmpty, NIcon } from "naive-ui";
 
 import { useGeneralStore } from "@/store/general";
+import { BLUEPRINTS_TAB } from "@/config/constants";
 import { Search as SearchIcon } from "@vicons/carbon";
 import { useWorkspacesStore } from "@/store/workspaces";
 import type { Emits, Props } from "@/types/CommonModalTypes";
-import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
 import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
@@ -126,7 +126,7 @@ function open(workspace: IWorkspaceDTO) {
   emit("update:is-visible", false);
 
   silentlyUpdateUrl({
-    pathname: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}/${GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB}`,
+    pathname: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}/${BLUEPRINTS_TAB}`,
   });
 }
 </script>

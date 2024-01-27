@@ -15,7 +15,6 @@ import {
   ROUTE_USERS_NAME,
   ROUTE_SIGN_UP_NAME,
   ROUTE_UPDATES_NAME,
-  ROUTE_INSIGHTS_NAME,
   ROUTE_SETTINGS_NAME,
   ROUTE_DASHBOARD_NAME,
   ROUTE_WORKSPACES_NAME,
@@ -32,10 +31,15 @@ import Settings from "@/views/Settings.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Workspace from "@/views/Workspace/Index.vue";
 
+import {
+  FILES_TAB,
+  BUNDLES_TAB,
+  INSIGHTS_PAGE,
+  BLUEPRINTS_TAB,
+} from "@/config/constants";
 import { useAuthStore } from "@/store/auth";
 import { LoadingState } from "@/types/enums/LoadingState";
 import { Permission } from "@shared/types/enums/Permission";
-import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -91,7 +95,7 @@ const router = createRouter({
     },
 
     {
-      path: `/${ROUTE_WORKSPACES_NAME}/:slug/:section(${GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB}|${GENERAL_LAYOUT_SIDER_KEYS.BUNDLES_TAB}|${GENERAL_LAYOUT_SIDER_KEYS.FILES_TAB}|${ROUTE_INSIGHTS_NAME})`,
+      path: `/${ROUTE_WORKSPACES_NAME}/:slug/:section(${BLUEPRINTS_TAB}|${BUNDLES_TAB}|${FILES_TAB}|${INSIGHTS_PAGE})`,
       name: ROUTE_WORKSPACES_NAME,
       component: Workspace,
       props: {},

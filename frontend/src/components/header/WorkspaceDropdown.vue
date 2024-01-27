@@ -23,9 +23,9 @@ import { useRoute, useRouter } from "vue-router";
 
 import { useAuthStore } from "@/store/auth";
 import renderIcon from "@/helpers/renderIcon";
+import { BLUEPRINTS_TAB } from "@/config/constants";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { Permission } from "@shared/types/enums/Permission";
-import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 
 const route = useRoute();
@@ -69,9 +69,7 @@ function handleSelect(key: "change-workspace" | "insights" | "data") {
       name: ROUTE_WORKSPACES_NAME,
       params: {
         slug: workspacesStore.activeItem.slug,
-        section:
-          workspacesStore.generalLayoutSiderKey ||
-          GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB,
+        section: workspacesStore.generalLayoutSiderKey || BLUEPRINTS_TAB,
       },
     });
 

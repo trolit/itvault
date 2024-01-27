@@ -41,9 +41,9 @@ import BlueprintsTab from "./BlueprintsTab.vue";
 import NotesDrawer from "./NotesDrawer/Index.vue";
 import BundleDrawer from "./BundleDrawer/Index.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
-import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
 import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
+import { FILES_TAB, BLUEPRINTS_TAB, BUNDLES_TAB } from "@/config/constants";
 
 const workspacesStore = useWorkspacesStore();
 
@@ -61,7 +61,7 @@ const isLoading = ref(false);
 
 const tabs = [
   {
-    key: GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB,
+    key: BLUEPRINTS_TAB,
     text: "Blueprints",
     tab: BlueprintsTab,
     props: {
@@ -72,7 +72,7 @@ const tabs = [
     },
   },
   {
-    key: GENERAL_LAYOUT_SIDER_KEYS.FILES_TAB,
+    key: FILES_TAB,
     text: "Files",
     tab: FilesTab,
     props: {
@@ -81,7 +81,7 @@ const tabs = [
     events: {},
   },
   {
-    key: GENERAL_LAYOUT_SIDER_KEYS.BUNDLES_TAB,
+    key: BUNDLES_TAB,
     text: "Bundles",
     tab: BundlesTab,
     props: {
