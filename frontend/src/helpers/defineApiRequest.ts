@@ -20,26 +20,24 @@ export const defineApiRequest = <T = void>(config: {
 
   return {
     isLoading,
-    onSubmit: (data: T) => {
+    onSubmit: async (data: T): Promise<void> => {
       if (isLoading.value) {
         return;
       }
 
       isLoading.value = true;
 
-      (async () => {
-        try {
-          await callHandler(printSuccess, data);
-        } catch (error) {
-          console.error(error);
+      try {
+        await callHandler(printSuccess, data);
+      } catch (error) {
+        console.error(error);
 
-          if (errorHandler) {
-            await errorHandler(error, printError);
-          }
-        } finally {
-          isLoading.value = false;
+        if (errorHandler) {
+          await errorHandler(error, printError);
         }
-      })();
+      } finally {
+        isLoading.value = false;
+      }
     },
   };
 };
