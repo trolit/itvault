@@ -17,7 +17,8 @@
 @import "./pages/sign-up.css";
 @import "./pages/settings.css";
 @import "./pages/dashboard.css";
-@import "./pages/workspace/page.css";
+@import "./pages/workspace/data.css";
+@import "./pages/workspace/insights.css";
 
 .n-form {
   .n-form-item {

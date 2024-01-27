@@ -2,7 +2,7 @@
   <n-page-header class="app-header">
     <brand-dropdown />
 
-    <span v-if="isInWorkspace">
+    <span v-if="showWorkspacePanel">
       <workspace-dropdown
         @change-workspace="isSwitchWorkspaceModalVisible = true"
       />
@@ -48,8 +48,8 @@ import {
   ChatLaunch as ChatOnIcon,
   RainDrop as RainDropIcon,
 } from "@vicons/carbon";
-import { ref, watch, onBeforeMount, computed } from "vue";
 import { NPageHeader, NButton, NIcon } from "naive-ui";
+import { ref, watch, onBeforeMount, computed } from "vue";
 import { useRoute, type RouteRecordName } from "vue-router";
 
 import { useAuthStore } from "@/store/auth";
@@ -82,7 +82,11 @@ watch(
   }
 );
 
-const isInWorkspace = computed(() => {
-  return route.name === ROUTE_WORKSPACES_NAME;
+const showWorkspacePanel = computed(() => {
+  if (!route.name) {
+    return;
+  }
+
+  return [ROUTE_WORKSPACES_NAME].includes(route.name.toString());
 });
 </script>

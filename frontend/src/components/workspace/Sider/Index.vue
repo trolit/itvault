@@ -4,8 +4,9 @@
       animated
       type="line"
       size="medium"
-      v-model:value="workspacesStore.generalLayoutSiderKey"
+      :value="workspacesStore.generalLayoutSiderKey"
       justify-content="space-evenly"
+      @update:value="onTabUpdate"
     >
       <n-tab-pane
         :name="key"
@@ -40,6 +41,9 @@ import BlueprintsTab from "./BlueprintsTab.vue";
 import NotesDrawer from "./NotesDrawer/Index.vue";
 import BundleDrawer from "./BundleDrawer/Index.vue";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
+import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
+import { FILES_TAB, BLUEPRINTS_TAB, BUNDLES_TAB } from "@/config/constants";
 
 const workspacesStore = useWorkspacesStore();
 
@@ -57,7 +61,7 @@ const isLoading = ref(false);
 
 const tabs = [
   {
-    key: "blueprints",
+    key: BLUEPRINTS_TAB,
     text: "Blueprints",
     tab: BlueprintsTab,
     props: {
@@ -68,7 +72,7 @@ const tabs = [
     },
   },
   {
-    key: "files",
+    key: FILES_TAB,
     text: "Files",
     tab: FilesTab,
     props: {
@@ -77,7 +81,7 @@ const tabs = [
     events: {},
   },
   {
-    key: "bundles",
+    key: BUNDLES_TAB,
     text: "Bundles",
     tab: BundlesTab,
     props: {
@@ -93,5 +97,13 @@ function updateLoadingState(value: unknown) {
   if (typeof value === "boolean") {
     isLoading.value = value;
   }
+}
+
+function onTabUpdate(key: string) {
+  workspacesStore.generalLayoutSiderKey = key;
+
+  silentlyUpdateUrl({
+    pathname: `${ROUTE_WORKSPACES_NAME}/${workspacesStore.activeItem.slug}/${workspacesStore.generalLayoutSiderKey}`,
+  });
 }
 </script>

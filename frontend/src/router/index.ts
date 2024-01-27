@@ -29,8 +29,14 @@ import SignUp from "@/views/SignUp.vue";
 import Updates from "@/views/Updates.vue";
 import Settings from "@/views/Settings.vue";
 import Dashboard from "@/views/Dashboard.vue";
-import Workspace from "@/views/Workspace.vue";
+import Workspace from "@/views/Workspace/Index.vue";
 
+import {
+  FILES_TAB,
+  BUNDLES_TAB,
+  INSIGHTS_PAGE,
+  BLUEPRINTS_TAB,
+} from "@/config/constants";
 import { useAuthStore } from "@/store/auth";
 import { LoadingState } from "@/types/enums/LoadingState";
 import { Permission } from "@shared/types/enums/Permission";
@@ -89,7 +95,7 @@ const router = createRouter({
     },
 
     {
-      path: `/${ROUTE_WORKSPACES_NAME}/:slug`,
+      path: `/${ROUTE_WORKSPACES_NAME}/:slug/:section(${BLUEPRINTS_TAB}|${BUNDLES_TAB}|${FILES_TAB}|${INSIGHTS_PAGE})`,
       name: ROUTE_WORKSPACES_NAME,
       component: Workspace,
       props: {},

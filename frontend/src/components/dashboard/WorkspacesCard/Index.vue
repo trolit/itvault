@@ -76,6 +76,7 @@ import { useAuthStore } from "@/store/auth";
 import { Drawer } from "@/types/enums/Drawer";
 import { useDrawerStore } from "@/store/drawer";
 import { useGeneralStore } from "@/store/general";
+import { BLUEPRINTS_TAB } from "@/config/constants";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
@@ -111,7 +112,10 @@ const { sortedItems } = defineComputed({
 function open(workspace: IWorkspaceDTO) {
   workspacesStore.setActiveItem(workspace);
 
-  router.push({ path: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}` });
+  router.push({
+    name: ROUTE_WORKSPACES_NAME,
+    params: { slug: workspace.slug, section: BLUEPRINTS_TAB },
+  });
 }
 
 async function getWorkspaces(newPage: number) {
