@@ -1,5 +1,5 @@
 <template>
-  <general-layout :key="workspacesStore.activeItemId" id="general-layout">
+  <general-layout id="general-layout">
     <template #sider>
       <sider :is-loading-file-from-url="isLoadingFileFromUrl" />
     </template>

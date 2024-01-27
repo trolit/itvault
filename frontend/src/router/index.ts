@@ -30,8 +30,7 @@ import SignUp from "@/views/SignUp.vue";
 import Updates from "@/views/Updates.vue";
 import Settings from "@/views/Settings.vue";
 import Dashboard from "@/views/Dashboard.vue";
-import WorkspaceTab from "@/views/Workspace/[tab].vue";
-import WorkspaceInsights from "@/views/Workspace/Insights.vue";
+import Workspace from "@/views/Workspace/Index.vue";
 
 import { useAuthStore } from "@/store/auth";
 import { LoadingState } from "@/types/enums/LoadingState";
@@ -92,19 +91,9 @@ const router = createRouter({
     },
 
     {
-      path: `/${ROUTE_WORKSPACES_NAME}/:slug/:tab(${GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB}|${GENERAL_LAYOUT_SIDER_KEYS.BUNDLES_TAB}|${GENERAL_LAYOUT_SIDER_KEYS.FILES_TAB})`,
+      path: `/${ROUTE_WORKSPACES_NAME}/:slug/:section(${GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB}|${GENERAL_LAYOUT_SIDER_KEYS.BUNDLES_TAB}|${GENERAL_LAYOUT_SIDER_KEYS.FILES_TAB}|${ROUTE_INSIGHTS_NAME})`,
       name: ROUTE_WORKSPACES_NAME,
-      component: WorkspaceTab,
-      props: {},
-      meta: {
-        requiresAuth: true,
-      },
-    },
-
-    {
-      path: `/${ROUTE_WORKSPACES_NAME}/:slug/${ROUTE_INSIGHTS_NAME}`,
-      name: ROUTE_INSIGHTS_NAME,
-      component: WorkspaceInsights,
+      component: Workspace,
       props: {},
       meta: {
         requiresAuth: true,
