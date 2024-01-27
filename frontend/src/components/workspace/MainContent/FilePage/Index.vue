@@ -32,7 +32,11 @@
         <n-tabs
           closable
           type="card"
+          size="small"
           v-model:value="filesStore.activeFileId"
+          :style="{
+            width: `${workspacesStore.VARIANT_VIEWER_WIDTH}`,
+          }"
           @close="filesStore.closeTab"
         >
           <n-tab-pane
