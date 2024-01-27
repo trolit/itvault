@@ -28,14 +28,15 @@ import Roles from "@/views/Roles.vue";
 import Users from "@/views/Users.vue";
 import SignUp from "@/views/SignUp.vue";
 import Updates from "@/views/Updates.vue";
-import Insights from "@/views/Insights.vue";
 import Settings from "@/views/Settings.vue";
 import Dashboard from "@/views/Dashboard.vue";
-import Workspace from "@/views/Workspace.vue";
+import WorkspaceTab from "@/views/Workspace/[tab].vue";
+import WorkspaceInsights from "@/views/Workspace/Insights.vue";
 
 import { useAuthStore } from "@/store/auth";
 import { LoadingState } from "@/types/enums/LoadingState";
 import { Permission } from "@shared/types/enums/Permission";
+import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -91,9 +92,9 @@ const router = createRouter({
     },
 
     {
-      path: `/${ROUTE_WORKSPACES_NAME}/:slug`,
+      path: `/${ROUTE_WORKSPACES_NAME}/:slug/:tab(${GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB}|${GENERAL_LAYOUT_SIDER_KEYS.BUNDLES_TAB}|${GENERAL_LAYOUT_SIDER_KEYS.FILES_TAB})`,
       name: ROUTE_WORKSPACES_NAME,
-      component: Workspace,
+      component: WorkspaceTab,
       props: {},
       meta: {
         requiresAuth: true,
@@ -103,7 +104,7 @@ const router = createRouter({
     {
       path: `/${ROUTE_WORKSPACES_NAME}/:slug/${ROUTE_INSIGHTS_NAME}`,
       name: ROUTE_INSIGHTS_NAME,
-      component: Insights,
+      component: WorkspaceInsights,
       props: {},
       meta: {
         requiresAuth: true,
