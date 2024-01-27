@@ -16,7 +16,7 @@
           </require-permission>
 
           <require-permission :permission="Permission.DeleteFile">
-            <n-popconfirm @positive-click="deleteFile">
+            <n-popconfirm @positive-click="deleteFile(activeFileId)">
               <template #trigger>
                 <n-button
                   size="small"
@@ -174,7 +174,6 @@ import { computed, ref } from "vue";
 import { Drawer } from "@/types/enums/Drawer";
 import { useFilesStore } from "@/store/files";
 import { useDrawerStore } from "@/store/drawer";
-import { useGeneralStore } from "@/store/general";
 import AddVariantModal from "./AddVariantModal.vue";
 import { formatBytes } from "@/helpers/formatBytes";
 import { useVariantsStore } from "@/store/variants";
@@ -191,7 +190,6 @@ import RenameFileModal from "@/components/workspace/Sider/FilesTab/RenameFileMod
 const filesStore = useFilesStore();
 const dateService = useDateService();
 const drawerStore = useDrawerStore();
-const generalStore = useGeneralStore();
 const variantsStore = useVariantsStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -204,7 +202,6 @@ const { activeVariantId } = storeToRefs(variantsStore);
 
 const isLoading = ref(false);
 const variantToEditId = ref("");
-const variantToDeleteId = ref("");
 const isAddVariantModalVisible = ref(false);
 const isRenameFileModalVisible = ref(false);
 
@@ -271,38 +268,28 @@ async function loadVariantsIfNotFetchedYet() {
   }
 }
 
-async function deleteVariant(id: string) {
-  if (variantToDeleteId.value) {
-    return;
-  }
+const { onSubmit: deleteVariant } = defineApiRequest<string>({
+  callHandler: async (printSuccess, variantId) => {
+    await variantsStore.delete(variantId);
 
-  variantToDeleteId.value = id;
-
-  try {
-    await variantsStore.delete(id);
-
-    generalStore.messageProvider.success("Variant removed!");
-  } catch (error) {
-    console.log(error);
-
-    generalStore.messageProvider.success("Failed to remove variant!");
-  } finally {
-    variantToDeleteId.value = "";
-  }
-}
-
-const { isLoading: isDeletingFile, onSubmit: deleteFile } = defineApiRequest({
-  callHandler: async printSuccess => {
-    const fileId = activeFileId.value;
-
-    await filesStore.delete(fileId);
-
-    filesStore.closeTab(fileId);
-
-    printSuccess("File removed!");
+    printSuccess("Variant removed!");
   },
   errorHandler: (error, printError) => {
-    printError("Failed to remove file!");
+    printError("Failed to remove variant!");
   },
 });
+
+const { isLoading: isDeletingFile, onSubmit: deleteFile } =
+  defineApiRequest<number>({
+    callHandler: async (printSuccess, fileId) => {
+      await filesStore.delete(fileId);
+
+      filesStore.closeTab(fileId);
+
+      printSuccess("File removed!");
+    },
+    errorHandler: (error, printError) => {
+      printError("Failed to remove file!");
+    },
+  });
 </script>
