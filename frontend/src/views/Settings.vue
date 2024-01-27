@@ -35,47 +35,54 @@ import {
   Catalog as ProfileIcon,
   Password as PasswordIcon,
   SessionBorderControl as SessionIcon,
+  ApplicationWeb as ApplicationWebIcon,
 } from "@vicons/carbon";
 import type { MenuOption } from "naive-ui";
 import { NLayout, NLayoutSider, NMenu, NGrid, NGridItem } from "naive-ui";
 
 import renderIcon from "@/helpers/renderIcon";
 import { useSettingsStore } from "@/store/settings";
+import AppSettings from "@/components/settings/App.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import ProfileSettings from "@/components/settings/Profile.vue";
 import PasswordSettings from "@/components/settings/Password.vue";
 
 const settingsStore = useSettingsStore();
 
-const menuOptions: MenuOption[] = [
+const menuOptions: (MenuOption & { component: object | null })[] = [
+  {
+    key: "app",
+    label: "App",
+    icon: renderIcon(ApplicationWebIcon),
+    component: AppSettings,
+  },
   {
     key: "profile",
     label: "Profile",
     icon: renderIcon(ProfileIcon),
+    component: ProfileSettings,
   },
   {
     key: "password",
     label: "Change password",
     icon: renderIcon(PasswordIcon),
+    component: PasswordSettings,
   },
   {
     key: "sessions",
     label: "Sessions",
     icon: renderIcon(SessionIcon),
+    component: null,
   },
 ];
 
 const { componentToRender } = defineComputed({
   componentToRender() {
-    if (settingsStore.activeKey === "profile") {
-      return ProfileSettings;
-    }
+    const option = menuOptions.find(
+      option => option.key === settingsStore.activeKey
+    );
 
-    if (settingsStore.activeKey === "password") {
-      return PasswordSettings;
-    }
-
-    return null;
+    return option?.component;
   },
 });
 </script>
