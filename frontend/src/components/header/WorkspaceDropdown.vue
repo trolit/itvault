@@ -21,13 +21,10 @@ import { computed } from "vue";
 import { NDropdown, NButton } from "naive-ui";
 import { useRoute, useRouter } from "vue-router";
 
-import {
-  ROUTE_INSIGHTS_NAME,
-  ROUTE_WORKSPACES_NAME,
-} from "@/assets/constants/routes";
 import renderIcon from "@/helpers/renderIcon";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { GENERAL_LAYOUT_SIDER_KEYS } from "@/config/constants";
+import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 
 const route = useRoute();
 const router = useRouter();
@@ -45,13 +42,13 @@ const options = computed(() => [
     label: "View insights",
     key: "insights",
     icon: renderIcon(InsightsIcon),
-    show: route.name !== ROUTE_INSIGHTS_NAME,
+    show: route.params.section !== "insights",
   },
   {
     label: "View data",
     key: "files",
     icon: renderIcon(FilesIcon),
-    show: route.name !== ROUTE_WORKSPACES_NAME,
+    show: route.params.section === "insights",
   },
 ]);
 
@@ -65,7 +62,7 @@ function handleSelect(key: "change-workspace" | "insights" | "files") {
   if (key === "files") {
     router.push({
       name: ROUTE_WORKSPACES_NAME,
-      params: { tab: GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB },
+      params: { section: GENERAL_LAYOUT_SIDER_KEYS.BLUEPRINTS_TAB },
     });
 
     return;
@@ -73,7 +70,8 @@ function handleSelect(key: "change-workspace" | "insights" | "files") {
 
   if (key === "insights") {
     router.push({
-      name: ROUTE_INSIGHTS_NAME,
+      name: ROUTE_WORKSPACES_NAME,
+      params: { section: "insights" },
     });
   }
 }
