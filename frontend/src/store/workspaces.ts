@@ -84,7 +84,6 @@ export const useWorkspacesStore = defineStore("workspaces", {
     ITEMS_PER_PAGE: () => 10,
     TRIGGER_STYLE_TOP: () => "31px",
     TRIGGER_STYLE_HEIGHT: () => "17px",
-    DEFAULT_GENERAL_LAYOUT_SIDER_KEY: () => "blueprints",
     activeItemId: state => state.activeItem.id,
     ALL_DIRS(): IDirectoryDTO[] {
       return this.tree.filter(item => isDirectory(item));
