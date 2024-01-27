@@ -69,7 +69,13 @@ export const useWorkspacesStore = defineStore("workspaces", {
     GENERAL_SIDER_WIDTH: () => 340,
     FILE_PAGE_SIDER_WIDTH: () => 250,
     VARIANT_VIEWER_WIDTH(): string {
+      const generalStore = useGeneralStore();
+
       let toSubtract = 0;
+
+      if (generalStore.isChatVisible) {
+        toSubtract += generalStore.GLOBAL_CHAT_WIDTH;
+      }
 
       if (!this.isGeneralSiderCollapsed) {
         toSubtract += this.GENERAL_SIDER_WIDTH;
