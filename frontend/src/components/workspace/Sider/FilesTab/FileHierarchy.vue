@@ -21,38 +21,14 @@
       :tree-drop-info="currentTreeDropInfo"
       @update:is-visible="currentTreeDropInfo = null"
     />
-
-    <rename-file-modal
-      v-if="fileToEditId"
-      :is-visible="true"
-      :file-id="fileToEditId"
-      @update:is-visible="fileToEditId = 0"
-    />
-
-    <confirmation-modal
-      :is-loading="isDeletingFile"
-      :is-visible="isDeleteConfirmationModalVisible"
-      :text="removeFileText"
-      @confirm="deleteFile"
-      @update:is-visible="onDeleteConfirmationModalClose"
-    />
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  NTree,
-  NIcon,
-  NSpace,
-  NButton,
-  type TreeOption,
-  type TreeDropInfo,
-} from "naive-ui";
-import { h, ref, type Ref, type VNode } from "vue";
+import { h, ref, type Ref } from "vue";
+import { NTree, NIcon, type TreeOption, type TreeDropInfo } from "naive-ui";
 
 import {
-  Pen as EditIcon,
-  TrashCan as DeleteIcon,
   Folder as OpenedFolderIcon,
   FolderOff as ClosedFolderIcon,
 } from "@vicons/carbon";
@@ -63,43 +39,19 @@ import isDirectory from "@/helpers/isDirectory";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
-import { defineApiRequest } from "@/helpers/defineApiRequest";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
-import ConfirmationModal from "@/components/common/ConfirmationModal.vue";
 import MoveFilesModal from "@/components/workspace/Sider/FilesTab/MoveFilesModal.vue";
-import RenameFileModal from "@/components/workspace/Sider/FilesTab/RenameFileModal.vue";
 
 const authStore = useAuthStore();
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
 
-const fileToEditId = ref(0);
-const hoveredFileId = ref(0);
-const fileToDeleteId = ref(0);
-const isDeleteConfirmationModalVisible = ref(false);
 const currentTreeDropInfo: Ref<TreeDropInfo | null> = ref(null);
 
-const { selectedKeys, removeFileText } = defineComputed({
+const { selectedKeys } = defineComputed({
   selectedKeys() {
     return [`file-${filesStore.activeFileId}`];
-  },
-
-  removeFileText() {
-    const treeItem = workspacesStore.tree.find(
-      item => item.id === fileToDeleteId.value && isFile(item)
-    );
-
-    // @TODO isFile called twice should be refactored..
-    return treeItem && isFile(treeItem)
-      ? `Do you really want to remove file "${
-          treeItem.originalFilename
-        }" from "${
-          treeItem.relativePath === filesStore.ROOT
-            ? "root"
-            : `${treeItem.relativePath}`
-        }" and it's variants?`
-      : "ERR";
   },
 });
 
@@ -130,81 +82,6 @@ const updatePrefixOnToggle = (
 
 const nodeProps = ({ option }: { option: TreeOption }) => {
   return {
-    onmouseover() {
-      const { key } = option;
-
-      if (!key) {
-        return;
-      }
-
-      const [type, id] = key.toString().split("-");
-
-      if (id && type === "file") {
-        hoveredFileId.value = parseInt(id);
-
-        const buttons: VNode[] = [];
-
-        if (authStore.hasPermission(Permission.UpdateFilename)) {
-          buttons.push(
-            h(
-              NButton,
-              {
-                secondary: true,
-                size: "tiny",
-                type: "info",
-                onClick: event => {
-                  event.stopPropagation();
-
-                  fileToEditId.value = parseInt(id);
-                },
-              },
-              {
-                default: () => h(NIcon, { component: EditIcon }),
-              }
-            )
-          );
-        }
-
-        if (authStore.hasPermission(Permission.DeleteFile)) {
-          buttons.push(
-            h(
-              NButton,
-              {
-                secondary: true,
-                size: "tiny",
-                type: "error",
-                onClick: event => {
-                  event.stopPropagation();
-
-                  fileToDeleteId.value = parseInt(id);
-
-                  isDeleteConfirmationModalVisible.value = true;
-                },
-              },
-              {
-                default: () => h(NIcon, { component: DeleteIcon }),
-              }
-            )
-          );
-        }
-
-        option.suffix = () =>
-          h(
-            NSpace,
-            { size: 5 },
-            {
-              default: () => buttons,
-            }
-          );
-      }
-    },
-
-    onmouseleave() {
-      hoveredFileId.value = 0;
-
-      option.suffix = undefined;
-    },
-
     onClick() {
       if (!option.children && option.isLeaf) {
         const { key } = option;
@@ -286,25 +163,4 @@ async function onLoadMore(node: TreeOption, relativePath: string) {
     return Promise.resolve(false);
   }
 }
-
-function onDeleteConfirmationModalClose() {
-  isDeleteConfirmationModalVisible.value = false;
-
-  setTimeout(() => {
-    fileToDeleteId.value = 0;
-  }, 250);
-}
-
-const { isLoading: isDeletingFile, onSubmit: deleteFile } = defineApiRequest({
-  callHandler: async printSuccess => {
-    await filesStore.delete(fileToDeleteId.value);
-
-    onDeleteConfirmationModalClose();
-
-    printSuccess("File removed!");
-  },
-  errorHandler: (error, printError) => {
-    printError("Failed to remove file!");
-  },
-});
 </script>
