@@ -2,6 +2,40 @@
   <div class="sider">
     <div class="wrapper">
       <n-card :bordered="false">
+        <n-space justify="space-between">
+          <require-permission :permission="Permission.UpdateFilename">
+            <n-button
+              round
+              dashed
+              size="small"
+              :disabled="isDeletingFile"
+              @click="isRenameFileModalVisible = true"
+            >
+              Rename
+            </n-button>
+          </require-permission>
+
+          <require-permission :permission="Permission.DeleteFile">
+            <n-popconfirm @positive-click="deleteFile">
+              <template #trigger>
+                <n-button
+                  size="small"
+                  round
+                  dashed
+                  type="error"
+                  :loading="isDeletingFile"
+                >
+                  Delete
+                </n-button>
+              </template>
+
+              Are you sure? This action cannot be undone.
+            </n-popconfirm>
+          </require-permission>
+        </n-space>
+
+        <n-divider />
+
         <n-text depth="3">Variants</n-text>
 
         <n-timeline v-if="!isLoading" item-placement="right">
@@ -104,6 +138,13 @@
       :variant-id="variantToEditId"
       @update:is-visible="variantToEditId = ''"
     />
+
+    <rename-file-modal
+      v-if="isRenameFileModalVisible"
+      :is-visible="true"
+      :file-id="activeFileId"
+      @update:is-visible="isRenameFileModalVisible = false"
+    />
   </div>
 </template>
 
@@ -142,8 +183,10 @@ import RenameVariantModal from "./RenameVariantModal.vue";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
+import { defineApiRequest } from "@/helpers/defineApiRequest";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import RequirePermission from "@/components/common/RequirePermission.vue";
+import RenameFileModal from "@/components/workspace/Sider/FilesTab/RenameFileModal.vue";
 
 const filesStore = useFilesStore();
 const dateService = useDateService();
@@ -163,6 +206,7 @@ const isLoading = ref(false);
 const variantToEditId = ref("");
 const variantToDeleteId = ref("");
 const isAddVariantModalVisible = ref(false);
+const isRenameFileModalVisible = ref(false);
 
 defineWatchers({
   activeFileId: {
@@ -246,4 +290,19 @@ async function deleteVariant(id: string) {
     variantToDeleteId.value = "";
   }
 }
+
+const { isLoading: isDeletingFile, onSubmit: deleteFile } = defineApiRequest({
+  callHandler: async printSuccess => {
+    const fileId = activeFileId.value;
+
+    await filesStore.delete(fileId);
+
+    filesStore.closeTab(fileId);
+
+    printSuccess("File removed!");
+  },
+  errorHandler: (error, printError) => {
+    printError("Failed to remove file!");
+  },
+});
 </script>
