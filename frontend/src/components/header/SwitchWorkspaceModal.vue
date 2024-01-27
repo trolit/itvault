@@ -42,6 +42,7 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import { ref, watch, type Ref, toRefs } from "vue";
 import { NModal, NInput, NSpace, NScrollbar, NEmpty, NIcon } from "naive-ui";
 
@@ -50,12 +51,12 @@ import { BLUEPRINTS_TAB } from "@/config/constants";
 import { Search as SearchIcon } from "@vicons/carbon";
 import { useWorkspacesStore } from "@/store/workspaces";
 import type { Emits, Props } from "@/types/CommonModalTypes";
-import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
 import { ROUTE_WORKSPACES_NAME } from "@/assets/constants/routes";
 import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import SingleItem from "@/components/dashboard/WorkspacesCard/SingleItem.vue";
 
+const router = useRouter();
 const generalStore = useGeneralStore();
 const workspacesStore = useWorkspacesStore();
 
@@ -125,8 +126,12 @@ function open(workspace: IWorkspaceDTO) {
 
   emit("update:is-visible", false);
 
-  silentlyUpdateUrl({
-    pathname: `${ROUTE_WORKSPACES_NAME}/${workspace.slug}/${BLUEPRINTS_TAB}`,
+  router.push({
+    name: ROUTE_WORKSPACES_NAME,
+    params: {
+      slug: workspace.slug,
+      section: BLUEPRINTS_TAB,
+    },
   });
 }
 </script>
