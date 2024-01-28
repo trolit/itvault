@@ -36,7 +36,7 @@
       <actions-dropdown
         v-if="isOwner"
         :message="item"
-        @update-message="$emit('update', item)"
+        @update-message="$emit('update-message', item)"
       />
     </template>
 
@@ -63,7 +63,11 @@
           {{ repliesText }}
         </n-text>
 
-        <n-button secondary size="tiny" @click="$emit('reply', item)">
+        <n-button
+          secondary
+          size="tiny"
+          @click="$emit('reply-to-message', item)"
+        >
           <n-icon :component="AddCommentIcon" :size="20" />
         </n-button>
       </n-space>
@@ -107,9 +111,9 @@ const props = defineProps<IProps>();
 defineEmits<{
   (event: "load-replies"): void;
 
-  (event: "reply", message: IChatMessageDTO): void;
+  (event: "update-message", item: IChatMessageDTO): void;
 
-  (event: "update", message: IChatMessageDTO): void;
+  (event: "reply-to-message", item: IChatMessageDTO): void;
 }>();
 
 const { expandText, initials, hasAnyReply, repliesText, createdBy, isOwner } =

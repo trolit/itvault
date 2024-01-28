@@ -12,8 +12,8 @@
           :item="item"
           :message-ids-under-load="messageIdsToLoadRepliesTo.value"
           @load-replies="onRepliesLoad"
-          @update="$emit('update-message', $event)"
-          @reply="$emit('reply-to-message', $event)"
+          @update-message="$emit('update-message', $event)"
+          @reply-to-message="$emit('reply-to-message', $event)"
         />
 
         <div ref="fetchpoint" class="fetchpoint">

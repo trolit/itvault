@@ -14,8 +14,8 @@
             ? (isExpanded = !isExpanded)
             : $emit('load-replies', item, 1)
         "
-        @reply="$emit('reply', $event)"
-        @update="$emit('update', $event)"
+        @update-message="$emit('update-message', $event)"
+        @reply-to-message="$emit('reply-to-message', $event)"
       />
     </div>
 
@@ -37,8 +37,8 @@
             @load-replies="
               $emit('load-replies', reply, reply.replies.length ? nextPage : 1)
             "
-            @reply="$emit('reply', $event)"
-            @update="$emit('update', $event)"
+            @update-message="$emit('update-message', $event)"
+            @reply-to-message="$emit('reply-to-message', $event)"
           />
 
           <div
@@ -87,9 +87,9 @@ const loadMoreRepliesIconSize = 18;
 const props = defineProps<IProps>();
 
 defineEmits<{
-  (event: "reply", message: IChatMessageDTO): void;
+  (event: "update-message", item: IChatMessageDTO): void;
 
-  (event: "update", message: IChatMessageDTO): void;
+  (event: "reply-to-message", item: IChatMessageDTO): void;
 
   (event: "load-replies", item: ChatMessage, page: number): void;
 }>();
