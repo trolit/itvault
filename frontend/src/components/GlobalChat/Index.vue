@@ -12,6 +12,8 @@
           :item="item"
           :message-ids-under-load="messageIdsToLoadRepliesTo.value"
           @load-replies="onRepliesLoad"
+          @update="$emit('update-message', $event)"
+          @reply="$emit('reply-to-message', $event)"
         />
 
         <div ref="fetchpoint" class="fetchpoint">
@@ -50,7 +52,9 @@ import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 
 defineEmits<{
   (event: "add-message"): void;
+
   (event: "update-message", item: IChatMessageDTO): void;
+
   (event: "reply-to-message", item: IChatMessageDTO): void;
 }>();
 

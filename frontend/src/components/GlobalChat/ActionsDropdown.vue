@@ -28,7 +28,7 @@ interface IProps {
 
 defineProps<IProps>();
 
-const emits = defineEmits(["toggle-message-update"]);
+const emits = defineEmits(["update-message"]);
 
 const { options } = defineComputed({
   options() {
@@ -47,7 +47,7 @@ const { options } = defineComputed({
 
 function handleSelect(key: string) {
   if (key === "update") {
-    emits("toggle-message-update");
+    emits("update-message");
 
     return;
   }

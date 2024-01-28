@@ -14,6 +14,8 @@
             ? (isExpanded = !isExpanded)
             : $emit('load-replies', item, 1)
         "
+        @reply="$emit('reply', $event)"
+        @update="$emit('update', $event)"
       />
     </div>
 
@@ -35,6 +37,8 @@
             @load-replies="
               $emit('load-replies', reply, reply.replies.length ? nextPage : 1)
             "
+            @reply="$emit('reply', reply)"
+            @update="$emit('update', reply)"
           />
 
           <div
@@ -67,6 +71,7 @@ import { NCollapseTransition, NButton, NIcon } from "naive-ui";
 import Message from "./Message.vue";
 import type { ChatMessage } from "@/types/ChatMessage";
 import { useChatMessagesStore } from "@/store/chat-messages";
+import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 
 const chatMessagesStore = useChatMessagesStore();
 
@@ -82,6 +87,10 @@ const loadMoreRepliesIconSize = 18;
 const props = defineProps<IProps>();
 
 defineEmits<{
+  (event: "reply", message: IChatMessageDTO): void;
+
+  (event: "update", message: IChatMessageDTO): void;
+
   (event: "load-replies", item: ChatMessage, page: number): void;
 }>();
 

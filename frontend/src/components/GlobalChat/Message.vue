@@ -10,7 +10,7 @@
           color: isOwner ? 'gold' : undefined,
         }"
       >
-        {{ createdBy }}
+        {{ createdBy }} - {{ item.id }}
       </span>
 
       <div>
@@ -33,7 +33,11 @@
     </template>
 
     <template #header-extra>
-      <actions-dropdown v-if="isOwner" :message="item" />
+      <actions-dropdown
+        v-if="isOwner"
+        :message="item"
+        @update-message="$emit('update', item)"
+      />
     </template>
 
     <!-- @TODO markdown -->
@@ -59,7 +63,7 @@
           {{ repliesText }}
         </n-text>
 
-        <n-button secondary size="tiny">
+        <n-button secondary size="tiny" @click="$emit('reply', item)">
           <n-icon :component="AddCommentIcon" :size="20" />
         </n-button>
       </n-space>
@@ -85,6 +89,7 @@ import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { AddComment as AddCommentIcon } from "@vicons/carbon";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
+import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 
 const authStore = useAuthStore();
 const dateService = useDateService();
@@ -99,7 +104,13 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-defineEmits(["load-replies"]);
+defineEmits<{
+  (event: "load-replies"): void;
+
+  (event: "reply", message: IChatMessageDTO): void;
+
+  (event: "update", message: IChatMessageDTO): void;
+}>();
 
 const { expandText, initials, hasAnyReply, repliesText, createdBy, isOwner } =
   defineComputed({
