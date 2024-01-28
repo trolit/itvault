@@ -37,8 +37,8 @@
             @load-replies="
               $emit('load-replies', reply, reply.replies.length ? nextPage : 1)
             "
-            @reply="$emit('reply', reply)"
-            @update="$emit('update', reply)"
+            @reply="$emit('reply', $event)"
+            @update="$emit('update', $event)"
           />
 
           <div
