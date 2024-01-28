@@ -88,40 +88,41 @@ watch(loadingState, () => {
 });
 
 function onAddMessage() {
-  onChatMessageEvent("add", null, {
-    closeHandler: () => isAddEditMessageDrawerVisible.value === true,
-  });
+  handleChatMessageEvent("add", null);
 }
 
 function onUpdateMessage(item: IChatMessageDTO) {
-  onChatMessageEvent("update", item, {
+  handleChatMessageEvent("update", item, {
     closeHandler: () => item.id === messageItem.value?.id,
   });
 }
 
 function onReplyToMessage(item: IChatMessageDTO) {
-  onChatMessageEvent("reply", item, {
+  handleChatMessageEvent("reply", item, {
     closeHandler: () => item.id === messageItem.value?.id,
   });
 }
 
-function onChatMessageEvent(
+function handleChatMessageEvent(
   action: "update" | "add" | "reply",
   item: IChatMessageDTO | null,
-  callbacks: { closeHandler: () => boolean }
+  callbacks?: { closeHandler?: () => boolean }
 ) {
+  const additionalCloseCondition =
+    callbacks && callbacks.closeHandler ? callbacks.closeHandler() : false;
+
   if (
     isAddEditMessageDrawerVisible.value === true &&
     messageAction.value === action &&
-    callbacks.closeHandler()
+    additionalCloseCondition
   ) {
     isAddEditMessageDrawerVisible.value = false;
 
     return;
   }
 
-  messageAction.value = action;
   messageItem.value = item;
+  messageAction.value = action;
 
   isAddEditMessageDrawerVisible.value = true;
 }
