@@ -10,7 +10,7 @@
           color: isOwner ? 'gold' : undefined,
         }"
       >
-        {{ createdBy }} - {{ item.id }}
+        {{ createdBy }}
       </span>
 
       <div>
