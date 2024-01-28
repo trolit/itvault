@@ -22,7 +22,7 @@
             show-count
             :maxlength="CHAT_MESSAGE_RULES.VALUE.MAX_LENGTH"
             type="textarea"
-            placeholder="text..."
+            placeholder="👉 type your message 👈"
             :autosize="{
               minRows: 8,
             }"
@@ -71,13 +71,13 @@ import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 interface IProps {
   isVisible: boolean;
 
-  toUpdate?: IChatMessageDTO;
+  item: IChatMessageDTO | null;
 
-  toReply?: IChatMessageDTO;
+  action: "update" | "add" | "reply";
 }
 
 const props = defineProps<IProps>();
-const { isVisible } = toRefs(props);
+const { isVisible, item } = toRefs(props);
 
 defineEmits(["close"]);
 
@@ -107,16 +107,22 @@ const {
   }),
 
   formCallHandler: async formData => {
-    const isUpdate = !!props.toUpdate;
+    const { action } = props;
 
-    isUpdate
-      ? await chatMessagesStore.update(props.toUpdate.id, {
-          text: formData.text,
-        })
-      : await chatMessagesStore.add({
-          replyToId: props.toReply?.id,
-          text: formData.text,
-        });
+    if (action === "update" && props.item) {
+      await chatMessagesStore.update(props.item.id, {
+        text: formData.text,
+      });
+    } else if (action === "reply" && props.item) {
+      await chatMessagesStore.add({
+        replyToId: props.item.id,
+        text: formData.text,
+      });
+    } else if (action === "add") {
+      await chatMessagesStore.add({
+        text: formData.text,
+      });
+    }
   },
 
   errorHandler: (error, printError) => {
@@ -135,21 +141,29 @@ defineWatchers({
 
         return;
       }
+    },
+  },
 
-      if (props.toUpdate) {
-        setFormData({ text: props.toUpdate.value });
+  item: {
+    source: item,
+    handler: (message: IChatMessageDTO) => {
+      if (message && props.action === "update") {
+        setFormData({ text: message.value });
+
+        return;
       }
+
+      resetForm();
+    },
+    options: {
+      deep: true,
     },
   },
 });
 
 const { isInitialValue } = defineComputed({
   isInitialValue() {
-    return (
-      (props.toUpdate?.value ||
-        props.toReply?.value ||
-        defaultFormData.text) === text.value
-    );
+    return (props.item?.value || defaultFormData.text) === text.value;
   },
 });
 </script>

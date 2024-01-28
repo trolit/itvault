@@ -25,8 +25,8 @@
 
     <add-edit-message-drawer
       :is-visible="isAddEditMessageDrawerVisible"
-      :to-reply="messageToReplyTo"
-      :to-update="messageToUpdate"
+      :action="messageAction"
+      :item="messageItem"
       @close="isAddEditMessageDrawerVisible = false"
     />
   </main>
@@ -68,8 +68,8 @@ const isAddEditMessageDrawerVisible = ref(false);
 
 generalStore.setMessageProvider(message);
 
-const messageToUpdate: Ref<IChatMessageDTO | undefined> = ref(undefined);
-const messageToReplyTo: Ref<IChatMessageDTO | undefined> = ref(undefined);
+const messageItem: Ref<IChatMessageDTO | null> = ref(null);
+const messageAction: Ref<"update" | "add" | "reply"> = ref("add");
 
 watch(loadingState, () => {
   switch (loadingState.value) {
@@ -93,8 +93,8 @@ function onAddMessage() {
       return isAddEditMessageDrawerVisible.value === true;
     },
     showHandler: () => {
-      messageToUpdate.value = undefined;
-      messageToReplyTo.value = undefined;
+      messageAction.value = "add";
+      messageItem.value = null;
     },
   });
 }
@@ -102,11 +102,11 @@ function onAddMessage() {
 function onUpdateMessage(item: IChatMessageDTO) {
   prepareAddEditMessageDrawer({
     closeHandler: () => {
-      return item.id === messageToUpdate.value?.id;
+      return item.id === messageItem.value?.id;
     },
     showHandler: () => {
-      messageToUpdate.value = item;
-      messageToReplyTo.value = undefined;
+      messageAction.value = "update";
+      messageItem.value = item;
     },
   });
 }
@@ -114,11 +114,11 @@ function onUpdateMessage(item: IChatMessageDTO) {
 function onReplyToMessage(item: IChatMessageDTO) {
   prepareAddEditMessageDrawer({
     closeHandler: () => {
-      return item.id === messageToReplyTo.value?.id;
+      return item.id === messageItem.value?.id;
     },
     showHandler: () => {
-      messageToUpdate.value = undefined;
-      messageToReplyTo.value = item;
+      messageAction.value = "reply";
+      messageItem.value = item;
     },
   });
 }
