@@ -109,7 +109,7 @@ function handleChatMessageEvent(
   callbacks?: { closeHandler?: () => boolean }
 ) {
   const additionalCloseCondition =
-    callbacks && callbacks.closeHandler ? callbacks.closeHandler() : false;
+    callbacks && callbacks.closeHandler ? callbacks.closeHandler() : true;
 
   if (
     isAddEditMessageDrawerVisible.value === true &&
