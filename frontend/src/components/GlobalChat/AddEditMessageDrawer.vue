@@ -77,7 +77,7 @@ interface IProps {
 }
 
 const props = defineProps<IProps>();
-const { isVisible, item } = toRefs(props);
+const { isVisible, action } = toRefs(props);
 
 defineEmits(["close"]);
 
@@ -144,19 +144,16 @@ defineWatchers({
     },
   },
 
-  item: {
-    source: item,
-    handler: (message: IChatMessageDTO) => {
-      if (message && props.action === "update") {
-        setFormData({ text: message.value });
+  action: {
+    source: action,
+    handler: () => {
+      if (props.action === "update" && props.item) {
+        setFormData({ text: props.item.value });
 
         return;
       }
 
       resetForm();
-    },
-    options: {
-      deep: true,
     },
   },
 });
