@@ -8,6 +8,7 @@
 
 @import "./drawers/notes.css";
 @import "./drawers/bundle.css";
+@import "./drawers/add-edit-message.css";
 
 @import "./modals/create-bundle/modal.css";
 @import "./modals/switch-workspace.css";
