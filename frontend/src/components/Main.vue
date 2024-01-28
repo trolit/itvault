@@ -25,8 +25,8 @@
 
     <add-edit-message-drawer
       :is-visible="isAddEditMessageDrawerVisible"
-      :action="messageAction"
       :item="messageItem"
+      :action="messageAction"
       @close="isAddEditMessageDrawerVisible = false"
     />
   </main>

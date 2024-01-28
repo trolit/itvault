@@ -58,7 +58,7 @@ import {
   NFormItem,
   NDrawerContent,
 } from "naive-ui";
-import { toRefs } from "vue";
+import { toRefs, watch } from "vue";
 import { object, string } from "yup";
 
 import { defineComputed } from "@/helpers/defineComputed";
@@ -77,7 +77,7 @@ interface IProps {
 }
 
 const props = defineProps<IProps>();
-const { isVisible, action } = toRefs(props);
+const { isVisible, action, item } = toRefs(props);
 
 const emits = defineEmits(["close"]);
 
@@ -139,23 +139,8 @@ defineWatchers({
       if (!isVisible.value) {
         setTimeout(() => {
           resetForm();
-        }, 500);
-
-        return;
+        }, 250);
       }
-    },
-  },
-
-  action: {
-    source: action,
-    handler: () => {
-      if (props.action === "update" && props.item) {
-        setFormData({ text: props.item.value });
-
-        return;
-      }
-
-      resetForm();
     },
   },
 });
@@ -167,4 +152,18 @@ const { isInitialValue } = defineComputed({
       : defaultFormData.text === text.value;
   },
 });
+
+watch(
+  [action, item],
+  () => {
+    if (props.action === "update" && props.item) {
+      setFormData({ text: props.item.value });
+
+      return;
+    }
+
+    resetForm();
+  },
+  { deep: true }
+);
 </script>
