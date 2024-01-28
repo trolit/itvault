@@ -10,8 +10,12 @@
           v-for="(item, index) in NESTED_ITEMS_BY_DEPTH"
           :key="index"
           :item="item"
+          :is-add-edit-drawer-visible="isAddEditDrawerVisible"
+          :message-under-action="messageUnderAction"
           :message-ids-under-load="messageIdsToLoadRepliesTo.value"
           @load-replies="onRepliesLoad"
+          @update-message="$emit('update-message', $event)"
+          @reply-to-message="$emit('reply-to-message', $event)"
         />
 
         <div ref="fetchpoint" class="fetchpoint">
@@ -25,7 +29,11 @@
 
       <div class="footer">
         <n-button :disabled="isLoadingSection" size="small" ghost>
-          <n-icon :component="AddIcon" :size="25" />
+          <n-icon
+            :size="25"
+            :component="AddIcon"
+            @click="$emit('add-message')"
+          />
         </n-button>
       </div>
     </div>
@@ -42,6 +50,23 @@ import { useGeneralStore } from "@/store/general";
 import type { ChatMessage } from "@/types/ChatMessage";
 import { useChatMessagesStore } from "@/store/chat-messages";
 import LoadingSection from "@/components/common/LoadingSection.vue";
+import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
+
+interface IProps {
+  isAddEditDrawerVisible: boolean;
+
+  messageUnderAction: IChatMessageDTO | null;
+}
+
+defineProps<IProps>();
+
+defineEmits<{
+  (event: "add-message"): void;
+
+  (event: "update-message", item: IChatMessageDTO): void;
+
+  (event: "reply-to-message", item: IChatMessageDTO): void;
+}>();
 
 const generalStore = useGeneralStore();
 const chatMessagesStore = useChatMessagesStore();
@@ -144,14 +169,12 @@ function addScrollObserver() {
 }
 
 function scrollToTheBottom() {
-  const [scrollbarContainer] = document.getElementsByClassName(
-    "n-scrollbar-container"
-  );
+  const scrollbars = document.getElementsByClassName("n-scrollbar-container");
 
-  if (scrollbar.value) {
+  if (scrollbar.value && scrollbars.length) {
     scrollbar.value.scrollTo({
       left: 0,
-      top: scrollbarContainer.scrollHeight,
+      top: scrollbars[0].scrollHeight,
       behavior: "instant",
     });
   }

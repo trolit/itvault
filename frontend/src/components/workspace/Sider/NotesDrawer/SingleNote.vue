@@ -3,7 +3,7 @@
     <n-card size="small" embedded>
       <template #header-extra> #header-extra </template>
 
-      <div v-html="markdown.render(note.value)" class="note-render-area" />
+      <div v-html="markdown.render(note.value)" class="markdown-render-area" />
 
       <n-space justify="end">
         <n-text depth="3">

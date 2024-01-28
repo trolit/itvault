@@ -14,6 +14,14 @@
             ? (isExpanded = !isExpanded)
             : $emit('load-replies', item, 1)
         "
+        :style="{
+          borderBottom:
+            isAddEditDrawerVisible && messageUnderAction?.id === item.id
+              ? '4px groove #bb9cf1'
+              : undefined,
+        }"
+        @update-message="$emit('update-message', $event)"
+        @reply-to-message="$emit('reply-to-message', $event)"
       />
     </div>
 
@@ -31,10 +39,14 @@
         >
           <thread
             :item="reply"
+            :is-add-edit-drawer-visible="isAddEditDrawerVisible"
+            :message-under-action="messageUnderAction"
             :message-ids-under-load="messageIdsUnderLoad"
             @load-replies="
               $emit('load-replies', reply, reply.replies.length ? nextPage : 1)
             "
+            @update-message="$emit('update-message', $event)"
+            @reply-to-message="$emit('reply-to-message', $event)"
           />
 
           <div
@@ -67,11 +79,16 @@ import { NCollapseTransition, NButton, NIcon } from "naive-ui";
 import Message from "./Message.vue";
 import type { ChatMessage } from "@/types/ChatMessage";
 import { useChatMessagesStore } from "@/store/chat-messages";
+import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 
 const chatMessagesStore = useChatMessagesStore();
 
 interface IProps {
   item: ChatMessage;
+
+  isAddEditDrawerVisible: boolean;
+
+  messageUnderAction: IChatMessageDTO | null;
 
   messageIdsUnderLoad: number[];
 }
@@ -82,6 +99,10 @@ const loadMoreRepliesIconSize = 18;
 const props = defineProps<IProps>();
 
 defineEmits<{
+  (event: "update-message", item: IChatMessageDTO): void;
+
+  (event: "reply-to-message", item: IChatMessageDTO): void;
+
   (event: "load-replies", item: ChatMessage, page: number): void;
 }>();
 

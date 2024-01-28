@@ -1,0 +1,28 @@
+.add-edit-message-drawer {
+  height: 60vh;
+
+  .n-drawer-content {
+    .n-drawer-body {
+      .n-drawer-body-content-wrapper {
+        padding: 0;
+
+        .n-form {
+          height: 100%;
+
+          .n-form-item {
+            height: 100%;
+
+            .n-input {
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
+
+    .n-drawer-footer {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

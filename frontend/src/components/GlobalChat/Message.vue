@@ -33,11 +33,14 @@
     </template>
 
     <template #header-extra>
-      <actions-dropdown v-if="isOwner" :message="item" />
+      <actions-dropdown
+        v-if="isOwner"
+        :message="item"
+        @update-message="$emit('update-message', item)"
+      />
     </template>
 
-    <!-- @TODO markdown -->
-    {{ item.value }}
+    <div v-html="markdown.render(item.value)" class="markdown-render-area" />
 
     <template #action>
       <n-space
@@ -59,7 +62,11 @@
           {{ repliesText }}
         </n-text>
 
-        <n-button secondary size="tiny">
+        <n-button
+          secondary
+          size="tiny"
+          @click="$emit('reply-to-message', item)"
+        >
           <n-icon :component="AddCommentIcon" :size="20" />
         </n-button>
       </n-space>
@@ -84,10 +91,13 @@ import type { ChatMessage } from "@/types/ChatMessage";
 import { defineComputed } from "@/helpers/defineComputed";
 import { useDateService } from "@/services/useDateService";
 import { AddComment as AddCommentIcon } from "@vicons/carbon";
+import { useMarkdownService } from "@/services/useMarkdownService";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
+import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 
 const authStore = useAuthStore();
 const dateService = useDateService();
+const markdown = useMarkdownService();
 
 interface IProps {
   item: ChatMessage;
@@ -99,7 +109,13 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-defineEmits(["load-replies"]);
+defineEmits<{
+  (event: "load-replies"): void;
+
+  (event: "update-message", item: IChatMessageDTO): void;
+
+  (event: "reply-to-message", item: IChatMessageDTO): void;
+}>();
 
 const { expandText, initials, hasAnyReply, repliesText, createdBy, isOwner } =
   defineComputed({
