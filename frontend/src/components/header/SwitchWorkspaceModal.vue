@@ -121,17 +121,17 @@ function onInputChange(value: string) {
   inputSearchTimeoutId.value = setTimeout(() => getWorkspaces(value), 250);
 }
 
-function open(workspace: IWorkspaceDTO) {
+async function open(workspace: IWorkspaceDTO) {
   workspacesStore.setActiveItem(workspace);
 
-  emit("update:is-visible", false);
-
-  router.push({
+  await router.push({
     name: ROUTE_WORKSPACES_NAME,
     params: {
       slug: workspace.slug,
       section: BLUEPRINTS_TAB,
     },
   });
+
+  emit("update:is-visible", false);
 }
 </script>
