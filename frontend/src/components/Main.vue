@@ -9,15 +9,26 @@
         collapse-mode="transform"
         :collapsed="!generalStore.isChatVisible"
       >
-        <global-chat />
+        <global-chat
+          @add-message="onAddMessage"
+          @update-message="onUpdateMessage"
+          @reply-to-message="onReplyToMessage"
+        />
       </n-layout-sider>
 
-      <n-layout-content>
+      <n-layout-content id="main-layout-content">
         <n-scrollbar>
           <router-view />
         </n-scrollbar>
       </n-layout-content>
     </n-layout>
+
+    <add-edit-message-drawer
+      :is-visible="isAddEditMessageDrawerVisible"
+      :to-reply="messageToReplyTo"
+      :to-update="messageToUpdate"
+      @close="isAddEditMessageDrawerVisible = false"
+    />
   </main>
 </template>
 
@@ -30,13 +41,15 @@ import {
   useLoadingBar,
   NLayoutContent,
 } from "naive-ui";
-import { watch } from "vue";
+import { ref, watch, type Ref } from "vue";
 import { storeToRefs } from "pinia";
 
 import { useGeneralStore } from "@/store/general";
 import { LoadingState } from "@/types/enums/LoadingState";
 import GlobalChat from "@/components/GlobalChat/Index.vue";
 import { ROUTE_LOGIN_NAME } from "@/assets/constants/routes";
+import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
+import AddEditMessageDrawer from "@/components/GlobalChat/AddEditMessageDrawer.vue";
 
 defineProps({
   withAppHeader: {
@@ -51,7 +64,12 @@ const generalStore = useGeneralStore();
 
 const { loadingState } = storeToRefs(generalStore);
 
+const isAddEditMessageDrawerVisible = ref(false);
+
 generalStore.setMessageProvider(message);
+
+const messageToUpdate: Ref<IChatMessageDTO | undefined> = ref(undefined);
+const messageToReplyTo: Ref<IChatMessageDTO | undefined> = ref(undefined);
 
 watch(loadingState, () => {
   switch (loadingState.value) {
@@ -68,4 +86,58 @@ watch(loadingState, () => {
       break;
   }
 });
+
+function onAddMessage() {
+  prepareAddEditMessageDrawer({
+    closeHandler: () => {
+      return isAddEditMessageDrawerVisible.value === true;
+    },
+    showHandler: () => {
+      messageToUpdate.value = undefined;
+      messageToReplyTo.value = undefined;
+    },
+  });
+}
+
+function onUpdateMessage(item: IChatMessageDTO) {
+  prepareAddEditMessageDrawer({
+    closeHandler: () => {
+      return item.id === messageToUpdate.value?.id;
+    },
+    showHandler: () => {
+      messageToUpdate.value = item;
+      messageToReplyTo.value = undefined;
+    },
+  });
+}
+
+function onReplyToMessage(item: IChatMessageDTO) {
+  prepareAddEditMessageDrawer({
+    closeHandler: () => {
+      return item.id === messageToReplyTo.value?.id;
+    },
+    showHandler: () => {
+      messageToUpdate.value = undefined;
+      messageToReplyTo.value = item;
+    },
+  });
+}
+
+function prepareAddEditMessageDrawer(callbacks: {
+  showHandler: () => void;
+  closeHandler: () => boolean;
+}) {
+  if (
+    isAddEditMessageDrawerVisible.value === true &&
+    callbacks.closeHandler()
+  ) {
+    isAddEditMessageDrawerVisible.value = false;
+
+    return;
+  }
+
+  callbacks.showHandler();
+
+  isAddEditMessageDrawerVisible.value = true;
+}
 </script>
