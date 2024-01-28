@@ -88,47 +88,31 @@ watch(loadingState, () => {
 });
 
 function onAddMessage() {
-  prepareAddEditMessageDrawer({
-    closeHandler: () => {
-      return isAddEditMessageDrawerVisible.value === true;
-    },
-    showHandler: () => {
-      messageAction.value = "add";
-      messageItem.value = null;
-    },
+  onChatMessageEvent("add", null, {
+    closeHandler: () => isAddEditMessageDrawerVisible.value === true,
   });
 }
 
 function onUpdateMessage(item: IChatMessageDTO) {
-  prepareAddEditMessageDrawer({
-    closeHandler: () => {
-      return item.id === messageItem.value?.id;
-    },
-    showHandler: () => {
-      messageAction.value = "update";
-      messageItem.value = item;
-    },
+  onChatMessageEvent("update", item, {
+    closeHandler: () => item.id === messageItem.value?.id,
   });
 }
 
 function onReplyToMessage(item: IChatMessageDTO) {
-  prepareAddEditMessageDrawer({
-    closeHandler: () => {
-      return item.id === messageItem.value?.id;
-    },
-    showHandler: () => {
-      messageAction.value = "reply";
-      messageItem.value = item;
-    },
+  onChatMessageEvent("reply", item, {
+    closeHandler: () => item.id === messageItem.value?.id,
   });
 }
 
-function prepareAddEditMessageDrawer(callbacks: {
-  showHandler: () => void;
-  closeHandler: () => boolean;
-}) {
+function onChatMessageEvent(
+  action: "update" | "add" | "reply",
+  item: IChatMessageDTO | null,
+  callbacks: { closeHandler: () => boolean }
+) {
   if (
     isAddEditMessageDrawerVisible.value === true &&
+    messageAction.value === action &&
     callbacks.closeHandler()
   ) {
     isAddEditMessageDrawerVisible.value = false;
@@ -136,7 +120,8 @@ function prepareAddEditMessageDrawer(callbacks: {
     return;
   }
 
-  callbacks.showHandler();
+  messageAction.value = action;
+  messageItem.value = item;
 
   isAddEditMessageDrawerVisible.value = true;
 }
