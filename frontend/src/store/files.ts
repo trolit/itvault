@@ -17,7 +17,6 @@ interface IState {
   ROOT: string;
   tabs: FileTab[];
   activeFileId: number;
-  tabToOpenData: { blueprintId: number; variantId: string } | null;
 }
 
 export const useFilesStore = defineStore("files", {
@@ -25,7 +24,6 @@ export const useFilesStore = defineStore("files", {
     ROOT: ".",
     tabs: [],
     activeFileId: 0,
-    tabToOpenData: null,
   }),
 
   getters: {
