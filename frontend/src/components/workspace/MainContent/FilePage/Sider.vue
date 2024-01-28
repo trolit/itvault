@@ -208,7 +208,11 @@ const isRenameFileModalVisible = ref(false);
 defineWatchers({
   activeFileId: {
     source: activeFileId,
-    handler: async () => {
+    handler: async (fileId: number) => {
+      if (!fileId) {
+        return;
+      }
+
       await loadVariantsIfNotFetchedYet();
 
       if (!activeVariantId.value) {
