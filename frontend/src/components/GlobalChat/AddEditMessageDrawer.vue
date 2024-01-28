@@ -162,7 +162,9 @@ defineWatchers({
 
 const { isInitialValue } = defineComputed({
   isInitialValue() {
-    return (props.item?.value || defaultFormData.text) === text.value;
+    return props.action === "update"
+      ? props.item?.value === text.value
+      : defaultFormData.text === text.value;
   },
 });
 </script>
