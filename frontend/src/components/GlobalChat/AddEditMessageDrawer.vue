@@ -79,7 +79,7 @@ interface IProps {
 const props = defineProps<IProps>();
 const { isVisible, action } = toRefs(props);
 
-defineEmits(["close"]);
+const emits = defineEmits(["close"]);
 
 const chatMessagesStore = useChatMessagesStore();
 
@@ -123,6 +123,8 @@ const {
         text: formData.text,
       });
     }
+
+    emits("close");
   },
 
   errorHandler: (error, printError) => {
