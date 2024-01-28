@@ -144,14 +144,12 @@ function addScrollObserver() {
 }
 
 function scrollToTheBottom() {
-  const [scrollbarContainer] = document.getElementsByClassName(
-    "n-scrollbar-container"
-  );
+  const scrollbars = document.getElementsByClassName("n-scrollbar-container");
 
-  if (scrollbar.value) {
+  if (scrollbar.value && scrollbars.length) {
     scrollbar.value.scrollTo({
       left: 0,
-      top: scrollbarContainer.scrollHeight,
+      top: scrollbars[0].scrollHeight,
       behavior: "instant",
     });
   }
