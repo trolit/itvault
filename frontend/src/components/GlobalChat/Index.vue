@@ -10,6 +10,8 @@
           v-for="(item, index) in NESTED_ITEMS_BY_DEPTH"
           :key="index"
           :item="item"
+          :is-add-edit-drawer-visible="isAddEditDrawerVisible"
+          :message-under-action="messageUnderAction"
           :message-ids-under-load="messageIdsToLoadRepliesTo.value"
           @load-replies="onRepliesLoad"
           @update-message="$emit('update-message', $event)"
@@ -49,6 +51,14 @@ import type { ChatMessage } from "@/types/ChatMessage";
 import { useChatMessagesStore } from "@/store/chat-messages";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
+
+interface IProps {
+  isAddEditDrawerVisible: boolean;
+
+  messageUnderAction: IChatMessageDTO | null;
+}
+
+defineProps<IProps>();
 
 defineEmits<{
   (event: "add-message"): void;

@@ -14,6 +14,12 @@
             ? (isExpanded = !isExpanded)
             : $emit('load-replies', item, 1)
         "
+        :style="{
+          borderBottom:
+            isAddEditDrawerVisible && messageUnderAction?.id === item.id
+              ? '4px groove #bb9cf1'
+              : undefined,
+        }"
         @update-message="$emit('update-message', $event)"
         @reply-to-message="$emit('reply-to-message', $event)"
       />
@@ -33,6 +39,8 @@
         >
           <thread
             :item="reply"
+            :is-add-edit-drawer-visible="isAddEditDrawerVisible"
+            :message-under-action="messageUnderAction"
             :message-ids-under-load="messageIdsUnderLoad"
             @load-replies="
               $emit('load-replies', reply, reply.replies.length ? nextPage : 1)
@@ -77,6 +85,10 @@ const chatMessagesStore = useChatMessagesStore();
 
 interface IProps {
   item: ChatMessage;
+
+  isAddEditDrawerVisible: boolean;
+
+  messageUnderAction: IChatMessageDTO | null;
 
   messageIdsUnderLoad: number[];
 }

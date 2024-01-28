@@ -10,6 +10,8 @@
         :collapsed="!generalStore.isChatVisible"
       >
         <global-chat
+          :message-under-action="messageItem"
+          :is-add-edit-drawer-visible="isAddEditMessageDrawerVisible"
           @add-message="onAddMessage"
           @update-message="onUpdateMessage"
           @reply-to-message="onReplyToMessage"
