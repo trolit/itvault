@@ -57,7 +57,7 @@ export class HardDeleteController extends BaseController {
       return response.sendStatus(HTTP.FORBIDDEN);
     }
 
-    if (message.repliesCount !== 0) {
+    if (message?.repliesCount !== 0) {
       return response.sendStatus(HTTP.BAD_REQUEST);
     }
 
