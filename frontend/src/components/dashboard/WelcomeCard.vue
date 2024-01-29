@@ -7,7 +7,7 @@
     </div>
 
     <div>
-      <n-text> {{ formattedNow }} ({{ dayOfYear }} day) </n-text>
+      <n-text> {{ formattedNow }} (Day {{ dayOfYear }}) </n-text>
 
       <div>
         <n-text depth="3">
@@ -25,17 +25,6 @@
     <!-- @TODO create permission that allows to create annoucements. Here we should have slider or smth -->
     <div>
       <strong>📌 Annoucement(s)</strong>
-
-      <div>
-        <em> @TODO </em>
-      </div>
-    </div>
-
-    <n-divider dashed />
-
-    <!-- @TODO store last 5 (?) user sessions (failed login attempts also should be monitored) -->
-    <div>
-      <strong>🛜 Recent sessions</strong>
 
       <div>
         <em> @TODO </em>

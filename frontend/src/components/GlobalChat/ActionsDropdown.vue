@@ -17,16 +17,20 @@ import { h } from "vue";
 import { OperationsField as GearIcon } from "@vicons/carbon";
 import { NIcon, NText, NButton, NDropdown, useDialog } from "naive-ui";
 
+import { useGeneralStore } from "@/store/general";
+import type { ChatMessage } from "@/types/ChatMessage";
 import { defineComputed } from "@/helpers/defineComputed";
-import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
+import { useChatMessagesStore } from "@/store/chat-messages";
 
 const dialog = useDialog();
+const generalStore = useGeneralStore();
+const chatMessagesStore = useChatMessagesStore();
 
 interface IProps {
-  message: IChatMessageDTO;
+  item: ChatMessage;
 }
 
-defineProps<IProps>();
+const props = defineProps<IProps>();
 
 const emits = defineEmits(["update-message"]);
 
@@ -40,6 +44,7 @@ const { options } = defineComputed({
       {
         key: "delete",
         label: () => h(NText, { type: "error" }, { default: () => "Delete" }),
+        show: props.item.repliesCount === 0,
       },
     ];
   },
@@ -61,7 +66,17 @@ function handleSelect(key: string) {
       onPositiveClick: async () => {
         deleteDialog.loading = true;
 
-        // @TODO
+        try {
+          await chatMessagesStore.delete(props.item.id);
+
+          generalStore.messageProvider.error("Message removed!");
+        } catch (error) {
+          console.log(error);
+
+          generalStore.messageProvider.error("Failed to remove message!");
+        } finally {
+          deleteDialog.loading = false;
+        }
       },
     });
 

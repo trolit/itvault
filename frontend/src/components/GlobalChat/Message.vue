@@ -35,7 +35,7 @@
     <template #header-extra>
       <actions-dropdown
         v-if="isOwner"
-        :message="item"
+        :item="item"
         @update-message="$emit('update-message', item)"
       />
     </template>
