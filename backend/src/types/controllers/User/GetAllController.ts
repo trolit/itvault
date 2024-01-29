@@ -5,9 +5,13 @@ import { IPaginationOptions } from "types/IPaginationOptions";
 
 export namespace GetAllControllerTypes {
   export namespace v1 {
-    export type QueryInput = IPaginationQuery;
+    type CommonQuery = {
+      filters: { workspaceId?: number };
+    };
 
-    export type QueryOutput = IPaginationOptions;
+    export type QueryInput = IPaginationQuery & CommonQuery;
+
+    export type QueryOutput = IPaginationOptions & CommonQuery;
 
     export type Request = CustomRequest<undefined, undefined, QueryOutput>;
 
