@@ -64,7 +64,7 @@
           :loading="isLoading"
           :disabled="isInitialValue"
         >
-          Save
+          {{ submitButtonText }}
         </n-button>
       </template>
     </n-drawer-content>
@@ -173,11 +173,24 @@ defineWatchers({
   },
 });
 
-const { isInitialValue } = defineComputed({
+const { isInitialValue, submitButtonText } = defineComputed({
   isInitialValue() {
     return props.action === "update"
       ? props.item?.value === text.value
       : defaultFormData.text === text.value;
+  },
+
+  submitButtonText() {
+    switch (props.action) {
+      case "add":
+        return "Add";
+
+      case "update":
+        return "Update";
+
+      case "reply":
+        return "Reply";
+    }
   },
 });
 
