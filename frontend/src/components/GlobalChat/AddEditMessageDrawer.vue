@@ -53,13 +53,13 @@
       </n-tabs>
 
       <template #footer>
-        <n-button secondary :loading="isLoading" @click="$emit('close')">
+        <n-button size="small" :loading="isLoading" @click="$emit('close')">
           Cancel
         </n-button>
 
         <n-button
-          type="info"
-          secondary
+          type="success"
+          size="small"
           @click="onSubmit"
           :loading="isLoading"
           :disabled="isInitialValue"
