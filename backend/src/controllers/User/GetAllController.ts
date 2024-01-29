@@ -1,4 +1,4 @@
-import { And, Not } from "typeorm";
+import { FindOptionsWhere } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { UserMapper } from "@mappers/UserMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
@@ -6,10 +6,9 @@ import { IUserRepository } from "types/repositories/IUserRepository";
 import { GetAllControllerTypes } from "types/controllers/User/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-
 import { Di } from "@enums/Di";
 import { User } from "@entities/User";
+import { Permission } from "@shared/types/enums/Permission";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -38,15 +37,30 @@ export class GetAllController extends BaseController {
     response: GetAllControllerTypes.v1.Response
   ) {
     const {
-      userId,
       query: { skip, take, filters },
     } = request;
 
-    const workspaceIdQuery = filters.workspaceId
-      ? {
-          workspaceId: filters.workspaceId,
-        }
-      : {};
+    let where: FindOptionsWhere<User>[] = [];
+
+    if (filters.workspaceId) {
+      where = [
+        {
+          userToWorkspace: {
+            workspaceId: filters.workspaceId,
+          },
+        },
+        {
+          role: {
+            permissionToRole: {
+              permission: {
+                signature: Permission.ViewAllWorkspaces,
+              },
+              enabled: true,
+            },
+          },
+        },
+      ];
+    }
 
     const [result, total] = await this._userRepository.getAllAndCount({
       skip,
@@ -58,15 +72,7 @@ export class GetAllController extends BaseController {
         role: true,
         createdBy: true,
       },
-      where: {
-        id:
-          userId === HEAD_ADMIN_ROLE_ID
-            ? Not(HEAD_ADMIN_ROLE_ID)
-            : And(Not(HEAD_ADMIN_ROLE_ID), Not(userId)),
-        userToWorkspace: {
-          ...workspaceIdQuery,
-        },
-      },
+      where,
       withDeleted: true,
     });
 
