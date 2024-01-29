@@ -23,7 +23,7 @@ import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 const dialog = useDialog();
 
 interface IProps {
-  message: IChatMessageDTO;
+  item: ChatMessage;
 }
 
 defineProps<IProps>();
