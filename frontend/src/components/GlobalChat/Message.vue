@@ -62,11 +62,7 @@
           {{ repliesText }}
         </n-text>
 
-        <n-button
-          secondary
-          size="tiny"
-          @click="$emit('reply-to-message', item)"
-        >
+        <n-button secondary size="tiny" @click="onAddCommentClick">
           <n-icon :component="AddCommentIcon" :size="20" />
         </n-button>
       </n-space>
@@ -109,7 +105,7 @@ interface IProps {
 
 const props = defineProps<IProps>();
 
-defineEmits<{
+const emits = defineEmits<{
   (event: "load-replies"): void;
 
   (event: "update-message", item: IChatMessageDTO): void;
@@ -149,4 +145,12 @@ const { expandText, initials, hasAnyReply, repliesText, createdBy, isOwner } =
       return authStore.loggedUserId === props.item.author.id;
     },
   });
+
+function onAddCommentClick() {
+  if (!props.item.replies.length) {
+    emits("load-replies");
+  }
+
+  emits("reply-to-message", props.item);
+}
 </script>
