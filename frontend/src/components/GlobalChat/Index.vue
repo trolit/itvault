@@ -46,11 +46,18 @@ import { reactive, ref, toRefs, watch, type Ref } from "vue";
 import { NScrollbar, NButton, NIcon, NSpin, NText } from "naive-ui";
 
 import Thread from "./Thread.vue";
+import { useAuthStore } from "@/store/auth";
+import type {
+  AddChatMessageData,
+  DeleteChatMessageData,
+  UpdateChatMessageData,
+} from "@shared/types/transport/ChatMessages";
 import { useGeneralStore } from "@/store/general";
 import type { ChatMessage } from "@/types/ChatMessage";
 import { useChatMessagesStore } from "@/store/chat-messages";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
+import { onSocketReceiveMessage } from "@/helpers/onSocketReceiveMessage";
 
 interface IProps {
   isAddEditDrawerVisible: boolean;
@@ -68,6 +75,7 @@ defineEmits<{
   (event: "reply-to-message", item: IChatMessageDTO): void;
 }>();
 
+const authStore = useAuthStore();
 const generalStore = useGeneralStore();
 const chatMessagesStore = useChatMessagesStore();
 
@@ -179,4 +187,25 @@ function scrollToTheBottom() {
     });
   }
 }
+
+const { CREATE_MESSAGE, DELETE_MESSAGE, UPDATE_MESSAGE } =
+  authStore.SOCKET_MESSAGE_TYPE.GLOBAL.ACTIONS;
+
+onSocketReceiveMessage(({ action, data }) => {
+  if (action === CREATE_MESSAGE) {
+    chatMessagesStore.onCreate(data as unknown as AddChatMessageData);
+
+    return;
+  }
+
+  if (action === UPDATE_MESSAGE) {
+    chatMessagesStore.onUpdate(data as unknown as UpdateChatMessageData);
+
+    return;
+  }
+
+  if (action === DELETE_MESSAGE) {
+    chatMessagesStore.onDelete(data as unknown as DeleteChatMessageData);
+  }
+});
 </script>

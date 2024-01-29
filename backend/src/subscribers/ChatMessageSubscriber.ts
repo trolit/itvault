@@ -33,7 +33,7 @@ export class ChatMessageSubscriber
       },
     });
 
-    if (replyTo.repliesCount >= 1) {
+    if (replyTo?.repliesCount >= 1) {
       replyTo.repliesCount = replyTo.repliesCount - 1;
 
       await manager.save(ChatMessage, replyTo);

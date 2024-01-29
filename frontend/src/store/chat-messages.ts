@@ -7,6 +7,11 @@ import type {
   IAddChatMessageDTO,
   IPatchChatMessageValueDTO,
 } from "@shared/types/DTOs/ChatMessage";
+import type {
+  AddChatMessageData,
+  UpdateChatMessageData,
+  DeleteChatMessageData,
+} from "@shared/types/transport/ChatMessages";
 import type { ChatMessage } from "@/types/ChatMessage";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
@@ -115,6 +120,51 @@ export const useChatMessagesStore = defineStore("chat-messages", {
           params,
         }
       );
+    },
+
+    onCreate(data: AddChatMessageData) {
+      if (data.replyToId) {
+        const index = this.items.findIndex(item => item.id === data.replyToId);
+
+        if (index < 0) {
+          return;
+        }
+
+        this.items[index].repliesCount++;
+      }
+
+      data.depth === 1 ? this.items.unshift(data) : this.items.push(data);
+
+      this.total++;
+    },
+
+    onUpdate(data: UpdateChatMessageData) {
+      const index = this.items.findIndex(item => item.id === data.id);
+
+      if (~index) {
+        this.items[index].value = data.value;
+      }
+    },
+
+    onDelete(data: DeleteChatMessageData) {
+      const indexToDelete = this.items.findIndex(item => item.id === data.id);
+
+      if (indexToDelete < 0) {
+        return;
+      }
+
+      const itemToDelete = this.items[indexToDelete];
+      const parentItem = itemToDelete?.replyToId
+        ? this.items.find(item => item.id === itemToDelete.replyToId)
+        : undefined;
+
+      if (parentItem) {
+        parentItem.repliesCount--;
+      }
+
+      this.items.splice(indexToDelete, 1);
+
+      this.total--;
     },
   },
 });
