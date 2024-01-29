@@ -33,17 +33,6 @@
 
     <n-divider dashed />
 
-    <!-- @TODO store last 5 (?) user sessions (failed login attempts also should be monitored) -->
-    <div>
-      <strong>🛜 Recent sessions</strong>
-
-      <div>
-        <em> @TODO </em>
-      </div>
-    </div>
-
-    <n-divider dashed />
-
     <!-- @TODO create array of changes object. Latest object should be rendered here -->
     <div>
       <strong>🔋 Last update changes (20.01.2017)</strong>
