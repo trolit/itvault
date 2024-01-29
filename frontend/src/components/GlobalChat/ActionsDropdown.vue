@@ -68,6 +68,8 @@ function handleSelect(key: string) {
 
         try {
           await chatMessagesStore.delete(props.item.id);
+
+          generalStore.messageProvider.error("Message removed!");
         } catch (error) {
           console.log(error);
 
