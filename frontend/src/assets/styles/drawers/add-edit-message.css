@@ -6,14 +6,42 @@
       .n-drawer-body-content-wrapper {
         padding: 0;
 
-        .n-form {
+        .n-tabs {
           height: 100%;
+          overflow: hidden;
 
-          .n-form-item {
+          .n-tabs-nav {
+            .n-tabs-nav-scroll-wrapper {
+              .n-tabs-wrapper {
+                margin-left: 10px;
+              }
+
+              .n-tabs-bar {
+                margin-left: 10px;
+              }
+            }
+          }
+
+          .n-tab-pane {
             height: 100%;
+            margin-top: 5px;
+            overflow: scroll;
 
-            .n-input {
-              height: 100%;
+            .preview {
+              margin: 0 10px;
+            }
+
+            .n-form {
+              height: inherit;
+
+              .n-form-item {
+                height: inherit;
+
+                .n-input {
+                  height: 100%;
+                  overflow: scroll;
+                }
+              }
             }
           }
         }
