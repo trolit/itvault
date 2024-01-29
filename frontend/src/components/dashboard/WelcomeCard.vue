@@ -7,7 +7,7 @@
     </div>
 
     <div>
-      <n-text> {{ formattedNow }} ({{ dayOfYear }} day) </n-text>
+      <n-text> {{ formattedNow }} (Day {{ dayOfYear }}) </n-text>
 
       <div>
         <n-text depth="3">
