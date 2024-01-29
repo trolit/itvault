@@ -11,38 +11,60 @@
     class="add-edit-message-drawer"
   >
     <n-drawer-content>
-      <!-- @TODO menu that allows to input markdown syntax at carriage position -->
-      <n-form :show-label="false">
-        <n-form-item
-          :feedback="getError('text')"
-          :validation-status="hasError('text')"
-        >
-          <n-input
-            v-model:value="text"
-            show-count
-            :maxlength="CHAT_MESSAGE_RULES.VALUE.MAX_LENGTH"
-            type="textarea"
-            placeholder="👉 type your message 👈"
-            :autosize="{
-              minRows: 8,
-            }"
-          />
-        </n-form-item>
-      </n-form>
+      <n-tabs default-value="edit" type="line">
+        <n-tab-pane name="edit" tab="Edit">
+          <!-- @TODO menu that allows to input markdown syntax at carriage position -->
+          <n-form :show-label="false">
+            <n-form-item
+              :feedback="getError('text')"
+              :validation-status="hasError('text')"
+            >
+              <n-input
+                v-model:value="text"
+                show-count
+                passively-activated
+                :maxlength="CHAT_MESSAGE_RULES.VALUE.MAX_LENGTH"
+                type="textarea"
+                placeholder="👉 type your message 👈"
+                :autosize="{
+                  minRows: 4,
+                }"
+              />
+            </n-form-item>
+          </n-form>
+        </n-tab-pane>
+        <n-tab-pane name="preview" tab="Preview">
+          <div class="preview">
+            <span v-if="!text">Nothing to preview</span>
+
+            <div
+              v-else
+              v-html="markdown.render(text)"
+              class="markdown-render-area"
+            />
+          </div>
+        </n-tab-pane>
+
+        <template #suffix>
+          <n-button disabled quaternary circle>
+            <n-icon :component="MenuVerticalIcon" :size="24" />
+          </n-button>
+        </template>
+      </n-tabs>
 
       <template #footer>
-        <n-button secondary :loading="isLoading" @click="$emit('close')">
+        <n-button size="small" :loading="isLoading" @click="$emit('close')">
           Cancel
         </n-button>
 
         <n-button
-          type="info"
-          secondary
+          type="success"
+          size="small"
           @click="onSubmit"
           :loading="isLoading"
           :disabled="isInitialValue"
         >
-          Save
+          {{ submitButtonText }}
         </n-button>
       </template>
     </n-drawer-content>
@@ -52,19 +74,24 @@
 <script setup lang="ts">
 import {
   NForm,
+  NTabs,
+  NIcon,
   NInput,
   NButton,
   NDrawer,
+  NTabPane,
   NFormItem,
   NDrawerContent,
 } from "naive-ui";
 import { toRefs, watch } from "vue";
 import { object, string } from "yup";
+import { OverflowMenuVertical as MenuVerticalIcon } from "@vicons/carbon";
 
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { CHAT_MESSAGE_RULES } from "@shared/constants/rules";
 import { useChatMessagesStore } from "@/store/chat-messages";
+import { useMarkdownService } from "@/services/useMarkdownService";
 import { defineFormApiRequest } from "@/helpers/defineFormApiRequest";
 import type { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 
@@ -81,6 +108,7 @@ const { isVisible, action, item } = toRefs(props);
 
 const emits = defineEmits(["close"]);
 
+const markdown = useMarkdownService();
 const chatMessagesStore = useChatMessagesStore();
 
 const defaultFormData: { text: string } = {
@@ -145,11 +173,24 @@ defineWatchers({
   },
 });
 
-const { isInitialValue } = defineComputed({
+const { isInitialValue, submitButtonText } = defineComputed({
   isInitialValue() {
     return props.action === "update"
       ? props.item?.value === text.value
       : defaultFormData.text === text.value;
+  },
+
+  submitButtonText() {
+    switch (props.action) {
+      case "add":
+        return "Add";
+
+      case "update":
+        return "Update";
+
+      case "reply":
+        return "Reply";
+    }
   },
 });
 
