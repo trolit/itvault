@@ -39,8 +39,14 @@ export class GetAllController extends BaseController {
   ) {
     const {
       userId,
-      query: { skip, take },
+      query: { skip, take, filters },
     } = request;
+
+    const workspaceIdQuery = filters.workspaceId
+      ? {
+          workspaceId: filters.workspaceId,
+        }
+      : {};
 
     const [result, total] = await this._userRepository.getAllAndCount({
       skip,
@@ -57,6 +63,9 @@ export class GetAllController extends BaseController {
           userId === HEAD_ADMIN_ROLE_ID
             ? Not(HEAD_ADMIN_ROLE_ID)
             : And(Not(HEAD_ADMIN_ROLE_ID), Not(userId)),
+        userToWorkspace: {
+          ...workspaceIdQuery,
+        },
       },
       withDeleted: true,
     });
