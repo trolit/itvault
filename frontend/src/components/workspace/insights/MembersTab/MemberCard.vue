@@ -1,5 +1,5 @@
 <template>
-  <n-card class="member" :title="item.fullName">
+  <n-card class="member-card" :title="item.fullName">
     <n-list>
       <n-list-item>
         <template #prefix> Role </template>
