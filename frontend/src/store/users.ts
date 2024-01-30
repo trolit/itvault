@@ -31,12 +31,16 @@ export const useUsersStore = defineStore("users", {
 
   actions: {
     async getAll(
-      query: IPaginationQuery & { filters: { workspaceId?: number } },
+      query: IPaginationQuery & { filters?: { workspaceId?: number } },
       options = { keepInStore: true }
     ) {
+      const { page, perPage, filters } = query;
+
       const params = {
         version: 1,
-        ...query,
+        page,
+        perPage,
+        filters: JSON.stringify(filters),
       };
 
       const { data } = await axios.get<PaginatedResponse<IUserDTO>>(
