@@ -17,8 +17,4 @@
 <script setup lang="ts">
 import { AddAlt as AddIcon } from "@vicons/carbon";
 import { NCard, NInput, NIcon, NText } from "naive-ui";
-
-interface IProps {}
-
-defineProps<IProps>();
 </script>
