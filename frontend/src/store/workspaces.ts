@@ -12,6 +12,7 @@ import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
 import { useBundlesStore } from "./bundles";
 import { useGeneralStore } from "./general";
+import { useInsightsStore } from "./insights";
 import { useVariantsStore } from "./variants";
 import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
@@ -128,10 +129,12 @@ export const useWorkspacesStore = defineStore("workspaces", {
 
       const filesStore = useFilesStore();
       const bundlesStore = useBundlesStore();
+      const insightsStore = useInsightsStore();
       const blueprintsStore = useBlueprintsStore();
 
       filesStore.resetState();
       bundlesStore.resetState();
+      insightsStore.resetState();
       blueprintsStore.resetState();
     },
 
