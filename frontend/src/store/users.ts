@@ -30,10 +30,13 @@ export const useUsersStore = defineStore("users", {
   }),
 
   actions: {
-    async getAll(options: IPaginationQuery) {
+    async getAll(
+      query: IPaginationQuery & { filters: { workspaceId?: number } },
+      options = { keepInStore: true }
+    ) {
       const params = {
         version: 1,
-        ...options,
+        ...query,
       };
 
       const { data } = await axios.get<PaginatedResponse<IUserDTO>>(
@@ -41,9 +44,10 @@ export const useUsersStore = defineStore("users", {
         { params }
       );
 
-      this.items = data.result;
-
-      this.total = data.total;
+      if (options.keepInStore) {
+        this.items = data.result;
+        this.total = data.total;
+      }
 
       return data;
     },
