@@ -35,8 +35,15 @@
                 .new-member-card {
                   height: 250px;
 
-                  .n-list-item__prefix {
-                    flex: 1;
+                  .n-list-item {
+                    .n-list-item__prefix {
+                      flex: 1;
+                    }
+
+                    .n-list-item__main {
+                      display: flex;
+                      justify-content: flex-end;
+                    }
                   }
                 }
 
