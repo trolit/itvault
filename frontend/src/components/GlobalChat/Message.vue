@@ -1,5 +1,5 @@
 <template>
-  <n-thing class="message">
+  <n-thing class="message" content-indented>
     <template #avatar>
       <n-avatar size="small"> {{ initials }} </n-avatar>
     </template>
