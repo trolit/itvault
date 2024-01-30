@@ -14,11 +14,9 @@
       </n-list-item>
 
       <!-- @TODO -->
-      <require-permission :permission="Permission.ManageUserWorkspaces">
-        <n-list-item>
-          <n-button disabled type="error"> Remove from workspace </n-button>
-        </n-list-item>
-      </require-permission>
+      <n-list-item v-if="isPermittedToManagerUserWorkspaces">
+        <n-button disabled type="error"> Remove from workspace </n-button>
+      </n-list-item>
     </n-list>
   </n-card>
 </template>
@@ -27,10 +25,10 @@
 import { NCard, NText, NList, NListItem, NTag, NButton } from "naive-ui";
 
 import type { IUserDTO } from "@shared/types/DTOs/User";
-import { Permission } from "@shared/types/enums/Permission";
-import RequirePermission from "@/components/common/RequirePermission.vue";
 interface IProps {
   item: IUserDTO;
+
+  isPermittedToManagerUserWorkspaces: boolean;
 }
 
 defineProps<IProps>();

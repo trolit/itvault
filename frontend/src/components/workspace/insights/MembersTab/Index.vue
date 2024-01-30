@@ -15,10 +15,15 @@
           :span="1"
           :key="item.id"
         >
-          <member-card :item="item" />
+          <member-card
+            :item="item"
+            :is-permitted-to-manager-user-workspaces="
+              isPermittedToManagerUserWorkspaces
+            "
+          />
         </n-grid-item>
 
-        <n-grid-item :span="1">
+        <n-grid-item v-if="isPermittedToManagerUserWorkspaces" :span="1">
           <new-member-card />
         </n-grid-item>
       </n-grid>
@@ -36,17 +41,20 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { NGrid, NGridItem, NPagination } from "naive-ui";
 
 import MemberCard from "./MemberCard.vue";
+import { useAuthStore } from "@/store/auth";
 import { useUsersStore } from "@/store/users";
 import NewMemberCard from "./NewMemberCard.vue";
 import { useGeneralStore } from "@/store/general";
 import { useInsightsStore } from "@/store/insights";
 import { useWorkspacesStore } from "@/store/workspaces";
+import { Permission } from "@shared/types/enums/Permission";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
+const authStore = useAuthStore();
 const usersStore = useUsersStore();
 const generalStore = useGeneralStore();
 const insightsStore = useInsightsStore();
@@ -85,4 +93,8 @@ async function fetchAll() {
     isLoading.value = false;
   }
 }
+
+const isPermittedToManagerUserWorkspaces = computed(() =>
+  authStore.hasPermission(Permission.ManageUserWorkspaces)
+);
 </script>
