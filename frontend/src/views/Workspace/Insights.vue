@@ -42,7 +42,7 @@ import { NLayout, NLayoutSider, NMenu, NGrid, NGridItem } from "naive-ui";
 import renderIcon from "@/helpers/renderIcon";
 import { useInsightsStore } from "@/store/insights";
 import { defineComputed } from "@/helpers/defineComputed";
-import MembersTab from "@/components/workspace/insights/MembersTab.vue";
+import MembersTab from "@/components/workspace/insights/MembersTab/Index.vue";
 
 const insightsStore = useInsightsStore();
 
