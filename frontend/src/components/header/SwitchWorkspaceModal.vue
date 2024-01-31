@@ -122,8 +122,7 @@ function onInputChange(value: string) {
 }
 
 async function open(workspace: IWorkspaceDTO) {
-  workspacesStore.setActiveItem(workspace);
-
+  // @NOTE first push then setActiveItem. In reverse order, Insights/MembersTab is re-rendered before change (not wanted)
   await router.push({
     name: ROUTE_WORKSPACES_NAME,
     params: {
@@ -131,6 +130,8 @@ async function open(workspace: IWorkspaceDTO) {
       section: BLUEPRINTS_TAB,
     },
   });
+
+  workspacesStore.setActiveItem(workspace);
 
   emit("update:is-visible", false);
 }
