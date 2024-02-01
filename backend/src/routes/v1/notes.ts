@@ -1,11 +1,13 @@
 import { Router } from "express";
+import { WorkspaceId } from "types/controllers/WorkspaceId";
 
 import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
+import { validateRequestWith } from "@middleware/validateRequestWith";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useAddSuperSchema } from "@schemas/Note/useAddSuperSchema";
@@ -15,14 +17,18 @@ import { usePatchValueSuperSchema } from "@schemas/Note/usePatchValueSuperSchema
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/Note/AddController";
 import { GetAllController } from "@controllers/Note/GetAllController";
-import { PatchValueController } from "@controllers/Note/PatchValueController";
 import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
+import { PatchValueController } from "@controllers/Note/PatchValueController";
 
 const notesRouter = Router();
 
 const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
+
+notesRouter.use(
+  requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
+);
 
 notesRouter.get(
   "",
