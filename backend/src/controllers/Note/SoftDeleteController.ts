@@ -59,7 +59,7 @@ export class SoftDeleteController extends BaseController {
     }
 
     if (
-      note.createdBy.id !== userId &&
+      note.createdBy?.id !== userId &&
       !isPermissionEnabled(Permission.DeleteAnyNote, permissions)
     ) {
       return response.sendStatus(HTTP.FORBIDDEN);
