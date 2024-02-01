@@ -12,7 +12,7 @@ const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
   text: string()
     .required()
     .transform(value => sanitizeHtml(value)),
-  fileId: useIdNumberSchema(Di.NoteRepository),
+  fileId: useIdNumberSchema(Di.FileRepository),
 });
 
 export const useAddSuperSchema: SuperSchema.Runner<
