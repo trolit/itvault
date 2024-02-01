@@ -2,9 +2,8 @@ import axios from "axios";
 import { defineStore } from "pinia";
 
 import { useFilesStore } from "./files";
+import { useWorkspacesStore } from "./workspaces";
 import type { INoteDTO } from "@shared/types/DTOs/Note";
-import { NoteResource } from "@shared/types/enums/NoteResource";
-import type { ResourceDTO } from "@shared/types/DTOs/ResourceDTO";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
@@ -14,8 +13,9 @@ export const useNotesStore = defineStore("notes", {
   state: (): IState => ({}),
 
   actions: {
-    async getAll(options: IPaginationQuery & { resource: string }) {
+    async getAll(options: IPaginationQuery) {
       const filesStore = useFilesStore();
+      const { activeItemId: workspaceId } = useWorkspacesStore();
 
       const { activeTab, activeFileId } = filesStore;
 
@@ -25,7 +25,8 @@ export const useNotesStore = defineStore("notes", {
 
       const params = {
         version: 1,
-        id: activeFileId,
+        workspaceId,
+        fileId: activeFileId,
         ...options,
       };
 
@@ -42,14 +43,17 @@ export const useNotesStore = defineStore("notes", {
       return data;
     },
 
-    async add(text: string, resource: ResourceDTO) {
+    async add(text: string, fileId: number) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
       const params = {
         version: 1,
+        workspaceId,
       };
 
       const payload = {
         text,
-        resource,
+        fileId,
       };
 
       const { data: item } = await axios.post<INoteDTO>(`v1/notes`, payload, {
@@ -60,8 +64,11 @@ export const useNotesStore = defineStore("notes", {
     },
 
     update(id: number, text: string) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
       const params = {
         version: 1,
+        workspaceId,
       };
 
       const payload = {
@@ -73,18 +80,18 @@ export const useNotesStore = defineStore("notes", {
       });
     },
 
-    async delete(id: number, resource: ResourceDTO) {
+    async delete(id: number) {
+      const { activeItemId: workspaceId } = useWorkspacesStore();
+
       const params = {
         version: 1,
+        workspaceId,
       };
 
       await axios.delete(`v1/notes/${id}`, { params });
-
-      if (resource.name === NoteResource.File) {
-        this._removeFileNote(<number>resource.id);
-      }
     },
 
+    // @TMP -> use Engine.IO
     _removeFileNote(id: number) {
       const filesStore = useFilesStore();
 
