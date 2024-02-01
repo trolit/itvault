@@ -7,8 +7,6 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 
-import { noteResourceToObject } from "@helpers/noteResourceToObject";
-
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -37,17 +35,8 @@ export class AddController extends BaseController {
   ) {
     const {
       userId,
-      body: {
-        text,
-        resource: { id, name },
-      },
+      body: { text, fileId },
     } = request;
-
-    const entityReference = noteResourceToObject(name, id);
-
-    if (!entityReference) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
-    }
 
     const note = await this._noteRepository.primitiveSave({
       value: text,
@@ -57,7 +46,9 @@ export class AddController extends BaseController {
       updatedBy: {
         id: userId,
       },
-      ...entityReference,
+      file: {
+        id: fileId,
+      },
     });
 
     if (!note) {
