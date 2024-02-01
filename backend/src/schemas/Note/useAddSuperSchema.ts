@@ -3,20 +3,16 @@ import sanitizeHtml from "sanitize-html";
 import { SuperSchema } from "types/SuperSchema";
 import { AddControllerTypes } from "types/controllers/Note/AddController";
 
-import { useResourceEntityTest } from "./useResourceEntityTest";
+import { Di } from "@enums/Di";
 
-import { NoteResource } from "@shared/types/enums/NoteResource";
-
+import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
   text: string()
     .required()
     .transform(value => sanitizeHtml(value)),
-  resource: object({
-    id: useResourceEntityTest(),
-    name: string().required().oneOf([NoteResource.File]),
-  }),
+  fileId: useIdNumberSchema(Di.FileRepository),
 });
 
 export const useAddSuperSchema: SuperSchema.Runner<

@@ -1,5 +1,3 @@
-import { ResourceDTO } from "./ResourceDTO";
-
 export interface INoteDTO {
   id: number;
 
@@ -17,7 +15,7 @@ export interface INoteDTO {
 export interface IAddNoteDTO {
   text: string;
 
-  resource: ResourceDTO;
+  fileId: number;
 }
 
 export interface IPatchNoteValueDTO {

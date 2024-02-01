@@ -1,7 +1,7 @@
+import { FindOptionsSelect } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { NoteMapper } from "@mappers/NoteMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { FindOptionsSelect, FindOptionsWhere } from "typeorm";
 import { INoteRepository } from "types/repositories/INoteRepository";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -10,8 +10,6 @@ import { Di } from "@enums/Di";
 import { Note } from "@entities/Note";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
-
-import { noteResourceToObject } from "@helpers/noteResourceToObject";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -61,20 +59,18 @@ export class GetAllController extends BaseController {
   ) {
     const {
       permissions,
-      query: { id, resource, skip, take },
+      query: { fileId, skip, take },
     } = request;
-
-    const entityReference = noteResourceToObject(resource, id);
-
-    const where: FindOptionsWhere<Note> = {
-      ...entityReference,
-    };
 
     const [result, total] = await this._noteRepository.getAllAndCount({
       select: this._select,
       skip,
       take,
-      where,
+      where: {
+        file: {
+          id: fileId,
+        },
+      },
       order: {
         createdAt: "desc",
       },

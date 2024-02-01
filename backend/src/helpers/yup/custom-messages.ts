@@ -36,10 +36,7 @@ export const CUSTOM_MESSAGES = {
     SHOULD_START_WITH_ROOT_INDICATOR: `Relative path should start with root indicator '${FILES.ROOT}'`,
   },
 
-  NOTE: {
-    RESOURCE_NOT_SPECIFIED: "Resource not specified.",
-    RESOURCE_NOT_AVAILABLE: "Resource is not available.",
-  },
+  NOTE: {},
 
   CHAT_MESSAGE: {
     MAX_DEPTH_REACHED: `Can't add reply to that comment. Max depth reached (${WORKSPACE_CHAT_MAX_DEPTH})!`,

@@ -1,10 +1,6 @@
-import { number, object, string } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
-
-import { useResourceEntityTest } from "./useResourceEntityTest";
-
-import { NoteResource } from "@shared/types/enums/NoteResource";
 
 import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
@@ -14,8 +10,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
     page: pageSchema,
     perPage: perPageSchema,
     userId: number().optional(),
-    id: useResourceEntityTest(),
-    resource: string().required().oneOf([NoteResource.File]),
+    fileId: number().required().min(1),
   });
 
 export const useGetAllSuperSchema: SuperSchema.Runner<

@@ -110,7 +110,6 @@ import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import AddEditNoteInnerDrawer from "./AddEditNoteInnerDrawer.vue";
 import LoadingSection from "@/components/common/LoadingSection.vue";
-import { NoteResource } from "@shared/types/enums/NoteResource";
 
 const filesStore = useFilesStore();
 const notesStore = useNotesStore();
@@ -200,7 +199,6 @@ async function fetchNotes() {
     await notesStore.getAll({
       page: notes.value.page,
       perPage,
-      resource: "File",
     });
   } catch (error) {
     console.log(error);
@@ -245,10 +243,7 @@ async function deleteNote(note: INoteDTO) {
   noteToDeleteId.value = note.id;
 
   try {
-    await notesStore.delete(note.id, {
-      id: fileId,
-      name: NoteResource.File,
-    });
+    await notesStore.delete(note.id);
 
     generalStore.messageProvider.success("Note deleted.");
   } catch (error) {
