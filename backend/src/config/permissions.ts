@@ -3,9 +3,7 @@ import { IPermissionDefinition } from "types/config/IPermissionDefinition";
 import { Permission } from "@shared/types/enums/Permission";
 import { PermissionGroup } from "@shared/types/enums/PermissionGroup";
 
-// ****************************************************
-// @NOTE BLUEPRINT PERMISSIONS
-// ****************************************************
+// --------------- BLUEPRINT
 
 const CREATE_BLUEPRINT_PERMISSION: IPermissionDefinition = {
   signature: Permission.CreateBlueprint,
@@ -25,9 +23,7 @@ const DELETE_BLUEPRINT_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Blueprints,
 };
 
-// ****************************************************
-// @NOTE BUNDLE PERMISSIONS
-// ****************************************************
+// --------------- BUNDLE
 
 const CREATE_BUNDLE_PERMISSION: IPermissionDefinition = {
   signature: Permission.CreateBundle,
@@ -53,9 +49,7 @@ const DELETE_ANY_BUNDLE_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Bundles,
 };
 
-// ****************************************************
-// @NOTE FILE PERMISSIONS
-// ****************************************************
+// --------------- FILE
 
 const UPLOAD_FILES_PERMISSION: IPermissionDefinition = {
   signature: Permission.UploadFiles,
@@ -81,9 +75,7 @@ const REMOVE_FILE_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Files,
 };
 
-// ****************************************************
-// @NOTE NOTE PERMISSIONS
-// ****************************************************
+// --------------- NOTE
 
 const CREATE_NOTE_PERMISSION: IPermissionDefinition = {
   signature: Permission.CreateNote,
@@ -115,9 +107,7 @@ const VIEW_USER_NOTES_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Notes,
 };
 
-// ****************************************************
-// @NOTE ROLE PERMISSIONS
-// ****************************************************
+// --------------- ROLE
 
 const CREATE_ROLE_PERMISSION: IPermissionDefinition = {
   signature: Permission.CreateRole,
@@ -131,9 +121,7 @@ const UPDATE_ROLE_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Roles,
 };
 
-// ****************************************************
-// @NOTE USER PERMISSIONS
-// ****************************************************
+// --------------- USER
 
 const VIEW_ALL_USERS_PERMISSION: IPermissionDefinition = {
   signature: Permission.ViewAllUsers,
@@ -171,9 +159,7 @@ const MANAGE_USER_WORKSPACES_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Users,
 };
 
-// ****************************************************
-// @NOTE VARIANT PERMISSIONS
-// ****************************************************
+// --------------- VARIANT
 
 const CREATE_VARIANT_PERMISSION: IPermissionDefinition = {
   signature: Permission.CreateVariant,
@@ -199,9 +185,7 @@ const MANAGE_VARIANT_COLORING_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Variants,
 };
 
-// ****************************************************
-// @NOTE WORKSPACE PERMISSIONS
-// ****************************************************
+// --------------- WORKSPACE
 
 const VIEW_ALL_WORKSPACES_PERMISSION: IPermissionDefinition = {
   signature: Permission.ViewAllWorkspaces,
