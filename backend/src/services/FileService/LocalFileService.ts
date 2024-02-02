@@ -101,6 +101,21 @@ export class LocalFileService extends BaseFileService {
     }
   }
 
+  async deleteFile(arg: {
+    filename: string;
+    pathToFile?: string | undefined;
+  }): Promise<void> {
+    const { filename, pathToFile } = arg;
+
+    const fullPath = pathToFile ? path.join(pathToFile, filename) : filename;
+
+    try {
+      await fs.remove(fullPath);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async writeVariantFile(arg: {
     filename: string;
     workspaceId: number;

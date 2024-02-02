@@ -41,6 +41,11 @@ export abstract class BaseFileService implements IBaseFileService {
     pathToFile?: string;
   }): Promise<{ size: number } | null>;
 
+  abstract deleteFile(arg: {
+    filename: string;
+    pathToFile?: string;
+  }): Promise<void>;
+
   abstract writeVariantFile(arg: {
     filename: string;
     workspaceId: number;

@@ -10,6 +10,7 @@ import {
   S3Client,
   GetObjectCommand,
   PutObjectCommand,
+  DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 
 import { FILES } from "@config";
@@ -163,6 +164,26 @@ export class S3FileService extends BaseFileService {
       console.error(error);
 
       return null;
+    }
+  }
+
+  async deleteFile(arg: {
+    filename: string;
+    pathToFile?: string | undefined;
+  }): Promise<void> {
+    const { filename, pathToFile } = arg;
+
+    const key = pathToFile ? `${pathToFile}/${filename}` : filename;
+
+    const command = new DeleteObjectCommand({
+      Bucket: FILES.S3.bucket,
+      Key: key,
+    });
+
+    try {
+      await this._s3Client.send(command);
+    } catch (error) {
+      console.error(error);
     }
   }
 

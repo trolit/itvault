@@ -31,6 +31,8 @@ export interface IBaseFileService {
     pathToFile?: string;
   }): Promise<{ size: number } | null>;
 
+  deleteFile(arg: { filename: string; pathToFile?: string }): Promise<void>;
+
   writeVariantFile(arg: {
     filename: string;
     workspaceId: number;

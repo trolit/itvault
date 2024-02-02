@@ -8,7 +8,7 @@ export enum Permission {
   CreateBundle = "BE-C",
   RequeueBundle = "BE-R",
   DownloadBundle = "BE-DD",
-  DeleteBundle = "BE-DE",
+  DeleteAnyBundle = "BE-DA",
   // @NOTE consider PatchBundleNoteController
   // @NOTE consider PatchBundleExpireController
 

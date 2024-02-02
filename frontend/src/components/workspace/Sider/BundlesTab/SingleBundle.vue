@@ -20,33 +20,27 @@
       </n-card>
 
       <template #footer>
-        <require-permission
-          v-if="item.status !== BundleStatusEnum.Building"
-          :permission="Permission.DeleteBundle"
-        >
-          <n-popconfirm @positive-click="deleteBundle(item.id)">
-            <template #trigger>
-              <n-button
-                type="error"
-                ghost
-                size="small"
-                :loading="bundleToDeleteId == item.id"
-                @click.stop
-              >
-                {{
-                  item.status === BundleStatusEnum.Enqueued
-                    ? "cancel"
-                    : "delete"
-                }}
-              </n-button>
-            </template>
+        <n-popconfirm @positive-click="deleteBundle(item.id)">
+          <template #trigger>
+            <n-button
+              v-if="canRemoveBundle"
+              type="error"
+              ghost
+              size="small"
+              :loading="bundleToDeleteId == item.id"
+              @click.stop
+            >
+              {{
+                item.status === BundleStatusEnum.Enqueued ? "cancel" : "delete"
+              }}
+            </n-button>
+          </template>
 
-            <small>
-              Do you really want to remove this bundle entry? This action cannot
-              be undone!
-            </small>
-          </n-popconfirm>
-        </require-permission>
+          <small>
+            Do you really want to remove this bundle entry? This action cannot
+            be undone!
+          </small>
+        </n-popconfirm>
 
         <!-- @TODO allow to requeue bundle for bundle owners (?) -->
         <require-permission :permission="Permission.RequeueBundle">
@@ -84,6 +78,7 @@ import type { IBundleDTO } from "@shared/types/DTOs/Bundle";
 import { NCard, NThing, NButton, NEllipsis, NPopconfirm } from "naive-ui";
 
 import Status from "./Status.vue";
+import { useAuthStore } from "@/store/auth";
 import { useGeneralStore } from "@/store/general";
 import { useBundlesStore } from "@/store/bundles";
 import { LoadingState } from "@/types/enums/LoadingState";
@@ -101,6 +96,7 @@ const props = defineProps({
 
 const emit = defineEmits(["set-status"]);
 
+const authStore = useAuthStore();
 const dateService = useDateService();
 const bundlesStore = useBundlesStore();
 const generalStore = useGeneralStore();
@@ -112,6 +108,12 @@ const isProcessingRequeueRequest = ref(false);
 const isProcessingDownloadRequest = ref(false);
 
 const item = computed(() => props.item);
+const canRemoveBundle = computed(
+  () =>
+    props.item.status !== BundleStatusEnum.Building &&
+    (authStore.hasPermission(Permission.DeleteAnyBundle) ||
+      props.item.createdBy.id === authStore.profile.id)
+);
 const isReady = computed(() => item.value.status === BundleStatusEnum.Ready);
 
 const isBundleGenerationFailed = computed(

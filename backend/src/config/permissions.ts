@@ -47,9 +47,9 @@ const DOWNLOAD_BUNDLE_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Bundles,
 };
 
-const DELETE_BUNDLE_PERMISSION: IPermissionDefinition = {
-  signature: Permission.DeleteBundle,
-  name: "Delete bundle",
+const DELETE_ANY_BUNDLE_PERMISSION: IPermissionDefinition = {
+  signature: Permission.DeleteAnyBundle,
+  name: "Delete any bundle",
   group: PermissionGroup.Bundles,
 };
 
@@ -237,7 +237,7 @@ export const ALL_PERMISSIONS = [
   CREATE_BUNDLE_PERMISSION,
   REQUEUE_BUNDLE_PERMISSION,
   DOWNLOAD_BUNDLE_PERMISSION,
-  DELETE_BUNDLE_PERMISSION,
+  DELETE_ANY_BUNDLE_PERMISSION,
 
   UPLOAD_FILES_PERMISSION,
   UPDATE_FILENAME_PERMISSION,
