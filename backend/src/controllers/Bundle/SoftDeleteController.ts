@@ -12,6 +12,7 @@ import { FILES } from "@config/index";
 import { Di } from "@enums/Di";
 import { FileStorageMode } from "@enums/FileStorageMode";
 import { Permission } from "@shared/types/enums/Permission";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
@@ -62,6 +63,10 @@ export class SoftDeleteController extends BaseController {
 
     if (!bundle) {
       return response.sendStatus(HTTP.NO_CONTENT);
+    }
+
+    if (bundle.status === BundleStatus.Building) {
+      return response.sendStatus(HTTP.BAD_REQUEST);
     }
 
     if (
