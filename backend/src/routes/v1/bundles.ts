@@ -8,8 +8,8 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useRequeueSchema } from "@schemas/Bundle/useRequeueSchema";
 import { useAddSuperSchema } from "@schemas/Bundle/useAddSuperSchema";
@@ -20,10 +20,10 @@ import { useGetBlueprintsSuperSchema } from "@schemas/Bundle/useGetBlueprintsSup
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/Bundle/AddController";
 import { GetAllController } from "@controllers/Bundle/GetAllController";
-import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { RequeueController } from "@controllers/Bundle/RequeueController";
-import { DownloadController } from "@controllers/Bundle/DownloadController";
 import { GetFilesController } from "@controllers/Bundle/GetFilesController";
+import { DownloadController } from "@controllers/Bundle/DownloadController";
+import { SoftDeleteController } from "@controllers/Bundle/SoftDeleteController";
 import { GetBlueprintsController } from "@controllers/Bundle/GetBlueprintsController";
 
 const bundlesRouter = Router();
