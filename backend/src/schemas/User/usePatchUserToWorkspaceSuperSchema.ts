@@ -5,9 +5,8 @@ import { IUserRepository } from "types/repositories/IUserRepository";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 import { PatchUserToWorkspaceControllerTypes } from "types/controllers/User/PatchUserToWorkspaceController";
 
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-
 import { Di } from "@enums/Di";
+import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -40,7 +39,7 @@ const useParamsSchema: (
           where: {
             id: userId,
             role: {
-              id: Not(HEAD_ADMIN_ROLE_ID),
+              id: Not(HEAD_ADMIN_ROLE.id),
             },
           },
         });

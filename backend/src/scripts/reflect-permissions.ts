@@ -1,12 +1,13 @@
 import "reflect-metadata";
 import { Role } from "@db/entities/Role";
-import { dataSource } from "@db/data-source";
 import { DataStore } from "types/DataStore";
+import { dataSource } from "@db/data-source";
 import { Permission } from "@db/entities/Permission";
 import { PermissionToRole } from "@db/entities/PermissionToRole";
 
 import { ALL_PERMISSIONS } from "@config/permissions";
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
+
+import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 import { setupRedis } from "@utils/setupRedis";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
@@ -64,7 +65,7 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
         const permissionToRole = manager.create(PermissionToRole, {
           permission: newPermission,
           role,
-          enabled: role.id === HEAD_ADMIN_ROLE_ID ? true : false,
+          enabled: role.id === HEAD_ADMIN_ROLE.id,
         });
 
         role.permissionToRole.push(permissionToRole);

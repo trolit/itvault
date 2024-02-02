@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import lockfile from "proper-lockfile";
-import { dataSource } from "@db/data-source";
 import { Transporter } from "nodemailer";
+import { dataSource } from "@db/data-source";
 import { Channel, Connection, connect } from "amqplib";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 

@@ -7,9 +7,8 @@ import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { GetAllControllerTypes } from "types/controllers/Role/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-
 import { Di } from "@enums/Di";
+import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -47,7 +46,7 @@ export class GetAllController extends BaseController {
       skip,
       take,
       where: {
-        id: Not(HEAD_ADMIN_ROLE_ID),
+        id: Not(HEAD_ADMIN_ROLE.id),
         ...nameQuery,
       },
       relations: {
