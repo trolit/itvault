@@ -79,7 +79,6 @@ bundlesRouter.post(
 
 bundlesRouter.delete(
   "/:id",
-  requirePermissions([Permission.DeleteBundle]),
   requireEndpointVersion(SoftDeleteController.ALL_VERSIONS),
   processRequestWith(SoftDeleteController)
 );
