@@ -53,8 +53,6 @@ const DELETE_ANY_BUNDLE_PERMISSION: IPermissionDefinition = {
   group: PermissionGroup.Bundles,
 };
 
-// @TODO delete any bundle permission
-
 // ****************************************************
 // @NOTE FILE PERMISSIONS
 // ****************************************************
