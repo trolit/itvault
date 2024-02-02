@@ -1,5 +1,6 @@
 import { Like } from "typeorm";
 import { autoInjectable, inject } from "tsyringe";
+import { Workspace } from "@db/entities/Workspace";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
@@ -7,7 +8,6 @@ import { GetAllControllerTypes } from "types/controllers/Workspace/GetAllControl
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Workspace } from "@entities/Workspace";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 

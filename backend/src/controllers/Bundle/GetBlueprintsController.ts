@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { Blueprint } from "@db/entities/Blueprint";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
@@ -6,7 +7,6 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { GetBlueprintsControllerTypes } from "types/controllers/Bundle/GetBlueprintsController";
 
 import { Di } from "@enums/Di";
-import { Blueprint } from "@entities/Blueprint";
 
 import { BaseController } from "@controllers/BaseController";
 

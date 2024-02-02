@@ -1,9 +1,8 @@
 import { injectable } from "tsyringe";
+import { Note } from "@db/entities/Note";
 import { INoteRepository } from "types/repositories/INoteRepository";
 
 import { BaseRepository } from "./BaseRepository";
-
-import { Note } from "@entities/Note";
 
 @injectable()
 export class NoteRepository

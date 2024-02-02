@@ -1,7 +1,6 @@
 import { DataSource } from "typeorm";
+import { Tag } from "@db/entities/Tag";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
-
-import { Tag } from "@entities/Tag";
 
 export default class TagSeeder implements Seeder {
   public async run(

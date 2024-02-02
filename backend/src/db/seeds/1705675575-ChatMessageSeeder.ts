@@ -1,12 +1,12 @@
 import random from "lodash/random";
 import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
+import { User } from "@db/entities/User";
 import { Seeder } from "typeorm-extension";
+import { ChatMessage } from "@db/entities/ChatMessage";
 
 import { getRandomRecords } from "./common";
 
-import { User } from "@entities/User";
-import { ChatMessage } from "@entities/ChatMessage";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 
 export default class ChatMessageSeeder implements Seeder {

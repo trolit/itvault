@@ -1,6 +1,7 @@
+import { Permission } from "@db/entities/Permission";
+
 import { BaseMapper } from "./BaseMapper";
 
-import { Permission } from "@entities/Permission";
 import { IPermissionDTO } from "@shared/types/DTOs/Permission";
 
 export class PermissionMapper

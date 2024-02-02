@@ -1,5 +1,5 @@
-import { Blueprint } from "@entities/Blueprint";
-import { Workspace } from "@entities/Workspace";
+import { Blueprint } from "@db/entities/Blueprint";
+import { Workspace } from "@db/entities/Workspace";
 
 export namespace PinControllerTypes {
   export namespace v1 {

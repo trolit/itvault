@@ -1,8 +1,7 @@
 import sample from "lodash/sample";
 import { faker } from "@faker-js/faker";
+import { File } from "@db/entities/File";
 import { setSeederFactory } from "typeorm-extension";
-
-import { File } from "@entities/File";
 
 export default setSeederFactory(File, () => {
   const file = new File();

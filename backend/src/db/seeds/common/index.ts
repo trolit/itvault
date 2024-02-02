@@ -5,17 +5,18 @@ import {
   WhereExpressionBuilder,
 } from "typeorm";
 
-import { HEAD_ADMIN_ROLE, ALL_EDITABLE_ROLES } from "@config/default-roles";
+import { ALL_PERMISSIONS } from "@config/permissions";
+import { ALL_EDITABLE_ROLES } from "@config/initial-roles";
+
+import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 export const DOMAIN = "itvault.dev";
 export const PASSWORD = "1234";
 
-const { name, permissions } = HEAD_ADMIN_ROLE;
-
 export const HEAD_ADMIN_ROLE_TEST_ACCOUNT = {
-  email: generateEmailByRoleName(name),
-  permissions,
-  roleName: name,
+  email: generateEmailByRoleName(HEAD_ADMIN_ROLE.name),
+  permissions: ALL_PERMISSIONS,
+  roleName: HEAD_ADMIN_ROLE.name,
 };
 
 export const TEST_ACCOUNTS = [HEAD_ADMIN_ROLE_TEST_ACCOUNT].concat(

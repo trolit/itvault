@@ -1,13 +1,13 @@
 import { In } from "typeorm";
 import { injectable } from "tsyringe";
+import { User } from "@db/entities/User";
 import { TransactionResult } from "types/TransactionResult";
+import { UserToWorkspace } from "@db/entities/UserToWorkspace";
 import { IUserRepository } from "types/repositories/IUserRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
-import { User } from "@entities/User";
 import { Permission } from "@shared/types/enums/Permission";
-import { UserToWorkspace } from "@entities/UserToWorkspace";
 
 @injectable()
 export class UserRepository

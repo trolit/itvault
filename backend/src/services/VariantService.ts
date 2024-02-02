@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { Variant } from "@db/entities/Variant";
 import { IFormDataFile } from "types/IFormDataFile";
 import { IFileService } from "types/services/IFileService";
 import { TransactionResult } from "types/TransactionResult";
@@ -7,7 +8,6 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
 
 import { Di } from "@enums/Di";
-import { Variant } from "@entities/Variant";
 
 @injectable()
 export class VariantService implements IVariantService {

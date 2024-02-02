@@ -1,9 +1,8 @@
 import { injectable } from "tsyringe";
+import { Variant } from "@db/entities/Variant";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
 
 import { BaseRepository } from "./BaseRepository";
-
-import { Variant } from "@entities/Variant";
 
 @injectable()
 export class VariantRepository

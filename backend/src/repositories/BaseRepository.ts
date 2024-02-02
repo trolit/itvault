@@ -1,4 +1,5 @@
 import { ClassType } from "types/ClassType";
+import { dataSource } from "@db/data-source";
 import { IBaseRepository } from "types/repositories/IBaseRepository";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 import {
@@ -11,8 +12,6 @@ import {
   FindManyOptions,
   FindOptionsWhere,
 } from "typeorm";
-
-import { dataSource } from "@config/data-source";
 
 export class BaseRepository<T extends { id: number | string }>
   implements IBaseRepository<T>

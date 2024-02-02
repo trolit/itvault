@@ -1,4 +1,5 @@
 import { Like } from "typeorm";
+import { Tag } from "@db/entities/Tag";
 import { inject, injectable } from "tsyringe";
 import { TagMapper } from "@mappers/TagMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
@@ -7,7 +8,6 @@ import { GetAllControllerTypes } from "types/controllers/Tag/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Tag } from "@entities/Tag";
 
 import { BaseController } from "@controllers/BaseController";
 

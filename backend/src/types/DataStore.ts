@@ -1,5 +1,5 @@
-import { Permission as PermissionEntity } from "@entities/Permission";
-import { PermissionToRole } from "@entities/PermissionToRole";
+import { Permission as PermissionEntity } from "@db/entities/Permission";
+import { PermissionToRole } from "@db/entities/PermissionToRole";
 
 export namespace DataStore {
   export const enum KeyType {

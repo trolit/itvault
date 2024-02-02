@@ -1,11 +1,11 @@
+import { File } from "@db/entities/File";
+import { Variant } from "@db/entities/Variant";
 import { IEntityMapperService } from "types/services/IEntityMapperService";
 
 import { BaseMapper } from "./BaseMapper";
 import { VariantMapper } from "./VariantMapper";
 
 import { Di } from "@enums/Di";
-import { File } from "@entities/File";
-import { Variant } from "@entities/Variant";
 import { IVariantDTO } from "@shared/types/DTOs/Variant";
 import { IFileVariantDTO } from "@shared/types/DTOs/File";
 

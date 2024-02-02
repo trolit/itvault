@@ -1,3 +1,4 @@
+import { Note } from "@db/entities/Note";
 import { FindOptionsSelect } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { NoteMapper } from "@mappers/NoteMapper";
@@ -7,7 +8,6 @@ import { GetAllControllerTypes } from "types/controllers/Note/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Note } from "@entities/Note";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 

@@ -1,14 +1,13 @@
 import { In } from "typeorm";
+import { Role } from "@db/entities/Role";
 import { SuperSchema } from "types/SuperSchema";
 import { array, boolean, number, object } from "yup";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-
 import { Di } from "@enums/Di";
-import { Role } from "@entities/Role";
 import { IUpdateUserDTO } from "@shared/types/DTOs/User";
+import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -45,7 +44,7 @@ const useSingleValueSchema: (
             return true;
           }
 
-          if (value === HEAD_ADMIN_ROLE_ID) {
+          if (value === HEAD_ADMIN_ROLE.id) {
             return ctx.createError({
               message: setYupError(
                 CUSTOM_MESSAGES.GENERAL.NOT_ASSIGNABLE,

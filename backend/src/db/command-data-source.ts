@@ -14,7 +14,7 @@ const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
 
 const isProduction = ENV === Environment.Production;
 
-const getGlobPattern = (path: string) => `src/${path}`;
+const getGlobPattern = (path: string) => `src/db/${path}`;
 
 const options: DataSourceOptions & SeederOptions = {
   type: TYPE,
@@ -31,10 +31,8 @@ const options: DataSourceOptions & SeederOptions = {
 
   seeds: isProduction
     ? [RoleSeeder, PermissionSeeder, PermissionToRoleSeeder]
-    : [`${getGlobPattern(`config/data-source/seeds/*`)}`],
-  factories: isProduction
-    ? []
-    : [`${getGlobPattern(`config/data-source/factories/*`)}`],
+    : [`${getGlobPattern(`seeds/*`)}`],
+  factories: isProduction ? [] : [`${getGlobPattern(`factories/*`)}`],
 };
 
 // @NOTE separate DS config to simplify primary DS (nevertheless of NODE_ENV, TypeORM commands need to reach for src)

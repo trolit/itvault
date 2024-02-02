@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import { User } from "@db/entities/User";
 import {
   InsertEvent,
   EventSubscriber,
@@ -6,8 +7,6 @@ import {
 } from "typeorm";
 
 import { BCRYPT } from "@config/index";
-
-import { User } from "@entities/User";
 
 @EventSubscriber()
 export class UserSubscriber implements EntitySubscriberInterface<User> {

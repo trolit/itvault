@@ -1,6 +1,7 @@
+import { Variant } from "@db/entities/Variant";
+
 import { BaseMapper } from "./BaseMapper";
 
-import { Variant } from "@entities/Variant";
 import { IBundleFileDTO } from "@shared/types/DTOs/Bundle";
 
 export class BundleFileMapper

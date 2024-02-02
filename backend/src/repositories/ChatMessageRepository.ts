@@ -1,9 +1,8 @@
 import { injectable } from "tsyringe";
+import { ChatMessage } from "@db/entities/ChatMessage";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 
 import { BaseRepository } from "./BaseRepository";
-
-import { ChatMessage } from "@entities/ChatMessage";
 
 @injectable()
 export class ChatMessageRepository

@@ -1,14 +1,13 @@
 import random from "lodash/random";
 import { DataSource } from "typeorm";
+import { User } from "@db/entities/User";
 import { Seeder } from "typeorm-extension";
-
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
+import { Workspace } from "@db/entities/Workspace";
+import { UserToWorkspace } from "@db/entities/UserToWorkspace";
 
 import { getRandomRecords } from "./common";
 
-import { User } from "@entities/User";
-import { Workspace } from "@entities/Workspace";
-import { UserToWorkspace } from "@entities/UserToWorkspace";
+import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 export default class UserToWorkspaceSeeder implements Seeder {
   public async run(dataSource: DataSource) {
@@ -24,7 +23,7 @@ export default class UserToWorkspaceSeeder implements Seeder {
       ]);
 
       const headAdminUserIndex = users.findIndex(
-        user => user.role.id === HEAD_ADMIN_ROLE_ID
+        user => user.role.id === HEAD_ADMIN_ROLE.id
       );
 
       if (~headAdminUserIndex) {

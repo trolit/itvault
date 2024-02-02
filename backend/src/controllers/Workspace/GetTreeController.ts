@@ -1,5 +1,7 @@
+import { File } from "@db/entities/File";
 import { inject, injectable } from "tsyringe";
 import { FileMapper } from "@mappers/FileMapper";
+import { Directory } from "@db/entities/Directory";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { DirectoryMapper } from "@mappers/DirectoryMapper";
 import { IFileRepository } from "types/repositories/IFileRepository";
@@ -8,8 +10,6 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { GetTreeControllerTypes } from "types/controllers/Workspace/GetTreeController";
 
 import { Di } from "@enums/Di";
-import { File } from "@entities/File";
-import { Directory } from "@entities/Directory";
 
 import { BaseController } from "@controllers/BaseController";
 

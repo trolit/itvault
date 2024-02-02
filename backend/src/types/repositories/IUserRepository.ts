@@ -1,4 +1,4 @@
-import { User } from "@entities/User";
+import { User } from "@db/entities/User";
 import { IBaseRepository } from "./IBaseRepository";
 import { TransactionResult } from "types/TransactionResult";
 

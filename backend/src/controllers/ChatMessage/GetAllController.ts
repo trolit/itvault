@@ -1,5 +1,6 @@
 import { FindOptionsSelect } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { ChatMessage } from "@db/entities/ChatMessage";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { ChatMessageMapper } from "@mappers/ChatMessageMapper";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
@@ -7,7 +8,6 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { GetAllControllerTypes } from "types/controllers/ChatMessage/GetAllController";
 
 import { Di } from "@enums/Di";
-import { ChatMessage } from "@entities/ChatMessage";
 
 import { BaseController } from "@controllers/BaseController";
 

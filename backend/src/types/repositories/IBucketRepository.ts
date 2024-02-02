@@ -1,4 +1,4 @@
-import { Bucket } from "@entities/Bucket";
+import { Bucket } from "@db/entities/Bucket";
 import { IBaseRepository } from "./IBaseRepository";
 import { TransactionResult } from "types/TransactionResult";
 import { BucketContent } from "@shared/types/BucketContent";

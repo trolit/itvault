@@ -1,5 +1,6 @@
 import { IsNull, Like, Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
+import { Blueprint } from "@db/entities/Blueprint";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
@@ -7,7 +8,6 @@ import { GetAllControllerTypes } from "types/controllers/Blueprint/GetAllControl
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Blueprint } from "@entities/Blueprint";
 
 import { BaseController } from "@controllers/BaseController";
 

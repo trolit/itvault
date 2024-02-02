@@ -1,4 +1,4 @@
-import { Workspace } from "@entities/Workspace";
+import { Workspace } from "@db/entities/Workspace";
 import { TransactionResult } from "types/TransactionResult";
 import { IAddEditWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 

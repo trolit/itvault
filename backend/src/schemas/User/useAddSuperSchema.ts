@@ -3,10 +3,9 @@ import { SuperSchema } from "types/SuperSchema";
 import { IUserRepository } from "types/repositories/IUserRepository";
 import { AddControllerTypes } from "types/controllers/User/AddController";
 
-import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-
 import { Di } from "@enums/Di";
 import { ACCOUNT_RULES } from "@shared/constants/rules";
+import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -47,7 +46,7 @@ const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
   lastName: string().required().min(LAST_NAME.MIN_LENGTH),
 
   roleId: useIdNumberSchema(Di.RoleRepository).test((value, ctx) => {
-    if (value === HEAD_ADMIN_ROLE_ID) {
+    if (value === HEAD_ADMIN_ROLE.id) {
       return ctx.createError({
         message: setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "role"),
       });

@@ -13,9 +13,9 @@ const options: DataSourceOptions & SeederOptions = {
   username: ROOT.USERNAME,
   password: ROOT.PASSWORD,
   database: NAME,
-  entities: [`${BASE_DIR}/entities/*`],
-  migrations: [`${BASE_DIR}/migrations/*`],
-  subscribers: [`${BASE_DIR}/subscribers/*`],
+  entities: [`${BASE_DIR}/db/entities/*`],
+  migrations: [`${BASE_DIR}/db/migrations/*`],
+  subscribers: [`${BASE_DIR}/db/subscribers/*`],
   logging: true,
   synchronize: false,
 };

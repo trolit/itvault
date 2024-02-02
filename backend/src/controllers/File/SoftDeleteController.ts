@@ -2,8 +2,8 @@ import { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IFileService } from "types/services/IFileService";
-import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { DeleteControllerTypes } from "types/controllers/File/SoftDeleteController";
+import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
 

@@ -1,9 +1,8 @@
 import { injectable } from "tsyringe";
+import { Role } from "@db/entities/Role";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
 
 import { BaseRepository } from "./BaseRepository";
-
-import { Role } from "@entities/Role";
 
 @injectable()
 export class RoleRepository

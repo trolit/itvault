@@ -1,13 +1,12 @@
 import sample from "lodash/sample";
 import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
+import { Note } from "@db/entities/Note";
+import { User } from "@db/entities/User";
+import { File } from "@db/entities/File";
 import { Seeder } from "typeorm-extension";
 
 import { getRandomRecords } from "./common";
-
-import { User } from "@entities/User";
-import { File } from "@entities/File";
-import { Note } from "@entities/Note";
 
 export default class NoteSeeder implements Seeder {
   private _notesPerFile = 10;

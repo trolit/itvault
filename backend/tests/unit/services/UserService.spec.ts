@@ -1,10 +1,9 @@
 import { In } from "typeorm";
 import { assert } from "chai";
+import { Role } from "@entities/Role";
+import { User } from "@entities/User";
 import { mockRepository } from "../mockRepository";
 import { SinonFakeTimers, SinonSandbox, createSandbox } from "sinon";
-
-import { User } from "@entities/User";
-import { Role } from "@entities/Role";
 
 import { UserService } from "@services/UserService";
 import { UserRepository } from "@repositories/UserRepository";

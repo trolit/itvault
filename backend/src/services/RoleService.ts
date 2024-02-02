@@ -1,12 +1,12 @@
+import { Role } from "@db/entities/Role";
 import { inject, injectable } from "tsyringe";
+import { Permission } from "@db/entities/Permission";
 import { IRoleService } from "types/services/IRoleService";
 import { TransactionResult } from "types/TransactionResult";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
-import { Role } from "@entities/Role";
-import { Permission } from "@entities/Permission";
 import { IAddEditRoleDTO } from "@shared/types/DTOs/Role";
 import { IPermissionUpdateDTO } from "@shared/types/DTOs/Permission";
 

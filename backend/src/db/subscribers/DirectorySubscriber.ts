@@ -1,3 +1,4 @@
+import { Directory } from "@db/entities/Directory";
 import {
   InsertEvent,
   EventSubscriber,
@@ -5,8 +6,6 @@ import {
 } from "typeorm";
 
 import { FILES } from "@config/index";
-
-import { Directory } from "@entities/Directory";
 
 @EventSubscriber()
 export class DirectorySubscriber

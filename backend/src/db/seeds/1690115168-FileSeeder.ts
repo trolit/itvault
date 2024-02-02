@@ -1,11 +1,10 @@
 import { DataSource } from "typeorm";
+import { File } from "@db/entities/File";
+import { Directory } from "@db/entities/Directory";
+import { Workspace } from "@db/entities/Workspace";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { getRandomRecords } from "./common";
-
-import { File } from "@entities/File";
-import { Workspace } from "@entities/Workspace";
-import { Directory } from "@entities/Directory";
 
 export default class FileSeeder implements Seeder {
   public async run(

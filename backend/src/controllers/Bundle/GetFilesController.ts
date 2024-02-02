@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { Variant } from "@db/entities/Variant";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { BundleFileMapper } from "@mappers/BundleFileMapper";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
@@ -6,7 +7,6 @@ import { GetFilesControllerTypes } from "types/controllers/Bundle/GetFilesContro
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Variant } from "@entities/Variant";
 
 import { BaseController } from "@controllers/BaseController";
 

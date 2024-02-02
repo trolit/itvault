@@ -1,13 +1,12 @@
 import uniq from "lodash/uniq";
 import { injectable } from "tsyringe";
 import { In, Like, Not } from "typeorm";
+import { Directory } from "@db/entities/Directory";
 import { IDirectoryRepository } from "types/repositories/IDirectoryRepository";
 
 import { FILES } from "@config";
 
 import { BaseRepository } from "./BaseRepository";
-
-import { Directory } from "@entities/Directory";
 
 @injectable()
 export class DirectoryRepository

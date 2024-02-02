@@ -1,7 +1,10 @@
 import path from "path";
 import fs from "fs-extra";
 import { Response } from "express";
+import { File } from "@db/entities/File";
+import { Bundle } from "@db/entities/Bundle";
 import { inject, injectable } from "tsyringe";
+import { Variant } from "@db/entities/Variant";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 import { IFileRepository } from "types/repositories/IFileRepository";
@@ -11,9 +14,6 @@ import { FILES } from "@config";
 import { BaseFileService } from "./BaseFileService";
 
 import { Di } from "@enums/Di";
-import { File } from "@entities/File";
-import { Bundle } from "@entities/Bundle";
-import { Variant } from "@entities/Variant";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
 @injectable()

@@ -1,4 +1,4 @@
-import { Bundle } from "@entities/Bundle";
+import { Bundle } from "@db/entities/Bundle";
 
 export type BundleConsumerHandlerData = {
   bundle: Bundle;

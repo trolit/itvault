@@ -1,11 +1,10 @@
 import { DataSource } from "typeorm";
+import { Tag } from "@db/entities/Tag";
+import { Workspace } from "@db/entities/Workspace";
+import { TagToWorkspace } from "@db/entities/TagToWorkspace";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { getRandomRecords } from "./common";
-
-import { Tag } from "@entities/Tag";
-import { Workspace } from "@entities/Workspace";
-import { TagToWorkspace } from "@entities/TagToWorkspace";
 
 export default class WorkspaceSeeder implements Seeder {
   public async run(

@@ -1,4 +1,4 @@
-import { Role } from "@entities/Role";
+import { Role } from "@db/entities/Role";
 import { IAddEditRoleDTO } from "@shared/types/DTOs/Role";
 import { TransactionResult } from "types/TransactionResult";
 
