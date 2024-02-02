@@ -1,4 +1,4 @@
-import { Tag } from "@entities/Tag";
+import { Tag } from "@db/entities/Tag";
 import { QueryRunner, SaveOptions } from "typeorm";
 import { IBaseRepository } from "./IBaseRepository";
 

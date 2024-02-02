@@ -1,4 +1,4 @@
-import { Variant } from "@entities/Variant";
+import { Variant } from "@db/entities/Variant";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
 

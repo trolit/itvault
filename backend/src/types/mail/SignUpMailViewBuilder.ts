@@ -1,4 +1,4 @@
-import { User } from "@entities/User";
+import { User } from "@db/entities/User";
 
 export namespace SignUpMailViewBuilder {
   export type Input = {
