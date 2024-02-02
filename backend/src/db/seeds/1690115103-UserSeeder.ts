@@ -3,7 +3,7 @@ import { User } from "@db/entities/User";
 import { Role } from "@db/entities/Role";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
-import { MEMBER_ROLE } from "@config/default-roles";
+import { MEMBER_ROLE } from "@config/initial-roles";
 
 import { PASSWORD, TEST_ACCOUNTS } from "./common";
 

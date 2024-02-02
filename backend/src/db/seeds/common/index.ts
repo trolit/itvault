@@ -6,7 +6,7 @@ import {
 } from "typeorm";
 
 import { ALL_PERMISSIONS } from "@config/permissions";
-import { ALL_EDITABLE_ROLES } from "@config/default-roles";
+import { ALL_EDITABLE_ROLES } from "@config/initial-roles";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
