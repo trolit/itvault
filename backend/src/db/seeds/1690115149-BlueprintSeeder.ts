@@ -2,9 +2,8 @@ import random from "lodash/random";
 import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
 import { Seeder } from "typeorm-extension";
-
-import { Blueprint } from "@entities/Blueprint";
-import { Workspace } from "@entities/Workspace";
+import { Workspace } from "@db/entities/Workspace";
+import { Blueprint } from "@db/entities/Blueprint";
 
 export default class BlueprintSeeder implements Seeder {
   public async run(dataSource: DataSource) {

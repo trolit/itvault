@@ -3,17 +3,16 @@ import fs from "fs-extra";
 import crypto from "crypto";
 import random from "lodash/random";
 import { DataSource } from "typeorm";
+import { User } from "@db/entities/User";
+import { File } from "@db/entities/File";
 import { Seeder } from "typeorm-extension";
+import { Variant } from "@db/entities/Variant";
+import { Workspace } from "@db/entities/Workspace";
 
 import { FILES } from "@config";
 
 import { createFile } from "./common/createFile";
 import { HEAD_ADMIN_ROLE_TEST_ACCOUNT } from "./common";
-
-import { File } from "@entities/File";
-import { User } from "@entities/User";
-import { Variant } from "@entities/Variant";
-import { Workspace } from "@entities/Workspace";
 
 export default class VariantSeeder implements Seeder {
   public async run(dataSource: DataSource) {

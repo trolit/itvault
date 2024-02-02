@@ -1,6 +1,7 @@
+import { Role } from "@db/entities/Role";
+
 import { BaseMapper } from "./BaseMapper";
 
-import { Role } from "@entities/Role";
 import { IRoleDTO } from "@shared/types/DTOs/Role";
 import { IAuthorDTO } from "@shared/types/DTOs/User";
 

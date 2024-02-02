@@ -1,13 +1,12 @@
 import { DataSource } from "typeorm";
+import { Role } from "@db/entities/Role";
 import { Seeder } from "typeorm-extension";
+import { Permission } from "@db/entities/Permission";
+import { PermissionToRole } from "@db/entities/PermissionToRole";
 
 import { ALL_PERMISSIONS } from "@config/permissions";
 
 import { TEST_ACCOUNTS } from "./common";
-
-import { Role } from "@entities/Role";
-import { Permission } from "@entities/Permission";
-import { PermissionToRole } from "@entities/PermissionToRole";
 
 export default class PermissionToRoleSeeder implements Seeder {
   public async run(dataSource: DataSource) {

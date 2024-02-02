@@ -1,4 +1,5 @@
 import { autoInjectable, inject } from "tsyringe";
+import { Workspace } from "@db/entities/Workspace";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { WorkspaceMapper } from "@mappers/WorkspaceMapper";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
@@ -6,7 +7,6 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { GetBySlugControllerTypes } from "types/controllers/Workspace/GetBySlugController";
 
 import { Di } from "@enums/Di";
-import { Workspace } from "@entities/Workspace";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 

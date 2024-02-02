@@ -2,9 +2,10 @@ import path from "path";
 import JSZip from "jszip";
 import crypto from "crypto";
 import { In } from "typeorm";
+import { Bucket } from "@db/entities/Bucket";
 import { inject, injectable } from "tsyringe";
-import { IFileService } from "types/services/IFileService";
 import { IDateService } from "types/services/IDateService";
+import { IFileService } from "types/services/IFileService";
 import { IFileRepository } from "types/repositories/IFileRepository";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
 import { IBundleRepository } from "types/repositories/IBundleRepository";
@@ -14,10 +15,9 @@ import { BundleConsumerHandlerData } from "types/consumer-handlers/BundleConsume
 import { FILES } from "@config";
 
 import { Di } from "@enums/Di";
-import { Bucket } from "@entities/Bucket";
 import { FileStorageMode } from "@enums/FileStorageMode";
-import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { BundleExpire } from "@shared/types/enums/BundleExpire";
+import { BundleStatus } from "@shared/types/enums/BundleStatus";
 
 @injectable()
 export class BundleConsumerHandler

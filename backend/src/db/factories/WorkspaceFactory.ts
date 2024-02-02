@@ -1,9 +1,8 @@
 import random from "lodash/random";
 import { faker } from "@faker-js/faker";
 import kebabCase from "lodash/kebabCase";
+import { Workspace } from "@db/entities/Workspace";
 import { setSeederFactory } from "typeorm-extension";
-
-import { Workspace } from "@entities/Workspace";
 
 export default setSeederFactory(Workspace, () => {
   const workspace = new Workspace();

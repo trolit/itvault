@@ -1,6 +1,7 @@
+import { User } from "@db/entities/User";
+
 import { BaseMapper } from "./BaseMapper";
 
-import { User } from "@entities/User";
 import { ILoggedUserDTO } from "@shared/types/DTOs/User";
 import { IRolePermissionDTO } from "@shared/types/DTOs/Role";
 

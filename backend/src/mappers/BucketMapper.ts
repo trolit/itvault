@@ -1,6 +1,7 @@
+import { Bucket } from "@db/entities/Bucket";
+
 import { BaseMapper } from "./BaseMapper";
 
-import { Bucket } from "@entities/Bucket";
 import { IBucketDTO } from "@shared/types/DTOs/Bucket";
 import { BucketContent } from "@shared/types/BucketContent";
 

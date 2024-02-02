@@ -1,6 +1,7 @@
 import { And, Equal, Not } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { PermissionToRole } from "@db/entities/PermissionToRole";
 import { RolePermissionMapper } from "@mappers/RolePermissionMapper";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -9,7 +10,6 @@ import { GetPermissionsControllerTypes } from "types/controllers/Role/GetPermiss
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import { PermissionToRole } from "@entities/PermissionToRole";
 
 import { BaseController } from "@controllers/BaseController";
 

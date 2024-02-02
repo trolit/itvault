@@ -1,3 +1,4 @@
+import { Bundle } from "@db/entities/Bundle";
 import { inject, injectable } from "tsyringe";
 import { IsNull, MoreThanOrEqual } from "typeorm";
 import { BundleMapper } from "@mappers/BundleMapper";
@@ -7,7 +8,6 @@ import { GetAllControllerTypes } from "types/controllers/Bundle/GetAllController
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Bundle } from "@entities/Bundle";
 
 import { BaseController } from "@controllers/BaseController";
 

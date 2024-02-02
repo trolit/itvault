@@ -1,5 +1,7 @@
 import assert from "assert";
 import { In } from "typeorm";
+import { Role } from "@db/entities/Role";
+import { User } from "@db/entities/User";
 import { inject, injectable } from "tsyringe";
 import { IUserService } from "types/services/IUserService";
 import { TransactionResult } from "types/TransactionResult";
@@ -7,8 +9,6 @@ import { IUserRepository } from "types/repositories/IUserRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
-import { User } from "@entities/User";
-import { Role } from "@entities/Role";
 import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";

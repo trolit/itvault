@@ -1,9 +1,8 @@
 import { DataSource } from "typeorm";
 import { Seeder } from "typeorm-extension";
+import { Directory } from "@db/entities/Directory";
 
 import { FILES } from "@config";
-
-import { Directory } from "@entities/Directory";
 
 const buildPath = (path: string) => FILES.ROOT.concat("/", path);
 

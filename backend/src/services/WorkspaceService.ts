@@ -1,5 +1,6 @@
 import kebabCase from "lodash/kebabCase";
 import { inject, injectable } from "tsyringe";
+import { Workspace } from "@db/entities/Workspace";
 import { TransactionResult } from "types/TransactionResult";
 import { ITagRepository } from "types/repositories/ITagRepository";
 import { IWorkspaceService } from "types/services/IWorkspaceService";
@@ -7,7 +8,6 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
-import { Workspace } from "@entities/Workspace";
 import { IAddEditWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 
 @injectable()

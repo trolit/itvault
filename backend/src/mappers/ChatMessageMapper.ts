@@ -1,6 +1,7 @@
+import { ChatMessage } from "@db/entities/ChatMessage";
+
 import { BaseMapper } from "./BaseMapper";
 
-import { ChatMessage } from "@entities/ChatMessage";
 import { IAuthorDTO } from "@shared/types/DTOs/User";
 import { ITimestampsDTO } from "@shared/types/DTOs/shared";
 import { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";

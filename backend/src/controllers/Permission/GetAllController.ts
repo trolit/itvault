@@ -1,4 +1,5 @@
 import { inject, injectable } from "tsyringe";
+import { Permission } from "@db/entities/Permission";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { PermissionMapper } from "@mappers/PermissionMapper";
 import { IPermissionRepository } from "types/repositories/IPermissionRepository";
@@ -6,7 +7,6 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { GetAllControllerTypes } from "types/controllers/Permission/GetAllController";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@entities/Permission";
 
 import { BaseController } from "@controllers/BaseController";
 

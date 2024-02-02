@@ -1,4 +1,5 @@
 import { In } from "typeorm";
+import { Role } from "@db/entities/Role";
 import { SuperSchema } from "types/SuperSchema";
 import { array, boolean, number, object } from "yup";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
@@ -7,7 +8,6 @@ import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyCont
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
 
 import { Di } from "@enums/Di";
-import { Role } from "@entities/Role";
 import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 import { setYupError } from "@helpers/yup/setError";

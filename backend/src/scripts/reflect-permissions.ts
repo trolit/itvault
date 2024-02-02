@@ -1,13 +1,12 @@
 import "reflect-metadata";
+import { Role } from "@db/entities/Role";
+import { dataSource } from "@db/data-source";
 import { DataStore } from "types/DataStore";
+import { Permission } from "@db/entities/Permission";
+import { PermissionToRole } from "@db/entities/PermissionToRole";
 
-import { dataSource } from "@config/data-source";
 import { ALL_PERMISSIONS } from "@config/permissions";
 import { HEAD_ADMIN_ROLE_ID } from "@config/default-roles";
-
-import { Role } from "@entities/Role";
-import { Permission } from "@entities/Permission";
-import { PermissionToRole } from "@entities/PermissionToRole";
 
 import { setupRedis } from "@utils/setupRedis";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";

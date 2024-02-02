@@ -1,8 +1,7 @@
 import http from "http";
 import express from "express";
+import { dataSource } from "@db/data-source";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
-
-import { dataSource } from "@config/data-source";
 
 import { Di } from "@enums/Di";
 

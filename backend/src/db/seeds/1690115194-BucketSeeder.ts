@@ -2,18 +2,18 @@ import path from "path";
 import fs from "fs-extra";
 import random from "lodash/random";
 import { DataSource } from "typeorm";
+import { File } from "@db/entities/File";
 import { Seeder } from "typeorm-extension";
 import sampleSize from "lodash/sampleSize";
+import { Bucket } from "@db/entities/Bucket";
+import { Variant } from "@db/entities/Variant";
+import { Blueprint } from "@db/entities/Blueprint";
+import { Workspace } from "@db/entities/Workspace";
 
 import { FILES } from "@config";
 
 import { getRandomRecords } from "./common";
 
-import { File } from "@entities/File";
-import { Bucket } from "@entities/Bucket";
-import { Variant } from "@entities/Variant";
-import { Workspace } from "@entities/Workspace";
-import { Blueprint } from "@entities/Blueprint";
 import { BucketContent } from "@shared/types/BucketContent";
 
 export default class BucketSeeder implements Seeder {

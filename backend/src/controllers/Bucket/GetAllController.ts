@@ -1,3 +1,4 @@
+import { Bucket } from "@db/entities/Bucket";
 import { inject, injectable } from "tsyringe";
 import { BucketMapper } from "@mappers/BucketMapper";
 import { StatusCodes as HTTP } from "http-status-codes";
@@ -6,7 +7,6 @@ import { GetAllControllerTypes } from "types/controllers/Bucket/GetAllController
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Bucket } from "@entities/Bucket";
 
 import { BaseController } from "@controllers/BaseController";
 

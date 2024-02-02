@@ -1,6 +1,7 @@
+import { File } from "@db/entities/File";
+
 import { BaseMapper } from "./BaseMapper";
 
-import { File } from "@entities/File";
 import { IFileDTO } from "@shared/types/DTOs/File";
 
 export class FileMapper extends BaseMapper<File> implements IFileDTO {

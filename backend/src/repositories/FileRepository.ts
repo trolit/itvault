@@ -1,9 +1,8 @@
 import { injectable } from "tsyringe";
+import { File } from "@db/entities/File";
 import { IFileRepository } from "types/repositories/IFileRepository";
 
 import { BaseRepository } from "./BaseRepository";
-
-import { File } from "@entities/File";
 
 @injectable()
 export class FileRepository

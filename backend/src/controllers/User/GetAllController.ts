@@ -1,3 +1,4 @@
+import { User } from "@db/entities/User";
 import { FindOptionsWhere } from "typeorm";
 import { inject, injectable } from "tsyringe";
 import { UserMapper } from "@mappers/UserMapper";
@@ -7,7 +8,6 @@ import { GetAllControllerTypes } from "types/controllers/User/GetAllController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { User } from "@entities/User";
 import { Permission } from "@shared/types/enums/Permission";
 
 import { BaseController } from "@controllers/BaseController";

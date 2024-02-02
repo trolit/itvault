@@ -1,11 +1,11 @@
 import "reflect-metadata";
 import lockfile from "proper-lockfile";
+import { dataSource } from "@db/data-source";
 import { Transporter } from "nodemailer";
 import { Channel, Connection, connect } from "amqplib";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 import { MQRABBIT } from "@config";
-import { dataSource } from "@config/data-source";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";

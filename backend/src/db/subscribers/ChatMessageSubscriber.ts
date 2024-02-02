@@ -1,12 +1,11 @@
+import { User } from "@db/entities/User";
+import { ChatMessage } from "@db/entities/ChatMessage";
 import {
   InsertEvent,
   RemoveEvent,
   EventSubscriber,
   EntitySubscriberInterface,
 } from "typeorm";
-
-import { User } from "@entities/User";
-import { ChatMessage } from "@entities/ChatMessage";
 
 @EventSubscriber()
 export class ChatMessageSubscriber

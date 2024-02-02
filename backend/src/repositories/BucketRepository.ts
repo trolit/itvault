@@ -1,10 +1,10 @@
 import { injectable } from "tsyringe";
+import { Bucket } from "@db/entities/Bucket";
 import { TransactionResult } from "types/TransactionResult";
 import { IBucketRepository } from "types/repositories/IBucketRepository";
 
 import { BaseRepository } from "./BaseRepository";
 
-import { Bucket } from "@entities/Bucket";
 import { BucketContent } from "@shared/types/BucketContent";
 
 @injectable()

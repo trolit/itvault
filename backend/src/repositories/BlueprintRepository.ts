@@ -1,9 +1,8 @@
 import { injectable } from "tsyringe";
+import { Blueprint } from "@db/entities/Blueprint";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 
 import { BaseRepository } from "./BaseRepository";
-
-import { Blueprint } from "@entities/Blueprint";
 
 @injectable()
 export class BlueprintRepository

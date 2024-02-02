@@ -1,6 +1,7 @@
+import { Blueprint } from "@db/entities/Blueprint";
+
 import { BaseMapper } from "./BaseMapper";
 
-import { Blueprint } from "@entities/Blueprint";
 import { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 export class BlueprintMapper

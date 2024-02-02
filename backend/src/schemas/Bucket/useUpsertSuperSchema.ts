@@ -1,10 +1,10 @@
+import { Variant } from "@db/entities/Variant";
 import { SuperSchema } from "types/SuperSchema";
+import { Blueprint } from "@db/entities/Blueprint";
 import { array, lazy, number, object, string } from "yup";
 import { UpsertControllerTypes } from "types/controllers/Bucket/UpsertController";
 
 import { Di } from "@enums/Di";
-import { Variant } from "@entities/Variant";
-import { Blueprint } from "@entities/Blueprint";
 
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
