@@ -40,13 +40,13 @@
             </div>
           </n-p>
 
-          <n-p v-if="DIRS_TO_IGNORE_FROM_UPLOAD.length" depth="3">
-            <small> Ignored dirs </small>
+          <n-p v-if="ELEMENTS_TO_IGNORE_FROM_UPLOAD.length" depth="3">
+            <small> Ignored from upload: </small>
 
             <div>
               <n-tag
                 size="tiny"
-                v-for="(item, index) in DIRS_TO_IGNORE_FROM_UPLOAD"
+                v-for="(item, index) in ELEMENTS_TO_IGNORE_FROM_UPLOAD"
                 :key="index"
               >
                 {{ item }}
@@ -125,7 +125,7 @@ import { Add as UploadIcon } from "@vicons/carbon";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { defineComputed } from "@/helpers/defineComputed";
 import type { Emits, Props } from "@/types/CommonModalTypes";
-import { DIRS_TO_IGNORE_FROM_UPLOAD } from "@shared/constants/config";
+import { ELEMENTS_TO_IGNORE_FROM_UPLOAD } from "@shared/constants/config";
 
 const filesStore = useFilesStore();
 const workspacesStore = useWorkspacesStore();
