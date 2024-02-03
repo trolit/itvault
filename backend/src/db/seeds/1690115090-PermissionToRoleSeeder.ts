@@ -4,9 +4,8 @@ import { Seeder } from "typeorm-extension";
 import { Permission } from "@db/entities/Permission";
 import { PermissionToRole } from "@db/entities/PermissionToRole";
 
-import { ALL_PERMISSIONS } from "@config/permissions";
-
-import { TEST_ACCOUNTS } from "./common";
+import { PERMISSIONS } from "@config/permissions";
+import { INITIAL_ROLES } from "@config/initial-roles";
 
 export default class PermissionToRoleSeeder implements Seeder {
   public async run(dataSource: DataSource) {
@@ -17,14 +16,14 @@ export default class PermissionToRoleSeeder implements Seeder {
 
     const permissionRepository = dataSource.getRepository(Permission);
 
-    for (const { roleName, permissions } of TEST_ACCOUNTS) {
-      const role = await roleRepository.findOneBy({ name: roleName });
+    for (const { name, permissions } of INITIAL_ROLES) {
+      const role = await roleRepository.findOneBy({ name });
 
       if (!role) {
         continue;
       }
 
-      ALL_PERMISSIONS.map(async ({ signature }) => {
+      Object.values(PERMISSIONS).map(async ({ signature }) => {
         const isPermissionEnabled = permissions.some(
           permission => permission.signature === signature
         );
