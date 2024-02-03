@@ -1,7 +1,7 @@
 import { In } from "typeorm";
 import { assert } from "chai";
-import { Role } from "@entities/Role";
-import { User } from "@entities/User";
+import { Role } from "@db/entities/Role";
+import { User } from "@db/entities/User";
 import { mockRepository } from "../mockRepository";
 import { SinonFakeTimers, SinonSandbox, createSandbox } from "sinon";
 
