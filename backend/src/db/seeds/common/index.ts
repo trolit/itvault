@@ -1,33 +1,14 @@
 import {
   Brackets,
-  ObjectLiteral,
   Repository,
+  ObjectLiteral,
   WhereExpressionBuilder,
 } from "typeorm";
-
-import { ALL_PERMISSIONS } from "@config/permissions";
-import { ALL_EDITABLE_ROLES } from "@config/initial-roles";
-
-import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 export const DOMAIN = "itvault.dev";
 export const PASSWORD = "1234";
 
-export const HEAD_ADMIN_ROLE_TEST_ACCOUNT = {
-  email: generateEmailByRoleName(HEAD_ADMIN_ROLE.name),
-  permissions: ALL_PERMISSIONS,
-  roleName: HEAD_ADMIN_ROLE.name,
-};
-
-export const TEST_ACCOUNTS = [HEAD_ADMIN_ROLE_TEST_ACCOUNT].concat(
-  ALL_EDITABLE_ROLES.map(({ name, permissions }) => ({
-    email: generateEmailByRoleName(name),
-    permissions,
-    roleName: name,
-  }))
-);
-
-function generateEmailByRoleName(name: string) {
+export function generateEmailByRoleName(name: string) {
   return `${name.toLowerCase().replace(/ /g, ".")}@${DOMAIN}`;
 }
 
