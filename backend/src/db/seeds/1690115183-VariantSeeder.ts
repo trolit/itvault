@@ -13,6 +13,7 @@ import { FILES } from "@config";
 
 import { createFile } from "./helpers/createFile";
 
+import { FileStorageMode } from "@enums/FileStorageMode";
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 export default class VariantSeeder implements Seeder {
@@ -55,10 +56,13 @@ export default class VariantSeeder implements Seeder {
         const extension = filename.split(".").pop() || "";
 
         for (let index = 0; index < numberOfVariants; index++) {
+          let size = 0;
           const UUID = crypto.randomUUID();
           const variantFilename = UUID.concat(".", extension);
 
-          const size = await createFile(variantFilename, extension, uploadDir);
+          if (FILES.ACTIVE_MODE === FileStorageMode.Local) {
+            size = await createFile(variantFilename, extension, uploadDir);
+          }
 
           await variantRepository.save({
             name: `v${index + 1}`,
