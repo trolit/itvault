@@ -5,7 +5,7 @@ import { dataSource } from "@db/data-source";
 import { Permission } from "@db/entities/Permission";
 import { PermissionToRole } from "@db/entities/PermissionToRole";
 
-import { ALL_PERMISSIONS } from "@config/permissions";
+import { PERMISSIONS } from "@config/permissions";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
@@ -36,7 +36,7 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
     const signatures = implementedPermissions.map(({ signature }) => signature);
 
-    const missingPermissions = ALL_PERMISSIONS.filter(
+    const missingPermissions = Object.values(PERMISSIONS).filter(
       ({ signature }) => !signatures.includes(signature)
     );
 
