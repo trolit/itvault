@@ -44,5 +44,5 @@
       "path": "../shared/tsconfig.json"
     }
   ],
-  "exclude": ["tests/**", "dist/**"]
+  "exclude": ["dist/**"]
 }
