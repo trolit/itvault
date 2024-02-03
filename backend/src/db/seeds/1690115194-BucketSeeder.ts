@@ -12,7 +12,7 @@ import { Workspace } from "@db/entities/Workspace";
 
 import { FILES } from "@config";
 
-import { getRandomRecords } from "./common";
+import { getRandomRecords } from "./helpers/getRandomRecords";
 
 import { BucketContent } from "@shared/types/BucketContent";
 

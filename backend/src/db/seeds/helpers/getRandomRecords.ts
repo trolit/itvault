@@ -5,13 +5,6 @@ import {
   WhereExpressionBuilder,
 } from "typeorm";
 
-export const DOMAIN = "itvault.dev";
-export const PASSWORD = "1234";
-
-export function generateEmailByRoleName(name: string) {
-  return `${name.toLowerCase().replace(/ /g, ".")}@${DOMAIN}`;
-}
-
 export function getRandomRecords<T extends ObjectLiteral>(
   repository: Repository<T>,
   amount = 1,

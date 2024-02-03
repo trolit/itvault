@@ -31,7 +31,7 @@ const options: DataSourceOptions & SeederOptions = {
 
   seeds: isProduction
     ? [RoleSeeder, PermissionSeeder, PermissionToRoleSeeder]
-    : [`${getGlobPattern(`seeds/*`)}`],
+    : [`${getGlobPattern(`seeds/*Seeder*`)}`],
   factories: isProduction ? [] : [`${getGlobPattern(`factories/*`)}`],
 };
 

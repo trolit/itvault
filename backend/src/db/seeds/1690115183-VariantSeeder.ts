@@ -11,7 +11,7 @@ import { Workspace } from "@db/entities/Workspace";
 
 import { FILES } from "@config";
 
-import { createFile } from "./common/createFile";
+import { createFile } from "./helpers/createFile";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 

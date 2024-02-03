@@ -5,9 +5,11 @@ import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { INITIAL_ROLES } from "@config/initial-roles";
 
-import { PASSWORD, generateEmailByRoleName } from "./common";
+import { roleNameToEmail } from "./helpers/roleNameToEmail";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
+
+const PASSWORD = "1234";
 
 export default class UserSeeder implements Seeder {
   public async run(
@@ -25,7 +27,7 @@ export default class UserSeeder implements Seeder {
       }
 
       await userFactory.save({
-        email: generateEmailByRoleName(name),
+        email: roleNameToEmail(name),
         password: PASSWORD,
         role,
         isSignedUp: true,
