@@ -12,7 +12,8 @@ import { Workspace } from "@db/entities/Workspace";
 import { FILES } from "@config";
 
 import { createFile } from "./common/createFile";
-import { HEAD_ADMIN_ROLE_TEST_ACCOUNT } from "./common";
+
+import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 export default class VariantSeeder implements Seeder {
   public async run(dataSource: DataSource) {
@@ -24,7 +25,7 @@ export default class VariantSeeder implements Seeder {
     const workspaces = await workspaceRepository.find();
 
     const headAdmin = await userRepository.findOneBy({
-      email: HEAD_ADMIN_ROLE_TEST_ACCOUNT.email,
+      id: HEAD_ADMIN_ROLE.id,
     });
 
     if (!headAdmin) {
