@@ -5,7 +5,7 @@ import { User } from "@db/entities/User";
 import { Seeder } from "typeorm-extension";
 import { ChatMessage } from "@db/entities/ChatMessage";
 
-import { getRandomRecords } from "./common";
+import { getRandomRecords } from "./helpers/getRandomRecords";
 
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 

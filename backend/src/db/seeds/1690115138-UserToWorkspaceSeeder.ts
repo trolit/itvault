@@ -5,7 +5,7 @@ import { Seeder } from "typeorm-extension";
 import { Workspace } from "@db/entities/Workspace";
 import { UserToWorkspace } from "@db/entities/UserToWorkspace";
 
-import { getRandomRecords } from "./common";
+import { getRandomRecords } from "./helpers/getRandomRecords";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 

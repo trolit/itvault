@@ -6,7 +6,7 @@ import { User } from "@db/entities/User";
 import { File } from "@db/entities/File";
 import { Seeder } from "typeorm-extension";
 
-import { getRandomRecords } from "./common";
+import { getRandomRecords } from "./helpers/getRandomRecords";
 
 export default class NoteSeeder implements Seeder {
   private _notesPerFile = 10;
