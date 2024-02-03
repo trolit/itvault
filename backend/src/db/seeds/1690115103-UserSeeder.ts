@@ -18,10 +18,6 @@ export default class UserSeeder implements Seeder {
     const roleRepository = dataSource.getRepository(Role);
 
     for (const { name } of INITIAL_ROLES) {
-      if (name === HEAD_ADMIN_ROLE.name) {
-        continue;
-      }
-
       const role = await roleRepository.findOneBy({ name });
 
       if (!role) {
@@ -34,6 +30,10 @@ export default class UserSeeder implements Seeder {
         role,
         isSignedUp: true,
       });
+
+      if (name === HEAD_ADMIN_ROLE.name) {
+        continue;
+      }
 
       // some random users
       await userFactory.saveMany(3, {
