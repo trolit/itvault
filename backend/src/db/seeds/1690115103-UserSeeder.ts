@@ -3,40 +3,44 @@ import { User } from "@db/entities/User";
 import { Role } from "@db/entities/Role";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
-import { MEMBER_ROLE } from "@config/initial-roles";
+import { INITIAL_ROLES } from "@config/initial-roles";
 
-import { PASSWORD, TEST_ACCOUNTS } from "./common";
+import { PASSWORD, generateEmailByRoleName } from "./common";
+
+import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 export default class UserSeeder implements Seeder {
   public async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager
   ) {
+    const userFactory = factoryManager.get(User);
     const roleRepository = dataSource.getRepository(Role);
 
-    const userFactory = factoryManager.get(User);
+    for (const { name } of INITIAL_ROLES) {
+      if (name === HEAD_ADMIN_ROLE.name) {
+        continue;
+      }
 
-    for (const { email, roleName } of TEST_ACCOUNTS) {
-      const role = await roleRepository.findOneBy({ name: roleName });
+      const role = await roleRepository.findOneBy({ name });
 
       if (!role) {
         continue;
       }
 
       await userFactory.save({
-        email,
+        email: generateEmailByRoleName(name),
         password: PASSWORD,
         role,
         isSignedUp: true,
       });
 
-      if (role.name === MEMBER_ROLE.name) {
-        await userFactory.saveMany(4, {
-          role,
-          deletedAt: new Date(),
-          isSignedUp: false,
-        });
-      }
+      // some random users
+      await userFactory.saveMany(3, {
+        role,
+        deletedAt: new Date(),
+        isSignedUp: false,
+      });
     }
   }
 }
