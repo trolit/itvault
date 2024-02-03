@@ -4,7 +4,7 @@ import { SuperSchema } from "types/SuperSchema";
 import { array, boolean, object, string } from "yup";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
 
-import { ALL_PERMISSIONS } from "@config/permissions";
+import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
 
 import { Di } from "@enums/Di";
 import { IAddEditRoleDTO } from "@shared/types/DTOs/Role";
@@ -54,9 +54,9 @@ export const useAddEditBodySchema: (
     permissions: array()
       .of(permissionSchema)
       .required()
-      .length(ALL_PERMISSIONS.length)
+      .length(PERMISSIONS_AS_ARRAY.length)
       .test((value, ctx) => {
-        const missingPermissions = ALL_PERMISSIONS.filter(
+        const missingPermissions = PERMISSIONS_AS_ARRAY.filter(
           ({ signature }) =>
             value.findIndex(
               permission => permission.signature === signature

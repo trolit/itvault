@@ -4,8 +4,8 @@ import { Seeder } from "typeorm-extension";
 import { Permission } from "@db/entities/Permission";
 import { PermissionToRole } from "@db/entities/PermissionToRole";
 
-import { PERMISSIONS } from "@config/permissions";
 import { INITIAL_ROLES } from "@config/initial-roles";
+import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
 
 export default class PermissionToRoleSeeder implements Seeder {
   public async run(dataSource: DataSource) {
@@ -23,7 +23,7 @@ export default class PermissionToRoleSeeder implements Seeder {
         continue;
       }
 
-      Object.values(PERMISSIONS).map(async ({ signature }) => {
+      PERMISSIONS_AS_ARRAY.map(async ({ signature }) => {
         const isPermissionEnabled = permissions.some(
           permission => permission.signature === signature
         );

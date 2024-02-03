@@ -1,6 +1,6 @@
 import { IRoleDefinition } from "types/config/IRoleDefinition";
 
-import { PERMISSIONS } from "./permissions";
+import { PERMISSIONS_AS_OBJECT, PERMISSIONS_AS_ARRAY } from "./permissions";
 
 import { HEAD_ADMIN_ROLE as HEAD_ADMIN_ROLE_DATA } from "@shared/constants/config";
 
@@ -13,14 +13,14 @@ const {
   UPDATE_FILENAME_PERMISSION,
   CREATE_BLUEPRINT_PERMISSION,
   UPDATE_BLUEPRINT_PERMISSION,
-} = PERMISSIONS;
+} = PERMISSIONS_AS_OBJECT;
 
 const HEAD_ADMIN_ROLE: IRoleDefinition = {
   name: HEAD_ADMIN_ROLE_DATA.name,
 
   description: "Head of application",
 
-  permissions: Object.values(PERMISSIONS),
+  permissions: PERMISSIONS_AS_ARRAY,
 };
 
 const MAINTAINER_ROLE: IRoleDefinition = {

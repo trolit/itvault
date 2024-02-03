@@ -4,7 +4,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
 
 import { JWT } from "@config";
-import { PERMISSIONS } from "@config/permissions";
+import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
@@ -66,7 +66,7 @@ function assignPermissionsToRequest<P, B, Q>(
 ) {
   const requestPermissions: Partial<{ [key in Permission]: boolean }> = {};
 
-  Object.values(PERMISSIONS).map(permissionDefinition => {
+  PERMISSIONS_AS_ARRAY.map(permissionDefinition => {
     const rolePermission = rolePermissions.find(
       ({ signature }) => signature === permissionDefinition.signature
     );
