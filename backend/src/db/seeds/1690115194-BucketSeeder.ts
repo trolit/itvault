@@ -2,6 +2,7 @@ import path from "path";
 import fs from "fs-extra";
 import random from "lodash/random";
 import { DataSource } from "typeorm";
+import { User } from "@db/entities/User";
 import { File } from "@db/entities/File";
 import { Seeder } from "typeorm-extension";
 import sampleSize from "lodash/sampleSize";
@@ -18,6 +19,7 @@ import { BucketContent } from "@shared/types/BucketContent";
 
 export default class BucketSeeder implements Seeder {
   public async run(dataSource: DataSource) {
+    const userRepository = dataSource.getRepository(User);
     const fileRepository = dataSource.getRepository(File);
     const bucketRepository = dataSource.getRepository(Bucket);
     const variantRepository = dataSource.getRepository(Variant);
@@ -68,10 +70,14 @@ export default class BucketSeeder implements Seeder {
           const splitContent = content.split("\n");
 
           for (const blueprint of sampleBlueprints) {
+            const [user] = await getRandomRecords(userRepository, 1);
+
             await bucketRepository.save({
               value: this._generateValue(splitContent),
               variant,
               blueprint,
+              createdBy: user,
+              updatedBy: user,
             });
           }
         }
