@@ -4,6 +4,7 @@ import { Base } from "./Base";
 import { File } from "./File";
 import { Bundle } from "./Bundle";
 import { Blueprint } from "./Blueprint";
+import { WorkspaceEvent } from "./WorkspaceEvent";
 import { TagToWorkspace } from "./TagToWorkspace";
 import { UserToWorkspace } from "./UserToWorkspace";
 
@@ -48,4 +49,7 @@ export class Workspace extends Base {
     cascade: ["insert", "update"],
   })
   tagToWorkspace: TagToWorkspace[];
+
+  @OneToMany(() => WorkspaceEvent, workspaceEvent => workspaceEvent.workspace)
+  events: WorkspaceEvent[];
 }
