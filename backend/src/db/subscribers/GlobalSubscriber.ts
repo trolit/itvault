@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Note } from "@db/entities/Note";
+import { Bundle } from "@db/entities/Bundle";
 import { Bucket } from "@db/entities/Bucket";
 import { Workspace } from "@db/entities/Workspace";
 import { Blueprint } from "@db/entities/Blueprint";
@@ -14,7 +15,7 @@ import {
 
 import { Action } from "@shared/types/enums/Action";
 
-// @TODO add Bundle, Variant, Bucket
+// @TODO add Variant
 const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Note.name,
@@ -27,6 +28,10 @@ const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Bucket.name,
     run: onBucketEvent,
+  },
+  {
+    entityName: Bundle.name,
+    run: onBundleEvent,
   },
 ];
 
@@ -55,6 +60,32 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
   if (workspaceEvent) {
     await workspaceEvent.run({ entity, action, manager });
   }
+}
+
+async function onBundleEvent(arg: {
+  entity: Bundle;
+  action: Action;
+  manager: EntityManager;
+}) {
+  const { action, manager, entity } = arg;
+
+  if (action === Action.Create) {
+    return;
+  }
+
+  const record = manager.create(WorkspaceEvent, {
+    entity: Bundle.name,
+    action,
+    workspace: {
+      id: entity.workspace.id,
+    },
+    user: {
+      id: entity.createdBy.id,
+    },
+    targetId: entity.id.toString(),
+  });
+
+  await manager.save(record);
 }
 
 async function onBucketEvent(arg: {
