@@ -26,11 +26,11 @@ const ENTITIES_TO_LISTEN_TO = [
 @EventSubscriber()
 export class WorkspacePartsSubscriber implements EntitySubscriberInterface {
   async afterInsert(event: InsertEvent<any>) {
-    handleWorkspaceEvent(event, Action.Create);
+    await handleWorkspaceEvent(event, Action.Create);
   }
 
   async afterUpdate(event: InsertEvent<any>) {
-    handleWorkspaceEvent(event, Action.Update);
+    await handleWorkspaceEvent(event, Action.Update);
   }
 }
 
@@ -69,7 +69,7 @@ async function onNoteEvent(arg: {
     return;
   }
 
-  const note = await manager.findOneOrFail(Note, {
+  const note = await manager.findOne(Note, {
     where: {
       id: entity.id,
     },
@@ -79,6 +79,10 @@ async function onNoteEvent(arg: {
       },
     },
   });
+
+  if (!note) {
+    return;
+  }
 
   const record = manager.create(WorkspaceEvent, {
     entity: Note.name,
