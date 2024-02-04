@@ -62,6 +62,7 @@ workspacesRouter.get(
     ({ params }) => params.id
   ),
   validateRequestWith({ [v1]: useGetEventsSuperSchema }),
+  transformPagination(),
   processRequestWith(GetEventsController)
 );
 
