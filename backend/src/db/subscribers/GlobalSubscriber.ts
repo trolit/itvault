@@ -4,7 +4,6 @@ import { Note } from "@db/entities/Note";
 import { Bundle } from "@db/entities/Bundle";
 import { Bucket } from "@db/entities/Bucket";
 import { Variant } from "@db/entities/Variant";
-import { Workspace } from "@db/entities/Workspace";
 import { Blueprint } from "@db/entities/Blueprint";
 import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
 import {
@@ -27,25 +26,33 @@ const ENTITIES_TO_LISTEN_TO = [
 @EventSubscriber()
 export class WorkspacePartsSubscriber implements EntitySubscriberInterface {
   async afterInsert(event: InsertEvent<any>) {
-    const {
-      entity,
+    handleWorkspaceEvent(event, Action.Create);
+  }
+
+  async afterUpdate(event: InsertEvent<any>) {
+    handleWorkspaceEvent(event, Action.Update);
+  }
+}
+
+async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
+  const {
+    entity,
+    manager,
+    metadata: { name: entityName },
+  } = event;
+
+  if (!ENTITIES_TO_LISTEN_TO.includes(entityName)) {
+    return;
+  }
+
+  if (entityName === Note.name) {
+    await onNoteEvent({
+      entity: <Note>entity,
+      action,
       manager,
-      metadata: { name: entityName },
-    } = event;
+    });
 
-    if (!ENTITIES_TO_LISTEN_TO.includes(entityName)) {
-      return;
-    }
-
-    if (entityName === Note.name) {
-      await onNoteEvent({
-        entity: <Note>entity,
-        action: Action.Create,
-        manager,
-      });
-
-      return;
-    }
+    return;
   }
 }
 
@@ -54,14 +61,21 @@ async function onNoteEvent(arg: {
   action: Action;
   manager: EntityManager;
 }) {
-  // @TODO DELETE event
-
   const { action, manager, entity } = arg;
 
-  const workspace = await manager.findOneOrFail(Workspace, {
+  if (action === Action.Delete) {
+    // @TODO DELETE event
+
+    return;
+  }
+
+  const note = await manager.findOneOrFail(Note, {
     where: {
-      files: {
-        id: entity.file.id,
+      id: entity.id,
+    },
+    relations: {
+      file: {
+        workspace: true,
       },
     },
   });
@@ -69,7 +83,7 @@ async function onNoteEvent(arg: {
   const record = manager.create(WorkspaceEvent, {
     entity: Note.name,
     action,
-    workspace,
+    workspace: note.file.workspace,
     user: {
       id: action === Action.Create ? entity.createdBy.id : entity.updatedBy.id,
     },
