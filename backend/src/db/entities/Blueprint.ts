@@ -23,7 +23,9 @@ export class Blueprint extends Base {
   })
   pinnedAt: Date | null;
 
-  @Column()
+  @Column({
+    length: 7,
+  })
   color!: string;
 
   @ManyToOne(() => Workspace, workspace => workspace.blueprints, {
