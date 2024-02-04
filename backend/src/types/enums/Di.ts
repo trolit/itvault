@@ -31,6 +31,7 @@ export enum Di {
   WorkspaceRepository = "IWorkspaceRepository",
   PermissionRepository = "IPermissionRepository",
   ChatMessageRepository = "IChatMessageRepository",
+  WorkspaceEventRepository = "IWorkspaceEventRepository",
 
   JobFactory = "IJobFactory",
   ConsumerFactory = "IConsumerFactory",
