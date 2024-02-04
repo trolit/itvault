@@ -35,6 +35,7 @@ export class AddController extends BaseController {
   ) {
     const {
       body,
+      userId,
       query: { workspaceId },
     } = request;
 
@@ -42,6 +43,12 @@ export class AddController extends BaseController {
       ...body,
       workspace: {
         id: workspaceId,
+      },
+      createdBy: {
+        id: userId,
+      },
+      updatedBy: {
+        id: userId,
       },
     });
 
