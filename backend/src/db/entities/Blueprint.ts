@@ -1,5 +1,6 @@
 import { Entity, Column, ManyToOne, OneToMany } from "typeorm";
 
+import { User } from "./User";
 import { Base } from "./Base";
 import { Bucket } from "./Bucket";
 import { Workspace } from "./Workspace";
@@ -41,4 +42,10 @@ export class Blueprint extends Base {
     { cascade: true }
   )
   blueprintToBundle: BlueprintToBundle[];
+
+  @ManyToOne(() => User, { cascade: false })
+  createdBy: User;
+
+  @ManyToOne(() => User, { cascade: false })
+  updatedBy: User;
 }
