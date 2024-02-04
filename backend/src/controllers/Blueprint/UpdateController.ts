@@ -32,6 +32,7 @@ export class UpdateController extends BaseController {
   async v1(request: UpdateControllerTypes.v1.Request, response: Response) {
     const {
       body,
+      userId,
       params: { id },
       query: { workspaceId },
     } = request;
@@ -40,6 +41,9 @@ export class UpdateController extends BaseController {
       {
         id,
         workspace: { id: workspaceId },
+        updatedBy: {
+          id: userId,
+        },
       },
       body
     );
