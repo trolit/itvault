@@ -35,14 +35,16 @@ export class UpsertController extends BaseController {
     response: UpsertControllerTypes.v1.Response
   ) {
     const {
+      userId,
       body: { blueprintId, variantId, value },
     } = request;
 
-    const result = await this._bucketRepository.save(
+    const result = await this._bucketRepository.save({
       value,
+      userId,
+      variantId,
       blueprintId,
-      variantId
-    );
+    });
 
     if (!result.isSuccess) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
