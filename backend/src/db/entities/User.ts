@@ -5,6 +5,7 @@ import { Role } from "./Role";
 import { Bundle } from "./Bundle";
 import { Variant } from "./Variant";
 import { ChatMessage } from "./ChatMessage";
+import { WorkspaceEvent } from "./WorkspaceEvent";
 import { UserToWorkspace } from "./UserToWorkspace";
 
 @Entity("users")
@@ -62,4 +63,7 @@ export class User extends Base {
     cascade: ["soft-remove"],
   })
   chatMessages: ChatMessage[];
+
+  @OneToMany(() => WorkspaceEvent, workspaceEvent => workspaceEvent.user)
+  workspaceEvents: WorkspaceEvent[];
 }
