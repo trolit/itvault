@@ -3,6 +3,7 @@
 import { Note } from "@db/entities/Note";
 import { Bundle } from "@db/entities/Bundle";
 import { Bucket } from "@db/entities/Bucket";
+import { Variant } from "@db/entities/Variant";
 import { Workspace } from "@db/entities/Workspace";
 import { Blueprint } from "@db/entities/Blueprint";
 import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
@@ -15,7 +16,6 @@ import {
 
 import { Action } from "@shared/types/enums/Action";
 
-// @TODO add Variant
 const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Note.name,
@@ -32,6 +32,10 @@ const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Bundle.name,
     run: onBundleEvent,
+  },
+  {
+    entityName: Variant.name,
+    run: onVariantEvent,
   },
 ];
 
@@ -62,6 +66,42 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
   }
 }
 
+async function onVariantEvent(arg: {
+  entity: Variant;
+  action: Action;
+  manager: EntityManager;
+}) {
+  const { action, manager, entity } = arg;
+
+  if (action !== Action.Create) {
+    return;
+  }
+
+  const workspace = await manager.findOne(Workspace, {
+    where: {
+      files: {
+        id: entity.file.id,
+      },
+    },
+  });
+
+  if (!workspace) {
+    return;
+  }
+
+  const record = manager.create(WorkspaceEvent, {
+    entity: Variant.name,
+    action,
+    workspace,
+    user: {
+      id: entity.createdBy.id,
+    },
+    targetId: entity.id.toString(),
+  });
+
+  await manager.save(record);
+}
+
 async function onBundleEvent(arg: {
   entity: Bundle;
   action: Action;
@@ -69,7 +109,7 @@ async function onBundleEvent(arg: {
 }) {
   const { action, manager, entity } = arg;
 
-  if (action === Action.Create) {
+  if (action !== Action.Create) {
     return;
   }
 
