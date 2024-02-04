@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Note } from "@db/entities/Note";
+import { Bucket } from "@db/entities/Bucket";
+import { Workspace } from "@db/entities/Workspace";
 import { Blueprint } from "@db/entities/Blueprint";
 import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
 import {
@@ -21,6 +23,10 @@ const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Blueprint.name,
     run: onBlueprintEvent,
+  },
+  {
+    entityName: Bucket.name,
+    run: onBucketEvent,
   },
 ];
 
@@ -49,6 +55,44 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
   if (workspaceEvent) {
     await workspaceEvent.run({ entity, action, manager });
   }
+}
+
+async function onBucketEvent(arg: {
+  entity: Bucket;
+  action: Action;
+  manager: EntityManager;
+}) {
+  const { action, manager, entity } = arg;
+
+  if (action === Action.Delete) {
+    return;
+  }
+
+  const workspace = await manager.findOne(Workspace, {
+    where: {
+      blueprints: {
+        id: entity.blueprint.id,
+      },
+    },
+  });
+
+  if (!workspace) {
+    return;
+  }
+
+  const record = manager.create(WorkspaceEvent, {
+    entity: Bucket.name,
+    action,
+    workspace: {
+      id: workspace.id,
+    },
+    user: {
+      id: action === Action.Create ? entity.createdBy.id : entity.updatedBy.id,
+    },
+    targetId: entity.id.toString(),
+  });
+
+  await manager.save(record);
 }
 
 async function onBlueprintEvent(arg: {
