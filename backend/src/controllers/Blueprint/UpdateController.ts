@@ -37,18 +37,31 @@ export class UpdateController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const result = await this._blueprintRepository.primitiveUpdate(
-      {
+    const blueprint = await this._blueprintRepository.getOne({
+      where: {
         id,
         workspace: { id: workspaceId },
-        updatedBy: {
-          id: userId,
-        },
       },
-      body
-    );
+      relations: {
+        workspace: true,
+      },
+    });
 
-    if (!result?.affected) {
+    if (!blueprint) {
+      return response.status(HTTP.NOT_FOUND);
+    }
+
+    // @TODO should do like with Note - "update any blueprint" or update if owner
+
+    const result = await this._blueprintRepository.primitiveSave({
+      ...blueprint,
+      ...body,
+      updatedBy: {
+        id: userId,
+      },
+    });
+
+    if (!result) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 

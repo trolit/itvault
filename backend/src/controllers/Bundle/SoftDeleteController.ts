@@ -78,13 +78,15 @@ export class SoftDeleteController extends BaseController {
 
     await this._bundleRepository.softDeleteEntity(bundle);
 
-    await this._fileService.deleteFile({
-      filename: bundle.filename,
-      pathToFile:
-        FILES.ACTIVE_MODE === FileStorageMode.Local
-          ? FILES.BASE_DOWNLOADS_PATH
-          : undefined,
-    });
+    if (bundle.status !== BundleStatus.Enqueued) {
+      await this._fileService.deleteFile({
+        filename: bundle.filename,
+        pathToFile:
+          FILES.ACTIVE_MODE === FileStorageMode.Local
+            ? FILES.BASE_DOWNLOADS_PATH
+            : undefined,
+      });
+    }
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
