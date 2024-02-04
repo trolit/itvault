@@ -24,7 +24,7 @@ const ENTITIES_TO_LISTEN_TO = [
 ];
 
 @EventSubscriber()
-export class WorkspacePartsSubscriber implements EntitySubscriberInterface {
+export class GlobalSubscriber implements EntitySubscriberInterface {
   async afterInsert(event: InsertEvent<any>) {
     await handleWorkspaceEvent(event, Action.Create);
   }
