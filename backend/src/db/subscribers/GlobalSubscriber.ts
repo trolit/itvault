@@ -13,14 +13,14 @@ import {
 import { Action } from "@shared/types/enums/Action";
 
 // @TODO add Bundle, Variant, Bucket
-const WORKSPACE_EVENTS_CONFIG = [
+const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Note.name,
-    handler: onNoteEvent,
+    run: onNoteEvent,
   },
   {
     entityName: Blueprint.name,
-    handler: onBlueprintEvent,
+    run: onBlueprintEvent,
   },
 ];
 
@@ -42,12 +42,12 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
     metadata: { name: entityName },
   } = event;
 
-  const onWorkspaceEvent = WORKSPACE_EVENTS_CONFIG.find(
+  const workspaceEvent = WORKSPACE_EVENT_HANDLERS.find(
     config => config.entityName === entityName
   );
 
-  if (onWorkspaceEvent) {
-    await onWorkspaceEvent.handler({ entity, action, manager });
+  if (workspaceEvent) {
+    await workspaceEvent.run({ entity, action, manager });
   }
 }
 
