@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Note } from "@db/entities/Note";
-import { Bundle } from "@db/entities/Bundle";
-import { Bucket } from "@db/entities/Bucket";
-import { Variant } from "@db/entities/Variant";
 import { Blueprint } from "@db/entities/Blueprint";
 import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
 import {
@@ -15,12 +12,16 @@ import {
 
 import { Action } from "@shared/types/enums/Action";
 
-const ENTITIES_TO_LISTEN_TO = [
-  Note.name,
-  Bucket.name,
-  Bundle.name,
-  Variant.name,
-  Blueprint.name,
+// @TODO add Bundle, Variant, Bucket
+const WORKSPACE_EVENTS_CONFIG = [
+  {
+    entityName: Note.name,
+    handler: onNoteEvent,
+  },
+  {
+    entityName: Blueprint.name,
+    handler: onBlueprintEvent,
+  },
 ];
 
 @EventSubscriber()
@@ -41,19 +42,41 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
     metadata: { name: entityName },
   } = event;
 
-  if (!ENTITIES_TO_LISTEN_TO.includes(entityName)) {
+  const onWorkspaceEvent = WORKSPACE_EVENTS_CONFIG.find(
+    config => config.entityName === entityName
+  );
+
+  if (onWorkspaceEvent) {
+    await onWorkspaceEvent.handler({ entity, action, manager });
+  }
+}
+
+async function onBlueprintEvent(arg: {
+  entity: Blueprint;
+  action: Action;
+  manager: EntityManager;
+}) {
+  const { action, manager, entity } = arg;
+
+  if (action === Action.Delete) {
+    // @TODO DELETE event
+
     return;
   }
 
-  if (entityName === Note.name) {
-    await onNoteEvent({
-      entity: <Note>entity,
-      action,
-      manager,
-    });
+  const record = manager.create(WorkspaceEvent, {
+    entity: Blueprint.name,
+    action,
+    workspace: {
+      id: entity.workspace.id,
+    },
+    user: {
+      id: action === Action.Create ? entity.createdBy.id : entity.updatedBy.id,
+    },
+    targetId: entity.id.toString(),
+  });
 
-    return;
-  }
+  await manager.save(record);
 }
 
 async function onNoteEvent(arg: {
