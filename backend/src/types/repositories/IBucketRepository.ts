@@ -4,9 +4,10 @@ import { TransactionResult } from "types/TransactionResult";
 import { BucketContent } from "@shared/types/BucketContent";
 
 export interface IBucketRepository extends IBaseRepository<Bucket> {
-  save(
-    value: BucketContent,
-    blueprintId: number,
-    variantId: string
-  ): Promise<TransactionResult<{ bucket: Bucket; isUpdate: boolean }>>;
+  save(arg: {
+    value: BucketContent;
+    userId: number;
+    blueprintId: number;
+    variantId: string;
+  }): Promise<TransactionResult<{ bucket: Bucket; isUpdate: boolean }>>;
 }

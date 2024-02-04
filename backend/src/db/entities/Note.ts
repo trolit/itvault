@@ -19,6 +19,4 @@ export class Note extends Base {
 
   @ManyToOne(() => File, file => file.notes, { cascade: false })
   file: File;
-
-  // @NOTE consider adding workspace relation here
 }

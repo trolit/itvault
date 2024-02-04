@@ -16,11 +16,14 @@ export class BucketRepository
     super(Bucket);
   }
 
-  async save(
-    value: BucketContent,
-    blueprintId: number,
-    variantId: string
-  ): Promise<TransactionResult<{ bucket: Bucket; isUpdate: boolean }>> {
+  async save(arg: {
+    value: BucketContent;
+    userId: number;
+    blueprintId: number;
+    variantId: string;
+  }): Promise<TransactionResult<{ bucket: Bucket; isUpdate: boolean }>> {
+    const { value, userId, blueprintId, variantId } = arg;
+
     const transaction = await this.useTransaction();
 
     try {
@@ -32,6 +35,9 @@ export class BucketRepository
               id: blueprintId,
             },
           },
+          relations: {
+            createdBy: true,
+          },
         })) || undefined;
 
       const bucket = await transaction.manager.save(Bucket, {
@@ -39,6 +45,8 @@ export class BucketRepository
         value,
         blueprint: { id: blueprintId },
         variant: { id: variantId },
+        createdBy: currentState ? currentState.createdBy : { id: userId },
+        updatedBy: { id: userId },
       });
 
       await transaction.commitTransaction();

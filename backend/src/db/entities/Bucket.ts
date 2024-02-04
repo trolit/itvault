@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne } from "typeorm";
 
+import { User } from "./User";
 import { Base } from "./Base";
 import { Variant } from "./Variant";
 import { Blueprint } from "./Blueprint";
@@ -16,4 +17,10 @@ export class Bucket extends Base {
 
   @ManyToOne(() => Variant, variant => variant.buckets)
   variant: Variant;
+
+  @ManyToOne(() => User, { cascade: false })
+  createdBy: User;
+
+  @ManyToOne(() => User, { cascade: false })
+  updatedBy: User;
 }
