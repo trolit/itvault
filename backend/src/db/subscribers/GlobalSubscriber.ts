@@ -16,26 +16,34 @@ import {
 
 import { Action } from "@shared/types/enums/Action";
 
+// @NOTE could expand it even more to include set of "smaller" actions like e.g. "Patch <property>"
 const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Note.name,
-    run: onNoteEvent,
+    getRecord: onNoteEvent,
+    // @TODO cover DELETE action
+    actions: [Action.Create, Action.Update],
   },
   {
     entityName: Blueprint.name,
-    run: onBlueprintEvent,
+    getRecord: onBlueprintEvent,
+    // @TODO cover DELETE action
+    actions: [Action.Create, Action.Update],
   },
   {
     entityName: Bucket.name,
-    run: onBucketEvent,
+    getRecord: onBucketEvent,
+    actions: [Action.Create, Action.Update],
   },
   {
     entityName: Bundle.name,
-    run: onBundleEvent,
+    getRecord: onBundleEvent,
+    actions: [Action.Create],
   },
   {
     entityName: Variant.name,
-    run: onVariantEvent,
+    getRecord: onVariantEvent,
+    actions: [Action.Create],
   },
 ];
 
@@ -58,11 +66,19 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
   } = event;
 
   const workspaceEvent = WORKSPACE_EVENT_HANDLERS.find(
-    config => config.entityName === entityName
+    eventHandler =>
+      eventHandler.entityName === entityName &&
+      eventHandler.actions.includes(action)
   );
 
-  if (workspaceEvent) {
-    await workspaceEvent.run({ entity, action, manager });
+  if (!workspaceEvent) {
+    return;
+  }
+
+  const record = await workspaceEvent.getRecord({ entity, action, manager });
+
+  if (record) {
+    await manager.save(record);
   }
 }
 
@@ -72,10 +88,6 @@ async function onVariantEvent(arg: {
   manager: EntityManager;
 }) {
   const { action, manager, entity } = arg;
-
-  if (action !== Action.Create) {
-    return;
-  }
 
   const workspace = await manager.findOne(Workspace, {
     where: {
@@ -99,7 +111,7 @@ async function onVariantEvent(arg: {
     targetId: entity.id.toString(),
   });
 
-  await manager.save(record);
+  return record;
 }
 
 async function onBundleEvent(arg: {
@@ -108,10 +120,6 @@ async function onBundleEvent(arg: {
   manager: EntityManager;
 }) {
   const { action, manager, entity } = arg;
-
-  if (action !== Action.Create) {
-    return;
-  }
 
   const record = manager.create(WorkspaceEvent, {
     entity: Bundle.name,
@@ -125,7 +133,7 @@ async function onBundleEvent(arg: {
     targetId: entity.id.toString(),
   });
 
-  await manager.save(record);
+  return record;
 }
 
 async function onBucketEvent(arg: {
@@ -134,10 +142,6 @@ async function onBucketEvent(arg: {
   manager: EntityManager;
 }) {
   const { action, manager, entity } = arg;
-
-  if (action === Action.Delete) {
-    return;
-  }
 
   const workspace = await manager.findOne(Workspace, {
     where: {
@@ -163,7 +167,7 @@ async function onBucketEvent(arg: {
     targetId: entity.id.toString(),
   });
 
-  await manager.save(record);
+  return record;
 }
 
 async function onBlueprintEvent(arg: {
@@ -172,12 +176,6 @@ async function onBlueprintEvent(arg: {
   manager: EntityManager;
 }) {
   const { action, manager, entity } = arg;
-
-  if (action === Action.Delete) {
-    // @TODO DELETE event
-
-    return;
-  }
 
   const record = manager.create(WorkspaceEvent, {
     entity: Blueprint.name,
@@ -191,7 +189,7 @@ async function onBlueprintEvent(arg: {
     targetId: entity.id.toString(),
   });
 
-  await manager.save(record);
+  return record;
 }
 
 async function onNoteEvent(arg: {
@@ -200,12 +198,6 @@ async function onNoteEvent(arg: {
   manager: EntityManager;
 }) {
   const { action, manager, entity } = arg;
-
-  if (action === Action.Delete) {
-    // @TODO DELETE event
-
-    return;
-  }
 
   const note = await manager.findOne(Note, {
     where: {
@@ -232,5 +224,5 @@ async function onNoteEvent(arg: {
     targetId: entity.id.toString(),
   });
 
-  await manager.save(record);
+  return record;
 }
