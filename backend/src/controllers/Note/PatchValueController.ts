@@ -48,18 +48,24 @@ export class PatchValueController extends BaseController {
             : userId,
         },
       },
+      relations: {
+        file: true,
+      },
     });
 
     if (!note) {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    const isUpdated = await this._noteRepository.primitiveUpdate(
-      { id },
-      { value: text, updatedAt: note.updatedAt, updatedBy: note.updatedBy }
-    );
+    const result = await this._noteRepository.primitiveSave({
+      ...note,
+      value: text,
+      updatedBy: {
+        id: userId,
+      },
+    });
 
-    if (!isUpdated?.affected) {
+    if (!result) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
 
