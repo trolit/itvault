@@ -5,7 +5,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import type { Request, NextFunction, Response } from "express";
 import { IFormidableFormFactory } from "types/factories/IFormidableFormFactory";
 
-import { APP } from "@config/index";
+import { APP } from "@config";
 
 import { Di } from "@enums/Di";
 
