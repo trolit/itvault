@@ -20,7 +20,7 @@ export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
       onTick: this.onTick.bind(this),
     },
     options: {
-      runOnInit: true,
+      runOnInit: false,
     },
   };
 
@@ -29,18 +29,12 @@ export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
   }
 
   async onTick() {
-    APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR = true;
-
     const fileService = getInstanceOf<IFileService>(Di.FileService);
 
     await fileService.removeAllFromTemporaryDir();
 
-    this.onComplete();
-  }
-
-  onComplete() {
-    APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR = false;
-
-    console.log(`CRON: ${this.jobName} completed.`);
+    await this.onComplete(() => {
+      APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR = false;
+    });
   }
 }
