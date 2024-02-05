@@ -33,15 +33,15 @@ export const parseUploadFormData = (
       query: { workspaceId },
     } = request;
 
+    if (APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR) {
+      return response.status(HTTP.SERVICE_UNAVAILABLE).send();
+    }
+
     if (typeof workspaceId !== "string") {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
     const parsedWorkspaceId = parseInt(workspaceId.toString());
-
-    if (APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR) {
-      return response.status(HTTP.SERVICE_UNAVAILABLE).send();
-    }
 
     const formidableFormFactory = getInstanceOf<IFormidableFormFactory>(
       Di.FormidableFormFactory

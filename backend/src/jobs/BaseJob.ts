@@ -36,4 +36,12 @@ export abstract class BaseJob implements IJob {
   }
 
   abstract onTick(): Promise<void> | void;
+
+  async onComplete(arg?: { callback: () => void | Promise<void> }) {
+    if (arg) {
+      await arg.callback();
+    }
+
+    console.log(`CRON: ${this.jobName} completed.`);
+  }
 }
