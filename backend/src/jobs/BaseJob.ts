@@ -2,6 +2,8 @@ import { CronJob } from "cron";
 import { IJob } from "types/jobs/IJob";
 import { JobConfig } from "types/jobs/JobConfig";
 
+import { Service } from "@enums/Service";
+
 export abstract class BaseJob implements IJob {
   instance: CronJob | null = null;
 
@@ -11,19 +13,28 @@ export abstract class BaseJob implements IJob {
 
   run(): void {
     if (!this.instance) {
-      console.log(`CRON: Something wrong with ${this.jobName} job!!`);
+      log.warning({
+        message: `Something wrong with ${this.jobName} job!! (can't run)`,
+        service: Service.cron,
+      });
 
       return;
     }
 
     this.instance.start();
 
-    console.log(`CRON: ${this.jobName} is running.`);
+    log.debug({
+      message: `${this.jobName} is running`,
+      service: Service.cron,
+    });
   }
 
   stop(): void {
     if (!this.instance) {
-      console.log(`CRON: Job ${this.jobName} is already stopped!!`);
+      log.warning({
+        message: `Job ${this.jobName} is already stopped!!`,
+        service: Service.cron,
+      });
 
       return;
     }
@@ -32,7 +43,10 @@ export abstract class BaseJob implements IJob {
 
     this.instance = null;
 
-    console.log(`CRON: Stopped ${this.jobName} job.`);
+    log.debug({
+      message: `Stopped ${this.jobName} job.`,
+      service: Service.cron,
+    });
   }
 
   abstract onTick(): Promise<void> | void;
@@ -42,6 +56,9 @@ export abstract class BaseJob implements IJob {
       await arg.callback();
     }
 
-    console.log(`CRON: ${this.jobName} completed.`);
+    log.debug({
+      message: `${this.jobName} completed.`,
+      service: Service.cron,
+    });
   }
 }
