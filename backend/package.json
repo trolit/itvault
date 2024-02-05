@@ -78,6 +78,8 @@
     "tsyringe": "^4.7.0",
     "typeorm": "^0.3.10",
     "typeorm-extension": "^2.1.15",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1",
     "yup": "^1.2.0"
   },
   "devDependencies": {
