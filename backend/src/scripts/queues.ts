@@ -81,14 +81,12 @@ const consumers = [
     );
 
     log.info({
-      message: `Initialization successful!`,
+      message: `Queues initialization successful!`,
     });
   } catch (error) {
-    console.log(error);
-
     log.error({
       error,
-      message: `Initialization failed!`,
+      message: `Queues initialization failed!`,
     });
   }
 })();
