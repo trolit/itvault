@@ -35,7 +35,8 @@ export class GetEventsController extends BaseController {
     response: GetEventsControllerTypes.v1.Response
   ) {
     const {
-      query: { skip, take, workspaceId },
+      params: { id },
+      query: { skip, take },
     } = request;
 
     const [data, total] = await this._workspaceEventRepository.getAllAndCount({
@@ -46,7 +47,7 @@ export class GetEventsController extends BaseController {
       },
       where: {
         workspace: {
-          id: workspaceId,
+          id,
         },
       },
       relations: {
