@@ -33,8 +33,10 @@ export class ClearTemporaryUploadsDirectoryJob extends BaseJob {
 
     await fileService.removeAllFromTemporaryDir();
 
-    await this.onComplete(() => {
-      APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR = false;
+    await this.onComplete({
+      callback: () => {
+        APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR = false;
+      },
     });
   }
 }
