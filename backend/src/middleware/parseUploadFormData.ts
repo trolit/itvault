@@ -2,10 +2,11 @@ import { Schema } from "yup";
 import IncomingForm from "formidable/Formidable";
 import { IFormDataFile } from "types/IFormDataFile";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IFileService } from "types/services/IFileService";
 import type { Request, NextFunction, Response } from "express";
 import { IFormidableFormFactory } from "types/factories/IFormidableFormFactory";
 
-import { APP } from "@config/index";
+import { APP } from "@config";
 
 import { Di } from "@enums/Di";
 
@@ -32,6 +33,12 @@ export const parseUploadFormData = (
       query: { workspaceId },
     } = request;
 
+    if (typeof workspaceId !== "string") {
+      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+    }
+
+    const parsedWorkspaceId = parseInt(workspaceId.toString());
+
     if (APP.IS_CLEARING_TEMPORARY_UPLOADS_DIR) {
       return response.status(HTTP.SERVICE_UNAVAILABLE).send();
     }
@@ -44,7 +51,7 @@ export const parseUploadFormData = (
 
     const form = await formidableFormFactory.create({
       ...formOptions,
-      destination: `workspace-${workspaceId}`,
+      destination: `workspace-${parsedWorkspaceId}`,
     });
 
     if (fieldsOrder?.length) {
@@ -53,13 +60,13 @@ export const parseUploadFormData = (
     }
 
     form.parse(request, async (error, fields, files) => {
+      const mappedFiles = files ? mapFormDataFiles(files) : [];
+
       if (error) {
-        console.error(error);
+        await onAnyErrorDuringFormParse(error, parsedWorkspaceId, mappedFiles);
 
         return response.status(HTTP.BAD_REQUEST).send();
       }
-
-      const mappedFiles = mapFormDataFiles(files);
 
       if (validators) {
         const errors = await handleValidators(
@@ -68,7 +75,11 @@ export const parseUploadFormData = (
         );
 
         if (errors) {
-          // @TODO remove files
+          await onAnyErrorDuringFormParse(
+            errors,
+            parsedWorkspaceId,
+            mappedFiles
+          );
 
           return response.status(HTTP.BAD_REQUEST).send({ body: errors });
         }
@@ -82,6 +93,21 @@ export const parseUploadFormData = (
     });
   };
 };
+
+async function onAnyErrorDuringFormParse(
+  error: unknown,
+  workspaceId: number,
+  files: IFormDataFile[]
+) {
+  const fileService = getInstanceOf<IFileService>(Di.FileService);
+
+  console.error(error);
+
+  await fileService.removeFromTemporaryDir({
+    files,
+    from: { workspaceId },
+  });
+}
 
 function setFieldsOrderValidation(form: IncomingForm, fieldsOrder: string[]) {
   let fieldsOrderIndex = 0;
