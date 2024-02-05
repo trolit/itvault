@@ -13,7 +13,6 @@ export class DisableFilesUploadJob extends BaseJob {
     time: "55 23 * * *",
     runners: {
       onTick: this.onTick.bind(this),
-      onComplete: this.onComplete.bind(this),
     },
     options: {
       runOnInit: false,
