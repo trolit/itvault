@@ -26,6 +26,7 @@ export const APP = {
   MAX_ITEMS_PER_PAGE: 20,
   BASE_DIR: ENV === Environment.Production ? "dist" : "src",
   TOTAL_ROLES_LIMIT: envInt("TOTAL_ROLES_LIMIT"),
+  IS_PRODUCTION: ENV === Environment.Production,
 };
 
 export const DATABASE = {

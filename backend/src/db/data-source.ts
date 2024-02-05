@@ -3,7 +3,7 @@ import { DataSource, DataSourceOptions } from "typeorm";
 
 import { DATABASE, APP } from "@config";
 
-const { BASE_DIR } = APP;
+const { BASE_DIR, IS_PRODUCTION } = APP;
 const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
 
 const options: DataSourceOptions & SeederOptions = {
@@ -16,7 +16,7 @@ const options: DataSourceOptions & SeederOptions = {
   entities: [`${BASE_DIR}/db/entities/*`],
   migrations: [`${BASE_DIR}/db/migrations/*`],
   subscribers: [`${BASE_DIR}/db/subscribers/*`],
-  logging: true,
+  logging: !IS_PRODUCTION,
   synchronize: false,
 };
 

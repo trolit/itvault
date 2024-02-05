@@ -7,12 +7,8 @@ import RoleSeeder from "./seeds/1690115009-RoleSeeder";
 import PermissionSeeder from "./seeds/1690115077-PermissionSeeder";
 import PermissionToRoleSeeder from "./seeds/1690115090-PermissionToRoleSeeder";
 
-import { Environment } from "@enums/Environment";
-
-const { ENV } = APP;
+const { IS_PRODUCTION } = APP;
 const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
-
-const isProduction = ENV === Environment.Production;
 
 const getGlobPattern = (path: string) => `src/db/${path}`;
 
@@ -29,10 +25,10 @@ const options: DataSourceOptions & SeederOptions = {
   logging: true,
   synchronize: false,
 
-  seeds: isProduction
+  seeds: IS_PRODUCTION
     ? [RoleSeeder, PermissionSeeder, PermissionToRoleSeeder]
     : [`${getGlobPattern(`seeds/*Seeder*`)}`],
-  factories: isProduction ? [] : [`${getGlobPattern(`factories/*`)}`],
+  factories: IS_PRODUCTION ? [] : [`${getGlobPattern(`factories/*`)}`],
 };
 
 // @NOTE separate DS config to simplify primary DS (nevertheless of NODE_ENV, TypeORM commands need to reach for src)
