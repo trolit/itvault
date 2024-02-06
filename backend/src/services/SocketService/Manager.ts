@@ -23,7 +23,9 @@ export class SocketServiceManager implements ISocketServiceManager {
 
   initialize() {
     if (this._initialized) {
-      console.log("SocketService manager is already initialized!");
+      log.warning({
+        message: `SocketService manager is already initialized!`,
+      });
 
       return;
     }
@@ -46,7 +48,9 @@ export class SocketServiceManager implements ISocketServiceManager {
   }
 
   private printMembersLength() {
-    console.log(`Active sockets: ${this._members.length}`);
+    log.debug({
+      message: `Active sockets: ${this._members.length}`,
+    });
   }
 
   async sendMessage<T>(
