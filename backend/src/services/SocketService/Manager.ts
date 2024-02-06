@@ -5,6 +5,7 @@ import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { SocketServiceMember } from "./Member";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import { SocketReceiveMessage } from "@shared/types/transport/SocketReceiveMessage";
 
@@ -25,6 +26,7 @@ export class SocketServiceManager implements ISocketServiceManager {
     if (this._initialized) {
       log.warning({
         message: `SocketService manager is already initialized!`,
+        service: Service.EngineIO,
       });
 
       return;
@@ -50,6 +52,7 @@ export class SocketServiceManager implements ISocketServiceManager {
   private printMembersLength() {
     log.debug({
       message: `Active sockets: ${this._members.length}`,
+      service: Service.EngineIO,
     });
   }
 
