@@ -5,6 +5,7 @@ import { ISocketServiceMember } from "types/services/ISocketServiceMember";
 import { IncomingAllowRequestMessage } from "types/IncomingAllowRequestMessage";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 import { SocketSendMessage } from "@shared/types/transport/SocketSendMessage";
 import { SocketReceiveMessage } from "@shared/types/transport/SocketReceiveMessage";
 
@@ -42,7 +43,7 @@ export class SocketServiceMember implements ISocketServiceMember {
 
     this._token = token;
 
-    this._printMessage("Connected.");
+    this._printMessage("connected.");
 
     // @NOTE [2] configure events
     socket.on("message", (message: string) => {
@@ -55,7 +56,7 @@ export class SocketServiceMember implements ISocketServiceMember {
       }
 
       if (!parsedMessage) {
-        this._printMessage("Sent unparseable message. Ignoring...");
+        this._printMessage("sent unparseable message. Ignoring...");
 
         return;
       }
@@ -64,11 +65,11 @@ export class SocketServiceMember implements ISocketServiceMember {
 
       this.latestMessage = parsedMessage;
 
-      this._printMessage(`Sent message of type: '${type}'`);
+      this._printMessage(`sent message of type: '${type}'`);
     });
 
     socket.on("close", () => {
-      this._printMessage("Disconnected.");
+      this._printMessage("disconnected.");
 
       // @NOTE so Manager can "remove" that member
       this.sid = "";
@@ -81,17 +82,20 @@ export class SocketServiceMember implements ISocketServiceMember {
     const result = authService.verifyToken(this._token);
 
     if (result.error) {
-      this._printMessage("Won't receive message (token expired)");
+      this._printMessage("won't receive message (token expired)");
 
       return;
     }
 
-    this._printMessage(`Should receive '${data.action}' message.`);
+    this._printMessage(`should receive '${data.action}' message.`);
 
     this._socket.send(JSON.stringify(data));
   }
 
   private _printMessage(message: string) {
-    console.log(`[SOCKET---${this.sid}]: ${message}`);
+    log.debug({
+      message: `Socket ${this.sid} ${message}`,
+      service: Service.EngineIO,
+    });
   }
 }
