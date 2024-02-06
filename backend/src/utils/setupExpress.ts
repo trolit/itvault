@@ -8,6 +8,8 @@ import express, { Application, Request, Response, Router } from "express";
 
 import { APP } from "@config";
 
+import { Service } from "@enums/Service";
+
 import { requireAuthentication } from "@middleware/requireAuthentication";
 
 export const setupExpress = async (app: Application) => {
@@ -63,9 +65,12 @@ async function getRoutes() {
       registeredRouters.push(routeName);
     }
 
-    console.log(
-      `Express: registered ${version} routes (${registeredRouters.join(", ")})`
-    );
+    log.debug({
+      message: `registered ${version} routes: \n${registeredRouters.join(
+        "\n"
+      )}`,
+      service: Service.Express,
+    });
 
     mainRouter.use(`/${version}`, versionRouter);
   }
