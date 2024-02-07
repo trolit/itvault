@@ -4,6 +4,7 @@ import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandl
 import { MailConsumerHandlerData } from "types/consumer-handlers/MailConsumerHandlerData";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 
 @injectable()
 export class MailConsumerHandler
@@ -33,15 +34,18 @@ export class MailConsumerHandler
 
       return true;
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        message: `Failed to send '${subject}' message to '${sendTo}'`,
+        service: Service.nodemailer,
+      });
 
       return false;
     }
   }
 
-  async onError(data: MailConsumerHandlerData<unknown>): Promise<void> {
-    const { subject, sendTo } = data;
-
-    console.error(`Failed to send '${subject}' email to ${sendTo}`);
+  // @TODO rename to e.g. "onFailure"
+  async onError(): Promise<void> {
+    //
   }
 }
