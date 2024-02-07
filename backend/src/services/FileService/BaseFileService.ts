@@ -63,7 +63,10 @@ export abstract class BaseFileService implements IBaseFileService {
         await fs.remove(fullPath);
       }
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        message: `Failed to remove files from ${BASE_TEMPORARY_UPLOADS_PATH}`,
+      });
     }
   }
 
@@ -90,7 +93,10 @@ export abstract class BaseFileService implements IBaseFileService {
         await fs.remove(fullPath);
       }
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        message: `Failed to remove files from ${basePath}`,
+      });
     }
   }
 
@@ -171,7 +177,10 @@ export abstract class BaseFileService implements IBaseFileService {
 
       return TransactionResult.success();
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        message: `Failed to move files of workspace #${workspaceId} from ${sourceDirectoryId} to ${sourceDirectoryId}`,
+      });
 
       await transaction.rollbackTransaction();
 
@@ -203,7 +212,10 @@ export abstract class BaseFileService implements IBaseFileService {
 
       return TransactionResult.success();
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        message: `Failed to delete file #${id} and it's variants`,
+      });
 
       await transaction.rollbackTransaction();
 
@@ -318,7 +330,10 @@ export abstract class BaseFileService implements IBaseFileService {
 
       return TransactionResult.success(fileRecords);
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        message: `Failed to handle user #${userId} upload for workspace #${workspaceId}`,
+      });
 
       await onCatch();
 
