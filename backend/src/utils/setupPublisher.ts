@@ -27,7 +27,7 @@ export const setupPublisher = async () => {
 
     container.register(Di.Publisher, { useValue: publisher });
 
-    log.error({
+    log.debug({
       service: Service.RabbitMQ,
       message: `Publisher initialized.`,
     });
