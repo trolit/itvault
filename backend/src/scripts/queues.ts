@@ -11,6 +11,7 @@ import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 import { Service } from "@enums/Service";
 
+import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
 import { splitPath } from "@helpers/splitPath";
 import { ConsumerFactory } from "@factories/ConsumerFactory";
@@ -32,6 +33,8 @@ const consumers = [
 ];
 
 (async function () {
+  Warden.start();
+
   try {
     log.debug({
       message: `acquiring lock on file ${splitPath(__filename).pop()}...`,
@@ -40,14 +43,14 @@ const consumers = [
     await lockfile.lock(__filename);
 
     log.info({
-      message: `creating data source connection...`,
+      message: `creating connection...`,
       service: Service.TypeORM,
     });
 
     await dataSource.initialize();
 
     log.info({
-      message: `creating nodemailer connection...`,
+      message: `creating connection...`,
       service: Service.nodemailer,
     });
 
@@ -62,7 +65,7 @@ const consumers = [
     const { PORT, USER, PASSWORD } = MQRABBIT;
 
     log.info({
-      message: `establishing amqplib connection...`,
+      message: `establishing connection...`,
       service: Service.RabbitMQ,
     });
 
@@ -98,9 +101,6 @@ async function onExit() {
   log.info({
     message: `received SHUTDOWN signal`,
   });
-  log.info({
-    message: `received SHUTDOWN signal`,
-  });
 
   log.info({
     message: `Closing consumer channels...`,
@@ -118,7 +118,7 @@ async function onExit() {
   }
 
   log.info({
-    message: `Closing nodemailer channels...`,
+    message: `Closing connection...`,
     service: Service.nodemailer,
   });
 
@@ -133,7 +133,7 @@ async function onExit() {
   }
 
   log.info({
-    message: `Closing data source connection...`,
+    message: `Closing connection...`,
     service: Service.TypeORM,
   });
 
@@ -148,7 +148,7 @@ async function onExit() {
   }
 
   log.info({
-    message: `Closing amqplib connection...`,
+    message: `Closing connection...`,
     service: Service.RabbitMQ,
   });
 
