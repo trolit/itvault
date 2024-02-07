@@ -30,7 +30,7 @@ export class DirectorySubscriber
       return;
     }
 
-    this._log(`Insert request received upon ${relativePath}`);
+    this._safeLog(`Insert request received upon ${relativePath}`);
 
     let previousDirectory: Directory | null = await manager.findOneBy(
       Directory,
@@ -46,7 +46,7 @@ export class DirectorySubscriber
       );
     }
 
-    this._log(`Making sure that partial paths are in DB.`);
+    this._safeLog(`Making sure that partial paths are in DB.`);
 
     for (let index = 1; index < splitRelativePathLength - 1; index++) {
       const currentPath = splitRelativePath.slice(0, index + 1).join("/");
@@ -74,7 +74,7 @@ export class DirectorySubscriber
     }
 
     if (!event.entity.parentDirectory) {
-      this._log(
+      this._safeLog(
         `Assigning parent directory (${previousDirectory.relativePath}) to ${relativePath}`
       );
 
@@ -82,14 +82,12 @@ export class DirectorySubscriber
     }
   }
 
-  private _log(message: string) {
-    if (!log) {
-      return;
+  private _safeLog(message: string) {
+    if (global.log) {
+      log.debug({
+        service: Service.TypeORM,
+        message,
+      });
     }
-
-    log.debug({
-      service: Service.TypeORM,
-      message,
-    });
   }
 }
