@@ -45,7 +45,5 @@ export class MailConsumerHandler
   }
 
   // @TODO rename to e.g. "onFailure"
-  async onError(): Promise<void> {
-    //
-  }
+  async onError(): Promise<void> {}
 }
