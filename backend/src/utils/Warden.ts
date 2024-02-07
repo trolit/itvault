@@ -5,9 +5,9 @@ import { Logger, addColors, createLogger, format, transports } from "winston";
 
 import { APP } from "@config";
 
-const { IS_PRODUCTION } = APP;
+import { Service } from "@enums/Service";
 
-type Service = "TypeORM" | "";
+const { IS_PRODUCTION } = APP;
 
 const ERRORS_TRANSPORT = new transports.DailyRotateFile({
   level: "error",
@@ -20,8 +20,10 @@ export class Warden {
   private _debugLogger: Logger;
   private _errorsLogger: Logger;
 
+  private constructor() {}
+
   public static start() {
-    const warden = new this();
+    const warden = new Warden();
 
     warden._init();
 
@@ -30,9 +32,7 @@ export class Warden {
 
   private _init() {
     if (this._debugLogger || this._errorsLogger) {
-      console.log("Warden is already initialized!!");
-
-      return;
+      throw Error("Warden is already initialized!");
     }
 
     addColors({
