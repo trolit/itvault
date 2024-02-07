@@ -15,7 +15,7 @@
     "dc:ls:down": "docker compose -f local-stack-compose.yml down",
     "dc:db": "docker exec -it db bash",
     "dc:redis": "docker exec -it redis bash",
-    "queues:prod": "node ./dist/scripts/queues.js",
+    "queues:prod": "node -r ./prod-paths.js ./dist/scripts/queues.js",
     "queues:dev": "ts-node -r tsconfig-paths/register --transpile-only ./src/scripts/queues.ts",
     "build": "npx tsc --build & copyfiles -f src/services/MailService/templates/*.mustache dist/services/MailService/templates",
     "prod": "node -r ./prod-paths.js dist/main.js",
