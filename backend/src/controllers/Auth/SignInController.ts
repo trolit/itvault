@@ -4,14 +4,15 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
 import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
-import { IUserRepository } from "types/repositories/IUserRepository";
 import { IDataStoreService } from "types/services/IDataStoreService";
+import { IUserRepository } from "types/repositories/IUserRepository";
 import { SignInControllerTypes } from "types/controllers/Auth/SignInController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { APP, JWT } from "@config";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 import { Environment } from "@enums/Environment";
 
 import { BaseController } from "@controllers/BaseController";
@@ -69,7 +70,11 @@ export class SignInController extends BaseController {
         { withTTL: { seconds: JWT.TOKEN_LIFETIME_IN_SECONDS } }
       );
     } catch (error) {
-      console.error(error);
+      log.error({
+        error,
+        message: `Failed to create hash for user #${user.id}. Sign in request failed!!!`,
+        service: Service.Redis,
+      });
 
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
