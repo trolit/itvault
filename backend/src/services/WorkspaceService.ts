@@ -8,6 +8,7 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 import { IWorkspaceRepository } from "types/repositories/IWorkspaceRepository";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 import { IAddEditWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 
 @injectable()
@@ -43,7 +44,11 @@ export class WorkspaceService implements IWorkspaceService {
 
       return TransactionResult.success(workspace);
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        service: Service.TypeORM,
+        message: `Failed to create ${Workspace.name}!`,
+      });
 
       await transaction.rollbackTransaction();
 
@@ -88,7 +93,11 @@ export class WorkspaceService implements IWorkspaceService {
 
       return TransactionResult.success(updatedWorkspace);
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        service: Service.TypeORM,
+        message: `Failed to update ${Workspace.name} #${id}!`,
+      });
 
       await transaction.rollbackTransaction();
 

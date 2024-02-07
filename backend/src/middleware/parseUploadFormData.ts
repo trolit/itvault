@@ -9,6 +9,7 @@ import { IFormidableFormFactory } from "types/factories/IFormidableFormFactory";
 import { APP } from "@config";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 
 import { formatError } from "@helpers/yup/formatError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -63,7 +64,13 @@ export const parseUploadFormData = (
       const mappedFiles = files ? mapFormDataFiles(files) : [];
 
       if (error) {
-        await onAnyErrorDuringFormParse(error, parsedWorkspaceId, mappedFiles);
+        log.error({
+          error,
+          message: `An error occured while parsing file(s) for workspace #${workspaceId}`,
+          service: Service.formidable,
+        });
+
+        await onAnyErrorDuringFormParse(parsedWorkspaceId, mappedFiles);
 
         return response.status(HTTP.BAD_REQUEST).send();
       }
@@ -75,11 +82,7 @@ export const parseUploadFormData = (
         );
 
         if (errors) {
-          await onAnyErrorDuringFormParse(
-            errors,
-            parsedWorkspaceId,
-            mappedFiles
-          );
+          await onAnyErrorDuringFormParse(parsedWorkspaceId, mappedFiles);
 
           return response.status(HTTP.BAD_REQUEST).send({ body: errors });
         }
@@ -95,13 +98,10 @@ export const parseUploadFormData = (
 };
 
 async function onAnyErrorDuringFormParse(
-  error: unknown,
   workspaceId: number,
   files: IFormDataFile[]
 ) {
   const fileService = getInstanceOf<IFileService>(Di.FileService);
-
-  console.error(error);
 
   await fileService.removeFromTemporaryDir({
     files,

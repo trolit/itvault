@@ -21,6 +21,7 @@ import { FILES } from "@config";
 import { BaseFileService } from "./BaseFileService";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 
 @injectable()
 export class S3FileService extends BaseFileService {
@@ -53,7 +54,11 @@ export class S3FileService extends BaseFileService {
 
       (result.Body as Readable).pipe(response);
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        service: Service.TypeORM,
+        message: `Failed to get bundle '${filename}' from bucket!`,
+      });
     }
   }
 
@@ -81,8 +86,11 @@ export class S3FileService extends BaseFileService {
       }
 
       return response.Body.transformToString();
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      log.error({
+        error,
+        message: `Failed to get content of variant #${variant.id}`,
+      });
 
       return null;
     }
@@ -161,7 +169,10 @@ export class S3FileService extends BaseFileService {
 
       return { size: Buffer.byteLength(buffer) };
     } catch (error) {
-      console.error(error);
+      log.error({
+        error,
+        message: `Failed to remove file ${key}`,
+      });
 
       return null;
     }
@@ -183,7 +194,10 @@ export class S3FileService extends BaseFileService {
     try {
       await this._s3Client.send(command);
     } catch (error) {
-      console.error(error);
+      log.error({
+        error,
+        message: `Failed to remove file ${key}`,
+      });
     }
   }
 

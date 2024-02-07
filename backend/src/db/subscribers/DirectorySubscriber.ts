@@ -7,6 +7,8 @@ import {
 
 import { FILES } from "@config/index";
 
+import { Service } from "@enums/Service";
+
 @EventSubscriber()
 export class DirectorySubscriber
   implements EntitySubscriberInterface<Directory>
@@ -28,7 +30,10 @@ export class DirectorySubscriber
       return;
     }
 
-    console.info(`Insert request received upon ${relativePath}`);
+    log.debug({
+      service: Service.TypeORM,
+      message: `Insert request received upon ${relativePath}`,
+    });
 
     let previousDirectory: Directory | null = await manager.findOneBy(
       Directory,
@@ -44,7 +49,10 @@ export class DirectorySubscriber
       );
     }
 
-    console.info(`Making sure that partial paths are in DB.`);
+    log.debug({
+      service: Service.TypeORM,
+      message: `Making sure that partial paths are in DB.`,
+    });
 
     for (let index = 1; index < splitRelativePathLength - 1; index++) {
       const currentPath = splitRelativePath.slice(0, index + 1).join("/");
@@ -72,9 +80,10 @@ export class DirectorySubscriber
     }
 
     if (!event.entity.parentDirectory) {
-      console.info(
-        `Assigning parent directory (${previousDirectory.relativePath}) to ${relativePath}`
-      );
+      log.debug({
+        service: Service.TypeORM,
+        message: `Assigning parent directory (${previousDirectory.relativePath}) to ${relativePath}`,
+      });
 
       event.entity.parentDirectory = previousDirectory;
     }

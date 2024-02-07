@@ -9,15 +9,13 @@ import { MQRABBIT } from "@config";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
+import { Service } from "@enums/Service";
 
+import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
 import { splitPath } from "@helpers/splitPath";
 import { ConsumerFactory } from "@factories/ConsumerFactory";
 import { setupMailTransporter } from "@utils/setupMailTransporter";
-
-function logMessage(message: string) {
-  console.log(`[queues]: ${message}`);
-}
 
 let connection: Connection;
 let consumerChannels: Channel[] = [];
@@ -35,26 +33,41 @@ const consumers = [
 ];
 
 (async function () {
+  Warden.start();
+
   try {
-    logMessage(`acquiring lock on file ${splitPath(__filename).pop()}...`);
+    log.debug({
+      message: `acquiring lock on file ${splitPath(__filename).pop()}...`,
+    });
 
     await lockfile.lock(__filename);
 
-    logMessage("creating data source connection...");
+    log.info({
+      message: `creating connection...`,
+      service: Service.TypeORM,
+    });
 
     await dataSource.initialize();
 
-    logMessage("creating nodemailer connection...");
+    log.info({
+      message: `creating connection...`,
+      service: Service.nodemailer,
+    });
 
     mailTransporter = setupMailTransporter();
 
-    logMessage("setting up dependency injection...");
+    log.debug({
+      message: `setting up dependency injection...`,
+    });
 
     await setupDi({ mailTransporter });
 
     const { PORT, USER, PASSWORD } = MQRABBIT;
 
-    logMessage("establishing amqplib connection...");
+    log.info({
+      message: `establishing connection...`,
+      service: Service.RabbitMQ,
+    });
 
     connection = await connect({
       port: PORT,
@@ -70,58 +83,83 @@ const consumers = [
       )
     );
 
-    logMessage("initialization successful!");
+    log.info({
+      message: `Queues initialization successful!`,
+    });
   } catch (error) {
-    console.log(error);
-
-    logMessage("initialization failed!");
+    log.error({
+      error,
+      message: `Queues initialization failed!`,
+    });
   }
 })();
 
 async function onExit() {
-  logMessage("received SHUTDOWN signal");
-  logMessage("received SHUTDOWN signal");
-  logMessage("received SHUTDOWN signal");
-  logMessage("received SHUTDOWN signal");
+  log.info({
+    message: `received SHUTDOWN signal`,
+  });
+  log.info({
+    message: `received SHUTDOWN signal`,
+  });
 
-  logMessage("closing consumer channels...");
+  log.info({
+    message: `Closing consumer channels...`,
+    service: Service.RabbitMQ,
+  });
 
   try {
     await Promise.all(consumerChannels.map(channel => channel.close()));
   } catch (error) {
-    console.log(error);
-
-    logMessage("failed to close consumer channels!");
+    log.error({
+      error,
+      message: `Failed to close consumer channels!`,
+      service: Service.RabbitMQ,
+    });
   }
 
-  logMessage("closing nodemailer connection...");
+  log.info({
+    message: `Closing connection...`,
+    service: Service.nodemailer,
+  });
 
   try {
     mailTransporter.close();
   } catch (error) {
-    console.log(error);
-
-    logMessage("failed to close nodemailer connection!");
+    log.error({
+      error,
+      message: `Failed to close connection!`,
+      service: Service.nodemailer,
+    });
   }
 
-  logMessage("closing data source connection...");
+  log.info({
+    message: `Closing connection...`,
+    service: Service.TypeORM,
+  });
 
   try {
     await dataSource.destroy();
   } catch (error) {
-    console.log(error);
-
-    logMessage("failed to destroy data source connection!");
+    log.error({
+      error,
+      message: `Failed to destroy connection!`,
+      service: Service.TypeORM,
+    });
   }
 
-  logMessage("closing amqplib connection...");
+  log.info({
+    message: `Closing connection...`,
+    service: Service.RabbitMQ,
+  });
 
   try {
     await connection.close();
   } catch (error) {
-    console.log(error);
-
-    logMessage("failed to close amqplib connection!");
+    log.error({
+      error,
+      message: `Failed to close connection!`,
+      service: Service.RabbitMQ,
+    });
   }
 
   process.exit();

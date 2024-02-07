@@ -10,6 +10,7 @@ import { APP, FILES } from "@config";
 import { initializeS3Client } from "./initializeS3Client";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 import { FileStorageMode } from "@enums/FileStorageMode";
 
 import { S3FileService } from "@services/FileService/S3FileService";
@@ -152,7 +153,10 @@ function registerDependenciesByInterfaces(config: {
 
         container.register(interfaceName, Dependency);
       } else {
-        console.log(`❗❗❗ Failed to register ${dependencyFilename}`);
+        log.error({
+          message: "Failed to register ${dependencyFilename}!",
+          service: Service.tsyringe,
+        });
       }
     }
   });

@@ -5,6 +5,7 @@ import { MQRABBIT } from "@config";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
+import { Service } from "@enums/Service";
 
 export const setupPublisher = async () => {
   const { PORT, USER, PASSWORD } = MQRABBIT;
@@ -26,11 +27,18 @@ export const setupPublisher = async () => {
 
     container.register(Di.Publisher, { useValue: publisher });
 
-    console.log("RabbitMQ: Publisher initialized.");
+    log.debug({
+      service: Service.RabbitMQ,
+      message: `Publisher initialized.`,
+    });
 
     return { connection, channel: publisher };
   } catch (error) {
-    console.log(error);
+    log.error({
+      error,
+      service: Service.RabbitMQ,
+      message: `Failed to setup publisher!`,
+    });
 
     throw "RabbitMQ: Failed to setup publisher!!";
   }

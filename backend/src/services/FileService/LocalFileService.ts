@@ -95,7 +95,10 @@ export class LocalFileService extends BaseFileService {
 
       return { size: Buffer.byteLength(buffer) };
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        message: `Failed to save '${fullPath}' file!`,
+      });
 
       return null;
     }
@@ -112,7 +115,10 @@ export class LocalFileService extends BaseFileService {
     try {
       await fs.remove(fullPath);
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        message: `Failed to delete '${fullPath}' file!`,
+      });
     }
   }
 
@@ -163,7 +169,10 @@ export class LocalFileService extends BaseFileService {
       try {
         await fs.move(src, dest);
       } catch (error) {
-        console.error(error);
+        log.error({
+          error,
+          message: `Failed to move file from ${src} to ${dest}!`,
+        });
       }
     }
   }

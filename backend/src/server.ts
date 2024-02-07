@@ -4,7 +4,9 @@ import { dataSource } from "@db/data-source";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 
+import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
 import { setupJobs } from "@utils/setupJobs";
 import { setupRedis } from "@utils/setupRedis";
@@ -15,16 +17,33 @@ import { setupPublisher } from "@utils/setupPublisher";
 import { initializeEngineIO } from "@utils/initializeEngineIO";
 
 export const server = async () => {
+  Warden.start();
+
   const app = express();
 
-  await loadYupUtils();
+  try {
+    await loadYupUtils();
+  } catch (error) {
+    log.error({
+      error,
+      message: "Failed to load yup utils!",
+      service: Service.yup,
+    });
+  }
 
   try {
     await dataSource.initialize();
 
-    console.log("TypeORM: DataSource initialized.");
+    log.debug({
+      service: Service.TypeORM,
+      message: "Data source initialized!",
+    });
   } catch (error) {
-    console.error(error);
+    log.error({
+      error,
+      message: "Failed to initialize data source!",
+      service: Service.TypeORM,
+    });
   }
 
   const engineIo = initializeEngineIO();

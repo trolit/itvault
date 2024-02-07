@@ -4,6 +4,7 @@ import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandl
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
+import { Service } from "@enums/Service";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
@@ -17,7 +18,10 @@ export class ConsumerFactory implements IConsumerFactory {
 
     channel.consume(queue, async message => {
       if (message === null) {
-        console.log("RabbitMQ: Consumer cancelled by server.");
+        log.warning({
+          message: "Consumer cancelled by server!",
+          service: Service.RabbitMQ,
+        });
 
         return;
       }
@@ -33,7 +37,10 @@ export class ConsumerFactory implements IConsumerFactory {
       if (isSuccessful) {
         channel.ack(message);
 
-        console.log(`RabbitMQ: consumer completed task of ${queue} queue.`);
+        log.debug({
+          message: `Consumer completed task of ${queue} queue.`,
+          service: Service.RabbitMQ,
+        });
 
         return;
       }
@@ -42,9 +49,10 @@ export class ConsumerFactory implements IConsumerFactory {
 
       channel.nack(message, false, false);
 
-      console.log(
-        `RabbitMQ: consumer failed to complete task of ${queue} queue.`
-      );
+      log.warning({
+        message: `Consumer failed to complete task of ${queue} queue.`,
+        service: Service.RabbitMQ,
+      });
     });
 
     return channel;

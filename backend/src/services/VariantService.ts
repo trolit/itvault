@@ -8,6 +8,7 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 
 @injectable()
 export class VariantService implements IVariantService {
@@ -62,7 +63,11 @@ export class VariantService implements IVariantService {
 
       return TransactionResult.success(variant);
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        service: Service.TypeORM,
+        message: `Failed to save variant!`,
+      });
 
       await transaction.rollbackTransaction();
 

@@ -9,6 +9,7 @@ import { IUserRepository } from "types/repositories/IUserRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
@@ -77,7 +78,11 @@ export class UserService implements IUserService {
 
       return TransactionResult.success(users);
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        service: Service.TypeORM,
+        message: `Failed to update users!`,
+      });
 
       await transaction.rollbackTransaction();
 
