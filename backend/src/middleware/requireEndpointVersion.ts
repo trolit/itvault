@@ -13,7 +13,7 @@ export const requireEndpointVersion = <P, B, Q>(versions: number[]) => {
     next: NextFunction
   ) => {
     if (!versions.length) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
+      return response.status(HTTP.NOT_IMPLEMENTED).send();
     }
 
     const versionSchema = useVersionSchema(versions);
