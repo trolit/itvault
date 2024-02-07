@@ -21,6 +21,7 @@ import { FILES } from "@config";
 import { BaseFileService } from "./BaseFileService";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 
 @injectable()
 export class S3FileService extends BaseFileService {
@@ -53,7 +54,11 @@ export class S3FileService extends BaseFileService {
 
       (result.Body as Readable).pipe(response);
     } catch (error) {
-      console.log(error);
+      log.error({
+        error,
+        service: Service.TypeORM,
+        message: `Failed to get bundle '${filename}' from bucket!`,
+      });
     }
   }
 
