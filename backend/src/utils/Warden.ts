@@ -38,7 +38,7 @@ export class Warden {
     addColors({
       info: "blue",
       warn: "yellow",
-      error: "inverse red",
+      error: "red",
       debug: "green",
     });
 
