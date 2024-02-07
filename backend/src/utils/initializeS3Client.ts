@@ -19,8 +19,9 @@ export const initializeS3Client = () => {
 
     return client;
   } catch (error) {
-    console.log(error);
-
-    throw Error("AWS: Failed to initialize S3 Client!");
+    log.error({
+      error,
+      message: `Failed to initialize S3 client!!`,
+    });
   }
 };
