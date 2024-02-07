@@ -5,6 +5,7 @@ import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { REDIS } from "@config";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
@@ -80,7 +81,11 @@ export const setupRedis = () => {
 
       mutli.exec(error => {
         if (error) {
-          console.log(error);
+          log.error({
+            error,
+            message: "Failed to initialize role keys!",
+            service: Service.Redis,
+          });
         }
       });
     },
