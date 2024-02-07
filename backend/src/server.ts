@@ -26,6 +26,8 @@ export const server = async () => {
       message: "Failed to load yup utils!",
       service: Service.yup,
     });
+
+    process.exit(1);
   }
 
   try {
@@ -41,6 +43,8 @@ export const server = async () => {
       message: "Failed to initialize data source!",
       service: Service.TypeORM,
     });
+
+    process.exit(1);
   }
 
   const engineIo = initializeEngineIO();
