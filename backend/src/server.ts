@@ -6,7 +6,6 @@ import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 import { Di } from "@enums/Di";
 import { Service } from "@enums/Service";
 
-import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
 import { setupJobs } from "@utils/setupJobs";
 import { setupRedis } from "@utils/setupRedis";
@@ -17,8 +16,6 @@ import { setupPublisher } from "@utils/setupPublisher";
 import { initializeEngineIO } from "@utils/initializeEngineIO";
 
 export const server = async () => {
-  Warden.start();
-
   const app = express();
 
   try {
