@@ -7,12 +7,16 @@ import { PermissionToRole } from "@db/entities/PermissionToRole";
 
 import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
 
+import { Service } from "@enums/Service";
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
+import { Warden } from "@utils/Warden";
 import { setupRedis } from "@utils/setupRedis";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
 (async function () {
+  Warden.start();
+
   if (!dataSource.isInitialized) {
     await dataSource.initialize();
   }
@@ -26,7 +30,10 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
   const { manager } = queryRunner;
 
   if (!queryRunner.isTransactionActive) {
-    console.log("TypeORM: Failed to start transaction.");
+    log.error({
+      service: Service.TypeORM,
+      message: `Failed to start transaction!`,
+    });
 
     return;
   }
@@ -41,7 +48,10 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
     );
 
     if (missingPermissions.length === 0) {
-      console.log("TypeORM: permissions are up to date.");
+      log.info({
+        service: Service.TypeORM,
+        message: `Permissions are up to date.`,
+      });
 
       await queryRunner.commitTransaction();
 
@@ -74,15 +84,20 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
     const roles = await manager.save(allRoles);
 
-    console.log(
-      `TypeORM: ${newPermissions.length} permission(s) were added to the database.`
-    );
+    log.info({
+      service: Service.TypeORM,
+      message: `${newPermissions.length} permission(s) were added to the database.`,
+    });
 
     await reflectChangesInRedis(roles);
 
     await queryRunner.commitTransaction();
   } catch (error) {
-    console.log(error);
+    log.error({
+      error,
+      service: Service.TypeORM,
+      message: `An error occurred while reflecting permissions.`,
+    });
 
     await queryRunner.rollbackTransaction();
   } finally {
@@ -113,7 +128,11 @@ async function reflectChangesInRedis(roles: Role[]) {
 
   mutli.exec(error => {
     if (error) {
-      console.log(error);
+      log.error({
+        error,
+        service: Service.Redis,
+        message: `An error occurred while reflecting permissions.`,
+      });
     }
   });
 
