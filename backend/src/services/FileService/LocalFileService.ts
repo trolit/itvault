@@ -163,7 +163,10 @@ export class LocalFileService extends BaseFileService {
       try {
         await fs.move(src, dest);
       } catch (error) {
-        console.error(error);
+        log.error({
+          error,
+          message: `Failed to move file from ${src} to ${dest}!`,
+        });
       }
     }
   }
