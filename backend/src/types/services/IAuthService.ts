@@ -10,4 +10,8 @@ export interface IAuthService {
   verifyToken(token: string): VerifyTokenResult;
 
   getRoleFromDataStore(roleId: number): Promise<DataStore.Role | null>;
+
+  getSessionKeys(userId: number): Promise<string[] | null>;
+
+  getSessions(keys: string[]): Promise<DataStore.User[] | null>;
 }
