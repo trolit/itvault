@@ -5,6 +5,8 @@ declare module "jsonwebtoken" {
     id: number;
 
     email: string;
+
+    sessionId: string;
   }
 
   export type VerifyTokenResult =
