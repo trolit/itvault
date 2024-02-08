@@ -1,4 +1,3 @@
-import { DataStore } from "types/DataStore";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IUserService } from "types/services/IUserService";
@@ -7,7 +6,6 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { UpdateManyControllerTypes } from "types/controllers/User/UpdateManyController";
 
 import { Di } from "@enums/Di";
-import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -47,30 +45,6 @@ export class UpdateManyController extends BaseController {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send(result.error);
     }
 
-    this.reflectChangesInDataStore(values);
-
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
-  }
-
-  private reflectChangesInDataStore(entitiesToUpdate: IUpdateUserDTO[]) {
-    for (const entityToUpdate of entitiesToUpdate) {
-      const { id, data } = entityToUpdate;
-
-      const key: DataStore.Key = [id, DataStore.KeyType.AuthenticatedUser];
-
-      if (data.isActive !== undefined && !data.isActive) {
-        this._dataStoreService.deleteHash(key);
-
-        continue;
-      }
-
-      if (data.roleId) {
-        this._dataStoreService.updateHashField<DataStore.User>(
-          key,
-          "roleId",
-          data.roleId.toString()
-        );
-      }
-    }
   }
 }

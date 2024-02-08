@@ -3,7 +3,7 @@ import { PermissionToRole } from "@db/entities/PermissionToRole";
 
 export namespace DataStore {
   export const enum KeyType {
-    AuthenticatedUser = "authenticated-user",
+    AuthenticatedUser = "session",
     Role = "role",
   }
 
@@ -20,7 +20,5 @@ export namespace DataStore {
 
   export type User = {
     id: string;
-
-    roleId: string;
   };
 }
