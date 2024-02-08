@@ -24,7 +24,7 @@ export const requireAuthentication = (<P, B, Q>() => {
 
     if (!tokenPayload) {
       log.debug({
-        message: "Missing token!",
+        message: "Failed to authenticate (missing token)!",
       });
 
       return response.status(HTTP.UNAUTHORIZED).send();
@@ -43,7 +43,7 @@ export const requireAuthentication = (<P, B, Q>() => {
 
     if (!user || typeof user.role !== "number") {
       log.debug({
-        message: "User not found or invalid query!",
+        message: "Failed to authenticate (user not found or invalid query)!",
       });
 
       return response.status(HTTP.UNAUTHORIZED).send();
