@@ -2,6 +2,7 @@ import { DataStore } from "types/DataStore";
 import type { NextFunction, Response } from "express";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
+import { IUserRepository } from "types/repositories/IUserRepository";
 
 import { JWT } from "@config";
 import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
@@ -19,13 +20,38 @@ export const requireAuthentication = (<P, B, Q>() => {
   ) => {
     const authService = getInstanceOf<IAuthService>(Di.AuthService);
 
-    const userId = analyzeTokenFromRequest(request, authService);
+    const tokenPayload = analyzeTokenFromRequest(request, authService);
 
-    if (!userId) {
+    if (!tokenPayload) {
+      log.debug({
+        message: "Missing token!",
+      });
+
       return response.status(HTTP.UNAUTHORIZED).send();
     }
 
-    const role = await authService.getSignedUserRole(userId);
+    const userRepository = getInstanceOf<IUserRepository>(Di.UserRepository);
+
+    const user = await userRepository.getOne({
+      where: {
+        id: tokenPayload.id,
+      },
+      loadRelationIds: {
+        relations: ["role"],
+      },
+    });
+
+    if (!user || typeof user.role !== "number") {
+      log.debug({
+        message: "User not found or invalid query!",
+      });
+
+      return response.status(HTTP.UNAUTHORIZED).send();
+    }
+
+    const roleId = <number>user.role;
+
+    const role = await authService.getRoleFromDataStore(roleId);
 
     if (!role) {
       return response.status(HTTP.UNAUTHORIZED).send();
@@ -53,11 +79,11 @@ function analyzeTokenFromRequest<P, B, Q>(
     return null;
   }
 
-  const userId = result.payload.id;
+  const { payload } = result;
 
-  request.userId = userId;
+  request.userId = payload.id;
 
-  return userId;
+  return payload;
 }
 
 function assignPermissionsToRequest<P, B, Q>(
