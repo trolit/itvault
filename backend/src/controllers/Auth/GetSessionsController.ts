@@ -3,7 +3,7 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
-import { GetAllSessionsControllerTypes } from "types/controllers/Auth/GetAllSessionsController";
+import { GetSessionsControllerTypes } from "types/controllers/Auth/GetSessionsController";
 
 import { Di } from "@enums/Di";
 
@@ -12,7 +12,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class GetAllSessionsController extends BaseController {
+export class GetSessionsController extends BaseController {
   constructor(
     @inject(Di.AuthService)
     private _authService: IAuthService
@@ -29,10 +29,7 @@ export class GetAllSessionsController extends BaseController {
 
   static ALL_VERSIONS = [v1];
 
-  async v1(
-    request: Request,
-    response: GetAllSessionsControllerTypes.v1.Response
-  ) {
+  async v1(request: Request, response: GetSessionsControllerTypes.v1.Response) {
     const { userId } = request;
 
     const keys = await this._authService.getSessionKeys(userId);
