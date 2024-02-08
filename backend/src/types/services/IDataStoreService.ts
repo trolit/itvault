@@ -29,6 +29,15 @@ export interface IDataStoreService {
 
   delete(key: DataStore.Key): Promise<number>;
 
+  scan(
+    pattern: string,
+    cursor?: number
+  ): Promise<[cursor: string, elements: string[]]>;
+
+  getAllHashes(
+    keys: string[]
+  ): Promise<[error: Error | null, result: unknown][] | null>;
+
   update<T>(
     key: DataStore.Key,
     callback: (updatedValue: T) => T

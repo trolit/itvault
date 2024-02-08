@@ -93,6 +93,22 @@ export class DataStoreService implements IDataStoreService {
     return this._redis.del(composeDataStoreKey(key));
   }
 
+  scan(pattern: string, cursor = 0) {
+    return this._redis.scan(cursor, "MATCH", pattern);
+  }
+
+  getAllHashes(
+    keys: string[]
+  ): Promise<[error: Error | null, result: unknown][] | null> {
+    const pipeline = this._redis.pipeline();
+
+    for (const key of keys) {
+      pipeline.hgetall(key);
+    }
+
+    return pipeline.exec();
+  }
+
   async update<T>(
     key: DataStore.Key,
     callback: (updatedValue: T) => T
