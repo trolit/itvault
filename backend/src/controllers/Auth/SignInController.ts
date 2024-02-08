@@ -66,6 +66,8 @@ export class SignInController extends BaseController {
 
     const sessionId = crypto.randomUUID();
 
+    const agent = request.get("user-agent");
+
     const token = this._authService.signIn({
       email,
       sessionId,
@@ -74,8 +76,8 @@ export class SignInController extends BaseController {
 
     try {
       await this._dataStoreService.createHash<DataStore.User>(
-        [sessionId, DataStore.KeyType.AuthenticatedUser],
-        { id: user.id.toString() },
+        [`${user.id}-${sessionId}`, DataStore.KeyType.AuthenticatedUser],
+        { id: user.id.toString(), userAgent: agent || "unknown" },
         { withTTL: { seconds: JWT.TOKEN_LIFETIME_IN_SECONDS } }
       );
     } catch (error) {

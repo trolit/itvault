@@ -20,5 +20,9 @@ export namespace DataStore {
 
   export type User = {
     id: string;
+
+    userAgent: string;
+
+    // @TODO req.socket.remoteAddress
   };
 }
