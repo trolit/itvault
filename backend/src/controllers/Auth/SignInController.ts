@@ -62,6 +62,8 @@ export class SignInController extends BaseController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
+    // @TODO limit of active sessions (e.g. 3?)
+
     const sessionId = crypto.randomUUID();
 
     const token = this._authService.signIn({
