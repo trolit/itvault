@@ -9,5 +9,5 @@ export interface IAuthService {
 
   verifyToken(token: string): VerifyTokenResult;
 
-  getSignedUserRole(userId: number): Promise<DataStore.Role | null>;
+  getRoleFromDataStore(roleId: number): Promise<DataStore.Role | null>;
 }

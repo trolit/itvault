@@ -9,6 +9,7 @@ import { IDataStoreService } from "types/services/IDataStoreService";
 import { JWT } from "@config";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -47,7 +48,7 @@ export class AuthService implements IAuthService {
 
   verifyToken(token: string) {
     let verificationError: VerifyErrors | null = null;
-    let payload: JwtPayload = { id: -1, email: "" };
+    let payload: JwtPayload = { id: -1, email: "", sessionId: "" };
 
     jwt.verify(
       token,
@@ -75,25 +76,19 @@ export class AuthService implements IAuthService {
     };
   }
 
-  async getSignedUserRole(userId: number): Promise<DataStore.Role | null> {
-    const roleId = await this._dataStoreService.getHashField<DataStore.User>(
-      [userId, DataStore.KeyType.AuthenticatedUser],
-      "roleId"
-    );
+  async getRoleFromDataStore(roleId: number): Promise<DataStore.Role | null> {
+    try {
+      return this._dataStoreService.get<DataStore.Role>([
+        roleId,
+        DataStore.KeyType.Role,
+      ]);
+    } catch (error) {
+      log.warning({
+        message: `Failed to read role #${roleId}: ${error}`,
+        service: Service.Redis,
+      });
 
-    if (!roleId) {
       return null;
     }
-
-    const role = await this._dataStoreService.get<DataStore.Role>([
-      roleId,
-      DataStore.KeyType.Role,
-    ]);
-
-    if (!role) {
-      return null;
-    }
-
-    return role;
   }
 }
