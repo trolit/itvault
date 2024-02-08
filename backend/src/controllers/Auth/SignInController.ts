@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import bcrypt from "bcrypt";
 import { DataStore } from "types/DataStore";
 import { inject, injectable } from "tsyringe";
@@ -61,18 +62,24 @@ export class SignInController extends BaseController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    const token = this._authService.signIn({ email, id: user.id });
+    const sessionId = crypto.randomUUID();
+
+    const token = this._authService.signIn({
+      email,
+      sessionId,
+      id: user.id,
+    });
 
     try {
       await this._dataStoreService.createHash<DataStore.User>(
-        [user.id, DataStore.KeyType.AuthenticatedUser],
-        { id: user.id.toString(), roleId: user.role.id.toString() },
+        [sessionId, DataStore.KeyType.AuthenticatedUser],
+        { id: user.id.toString() },
         { withTTL: { seconds: JWT.TOKEN_LIFETIME_IN_SECONDS } }
       );
     } catch (error) {
       log.error({
         error,
-        message: `Failed to create hash for user #${user.id}. Sign in request failed!!!`,
+        message: `Failed to save ${sessionId} of user #${user.id}. Sign in request failed!!!`,
         service: Service.Redis,
       });
 
