@@ -5,8 +5,8 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
 import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
-import { IDataStoreService } from "types/services/IDataStoreService";
 import { IUserRepository } from "types/repositories/IUserRepository";
+import { IDataStoreService } from "types/services/IDataStoreService";
 import { SignInControllerTypes } from "types/controllers/Auth/SignInController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
