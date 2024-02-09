@@ -1,5 +1,6 @@
-import { Permission as PermissionEntity } from "@db/entities/Permission";
+import { IUserSessionDTO } from "@shared/types/dtos/Auth";
 import { PermissionToRole } from "@db/entities/PermissionToRole";
+import { Permission as PermissionEntity } from "@db/entities/Permission";
 
 export namespace DataStore {
   export const enum KeyType {
@@ -18,11 +19,5 @@ export namespace DataStore {
     permissions: Permission[];
   };
 
-  export type User = {
-    id: string;
-
-    userAgent: string;
-
-    // @TODO req.socket.remoteAddress
-  };
+  export type User = IUserSessionDTO;
 }
