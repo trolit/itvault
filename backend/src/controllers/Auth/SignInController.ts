@@ -77,7 +77,11 @@ export class SignInController extends BaseController {
     try {
       await this._dataStoreService.createHash<DataStore.User>(
         [`${user.id}-${sessionId}`, DataStore.KeyType.AuthenticatedUser],
-        { id: user.id.toString(), userAgent: agent || "unknown" },
+        {
+          id: user.id.toString(),
+          userAgent: agent || "unknown",
+          issuedAt: new Date().toISOString(),
+        },
         { withTTL: { seconds: JWT.TOKEN_LIFETIME_IN_SECONDS } }
       );
     } catch (error) {
