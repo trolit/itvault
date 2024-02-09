@@ -78,7 +78,8 @@ export class SignInController extends BaseController {
       await this._dataStoreService.createHash<DataStore.User>(
         [`${user.id}-${sessionId}`, DataStore.KeyType.AuthenticatedUser],
         {
-          id: user.id.toString(),
+          sessionId,
+          userId: user.id.toString(),
           userAgent: agent || "unknown",
           issuedAt: new Date().toISOString(),
         },
