@@ -9,9 +9,9 @@ import { useSignInSuperSchema } from "@schemas/Auth/useSignInSuperSchema";
 import { useDeleteSessionSuperSchema } from "@schemas/Auth/useDeleteSessionSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { LogoutController } from "@controllers/Auth/LogoutController";
 import { SignInController } from "@controllers/Auth/SignInController";
 import { StatusController } from "@controllers/Auth/StatusController";
+import { SignOutController } from "@controllers/Auth/SignOutController";
 import { GetSessionsController } from "@controllers/Auth/GetSessionsController";
 import { DeleteSessionController } from "@controllers/Auth/DeleteSessionController";
 
@@ -28,9 +28,9 @@ authRouter.post(
 );
 
 authRouter.post(
-  "/logout",
-  requireEndpointVersion(LogoutController.ALL_VERSIONS),
-  processRequestWith(LogoutController)
+  "/sign-out",
+  requireEndpointVersion(SignOutController.ALL_VERSIONS),
+  processRequestWith(SignOutController)
 );
 
 authRouter.get(
