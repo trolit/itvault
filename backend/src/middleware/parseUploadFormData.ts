@@ -9,7 +9,7 @@ import { IFormidableFormFactory } from "types/factories/IFormidableFormFactory";
 import { APP } from "@config";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 import { formatError } from "@helpers/yup/formatError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -67,7 +67,7 @@ export const parseUploadFormData = (
         log.error({
           error,
           message: `An error occured while parsing file(s) for workspace #${workspaceId}`,
-          service: Service.formidable,
+          dependency: Dependency.formidable,
         });
 
         await onAnyErrorDuringFormParse(parsedWorkspaceId, mappedFiles);

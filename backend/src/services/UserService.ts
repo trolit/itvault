@@ -9,7 +9,7 @@ import { IUserRepository } from "types/repositories/IUserRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 import { IUpdateUserDTO } from "@shared/types/DTOs/User";
 
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
@@ -80,7 +80,7 @@ export class UserService implements IUserService {
     } catch (error) {
       log.error({
         error,
-        service: Service.TypeORM,
+        dependency: Dependency.TypeORM,
         message: `Failed to update users!`,
       });
 

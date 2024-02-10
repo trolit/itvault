@@ -8,7 +8,7 @@ import { JWT } from "@config";
 import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 import { Permission } from "@shared/types/enums/Permission";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -93,7 +93,7 @@ function readToken<P, B, Q>(
     log.error({
       error: result.error,
       message: `Failed to verify token`,
-      service: Service.JWT,
+      dependency: Dependency.JWT,
     });
 
     return null;

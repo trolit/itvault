@@ -7,7 +7,7 @@ import { PermissionToRole } from "@db/entities/PermissionToRole";
 
 import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
 
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 import { Warden } from "@utils/Warden";
@@ -31,7 +31,7 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
   if (!queryRunner.isTransactionActive) {
     log.error({
-      service: Service.TypeORM,
+      dependency: Dependency.TypeORM,
       message: `Failed to start transaction!`,
     });
 
@@ -49,7 +49,7 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
     if (missingPermissions.length === 0) {
       log.info({
-        service: Service.TypeORM,
+        dependency: Dependency.TypeORM,
         message: `Permissions are up to date.`,
       });
 
@@ -85,7 +85,7 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
     const roles = await manager.save(allRoles);
 
     log.info({
-      service: Service.TypeORM,
+      dependency: Dependency.TypeORM,
       message: `${newPermissions.length} permission(s) were added to the database.`,
     });
 
@@ -95,7 +95,7 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
   } catch (error) {
     log.error({
       error,
-      service: Service.TypeORM,
+      dependency: Dependency.TypeORM,
       message: `An error occurred while reflecting permissions.`,
     });
 
@@ -130,7 +130,7 @@ async function reflectChangesInRedis(roles: Role[]) {
     if (error) {
       log.error({
         error,
-        service: Service.Redis,
+        dependency: Dependency.Redis,
         message: `An error occurred while reflecting permissions.`,
       });
     }

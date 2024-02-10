@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 
 import { EMAIL } from "@config";
 
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 const { HOST, PORT, USER, PASSWORD } = EMAIL;
 
@@ -21,7 +21,7 @@ export const setupMailTransporter = () => {
     if (error) {
       log.error({
         error,
-        service: Service.nodemailer,
+        dependency: Dependency.nodemailer,
         message: `Invalid config!`,
       });
     }

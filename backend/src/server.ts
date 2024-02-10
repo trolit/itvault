@@ -4,7 +4,7 @@ import { dataSource } from "@db/data-source";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 import { setupDi } from "@utils/setupDi";
 import { setupJobs } from "@utils/setupJobs";
@@ -24,7 +24,7 @@ export const server = async () => {
     log.error({
       error,
       message: "Failed to load yup utils!",
-      service: Service.yup,
+      dependency: Dependency.yup,
     });
 
     process.exit(1);
@@ -34,14 +34,14 @@ export const server = async () => {
     await dataSource.initialize();
 
     log.debug({
-      service: Service.TypeORM,
+      dependency: Dependency.TypeORM,
       message: "Data source initialized!",
     });
   } catch (error) {
     log.error({
       error,
       message: "Failed to initialize data source!",
-      service: Service.TypeORM,
+      dependency: Dependency.TypeORM,
     });
 
     process.exit(1);

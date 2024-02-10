@@ -5,7 +5,7 @@ import { MQRABBIT } from "@config";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 export const setupPublisher = async () => {
   const { PORT, USER, PASSWORD } = MQRABBIT;
@@ -28,7 +28,7 @@ export const setupPublisher = async () => {
     container.register(Di.Publisher, { useValue: publisher });
 
     log.debug({
-      service: Service.RabbitMQ,
+      dependency: Dependency.RabbitMQ,
       message: `Publisher initialized.`,
     });
 
@@ -36,7 +36,7 @@ export const setupPublisher = async () => {
   } catch (error) {
     log.error({
       error,
-      service: Service.RabbitMQ,
+      dependency: Dependency.RabbitMQ,
       message: `Failed to setup publisher!`,
     });
 

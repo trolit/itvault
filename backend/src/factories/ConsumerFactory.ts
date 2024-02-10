@@ -4,7 +4,7 @@ import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandl
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
@@ -20,7 +20,7 @@ export class ConsumerFactory implements IConsumerFactory {
       if (message === null) {
         log.warning({
           message: "Consumer cancelled by server!",
-          service: Service.RabbitMQ,
+          dependency: Dependency.RabbitMQ,
         });
 
         return;
@@ -39,7 +39,7 @@ export class ConsumerFactory implements IConsumerFactory {
 
         log.debug({
           message: `Consumer completed task of ${queue} queue.`,
-          service: Service.RabbitMQ,
+          dependency: Dependency.RabbitMQ,
         });
 
         return;
@@ -51,7 +51,7 @@ export class ConsumerFactory implements IConsumerFactory {
 
       log.warning({
         message: `Consumer failed to complete task of ${queue} queue.`,
-        service: Service.RabbitMQ,
+        dependency: Dependency.RabbitMQ,
       });
     });
 

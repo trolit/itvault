@@ -8,7 +8,7 @@ import express, { Application, Request, Response, Router } from "express";
 
 import { APP } from "@config";
 
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 import { requireAuthentication } from "@middleware/requireAuthentication";
 
@@ -69,7 +69,7 @@ async function getRoutes() {
       message: `registered ${version} routes: \n${registeredRouters.join(
         "\n"
       )}`,
-      service: Service.Express,
+      dependency: Dependency.Express,
     });
 
     mainRouter.use(`/${version}`, versionRouter);
