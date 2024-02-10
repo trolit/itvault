@@ -11,6 +11,8 @@ export interface IAuthService {
 
   getRoleFromDataStore(roleId: number): Promise<DataStore.Role | null>;
 
+  isSessionActive(userId: number, sessionId: string): Promise<boolean>;
+
   getSessionKeys(userId: number): Promise<string[] | null>;
 
   getSessions(keys: string[]): Promise<DataStore.User[] | null>;

@@ -20,7 +20,7 @@ export const requireAuthentication = (<P, B, Q>() => {
   ) => {
     const authService = getInstanceOf<IAuthService>(Di.AuthService);
 
-    const tokenPayload = analyzeTokenFromRequest(request, authService);
+    const tokenPayload = readToken(request, authService);
 
     if (!tokenPayload) {
       log.debug({
@@ -29,6 +29,19 @@ export const requireAuthentication = (<P, B, Q>() => {
 
       return response.status(HTTP.UNAUTHORIZED).send();
     }
+
+    const { id: userId, sessionId } = tokenPayload;
+
+    const isSessionActive = await authService.isSessionActive(
+      userId,
+      sessionId
+    );
+
+    if (!isSessionActive) {
+      return response.status(HTTP.UNAUTHORIZED).send();
+    }
+
+    request.userId = userId;
 
     const userRepository = getInstanceOf<IUserRepository>(Di.UserRepository);
 
@@ -63,7 +76,7 @@ export const requireAuthentication = (<P, B, Q>() => {
   };
 })();
 
-function analyzeTokenFromRequest<P, B, Q>(
+function readToken<P, B, Q>(
   request: CustomRequest<P, B, Q>,
   authService: IAuthService
 ) {
@@ -80,8 +93,6 @@ function analyzeTokenFromRequest<P, B, Q>(
   }
 
   const { payload } = result;
-
-  request.userId = payload.id;
 
   return payload;
 }
