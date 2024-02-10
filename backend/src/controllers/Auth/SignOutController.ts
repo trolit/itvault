@@ -13,7 +13,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
-export class LogoutController extends BaseController {
+export class SignOutController extends BaseController {
   constructor(
     @inject(Di.AuthService)
     private _authService: IAuthService

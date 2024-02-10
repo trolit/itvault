@@ -59,7 +59,7 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       this.socket?.close();
 
-      return axios.post("v1/auth/logout", null, {
+      return axios.post("v1/auth/sign-out", null, {
         params: { version: 1 },
       });
     },
