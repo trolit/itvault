@@ -37,7 +37,7 @@ export class DeleteSessionController extends BaseController {
   ) {
     const {
       userId,
-      params: { sessionId },
+      params: { id: sessionId },
     } = request;
 
     const key: DataStore.Key = [

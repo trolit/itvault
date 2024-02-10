@@ -6,7 +6,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const paramsSchema: SuperSchema.Fragment<DeleteSessionControllerTypes.v1.Params> =
   object({
-    sessionId: string().required(),
+    id: string().required(),
   });
 
 export const useDeleteSessionSuperSchema: SuperSchema.Runner<
