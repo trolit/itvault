@@ -4,12 +4,10 @@ import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IDataStoreService } from "types/services/IDataStoreService";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
-import { DeleteSessionControllerTypes } from "types/controllers/User/DeleteSessionController";
+import { DeleteSessionControllerTypes } from "types/controllers/Auth/DeleteSessionController";
 
 import { Di } from "@enums/Di";
 import { Service } from "@enums/Service";
-
-import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -38,23 +36,25 @@ export class DeleteSessionController extends BaseController {
     response: Response
   ) {
     const {
-      params: { id, sessionId },
+      userId,
+      params: { sessionId },
     } = request;
 
-    const key = composeDataStoreKey([
-      `${id}-${sessionId}`,
+    const key: DataStore.Key = [
+      `${userId}-${sessionId}`,
       DataStore.KeyType.AuthenticatedUser,
-    ]);
+    ];
 
     try {
-      await this._dataStoreService.deleteHash([
-        `${id}-${sessionId}`,
-        DataStore.KeyType.AuthenticatedUser,
-      ]);
+      const session = await this._dataStoreService.get<DataStore.User>(key);
+
+      if (session) {
+        await this._dataStoreService.deleteHash(key);
+      }
     } catch (error) {
       log.error({
         error,
-        message: `Failed to delete hash identified by '${key}'`,
+        message: `Failed to delete session identified by '${key}'`,
         service: Service.Redis,
       });
     }
