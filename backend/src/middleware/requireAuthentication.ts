@@ -39,6 +39,8 @@ export const requireAuthentication = (<P, B, Q>() => {
     );
 
     if (!isSessionActive) {
+      response.clearCookie(JWT.COOKIE_KEY);
+
       return response.status(HTTP.UNAUTHORIZED).send();
     }
 

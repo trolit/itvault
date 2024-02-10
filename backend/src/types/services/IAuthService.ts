@@ -17,5 +17,8 @@ export interface IAuthService {
 
   getSessionKeys(userId: number): Promise<string[] | null>;
 
-  getSessions(keys: string[]): Promise<DataStore.User[] | null>;
+  getSessions(
+    requesterSessionId: string,
+    keys: string[]
+  ): Promise<DataStore.User[] | null>;
 }

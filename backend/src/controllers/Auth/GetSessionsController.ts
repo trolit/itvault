@@ -30,7 +30,7 @@ export class GetSessionsController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(request: Request, response: GetSessionsControllerTypes.v1.Response) {
-    const { userId } = request;
+    const { userId, sessionId } = request;
 
     const keys = await this._authService.getSessionKeys(userId);
 
@@ -38,7 +38,7 @@ export class GetSessionsController extends BaseController {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
     }
 
-    const sessions = await this._authService.getSessions(keys);
+    const sessions = await this._authService.getSessions(sessionId, keys);
 
     if (!sessions) {
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
