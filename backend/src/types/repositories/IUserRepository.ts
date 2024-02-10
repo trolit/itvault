@@ -8,6 +8,8 @@ export interface IUserRepository extends IBaseRepository<User> {
     options?: { includePermissions: boolean }
   ): Promise<User | null>;
 
+  getRoleId(userId: number): Promise<number>;
+
   filterUsersWithAccessToWorkspace(
     workspaceId: number,
     userIds: number[]

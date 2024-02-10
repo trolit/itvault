@@ -47,25 +47,13 @@ export const requireAuthentication = (<P, B, Q>() => {
 
     const userRepository = getInstanceOf<IUserRepository>(Di.UserRepository);
 
-    const user = await userRepository.getOne({
-      where: {
-        id: tokenPayload.id,
-      },
-      loadRelationIds: {
-        relations: ["role"],
-      },
-    });
+    const roleId = await userRepository.getRoleId(userId);
 
-    if (!user || typeof user.role !== "number") {
-      log.debug({
-        message:
-          "Failed to verify auth status (user not found or invalid query)!",
-      });
-
+    if (!roleId) {
       return response.status(HTTP.UNAUTHORIZED).send();
     }
 
-    const role = await authService.getRoleFromDataStore(<number>user.role);
+    const role = await authService.getRoleFromDataStore(roleId);
 
     if (!role) {
       return response.status(HTTP.UNAUTHORIZED).send();
