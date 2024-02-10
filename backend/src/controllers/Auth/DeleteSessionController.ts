@@ -38,8 +38,6 @@ export class DeleteSessionController extends BaseController {
       params: { id: sessionId },
     } = request;
 
-    // @TODO prevent deleting session from which request was fired because this is logout..
-
     await this._authService.deleteSession(userId, sessionId);
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

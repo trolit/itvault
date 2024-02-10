@@ -4,17 +4,19 @@ import { DeleteSessionControllerTypes } from "types/controllers/Auth/DeleteSessi
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const paramsSchema: SuperSchema.Fragment<DeleteSessionControllerTypes.v1.Params> =
+const useParamsSchema: (
+  sessionId: string
+) => SuperSchema.Fragment<DeleteSessionControllerTypes.v1.Params> = sessionId =>
   object({
-    id: string().required(),
+    id: string().required().notOneOf([sessionId]),
   });
 
 export const useDeleteSessionSuperSchema: SuperSchema.Runner<
   DeleteSessionControllerTypes.v1.Params,
   void,
   void
-> = defineSuperSchemaRunner(() => {
+> = defineSuperSchemaRunner(({ request: { sessionId } }) => {
   return {
-    params: paramsSchema,
+    params: useParamsSchema(sessionId),
   };
 });

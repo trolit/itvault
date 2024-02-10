@@ -42,6 +42,7 @@ export const requireAuthentication = (<P, B, Q>() => {
     }
 
     request.userId = userId;
+    request.sessionId = sessionId;
 
     const userRepository = getInstanceOf<IUserRepository>(Di.UserRepository);
 
