@@ -19,5 +19,8 @@ export namespace DataStore {
     permissions: Permission[];
   };
 
-  export type User = Omit<IUserSessionDTO, "isRequesterSession">;
+  export type User = { userId: string } & Omit<
+    IUserSessionDTO,
+    "isRequesterSession"
+  >;
 }
