@@ -35,8 +35,10 @@ export class AuthService implements IAuthService {
       return -1;
     }
 
+    const { id: userId, sessionId } = decodedToken;
+
     const result = await this._dataStoreService.delete([
-      decodedToken.id,
+      `${userId}-${sessionId}`,
       DataStore.KeyType.AuthenticatedUser,
     ]);
 
