@@ -7,5 +7,7 @@ export interface IUserSessionDTO {
 
   sessionId: string;
 
+  isRequesterSession: boolean;
+
   // @TODO req.socket.remoteAddress
 }
