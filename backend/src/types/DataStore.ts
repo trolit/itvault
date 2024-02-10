@@ -10,7 +10,7 @@ export namespace DataStore {
 
   export type Key = [string | number, KeyType];
 
-  export type Permission = Pick<PermissionEntity, "signature" | "name"> &
+  export type Permission = Pick<PermissionEntity, "signature"> &
     Pick<PermissionToRole, "enabled">;
 
   export type Role = {

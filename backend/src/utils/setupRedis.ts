@@ -71,7 +71,7 @@ export const setupRedis = () => {
         const value: DataStore.Role = {
           id,
           permissions: permissionToRole.map(({ enabled, permission }) => ({
-            ...permission,
+            signature: permission.signature,
             enabled,
           })),
         };
