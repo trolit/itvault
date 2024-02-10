@@ -9,6 +9,8 @@ import { DeleteSessionControllerTypes } from "types/controllers/Auth/DeleteSessi
 import { Di } from "@enums/Di";
 import { Service } from "@enums/Service";
 
+import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
+
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -45,16 +47,20 @@ export class DeleteSessionController extends BaseController {
       DataStore.KeyType.AuthenticatedUser,
     ];
 
-    try {
-      const session = await this._dataStoreService.get<DataStore.User>(key);
+    // @TODO prevent deleting session from which request was fired because this is logout..
 
-      if (session) {
-        await this._dataStoreService.deleteHash(key);
+    try {
+      const keyCount = await this._dataStoreService.isKeyDefined(key);
+
+      if (keyCount === 1) {
+        await this._dataStoreService.delete(key);
       }
     } catch (error) {
       log.error({
         error,
-        message: `Failed to delete session identified by '${key}'`,
+        message: `Failed to delete session identified by '${composeDataStoreKey(
+          key
+        )}'`,
         service: Service.Redis,
       });
     }
