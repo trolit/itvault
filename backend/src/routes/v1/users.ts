@@ -45,6 +45,7 @@ usersRouter.get(
 
 usersRouter.get(
   "/:id/notes",
+  requireAuthentication,
   validateRequestWith({ [v1]: useGetNotesSuperSchema }),
   transformPagination({ defaultPerPage: GetNotesController.ITEMS_PER_PAGE }),
   processRequestWith(GetNotesController)
