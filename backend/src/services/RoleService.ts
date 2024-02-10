@@ -7,7 +7,7 @@ import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 import { IAddEditRoleDTO } from "@shared/types/DTOs/Role";
 import { IPermissionUpdateDTO } from "@shared/types/DTOs/Permission";
 
@@ -57,7 +57,7 @@ export class RoleService implements IRoleService {
     } catch (error) {
       log.error({
         error,
-        service: Service.TypeORM,
+        dependency: Dependency.TypeORM,
         message: `Failed to create role!`,
       });
 
@@ -116,7 +116,7 @@ export class RoleService implements IRoleService {
     } catch (error) {
       log.error({
         error,
-        service: Service.TypeORM,
+        dependency: Dependency.TypeORM,
         message: `Failed to update role!`,
       });
 

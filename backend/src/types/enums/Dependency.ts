@@ -1,5 +1,6 @@
-export enum Service {
+export enum Dependency {
   yup = "yup",
+  JWT = "JWT",
   Redis = "Redis",
   TypeORM = "TypeORM",
   tsyringe = "tsyringe",

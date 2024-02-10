@@ -5,7 +5,7 @@ import { Logger, addColors, createLogger, format, transports } from "winston";
 
 import { APP } from "@config";
 
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 const { IS_PRODUCTION } = APP;
 
@@ -66,7 +66,7 @@ export class Warden {
             .colorize(
               msg.level,
               `[${msg.timestamp}] [${msg.level.toUpperCase()}]${
-                msg.service ? ` [${msg.service}]:` : ":"
+                msg.dependency ? ` [${msg.dependency}]:` : ":"
               } ${msg.message}`
             )
         )
@@ -79,42 +79,42 @@ export class Warden {
     });
   }
 
-  warning(arg: { service?: Service; message: string; values?: any[] }) {
-    const { message, values, service } = arg;
+  warning(arg: { dependency?: Dependency; message: string; values?: any[] }) {
+    const { message, values, dependency } = arg;
 
     this._log({
       level: "warn",
       loggers: [this._debugLogger],
-      labels: { service },
+      labels: { dependency },
       message,
       values,
     });
   }
 
-  info(arg: { service?: Service; message: string; values?: any[] }) {
-    const { message, values, service } = arg;
+  info(arg: { dependency?: Dependency; message: string; values?: any[] }) {
+    const { message, values, dependency } = arg;
 
     this._log({
       level: "info",
       loggers: [this._debugLogger],
-      labels: { service },
+      labels: { dependency },
       message,
       values,
     });
   }
 
   error(arg: {
-    service?: Service;
+    dependency?: Dependency;
     message: string;
     error?: any;
     values?: any[];
   }) {
-    const { message, values, service, error } = arg;
+    const { message, values, dependency, error } = arg;
 
     this._log({
       level: "error",
       loggers: [this._errorsLogger, this._debugLogger],
-      labels: { service },
+      labels: { dependency },
       message,
       values,
       additionalData: {
@@ -123,13 +123,13 @@ export class Warden {
     });
   }
 
-  debug(arg: { service?: Service; message: string; values?: any[] }) {
-    const { message, values, service } = arg;
+  debug(arg: { dependency?: Dependency; message: string; values?: any[] }) {
+    const { message, values, dependency } = arg;
 
     this._log({
       level: "debug",
       loggers: [this._debugLogger],
-      labels: { service },
+      labels: { dependency },
       message,
       values,
     });
@@ -142,7 +142,7 @@ export class Warden {
 
     values?: any[];
     labels?: {
-      service?: string;
+      dependency?: string;
     };
     additionalData?: T;
   }) {

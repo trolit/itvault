@@ -8,6 +8,7 @@ import { JWT } from "@config";
 import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
 
 import { Di } from "@enums/Di";
+import { Dependency } from "@enums/Dependency";
 import { Permission } from "@shared/types/enums/Permission";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -20,7 +21,7 @@ export const requireAuthentication = (<P, B, Q>() => {
   ) => {
     const authService = getInstanceOf<IAuthService>(Di.AuthService);
 
-    const tokenPayload = analyzeTokenFromRequest(request, authService);
+    const tokenPayload = readToken(request, authService);
 
     if (!tokenPayload) {
       log.debug({
@@ -30,26 +31,27 @@ export const requireAuthentication = (<P, B, Q>() => {
       return response.status(HTTP.UNAUTHORIZED).send();
     }
 
-    const userRepository = getInstanceOf<IUserRepository>(Di.UserRepository);
+    const { id: userId, sessionId } = tokenPayload;
 
-    const user = await userRepository.getOne({
-      where: {
-        id: tokenPayload.id,
-      },
-      loadRelationIds: {
-        relations: ["role"],
-      },
-    });
+    const isSessionActive = await authService.isSessionActive(
+      userId,
+      sessionId
+    );
 
-    if (!user || typeof user.role !== "number") {
-      log.debug({
-        message: "Failed to authenticate (user not found or invalid query)!",
-      });
-
+    if (!isSessionActive) {
       return response.status(HTTP.UNAUTHORIZED).send();
     }
 
-    const roleId = <number>user.role;
+    request.userId = userId;
+    request.sessionId = sessionId;
+
+    const userRepository = getInstanceOf<IUserRepository>(Di.UserRepository);
+
+    const roleId = await userRepository.getRoleId(userId);
+
+    if (!roleId) {
+      return response.status(HTTP.UNAUTHORIZED).send();
+    }
 
     const role = await authService.getRoleFromDataStore(roleId);
 
@@ -63,7 +65,7 @@ export const requireAuthentication = (<P, B, Q>() => {
   };
 })();
 
-function analyzeTokenFromRequest<P, B, Q>(
+function readToken<P, B, Q>(
   request: CustomRequest<P, B, Q>,
   authService: IAuthService
 ) {
@@ -76,12 +78,16 @@ function analyzeTokenFromRequest<P, B, Q>(
   const result = authService.verifyToken(token);
 
   if (result.error) {
+    log.error({
+      error: result.error,
+      message: `Failed to verify token`,
+      dependency: Dependency.JWT,
+    });
+
     return null;
   }
 
   const { payload } = result;
-
-  request.userId = payload.id;
 
   return payload;
 }

@@ -12,6 +12,7 @@ declare global {
     export interface Request {
       // @NOTE -> available only after `requireAuthentication`
       userId: number;
+      sessionId: string;
 
       // @NOTE -> available only after `requireAuthentication`
       permissions: RequestPermissions;

@@ -47,6 +47,7 @@ export const CUSTOM_MESSAGES = {
   },
 
   AUTH: {
+    DELETE_OWN_SESSION: "Cannot delete own session. Use sign out request 👌.",
     PASSWORD: {
       ONE_LOWERCASE_LETTER: "At least one lowercase letter.",
       ONE_UPPERCASE_LETTER: "At least one uppercase letter.",

@@ -7,7 +7,7 @@ import {
 
 import { FILES } from "@config/index";
 
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 @EventSubscriber()
 export class DirectorySubscriber
@@ -85,7 +85,7 @@ export class DirectorySubscriber
   private _safeLog(message: string) {
     if (global.log) {
       log.debug({
-        service: Service.TypeORM,
+        dependency: Dependency.TypeORM,
         message,
       });
     }

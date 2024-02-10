@@ -9,7 +9,7 @@ import { IDataStoreService } from "types/services/IDataStoreService";
 import { JWT } from "@config";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
@@ -88,10 +88,50 @@ export class AuthService implements IAuthService {
       log.error({
         error,
         message: `Failed to read role #${roleId}: ${error}`,
-        service: Service.Redis,
+        dependency: Dependency.Redis,
       });
 
       return null;
+    }
+  }
+
+  async deleteSession(userId: number, sessionId: string): Promise<void> {
+    const key: DataStore.Key = [
+      `${userId}-${sessionId}`,
+      DataStore.KeyType.AuthenticatedUser,
+    ];
+
+    try {
+      await this._dataStoreService.delete(key);
+    } catch (error) {
+      log.error({
+        error,
+        message: `Failed to delete session identified by '${composeDataStoreKey(
+          key
+        )}'`,
+        dependency: Dependency.Redis,
+      });
+    }
+  }
+
+  async isSessionActive(userId: number, sessionId: string): Promise<boolean> {
+    const key: DataStore.Key = [
+      `${userId}-${sessionId}`,
+      DataStore.KeyType.AuthenticatedUser,
+    ];
+
+    try {
+      const keys = await this._dataStoreService.isKeyDefined(key);
+
+      return keys === 1;
+    } catch (error) {
+      log.error({
+        error,
+        message: `Failed to find session '${key}'`,
+        dependency: Dependency.Redis,
+      });
+
+      return false;
     }
   }
 
@@ -109,7 +149,7 @@ export class AuthService implements IAuthService {
       log.error({
         error,
         message: `Failed to get session keys of user #${userId}`,
-        service: Service.Redis,
+        dependency: Dependency.Redis,
       });
 
       return null;
@@ -134,7 +174,7 @@ export class AuthService implements IAuthService {
           log.error({
             error,
             message: `An error occurred while requesting hash of key '${keys[index]}'`,
-            service: Service.Redis,
+            dependency: Dependency.Redis,
           });
 
           continue;
@@ -147,7 +187,7 @@ export class AuthService implements IAuthService {
     } catch (error) {
       log.debug({
         message: `Failed to get session keys: ${keys.join(", ")}`,
-        service: Service.Redis,
+        dependency: Dependency.Redis,
       });
 
       return null;

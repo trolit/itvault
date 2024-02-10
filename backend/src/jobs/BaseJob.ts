@@ -2,7 +2,7 @@ import { CronJob } from "cron";
 import { IJob } from "types/jobs/IJob";
 import { JobConfig } from "types/jobs/JobConfig";
 
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 export abstract class BaseJob implements IJob {
   instance: CronJob | null = null;
@@ -15,7 +15,7 @@ export abstract class BaseJob implements IJob {
     if (!this.instance) {
       log.warning({
         message: `Something wrong with ${this.jobName} job!! (can't run)`,
-        service: Service.cron,
+        dependency: Dependency.cron,
       });
 
       return;
@@ -25,7 +25,7 @@ export abstract class BaseJob implements IJob {
 
     log.debug({
       message: `${this.jobName} is running`,
-      service: Service.cron,
+      dependency: Dependency.cron,
     });
   }
 
@@ -33,7 +33,7 @@ export abstract class BaseJob implements IJob {
     if (!this.instance) {
       log.warning({
         message: `Job ${this.jobName} is already stopped!!`,
-        service: Service.cron,
+        dependency: Dependency.cron,
       });
 
       return;
@@ -45,7 +45,7 @@ export abstract class BaseJob implements IJob {
 
     log.debug({
       message: `Stopped ${this.jobName} job.`,
-      service: Service.cron,
+      dependency: Dependency.cron,
     });
   }
 
@@ -58,7 +58,7 @@ export abstract class BaseJob implements IJob {
 
     log.debug({
       message: `${this.jobName} completed.`,
-      service: Service.cron,
+      dependency: Dependency.cron,
     });
   }
 }

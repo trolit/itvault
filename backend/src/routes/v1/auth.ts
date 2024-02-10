@@ -6,12 +6,14 @@ import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useSignInSuperSchema } from "@schemas/Auth/useSignInSuperSchema";
+import { useDeleteSessionSuperSchema } from "@schemas/Auth/useDeleteSessionSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
+import { LogoutController } from "@controllers/Auth/LogoutController";
 import { SignInController } from "@controllers/Auth/SignInController";
 import { StatusController } from "@controllers/Auth/StatusController";
-import { LogoutController } from "@controllers/Auth/LogoutController";
 import { GetSessionsController } from "@controllers/Auth/GetSessionsController";
+import { DeleteSessionController } from "@controllers/Auth/DeleteSessionController";
 
 const authRouter = Router();
 
@@ -44,4 +46,10 @@ authRouter.get(
   processRequestWith(GetSessionsController)
 );
 
+authRouter.delete(
+  "/sessions/:id",
+  requireAuthentication,
+  validateRequestWith({ [v1]: useDeleteSessionSuperSchema }),
+  processRequestWith(DeleteSessionController)
+);
 export = authRouter;

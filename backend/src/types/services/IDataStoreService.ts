@@ -23,6 +23,8 @@ export interface IDataStoreService {
     options?: { withTTL: { seconds: number } }
   ): Promise<string | null>;
 
+  isKeyDefined(key: DataStore.Key): Promise<number>;
+
   get<T>(key: DataStore.Key): Promise<T | null>;
 
   ttl(key: DataStore.Key): Promise<number>;

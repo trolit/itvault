@@ -49,6 +49,23 @@ export class UserRepository
     });
   }
 
+  async getRoleId(userId: number): Promise<number> {
+    const user = await this.database.findOne({
+      where: {
+        id: userId,
+      },
+      loadRelationIds: {
+        relations: ["role"],
+      },
+    });
+
+    if (!user || typeof user.role !== "number") {
+      return 0;
+    }
+
+    return user.role;
+  }
+
   filterUsersWithAccessToWorkspace(
     workspaceId: number,
     userIds: number[]

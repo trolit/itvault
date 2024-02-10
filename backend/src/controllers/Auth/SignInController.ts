@@ -13,7 +13,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { APP, JWT } from "@config";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 import { Environment } from "@enums/Environment";
 
 import { BaseController } from "@controllers/BaseController";
@@ -78,7 +78,8 @@ export class SignInController extends BaseController {
       await this._dataStoreService.createHash<DataStore.User>(
         [`${user.id}-${sessionId}`, DataStore.KeyType.AuthenticatedUser],
         {
-          id: user.id.toString(),
+          sessionId,
+          userId: user.id.toString(),
           userAgent: agent || "unknown",
           issuedAt: new Date().toISOString(),
         },
@@ -88,7 +89,7 @@ export class SignInController extends BaseController {
       log.error({
         error,
         message: `Failed to save ${sessionId} of user #${user.id}. Sign in request failed!!!`,
-        service: Service.Redis,
+        dependency: Dependency.Redis,
       });
 
       return response.status(HTTP.INTERNAL_SERVER_ERROR).send();

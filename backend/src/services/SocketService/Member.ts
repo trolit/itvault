@@ -5,7 +5,7 @@ import { ISocketServiceMember } from "types/services/ISocketServiceMember";
 import { IncomingAllowRequestMessage } from "types/IncomingAllowRequestMessage";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 import { SocketSendMessage } from "@shared/types/transport/SocketSendMessage";
 import { SocketReceiveMessage } from "@shared/types/transport/SocketReceiveMessage";
 
@@ -95,7 +95,7 @@ export class SocketServiceMember implements ISocketServiceMember {
   private _printMessage(message: string) {
     log.debug({
       message: `Socket ${this.sid} ${message}`,
-      service: Service.EngineIO,
+      dependency: Dependency.EngineIO,
     });
   }
 }

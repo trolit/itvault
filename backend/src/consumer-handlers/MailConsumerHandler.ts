@@ -4,7 +4,7 @@ import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandl
 import { MailConsumerHandlerData } from "types/consumer-handlers/MailConsumerHandlerData";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 @injectable()
 export class MailConsumerHandler
@@ -37,7 +37,7 @@ export class MailConsumerHandler
       log.error({
         error,
         message: `Failed to send '${subject}' message to '${sendTo}'`,
-        service: Service.nodemailer,
+        dependency: Dependency.nodemailer,
       });
 
       return false;

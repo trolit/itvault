@@ -9,7 +9,7 @@ import { MQRABBIT } from "@config";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
@@ -44,14 +44,14 @@ const consumers = [
 
     log.info({
       message: `creating connection...`,
-      service: Service.TypeORM,
+      dependency: Dependency.TypeORM,
     });
 
     await dataSource.initialize();
 
     log.info({
       message: `creating connection...`,
-      service: Service.nodemailer,
+      dependency: Dependency.nodemailer,
     });
 
     mailTransporter = setupMailTransporter();
@@ -66,7 +66,7 @@ const consumers = [
 
     log.info({
       message: `establishing connection...`,
-      service: Service.RabbitMQ,
+      dependency: Dependency.RabbitMQ,
     });
 
     connection = await connect({
@@ -104,7 +104,7 @@ async function onExit() {
 
   log.info({
     message: `Closing consumer channels...`,
-    service: Service.RabbitMQ,
+    dependency: Dependency.RabbitMQ,
   });
 
   try {
@@ -113,13 +113,13 @@ async function onExit() {
     log.error({
       error,
       message: `Failed to close consumer channels!`,
-      service: Service.RabbitMQ,
+      dependency: Dependency.RabbitMQ,
     });
   }
 
   log.info({
     message: `Closing connection...`,
-    service: Service.nodemailer,
+    dependency: Dependency.nodemailer,
   });
 
   try {
@@ -128,13 +128,13 @@ async function onExit() {
     log.error({
       error,
       message: `Failed to close connection!`,
-      service: Service.nodemailer,
+      dependency: Dependency.nodemailer,
     });
   }
 
   log.info({
     message: `Closing connection...`,
-    service: Service.TypeORM,
+    dependency: Dependency.TypeORM,
   });
 
   try {
@@ -143,13 +143,13 @@ async function onExit() {
     log.error({
       error,
       message: `Failed to destroy connection!`,
-      service: Service.TypeORM,
+      dependency: Dependency.TypeORM,
     });
   }
 
   log.info({
     message: `Closing connection...`,
-    service: Service.RabbitMQ,
+    dependency: Dependency.RabbitMQ,
   });
 
   try {
@@ -158,7 +158,7 @@ async function onExit() {
     log.error({
       error,
       message: `Failed to close connection!`,
-      service: Service.RabbitMQ,
+      dependency: Dependency.RabbitMQ,
     });
   }
 

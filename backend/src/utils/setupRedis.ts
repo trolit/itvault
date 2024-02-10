@@ -5,7 +5,7 @@ import { IRoleRepository } from "types/repositories/IRoleRepository";
 import { REDIS } from "@config";
 
 import { Di } from "@enums/Di";
-import { Service } from "@enums/Service";
+import { Dependency } from "@enums/Dependency";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
@@ -84,7 +84,7 @@ export const setupRedis = () => {
           log.error({
             error,
             message: "Failed to initialize role keys!",
-            service: Service.Redis,
+            dependency: Dependency.Redis,
           });
         }
       });
