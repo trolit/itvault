@@ -8,6 +8,7 @@ import { JWT } from "@config";
 import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
 
 import { Di } from "@enums/Di";
+import { Service } from "@enums/Service";
 import { Permission } from "@shared/types/enums/Permission";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -57,15 +58,14 @@ export const requireAuthentication = (<P, B, Q>() => {
 
     if (!user || typeof user.role !== "number") {
       log.debug({
-        message: "Failed to authenticate (user not found or invalid query)!",
+        message:
+          "Failed to verify auth status (user not found or invalid query)!",
       });
 
       return response.status(HTTP.UNAUTHORIZED).send();
     }
 
-    const roleId = <number>user.role;
-
-    const role = await authService.getRoleFromDataStore(roleId);
+    const role = await authService.getRoleFromDataStore(<number>user.role);
 
     if (!role) {
       return response.status(HTTP.UNAUTHORIZED).send();
@@ -90,6 +90,12 @@ function readToken<P, B, Q>(
   const result = authService.verifyToken(token);
 
   if (result.error) {
+    log.error({
+      error: result.error,
+      message: `Failed to verify token`,
+      service: Service.JWT,
+    });
+
     return null;
   }
 

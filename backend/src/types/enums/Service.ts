@@ -1,5 +1,6 @@
 export enum Service {
   yup = "yup",
+  JWT = "JWT",
   Redis = "Redis",
   TypeORM = "TypeORM",
   tsyringe = "tsyringe",
