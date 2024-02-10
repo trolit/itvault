@@ -38,6 +38,8 @@ export class DeleteSessionController extends BaseController {
       params: { id: sessionId },
     } = request;
 
+    // @NOTE consider option that some permission allows to remove any session (?)
+
     await this._authService.deleteSession(userId, sessionId);
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

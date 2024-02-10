@@ -186,8 +186,11 @@ export class AuthService implements IAuthService {
           continue;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { userId, ...data } = <DataStore.User>hash;
+
         result.push({
-          ...(<DataStore.User>hash),
+          ...data,
           isRequesterSession: keys[index].includes(requesterSessionId),
         });
       }

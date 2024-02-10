@@ -1,5 +1,6 @@
 import { Response } from "express";
 import { DataStore } from "types/DataStore";
+import { IUserSessionDTO } from "@shared/types/DTOs/Auth";
 import { JwtPayload, SignOptions, VerifyTokenResult } from "jsonwebtoken";
 
 export interface IAuthService {
@@ -20,5 +21,5 @@ export interface IAuthService {
   getSessions(
     requesterSessionId: string,
     keys: string[]
-  ): Promise<DataStore.User[] | null>;
+  ): Promise<IUserSessionDTO[] | null>;
 }
