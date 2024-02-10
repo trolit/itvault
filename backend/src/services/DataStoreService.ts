@@ -71,6 +71,10 @@ export class DataStoreService implements IDataStoreService {
     return this._redis.set(dataStoreKey, valueAsString);
   }
 
+  isKeyDefined(key: DataStore.Key): Promise<number> {
+    return this._redis.exists(composeDataStoreKey(key));
+  }
+
   async get<T>(key: DataStore.Key): Promise<T | null> {
     const dataKey = composeDataStoreKey(key);
 
