@@ -95,6 +95,25 @@ export class AuthService implements IAuthService {
     }
   }
 
+  async deleteSession(userId: number, sessionId: string): Promise<void> {
+    const key: DataStore.Key = [
+      `${userId}-${sessionId}`,
+      DataStore.KeyType.AuthenticatedUser,
+    ];
+
+    try {
+      await this._dataStoreService.delete(key);
+    } catch (error) {
+      log.error({
+        error,
+        message: `Failed to delete session identified by '${composeDataStoreKey(
+          key
+        )}'`,
+        service: Service.Redis,
+      });
+    }
+  }
+
   async isSessionActive(userId: number, sessionId: string): Promise<boolean> {
     const key: DataStore.Key = [
       `${userId}-${sessionId}`,

@@ -11,6 +11,8 @@ export interface IAuthService {
 
   getRoleFromDataStore(roleId: number): Promise<DataStore.Role | null>;
 
+  deleteSession(userId: number, sessionId: string): Promise<void>;
+
   isSessionActive(userId: number, sessionId: string): Promise<boolean>;
 
   getSessionKeys(userId: number): Promise<string[] | null>;
