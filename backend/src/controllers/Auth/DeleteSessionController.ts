@@ -49,6 +49,7 @@ export class DeleteSessionController extends BaseController {
 
     // @TODO prevent deleting session from which request was fired because this is logout..
 
+    // @TODO lets move it to AuthService?
     try {
       const keyCount = await this._dataStoreService.isKeyDefined(key);
 
