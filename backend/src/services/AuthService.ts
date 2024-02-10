@@ -10,6 +10,7 @@ import { JWT } from "@config";
 
 import { Di } from "@enums/Di";
 import { Dependency } from "@enums/Dependency";
+import { IUserSessionDTO } from "@shared/types/DTOs/Auth";
 
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
@@ -156,7 +157,10 @@ export class AuthService implements IAuthService {
     }
   }
 
-  async getSessions(keys: string[]): Promise<DataStore.User[] | null> {
+  async getSessions(
+    requesterSessionId: string,
+    keys: string[]
+  ): Promise<IUserSessionDTO[] | null> {
     try {
       const hashes = await this._dataStoreService.getAllHashes(keys);
 
@@ -165,7 +169,7 @@ export class AuthService implements IAuthService {
       }
 
       const hashesLength = hashes.length;
-      const result: DataStore.User[] = [];
+      const result: IUserSessionDTO[] = [];
 
       for (let index = 0; index < hashesLength; index++) {
         const [error, hash] = hashes[index];
@@ -180,7 +184,10 @@ export class AuthService implements IAuthService {
           continue;
         }
 
-        result.push(<DataStore.User>hash);
+        result.push({
+          ...(<DataStore.User>hash),
+          isRequesterSession: keys[index].includes(requesterSessionId),
+        });
       }
 
       return result;
