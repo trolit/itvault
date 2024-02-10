@@ -70,6 +70,10 @@ export class SignInController extends BaseController {
     }
 
     if (sessions.length >= MAX_SESSIONS_PER_USER) {
+      log.debug({
+        message: `Max sessions reached (${MAX_SESSIONS_PER_USER}). Sign in attempt rejected.`,
+      });
+
       return response.status(HTTP.UNAUTHORIZED).send();
     }
 
