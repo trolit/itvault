@@ -1,4 +1,4 @@
-import { IUserSessionDTO } from "@shared/types/dtos/Auth";
+import { IUserSessionDTO } from "@shared/types/DTOs/Auth";
 import { PermissionToRole } from "@db/entities/PermissionToRole";
 import { Permission as PermissionEntity } from "@db/entities/Permission";
 
