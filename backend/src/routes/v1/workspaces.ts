@@ -18,6 +18,7 @@ import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
 import { useGetTreeSuperSchema } from "@schemas/Workspace/useGetTreeSuperSchema";
 import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema";
 import { useGetEventsSuperSchema } from "@schemas/Workspace/useGetEventsSuperSchema";
+import { useGetContributorsSuperSchema } from "@schemas/Workspace/useGetContributorsSuperSchema";
 
 import { PinController } from "@controllers/PinController";
 import { BaseController } from "@controllers/BaseController";
@@ -28,6 +29,7 @@ import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
 import { GetEventsController } from "@controllers/Workspace/GetEventsController";
 import { GetBySlugController } from "@controllers/Workspace/GetBySlugController";
+import { GetContributorsController } from "@controllers/Workspace/GetContributorsController";
 
 const workspacesRouter = Router();
 
@@ -53,17 +55,6 @@ workspacesRouter.get(
   requireWorkspaceAccess<NumberId>(({ params }) => params.id),
   validateRequestWith({ [v1]: useGetTreeSuperSchema }),
   processRequestWith(GetTreeController)
-);
-
-workspacesRouter.get(
-  "/:id/events",
-  requirePermissions([Permission.ViewWorkspaceInsights]),
-  requireWorkspaceAccess<NumberId & GetEventsControllerTypes.v1.QueryInput>(
-    ({ params }) => params.id
-  ),
-  validateRequestWith({ [v1]: useGetEventsSuperSchema }),
-  transformPagination(),
-  processRequestWith(GetEventsController)
 );
 
 workspacesRouter.post(
@@ -96,6 +87,29 @@ workspacesRouter.put(
   requirePermissions([Permission.UpdateWorkspace]),
   validateRequestWith({ [v1]: useUpdateSuperSchema }),
   processRequestWith(UpdateController)
+);
+
+// @NOTE -- insights -- (consider nesting router but this also implies changes on setupExpress -> getRoutes)
+
+workspacesRouter.get(
+  "/:id/events",
+  requirePermissions([Permission.ViewWorkspaceInsights]),
+  requireWorkspaceAccess<NumberId & GetEventsControllerTypes.v1.QueryInput>(
+    ({ params }) => params.id
+  ),
+  validateRequestWith({ [v1]: useGetEventsSuperSchema }),
+  transformPagination(),
+  processRequestWith(GetEventsController)
+);
+
+workspacesRouter.get(
+  "/:id/contributors",
+  requirePermissions([Permission.ViewWorkspaceInsights]),
+  requireWorkspaceAccess<NumberId>(({ params }) => params.id),
+  validateRequestWith({
+    [v1]: useGetContributorsSuperSchema,
+  }),
+  processRequestWith(GetContributorsController)
 );
 
 export = workspacesRouter;
