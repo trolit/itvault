@@ -3,7 +3,7 @@ import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
 import { BaseMapper } from "./BaseMapper";
 
 import { Action } from "@shared/types/enums/Action";
-import { IWorkspaceEventDTO } from "@shared/types/DTOs/WorkspaceEvent";
+import { IWorkspaceEventDTO } from "@shared/types/DTOs/Workspace";
 
 export class WorkspaceEventMapper
   extends BaseMapper<WorkspaceEvent>
