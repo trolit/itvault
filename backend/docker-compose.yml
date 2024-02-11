@@ -43,8 +43,8 @@ services:
     restart: unless-stopped
     image: maildev/maildev
     ports:
-      - ${MAIL_CATCHER_PORT}:${MAIL_CATCHER_CONTAINER_PORT}
-      - 1025:1025
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:${MAIL_CATCHER_PORT}:${MAIL_CATCHER_CONTAINER_PORT}"
 
 volumes:
   db:

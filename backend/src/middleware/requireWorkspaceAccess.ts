@@ -8,11 +8,11 @@ import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-export const requireWorkspaceAccess = <T>(
-  id: (request: CustomRequest<T, unknown, T>) => number
+export const requireWorkspaceAccess = <P>(
+  id: (request: CustomRequest<P, unknown, unknown>) => number
 ) => {
   return async (
-    request: CustomRequest<T, unknown, T>,
+    request: CustomRequest<P, unknown, unknown>,
     response: Response,
     next: NextFunction
   ) => {

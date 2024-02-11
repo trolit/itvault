@@ -50,6 +50,8 @@ async function getRoutes() {
     const registeredRouters: string[] = [];
 
     for (const router of routers) {
+      // @NOTE consider adding dirs skip
+
       const dependency = await import(
         path.resolve(APP.BASE_DIR, "routes", version, router)
       );

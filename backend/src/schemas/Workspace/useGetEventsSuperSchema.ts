@@ -1,10 +1,7 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetEventsControllerTypes } from "types/controllers/Workspace/GetEventsController";
 
-import { Di } from "@enums/Di";
-
-import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
@@ -16,7 +13,7 @@ const querySchema: SuperSchema.Fragment<GetEventsControllerTypes.v1.QueryInput> 
 
 const paramsSchema: SuperSchema.Fragment<GetEventsControllerTypes.v1.Params> =
   object({
-    id: useIdNumberSchema(Di.WorkspaceRepository),
+    id: number().required(),
   });
 
 export const useGetEventsSuperSchema: SuperSchema.Runner<
