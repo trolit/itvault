@@ -14,6 +14,7 @@ const querySchema: SuperSchema.Fragment<GetEventsControllerTypes.v1.QueryInput> 
     perPage: perPageSchema,
   });
 
+// @NOTE consider not checking if entity exists in such requests
 const paramsSchema: SuperSchema.Fragment<GetEventsControllerTypes.v1.Params> =
   object({
     id: useIdNumberSchema(Di.WorkspaceRepository),
