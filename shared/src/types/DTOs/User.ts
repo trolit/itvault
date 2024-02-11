@@ -18,6 +18,14 @@ export interface IUserDTO {
   invitedBy: string | null;
 }
 
+export interface IContributorDTO {
+  id: number;
+
+  email: string;
+
+  fullName: string;
+}
+
 export interface ILoggedUserDTO {
   id: number;
 
