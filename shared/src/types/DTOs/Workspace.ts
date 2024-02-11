@@ -35,3 +35,9 @@ export interface IWorkspaceEventDTO {
 
   createdBy: { id: number; fullName: string };
 }
+
+export interface IWorkspaceActivityDataPointDTO {
+  x: string;
+
+  y: number;
+}
