@@ -48,9 +48,6 @@ export class GetContributorsController extends BaseController {
           },
         },
       },
-      relations: {
-        role: true,
-      },
     });
 
     const contributors = this.mapper.map<User>(data).to(ContributorMapper);
