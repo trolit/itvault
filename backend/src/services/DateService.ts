@@ -1,7 +1,7 @@
 import utc from "dayjs/plugin/utc";
 import { injectable } from "tsyringe";
-import dayjs, { Dayjs, ManipulateType } from "dayjs";
 import { IDateService } from "types/services/IDateService";
+import dayjs, { Dayjs, ManipulateType, UnitType } from "dayjs";
 
 import { DatePrecision } from "@shared/types/enums/DatePrecision";
 
@@ -32,6 +32,12 @@ export class DateService implements IDateService {
     const expiresAt = now.add(parseInt(value), <ManipulateType>unit);
 
     return expiresAt.format();
+  }
+
+  getDifference(arg: { from: Date; to: Date; unit: UnitType }): number {
+    const { from, to, unit } = arg;
+
+    return dayjs(to).diff(from, unit);
   }
 
   getUniqueDatesToPrecision(dates: string[], precision: DatePrecision) {
