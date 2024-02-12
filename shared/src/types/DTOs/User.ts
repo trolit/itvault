@@ -62,6 +62,12 @@ export interface IUpdateUserDTO {
   data: { roleId?: number; isActive?: boolean };
 }
 
+export interface IUpdateProfileDTO {
+  firstName: string;
+
+  lastName: string;
+}
+
 export interface ISignUpDTO {
   id: number;
 

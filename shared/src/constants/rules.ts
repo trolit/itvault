@@ -1,10 +1,12 @@
 export const ACCOUNT_RULES = {
   FIRST_NAME: {
     MIN_LENGTH: 2,
+    MAX_LENGTH: 60,
   },
 
   LAST_NAME: {
     MIN_LENGTH: 2,
+    MAX_LENGTH: 60,
   },
 
   EMAIL: {

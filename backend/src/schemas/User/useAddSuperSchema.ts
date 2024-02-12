@@ -3,6 +3,8 @@ import { SuperSchema } from "types/SuperSchema";
 import { IUserRepository } from "types/repositories/IUserRepository";
 import { AddControllerTypes } from "types/controllers/User/AddController";
 
+import { firstNameSchema, lastNameSchema } from "./nameSchemas";
+
 import { Di } from "@enums/Di";
 import { ACCOUNT_RULES } from "@shared/constants/rules";
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
@@ -14,7 +16,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const { EMAIL, FIRST_NAME, LAST_NAME } = ACCOUNT_RULES;
+const { EMAIL } = ACCOUNT_RULES;
 
 const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
   email: string()
@@ -41,9 +43,9 @@ const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
       return true;
     }),
 
-  firstName: string().required().min(FIRST_NAME.MIN_LENGTH),
+  firstName: firstNameSchema,
 
-  lastName: string().required().min(LAST_NAME.MIN_LENGTH),
+  lastName: lastNameSchema,
 
   roleId: useIdNumberSchema(Di.RoleRepository).test((value, ctx) => {
     if (value === HEAD_ADMIN_ROLE.id) {

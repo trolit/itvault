@@ -5,8 +5,8 @@ import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { processRequestWith } from "@helpers/processRequestWith";
-import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
+import { validateRequestWith } from "@middleware/validateRequestWith";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import {
   requirePermissions,
@@ -14,18 +14,20 @@ import {
 } from "@middleware/requirePermissions";
 
 import { useAddSuperSchema } from "@schemas/User/useAddSuperSchema";
-import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
+import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
 import { useGetNotesSuperSchema } from "@schemas/User/useGetNotesSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
+import { useUpdateProfileSuperSchema } from "@schemas/User/useUpdateProfileController";
 import { usePatchUserToWorkspaceSuperSchema } from "@schemas/User/usePatchUserToWorkspaceSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/User/AddController";
-import { GetAllController } from "@controllers/User/GetAllController";
 import { SignUpController } from "@controllers/User/SignUpController";
+import { GetAllController } from "@controllers/User/GetAllController";
 import { GetNotesController } from "@controllers/User/GetNotesController";
 import { UpdateManyController } from "@controllers/User/UpdateManyController";
+import { UpdateProfileController } from "@controllers/User/UpdateProfileController";
 import { PatchUserToWorkspaceController } from "@controllers/User/PatchUserToWorkspaceController";
 
 const usersRouter = Router();
@@ -104,6 +106,13 @@ usersRouter.patch(
   }),
   validateRequestWith({ [v1]: useUpdateManySuperSchema }),
   processRequestWith(UpdateManyController)
+);
+
+usersRouter.post(
+  "/settings/update-profile",
+  requireAuthentication,
+  validateRequestWith({ [v1]: useUpdateProfileSuperSchema }),
+  processRequestWith(UpdateProfileController)
 );
 
 export = usersRouter;
