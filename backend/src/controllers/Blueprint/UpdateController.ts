@@ -53,17 +53,13 @@ export class UpdateController extends BaseController {
 
     // @TODO should do like with Note - "update any blueprint" or update if owner
 
-    const result = await this._blueprintRepository.primitiveSave({
+    await this._blueprintRepository.primitiveSave({
       ...blueprint,
       ...body,
       updatedBy: {
         id: userId,
       },
     });
-
-    if (!result) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
-    }
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
