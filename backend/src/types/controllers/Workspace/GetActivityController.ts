@@ -6,9 +6,9 @@ export namespace GetActivityControllerTypes {
     export type Params = { id: number };
 
     export type Query = {
-      from: string;
+      from: Date;
 
-      to: string;
+      to: Date;
 
       precision: DatePrecision;
 
