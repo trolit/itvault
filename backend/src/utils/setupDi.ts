@@ -154,7 +154,7 @@ function registerDependenciesByInterfaces(config: {
         container.register(interfaceName, Dependency);
       } else {
         log.error({
-          message: "Failed to register ${dependencyFilename}!",
+          message: `Failed to register ${dependencyFilename}!`,
           dependency: Dependency.tsyringe,
         });
       }
