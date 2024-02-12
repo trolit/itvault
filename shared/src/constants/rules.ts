@@ -44,6 +44,7 @@ export const CHAT_MESSAGE_RULES = {
   },
 };
 
+// @NOTE consider changing properties names to those defined in DTOs
 export const NOTE_RULES = {
   VALUE: {
     MAX_LENGTH: 1000,
@@ -68,5 +69,12 @@ export const WORKSPACE_RULES = {
   TAGS: {
     MIN_LENGTH: 1,
     REGEX: /^[a-zA-Z0-9]*$/,
+  },
+};
+
+export const BUNDLE_RULES = {
+  TEXT: {
+    MIN_LENGTH: 5,
+    MAX_LENGTH: 200,
   },
 };
