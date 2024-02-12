@@ -19,6 +19,10 @@ export const CUSTOM_MESSAGES = {
     WRONG_VERSION: "Wrong resource version (available: ${values})",
   },
 
+  DATE: {
+    MAX_DIFFERENCE: "Max allowed difference is %s (provided %s)",
+  },
+
   BLUEPRINTS: {
     SOME_NOT_AVAILABLE: "One or more blueprints are not available.",
   },
