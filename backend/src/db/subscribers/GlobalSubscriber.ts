@@ -65,17 +65,17 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
     metadata: { name: entityName },
   } = event;
 
-  const workspaceEvent = WORKSPACE_EVENT_HANDLERS.find(
+  const eventHandler = WORKSPACE_EVENT_HANDLERS.find(
     eventHandler =>
       eventHandler.entityName === entityName &&
       eventHandler.actions.includes(action)
   );
 
-  if (!workspaceEvent) {
+  if (!eventHandler) {
     return;
   }
 
-  const record = await workspaceEvent.getRecord({ entity, action, manager });
+  const record = await eventHandler.getRecord({ entity, action, manager });
 
   if (record) {
     await manager.save(record);
