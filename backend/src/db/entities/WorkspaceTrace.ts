@@ -11,8 +11,8 @@ import { Workspace } from "./Workspace";
 
 import { Action } from "@shared/types/enums/Action";
 
-@Entity("workspace_events")
-export class WorkspaceEvent {
+@Entity("workspaces_traces")
+export class WorkspaceTrace {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,10 +25,10 @@ export class WorkspaceEvent {
   @Column({ type: "enum", enum: Action })
   action: Action;
 
-  @ManyToOne(() => Workspace, workspace => workspace.events)
+  @ManyToOne(() => Workspace, workspace => workspace.traces)
   workspace: Workspace;
 
-  @ManyToOne(() => User, user => user.workspaceEvents, { cascade: false })
+  @ManyToOne(() => User, user => user.workspaceTraces, { cascade: false })
   user: User;
 
   @CreateDateColumn()

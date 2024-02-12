@@ -6,7 +6,7 @@ import { Bucket } from "@db/entities/Bucket";
 import { Variant } from "@db/entities/Variant";
 import { Workspace } from "@db/entities/Workspace";
 import { Blueprint } from "@db/entities/Blueprint";
-import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
+import { WorkspaceEvent } from "@db/entities/WorkspaceTrace";
 import {
   InsertEvent,
   EventSubscriber,

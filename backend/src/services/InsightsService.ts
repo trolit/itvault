@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { IDateService } from "types/services/IDateService";
-import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
+import { WorkspaceEvent } from "@db/entities/WorkspaceTrace";
 import { IInsightsService } from "types/services/IInsightsService";
 
 import { Di } from "@enums/Di";

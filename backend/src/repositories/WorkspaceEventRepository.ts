@@ -1,5 +1,5 @@
 import { injectable } from "tsyringe";
-import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
+import { WorkspaceEvent } from "@db/entities/WorkspaceTrace";
 import { IWorkspaceEventRepository } from "types/repositories/IWorkspaceEventRepository";
 
 import { BaseRepository } from "./BaseRepository";

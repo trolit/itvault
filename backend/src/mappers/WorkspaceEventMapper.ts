@@ -1,4 +1,4 @@
-import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
+import { WorkspaceEvent } from "@db/entities/WorkspaceTrace";
 
 import { BaseMapper } from "./BaseMapper";
 
