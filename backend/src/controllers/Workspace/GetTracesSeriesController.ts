@@ -4,7 +4,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { IInsightsService } from "types/services/IInsightsService";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { IWorkspaceTraceRepository } from "types/repositories/IWorkspaceTraceRepository";
-import { GetActivityControllerTypes } from "types/controllers/Workspace/GetActivityController";
+import { GetTracesSeriesControllerTypes } from "types/controllers/Workspace/GetTracesSeriesController";
 
 import { Di } from "@enums/Di";
 
@@ -13,7 +13,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @autoInjectable()
-export class GetActivityController extends BaseController {
+export class GetTracesSeriesController extends BaseController {
   constructor(
     @inject(Di.WorkspaceTraceRepository)
     private _workspaceTraceRepository: IWorkspaceTraceRepository,
@@ -33,8 +33,8 @@ export class GetActivityController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(
-    request: GetActivityControllerTypes.v1.Request,
-    response: GetActivityControllerTypes.v1.Response
+    request: GetTracesSeriesControllerTypes.v1.Request,
+    response: GetTracesSeriesControllerTypes.v1.Response
   ) {
     const {
       params: { id },

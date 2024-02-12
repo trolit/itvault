@@ -16,8 +16,8 @@ import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
 import { useGetTreeSuperSchema } from "@schemas/Workspace/useGetTreeSuperSchema";
 import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema";
-import { useGetTracesSuperSchema } from "@schemas/Workspace/useGetEventsSuperSchema";
-import { useGetActivitySuperSchema } from "@schemas/Workspace/useGetActivitySuperSchema";
+import { useGetTracesSuperSchema } from "@schemas/Workspace/useGetTracesSuperSchema";
+import { useGetTracesSeriesSuperSchema } from "@schemas/Workspace/useGetTracesSeriesSuperSchema";
 import { useGetContributorsSuperSchema } from "@schemas/Workspace/useGetContributorsSuperSchema";
 
 import { PinController } from "@controllers/PinController";
@@ -29,7 +29,7 @@ import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
 import { GetTracesController } from "@controllers/Workspace/GetTracesController";
 import { GetBySlugController } from "@controllers/Workspace/GetBySlugController";
-import { GetActivityController } from "@controllers/Workspace/GetActivityController";
+import { GetTracesSeriesController } from "@controllers/Workspace/GetTracesSeriesController";
 import { GetContributorsController } from "@controllers/Workspace/GetContributorsController";
 
 const workspacesRouter = Router();
@@ -102,6 +102,16 @@ workspacesRouter.get(
 );
 
 workspacesRouter.get(
+  "/:id/traces-series",
+  requirePermissions([Permission.ViewWorkspaceInsights]),
+  requireWorkspaceAccess<NumberId>(({ params }) => params.id),
+  validateRequestWith({
+    [v1]: useGetTracesSeriesSuperSchema,
+  }),
+  processRequestWith(GetTracesSeriesController)
+);
+
+workspacesRouter.get(
   "/:id/contributors",
   requirePermissions([Permission.ViewWorkspaceInsights]),
   requireWorkspaceAccess<NumberId>(({ params }) => params.id),
@@ -109,16 +119,6 @@ workspacesRouter.get(
     [v1]: useGetContributorsSuperSchema,
   }),
   processRequestWith(GetContributorsController)
-);
-
-workspacesRouter.get(
-  "/:id/activity",
-  requirePermissions([Permission.ViewWorkspaceInsights]),
-  requireWorkspaceAccess<NumberId>(({ params }) => params.id),
-  validateRequestWith({
-    [v1]: useGetActivitySuperSchema,
-  }),
-  processRequestWith(GetActivityController)
 );
 
 export = workspacesRouter;

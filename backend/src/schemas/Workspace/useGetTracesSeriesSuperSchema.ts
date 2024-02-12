@@ -1,7 +1,7 @@
 import { SuperSchema } from "types/SuperSchema";
 import { date, number, object, string } from "yup";
 import { IDateService } from "types/services/IDateService";
-import { GetActivityControllerTypes } from "types/controllers/Workspace/GetActivityController";
+import { GetTracesSeriesControllerTypes } from "types/controllers/Workspace/GetTracesSeriesController";
 
 import { Di } from "@enums/Di";
 import { DatePrecision } from "@shared/types/enums/DatePrecision";
@@ -16,7 +16,7 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const querySchema: SuperSchema.Fragment<GetActivityControllerTypes.v1.Query> =
+const querySchema: SuperSchema.Fragment<GetTracesSeriesControllerTypes.v1.Query> =
   object({
     from: date().required(),
     to: date()
@@ -52,15 +52,15 @@ const querySchema: SuperSchema.Fragment<GetActivityControllerTypes.v1.Query> =
       }),
   });
 
-const paramsSchema: SuperSchema.Fragment<GetActivityControllerTypes.v1.Params> =
+const paramsSchema: SuperSchema.Fragment<GetTracesSeriesControllerTypes.v1.Params> =
   object({
     id: number().required(),
   });
 
-export const useGetActivitySuperSchema: SuperSchema.Runner<
-  GetActivityControllerTypes.v1.Params,
+export const useGetTracesSeriesSuperSchema: SuperSchema.Runner<
+  GetTracesSeriesControllerTypes.v1.Params,
   void,
-  GetActivityControllerTypes.v1.Query
+  GetTracesSeriesControllerTypes.v1.Query
 > = defineSuperSchemaRunner(() => {
   return {
     params: paramsSchema,
