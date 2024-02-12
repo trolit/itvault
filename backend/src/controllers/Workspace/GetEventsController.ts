@@ -3,7 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
 import { WorkspaceTraceMapper } from "@mappers/WorkspaceTraceMapper";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
-import { IWorkspaceEventRepository } from "types/repositories/IWorkspaceEventRepository";
+import { IWorkspaceTraceRepository } from "types/repositories/IWorkspaceTraceRepository";
 import { GetEventsControllerTypes } from "types/controllers/Workspace/GetEventsController";
 
 import { Di } from "@enums/Di";
@@ -15,8 +15,8 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 @autoInjectable()
 export class GetEventsController extends BaseController {
   constructor(
-    @inject(Di.WorkspaceEventRepository)
-    private _workspaceEventRepository: IWorkspaceEventRepository
+    @inject(Di.WorkspaceTraceRepository)
+    private _workspaceTraceRepository: IWorkspaceTraceRepository
   ) {
     super();
   }
@@ -39,7 +39,7 @@ export class GetEventsController extends BaseController {
       query: { skip, take },
     } = request;
 
-    const [data, total] = await this._workspaceEventRepository.getAllAndCount({
+    const [data, total] = await this._workspaceTraceRepository.getAllAndCount({
       skip,
       take,
       order: {

@@ -4,9 +4,9 @@ import { Note } from "@db/entities/Note";
 import { Bundle } from "@db/entities/Bundle";
 import { Bucket } from "@db/entities/Bucket";
 import { Variant } from "@db/entities/Variant";
-import { Workspace } from "@db/entities/Workspace";
 import { Blueprint } from "@db/entities/Blueprint";
-import { WorkspaceEvent } from "@db/entities/WorkspaceTrace";
+import { Workspace } from "@db/entities/Workspace";
+import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
 import {
   InsertEvent,
   EventSubscriber,
@@ -101,7 +101,7 @@ async function onVariantEvent(arg: {
     return;
   }
 
-  const record = manager.create(WorkspaceEvent, {
+  const record = manager.create(WorkspaceTrace, {
     entity: Variant.name,
     action,
     workspace,
@@ -121,7 +121,7 @@ async function onBundleEvent(arg: {
 }) {
   const { action, manager, entity } = arg;
 
-  const record = manager.create(WorkspaceEvent, {
+  const record = manager.create(WorkspaceTrace, {
     entity: Bundle.name,
     action,
     workspace: {
@@ -155,7 +155,7 @@ async function onBucketEvent(arg: {
     return;
   }
 
-  const record = manager.create(WorkspaceEvent, {
+  const record = manager.create(WorkspaceTrace, {
     entity: Bucket.name,
     action,
     workspace: {
@@ -177,7 +177,7 @@ async function onBlueprintEvent(arg: {
 }) {
   const { action, manager, entity } = arg;
 
-  const record = manager.create(WorkspaceEvent, {
+  const record = manager.create(WorkspaceTrace, {
     entity: Blueprint.name,
     action,
     workspace: {
@@ -214,7 +214,7 @@ async function onNoteEvent(arg: {
     return;
   }
 
-  const record = manager.create(WorkspaceEvent, {
+  const record = manager.create(WorkspaceTrace, {
     entity: Note.name,
     action,
     workspace: note.file.workspace,

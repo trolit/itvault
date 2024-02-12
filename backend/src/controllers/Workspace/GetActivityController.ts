@@ -3,7 +3,7 @@ import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IInsightsService } from "types/services/IInsightsService";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
-import { IWorkspaceEventRepository } from "types/repositories/IWorkspaceEventRepository";
+import { IWorkspaceTraceRepository } from "types/repositories/IWorkspaceTraceRepository";
 import { GetActivityControllerTypes } from "types/controllers/Workspace/GetActivityController";
 
 import { Di } from "@enums/Di";
@@ -15,8 +15,8 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 @autoInjectable()
 export class GetActivityController extends BaseController {
   constructor(
-    @inject(Di.WorkspaceEventRepository)
-    private _workspaceEventRepository: IWorkspaceEventRepository,
+    @inject(Di.WorkspaceTraceRepository)
+    private _workspaceTraceRepository: IWorkspaceTraceRepository,
     @inject(Di.InsightsService)
     private _insightsService: IInsightsService
   ) {
@@ -41,7 +41,7 @@ export class GetActivityController extends BaseController {
       query: { from, to, precision, filters },
     } = request;
 
-    const data = await this._workspaceEventRepository.getAll({
+    const data = await this._workspaceTraceRepository.getAll({
       where: {
         workspace: {
           id,
