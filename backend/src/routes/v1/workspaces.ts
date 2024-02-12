@@ -18,6 +18,7 @@ import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
 import { useGetTreeSuperSchema } from "@schemas/Workspace/useGetTreeSuperSchema";
 import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema";
 import { useGetEventsSuperSchema } from "@schemas/Workspace/useGetEventsSuperSchema";
+import { useGetActivitySuperSchema } from "@schemas/Workspace/useGetActivitySuperSchema";
 import { useGetContributorsSuperSchema } from "@schemas/Workspace/useGetContributorsSuperSchema";
 
 import { PinController } from "@controllers/PinController";
@@ -27,8 +28,9 @@ import { AddController } from "@controllers/Workspace/AddController";
 import { UpdateController } from "@controllers/Workspace/UpdateController";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
-import { GetEventsController } from "@controllers/Workspace/GetEventsController";
 import { GetBySlugController } from "@controllers/Workspace/GetBySlugController";
+import { GetEventsController } from "@controllers/Workspace/GetEventsController";
+import { GetActivityController } from "@controllers/Workspace/GetActivityController";
 import { GetContributorsController } from "@controllers/Workspace/GetContributorsController";
 
 const workspacesRouter = Router();
@@ -110,6 +112,16 @@ workspacesRouter.get(
     [v1]: useGetContributorsSuperSchema,
   }),
   processRequestWith(GetContributorsController)
+);
+
+workspacesRouter.get(
+  "/:id/activity",
+  requirePermissions([Permission.ViewWorkspaceInsights]),
+  requireWorkspaceAccess<NumberId>(({ params }) => params.id),
+  validateRequestWith({
+    [v1]: useGetActivitySuperSchema,
+  }),
+  processRequestWith(GetActivityController)
 );
 
 export = workspacesRouter;
