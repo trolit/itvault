@@ -1,7 +1,7 @@
 import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { WorkspaceEvent } from "@db/entities/WorkspaceTrace";
-import { WorkspaceEventMapper } from "@mappers/WorkspaceEventMapper";
+import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
+import { WorkspaceTraceMapper } from "@mappers/WorkspaceTraceMapper";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { IWorkspaceEventRepository } from "types/repositories/IWorkspaceEventRepository";
 import { GetEventsControllerTypes } from "types/controllers/Workspace/GetEventsController";
@@ -56,8 +56,8 @@ export class GetEventsController extends BaseController {
     });
 
     const result = this.mapper
-      .map<WorkspaceEvent>(data)
-      .to(WorkspaceEventMapper);
+      .map<WorkspaceTrace>(data)
+      .to(WorkspaceTraceMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result,

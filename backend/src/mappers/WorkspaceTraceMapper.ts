@@ -1,13 +1,13 @@
-import { WorkspaceEvent } from "@db/entities/WorkspaceTrace";
+import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
 
 import { BaseMapper } from "./BaseMapper";
 
 import { Action } from "@shared/types/enums/Action";
-import { IWorkspaceEventDTO } from "@shared/types/DTOs/Workspace";
+import { IWorkspaceTraceDTO } from "@shared/types/DTOs/Workspace";
 
-export class WorkspaceEventMapper
-  extends BaseMapper<WorkspaceEvent>
-  implements IWorkspaceEventDTO
+export class WorkspaceTraceMapper
+  extends BaseMapper<WorkspaceTrace>
+  implements IWorkspaceTraceDTO
 {
   id: number;
   entity: string;
@@ -16,7 +16,7 @@ export class WorkspaceEventMapper
   createdAt: string;
   createdBy: { id: number; fullName: string };
 
-  constructor(data: WorkspaceEvent) {
+  constructor(data: WorkspaceTrace) {
     super(data, ["id", "entity", "action", "targetId", "createdAt"]);
 
     this.assignInitialKeys();
