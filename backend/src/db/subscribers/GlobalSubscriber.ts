@@ -4,8 +4,8 @@ import { Note } from "@db/entities/Note";
 import { Bundle } from "@db/entities/Bundle";
 import { Bucket } from "@db/entities/Bucket";
 import { Variant } from "@db/entities/Variant";
-import { Blueprint } from "@db/entities/Blueprint";
 import { Workspace } from "@db/entities/Workspace";
+import { Blueprint } from "@db/entities/Blueprint";
 import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
 import {
   InsertEvent,
@@ -13,6 +13,8 @@ import {
   EntitySubscriberInterface,
   EntityManager,
 } from "typeorm";
+
+import { APP } from "@config";
 
 import { Action } from "@shared/types/enums/Action";
 
@@ -64,6 +66,10 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
     manager,
     metadata: { name: entityName },
   } = event;
+
+  if (!APP.IS_PRODUCTION) {
+    return;
+  }
 
   const eventHandler = WORKSPACE_EVENT_HANDLERS.find(
     eventHandler =>
