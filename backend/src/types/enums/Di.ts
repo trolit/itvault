@@ -13,6 +13,7 @@ export enum Di {
   UserService = "IUserService",
   FileService = "IFileService",
   VariantService = "IVariantService",
+  InsightsService = "IInsightsService",
   DataStoreService = "IDataStoreService",
   WorkspaceService = "IWorkspaceService",
   EntityMapperService = "IEntityMapperService",
