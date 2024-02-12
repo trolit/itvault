@@ -9,7 +9,7 @@ import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export const requireWorkspaceAccess = <P>(
-  id: (request: CustomRequest<P, unknown, unknown>) => number
+  id: (request: CustomRequest<P, unknown, any>) => number
 ) => {
   return async (
     request: CustomRequest<P, unknown, unknown>,
