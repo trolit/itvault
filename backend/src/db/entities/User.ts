@@ -65,5 +65,5 @@ export class User extends Base {
   chatMessages: ChatMessage[];
 
   @OneToMany(() => WorkspaceTrace, workspaceTrace => workspaceTrace.user)
-  workspaceTraces: WorkspaceTrace[];
+  workspacesTraces: WorkspaceTrace[];
 }

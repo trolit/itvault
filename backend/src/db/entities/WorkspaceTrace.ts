@@ -28,7 +28,7 @@ export class WorkspaceTrace {
   @ManyToOne(() => Workspace, workspace => workspace.traces)
   workspace: Workspace;
 
-  @ManyToOne(() => User, user => user.workspaceTraces, { cascade: false })
+  @ManyToOne(() => User, user => user.workspacesTraces, { cascade: false })
   user: User;
 
   @CreateDateColumn()
