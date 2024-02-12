@@ -57,17 +57,13 @@ export class PatchValueController extends BaseController {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    const result = await this._noteRepository.primitiveSave({
+    await this._noteRepository.primitiveSave({
       ...note,
       value: text,
       updatedBy: {
         id: userId,
       },
     });
-
-    if (!result) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
-    }
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
