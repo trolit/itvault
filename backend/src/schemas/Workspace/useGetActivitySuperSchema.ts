@@ -1,7 +1,6 @@
 import { SuperSchema } from "types/SuperSchema";
 import { date, number, object, string } from "yup";
 import { IDateService } from "types/services/IDateService";
-import { GetEventsControllerTypes } from "types/controllers/Workspace/GetEventsController";
 import { GetActivityControllerTypes } from "types/controllers/Workspace/GetActivityController";
 
 import { Di } from "@enums/Di";
@@ -53,7 +52,7 @@ const querySchema: SuperSchema.Fragment<GetActivityControllerTypes.v1.Query> =
       }),
   });
 
-const paramsSchema: SuperSchema.Fragment<GetEventsControllerTypes.v1.Params> =
+const paramsSchema: SuperSchema.Fragment<GetActivityControllerTypes.v1.Params> =
   object({
     id: number().required(),
   });

@@ -4,7 +4,7 @@ import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
 import { WorkspaceTraceMapper } from "@mappers/WorkspaceTraceMapper";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { IWorkspaceTraceRepository } from "types/repositories/IWorkspaceTraceRepository";
-import { GetEventsControllerTypes } from "types/controllers/Workspace/GetEventsController";
+import { GetTracesControllerTypes } from "types/controllers/Workspace/GetTracesController";
 
 import { Di } from "@enums/Di";
 
@@ -13,7 +13,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @autoInjectable()
-export class GetEventsController extends BaseController {
+export class GetTracesController extends BaseController {
   constructor(
     @inject(Di.WorkspaceTraceRepository)
     private _workspaceTraceRepository: IWorkspaceTraceRepository
@@ -31,8 +31,8 @@ export class GetEventsController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(
-    request: GetEventsControllerTypes.v1.Request,
-    response: GetEventsControllerTypes.v1.Response
+    request: GetTracesControllerTypes.v1.Request,
+    response: GetTracesControllerTypes.v1.Response
   ) {
     const {
       params: { id },

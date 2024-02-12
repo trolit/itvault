@@ -1,25 +1,25 @@
 import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
-import { GetEventsControllerTypes } from "types/controllers/Workspace/GetEventsController";
+import { GetTracesControllerTypes } from "types/controllers/Workspace/GetTracesController";
 
 import { pageSchema, perPageSchema } from "@schemas/common/paginationSchemas";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-const querySchema: SuperSchema.Fragment<GetEventsControllerTypes.v1.QueryInput> =
+const querySchema: SuperSchema.Fragment<GetTracesControllerTypes.v1.QueryInput> =
   object({
     page: pageSchema,
     perPage: perPageSchema,
   });
 
-const paramsSchema: SuperSchema.Fragment<GetEventsControllerTypes.v1.Params> =
+const paramsSchema: SuperSchema.Fragment<GetTracesControllerTypes.v1.Params> =
   object({
     id: number().required(),
   });
 
-export const useGetEventsSuperSchema: SuperSchema.Runner<
-  GetEventsControllerTypes.v1.Params,
+export const useGetTracesSuperSchema: SuperSchema.Runner<
+  GetTracesControllerTypes.v1.Params,
   void,
-  GetEventsControllerTypes.v1.QueryInput
+  GetTracesControllerTypes.v1.QueryInput
 > = defineSuperSchemaRunner(() => {
   return {
     params: paramsSchema,

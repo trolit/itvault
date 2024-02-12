@@ -3,7 +3,7 @@ import { IWorkspaceTraceDTO } from "@shared/types/DTOs/Workspace";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
-export namespace GetEventsControllerTypes {
+export namespace GetTracesControllerTypes {
   export namespace v1 {
     export type Params = { id: number };
 
