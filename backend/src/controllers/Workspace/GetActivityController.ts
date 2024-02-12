@@ -38,13 +38,16 @@ export class GetActivityController extends BaseController {
   ) {
     const {
       params: { id },
-      query: { from, to, precision },
+      query: { from, to, precision, filters },
     } = request;
 
     const data = await this._workspaceEventRepository.getAll({
       where: {
         workspace: {
           id,
+        },
+        user: {
+          id: filters.userId,
         },
         createdAt: Between(from, to),
       },

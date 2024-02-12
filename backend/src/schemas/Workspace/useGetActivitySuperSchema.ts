@@ -44,6 +44,13 @@ const querySchema: SuperSchema.Fragment<GetActivityControllerTypes.v1.Query> =
         return true;
       }),
     precision: string().required().oneOf(Object.values(DatePrecision)),
+    filters: object()
+      .default({})
+      .transform(value => JSON.parse(value))
+      .required()
+      .shape({
+        userId: number().optional().min(1),
+      }),
   });
 
 const paramsSchema: SuperSchema.Fragment<GetEventsControllerTypes.v1.Params> =

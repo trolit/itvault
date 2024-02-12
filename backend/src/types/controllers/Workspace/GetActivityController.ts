@@ -12,7 +12,9 @@ export namespace GetActivityControllerTypes {
 
       precision: DatePrecision;
 
-      // @TODO filters (userId)
+      filters: {
+        userId?: number;
+      };
     };
 
     export type Request = CustomRequest<Params, undefined, Query>;
