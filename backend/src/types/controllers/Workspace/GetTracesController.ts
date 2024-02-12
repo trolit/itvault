@@ -1,9 +1,9 @@
 import { IPaginationOptions } from "types/IPaginationOptions";
+import { IWorkspaceTraceDTO } from "@shared/types/DTOs/Workspace";
 import { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import { WorkspaceEventMapper } from "@mappers/WorkspaceEventMapper";
 
-export namespace GetEventsControllerTypes {
+export namespace GetTracesControllerTypes {
   export namespace v1 {
     export type Params = { id: number };
 
@@ -14,7 +14,7 @@ export namespace GetEventsControllerTypes {
     export type Request = CustomRequest<Params, undefined, QueryOutput>;
 
     export type Response = CustomResponse<
-      PaginatedResponse<WorkspaceEventMapper>
+      PaginatedResponse<IWorkspaceTraceDTO>
     >;
   }
 }

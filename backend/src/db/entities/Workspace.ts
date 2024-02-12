@@ -4,7 +4,7 @@ import { Base } from "./Base";
 import { File } from "./File";
 import { Bundle } from "./Bundle";
 import { Blueprint } from "./Blueprint";
-import { WorkspaceEvent } from "./WorkspaceEvent";
+import { WorkspaceTrace } from "./WorkspaceTrace";
 import { TagToWorkspace } from "./TagToWorkspace";
 import { UserToWorkspace } from "./UserToWorkspace";
 
@@ -50,6 +50,6 @@ export class Workspace extends Base {
   })
   tagToWorkspace: TagToWorkspace[];
 
-  @OneToMany(() => WorkspaceEvent, workspaceEvent => workspaceEvent.workspace)
-  events: WorkspaceEvent[];
+  @OneToMany(() => WorkspaceTrace, workspaceTrace => workspaceTrace.workspace)
+  traces: WorkspaceTrace[];
 }

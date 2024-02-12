@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { IDateService } from "types/services/IDateService";
-import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
+import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
 import { IInsightsService } from "types/services/IInsightsService";
 
 import { Di } from "@enums/Di";
@@ -15,7 +15,7 @@ export class InsightsService implements IInsightsService {
   ) {}
 
   createDataPoints(arg: {
-    data: WorkspaceEvent[];
+    data: WorkspaceTrace[];
     precision: DatePrecision;
   }): IWorkspaceActivityDataPointDTO[] {
     const { data, precision } = arg;

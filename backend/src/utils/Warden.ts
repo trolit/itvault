@@ -118,7 +118,7 @@ export class Warden {
       message,
       values,
       additionalData: {
-        error: error.stack,
+        error: error?.stack || error,
       },
     });
   }

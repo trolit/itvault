@@ -5,7 +5,7 @@ import { Role } from "./Role";
 import { Bundle } from "./Bundle";
 import { Variant } from "./Variant";
 import { ChatMessage } from "./ChatMessage";
-import { WorkspaceEvent } from "./WorkspaceEvent";
+import { WorkspaceTrace } from "./WorkspaceTrace";
 import { UserToWorkspace } from "./UserToWorkspace";
 
 @Entity("users")
@@ -64,6 +64,6 @@ export class User extends Base {
   })
   chatMessages: ChatMessage[];
 
-  @OneToMany(() => WorkspaceEvent, workspaceEvent => workspaceEvent.user)
-  workspaceEvents: WorkspaceEvent[];
+  @OneToMany(() => WorkspaceTrace, workspaceTrace => workspaceTrace.user)
+  workspacesTraces: WorkspaceTrace[];
 }

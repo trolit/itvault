@@ -22,7 +22,7 @@ export interface IAddEditWorkspaceDTO {
   tags: string[];
 }
 
-export interface IWorkspaceEventDTO {
+export interface IWorkspaceTraceDTO {
   id: number;
 
   entity: string;

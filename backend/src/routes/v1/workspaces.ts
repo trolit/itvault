@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { NumberId } from "types/NumberId";
-import { GetEventsControllerTypes } from "types/controllers/Workspace/GetEventsController";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
@@ -17,8 +16,8 @@ import { useGetAllSuperSchema } from "@schemas/Workspace/useGetAllSuperSchema";
 import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
 import { useGetTreeSuperSchema } from "@schemas/Workspace/useGetTreeSuperSchema";
 import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema";
-import { useGetEventsSuperSchema } from "@schemas/Workspace/useGetEventsSuperSchema";
-import { useGetActivitySuperSchema } from "@schemas/Workspace/useGetActivitySuperSchema";
+import { useGetTracesSuperSchema } from "@schemas/Workspace/useGetTracesSuperSchema";
+import { useGetTracesSeriesSuperSchema } from "@schemas/Workspace/useGetTracesSeriesSuperSchema";
 import { useGetContributorsSuperSchema } from "@schemas/Workspace/useGetContributorsSuperSchema";
 
 import { PinController } from "@controllers/PinController";
@@ -28,9 +27,9 @@ import { AddController } from "@controllers/Workspace/AddController";
 import { UpdateController } from "@controllers/Workspace/UpdateController";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
+import { GetTracesController } from "@controllers/Workspace/GetTracesController";
 import { GetBySlugController } from "@controllers/Workspace/GetBySlugController";
-import { GetEventsController } from "@controllers/Workspace/GetEventsController";
-import { GetActivityController } from "@controllers/Workspace/GetActivityController";
+import { GetTracesSeriesController } from "@controllers/Workspace/GetTracesSeriesController";
 import { GetContributorsController } from "@controllers/Workspace/GetContributorsController";
 
 const workspacesRouter = Router();
@@ -94,14 +93,22 @@ workspacesRouter.put(
 // @NOTE -- insights -- (consider nesting router but this also implies changes on setupExpress -> getRoutes)
 
 workspacesRouter.get(
-  "/:id/events",
+  "/:id/traces",
   requirePermissions([Permission.ViewWorkspaceInsights]),
-  requireWorkspaceAccess<NumberId & GetEventsControllerTypes.v1.QueryInput>(
-    ({ params }) => params.id
-  ),
-  validateRequestWith({ [v1]: useGetEventsSuperSchema }),
+  requireWorkspaceAccess<NumberId>(({ params }) => params.id),
+  validateRequestWith({ [v1]: useGetTracesSuperSchema }),
   transformPagination(),
-  processRequestWith(GetEventsController)
+  processRequestWith(GetTracesController)
+);
+
+workspacesRouter.get(
+  "/:id/traces-series",
+  requirePermissions([Permission.ViewWorkspaceInsights]),
+  requireWorkspaceAccess<NumberId>(({ params }) => params.id),
+  validateRequestWith({
+    [v1]: useGetTracesSeriesSuperSchema,
+  }),
+  processRequestWith(GetTracesSeriesController)
 );
 
 workspacesRouter.get(
@@ -112,16 +119,6 @@ workspacesRouter.get(
     [v1]: useGetContributorsSuperSchema,
   }),
   processRequestWith(GetContributorsController)
-);
-
-workspacesRouter.get(
-  "/:id/activity",
-  requirePermissions([Permission.ViewWorkspaceInsights]),
-  requireWorkspaceAccess<NumberId>(({ params }) => params.id),
-  validateRequestWith({
-    [v1]: useGetActivitySuperSchema,
-  }),
-  processRequestWith(GetActivityController)
 );
 
 export = workspacesRouter;

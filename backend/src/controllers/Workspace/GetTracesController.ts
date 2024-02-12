@@ -1,10 +1,10 @@
 import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { WorkspaceEvent } from "@db/entities/WorkspaceEvent";
-import { WorkspaceEventMapper } from "@mappers/WorkspaceEventMapper";
+import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
+import { WorkspaceTraceMapper } from "@mappers/WorkspaceTraceMapper";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
-import { IWorkspaceEventRepository } from "types/repositories/IWorkspaceEventRepository";
-import { GetEventsControllerTypes } from "types/controllers/Workspace/GetEventsController";
+import { IWorkspaceTraceRepository } from "types/repositories/IWorkspaceTraceRepository";
+import { GetTracesControllerTypes } from "types/controllers/Workspace/GetTracesController";
 
 import { Di } from "@enums/Di";
 
@@ -13,10 +13,10 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @autoInjectable()
-export class GetEventsController extends BaseController {
+export class GetTracesController extends BaseController {
   constructor(
-    @inject(Di.WorkspaceEventRepository)
-    private _workspaceEventRepository: IWorkspaceEventRepository
+    @inject(Di.WorkspaceTraceRepository)
+    private _workspaceTraceRepository: IWorkspaceTraceRepository
   ) {
     super();
   }
@@ -31,15 +31,15 @@ export class GetEventsController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(
-    request: GetEventsControllerTypes.v1.Request,
-    response: GetEventsControllerTypes.v1.Response
+    request: GetTracesControllerTypes.v1.Request,
+    response: GetTracesControllerTypes.v1.Response
   ) {
     const {
       params: { id },
       query: { skip, take },
     } = request;
 
-    const [data, total] = await this._workspaceEventRepository.getAllAndCount({
+    const [data, total] = await this._workspaceTraceRepository.getAllAndCount({
       skip,
       take,
       order: {
@@ -56,8 +56,8 @@ export class GetEventsController extends BaseController {
     });
 
     const result = this.mapper
-      .map<WorkspaceEvent>(data)
-      .to(WorkspaceEventMapper);
+      .map<WorkspaceTrace>(data)
+      .to(WorkspaceTraceMapper);
 
     return this.finalizeRequest(response, HTTP.OK, {
       result,

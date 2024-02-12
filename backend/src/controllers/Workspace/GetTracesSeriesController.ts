@@ -3,8 +3,8 @@ import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IInsightsService } from "types/services/IInsightsService";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
-import { IWorkspaceEventRepository } from "types/repositories/IWorkspaceEventRepository";
-import { GetActivityControllerTypes } from "types/controllers/Workspace/GetActivityController";
+import { IWorkspaceTraceRepository } from "types/repositories/IWorkspaceTraceRepository";
+import { GetTracesSeriesControllerTypes } from "types/controllers/Workspace/GetTracesSeriesController";
 
 import { Di } from "@enums/Di";
 
@@ -13,10 +13,10 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @autoInjectable()
-export class GetActivityController extends BaseController {
+export class GetTracesSeriesController extends BaseController {
   constructor(
-    @inject(Di.WorkspaceEventRepository)
-    private _workspaceEventRepository: IWorkspaceEventRepository,
+    @inject(Di.WorkspaceTraceRepository)
+    private _workspaceTraceRepository: IWorkspaceTraceRepository,
     @inject(Di.InsightsService)
     private _insightsService: IInsightsService
   ) {
@@ -33,15 +33,15 @@ export class GetActivityController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(
-    request: GetActivityControllerTypes.v1.Request,
-    response: GetActivityControllerTypes.v1.Response
+    request: GetTracesSeriesControllerTypes.v1.Request,
+    response: GetTracesSeriesControllerTypes.v1.Response
   ) {
     const {
       params: { id },
       query: { from, to, precision, filters },
     } = request;
 
-    const data = await this._workspaceEventRepository.getAll({
+    const data = await this._workspaceTraceRepository.getAll({
       where: {
         workspace: {
           id,
