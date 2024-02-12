@@ -41,7 +41,7 @@ export class GetContributorsController extends BaseController {
 
     const data = await this._userRepository.getAll({
       where: {
-        workspaceTraces: {
+        workspacesTraces: {
           id: Not(IsNull()),
           workspace: {
             id,
