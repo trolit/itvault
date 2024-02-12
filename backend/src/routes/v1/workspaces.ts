@@ -27,7 +27,7 @@ import { AddController } from "@controllers/Workspace/AddController";
 import { UpdateController } from "@controllers/Workspace/UpdateController";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
-import { GetTracesController } from "@controllers/Workspace/GetEventsController";
+import { GetTracesController } from "@controllers/Workspace/GetTracesController";
 import { GetBySlugController } from "@controllers/Workspace/GetBySlugController";
 import { GetActivityController } from "@controllers/Workspace/GetActivityController";
 import { GetContributorsController } from "@controllers/Workspace/GetContributorsController";
