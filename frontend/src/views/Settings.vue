@@ -45,8 +45,8 @@ import { useSettingsStore } from "@/store/settings";
 import AppSettings from "@/components/settings/App.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import ProfileSettings from "@/components/settings/Profile.vue";
-import PasswordSettings from "@/components/settings/Password.vue";
 import SessionsManagement from "@/components/settings/Sessions.vue";
+import ChangePassword from "@/components/settings/ChangePassword.vue";
 
 const settingsStore = useSettingsStore();
 
@@ -67,7 +67,7 @@ const menuOptions: (MenuOption & { component: object | null })[] = [
     key: "password",
     label: "Change password",
     icon: renderIcon(PasswordIcon),
-    component: PasswordSettings,
+    component: ChangePassword,
   },
   {
     key: "sessions",
