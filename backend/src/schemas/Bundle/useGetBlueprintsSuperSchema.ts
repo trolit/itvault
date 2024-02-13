@@ -1,4 +1,4 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetBlueprintsControllerTypes } from "types/controllers/Bundle/GetBlueprintsController";
 
@@ -14,7 +14,7 @@ const paramsSchema: SuperSchema.Fragment<GetBlueprintsControllerTypes.v1.Params>
 
 const querySchema: SuperSchema.Fragment<GetBlueprintsControllerTypes.v1.Query> =
   object({
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    workspaceId: number().required(),
   });
 
 export const useGetBlueprintsSuperSchema: SuperSchema.Runner<

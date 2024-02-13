@@ -2,14 +2,11 @@ import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { RequeueControllerTypes } from "types/controllers/Bundle/RequeueController";
 
-import { Di } from "@enums/Di";
-
-import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const querySchema: SuperSchema.Fragment<RequeueControllerTypes.v1.Query> =
   object({
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    workspaceId: number().required(),
   });
 
 const paramsSchema: SuperSchema.Fragment<RequeueControllerTypes.v1.Params> =
