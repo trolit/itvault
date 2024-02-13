@@ -1,5 +1,7 @@
 <template>
   <div>
+    <n-h2>App</n-h2>
+
     <n-element
       :style="{ display: 'flex', alignItems: 'center', columnGap: '20px' }"
     >
@@ -15,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { NElement, NButton } from "naive-ui";
+import { NElement, NButton, NH2 } from "naive-ui";
 
 import ThemeSelector from "@/components/common/ThemeSelector.vue";
 import { useGeneralStore } from "@/store/general";
