@@ -82,9 +82,9 @@ import { onBeforeMount, onUnmounted, ref } from "vue";
 import { useAuthStore } from "@/store/auth";
 import { useGeneralStore } from "@/store/general";
 import { useDateService } from "@/services/useDateService";
-import LoadingSection from "@/components/common/LoadingSection.vue";
-import { MAX_SESSIONS_PER_USER } from "@shared/constants/config";
 import { ROUTE_SETTINGS_NAME } from "@/assets/constants/routes";
+import { MAX_SESSIONS_PER_USER } from "@shared/constants/config";
+import LoadingSection from "@/components/common/LoadingSection.vue";
 
 const route = useRoute();
 const authStore = useAuthStore();
