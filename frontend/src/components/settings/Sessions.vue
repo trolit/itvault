@@ -76,14 +76,17 @@ import {
   NPopconfirm,
 } from "naive-ui";
 import { storeToRefs } from "pinia";
-import { onBeforeMount, ref } from "vue";
+import { useRoute } from "vue-router";
+import { onBeforeMount, onUnmounted, ref } from "vue";
 
 import { useAuthStore } from "@/store/auth";
 import { useGeneralStore } from "@/store/general";
 import { useDateService } from "@/services/useDateService";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import { MAX_SESSIONS_PER_USER } from "@shared/constants/config";
+import { ROUTE_SETTINGS_NAME } from "@/assets/constants/routes";
 
+const route = useRoute();
 const authStore = useAuthStore();
 const dateService = useDateService();
 const generalStore = useGeneralStore();
@@ -95,6 +98,14 @@ const sessionIdUnderRemove = ref("");
 onBeforeMount(() => {
   if (!sessions.value.length) {
     fetchSessions();
+  }
+});
+
+onUnmounted(() => {
+  if (route.name !== ROUTE_SETTINGS_NAME) {
+    setTimeout(() => {
+      authStore.sessions = [];
+    }, 200);
   }
 });
 
