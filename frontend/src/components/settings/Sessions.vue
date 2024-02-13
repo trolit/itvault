@@ -41,8 +41,11 @@
 
                 <n-button
                   v-if="!item.isRequesterSession"
+                  :loading="sessionIdUnderRemove === item.sessionId"
+                  :disabled="!!sessionIdUnderRemove"
                   type="error"
                   secondary
+                  @click="removeSession(item.sessionId)"
                 >
                   Delete
                 </n-button>
@@ -72,6 +75,7 @@ const generalStore = useGeneralStore();
 const { sessions } = storeToRefs(authStore);
 
 const isLoading = ref(false);
+const sessionIdUnderRemove = ref("");
 
 onBeforeMount(() => {
   if (!sessions.value.length) {
@@ -94,6 +98,22 @@ async function fetchSessions() {
     generalStore.messageProvider.error(`Oops, failed to fetch sessions!`);
   } finally {
     isLoading.value = false;
+  }
+}
+
+async function removeSession(sessionId: string) {
+  sessionIdUnderRemove.value = sessionId;
+
+  try {
+    await authStore.deleteSession(sessionId);
+  } catch (error) {
+    console.log(error);
+
+    generalStore.messageProvider.error(
+      `Oops, failed to remove session #${sessionId}!`
+    );
+  } finally {
+    sessionIdUnderRemove.value = "";
   }
 }
 </script>
