@@ -44,7 +44,7 @@ import renderIcon from "@/helpers/renderIcon";
 import { useSettingsStore } from "@/store/settings";
 import AppSettings from "@/components/settings/App.vue";
 import { defineComputed } from "@/helpers/defineComputed";
-import ProfileSettings from "@/components/settings/Profile.vue";
+import ProfileManagement from "@/components/settings/Profile.vue";
 import SessionsManagement from "@/components/settings/Sessions.vue";
 import ChangePassword from "@/components/settings/ChangePassword.vue";
 
@@ -61,7 +61,7 @@ const menuOptions: (MenuOption & { component: object | null })[] = [
     key: "profile",
     label: "Profile",
     icon: renderIcon(ProfileIcon),
-    component: ProfileSettings,
+    component: ProfileManagement,
   },
   {
     key: "password",
