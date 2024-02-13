@@ -14,11 +14,10 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
 
-import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const querySchema: SuperSchema.Fragment<AddControllerTypes.v1.Query> = object({
-  workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+  workspaceId: number().required(),
 });
 
 const valueSchema: SuperSchema.Fragment<IAddBundleValueDTO> = object({

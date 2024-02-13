@@ -43,6 +43,10 @@ export interface IAddBundleValueDTO {
   variantIds: string[];
 }
 
+export interface IPatchBundleNoteDTO {
+  text: string;
+}
+
 export interface IAddBundleDTO {
   note?: string;
 

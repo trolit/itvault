@@ -8,13 +8,14 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useRequeueSchema } from "@schemas/Bundle/useRequeueSchema";
 import { useAddSuperSchema } from "@schemas/Bundle/useAddSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Bundle/useGetAllSuperSchema";
 import { useGetFilesSuperSchema } from "@schemas/Bundle/useGetFilesSuperSchema";
+import { usePatchNoteSuperSchema } from "@schemas/Bundle/usePatchNoteSuperSchema";
 import { useGetBlueprintsSuperSchema } from "@schemas/Bundle/useGetBlueprintsSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
@@ -23,6 +24,7 @@ import { GetAllController } from "@controllers/Bundle/GetAllController";
 import { RequeueController } from "@controllers/Bundle/RequeueController";
 import { GetFilesController } from "@controllers/Bundle/GetFilesController";
 import { DownloadController } from "@controllers/Bundle/DownloadController";
+import { PatchNoteController } from "@controllers/Bundle/PatchNoteController";
 import { SoftDeleteController } from "@controllers/Bundle/SoftDeleteController";
 import { GetBlueprintsController } from "@controllers/Bundle/GetBlueprintsController";
 
@@ -81,6 +83,12 @@ bundlesRouter.delete(
   "/:id",
   requireEndpointVersion(SoftDeleteController.ALL_VERSIONS),
   processRequestWith(SoftDeleteController)
+);
+
+bundlesRouter.patch(
+  "/:id/note",
+  validateRequestWith({ [v1]: usePatchNoteSuperSchema }),
+  processRequestWith(PatchNoteController)
 );
 
 export = bundlesRouter;

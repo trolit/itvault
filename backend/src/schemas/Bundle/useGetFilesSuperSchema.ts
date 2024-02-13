@@ -1,4 +1,4 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetFilesControllerTypes } from "types/controllers/Bundle/GetFilesController";
 
@@ -14,7 +14,7 @@ const paramsSchema: SuperSchema.Fragment<GetFilesControllerTypes.v1.Params> =
 
 const querySchema: SuperSchema.Fragment<GetFilesControllerTypes.v1.Query> =
   object({
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    workspaceId: number().required(),
     blueprintId: useIdNumberSchema(Di.BlueprintRepository),
   });
 
