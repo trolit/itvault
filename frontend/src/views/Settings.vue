@@ -46,6 +46,7 @@ import AppSettings from "@/components/settings/App.vue";
 import { defineComputed } from "@/helpers/defineComputed";
 import ProfileSettings from "@/components/settings/Profile.vue";
 import PasswordSettings from "@/components/settings/Password.vue";
+import SessionsManagement from "@/components/settings/Sessions.vue";
 
 const settingsStore = useSettingsStore();
 
@@ -72,7 +73,7 @@ const menuOptions: (MenuOption & { component: object | null })[] = [
     key: "sessions",
     label: "Sessions",
     icon: renderIcon(SessionIcon),
-    component: null,
+    component: SessionsManagement,
   },
 ];
 
