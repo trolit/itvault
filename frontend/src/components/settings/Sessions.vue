@@ -39,16 +39,23 @@
                   This device session
                 </n-tag>
 
-                <n-button
+                <n-popconfirm
                   v-if="!item.isRequesterSession"
-                  :loading="sessionIdUnderRemove === item.sessionId"
-                  :disabled="!!sessionIdUnderRemove"
-                  type="error"
-                  secondary
-                  @click="removeSession(item.sessionId)"
+                  @positive-click="removeSession(item.sessionId)"
                 >
-                  Delete
-                </n-button>
+                  <template #trigger>
+                    <n-button
+                      :loading="sessionIdUnderRemove === item.sessionId"
+                      :disabled="!!sessionIdUnderRemove"
+                      type="error"
+                      secondary
+                    >
+                      Delete
+                    </n-button>
+                  </template>
+
+                  Are you sure that you want to remove this session?
+                </n-popconfirm>
               </n-space>
             </template>
           </n-card>
@@ -59,9 +66,17 @@
 </template>
 
 <script setup lang="ts">
+import {
+  NH2,
+  NTag,
+  NCard,
+  NText,
+  NSpace,
+  NButton,
+  NPopconfirm,
+} from "naive-ui";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
-import { NH2, NCard, NTag, NText, NButton, NSpace } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import { useGeneralStore } from "@/store/general";
