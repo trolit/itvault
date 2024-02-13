@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { Socket } from "engine.io-client";
 
 import { WEBSOCKETS } from "@/config";
+import type { IUserSessionDTO } from "@shared/types/DTOs/Auth";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
 import type { ISignInDTO, ILoggedUserDTO } from "@shared/types/DTOs/User";
@@ -12,6 +13,7 @@ import type { SocketSendMessage } from "@shared/types/transport/SocketSendMessag
 interface IState {
   socket: Socket | null;
   profile: ILoggedUserDTO;
+  sessions: IUserSessionDTO[];
   wasSocketInitialized: boolean;
 }
 
@@ -26,6 +28,7 @@ export const useAuthStore = defineStore("auth", {
       roleName: "",
       permissions: [],
     },
+    sessions: [],
     wasSocketInitialized: false,
   }),
 
@@ -72,6 +75,28 @@ export const useAuthStore = defineStore("auth", {
       this.profile = data;
 
       return data;
+    },
+
+    async getSessions() {
+      const { data } = await axios.get<IUserSessionDTO[]>("v1/auth/sessions", {
+        params: { version: 1 },
+      });
+
+      this.sessions = data;
+    },
+
+    async deleteSession(id: string) {
+      await axios.delete(`v1/auth/sessions/${id}`, {
+        params: { version: 1 },
+      });
+
+      const index = this.sessions.findIndex(
+        session => session.sessionId === id
+      );
+
+      if (~index) {
+        this.sessions.splice(index, 1);
+      }
     },
 
     initializeSocket() {
