@@ -9,7 +9,7 @@
 
       <div v-if="error" class="state-error">
         <n-alert title="Failed to load page" type="error">
-          We were unable to load page
+          {{ message || "We were unable to load page" }}
 
           <n-divider />
 
@@ -29,6 +29,8 @@ import type { AxiosError } from "axios";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
 interface IProps {
+  message?: string;
+
   error: AxiosError | null;
 }
 

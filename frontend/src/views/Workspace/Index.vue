@@ -6,7 +6,6 @@
       :is="IS_INSIGHTS_PAGE ? InsightsPage : DataPage"
     />
 
-    <!-- @TODO allow to pass custom message -->
     <loading-page v-else :error="responseError" />
   </div>
 </template>
@@ -28,8 +27,8 @@ const router = useRouter();
 const authStore = useAuthStore();
 const workspacesStore = useWorkspacesStore();
 
-const responseError: Ref<AxiosError<any, any> | null> = ref(null);
 const isLoading = ref(false);
+const responseError: Ref<AxiosError<any, any> | null> = ref(null);
 
 onBeforeMount(async () => {
   const {
