@@ -34,7 +34,7 @@
 import {
   Events as MembersIcon,
   SecurityServices as LogsIcon,
-  ChartLine as ActivityChartsIcon,
+  ChartLine as ActivityIcon,
 } from "@vicons/carbon";
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
@@ -67,14 +67,14 @@ const menuOptions: (MenuOption & { component: object | null })[] = [
     component: MembersTab,
   },
   {
-    key: "activity-charts",
-    label: "Activity charts",
-    icon: renderIcon(ActivityChartsIcon),
+    key: "activity",
+    label: "Activity",
+    icon: renderIcon(ActivityIcon),
     component: null,
   },
   {
     key: "log",
-    label: "Log",
+    label: "Logs",
     icon: renderIcon(LogsIcon),
     component: null,
   },
