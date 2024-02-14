@@ -1,32 +1,34 @@
 <template>
   <div :class="['page', `${IS_INSIGHTS_PAGE ? 'insights' : 'data'}-page`]">
     <component
-      v-if="!isLoading"
+      v-if="!isLoading && !responseError"
       :key="workspacesStore.activeItemId"
       :is="IS_INSIGHTS_PAGE ? InsightsPage : DataPage"
     />
 
     <!-- @TODO allow to pass custom message -->
-    <loading-page v-else :is-failed="isFailed" />
+    <loading-page v-else :error="responseError" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { AxiosError } from "axios";
-import { useRoute } from "vue-router";
-import { computed, onBeforeMount, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { computed, onBeforeMount, ref, type Ref } from "vue";
 
 import DataPage from "./Data.vue";
 import InsightsPage from "./Insights.vue";
 import { useAuthStore } from "@/store/auth";
 import { useWorkspacesStore } from "@/store/workspaces";
 import LoadingPage from "@/components/common/LoadingPage.vue";
+import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
 const route = useRoute();
+const router = useRouter();
 const authStore = useAuthStore();
 const workspacesStore = useWorkspacesStore();
 
-const isFailed = ref(false);
+const responseError: Ref<AxiosError<any, any> | null> = ref(null);
 const isLoading = ref(false);
 
 onBeforeMount(async () => {
@@ -49,12 +51,20 @@ onBeforeMount(async () => {
 
     sendViewWorkspaceMessage();
   } catch (error) {
+    console.log(error);
+
     // @TODO create API errors handler/parser
     if (error instanceof AxiosError && error.response) {
-      console.log(error.response.statusText);
-    }
+      responseError.value = error;
 
-    isFailed.value = true;
+      const {
+        response: { status },
+      } = error;
+
+      if (status === 401 || status === 403) {
+        router.push({ name: ROUTE_DASHBOARD_NAME });
+      }
+    }
   } finally {
     isLoading.value = false;
   }
