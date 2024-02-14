@@ -1,16 +1,21 @@
 <template>
   <div class="loading-page">
     <div class="wrapper">
-      <div v-if="!isFailed" class="state-loading">
+      <div v-if="!error" class="state-loading">
         <loading-section spin-size="large" />
 
         <div>Loading page...</div>
       </div>
 
-      <div v-if="isFailed" class="state-error">
+      <div v-if="error" class="state-error">
         <n-alert title="Failed to load page" type="error">
-          We were unable to fetch primary data. Please try to reload page or
-          make sure that requested resource exists.
+          We were unable to load page
+
+          <n-divider />
+
+          <div :style="{ marginTop: '20px' }">
+            {{ error.response }}
+          </div>
         </n-alert>
       </div>
     </div>
@@ -18,15 +23,15 @@
 </template>
 
 <script setup lang="ts">
-import { NAlert } from "naive-ui";
+import { NAlert, NDivider } from "naive-ui";
+import type { AxiosError } from "axios";
 
 import LoadingSection from "@/components/common/LoadingSection.vue";
 
+interface IProps {
+  error: AxiosError | null;
+}
+
 // @TODO allow to pass response codes and show message depending on status code
-defineProps({
-  isFailed: {
-    type: Boolean,
-    required: true,
-  },
-});
+defineProps<IProps>();
 </script>
