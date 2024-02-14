@@ -36,15 +36,28 @@ import {
   SecurityServices as LogsIcon,
   ChartLine as ActivityChartsIcon,
 } from "@vicons/carbon";
+import { onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 import type { MenuOption } from "naive-ui";
 import { NLayout, NLayoutSider, NMenu, NGrid, NGridItem } from "naive-ui";
 
+import { useAuthStore } from "@/store/auth";
 import renderIcon from "@/helpers/renderIcon";
 import { useInsightsStore } from "@/store/insights";
 import { defineComputed } from "@/helpers/defineComputed";
+import { Permission } from "@shared/types/enums/Permission";
+import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import MembersTab from "@/components/workspace/insights/MembersTab/Index.vue";
 
+const router = useRouter();
+const authStore = useAuthStore();
 const insightsStore = useInsightsStore();
+
+onBeforeMount(() => {
+  if (!authStore.hasPermission(Permission.ViewWorkspaceInsights)) {
+    router.push({ name: ROUTE_DASHBOARD_NAME });
+  }
+});
 
 const menuOptions: (MenuOption & { component: object | null })[] = [
   {
