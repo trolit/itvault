@@ -10,22 +10,20 @@
 
       .n-layout-scroll-container {
         .content-wrapper {
-          margin: 0 20px;
+          width: 100%;
+          height: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
 
           .loading {
-            width: 100%;
-            height: 100%;
+            width: inherit;
+            height: inherit;
           }
 
           .logs-tab {
             .n-data-table {
-              /* height: calc(
-                100vh - var(--header-height) - var(--roles-header-height) -
-                  var(--roles-bottom-margin)
-              ) !important; */
+              height: calc(100vh - var(--header-height) - 5px);
 
               .n-data-table-base-table-body {
                 .n-scrollbar-content {
@@ -40,6 +38,8 @@
               }
 
               .n-data-table__pagination {
+                padding: 0;
+                margin: 8px 0;
                 justify-content: center;
               }
             }
@@ -47,6 +47,7 @@
 
           .members-tab {
             width: 100%;
+            margin: 0 20px;
 
             .wrapper {
               .n-grid {
