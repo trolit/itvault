@@ -13,24 +13,18 @@
     }"
     :loading="isLoading"
     :row-key="(row: IWorkspaceTraceDTO) => row.id"
-    @update:page="$event => $emit('get-roles', $event)"
+    @update:page="$event => $emit('get-logs', $event)"
   >
     <template #empty>
-      <n-empty description="No roles found." />
+      <n-empty description="No logs found." />
     </template>
   </n-data-table>
 </template>
 
 <script setup lang="ts">
-import {
-  NText,
-  NEmpty,
-  NButton,
-  NDataTable,
-  type DataTableColumns,
-} from "naive-ui";
 import { storeToRefs } from "pinia";
 import { h, ref, type Ref } from "vue";
+import { NEmpty, NButton, NDataTable, type DataTableColumns } from "naive-ui";
 
 import { useInsightsStore } from "@/store/insights";
 import { useDateService } from "@/services/useDateService";
@@ -42,6 +36,10 @@ interface IProps {
 
 defineProps<IProps>();
 
+defineEmits<{
+  (event: "get-logs", page: number): void;
+}>();
+
 const dateService = useDateService();
 const insightsStore = useInsightsStore();
 
@@ -51,7 +49,7 @@ const columns: Ref<DataTableColumns<IWorkspaceTraceDTO>> = ref<
   DataTableColumns<IWorkspaceTraceDTO>
 >([
   {
-    title: "Name",
+    title: "Entity",
     key: "entity",
     ellipsis: {
       tooltip: true,
@@ -59,7 +57,7 @@ const columns: Ref<DataTableColumns<IWorkspaceTraceDTO>> = ref<
   },
 
   {
-    title: "Action",
+    title: "Operation",
     key: "action",
     ellipsis: {
       tooltip: true,
@@ -69,7 +67,6 @@ const columns: Ref<DataTableColumns<IWorkspaceTraceDTO>> = ref<
   {
     title: "Created at",
     key: "createdAt",
-    width: 150,
     ellipsis: {
       tooltip: true,
     },
@@ -83,14 +80,33 @@ const columns: Ref<DataTableColumns<IWorkspaceTraceDTO>> = ref<
     ellipsis: {
       tooltip: true,
     },
-    render({ createdBy }) {
-      return createdBy
-        ? h(
-            NButton,
-            { dashed: true, type: "info" },
-            { default: () => createdBy.fullName }
-          )
-        : h(NText, { depth: 3 }, { default: () => "SYSTEM" });
+    render: ({ createdBy }) =>
+      h(
+        NButton,
+        { size: "small", secondary: true },
+        { default: () => createdBy.fullName }
+      ),
+  },
+
+  {
+    title: "Actions",
+    key: "actions",
+    ellipsis: {
+      tooltip: true,
+    },
+    render() {
+      return h("div", { class: "actions-wrapper" }, [
+        h(
+          NButton,
+          {
+            size: "small",
+            onClick: event => {
+              event.stopPropagation();
+            },
+          },
+          { default: () => "Open" }
+        ),
+      ]);
     },
   },
 ]);
