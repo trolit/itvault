@@ -11,13 +11,14 @@
 <script setup lang="ts">
 import VueApexCharts from "vue3-apexcharts";
 import type { ApexOptions } from "apexcharts";
+import type { PairedSeriesPoint } from "@/types/PairedSeriesPoint";
 
 interface IProps {
   type: "line";
 
   options?: ApexOptions;
 
-  series: { name: string; data: any[] }[];
+  series: { name: string; data: PairedSeriesPoint[] }[];
 
   width?: string | number;
 
