@@ -6,7 +6,9 @@ import type { RouteLocationNormalizedLoaded } from "vue-router";
 
 import type {
   IWorkspaceDTO,
+  IWorkspaceTraceDTO,
   IAddEditWorkspaceDTO,
+  IWorkspaceActivityDataPointDTO,
 } from "@shared/types/DTOs/Workspace";
 import isFile from "@/helpers/isFile";
 import { useFilesStore } from "./files";
@@ -23,6 +25,7 @@ import createFileTreeOption from "@/helpers/createFileTreeOption";
 import type { IDirectoryDTO } from "@shared/types/DTOs/Directory";
 import createFolderTreeOption from "@/helpers/createFolderTreeOption";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
+import type { DatePrecision } from "@shared/types/enums/DatePrecision";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
 import type { WorkspaceSearchParams } from "@/types/WorkspaceSearchParams";
 import { getUniqueTreeRelativePaths } from "@/helpers/getUniqueTreeRelativePaths";
@@ -136,6 +139,44 @@ export const useWorkspacesStore = defineStore("workspaces", {
       bundlesStore.resetState();
       insightsStore.resetState();
       blueprintsStore.resetState();
+    },
+
+    getTraces(query: IPaginationQuery) {
+      const params = {
+        version: 1,
+        ...query,
+      };
+
+      return axios.get<PaginatedResponse<IWorkspaceTraceDTO>>(
+        `v1/workspaces/${this.activeItemId}/traces`,
+        {
+          params,
+        }
+      );
+    },
+
+    getTracesSeries(query: {
+      from: Date;
+      to: Date;
+      precision: DatePrecision;
+      filters: {
+        userId?: number;
+      };
+    }) {
+      const { filters, ...otherQueryProperties } = query;
+
+      const params = {
+        version: 1,
+        ...otherQueryProperties,
+        filters: JSON.stringify(filters),
+      };
+
+      return axios.get<IWorkspaceActivityDataPointDTO[]>(
+        `v1/workspaces/${this.activeItemId}/traces-series`,
+        {
+          params,
+        }
+      );
     },
 
     async getBySlug(slug: string) {

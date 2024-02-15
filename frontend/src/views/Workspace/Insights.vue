@@ -34,7 +34,7 @@
 import {
   Events as MembersIcon,
   SecurityServices as LogsIcon,
-  ChartLine as ActivityChartsIcon,
+  ChartLine as ActivityIcon,
 } from "@vicons/carbon";
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
@@ -47,6 +47,7 @@ import { useInsightsStore } from "@/store/insights";
 import { defineComputed } from "@/helpers/defineComputed";
 import { Permission } from "@shared/types/enums/Permission";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
+import LogsTab from "@/components/workspace/insights/LogsTab/Index.vue";
 import MembersTab from "@/components/workspace/insights/MembersTab/Index.vue";
 
 const router = useRouter();
@@ -67,16 +68,16 @@ const menuOptions: (MenuOption & { component: object | null })[] = [
     component: MembersTab,
   },
   {
-    key: "activity-charts",
-    label: "Activity charts",
-    icon: renderIcon(ActivityChartsIcon),
+    key: "activity",
+    label: "Activity",
+    icon: renderIcon(ActivityIcon),
     component: null,
   },
   {
     key: "log",
-    label: "Log",
+    label: "Logs",
     icon: renderIcon(LogsIcon),
-    component: null,
+    component: LogsTab,
   },
 ];
 
