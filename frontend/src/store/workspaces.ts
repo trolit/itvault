@@ -156,8 +156,8 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     getTracesSeries(query: {
-      from: Date;
-      to: Date;
+      from: string;
+      to: string;
       precision: DatePrecision;
       filters: {
         userId?: number;
