@@ -6,9 +6,9 @@ export namespace GetTracesSeriesControllerTypes {
     export type Params = { id: number };
 
     export type Query = {
-      from: Date;
+      from: number;
 
-      to: Date;
+      to: number;
 
       precision: DatePrecision;
 
