@@ -77,6 +77,6 @@ function onPredefinedOptionSelect(option: string) {
 }
 
 const isCustomOptionActive = computed(() => {
-  return !!options.find(option => option.value === props.option);
+  return props.option === "custom";
 });
 </script>
