@@ -20,6 +20,10 @@ const querySchema: SuperSchema.Fragment<GetTracesSeriesControllerTypes.v1.Query>
     to: useUnixTimestampInSecondsSchema().test((toAsUnix, ctx) => {
       const fromAsUnix = ctx.parent.from;
 
+      if (isNaN(fromAsUnix)) {
+        return true;
+      }
+
       if (toAsUnix <= fromAsUnix) {
         return ctx.createError({
           message: setYupError(
