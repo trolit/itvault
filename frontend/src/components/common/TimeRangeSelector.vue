@@ -1,8 +1,9 @@
 <template>
-  <n-element>
+  <n-space>
     <n-select
       :value="option"
       :options="options"
+      :consistent-menu-width="false"
       @update:value="onPredefinedOptionSelect"
     />
 
@@ -11,13 +12,13 @@
       :value="range"
       type="datetimerange"
       :default-time="['00:00:00', '23:59:59']"
-      @update:value="$emit('update-range', $event)"
+      @update:value="onRangeSelect"
     />
-  </n-element>
+  </n-space>
 </template>
 
 <script setup lang="ts">
-import { NSelect, NElement, NDatePicker } from "naive-ui";
+import { NSelect, NSpace, NDatePicker } from "naive-ui";
 
 import { useDateService } from "@/services/useDateService";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
@@ -70,10 +71,14 @@ function onPredefinedOptionSelect(option: string) {
   if (option !== "custom") {
     const [unit, value] = option.split("-");
 
-    emits("update-range", dateService.unixRange(parseInt(value), unit));
+    emits("update-range", dateService.toUnixRange(parseInt(value), unit));
   }
 
   emits("update-option", option);
+}
+
+function onRangeSelect(range: [number, number]) {
+  emits("update-range", dateService.rangeToUnix(range));
 }
 
 const isCustomOptionActive = computed(() => {
