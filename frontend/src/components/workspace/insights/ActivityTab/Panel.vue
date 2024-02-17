@@ -4,8 +4,8 @@
 
     <time-range-selector
       :option="activityTabData.timeRangeOption"
-      :range="range"
-      @update-option="onOptionUpdate"
+      :range="rangeInMilliseconds"
+      @update-option="activityTabData.timeRangeOption = $event"
       @update-range="insightsStore.setTimeRange($event)"
     />
   </div>
@@ -19,9 +19,5 @@ import TimeRangeSelector from "@/components/common/TimeRangeSelector.vue";
 
 const insightsStore = useInsightsStore();
 
-const { activityTabData, range } = storeToRefs(insightsStore);
-
-function onOptionUpdate(option: string) {
-  activityTabData.value.timeRangeOption = option;
-}
+const { activityTabData, rangeInMilliseconds } = storeToRefs(insightsStore);
 </script>
