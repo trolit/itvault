@@ -20,17 +20,19 @@ export const useDateService = () => ({
 
   now: () => dayjs(),
 
-  unixRange: (
-    amount: number,
-    unit: string | ManipulateType
-  ): [number, number] => {
+  dateToUnix: (date: string | number) => dayjs(date).unix(),
+
+  toUnixRange(amount: number, unit: string | ManipulateType): [number, number] {
     const to = dayjs();
     const from = to.subtract(amount, <ManipulateType>unit);
 
     return [from.unix(), to.unix()];
   },
 
-  unixToUtcUnix: (dateInUnix: number) => dayjs(dateInUnix).utc().unix(),
+  rangeToUnix: (range: [number, number]): [number, number] => [
+    dayjs(range[0]).unix(),
+    dayjs(range[1]).unix(),
+  ],
 
   endOf: (unit: UnitType) => dayjs().endOf(unit),
 
