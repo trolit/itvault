@@ -5,10 +5,7 @@ import { GetTracesSeriesControllerTypes } from "types/controllers/Workspace/GetT
 
 import { Di } from "@enums/Di";
 import { DatePrecision } from "@shared/types/enums/DatePrecision";
-import {
-  INSIGHTS_ACTIVITY_UNIT,
-  INSIGHTS_ACTIVITY_MAX_DIFF,
-} from "@shared/constants/config";
+import { INSIGHTS_ACTIVITY_MAX_DIFF } from "@shared/constants/config";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -34,20 +31,21 @@ const querySchema: SuperSchema.Fragment<GetTracesSeriesControllerTypes.v1.Query>
 
       const dateService = getInstanceOf<IDateService>(Di.DateService);
 
+      const unit = "days";
       const from = dateService.parse(fromAsUnix).toISOString();
       const to = dateService.parse(toAsUnix).toISOString();
 
       const diff = dateService.getDifference({
         from,
         to,
-        unit: INSIGHTS_ACTIVITY_UNIT,
+        unit,
       });
 
       if (diff > INSIGHTS_ACTIVITY_MAX_DIFF) {
         return ctx.createError({
           message: setYupError(
             CUSTOM_MESSAGES.DATE.MAX_DIFFERENCE,
-            `${INSIGHTS_ACTIVITY_MAX_DIFF} ${INSIGHTS_ACTIVITY_UNIT}`,
+            `${INSIGHTS_ACTIVITY_MAX_DIFF} ${unit}`,
             diff
           ),
         });
