@@ -9,6 +9,7 @@ export const CUSTOM_MESSAGES = {
     MIN_CHARACTERS: "Should include at least %s characters.",
     MAX_CHARACTERS: "Should include up to %s characters.",
     MIN_MAX_CHARACTERS: "Should include from %s to %s characters.",
+    SHOULD_BE: "Should be %s",
     SHOULD_START_WITH: "Should start with %s",
     SHOULD_NOT_END_WITH: "Should not end with %s",
     SHOULD_BE_GREATER_THAN: "Should be greater than %s",
