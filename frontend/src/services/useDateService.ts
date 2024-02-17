@@ -1,7 +1,14 @@
+import dayjs, {
+  Dayjs,
+  type UnitType,
+  type UnitTypeLong,
+  type ManipulateType,
+} from "dayjs";
+import utc from "dayjs/plugin/utc";
 import dayOfYear from "dayjs/plugin/dayOfYear";
 import relativeTime from "dayjs/plugin/relativeTime";
-import dayjs, { type UnitTypeLong, type UnitType, Dayjs } from "dayjs";
 
+dayjs.extend(utc);
 dayjs.extend(dayOfYear);
 dayjs.extend(relativeTime);
 
@@ -13,10 +20,26 @@ export const useDateService = () => ({
 
   now: () => dayjs(),
 
+  unixRange: (
+    amount: number,
+    unit: string | ManipulateType
+  ): [number, number] => {
+    const to = dayjs();
+    const from = to.subtract(amount, <ManipulateType>unit);
+
+    return [from.unix(), to.unix()];
+  },
+
+  unixToUtcUnix: (dateInUnix: number) => dayjs(dateInUnix).utc().unix(),
+
   endOf: (unit: UnitType) => dayjs().endOf(unit),
+
+  subtract: (date: Dayjs, amount: number, unit: string | ManipulateType) =>
+    date.subtract(amount, <ManipulateType>unit),
 
   date: (date: string) => {
     return {
+      parse: () => dayjs(date),
       isSame: (dateToCompare: string) => dayjs(date).isSame(dateToCompare),
       isAfter: (dateToCompare: string) => dayjs(date).isAfter(dateToCompare),
       isBefore: (dateToCompare: string) => dayjs(date).isBefore(dateToCompare),
