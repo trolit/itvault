@@ -20,11 +20,22 @@ import { useUnixTimestampInSecondsSchema } from "@schemas/common/useUnixTimestam
 const querySchema: SuperSchema.Fragment<GetTracesSeriesControllerTypes.v1.Query> =
   object({
     from: useUnixTimestampInSecondsSchema(),
-    to: useUnixTimestampInSecondsSchema().test((value, ctx) => {
+    to: useUnixTimestampInSecondsSchema().test((toAsUnix, ctx) => {
+      const fromAsUnix = ctx.parent.from;
+
+      if (toAsUnix <= fromAsUnix) {
+        return ctx.createError({
+          message: setYupError(
+            CUSTOM_MESSAGES.GENERAL.SHOULD_BE_GREATER_THAN,
+            fromAsUnix
+          ),
+        });
+      }
+
       const dateService = getInstanceOf<IDateService>(Di.DateService);
 
-      const from = dateService.parse(ctx.parent.from).toISOString();
-      const to = dateService.parse(value).toISOString();
+      const from = dateService.parse(fromAsUnix).toISOString();
+      const to = dateService.parse(toAsUnix).toISOString();
 
       const diff = dateService.getDifference({
         from,
