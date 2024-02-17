@@ -45,6 +45,30 @@
             }
           }
 
+          .activity-tab {
+            width: 100%;
+
+            .wrapper {
+              width: 100%;
+              height: calc(var(--insights-page-height));
+
+              .panel {
+                height: 100px;
+              }
+
+              .chart-card {
+                height: calc(var(--insights-page-height) - 100px);
+                overflow: hidden;
+                margin: 0;
+                padding: 0;
+
+                .n-card__content {
+                  padding: 0;
+                }
+              }
+            }
+          }
+
           .members-tab {
             width: 100%;
             margin: 0 20px;
