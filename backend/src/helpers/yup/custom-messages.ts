@@ -9,8 +9,10 @@ export const CUSTOM_MESSAGES = {
     MIN_CHARACTERS: "Should include at least %s characters.",
     MAX_CHARACTERS: "Should include up to %s characters.",
     MIN_MAX_CHARACTERS: "Should include from %s to %s characters.",
+    SHOULD_BE: "Should be %s",
     SHOULD_START_WITH: "Should start with %s",
     SHOULD_NOT_END_WITH: "Should not end with %s",
+    SHOULD_BE_GREATER_THAN: "Should be greater than %s",
     NOT_EDITABLE: "This %s is not editable.",
     NOT_AVAILABLE: "This %s is not available.",
     NOT_ASSIGNABLE: "This %s is not assignable.",
@@ -21,6 +23,8 @@ export const CUSTOM_MESSAGES = {
 
   DATE: {
     MAX_DIFFERENCE: "Max allowed difference is %s (provided %s)",
+    NOT_UNIX_TIMESTAMP_IN_SECONDS:
+      "Unix format in seconds is required (e.g. 1708168503)",
   },
 
   BLUEPRINTS: {

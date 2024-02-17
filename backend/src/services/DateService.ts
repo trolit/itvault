@@ -34,7 +34,26 @@ export class DateService implements IDateService {
     return expiresAt.format();
   }
 
-  getDifference(arg: { from: Date; to: Date; unit: UnitType }): number {
+  parse(date: string | number): {
+    toDate: () => Date;
+    toISOString: () => string;
+  } {
+    // @NOTE if unix, convert seconds to milliseconds
+    const fixedDate = typeof date === "number" ? date * 1000 : date;
+
+    const parsedDate = dayjs(fixedDate);
+
+    return {
+      toISOString: () => parsedDate.toISOString(),
+      toDate: () => parsedDate.toDate(),
+    };
+  }
+
+  getDifference(arg: {
+    from: string | Date | number;
+    to: string | Date | number;
+    unit: UnitType;
+  }): number {
     const { from, to, unit } = arg;
 
     return dayjs(to).diff(from, unit);

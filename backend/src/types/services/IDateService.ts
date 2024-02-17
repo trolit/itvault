@@ -6,7 +6,16 @@ export interface IDateService {
 
   getExpirationDate(expiration: string, separator?: string): string | null;
 
-  getDifference(arg: { from: Date; to: Date; unit: UnitType }): number;
+  parse(date: string | number): {
+    toDate: () => Date;
+    toISOString: () => string;
+  };
+
+  getDifference(arg: {
+    from: string | Date | number;
+    to: string | Date | number;
+    unit: UnitType;
+  }): number;
 
   getUniqueDatesToPrecision(
     dates: string[],
