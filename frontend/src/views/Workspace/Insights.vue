@@ -49,6 +49,7 @@ import { Permission } from "@shared/types/enums/Permission";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import LogsTab from "@/components/workspace/insights/LogsTab/Index.vue";
 import MembersTab from "@/components/workspace/insights/MembersTab/Index.vue";
+import ActivityTab from "@/components/workspace/insights/ActivityTab/Index.vue";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -71,7 +72,7 @@ const menuOptions: (MenuOption & { component: object | null })[] = [
     key: "activity",
     label: "Activity",
     icon: renderIcon(ActivityIcon),
-    component: null,
+    component: ActivityTab,
   },
   {
     key: "log",
