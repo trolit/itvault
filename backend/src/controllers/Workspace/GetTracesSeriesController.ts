@@ -1,6 +1,7 @@
 import { Between } from "typeorm";
 import { autoInjectable, inject } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { IDateService } from "types/services/IDateService";
 import { IInsightsService } from "types/services/IInsightsService";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 import { IWorkspaceTraceRepository } from "types/repositories/IWorkspaceTraceRepository";
@@ -18,7 +19,9 @@ export class GetTracesSeriesController extends BaseController {
     @inject(Di.WorkspaceTraceRepository)
     private _workspaceTraceRepository: IWorkspaceTraceRepository,
     @inject(Di.InsightsService)
-    private _insightsService: IInsightsService
+    private _insightsService: IInsightsService,
+    @inject(Di.DateService)
+    private _dateService: IDateService
   ) {
     super();
   }
@@ -38,8 +41,11 @@ export class GetTracesSeriesController extends BaseController {
   ) {
     const {
       params: { id },
-      query: { from, to, precision, filters },
+      query: { from: unixFrom, to: unixTo, precision, filters },
     } = request;
+
+    const from = this._dateService.parse(unixFrom).toDate();
+    const to = this._dateService.parse(unixTo).toDate();
 
     const data = await this._workspaceTraceRepository.getAll({
       where: {
