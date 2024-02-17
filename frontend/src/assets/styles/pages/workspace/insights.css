@@ -53,11 +53,15 @@
               height: calc(var(--insights-page-height));
 
               .panel {
-                height: 100px;
+                height: 60px;
+                display: flex;
+                margin: 0 10px;
+                column-gap: 10px;
+                align-items: center;
               }
 
               .chart-card {
-                height: calc(var(--insights-page-height) - 100px);
+                height: calc(var(--insights-page-height) - 60px);
                 overflow: hidden;
                 margin: 0;
                 padding: 0;
