@@ -3,6 +3,7 @@
     <n-select
       :value="option"
       :options="options"
+      :disabled="disabled"
       :consistent-menu-width="false"
       @update:value="onPredefinedOptionSelect"
     />
@@ -11,6 +12,7 @@
     <n-date-picker
       v-if="isCustomOptionActive"
       :value="range"
+      :disabled="disabled"
       type="datetimerange"
       :default-time="['00:00:00', '23:59:59']"
       @update:value="onRangeSelect"
@@ -27,6 +29,8 @@ import { computed } from "vue";
 
 interface IProps {
   option: string;
+
+  disabled?: boolean;
 
   range: [number, number];
 }
