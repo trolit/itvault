@@ -84,7 +84,6 @@
               :value="roleId"
               :options="roles"
               :loading="isLoadingRoles"
-              :consistent-menu-width="false"
               @select="roleId = $event"
               @onBlur="$emit('select-blur')"
               @filter="$emit('select-filter', $event)"

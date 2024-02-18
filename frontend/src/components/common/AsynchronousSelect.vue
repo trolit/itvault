@@ -3,6 +3,7 @@
     remote
     show-checkmark
     filterable
+    :consistent-menu-width="false"
     :value="fixedValue"
     :options="options"
     :reset-menu-on-options-change="false"
