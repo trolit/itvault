@@ -25,17 +25,27 @@ export class InsightsService implements IInsightsService {
     }
 
     const arrayOfX = this._dateService.getUniqueDatesToPrecision(
-      data.map(item => item.createdAt.toISOString()),
+      data.map(item => item.createdAt),
       precision
     );
+
+    arrayOfX.sort((date1, date2) => {
+      const date1Time = new Date(date1).getTime();
+      const date2Time = new Date(date2).getTime();
+
+      return date1Time - date2Time;
+    });
 
     const dataPoints: IWorkspaceActivityDataPointDTO[] = [];
 
     for (const x of arrayOfX) {
+      const matchingData = data.filter(item =>
+        this._dateService.parse(item.createdAt).isSame(x, precision)
+      );
+
       dataPoints.push({
         x,
-        y: data.filter(item => item.createdAt.toISOString().startsWith(x))
-          .length,
+        y: matchingData.length,
       });
     }
 
