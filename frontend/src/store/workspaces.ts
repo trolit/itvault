@@ -20,6 +20,7 @@ import isDirectory from "@/helpers/isDirectory";
 import { useBlueprintsStore } from "./blueprints";
 import type { IFileDTO } from "@shared/types/DTOs/File";
 import { useDateService } from "@/services/useDateService";
+import type { IContributorDTO } from "@shared/types/DTOs/User";
 import { silentlyUpdateUrl } from "@/helpers/silentlyUpdateUrl";
 import createFileTreeOption from "@/helpers/createFileTreeOption";
 import type { IDirectoryDTO } from "@shared/types/DTOs/Directory";
@@ -139,6 +140,17 @@ export const useWorkspacesStore = defineStore("workspaces", {
       bundlesStore.resetState();
       insightsStore.resetState();
       blueprintsStore.resetState();
+    },
+
+    getContributors() {
+      const params = {
+        version: 1,
+      };
+
+      return axios.get<IContributorDTO[]>(
+        `v1/workspaces/${this.activeItemId}/contributors`,
+        { params }
+      );
     },
 
     getTraces(query: IPaginationQuery) {
