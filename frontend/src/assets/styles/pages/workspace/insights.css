@@ -53,15 +53,19 @@
               height: calc(var(--insights-page-height));
 
               .panel {
-                height: 60px;
+                height: 80px;
                 display: flex;
                 margin: 0 10px;
                 column-gap: 10px;
                 align-items: center;
+
+                .n-select {
+                  min-width: 190px;
+                }
               }
 
               .chart-card {
-                height: calc(var(--insights-page-height) - 60px);
+                height: calc(var(--insights-page-height) - 80px);
                 overflow: hidden;
                 margin: 0;
                 padding: 0;
