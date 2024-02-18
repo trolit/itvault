@@ -27,6 +27,8 @@ const DEFAULT_LOGS_TAB_DATA = {
 };
 
 const DEFAULT_ACTIVITY_TAB_DATA = {
+  isGeneralSeriesVisible: true,
+  isGridVisible: true,
   timeRangeOption: "days-30",
   precision: DatePrecision.Days,
   fromInSeconds: 0,
@@ -51,6 +53,8 @@ interface IState {
     pagination: IPaginationQuery;
   };
   activityTabData: {
+    isGeneralSeriesVisible: boolean;
+    isGridVisible: boolean;
     timeRangeOption: string;
     precision: DatePrecision;
     fromInSeconds: number;
@@ -75,6 +79,7 @@ export const useInsightsStore = defineStore("insights", {
   }),
 
   getters: {
+    GENERAL_SERIES_NAME: () => "General",
     contributorsOptions(): PrimitiveSelectOption[] {
       return this.contributors.map(contributor => ({
         label: contributor.fullName,
@@ -89,7 +94,7 @@ export const useInsightsStore = defineStore("insights", {
 
       const result = [
         {
-          name: "General",
+          name: this.GENERAL_SERIES_NAME,
           data: commonData,
         },
       ];
@@ -111,6 +116,20 @@ export const useInsightsStore = defineStore("insights", {
       const { fromInSeconds, toInSeconds } = this.activityTabData;
 
       return [fromInSeconds * 1000, toInSeconds * 1000];
+    },
+    currentFormat(): string {
+      const baseFormat = `D.MM`;
+
+      switch (this.activityTabData.precision) {
+        case DatePrecision.Minutes:
+          return `${baseFormat} HH:mm`;
+        case DatePrecision.Hours:
+          return `${baseFormat} Ha`;
+        case DatePrecision.Days:
+          return `${baseFormat}`;
+        case DatePrecision.Months:
+          return `MMM YYYY`;
+      }
     },
   },
 
@@ -174,28 +193,6 @@ export const useInsightsStore = defineStore("insights", {
       }
 
       this.activityTabData.commonData = data;
-    },
-
-    onLegendClick(seriesIndex: number) {
-      const serie = this.series[seriesIndex];
-
-      const contributorIndex = this.activeContributorIds.findIndex(
-        contributorId => this.getSeriesName(contributorId) === serie.name
-      );
-
-      if (~contributorIndex) {
-        this.activeContributorIds.splice(contributorIndex, 1);
-
-        return;
-      }
-
-      const userData = this.activityTabData.usersData.find(
-        userData => this.getSeriesName(userData.userId) === serie.name
-      );
-
-      if (userData) {
-        this.activeContributorIds.push(userData.userId);
-      }
     },
   },
 });
