@@ -5,9 +5,11 @@ import type {
   IWorkspaceActivityDataPointDTO,
 } from "@shared/types/DTOs/Workspace";
 import { useDateService } from "@/services/useDateService";
+import { DatePrecision } from "@shared/types/enums/DatePrecision";
 import type { PairedSeriesPoint } from "@/types/PairedSeriesPoint";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { IContributorDTO, IUserDTO } from "@shared/types/DTOs/User";
+import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
 
 const DEFAULT_MEMBERS_TAB_DATA = {
   total: 0,
@@ -26,6 +28,7 @@ const DEFAULT_LOGS_TAB_DATA = {
 
 const DEFAULT_ACTIVITY_TAB_DATA = {
   timeRangeOption: "days-30",
+  precision: DatePrecision.Days,
   fromInSeconds: 0,
   toInSeconds: 0,
   commonData: [],
@@ -35,6 +38,7 @@ const DEFAULT_ACTIVITY_TAB_DATA = {
 interface IState {
   activeKey: string;
   contributors: IContributorDTO[];
+  activeContributorIds: number[];
 
   membersTabData: {
     total: number;
@@ -48,6 +52,7 @@ interface IState {
   };
   activityTabData: {
     timeRangeOption: string;
+    precision: DatePrecision;
     fromInSeconds: number;
     toInSeconds: number;
     commonData: IWorkspaceActivityDataPointDTO[];
@@ -62,6 +67,7 @@ export const useInsightsStore = defineStore("insights", {
   state: (): IState => ({
     activeKey: "members",
     contributors: [],
+    activeContributorIds: [],
 
     membersTabData: { ...DEFAULT_MEMBERS_TAB_DATA },
     logsTabData: { ...DEFAULT_LOGS_TAB_DATA },
@@ -69,7 +75,16 @@ export const useInsightsStore = defineStore("insights", {
   }),
 
   getters: {
-    series(): { name: string; data: PairedSeriesPoint<string, number>[] }[] {
+    contributorsOptions(): PrimitiveSelectOption[] {
+      return this.contributors.map(contributor => ({
+        label: contributor.fullName,
+        value: contributor.id,
+      }));
+    },
+    series(): {
+      name: string;
+      data: PairedSeriesPoint<string, number>[];
+    }[] {
       const { commonData, usersData } = this.activityTabData;
 
       const result = [
@@ -100,6 +115,12 @@ export const useInsightsStore = defineStore("insights", {
   },
 
   actions: {
+    getSeriesName(userId: number) {
+      const user = this.contributors.find(user => user.id === userId);
+
+      return user ? `${user.fullName}` : "unknown";
+    },
+
     resetState() {
       this.activeKey = "members";
 
@@ -108,6 +129,12 @@ export const useInsightsStore = defineStore("insights", {
       this.logsTabData = { ...DEFAULT_LOGS_TAB_DATA };
 
       this.activityTabData = { ...DEFAULT_ACTIVITY_TAB_DATA };
+    },
+
+    wasContributorDataAlreadyFetched(userId: number) {
+      return !!this.activityTabData.usersData.find(
+        data => data.userId === userId
+      );
     },
 
     setTimeRange(range?: [number, number]) {
@@ -147,6 +174,28 @@ export const useInsightsStore = defineStore("insights", {
       }
 
       this.activityTabData.commonData = data;
+    },
+
+    onLegendClick(seriesIndex: number) {
+      const serie = this.series[seriesIndex];
+
+      const contributorIndex = this.activeContributorIds.findIndex(
+        contributorId => this.getSeriesName(contributorId) === serie.name
+      );
+
+      if (~contributorIndex) {
+        this.activeContributorIds.splice(contributorIndex, 1);
+
+        return;
+      }
+
+      const userData = this.activityTabData.usersData.find(
+        userData => this.getSeriesName(userData.userId) === serie.name
+      );
+
+      if (userData) {
+        this.activeContributorIds.push(userData.userId);
+      }
     },
   },
 });
