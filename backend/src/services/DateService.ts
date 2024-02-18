@@ -7,11 +7,11 @@ import { DatePrecision } from "@shared/types/enums/DatePrecision";
 
 dayjs.extend(utc);
 
-const formatters = {
-  [DatePrecision.Minutes]: "YYYY-MM-DDTHH:mm",
-  [DatePrecision.Hours]: "YYYY-MM-DDTHH:00",
-  [DatePrecision.Days]: "YYYY-MM-DDT00:00",
-  [DatePrecision.Months]: "YYYY-MM-01T00:00",
+const precisionFormatters = {
+  [DatePrecision.Minutes]: "YYYY-MM-DDTHH:mmZ",
+  [DatePrecision.Hours]: "YYYY-MM-DDTHH:00Z",
+  [DatePrecision.Days]: "YYYY-MM-DDT00:00Z",
+  [DatePrecision.Months]: "YYYY-MM-01T00:00Z",
 };
 
 @injectable()
@@ -78,7 +78,9 @@ export class DateService implements IDateService {
     const uniqueDates: string[] = [];
 
     for (const date of dates) {
-      const formattedDate = dayjs(date).utc().format(formatters[precision]);
+      const formattedDate = dayjs(date)
+        .utc()
+        .format(precisionFormatters[precision]);
 
       if (!uniqueDates.includes(formattedDate)) {
         uniqueDates.push(formattedDate);
