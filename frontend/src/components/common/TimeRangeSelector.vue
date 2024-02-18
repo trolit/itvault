@@ -7,6 +7,7 @@
       @update:value="onPredefinedOptionSelect"
     />
 
+    <!-- @TODO investigate if it's possible to limit amount of taken days -->
     <n-date-picker
       v-if="isCustomOptionActive"
       :value="range"
