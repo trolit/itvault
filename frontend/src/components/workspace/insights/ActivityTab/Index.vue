@@ -2,9 +2,11 @@
   <div class="activity-tab">
     <div class="wrapper">
       <panel
+        :is-loading="isLoading"
         @update-range="onRangeUpdate"
         @update-precision="onPrecisionUpdate"
         @toggle-contributors="onContributorsToggle"
+        @toggle-general-series="onToggleGeneralSeries"
       />
 
       <n-card bordered class="chart-card">
@@ -17,7 +19,6 @@
           type="line"
           :options="options"
           :series="series"
-          @legend-click="onLegendClick"
         />
       </n-card>
     </div>
@@ -36,9 +37,11 @@ import { useInsightsStore } from "@/store/insights";
 import { useWorkspacesStore } from "@/store/workspaces";
 import { THEME_LIGHT } from "@/assets/constants/themes";
 import ApexChart from "@/components/common/ApexChart.vue";
+import { useDateService } from "@/services/useDateService";
 import LoadingSection from "@/components/common/LoadingSection.vue";
 import type { DatePrecision } from "@shared/types/enums/DatePrecision";
 
+const dateService = useDateService();
 const generalStore = useGeneralStore();
 const insightsStore = useInsightsStore();
 const workspacesStore = useWorkspacesStore();
@@ -72,6 +75,9 @@ async function fetchAll(userId?: number) {
       data,
       userId,
     });
+
+    // @TMP keep user selections
+    activityTabData.value.isGeneralSeriesVisible = true;
   } catch (error) {
     console.error(error);
 
@@ -85,27 +91,27 @@ const options: ComputedRef<ApexOptions> = computed(() => ({
   theme: {
     mode: generalStore.theme === THEME_LIGHT ? "light" : "dark",
   },
-  // tooltip: {
-  //   x: {
-  //     format: "dd MMM",
-  //   },
-  // },
+  tooltip: {
+    x: {
+      format: insightsStore.currentFormat,
+    },
+  },
   legend: {
     show: true,
-    showForSingleSeries: true,
-    position: "left",
+    onItemClick: {
+      toggleDataSeries: false,
+    },
   },
   stroke: {
-    show: true,
+    width: 5,
     curve: "smooth",
-    lineCap: "square",
-    colors: undefined,
-    width: 3,
-    dashArray: 0,
+  },
+  fill: {
+    type: "solid",
+    colors: ["transparent"],
   },
   grid: {
-    show: true,
-    borderColor: "#90A4AE",
+    show: activityTabData.value.isGridVisible,
     strokeDashArray: 2,
     xaxis: {
       lines: {
@@ -113,6 +119,7 @@ const options: ComputedRef<ApexOptions> = computed(() => ({
       },
     },
     yaxis: {
+      min: 0,
       lines: {
         show: true,
       },
@@ -126,31 +133,41 @@ const options: ComputedRef<ApexOptions> = computed(() => ({
       enabled: false,
     },
   },
-  // xaxis: {
-  //   type: "datetime",
-  //   labels: {
-  //     datetimeFormatter: {
-  //       year: "yyyy",
-  //       month: "MMM 'yy",
-  //       day: "dd MMM",
-  //       hour: "HH:mm",
-  //     },
-  //   },
-  // },
+  yaxis: {
+    min: 0,
+    title: {
+      text: "Events",
+      style: {
+        fontWeight: "none",
+      },
+    },
+    labels: {
+      formatter(value) {
+        return Math.floor(value).toString();
+      },
+    },
+  },
+  xaxis: {
+    type: "datetime",
+    tooltip: {
+      enabled: false,
+    },
+    labels: {
+      formatter(value) {
+        return dateService.format(value, insightsStore.currentFormat);
+      },
+    },
+  },
 }));
 
-function onLegendClick(chart: ApexCharts, seriesIndex: number) {
-  if (seriesIndex === 0) {
-    return;
-  }
-
-  insightsStore.onLegendClick(seriesIndex);
-}
-
-function onRangeUpdate() {
+function resetChartData() {
   activityTabData.value.commonData = [];
   activityTabData.value.usersData = [];
   activeContributorIds.value = [];
+}
+
+function onRangeUpdate() {
+  resetChartData();
 
   fetchAll();
 }
@@ -158,9 +175,7 @@ function onRangeUpdate() {
 function onPrecisionUpdate(precision: string) {
   activityTabData.value.precision = precision as DatePrecision;
 
-  activityTabData.value.commonData = [];
-  activityTabData.value.usersData = [];
-  activeContributorIds.value = [];
+  resetChartData();
 
   fetchAll();
 }
@@ -176,20 +191,55 @@ function onContributorsToggle(userIds: number[]) {
     fetchAll(latestUserId);
   }
 
-  insightsStore.activeContributorIds = userIds;
+  activeContributorIds.value = userIds;
 
   for (const item of activityTabData.value.usersData) {
     const seriesName = insightsStore.getSeriesName(item.userId);
 
-    toggleSeries(seriesName);
+    callSeriesAction(
+      seriesName,
+      activeContributorIds.value.includes(item.userId)
+        ? { show: true }
+        : { hide: true }
+    );
   }
 }
 
-function toggleSeries(seriesName: string) {
+function onToggleGeneralSeries(value?: boolean) {
+  const show =
+    typeof value === "boolean"
+      ? value
+      : !activityTabData.value.isGeneralSeriesVisible;
+
+  activityTabData.value.isGeneralSeriesVisible = show;
+
+  callSeriesAction(insightsStore.GENERAL_SERIES_NAME, { toggle: true });
+}
+
+function callSeriesAction(
+  name: string,
+  action: { show?: boolean; hide?: boolean; toggle?: boolean }
+) {
   const chart = ApexCharts.getChartByID("activity-tab-chart");
 
-  if (chart) {
-    chart.toggleSeries(seriesName);
+  if (!chart) {
+    return;
+  }
+
+  if (action.show) {
+    chart.showSeries(name);
+
+    return;
+  }
+
+  if (action.hide) {
+    chart.hideSeries(name);
+
+    return;
+  }
+
+  if (action.toggle) {
+    chart.toggleSeries(name);
   }
 }
 </script>
