@@ -6,9 +6,13 @@ export interface IDateService {
 
   getExpirationDate(expiration: string, separator?: string): string | null;
 
-  parse(date: string | number): {
+  parse(date: string | number | Date): {
     toDate: () => Date;
     toISOString: () => string;
+    isSame: (
+      dateToCompareTo: string | number | Date,
+      precision: DatePrecision
+    ) => boolean;
   };
 
   getDifference(arg: {
@@ -18,7 +22,7 @@ export interface IDateService {
   }): number;
 
   getUniqueDatesToPrecision(
-    dates: string[],
+    dates: Date[] | string[],
     precision: DatePrecision
   ): string[];
 }
