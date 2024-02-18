@@ -16,12 +16,13 @@
 
       <asynchronous-select
         multiple
+        :disabled="isLoading || isFetchingContributors"
         :value="activeContributorIds"
         :options="contributorsOptions"
         :filterable="false"
         :max-tag-count="1"
         placeholder="Select contributor(s)"
-        :loading="isLoadingContributors"
+        :loading="isFetchingContributors"
         @update-value="$emit('toggle-contributors', $event)"
       />
     </div>
@@ -30,10 +31,11 @@
       <n-text :depth="3"><small>Range</small></n-text>
 
       <time-range-selector
+        :disabled="isLoading"
         :option="activityTabData.timeRangeOption"
         :range="rangeInMilliseconds"
         @update-option="activityTabData.timeRangeOption = $event"
-        @update-range="onUpdateRange"
+        @update-range="onRangeUpdate"
       />
     </div>
 
@@ -41,6 +43,7 @@
       <n-text :depth="3"><small>Precision</small></n-text>
 
       <time-precision-selector
+        :disabled="isLoading"
         :option="activityTabData.precision"
         @update-option="$emit('update-precision', $event)"
       />
@@ -60,6 +63,12 @@ import TimeRangeSelector from "@/components/common/TimeRangeSelector.vue";
 import AsynchronousSelect from "@/components/common/AsynchronousSelect.vue";
 import TimePrecisionSelector from "@/components/common/TimePrecisionSelector.vue";
 
+interface IProps {
+  isLoading: boolean;
+}
+
+defineProps<IProps>();
+
 const emits = defineEmits<{
   (event: "update-range"): void;
   (event: "toggle-general-series"): void;
@@ -71,13 +80,13 @@ const generalStore = useGeneralStore();
 const insightsStore = useInsightsStore();
 const workspacesStore = useWorkspacesStore();
 
-const isLoadingContributors = ref(false);
 const {
   activityTabData,
   rangeInMilliseconds,
   contributorsOptions,
   activeContributorIds,
 } = storeToRefs(insightsStore);
+const isFetchingContributors = ref(false);
 
 onBeforeMount(() => {
   if (!insightsStore.contributors.length) {
@@ -85,18 +94,12 @@ onBeforeMount(() => {
   }
 });
 
-function onUpdateRange(range: [number, number]) {
-  insightsStore.setTimeRange(range);
-
-  emits("update-range");
-}
-
 async function fetchContributors() {
-  if (isLoadingContributors.value) {
+  if (isFetchingContributors.value) {
     return;
   }
 
-  isLoadingContributors.value = true;
+  isFetchingContributors.value = true;
 
   try {
     const { data } = await workspacesStore.getContributors();
@@ -107,7 +110,13 @@ async function fetchContributors() {
 
     generalStore.messageProvider.error(`Failed to fetch contributors!`);
   } finally {
-    isLoadingContributors.value = false;
+    isFetchingContributors.value = false;
   }
+}
+
+function onRangeUpdate(range: [number, number]) {
+  insightsStore.setTimeRange(range);
+
+  emits("update-range");
 }
 </script>
