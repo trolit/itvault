@@ -9,9 +9,9 @@ dayjs.extend(utc);
 
 const formatters = {
   [DatePrecision.Minutes]: "YYYY-MM-DDTHH:mm",
-  [DatePrecision.Hours]: "YYYY-MM-DDTHH",
-  [DatePrecision.Days]: "YYYY-MM-DD",
-  [DatePrecision.Months]: "YYYY-MM",
+  [DatePrecision.Hours]: "YYYY-MM-DDTHH:00",
+  [DatePrecision.Days]: "YYYY-MM-DDT00:00",
+  [DatePrecision.Months]: "YYYY-MM-01T00:00",
 };
 
 @injectable()
@@ -34,18 +34,30 @@ export class DateService implements IDateService {
     return expiresAt.format();
   }
 
-  parse(date: string | number): {
+  parse(date: string | number | Date): {
     toDate: () => Date;
     toISOString: () => string;
+    isSame: (
+      dateToCompareTo: string | number | Date,
+      precision: DatePrecision
+    ) => boolean;
   } {
-    // @NOTE if unix, convert seconds to milliseconds
-    const fixedDate = typeof date === "number" ? date * 1000 : date;
+    let fixedDate = date;
+
+    // @NOTE convert seconds to milliseconds
+    if (typeof date === "number" && date.toString().length === 10) {
+      fixedDate = date * 1000;
+    }
 
     const parsedDate = dayjs(fixedDate);
 
     return {
       toISOString: () => parsedDate.toISOString(),
       toDate: () => parsedDate.toDate(),
+      isSame: (
+        dateToCompareTo: string | number | Date,
+        precision: DatePrecision
+      ) => parsedDate.isSame(dateToCompareTo, precision),
     };
   }
 
@@ -59,7 +71,10 @@ export class DateService implements IDateService {
     return dayjs(to).diff(from, unit);
   }
 
-  getUniqueDatesToPrecision(dates: string[], precision: DatePrecision) {
+  getUniqueDatesToPrecision(
+    dates: Date[] | string[],
+    precision: DatePrecision
+  ) {
     const uniqueDates: string[] = [];
 
     for (const date of dates) {
