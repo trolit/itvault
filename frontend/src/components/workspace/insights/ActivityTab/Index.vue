@@ -3,7 +3,7 @@
     <loading-section v-if="isLoading" spin-size="large" />
 
     <div v-else class="wrapper">
-      <panel />
+      <panel @update-range="fetchAll" />
 
       <n-card bordered class="chart-card">
         <apex-chart
@@ -37,7 +37,7 @@ const insightsStore = useInsightsStore();
 const workspacesStore = useWorkspacesStore();
 
 const isLoading = ref(false);
-const { activityTabData, series, rangeInUtc } = storeToRefs(insightsStore);
+const { activityTabData, series } = storeToRefs(insightsStore);
 
 onBeforeMount(() => {
   if (!activityTabData.value.commonData.length) {
@@ -54,12 +54,12 @@ async function fetchAll(userId?: number) {
 
   isLoading.value = true;
 
-  const [from, to] = rangeInUtc.value;
+  const { fromInSeconds, toInSeconds } = activityTabData.value;
 
   try {
     const { data } = await workspacesStore.getTracesSeries({
-      from,
-      to,
+      from: fromInSeconds,
+      to: toInSeconds,
       precision: DatePrecision.Days,
       filters: {},
     });

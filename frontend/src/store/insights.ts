@@ -26,8 +26,8 @@ const DEFAULT_LOGS_TAB_DATA = {
 
 const DEFAULT_ACTIVITY_TAB_DATA = {
   timeRangeOption: "days-30",
-  from: 0,
-  to: 0,
+  fromInSeconds: 0,
+  toInSeconds: 0,
   commonData: [],
   usersData: [],
 };
@@ -48,8 +48,8 @@ interface IState {
   };
   activityTabData: {
     timeRangeOption: string;
-    from: number;
-    to: number;
+    fromInSeconds: number;
+    toInSeconds: number;
     commonData: IWorkspaceActivityDataPointDTO[];
     usersData: {
       userId: number;
@@ -92,17 +92,10 @@ export const useInsightsStore = defineStore("insights", {
 
       return result;
     },
-    range(): [number, number] {
-      const { from, to } = this.activityTabData;
+    rangeInMilliseconds(): [number, number] {
+      const { fromInSeconds, toInSeconds } = this.activityTabData;
 
-      return [from, to];
-    },
-    rangeInUtc(): [number, number] {
-      const dateService = useDateService();
-
-      const { from, to } = this.activityTabData;
-
-      return [dateService.unixToUtcUnix(from), dateService.unixToUtcUnix(to)];
+      return [fromInSeconds * 1000, toInSeconds * 1000];
     },
   },
 
@@ -121,21 +114,21 @@ export const useInsightsStore = defineStore("insights", {
       let from = 0;
       let to = 0;
 
+      const dateService = useDateService();
+
       if (Array.isArray(range)) {
         from = range[0];
         to = range[1];
       } else {
-        const dateService = useDateService();
-
         const [unit, amount] = this.activityTabData.timeRangeOption.split("-");
-        const result = dateService.unixRange(parseInt(amount), unit);
+        const result = dateService.toUnixRange(parseInt(amount), unit);
 
         from = result[0];
         to = result[1];
       }
 
-      this.activityTabData.from = from;
-      this.activityTabData.to = to;
+      this.activityTabData.fromInSeconds = from;
+      this.activityTabData.toInSeconds = to;
     },
 
     appendSeriesData(arg: {
