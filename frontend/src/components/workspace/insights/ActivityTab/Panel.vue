@@ -1,5 +1,16 @@
 <template>
   <div class="panel">
+    <n-checkbox
+      :checked="activityTabData.isGeneralSeriesVisible"
+      @update:checked="$emit('toggle-general-series')"
+    >
+      General series
+    </n-checkbox>
+
+    <n-checkbox v-model:checked="activityTabData.isGridVisible">
+      Grid
+    </n-checkbox>
+
     <div>
       <n-text :depth="3"><small>Contributor(s)</small></n-text>
 
@@ -34,17 +45,13 @@
         @update-option="$emit('update-precision', $event)"
       />
     </div>
-
-    <!-- @TODO add option to hide grid -->
-
-    <!-- @TODO add option to hide legend -->
   </div>
 </template>
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
-import { NText } from "naive-ui";
+import { NText, NCheckbox } from "naive-ui";
 
 import { useGeneralStore } from "@/store/general";
 import { useInsightsStore } from "@/store/insights";
@@ -55,6 +62,7 @@ import TimePrecisionSelector from "@/components/common/TimePrecisionSelector.vue
 
 const emits = defineEmits<{
   (event: "update-range"): void;
+  (event: "toggle-general-series"): void;
   (event: "update-precision", unit: string): void;
   (event: "toggle-contributors", userIds: number[]): void;
 }>();
