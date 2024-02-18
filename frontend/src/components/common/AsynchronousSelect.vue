@@ -20,7 +20,7 @@ import { defineComputed } from "@/helpers/defineComputed";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
 
 interface IProps {
-  value: string | number | null;
+  value: string | number | number[] | string[] | null;
 
   options: PrimitiveSelectOption[];
 }
