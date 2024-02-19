@@ -103,7 +103,9 @@ export const useUsersStore = defineStore("users", {
         version: 1,
       };
 
-      return axios.post(`users/settings/update-profile`, payload, { params });
+      return axios.post(`v1/users/settings/update-profile`, payload, {
+        params,
+      });
     },
 
     async signUp(payload: ISignUpDTO) {
