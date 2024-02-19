@@ -11,13 +11,15 @@ export class LoggedUserMapper
 {
   id: number;
   email: string;
+  firstName: string;
+  lastName: string;
   fullName: string;
   roleId: number;
   roleName: string;
   permissions: IRolePermissionDTO[];
 
   constructor(data: User) {
-    super(data, ["id", "email", "fullName"]);
+    super(data, ["id", "email", "firstName", "lastName", "fullName"]);
 
     this.assignInitialKeys();
 

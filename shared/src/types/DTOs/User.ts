@@ -31,6 +31,10 @@ export interface ILoggedUserDTO {
 
   email: string;
 
+  firstName: string;
+
+  lastName: string;
+
   fullName: string;
 
   roleId: number;
