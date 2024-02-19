@@ -18,7 +18,7 @@ import { useGetAllSuperSchema } from "@schemas/User/useGetAllSuperSchema";
 import { useSignUpSuperSchema } from "@schemas/User/useSignUpSuperSchema";
 import { useGetNotesSuperSchema } from "@schemas/User/useGetNotesSuperSchema";
 import { useUpdateManySuperSchema } from "@schemas/User/useUpdateManySuperSchema";
-import { useUpdateProfileSuperSchema } from "@schemas/User/useUpdateProfileController";
+import { useUpdateProfileSuperSchema } from "@schemas/User/useUpdateProfileSuperSchema";
 import { usePatchUserToWorkspaceSuperSchema } from "@schemas/User/usePatchUserToWorkspaceSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";

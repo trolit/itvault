@@ -6,6 +6,7 @@ import type {
   IUserDTO,
   ISignUpDTO,
   IUpdateUserDTO,
+  IUpdateProfileDTO,
   IPatchUserToWorkspaceDTO,
 } from "@shared/types/DTOs/User";
 import type { INoteDTO } from "@shared/types/DTOs/Note";
@@ -94,6 +95,16 @@ export const useUsersStore = defineStore("users", {
 
       return axios.patch(`v1/users/${userId}/workspaces`, payload, {
         params: { version: 1 },
+      });
+    },
+
+    async updateProfile(payload: IUpdateProfileDTO) {
+      const params = {
+        version: 1,
+      };
+
+      return axios.post(`v1/users/settings/update-profile`, payload, {
+        params,
       });
     },
 
