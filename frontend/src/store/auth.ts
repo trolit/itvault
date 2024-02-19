@@ -23,6 +23,8 @@ export const useAuthStore = defineStore("auth", {
     profile: {
       id: -1,
       email: "",
+      firstName: "",
+      lastName: "",
       fullName: "",
       roleId: -1,
       roleName: "",
