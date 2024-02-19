@@ -2,11 +2,15 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import { Socket } from "engine.io-client";
 
+import type {
+  ISignInDTO,
+  ILoggedUserDTO,
+  IUpdateProfileDTO,
+} from "@shared/types/DTOs/User";
 import { WEBSOCKETS } from "@/config";
 import type { IUserSessionDTO } from "@shared/types/DTOs/Auth";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
-import type { ISignInDTO, ILoggedUserDTO } from "@shared/types/DTOs/User";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 import type { SocketSendMessage } from "@shared/types/transport/SocketSendMessage";
 
@@ -136,6 +140,14 @@ export const useAuthStore = defineStore("auth", {
           }
         }, 1000);
       });
+    },
+
+    updateProfile(data: IUpdateProfileDTO) {
+      const { firstName, lastName } = data;
+
+      this.profile.firstName = firstName;
+      this.profile.lastName = lastName;
+      this.profile.fullName = `${firstName} ${lastName}`;
     },
   },
 });

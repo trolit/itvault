@@ -86,6 +86,8 @@ const {
   formCallHandler: async (formData, printSuccess) => {
     await usersStore.updateProfile(formData);
 
+    authStore.updateProfile(formData);
+
     printSuccess(`Profile updated`);
   },
 
