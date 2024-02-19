@@ -5,7 +5,7 @@
         x-gap="0"
         y-gap="20"
         responsive="screen"
-        cols="1 s:1 m:5 l:5 xl:5 2xl:5"
+        cols="1 s:1 m:7 l:7 xl:7 2xl:7"
       >
         <n-grid-item :span="1">
           <n-layout-sider bordered width="100%">
@@ -16,7 +16,7 @@
           </n-layout-sider>
         </n-grid-item>
 
-        <n-grid-item :span="4">
+        <n-grid-item :span="6">
           <n-layout>
             <div class="content-wrapper">
               <component v-if="componentToRender" :is="componentToRender" />
