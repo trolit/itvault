@@ -9,7 +9,7 @@ services:
       MYSQL_DATABASE: ${DATABASE_NAME}
       MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
     ports:
-      - "127.0.0.1:${DATABASE_PORT}:${DATABASE_CONTAINER_PORT}"
+      - "127.0.0.1:${DATABASE_PORT}:${DATABASE_PORT}"
     volumes:
       - db:/var/lib/mysql
 
@@ -18,7 +18,7 @@ services:
     container_name: ${REDIS_CONTAINER_NAME}
     restart: unless-stopped
     ports:
-      - ${REDIS_PORT}:${REDIS_CONTAINER_PORT}
+      - "127.0.0.1:${REDIS_PORT}:${REDIS_PORT}"
     volumes:
       - redis:/var/lib/redis
     environment:
@@ -30,8 +30,8 @@ services:
     container_name: ${RABBITMQ_CONTAINER_NAME}
     restart: unless-stopped
     ports:
-      - ${RABBITMQ_PORT}:${RABBITMQ_CONTAINER_PORT}
-      - ${RABBITMQ_CONSOLE_PORT}:${RABBITMQ_CONSOLE_CONTAINER_PORT}
+      - "127.0.0.1:${RABBITMQ_PORT}:${RABBITMQ_PORT}"
+      - ${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_PORT}
     volumes:
       - mqrabbit:/var/lib/rabbitmq
     environment:
@@ -43,8 +43,8 @@ services:
     restart: unless-stopped
     image: maildev/maildev
     ports:
-      - "127.0.0.1:1025:1025"
-      - "127.0.0.1:${MAIL_CATCHER_PORT}:${MAIL_CATCHER_CONTAINER_PORT}"
+      - "127.0.0.1:${MAILDEV_PORT}:${MAILDEV_PORT}"
+      - "127.0.0.1:${MAILDEV_UI_PORT}:${MAILDEV_UI_PORT}"
 
 volumes:
   db:
