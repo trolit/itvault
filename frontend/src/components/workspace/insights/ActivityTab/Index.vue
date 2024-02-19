@@ -76,7 +76,7 @@ async function fetchAll(userId?: number) {
       userId,
     });
 
-    // @TMP keep user selections
+    // @TMP since series rearrange resets "General" series visibility, reset checkbox here
     activityTabData.value.isGeneralSeriesVisible = true;
   } catch (error) {
     console.error(error);
