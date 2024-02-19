@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  maildev:
+    container_name: mailcatcher
+    restart: unless-stopped
+    image: maildev/maildev
+    ports:
+      - "127.0.0.1:${MAILDEV_PORT}:${MAILDEV_PORT}"
+      - "127.0.0.1:${MAILDEV_UI_PORT}:${MAILDEV_UI_PORT}"

@@ -38,14 +38,6 @@ services:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASSWORD}
 
-  maildev:
-    container_name: mailcatcher
-    restart: unless-stopped
-    image: maildev/maildev
-    ports:
-      - "127.0.0.1:${MAILDEV_PORT}:${MAILDEV_PORT}"
-      - "127.0.0.1:${MAILDEV_UI_PORT}:${MAILDEV_UI_PORT}"
-
 volumes:
   db:
   redis:
