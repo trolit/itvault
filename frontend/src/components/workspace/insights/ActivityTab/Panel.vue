@@ -30,6 +30,7 @@
     <div>
       <n-text :depth="3"><small>Range</small></n-text>
 
+      <!-- @TODO consider making pure number here and rely on "time precision selector"-->
       <time-range-selector
         :disabled="isLoading"
         :option="activityTabData.timeRangeOption"
