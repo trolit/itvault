@@ -39,6 +39,8 @@ export class UserRepository
         id: true,
         email: true,
         password: true,
+        firstName: true,
+        lastName: true,
         fullName: true,
       },
       where: {
