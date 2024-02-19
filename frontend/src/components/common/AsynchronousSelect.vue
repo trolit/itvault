@@ -3,6 +3,7 @@
     remote
     show-checkmark
     filterable
+    :consistent-menu-width="false"
     :value="fixedValue"
     :options="options"
     :reset-menu-on-options-change="false"
@@ -19,7 +20,7 @@ import { defineComputed } from "@/helpers/defineComputed";
 import type { PrimitiveSelectOption } from "@/types/PrimitiveSelectOption";
 
 interface IProps {
-  value: string | number | null;
+  value: string | number | number[] | string[] | null;
 
   options: PrimitiveSelectOption[];
 }

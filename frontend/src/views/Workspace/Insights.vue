@@ -5,7 +5,7 @@
         x-gap="0"
         y-gap="20"
         responsive="screen"
-        cols="1 s:1 m:5 l:5 xl:5 2xl:5"
+        cols="1 s:1 m:7 l:7 xl:7 2xl:7"
       >
         <n-grid-item :span="1">
           <n-layout-sider bordered width="100%">
@@ -16,7 +16,7 @@
           </n-layout-sider>
         </n-grid-item>
 
-        <n-grid-item :span="4">
+        <n-grid-item :span="6">
           <n-layout>
             <div class="content-wrapper">
               <component v-if="componentToRender" :is="componentToRender" />
@@ -49,6 +49,7 @@ import { Permission } from "@shared/types/enums/Permission";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 import LogsTab from "@/components/workspace/insights/LogsTab/Index.vue";
 import MembersTab from "@/components/workspace/insights/MembersTab/Index.vue";
+import ActivityTab from "@/components/workspace/insights/ActivityTab/Index.vue";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -71,7 +72,7 @@ const menuOptions: (MenuOption & { component: object | null })[] = [
     key: "activity",
     label: "Activity",
     icon: renderIcon(ActivityIcon),
-    component: null,
+    component: ActivityTab,
   },
   {
     key: "log",
