@@ -7,7 +7,7 @@
   "author": "https://github.com/trolit",
   "license": "ISC",
   "scripts": {
-    "dc:prod:start": "docker compose up -d",
+    "dc:prod:start": "docker compose up -d --remove-orphans",
     "dc:prod:stop": "docker compose stop",
     "dc:prod:down": "docker compose down",
     "dc:dev:start": "docker compose -f docker-compose.yml -f docker-compose-dev.yml up -d",
