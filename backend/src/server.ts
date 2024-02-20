@@ -32,7 +32,7 @@ export const server = async () => {
     Di.QueuesConnectionFactory
   ).create();
 
-  di.registerOptionalDependencies({
+  di.registerExternalDependencies({
     engineIO,
     rabbitMQ,
     dataSource,

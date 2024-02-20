@@ -54,7 +54,7 @@ const consumers = [
       Di.QueuesConnectionFactory
     ).create();
 
-    di.registerOptionalDependencies({
+    di.registerExternalDependencies({
       rabbitMQ,
       dataSource,
       mailTransporter,
