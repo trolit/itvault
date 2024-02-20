@@ -3,6 +3,7 @@ export enum Di {
   S3Client = "S3Client",
   RabbitMQ = "RabbitMQ",
   EngineIO = "Engine.IO",
+  DataSource = "DataSource",
   Publisher = "RabbitMQ Publisher",
   MailTransporter = "MailTransporter",
 
@@ -36,6 +37,7 @@ export enum Di {
 
   JobFactory = "IJobFactory",
   ConsumerFactory = "IConsumerFactory",
+  DataSourceFactory = "IDataSourceFactory",
   FormidableFormFactory = "IFormidableFormFactory",
 
   SendMailConsumerHandler = "MailConsumerHandler",
