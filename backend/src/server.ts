@@ -1,4 +1,3 @@
-import http from "http";
 import express from "express";
 import { IRabbitMQFactory } from "types/factories/IRabbitMQFactory";
 import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
@@ -9,38 +8,32 @@ import { Di } from "@enums/Di";
 import { setupDi } from "@utils/setupDi";
 import { setupJobs } from "@utils/setupJobs";
 import { setupRedis } from "@utils/setupRedis";
-import { loadYupUtils } from "@utils/loadYupUtils";
 import { setupExpress } from "@utils/setupExpress";
 import { setupPublisher } from "@utils/setupPublisher";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { initializeEngineIO } from "@utils/initializeEngineIO";
+import { attachEngineIO } from "@utils/attachEngineIO";
+import { loadYupCustomMethods } from "@utils/loadYupCustomMethods";
 
 export const server = async () => {
   const app = express();
-  const serverInstance = http.createServer(app);
+  const { serverInstance, engineIO } = attachEngineIO(app);
 
-  await loadYupUtils();
-
-  const engineIo = initializeEngineIO();
-
-  engineIo.attach(serverInstance);
+  await loadYupCustomMethods();
 
   const redis = setupRedis();
 
   const di = await setupDi();
 
-  const dataSourceFactory = getInstanceOf<IDataSourceFactory>(
+  const dataSource = await getInstanceOf<IDataSourceFactory>(
     Di.DataSourceFactory
-  );
+  ).create();
 
-  const dataSource = await dataSourceFactory.create();
+  const rabbitMQ = await getInstanceOf<IRabbitMQFactory>(
+    Di.RabbitMQFactory
+  ).create();
 
-  const rabbitMQFactory = getInstanceOf<IRabbitMQFactory>(Di.RabbitMQFactory);
-
-  const rabbitMQ = await rabbitMQFactory.create();
-
-  di.registerAdditionalDependencies({
-    engineIo,
+  di.registerOptionalDependencies({
+    engineIO,
     rabbitMQ,
     dataSource,
     redis: redis.instance,
@@ -48,7 +41,7 @@ export const server = async () => {
 
   await setupPublisher(rabbitMQ);
 
-  redis.initializeRoleKeys();
+  await redis.initializeRoleKeys();
 
   await setupJobs();
 

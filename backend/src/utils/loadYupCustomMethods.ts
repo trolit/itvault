@@ -7,7 +7,7 @@ import { Dependency } from "@enums/Dependency";
 
 import "@helpers/yup/internal-messages";
 
-export const loadYupUtils = async () => {
+export const loadYupCustomMethods = async () => {
   const dir = path.join(APP.BASE_DIR, "helpers", "yup", "custom-methods");
 
   log.debug({

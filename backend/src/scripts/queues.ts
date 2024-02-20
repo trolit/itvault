@@ -2,11 +2,11 @@ import "reflect-metadata";
 import { DataSource } from "typeorm";
 import lockfile from "proper-lockfile";
 import { Transporter } from "nodemailer";
-import { Channel, Connection, connect } from "amqplib";
+import { Channel, Connection } from "amqplib";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { IConsumerFactory } from "types/factories/IConsumerFactory";
+import { IRabbitMQFactory } from "types/factories/IRabbitMQFactory";
 import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
-
-import { RABBITMQ } from "@config";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
@@ -16,10 +16,8 @@ import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
 import { splitPath } from "@helpers/splitPath";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { ConsumerFactory } from "@factories/ConsumerFactory";
 import { setupMailTransporter } from "@utils/setupMailTransporter";
 
-let connection: Connection;
 let consumerChannels: Channel[] = [];
 let mailTransporter: Transporter<SMTPTransport.SentMessageInfo>;
 
@@ -54,26 +52,17 @@ const consumers = [
 
     mailTransporter = setupMailTransporter();
 
-    di.registerAdditionalDependencies({
+    const rabbitMQFactory = getInstanceOf<IRabbitMQFactory>(Di.RabbitMQFactory);
+
+    const rabbitMQ = await rabbitMQFactory.create();
+
+    di.registerOptionalDependencies({
+      rabbitMQ,
       dataSource,
       mailTransporter,
     });
 
-    const { PORT, USER, PASSWORD, HOST } = RABBITMQ;
-
-    log.info({
-      message: `establishing connection...`,
-      dependency: Dependency.RabbitMQ,
-    });
-
-    connection = await connect({
-      hostname: HOST,
-      port: PORT,
-      username: USER,
-      password: PASSWORD,
-    });
-
-    const consumerFactory = new ConsumerFactory(connection);
+    const consumerFactory = getInstanceOf<IConsumerFactory>(Di.ConsumerFactory);
 
     consumerChannels = await Promise.all(
       consumers.map(({ queue, handler }) =>
@@ -152,8 +141,10 @@ async function onExit() {
     dependency: Dependency.RabbitMQ,
   });
 
+  const rabbitMQ = getInstanceOf<Connection>(Di.RabbitMQ);
+
   try {
-    await connection.close();
+    await rabbitMQ.close();
   } catch (error) {
     log.error({
       error,

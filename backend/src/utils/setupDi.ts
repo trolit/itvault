@@ -71,7 +71,7 @@ export const setupDi = async () => {
 
 function registerOptionalDependencies(dependencies: {
   redis?: Redis;
-  engineIo?: Server;
+  engineIO?: Server;
   rabbitMQ?: Connection;
   dataSource?: DataSource;
   mailTransporter?: Transporter;
@@ -81,15 +81,15 @@ function registerOptionalDependencies(dependencies: {
     message: "Registering optional dependencies...",
   });
 
-  const { mailTransporter, rabbitMQ, redis, engineIo, dataSource } =
+  const { mailTransporter, rabbitMQ, redis, engineIO, dataSource } =
     dependencies;
 
   if (rabbitMQ) {
     container.register(Di.RabbitMQ, { useValue: rabbitMQ });
   }
 
-  if (engineIo) {
-    container.register(Di.EngineIO, { useValue: engineIo });
+  if (engineIO) {
+    container.register(Di.EngineIO, { useValue: engineIO });
   }
 
   if (dataSource) {
