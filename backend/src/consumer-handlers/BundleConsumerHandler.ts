@@ -304,12 +304,12 @@ export class BundleConsumerHandler
 
       const data = this._generateData(fileContent, buckets);
 
-      const absolutePath =
+      const pathToFile =
         relativePath === FILES.ROOT
           ? file.originalFilename
-          : relativePath.slice(2); // @NOTE e.g. ./src -> src
+          : path.join(relativePath.slice(2), file.originalFilename); // @NOTE slice e.g. ./src -> src
 
-      jszip.file(path.join(absolutePath, file.originalFilename), data);
+      jszip.file(pathToFile, data);
     }
 
     return jszip.generateAsync({ type: "nodebuffer" });
