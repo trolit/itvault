@@ -13,7 +13,7 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 export const setupRedis = () => {
   log.debug({
     dependency: Dependency.Redis,
-    message: "initializing connection...",
+    message: "Initializing connection...",
   });
 
   const redis = new Redis({
