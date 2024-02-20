@@ -3,7 +3,6 @@ import { DataSource } from "typeorm";
 import lockfile from "proper-lockfile";
 import { Transporter } from "nodemailer";
 import { Channel, Connection } from "amqplib";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { IConsumerFactory } from "types/factories/IConsumerFactory";
 import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
 import { IMailTransporterFactory } from "types/factories/IMailTransporterFactory";
@@ -19,7 +18,6 @@ import { splitPath } from "@helpers/splitPath";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 let consumerChannels: Channel[] = [];
-let mailTransporter: Transporter<SMTPTransport.SentMessageInfo>;
 
 const consumers = [
   {
@@ -37,7 +35,7 @@ const consumers = [
 
   try {
     log.debug({
-      message: `acquiring lock on file ${splitPath(__filename).pop()}...`,
+      message: `Acquiring lock on file ${splitPath(__filename).pop()}...`,
     });
 
     await lockfile.lock(__filename);
@@ -108,6 +106,8 @@ async function onExit() {
     message: `Closing connection...`,
     dependency: Dependency.nodemailer,
   });
+
+  const mailTransporter = getInstanceOf<Transporter>(Di.MailTransporter);
 
   try {
     mailTransporter.close();
