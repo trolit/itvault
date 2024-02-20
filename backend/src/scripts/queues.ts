@@ -5,8 +5,8 @@ import { Transporter } from "nodemailer";
 import { Channel, Connection } from "amqplib";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { IConsumerFactory } from "types/factories/IConsumerFactory";
-import { IRabbitMQFactory } from "types/factories/IRabbitMQFactory";
 import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
+import { IQueuesConnectionFactory } from "types/factories/IQueuesConnectionFactory";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
@@ -52,9 +52,11 @@ const consumers = [
 
     mailTransporter = setupMailTransporter();
 
-    const rabbitMQFactory = getInstanceOf<IRabbitMQFactory>(Di.RabbitMQFactory);
+    const queuesConnectionFactory = getInstanceOf<IQueuesConnectionFactory>(
+      Di.QueuesConnectionFactory
+    );
 
-    const rabbitMQ = await rabbitMQFactory.create();
+    const rabbitMQ = await queuesConnectionFactory.create();
 
     di.registerOptionalDependencies({
       rabbitMQ,

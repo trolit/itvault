@@ -1,5 +1,5 @@
 import { Connection } from "amqplib";
 
-export interface IRabbitMQFactory {
+export interface IQueuesConnectionFactory {
   create(): Promise<Connection>;
 }

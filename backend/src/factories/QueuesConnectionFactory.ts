@@ -1,11 +1,11 @@
 import { connect } from "amqplib";
-import { IRabbitMQFactory } from "types/factories/IRabbitMQFactory";
+import { IQueuesConnectionFactory } from "types/factories/IQueuesConnectionFactory";
 
 import { RABBITMQ } from "@config";
 
 import { Dependency } from "@enums/Dependency";
 
-export class RabbitMQFactory implements IRabbitMQFactory {
+export class QueuesConnectionFactory implements IQueuesConnectionFactory {
   create() {
     const { PORT, USER, PASSWORD, HOST } = RABBITMQ;
 

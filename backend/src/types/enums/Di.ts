@@ -37,9 +37,9 @@ export enum Di {
 
   JobFactory = "IJobFactory",
   ConsumerFactory = "IConsumerFactory",
-  RabbitMQFactory = "IRabbitMQFactory",
   DataSourceFactory = "IDataSourceFactory",
   FormidableFormFactory = "IFormidableFormFactory",
+  QueuesConnectionFactory = "IQueuesConnectionFactory",
 
   SendMailConsumerHandler = "MailConsumerHandler",
   GenerateBundleConsumerHandler = "BundleConsumerHandler",
