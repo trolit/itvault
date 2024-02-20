@@ -3,9 +3,16 @@ import { IRabbitMQFactory } from "types/factories/IRabbitMQFactory";
 
 import { RABBITMQ } from "@config";
 
-export class JobFactory implements IRabbitMQFactory {
+import { Dependency } from "@enums/Dependency";
+
+export class RabbitMQFactory implements IRabbitMQFactory {
   create() {
     const { PORT, USER, PASSWORD, HOST } = RABBITMQ;
+
+    log.debug({
+      message: `Creating connection...`,
+      dependency: Dependency.RabbitMQ,
+    });
 
     return connect({
       hostname: HOST,
