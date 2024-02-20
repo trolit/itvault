@@ -33,11 +33,6 @@ export const setupPublisher = async () => {
 
     container.register(Di.Publisher, { useValue: publisher });
 
-    log.debug({
-      dependency: Dependency.RabbitMQ,
-      message: `Publisher initialized.`,
-    });
-
     return { connection, channel: publisher };
   } catch (error) {
     log.error({
