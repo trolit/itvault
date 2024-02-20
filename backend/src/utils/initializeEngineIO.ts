@@ -13,7 +13,7 @@ import { getTokenCookieValue } from "@helpers/getTokenCookieValue";
 export const initializeEngineIO = () => {
   log.debug({
     dependency: Dependency.EngineIO,
-    message: `initializing Engine.io`,
+    message: `Initializing server..`,
   });
 
   return new Server({
