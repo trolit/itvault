@@ -44,19 +44,15 @@ const consumers = [
 
     const di = await setupDi();
 
-    const dataSourceFactory = getInstanceOf<IDataSourceFactory>(
+    const dataSource = await getInstanceOf<IDataSourceFactory>(
       Di.DataSourceFactory
-    );
-
-    const dataSource = await dataSourceFactory.create();
+    ).create();
 
     mailTransporter = setupMailTransporter();
 
-    const queuesConnectionFactory = getInstanceOf<IQueuesConnectionFactory>(
+    const rabbitMQ = await getInstanceOf<IQueuesConnectionFactory>(
       Di.QueuesConnectionFactory
-    );
-
-    const rabbitMQ = await queuesConnectionFactory.create();
+    ).create();
 
     di.registerOptionalDependencies({
       rabbitMQ,
