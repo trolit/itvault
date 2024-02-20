@@ -58,7 +58,7 @@ export const setupRedis = () => {
   return {
     instance: redis,
 
-    initializeRoleKeys: async () => {
+    seedWithRoles: async () => {
       log.debug({
         dependency: Dependency.Redis,
         message: "Seeding with roles...",

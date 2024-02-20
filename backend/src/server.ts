@@ -41,17 +41,13 @@ export const server = async () => {
 
   await setupPublisher(rabbitMQ);
 
-  await redis.initializeRoleKeys();
+  await redis.seedWithRoles();
 
   await setupJobs();
 
   await setupExpress(app);
 
-  const socketServiceManager = getInstanceOf<ISocketServiceManager>(
-    Di.SocketServiceManager
-  );
-
-  socketServiceManager.initialize();
+  getInstanceOf<ISocketServiceManager>(Di.SocketServiceManager).initialize();
 
   return serverInstance;
 };
