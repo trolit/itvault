@@ -5,11 +5,17 @@ import { IncomingAllowRequestMessage } from "types/IncomingAllowRequestMessage";
 import { APP } from "@config";
 
 import { Di } from "@enums/Di";
+import { Dependency } from "@enums/Dependency";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { getTokenCookieValue } from "@helpers/getTokenCookieValue";
 
 export const initializeEngineIO = () => {
+  log.debug({
+    dependency: Dependency.EngineIO,
+    message: `initializing Engine.io`,
+  });
+
   return new Server({
     cors: {
       origin: APP.URL,
