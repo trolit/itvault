@@ -1,10 +1,11 @@
 import { In } from "typeorm";
 import { assert } from "chai";
-import { Role } from "@db/entities/Role";
 import { User } from "@db/entities/User";
+import { Role } from "@db/entities/Role";
 import { mockRepository } from "../mockRepository";
 import { SinonFakeTimers, SinonSandbox, createSandbox } from "sinon";
 
+import { Warden } from "@utils/Warden";
 import { UserService } from "@services/UserService";
 import { UserRepository } from "@repositories/UserRepository";
 
@@ -21,6 +22,8 @@ describe("UserService tests", () => {
     clock = sandbox.useFakeTimers({
       now: fakeDate,
     });
+
+    global.log = sandbox.createStubInstance(Warden);
   });
 
   afterEach(() => {
