@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { Server } from "engine.io";
+import { Connection } from "amqplib";
 import { DataSource } from "typeorm";
 import Redis from "ioredis/built/Redis";
 import { Transporter } from "nodemailer";
@@ -71,6 +72,7 @@ export const setupDi = async () => {
 function registerAdditionalDependencies(dependencies: {
   redis?: Redis;
   engineIo?: Server;
+  rabbitMQ?: Connection;
   dataSource?: DataSource;
   mailTransporter?: Transporter;
 }) {
@@ -79,7 +81,12 @@ function registerAdditionalDependencies(dependencies: {
     message: "Registering optional dependencies...",
   });
 
-  const { mailTransporter, redis, engineIo, dataSource } = dependencies;
+  const { mailTransporter, rabbitMQ, redis, engineIo, dataSource } =
+    dependencies;
+
+  if (rabbitMQ) {
+    container.register(Di.RabbitMQ, { useValue: rabbitMQ });
+  }
 
   if (engineIo) {
     container.register(Di.EngineIO, { useValue: engineIo });

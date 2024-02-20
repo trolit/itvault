@@ -37,6 +37,7 @@ export enum Di {
 
   JobFactory = "IJobFactory",
   ConsumerFactory = "IConsumerFactory",
+  RabbitMQFactory = "IRabbitMQFactory",
   DataSourceFactory = "IDataSourceFactory",
   FormidableFormFactory = "IFormidableFormFactory",
 
