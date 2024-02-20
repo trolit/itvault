@@ -12,6 +12,7 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
 export const setupRedis = () => {
   const redis = new Redis({
+    host: REDIS.HOST,
     port: REDIS.PORT,
     password: REDIS.PASSWORD,
     enableAutoPipelining: true,

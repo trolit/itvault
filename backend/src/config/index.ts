@@ -51,12 +51,14 @@ export const JWT = {
 };
 
 export const REDIS = {
-  PORT: envPort("REDIS_CONTAINER_PORT"),
+  HOST: envString("REDIS_HOST"),
+  PORT: envPort("REDIS_PORT"),
   PASSWORD: envString("REDIS_PASSWORD"),
 };
 
-export const MQRABBIT = {
-  PORT: envPort("RABBITMQ_CONTAINER_PORT"),
+export const RABBITMQ = {
+  HOST: envString("RABBITMQ_HOST"),
+  PORT: envPort("RABBITMQ_PORT"),
   USER: envString("RABBITMQ_DEFAULT_USER"),
   PASSWORD: envString("RABBITMQ_DEFAULT_PASSWORD"),
 };
@@ -80,18 +82,30 @@ const FILES_BASE_TEMPORARY_UPLOADS_PATH: string = envString(
   "FILES_BASE_TEMPORARY_UPLOADS_PATH"
 );
 
+const S3 = {
+  bucket: "",
+  endpoint: "",
+  accessKeyId: "",
+  secretAccessKey: "",
+};
+
+if (FILES_STORAGE_MODE === FileStorageMode.AWS) {
+  const S3_HOST = envString("S3_HOST");
+  const S3_PORT = envString("S3_PORT");
+
+  S3.bucket = envString("S3_BUCKET");
+  S3.endpoint = `${S3_HOST}:${S3_PORT}/`;
+  S3.accessKeyId = envString("S3_ACCESS_KEY_ID");
+  S3.secretAccessKey = envString("S3_SECRET_ACCESS_KEY");
+}
+
 export const FILES = {
   ROOT: ".",
   ACTIVE_MODE: FILES_STORAGE_MODE,
   BASE_UPLOADS_PATH: FILES_BASE_UPLOADS_PATH,
   BASE_DOWNLOADS_PATH: FILES_BASE_DOWNLOADS_PATH,
   BASE_TEMPORARY_UPLOADS_PATH: FILES_BASE_TEMPORARY_UPLOADS_PATH,
-  S3: {
-    bucket: "itvault-bucket",
-    endpoint: envString("S3_ENDPOINT"),
-    accessKeyId: envString("S3_ACCESS_KEY_ID"),
-    secretAccessKey: envString("S3_SECRET_ACCESS_KEY"),
-  },
+  S3,
 };
 
 if (FILES_STORAGE_MODE === FileStorageMode.Local) {

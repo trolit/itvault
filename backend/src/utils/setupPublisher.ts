@@ -1,16 +1,17 @@
 import { connect } from "amqplib";
 import { container } from "tsyringe";
 
-import { MQRABBIT } from "@config";
+import { RABBITMQ } from "@config";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 import { Dependency } from "@enums/Dependency";
 
 export const setupPublisher = async () => {
-  const { PORT, USER, PASSWORD } = MQRABBIT;
+  const { PORT, USER, PASSWORD, HOST } = RABBITMQ;
 
   const connection = await connect({
+    hostname: HOST,
     port: PORT,
     username: USER,
     password: PASSWORD,
