@@ -76,6 +76,7 @@ export class SoftDeleteController extends BaseController {
       return response.sendStatus(HTTP.FORBIDDEN);
     }
 
+    // @NOTE consider adding subscriber and set "size" to 0 and/or filename to NULL to mark that we do not have it anymore (?)
     await this._bundleRepository.softDeleteEntity(bundle);
 
     if (bundle.status !== BundleStatus.Enqueued) {
