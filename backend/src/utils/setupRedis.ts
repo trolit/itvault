@@ -59,6 +59,11 @@ export const setupRedis = () => {
     instance: redis,
 
     initializeRoleKeys: async () => {
+      log.debug({
+        dependency: Dependency.Redis,
+        message: "Seeding with roles...",
+      });
+
       const roleRepository = getInstanceOf<IRoleRepository>(Di.RoleRepository);
 
       const roles = await roleRepository.getAll({
