@@ -11,6 +11,11 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
 export const setupRedis = () => {
+  log.debug({
+    dependency: Dependency.Redis,
+    message: "Initializing connection...",
+  });
+
   const redis = new Redis({
     host: REDIS.HOST,
     port: REDIS.PORT,
@@ -53,7 +58,12 @@ export const setupRedis = () => {
   return {
     instance: redis,
 
-    initializeRoleKeys: async () => {
+    seedWithRoles: async () => {
+      log.debug({
+        dependency: Dependency.Redis,
+        message: "Seeding with roles...",
+      });
+
       const roleRepository = getInstanceOf<IRoleRepository>(Di.RoleRepository);
 
       const roles = await roleRepository.getAll({

@@ -1,3 +1,4 @@
+import { inject, injectable } from "tsyringe";
 import { Channel, Connection } from "amqplib";
 import { IConsumerFactory } from "types/factories/IConsumerFactory";
 import { IBaseConsumerHandler } from "types/consumer-handlers/IBaseConsumerHandler";
@@ -8,8 +9,12 @@ import { Dependency } from "@enums/Dependency";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
+@injectable()
 export class ConsumerFactory implements IConsumerFactory {
-  constructor(private _rabbitMQ: Connection) {}
+  constructor(
+    @inject(Di.RabbitMQ)
+    private _rabbitMQ: Connection
+  ) {}
 
   async create(queue: Queue, handler: Di): Promise<Channel> {
     const channel = await this._rabbitMQ.createChannel();

@@ -1,11 +1,12 @@
 import "reflect-metadata";
+import { DataSource } from "typeorm";
 import lockfile from "proper-lockfile";
 import { Transporter } from "nodemailer";
-import { dataSource } from "@db/data-source";
-import { Channel, Connection, connect } from "amqplib";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
-
-import { RABBITMQ } from "@config";
+import { Channel, Connection } from "amqplib";
+import { IConsumerFactory } from "types/factories/IConsumerFactory";
+import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
+import { IMailTransporterFactory } from "types/factories/IMailTransporterFactory";
+import { IQueuesConnectionFactory } from "types/factories/IQueuesConnectionFactory";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
@@ -14,12 +15,9 @@ import { Dependency } from "@enums/Dependency";
 import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
 import { splitPath } from "@helpers/splitPath";
-import { ConsumerFactory } from "@factories/ConsumerFactory";
-import { setupMailTransporter } from "@utils/setupMailTransporter";
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
-let connection: Connection;
 let consumerChannels: Channel[] = [];
-let mailTransporter: Transporter<SMTPTransport.SentMessageInfo>;
 
 const consumers = [
   {
@@ -37,46 +35,32 @@ const consumers = [
 
   try {
     log.debug({
-      message: `acquiring lock on file ${splitPath(__filename).pop()}...`,
+      message: `Acquiring lock on file ${splitPath(__filename).pop()}...`,
     });
 
     await lockfile.lock(__filename);
 
-    log.info({
-      message: `creating connection...`,
-      dependency: Dependency.TypeORM,
+    const di = await setupDi();
+
+    const dataSource = await getInstanceOf<IDataSourceFactory>(
+      Di.DataSourceFactory
+    ).create();
+
+    const mailTransporter = getInstanceOf<IMailTransporterFactory>(
+      Di.MailTransporterFactory
+    ).create();
+
+    const rabbitMQ = await getInstanceOf<IQueuesConnectionFactory>(
+      Di.QueuesConnectionFactory
+    ).create();
+
+    di.registerExternalDependencies({
+      rabbitMQ,
+      dataSource,
+      mailTransporter,
     });
 
-    await dataSource.initialize();
-
-    log.info({
-      message: `creating connection...`,
-      dependency: Dependency.nodemailer,
-    });
-
-    mailTransporter = setupMailTransporter();
-
-    log.debug({
-      message: `setting up dependency injection...`,
-    });
-
-    await setupDi({ mailTransporter });
-
-    const { PORT, USER, PASSWORD, HOST } = RABBITMQ;
-
-    log.info({
-      message: `establishing connection...`,
-      dependency: Dependency.RabbitMQ,
-    });
-
-    connection = await connect({
-      hostname: HOST,
-      port: PORT,
-      username: USER,
-      password: PASSWORD,
-    });
-
-    const consumerFactory = new ConsumerFactory(connection);
+    const consumerFactory = getInstanceOf<IConsumerFactory>(Di.ConsumerFactory);
 
     consumerChannels = await Promise.all(
       consumers.map(({ queue, handler }) =>
@@ -123,6 +107,8 @@ async function onExit() {
     dependency: Dependency.nodemailer,
   });
 
+  const mailTransporter = getInstanceOf<Transporter>(Di.MailTransporter);
+
   try {
     mailTransporter.close();
   } catch (error) {
@@ -137,6 +123,8 @@ async function onExit() {
     message: `Closing connection...`,
     dependency: Dependency.TypeORM,
   });
+
+  const dataSource = getInstanceOf<DataSource>(Di.DataSource);
 
   try {
     await dataSource.destroy();
@@ -153,8 +141,10 @@ async function onExit() {
     dependency: Dependency.RabbitMQ,
   });
 
+  const rabbitMQ = getInstanceOf<Connection>(Di.RabbitMQ);
+
   try {
-    await connection.close();
+    await rabbitMQ.close();
   } catch (error) {
     log.error({
       error,

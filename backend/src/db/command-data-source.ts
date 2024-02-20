@@ -21,7 +21,8 @@ const options: DataSourceOptions & SeederOptions = {
   database: NAME,
   entities: [getGlobPattern(`entities/*`)],
   migrations: [getGlobPattern(`migrations/*`)],
-  subscribers: [getGlobPattern(`subscribers/*`)],
+  // @NOTE [!G] excludes GlobalSubscriber (traces are created manually with seeder)
+  subscribers: [getGlobPattern(`subscribers/[!G]*`)],
   logging: true,
   synchronize: false,
 

@@ -1,8 +1,8 @@
 import { ClassType } from "types/ClassType";
-import { dataSource } from "@db/data-source";
 import { IBaseRepository } from "types/repositories/IBaseRepository";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
 import {
+  DataSource,
   Repository,
   DeepPartial,
   SaveOptions,
@@ -13,6 +13,10 @@ import {
   FindOptionsWhere,
 } from "typeorm";
 
+import { Di } from "@enums/Di";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
+
 export class BaseRepository<T extends { id: number | string }>
   implements IBaseRepository<T>
 {
@@ -21,6 +25,8 @@ export class BaseRepository<T extends { id: number | string }>
   public useTransaction: () => Promise<QueryRunner>;
 
   constructor(entity: ClassType<T>) {
+    const dataSource = getInstanceOf<DataSource>(Di.DataSource);
+
     this.database = dataSource.getRepository(entity);
 
     this.useTransaction = async () => {

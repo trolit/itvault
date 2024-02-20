@@ -1,75 +1,53 @@
-import http from "http";
 import express from "express";
-import { dataSource } from "@db/data-source";
+import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
+import { IQueuesConnectionFactory } from "types/factories/IQueuesConnectionFactory";
 
 import { Di } from "@enums/Di";
-import { Dependency } from "@enums/Dependency";
 
 import { setupDi } from "@utils/setupDi";
 import { setupJobs } from "@utils/setupJobs";
 import { setupRedis } from "@utils/setupRedis";
 import { setupExpress } from "@utils/setupExpress";
-import { loadYupUtils } from "@utils/loadYupUtils";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { setupPublisher } from "@utils/setupPublisher";
-import { initializeEngineIO } from "@utils/initializeEngineIO";
+import { attachEngineIO } from "@utils/attachEngineIO";
+import { loadYupCustomMethods } from "@utils/loadYupCustomMethods";
 
 export const server = async () => {
   const app = express();
+  const { serverInstance, engineIO } = attachEngineIO(app);
 
-  try {
-    await loadYupUtils();
-  } catch (error) {
-    log.error({
-      error,
-      message: "Failed to load yup utils!",
-      dependency: Dependency.yup,
-    });
-
-    process.exit(1);
-  }
-
-  try {
-    await dataSource.initialize();
-
-    log.debug({
-      dependency: Dependency.TypeORM,
-      message: "Data source initialized!",
-    });
-  } catch (error) {
-    log.error({
-      error,
-      message: "Failed to initialize data source!",
-      dependency: Dependency.TypeORM,
-    });
-
-    process.exit(1);
-  }
-
-  const engineIo = initializeEngineIO();
-
-  const serverInstance = http.createServer(app);
-
-  engineIo.attach(serverInstance);
+  await loadYupCustomMethods();
 
   const redis = setupRedis();
 
-  await setupDi({ redis: redis.instance, engineIo });
+  const di = await setupDi();
 
-  await setupPublisher();
+  const dataSource = await getInstanceOf<IDataSourceFactory>(
+    Di.DataSourceFactory
+  ).create();
 
-  redis.initializeRoleKeys();
+  const rabbitMQ = await getInstanceOf<IQueuesConnectionFactory>(
+    Di.QueuesConnectionFactory
+  ).create();
+
+  di.registerExternalDependencies({
+    engineIO,
+    rabbitMQ,
+    dataSource,
+    redis: redis.instance,
+  });
+
+  await setupPublisher(rabbitMQ);
+
+  await redis.seedWithRoles();
 
   await setupJobs();
 
   await setupExpress(app);
 
-  const socketServiceManager = getInstanceOf<ISocketServiceManager>(
-    Di.SocketServiceManager
-  );
-
-  socketServiceManager.initialize();
+  getInstanceOf<ISocketServiceManager>(Di.SocketServiceManager).initialize();
 
   return serverInstance;
 };

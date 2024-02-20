@@ -1,3 +1,5 @@
+import http from "http";
+import { Express } from "express";
 import { Server } from "engine.io";
 import { IAuthService } from "types/services/IAuthService";
 import { IncomingAllowRequestMessage } from "types/IncomingAllowRequestMessage";
@@ -5,12 +7,20 @@ import { IncomingAllowRequestMessage } from "types/IncomingAllowRequestMessage";
 import { APP } from "@config";
 
 import { Di } from "@enums/Di";
+import { Dependency } from "@enums/Dependency";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { getTokenCookieValue } from "@helpers/getTokenCookieValue";
 
-export const initializeEngineIO = () => {
-  return new Server({
+export const attachEngineIO = (app: Express) => {
+  const serverInstance = http.createServer(app);
+
+  log.debug({
+    dependency: Dependency.EngineIO,
+    message: `Initializing server..`,
+  });
+
+  const engineIO = new Server({
     cors: {
       origin: APP.URL,
       credentials: true,
@@ -45,4 +55,11 @@ export const initializeEngineIO = () => {
       return callback(null, true);
     },
   });
+
+  engineIO.attach(serverInstance);
+
+  return {
+    engineIO,
+    serverInstance,
+  };
 };

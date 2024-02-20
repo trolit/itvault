@@ -2,6 +2,8 @@ import path from "path";
 import fs from "fs-extra";
 import { IJobFactory } from "types/factories/IJobFactory";
 
+import { APP } from "@config";
+
 import { Di } from "@enums/Di";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -9,7 +11,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 const allJobs = [];
 
 export const setupJobs = async () => {
-  const dir = path.join("dist", "jobs");
+  const dir = path.join(APP.BASE_DIR, "jobs");
 
   const files = await fs.readdir(dir);
 

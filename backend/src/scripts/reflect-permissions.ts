@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import { Role } from "@db/entities/Role";
 import { DataStore } from "types/DataStore";
-import { dataSource } from "@db/data-source";
 import { Permission } from "@db/entities/Permission";
 import { PermissionToRole } from "@db/entities/PermissionToRole";
 
@@ -12,14 +11,15 @@ import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 import { Warden } from "@utils/Warden";
 import { setupRedis } from "@utils/setupRedis";
+import { DataSourceFactory } from "@factories/DataSourceFactory";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
 (async function () {
   Warden.start();
 
-  if (!dataSource.isInitialized) {
-    await dataSource.initialize();
-  }
+  const dataSourceFactory = new DataSourceFactory();
+
+  const dataSource = await dataSourceFactory.create();
 
   const queryRunner = dataSource.createQueryRunner();
 
@@ -102,6 +102,8 @@ import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
     await queryRunner.rollbackTransaction();
   } finally {
     await queryRunner.release();
+
+    await dataSource.destroy();
   }
 
   process.exit(0);
