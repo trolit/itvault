@@ -11,6 +11,11 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { composeDataStoreKey } from "@helpers/composeDataStoreKey";
 
 export const setupRedis = () => {
+  log.debug({
+    dependency: Dependency.Redis,
+    message: "initializing connection...",
+  });
+
   const redis = new Redis({
     host: REDIS.HOST,
     port: REDIS.PORT,
