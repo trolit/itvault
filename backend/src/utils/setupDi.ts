@@ -65,11 +65,11 @@ export const setupDi = async () => {
   });
 
   return {
-    registerAdditionalDependencies,
+    registerOptionalDependencies,
   };
 };
 
-function registerAdditionalDependencies(dependencies: {
+function registerOptionalDependencies(dependencies: {
   redis?: Redis;
   engineIo?: Server;
   rabbitMQ?: Connection;
