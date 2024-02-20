@@ -1,61 +1,44 @@
 import http from "http";
 import express from "express";
-import { dataSource } from "@db/data-source";
+import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 
 import { Di } from "@enums/Di";
-import { Dependency } from "@enums/Dependency";
 
 import { setupDi } from "@utils/setupDi";
 import { setupJobs } from "@utils/setupJobs";
 import { setupRedis } from "@utils/setupRedis";
-import { setupExpress } from "@utils/setupExpress";
 import { loadYupUtils } from "@utils/loadYupUtils";
-import { getInstanceOf } from "@helpers/getInstanceOf";
+import { setupExpress } from "@utils/setupExpress";
 import { setupPublisher } from "@utils/setupPublisher";
+import { getInstanceOf } from "@helpers/getInstanceOf";
 import { initializeEngineIO } from "@utils/initializeEngineIO";
 
 export const server = async () => {
   const app = express();
+  const serverInstance = http.createServer(app);
 
-  try {
-    await loadYupUtils();
-  } catch (error) {
-    log.error({
-      error,
-      message: "Failed to load yup utils!",
-      dependency: Dependency.yup,
-    });
-
-    process.exit(1);
-  }
-
-  try {
-    await dataSource.initialize();
-
-    log.debug({
-      dependency: Dependency.TypeORM,
-      message: "Data source initialized!",
-    });
-  } catch (error) {
-    log.error({
-      error,
-      message: "Failed to initialize data source!",
-      dependency: Dependency.TypeORM,
-    });
-
-    process.exit(1);
-  }
+  await loadYupUtils();
 
   const engineIo = initializeEngineIO();
-
-  const serverInstance = http.createServer(app);
 
   engineIo.attach(serverInstance);
 
   const redis = setupRedis();
 
-  await setupDi({ redis: redis.instance, engineIo });
+  const di = await setupDi();
+
+  const dataSourceFactory = getInstanceOf<IDataSourceFactory>(
+    Di.DataSourceFactory
+  );
+
+  const dataSource = await dataSourceFactory.create();
+
+  di.registerAdditionalDependencies({
+    engineIo,
+    dataSource,
+    redis: redis.instance,
+  });
 
   await setupPublisher();
 

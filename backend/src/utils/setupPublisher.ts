@@ -8,6 +8,11 @@ import { Queue } from "@enums/Queue";
 import { Dependency } from "@enums/Dependency";
 
 export const setupPublisher = async () => {
+  log.debug({
+    dependency: Dependency.RabbitMQ,
+    message: "Initializing publisher...",
+  });
+
   const { PORT, USER, PASSWORD, HOST } = RABBITMQ;
 
   const connection = await connect({

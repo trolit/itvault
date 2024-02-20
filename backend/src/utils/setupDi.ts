@@ -21,6 +21,11 @@ import { MailConsumerHandler } from "@consumer-handlers/MailConsumerHandler";
 import { BundleConsumerHandler } from "@consumer-handlers/BundleConsumerHandler";
 
 export const setupDi = async () => {
+  log.debug({
+    dependency: Dependency.tsyringe,
+    message: "Registering primary dependencies...",
+  });
+
   container.register(Di.SocketServiceManager, SocketServiceManager, {
     lifecycle: Lifecycle.Singleton,
   });
@@ -69,6 +74,11 @@ function registerAdditionalDependencies(dependencies: {
   dataSource?: DataSource;
   mailTransporter?: Transporter;
 }) {
+  log.debug({
+    dependency: Dependency.tsyringe,
+    message: "Registering optional dependencies...",
+  });
+
   const { mailTransporter, redis, engineIo, dataSource } = dependencies;
 
   if (engineIo) {
