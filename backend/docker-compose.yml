@@ -33,7 +33,7 @@ services:
       - "127.0.0.1:${RABBITMQ_PORT}:${RABBITMQ_PORT}"
       - ${RABBITMQ_MANAGEMENT_PORT}:${RABBITMQ_MANAGEMENT_PORT}
     volumes:
-      - mqrabbit:/var/lib/rabbitmq
+      - rabbitmq:/var/lib/rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASSWORD}
@@ -41,4 +41,4 @@ services:
 volumes:
   db:
   redis:
-  mqrabbit:
+  rabbitmq:

@@ -5,7 +5,7 @@ import { dataSource } from "@db/data-source";
 import { Channel, Connection, connect } from "amqplib";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
-import { MQRABBIT } from "@config";
+import { RABBITMQ } from "@config";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
@@ -62,7 +62,7 @@ const consumers = [
 
     await setupDi({ mailTransporter });
 
-    const { PORT, USER, PASSWORD } = MQRABBIT;
+    const { PORT, USER, PASSWORD, HOST } = RABBITMQ;
 
     log.info({
       message: `establishing connection...`,
@@ -70,6 +70,7 @@ const consumers = [
     });
 
     connection = await connect({
+      hostname: HOST,
       port: PORT,
       username: USER,
       password: PASSWORD,
