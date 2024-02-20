@@ -56,6 +56,7 @@ export const REDIS = {
 };
 
 export const MQRABBIT = {
+  HOST: envString("RABBITMQ_HOST"),
   PORT: envPort("RABBITMQ_PORT"),
   USER: envString("RABBITMQ_DEFAULT_USER"),
   PASSWORD: envString("RABBITMQ_DEFAULT_PASSWORD"),

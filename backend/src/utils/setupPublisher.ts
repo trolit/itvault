@@ -8,9 +8,10 @@ import { Queue } from "@enums/Queue";
 import { Dependency } from "@enums/Dependency";
 
 export const setupPublisher = async () => {
-  const { PORT, USER, PASSWORD } = MQRABBIT;
+  const { PORT, USER, PASSWORD, HOST } = MQRABBIT;
 
   const connection = await connect({
+    hostname: HOST,
     port: PORT,
     username: USER,
     password: PASSWORD,
