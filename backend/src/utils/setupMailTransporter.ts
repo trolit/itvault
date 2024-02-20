@@ -7,6 +7,11 @@ import { Dependency } from "@enums/Dependency";
 const { HOST, PORT, USER, PASSWORD } = EMAIL;
 
 export const setupMailTransporter = () => {
+  log.debug({
+    dependency: Dependency.nodemailer,
+    message: "Initializing nodemailer...",
+  });
+
   const transporter = nodemailer.createTransport({
     host: HOST,
     port: PORT,

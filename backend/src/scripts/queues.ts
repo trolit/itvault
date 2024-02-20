@@ -1,9 +1,10 @@
 import "reflect-metadata";
+import { DataSource } from "typeorm";
 import lockfile from "proper-lockfile";
 import { Transporter } from "nodemailer";
-import { dataSource } from "@db/data-source";
 import { Channel, Connection, connect } from "amqplib";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
+import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
 
 import { RABBITMQ } from "@config";
 
@@ -14,6 +15,7 @@ import { Dependency } from "@enums/Dependency";
 import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
 import { splitPath } from "@helpers/splitPath";
+import { getInstanceOf } from "@helpers/getInstanceOf";
 import { ConsumerFactory } from "@factories/ConsumerFactory";
 import { setupMailTransporter } from "@utils/setupMailTransporter";
 
@@ -42,25 +44,20 @@ const consumers = [
 
     await lockfile.lock(__filename);
 
-    log.info({
-      message: `creating connection...`,
-      dependency: Dependency.TypeORM,
-    });
+    const di = await setupDi();
 
-    await dataSource.initialize();
+    const dataSourceFactory = getInstanceOf<IDataSourceFactory>(
+      Di.DataSourceFactory
+    );
 
-    log.info({
-      message: `creating connection...`,
-      dependency: Dependency.nodemailer,
-    });
+    const dataSource = await dataSourceFactory.create();
 
     mailTransporter = setupMailTransporter();
 
-    log.debug({
-      message: `setting up dependency injection...`,
+    di.registerAdditionalDependencies({
+      dataSource,
+      mailTransporter,
     });
-
-    await setupDi({ mailTransporter });
 
     const { PORT, USER, PASSWORD, HOST } = RABBITMQ;
 
@@ -137,6 +134,8 @@ async function onExit() {
     message: `Closing connection...`,
     dependency: Dependency.TypeORM,
   });
+
+  const dataSource = getInstanceOf<DataSource>(Di.DataSource);
 
   try {
     await dataSource.destroy();
