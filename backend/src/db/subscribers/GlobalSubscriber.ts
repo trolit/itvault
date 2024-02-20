@@ -14,8 +14,6 @@ import {
   EntityManager,
 } from "typeorm";
 
-import { APP } from "@config";
-
 import { Action } from "@shared/types/enums/Action";
 
 // @NOTE could expand it even more to include set of "smaller" actions like e.g. "Patch <property>"
@@ -66,10 +64,6 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
     manager,
     metadata: { name: entityName },
   } = event;
-
-  if (!APP.IS_PRODUCTION) {
-    return;
-  }
 
   const eventHandler = WORKSPACE_EVENT_HANDLERS.find(
     eventHandler =>
