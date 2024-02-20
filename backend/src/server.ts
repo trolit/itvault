@@ -1,5 +1,6 @@
 import http from "http";
 import express from "express";
+import { IRabbitMQFactory } from "types/factories/IRabbitMQFactory";
 import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
 import { ISocketServiceManager } from "types/services/ISocketServiceManager";
 
@@ -34,13 +35,18 @@ export const server = async () => {
 
   const dataSource = await dataSourceFactory.create();
 
+  const rabbitMQFactory = getInstanceOf<IRabbitMQFactory>(Di.RabbitMQFactory);
+
+  const rabbitMQ = await rabbitMQFactory.create();
+
   di.registerAdditionalDependencies({
     engineIo,
+    rabbitMQ,
     dataSource,
     redis: redis.instance,
   });
 
-  await setupPublisher();
+  await setupPublisher(rabbitMQ);
 
   redis.initializeRoleKeys();
 

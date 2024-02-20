@@ -1,29 +1,18 @@
-import { connect } from "amqplib";
 import { container } from "tsyringe";
-
-import { RABBITMQ } from "@config";
+import { Connection } from "amqplib";
 
 import { Di } from "@enums/Di";
 import { Queue } from "@enums/Queue";
 import { Dependency } from "@enums/Dependency";
 
-export const setupPublisher = async () => {
+export const setupPublisher = async (rabbitMQ: Connection) => {
   log.debug({
     dependency: Dependency.RabbitMQ,
     message: "Initializing publisher...",
   });
 
-  const { PORT, USER, PASSWORD, HOST } = RABBITMQ;
-
-  const connection = await connect({
-    hostname: HOST,
-    port: PORT,
-    username: USER,
-    password: PASSWORD,
-  });
-
   try {
-    const publisher = await connection.createChannel();
+    const publisher = await rabbitMQ.createChannel();
 
     const queues = Object.values(Queue);
 
@@ -32,8 +21,6 @@ export const setupPublisher = async () => {
     });
 
     container.register(Di.Publisher, { useValue: publisher });
-
-    return { connection, channel: publisher };
   } catch (error) {
     log.error({
       error,
