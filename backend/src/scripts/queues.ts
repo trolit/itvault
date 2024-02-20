@@ -6,6 +6,7 @@ import { Channel, Connection } from "amqplib";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import { IConsumerFactory } from "types/factories/IConsumerFactory";
 import { IDataSourceFactory } from "types/factories/IDataSourceFactory";
+import { IMailTransporterFactory } from "types/factories/IMailTransporterFactory";
 import { IQueuesConnectionFactory } from "types/factories/IQueuesConnectionFactory";
 
 import { Di } from "@enums/Di";
@@ -16,7 +17,6 @@ import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
 import { splitPath } from "@helpers/splitPath";
 import { getInstanceOf } from "@helpers/getInstanceOf";
-import { setupMailTransporter } from "@utils/setupMailTransporter";
 
 let consumerChannels: Channel[] = [];
 let mailTransporter: Transporter<SMTPTransport.SentMessageInfo>;
@@ -48,7 +48,9 @@ const consumers = [
       Di.DataSourceFactory
     ).create();
 
-    mailTransporter = setupMailTransporter();
+    const mailTransporter = getInstanceOf<IMailTransporterFactory>(
+      Di.MailTransporterFactory
+    ).create();
 
     const rabbitMQ = await getInstanceOf<IQueuesConnectionFactory>(
       Di.QueuesConnectionFactory

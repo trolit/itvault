@@ -39,6 +39,7 @@ export enum Di {
   ConsumerFactory = "IConsumerFactory",
   DataSourceFactory = "IDataSourceFactory",
   FormidableFormFactory = "IFormidableFormFactory",
+  MailTransporterFactory = "IMailTransporterFactory",
   QueuesConnectionFactory = "IQueuesConnectionFactory",
 
   SendMailConsumerHandler = "MailConsumerHandler",
