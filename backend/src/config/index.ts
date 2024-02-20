@@ -80,18 +80,30 @@ const FILES_BASE_TEMPORARY_UPLOADS_PATH: string = envString(
   "FILES_BASE_TEMPORARY_UPLOADS_PATH"
 );
 
+const S3 = {
+  bucket: "",
+  endpoint: "",
+  accessKeyId: "",
+  secretAccessKey: "",
+};
+
+if (FILES_STORAGE_MODE === FileStorageMode.AWS) {
+  const S3_HOST = envString("S3_HOST");
+  const S3_PORT = envString("S3_PORT");
+
+  S3.bucket = envString("S3_BUCKET");
+  S3.endpoint = `${S3_HOST}:${S3_PORT}/`;
+  S3.accessKeyId = envString("S3_ACCESS_KEY_ID");
+  S3.secretAccessKey = envString("S3_SECRET_ACCESS_KEY");
+}
+
 export const FILES = {
   ROOT: ".",
   ACTIVE_MODE: FILES_STORAGE_MODE,
   BASE_UPLOADS_PATH: FILES_BASE_UPLOADS_PATH,
   BASE_DOWNLOADS_PATH: FILES_BASE_DOWNLOADS_PATH,
   BASE_TEMPORARY_UPLOADS_PATH: FILES_BASE_TEMPORARY_UPLOADS_PATH,
-  S3: {
-    bucket: "itvault-bucket",
-    endpoint: envString("S3_ENDPOINT"),
-    accessKeyId: envString("S3_ACCESS_KEY_ID"),
-    secretAccessKey: envString("S3_SECRET_ACCESS_KEY"),
-  },
+  S3,
 };
 
 if (FILES_STORAGE_MODE === FileStorageMode.Local) {

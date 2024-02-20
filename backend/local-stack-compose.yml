@@ -5,7 +5,7 @@ services:
     container_name: s3
     image: localstack/localstack:s3-latest
     ports:
-      - ${S3_ENDPOINT}:4566
+      - "127.0.0.1:${S3_PORT}:4566"
     environment:
       - DEBUG=0
     volumes:
