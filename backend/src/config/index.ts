@@ -51,6 +51,7 @@ export const JWT = {
 };
 
 export const REDIS = {
+  HOST: envString("REDIS_HOST"),
   PORT: envPort("REDIS_PORT"),
   PASSWORD: envString("REDIS_PASSWORD"),
 };
