@@ -5,16 +5,19 @@ import { IQueuesConnectionFactory } from "types/factories/IQueuesConnectionFacto
 
 import { Di } from "@enums/Di";
 
+import { Warden } from "@utils/Warden";
 import { setupDi } from "@utils/setupDi";
 import { setupJobs } from "@utils/setupJobs";
 import { setupRedis } from "@utils/setupRedis";
 import { setupExpress } from "@utils/setupExpress";
+import { attachEngineIO } from "@utils/attachEngineIO";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { setupPublisher } from "@utils/setupPublisher";
-import { attachEngineIO } from "@utils/attachEngineIO";
 import { loadYupCustomMethods } from "@utils/loadYupCustomMethods";
 
 export const server = async () => {
+  Warden.start();
+
   const app = express();
   const { serverInstance, engineIO } = attachEngineIO(app);
 
