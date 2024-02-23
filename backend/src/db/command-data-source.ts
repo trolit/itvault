@@ -7,7 +7,7 @@ import RoleSeeder from "./seeds/1690115009-RoleSeeder";
 import PermissionSeeder from "./seeds/1690115077-PermissionSeeder";
 import PermissionToRoleSeeder from "./seeds/1690115090-PermissionToRoleSeeder";
 
-const { IS_PRODUCTION } = APP;
+const { IS_PRODUCTION, IS_TEST } = APP;
 const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
 
 const getGlobPattern = (path: string) => `src/db/${path}`;
@@ -26,9 +26,10 @@ const options: DataSourceOptions & SeederOptions = {
   logging: true,
   synchronize: false,
 
-  seeds: IS_PRODUCTION
-    ? [RoleSeeder, PermissionSeeder, PermissionToRoleSeeder]
-    : [`${getGlobPattern(`seeds/*Seeder*`)}`],
+  seeds:
+    IS_PRODUCTION || IS_TEST
+      ? [RoleSeeder, PermissionSeeder, PermissionToRoleSeeder]
+      : [`${getGlobPattern(`seeds/*Seeder*`)}`],
   factories: IS_PRODUCTION ? [] : [`${getGlobPattern(`factories/*`)}`],
 };
 
