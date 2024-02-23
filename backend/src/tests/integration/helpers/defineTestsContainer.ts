@@ -5,18 +5,16 @@ import TestAgent from "supertest/lib/agent";
 
 import { versionToString } from "./versionToString";
 
-export const defineTestsContainer = (
-  // @TODO add option to define "before"
-  arg: {
-    name: string;
-    route: string;
-    collection: {
-      controller: string;
-      testData: { routerVersion: number; tests: ITest<any, any>[] }[];
-    }[];
-  }
-) => {
-  const { name, route: entityRoute, collection } = arg;
+export const defineTestsContainer = (arg: {
+  name: string;
+  route: string;
+  before?: Mocha.Func;
+  collection: {
+    controller: string;
+    testData: { routerVersion: number; tests: ITest<any, any>[] }[];
+  }[];
+}) => {
+  const { name, route: entityRoute, before: entityBefore, collection } = arg;
 
   return {
     loadToSuite: (
@@ -24,6 +22,10 @@ export const defineTestsContainer = (
       tools: { supertest: TestAgent | null }
     ) => {
       const entitySuite = Mocha.Suite.create(suite, `${name}`);
+
+      if (entityBefore) {
+        entitySuite.beforeAll(entityBefore);
+      }
 
       for (const element of collection) {
         const { controller, testData } = element;
