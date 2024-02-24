@@ -42,7 +42,7 @@ const MAINTAINER_ROLE: IRoleDefinition = {
   ],
 };
 
-const MEMBER_ROLE: IRoleDefinition = {
+export const MEMBER_ROLE: IRoleDefinition = {
   name: "Member",
 
   description: "Regular user of application",
