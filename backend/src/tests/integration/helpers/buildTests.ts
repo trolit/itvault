@@ -1,5 +1,6 @@
 import { ITest } from "../types/ITest";
 import { Method } from "../types/Method";
+import { ICustomTest } from "../types/ICustomTest";
 
 export const buildTests = <BQ = { version: number }, BB = void>(
   general: {
@@ -9,9 +10,10 @@ export const buildTests = <BQ = { version: number }, BB = void>(
   },
   builder: (arg: {
     addTest: <Q, B>(data: Omit<ITest<Q, B>, "method">) => void;
+    addCustomTest: (data: ICustomTest) => void;
   }) => void
 ) => {
-  const tests: ITest<any, any>[] = [];
+  const tests: (ITest<any, any> | ICustomTest)[] = [];
 
   const { baseQuery, baseBody, method } = general;
 
@@ -24,7 +26,11 @@ export const buildTests = <BQ = { version: number }, BB = void>(
     });
   };
 
-  builder({ addTest: addTestBuilder });
+  const addCustomTestBuilder = (data: ICustomTest) => {
+    tests.push({ ...data });
+  };
+
+  builder({ addTest: addTestBuilder, addCustomTest: addCustomTestBuilder });
 
   return tests;
 };
