@@ -6,5 +6,5 @@ export const isCustomTest = (
 ): data is ICustomTest => {
   const castedData = <ICustomTest>data;
 
-  return !!castedData?.customRunner;
+  return !!castedData?.runner;
 };
