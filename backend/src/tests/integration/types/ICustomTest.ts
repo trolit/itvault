@@ -5,8 +5,8 @@ import TestAgent from "supertest/lib/agent";
 export interface ICustomTest {
   description: string;
 
-  customRunner?: (arg: {
+  customRunner: (arg: {
     url: string;
-    superTest: TestAgent;
+    supertest: TestAgent;
   }) => Promise<Response>;
 }
