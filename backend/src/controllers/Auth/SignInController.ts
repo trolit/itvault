@@ -65,10 +65,6 @@ export class SignInController extends BaseController {
 
     const sessions = await this._authService.getSessionKeys(user.id);
 
-    if (!sessions) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
-    }
-
     if (sessions.length >= MAX_SESSIONS_PER_USER) {
       log.debug({
         message: `Max sessions reached (${MAX_SESSIONS_PER_USER}). Sign in attempt rejected.`,

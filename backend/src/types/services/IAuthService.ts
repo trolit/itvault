@@ -16,7 +16,7 @@ export interface IAuthService {
 
   isSessionActive(userId: number, sessionId: string): Promise<boolean>;
 
-  getSessionKeys(userId: number): Promise<string[] | null>;
+  getSessionKeys(userId: number): Promise<string[]>;
 
   getSessions(
     requesterSessionId: string,
