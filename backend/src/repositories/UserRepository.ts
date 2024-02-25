@@ -40,6 +40,7 @@ export class UserRepository
         email: true,
         password: true,
         firstName: true,
+        isSignedUp: true,
         lastName: true,
         fullName: true,
       },

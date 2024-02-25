@@ -90,9 +90,6 @@ const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
       expect: {
         statusCode: HTTP.OK,
         callback: async response => {
-          console.log("----123");
-          console.log(response);
-
           const userId = response.body.id;
           const authService = getInstanceOf<IAuthService>(Di.AuthService);
 
