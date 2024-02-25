@@ -96,6 +96,8 @@ const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
           const sessionKeys = await authService.getSessionKeys(userId);
 
           expect(sessionKeys).to.have.lengthOf(1);
+
+          expect(response.headers).to.haveOwnProperty("set-cookie");
         },
       },
     });
