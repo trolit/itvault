@@ -53,7 +53,7 @@ export class SignInController extends BaseController {
       includePermissions: true,
     });
 
-    if (!user) {
+    if (!user || (user && !user.isSignedUp)) {
       return response.status(HTTP.UNAUTHORIZED).send();
     }
 
