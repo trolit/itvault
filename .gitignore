@@ -15,6 +15,7 @@ dist
 dist-ssr
 coverage
 *.local
+.nyc_output
 
 package-lock.json
 

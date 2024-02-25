@@ -43,6 +43,7 @@ export class Warden {
     });
 
     this._errorsLogger = createLogger({
+      silent: APP.IS_TEST,
       level: "info",
       format: format.combine(format.splat(), format.json()),
       exceptionHandlers: [
@@ -54,6 +55,7 @@ export class Warden {
 
     this._debugLogger = createLogger({
       level: "debug",
+      silent: APP.IS_TEST,
       format: format.combine(
         format.splat(),
         format.timestamp({

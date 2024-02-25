@@ -8,7 +8,7 @@ import { Dependency } from "@enums/Dependency";
 
 export class DataSourceFactory implements IDataSourceFactory {
   create() {
-    const { BASE_DIR, IS_PRODUCTION } = APP;
+    const { BASE_DIR, IS_PRODUCTION, IS_TEST } = APP;
     const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
 
     log.debug({
@@ -26,7 +26,7 @@ export class DataSourceFactory implements IDataSourceFactory {
       entities: [`${BASE_DIR}/db/entities/*`],
       migrations: [`${BASE_DIR}/db/migrations/*`],
       subscribers: [`${BASE_DIR}/db/subscribers/*`],
-      logging: !IS_PRODUCTION,
+      logging: !IS_PRODUCTION && !IS_TEST,
       synchronize: false,
     };
 

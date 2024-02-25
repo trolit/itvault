@@ -34,10 +34,6 @@ export class GetSessionsController extends BaseController {
 
     const keys = await this._authService.getSessionKeys(userId);
 
-    if (!keys || keys.length === 0) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
-    }
-
     const sessions = await this._authService.getSessions(sessionId, keys);
 
     if (!sessions) {

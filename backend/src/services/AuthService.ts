@@ -138,25 +138,27 @@ export class AuthService implements IAuthService {
     }
   }
 
-  async getSessionKeys(userId: number): Promise<string[] | null> {
+  async getSessionKeys(userId: number): Promise<string[]> {
     const prefix = composeDataStoreKey([
       userId,
       DataStore.KeyType.AuthenticatedUser,
     ]);
 
+    let result: string[] = [];
+
     try {
       const [, keys] = await this._dataStoreService.scan(`${prefix}-*`);
 
-      return keys;
+      result = keys;
     } catch (error) {
       log.error({
         error,
         message: `Failed to get session keys of user #${userId}`,
         dependency: Dependency.Redis,
       });
-
-      return null;
     }
+
+    return result;
   }
 
   async getSessions(

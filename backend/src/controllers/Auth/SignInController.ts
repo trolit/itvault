@@ -53,7 +53,7 @@ export class SignInController extends BaseController {
       includePermissions: true,
     });
 
-    if (!user) {
+    if (!user || (user && !user.isSignedUp)) {
       return response.status(HTTP.UNAUTHORIZED).send();
     }
 
@@ -64,10 +64,6 @@ export class SignInController extends BaseController {
     }
 
     const sessions = await this._authService.getSessionKeys(user.id);
-
-    if (!sessions) {
-      return response.status(HTTP.INTERNAL_SERVER_ERROR).send();
-    }
 
     if (sessions.length >= MAX_SESSIONS_PER_USER) {
       log.debug({
