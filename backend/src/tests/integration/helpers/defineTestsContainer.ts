@@ -16,6 +16,7 @@ export const defineTestsContainer = (arg: {
   route: string;
   before?: Mocha.Func;
   collection: {
+    route: string;
     controller: string;
     testData: {
       routerVersion: number;
@@ -23,7 +24,7 @@ export const defineTestsContainer = (arg: {
     }[];
   }[];
 }) => {
-  const { name, route, before: entityBefore, collection } = arg;
+  const { name, route: mainRoute, before: entityBefore, collection } = arg;
 
   return {
     beforeAll(suite: Mocha.Suite) {
@@ -41,7 +42,7 @@ export const defineTestsContainer = (arg: {
       const entitySuite = Mocha.Suite.create(suite, `${name}`);
 
       for (const element of collection) {
-        const { controller, testData } = element;
+        const { controller, testData, route: collectionRoute } = element;
 
         const controllerSuite = Mocha.Suite.create(
           entitySuite,
@@ -62,7 +63,7 @@ export const defineTestsContainer = (arg: {
                   return;
                 }
 
-                const url = `/api/${translatedRouterVersion}/${route}`;
+                const url = `/api/${translatedRouterVersion}/${mainRoute}/${collectionRoute}`;
 
                 await executeTest({ url, supertest, test, sessions });
               }
@@ -97,7 +98,7 @@ async function executeTest(arg: {
       expect: { statusCode, callback },
     } = test;
 
-    const request = supertest[method](url);
+    const request = supertest[method](url).query(query);
 
     if (sendAs) {
       const session = findSessionOrThrowError({ sessions, email: sendAs });
@@ -105,13 +106,13 @@ async function executeTest(arg: {
       request.set(JWT.COOKIE_KEY, session.value);
     }
 
-    const response = await request.query(query).send(body);
-
-    expect(response.status).to.eql(statusCode);
+    const response = await request.send(body);
 
     if (callback) {
       callback(response);
     }
+
+    expect(response.status).to.eql(statusCode);
   }
 }
 
