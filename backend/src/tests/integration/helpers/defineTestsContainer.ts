@@ -103,7 +103,7 @@ async function executeTest(arg: {
     if (sendAs) {
       const session = findSessionOrThrowError({ sessions, email: sendAs });
 
-      request.set(JWT.COOKIE_KEY, session.value);
+      request.set("Cookie", [session.value]);
     }
 
     const response = await request.send(body);

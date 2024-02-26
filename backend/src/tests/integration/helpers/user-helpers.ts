@@ -67,9 +67,11 @@ export async function getSessions(arg: {
       .query({ version: v1 })
       .send(body);
 
+    const [token] = response.headers["set-cookie"];
+
     result.push({
       email,
-      value: response.headers["set-cookie"],
+      value: token,
     });
   }
 
