@@ -6,8 +6,6 @@ import { ISession } from "../types/ISession";
 import { RuntimeData } from "../types/RuntimeData";
 import { ICustomTest } from "../types/ICustomTest";
 
-import { JWT } from "@config/index";
-
 import { isCustomTest } from "./isCustomTest";
 import { versionToString } from "./versionToString";
 
