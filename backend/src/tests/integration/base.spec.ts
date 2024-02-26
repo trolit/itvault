@@ -2,15 +2,16 @@ import "reflect-metadata";
 import { Server } from "http";
 import request from "supertest";
 import { server } from "../../server";
+import TestAgent from "supertest/lib/agent";
 
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
 import { AUTH_TESTS } from "./controllers/Auth";
 import { RuntimeData } from "./types/RuntimeData";
-import { addUsers } from "./helpers/user-helpers";
 import { containers } from "./helpers/containers";
 import { HEAD_ADMIN_EMAIL, MEMBER_EMAIL } from "./common-data";
+import { addUsers, getSessions } from "./helpers/user-helpers";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
@@ -32,7 +33,9 @@ describe("Integration tests", function () {
 
         runtimeData.supertest = supertest;
 
-        await initializeTestingEnvironment();
+        const { sessions } = await initializeTestingEnvironment(supertest);
+
+        runtimeData.sessions = sessions;
 
         AUTH_TESTS.beforeAll(this);
 
@@ -50,7 +53,7 @@ describe("Integration tests", function () {
   });
 });
 
-async function initializeTestingEnvironment() {
+async function initializeTestingEnvironment(supertest: TestAgent) {
   await addUsers([
     {
       email: HEAD_ADMIN_EMAIL,
@@ -63,4 +66,11 @@ async function initializeTestingEnvironment() {
       roleNameOrId: MEMBER_ROLE.name,
     },
   ]);
+
+  const sessions = await getSessions({
+    emails: [HEAD_ADMIN_EMAIL, MEMBER_EMAIL],
+    supertest,
+  });
+
+  return { sessions };
 }
