@@ -20,7 +20,10 @@ export const SESSION_LIMIT_EMAIL = "session-limit@email.com";
 export const NOT_SIGNED_UP_TEST_EMAIL = "not-signed-up@email.com";
 
 export const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
-  { method: Method.POST, baseQuery: { version: v1 } },
+  {
+    method: Method.POST,
+    baseQuery: { version: v1 },
+  },
 
   ({ addTest, addCustomTest }) => {
     addTest<void, ISignInDTO>({

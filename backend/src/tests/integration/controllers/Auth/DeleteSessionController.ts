@@ -16,7 +16,10 @@ export const DELETE_SESSION_MEMBER2_EMAIL = "session-delete-member2@email.com";
 const query = { version: v1 };
 
 export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
-  { method: Method.DELETE, baseQuery: { version: v1 } },
+  {
+    method: Method.DELETE,
+    baseQuery: { version: v1 },
+  },
 
   ({ addTest, addCustomTest }) => {
     addTest({
