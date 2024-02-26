@@ -3,22 +3,27 @@ import { defineTestsContainer } from "tests/integration/helpers/defineTestsConta
 
 import { MEMBER_ROLE } from "@config/initial-roles";
 
-import { SIGN_IN_CONTROLLER_V1_TESTS } from "./SignInController";
+import { GET_SESSIONS_CONTROLLER_V1_TESTS } from "./GetSessionsController";
+import {
+  SESSION_LIMIT_EMAIL,
+  VALID_REQUEST_EMAIL,
+  NOT_SIGNED_UP_TEST_EMAIL,
+  SIGN_IN_CONTROLLER_V1_TESTS,
+} from "./SignInController";
 
 import { BaseController } from "@controllers/BaseController";
+import { SignInController } from "@controllers/Auth/SignInController";
+import { GetSessionsController } from "@controllers/Auth/GetSessionsController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-export const SESSION_TEST_EMAIL = "session@email.com";
-export const NOT_SIGNED_UP_TEST_EMAIL = "not-signed-up@email.com";
-
 export const AUTH_TESTS = defineTestsContainer({
   name: "Auth",
-  route: `auth/sign-in`,
+  route: `auth`,
   before: () => {
     return addUsers([
       {
-        email: SESSION_TEST_EMAIL,
+        email: VALID_REQUEST_EMAIL,
         isSignedUp: true,
         roleNameOrId: MEMBER_ROLE.name,
       },
@@ -27,15 +32,31 @@ export const AUTH_TESTS = defineTestsContainer({
         isSignedUp: false,
         roleNameOrId: MEMBER_ROLE.name,
       },
+      {
+        email: SESSION_LIMIT_EMAIL,
+        isSignedUp: true,
+        roleNameOrId: MEMBER_ROLE.name,
+      },
     ]);
   },
   collection: [
     {
-      controller: `SignInController`,
+      route: "sign-in",
+      controller: SignInController.name,
       testData: [
         {
           routerVersion: v1,
           tests: SIGN_IN_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
+    {
+      route: "sessions",
+      controller: GetSessionsController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: GET_SESSIONS_CONTROLLER_V1_TESTS,
         },
       ],
     },

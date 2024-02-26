@@ -1,8 +1,7 @@
 import { expect } from "chai";
-import { StatusCodes as HTTP } from "http-status-codes";
 import { Method } from "tests/integration/types/Method";
+import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
-import { NOT_SIGNED_UP_TEST_EMAIL, SESSION_TEST_EMAIL } from ".";
 import { buildTests } from "tests/integration/helpers/buildTests";
 import { HEAD_ADMIN_EMAIL, PASSWORD } from "tests/integration/common-data";
 
@@ -15,6 +14,10 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
+
+export const VALID_REQUEST_EMAIL = "session@email.com";
+export const SESSION_LIMIT_EMAIL = "session-limit@email.com";
+export const NOT_SIGNED_UP_TEST_EMAIL = "not-signed-up@email.com";
 
 export const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
   { method: Method.POST, baseQuery: { version: v1 } },
@@ -65,7 +68,7 @@ export const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
       statusCode: HTTP.UNAUTHORIZED,
       runner: async ({ url, supertest }) => {
         const body: ISignInDTO = {
-          email: SESSION_TEST_EMAIL,
+          email: SESSION_LIMIT_EMAIL,
           password: PASSWORD,
         };
         const query = { version: v1 };
@@ -80,7 +83,7 @@ export const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
 
     addTest<void, ISignInDTO>({
       description: `returns ${HTTP.OK} when user types valid credentials and has available session`,
-      body: { email: HEAD_ADMIN_EMAIL, password: PASSWORD },
+      body: { email: VALID_REQUEST_EMAIL, password: PASSWORD },
       expect: {
         statusCode: HTTP.OK,
         callback: async response => {
