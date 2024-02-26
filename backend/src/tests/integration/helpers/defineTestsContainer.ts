@@ -2,6 +2,7 @@ import Mocha from "mocha";
 import { expect } from "chai";
 import { ITest } from "../types/ITest";
 import TestAgent from "supertest/lib/agent";
+import { RuntimeData } from "../types/RuntimeData";
 import { ICustomTest } from "../types/ICustomTest";
 
 import { isCustomTest } from "./isCustomTest";
@@ -33,10 +34,7 @@ export const defineTestsContainer = (arg: {
         }
       }
     },
-    loadToSuite: (
-      suite: Mocha.Suite,
-      tools: { supertest: TestAgent | null }
-    ) => {
+    loadToSuite: (suite: Mocha.Suite, runtimeData: RuntimeData) => {
       const entitySuite = Mocha.Suite.create(suite, `${name}`);
 
       for (const element of collection) {
@@ -55,7 +53,7 @@ export const defineTestsContainer = (arg: {
             const mochaTest = new Mocha.Test(
               `${translatedRouterVersion} ${test.description}`,
               async () => {
-                const { supertest } = tools;
+                const { supertest } = runtimeData;
 
                 if (!supertest) {
                   return;

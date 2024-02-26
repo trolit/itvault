@@ -2,14 +2,14 @@ import "reflect-metadata";
 import { Server } from "http";
 import request from "supertest";
 import { server } from "../../server";
-import TestAgent from "supertest/lib/agent";
 
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
 import { AUTH_TESTS } from "./controllers/Auth";
-import { containers } from "./helpers/containers";
+import { RuntimeData } from "./types/RuntimeData";
 import { addUsers } from "./helpers/user-helpers";
+import { containers } from "./helpers/containers";
 import { HEAD_ADMIN_EMAIL, MEMBER_EMAIL } from "./common-data";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
@@ -19,7 +19,7 @@ const { PORT } = APP;
 describe("Integration tests", function () {
   let _app: Server;
 
-  const tools: { supertest: TestAgent | null } = { supertest: null };
+  const runtimeData: RuntimeData = { supertest: null, sessions: [] };
 
   this.timeout(10000);
 
@@ -30,7 +30,7 @@ describe("Integration tests", function () {
       app.listen(PORT, async () => {
         const supertest = request(app);
 
-        tools.supertest = supertest;
+        runtimeData.supertest = supertest;
 
         await initializeTestingEnvironment();
 
@@ -41,7 +41,7 @@ describe("Integration tests", function () {
     });
   });
 
-  AUTH_TESTS.loadToSuite(this, tools);
+  AUTH_TESTS.loadToSuite(this, runtimeData);
 
   after(async () => {
     _app.close();
