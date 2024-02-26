@@ -83,7 +83,7 @@ export class RequestAgent implements IRequestAgent {
 
     const routerVersion = `v${version}`;
 
-    return `/${APP.ROUTES_PREFIX}/${routerVersion}/${name}/${action}`;
+    return `${APP.ROUTES_PREFIX}/${routerVersion}/${name}/${action}`;
   }
 
   private _useToken(arg: { user: { email: string } } | { token: string }) {
