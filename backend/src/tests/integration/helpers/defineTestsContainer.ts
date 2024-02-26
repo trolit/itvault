@@ -2,7 +2,11 @@ import Mocha from "mocha";
 import { expect } from "chai";
 import { ITest } from "../types/ITest";
 import TestAgent from "supertest/lib/agent";
+import { ISession } from "../types/ISession";
+import { RuntimeData } from "../types/RuntimeData";
 import { ICustomTest } from "../types/ICustomTest";
+
+import { JWT } from "@config/index";
 
 import { isCustomTest } from "./isCustomTest";
 import { versionToString } from "./versionToString";
@@ -12,6 +16,7 @@ export const defineTestsContainer = (arg: {
   route: string;
   before?: Mocha.Func;
   collection: {
+    route: string;
     controller: string;
     testData: {
       routerVersion: number;
@@ -19,7 +24,7 @@ export const defineTestsContainer = (arg: {
     }[];
   }[];
 }) => {
-  const { name, route: entityRoute, before: entityBefore, collection } = arg;
+  const { name, route: mainRoute, before: entityBefore, collection } = arg;
 
   return {
     beforeAll(suite: Mocha.Suite) {
@@ -33,14 +38,11 @@ export const defineTestsContainer = (arg: {
         }
       }
     },
-    loadToSuite: (
-      suite: Mocha.Suite,
-      tools: { supertest: TestAgent | null }
-    ) => {
+    loadToSuite: (suite: Mocha.Suite, runtimeData: RuntimeData) => {
       const entitySuite = Mocha.Suite.create(suite, `${name}`);
 
       for (const element of collection) {
-        const { controller, testData } = element;
+        const { controller, testData, route: collectionRoute } = element;
 
         const controllerSuite = Mocha.Suite.create(
           entitySuite,
@@ -55,15 +57,15 @@ export const defineTestsContainer = (arg: {
             const mochaTest = new Mocha.Test(
               `${translatedRouterVersion} ${test.description}`,
               async () => {
-                const { supertest } = tools;
+                const { supertest, sessions } = runtimeData;
 
                 if (!supertest) {
                   return;
                 }
 
-                const url = `/api/${translatedRouterVersion}/${entityRoute}`;
+                const url = `/api/${translatedRouterVersion}/${mainRoute}/${collectionRoute}`;
 
-                await executeTest({ url, supertest, test });
+                await executeTest({ url, supertest, test, sessions });
               }
             );
 
@@ -78,9 +80,10 @@ export const defineTestsContainer = (arg: {
 async function executeTest(arg: {
   url: string;
   supertest: TestAgent;
+  sessions: ISession[];
   test: ITest<any, any> | ICustomTest;
 }) {
-  const { supertest, test, url } = arg;
+  const { supertest, test, url, sessions } = arg;
 
   if (isCustomTest(test)) {
     const response = await test.runner({ url, supertest });
@@ -91,15 +94,38 @@ async function executeTest(arg: {
       method,
       query,
       body,
+      sendAs,
       expect: { statusCode, callback },
     } = test;
 
-    const response = await supertest[method](url).query(query).send(body);
+    const request = supertest[method](url).query(query);
 
-    expect(response.status).to.eql(statusCode);
+    if (sendAs) {
+      const session = findSessionOrThrowError({ sessions, email: sendAs });
+
+      request.set("Cookie", [session.value]);
+    }
+
+    const response = await request.send(body);
 
     if (callback) {
       callback(response);
     }
+
+    expect(response.status).to.eql(statusCode);
   }
+}
+
+function findSessionOrThrowError(arg: { sessions: ISession[]; email: string }) {
+  const { sessions, email } = arg;
+
+  const session = sessions.find(element => element.email === email);
+
+  if (!session) {
+    throw Error(
+      `Attempted to resolve session for ${email} but it wasn't found!`
+    );
+  }
+
+  return session;
 }

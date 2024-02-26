@@ -7,13 +7,11 @@ import TestAgent from "supertest/lib/agent";
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
-import { AUTH_TESTS } from "./auth-tests";
+import { AUTH_TESTS } from "./controllers/Auth";
+import { RuntimeData } from "./types/RuntimeData";
 import { containers } from "./helpers/containers";
-import {
-  HEAD_ADMIN_EMAIL,
-  MEMBER_EMAIL,
-  addUsers,
-} from "./helpers/user-helpers";
+import { HEAD_ADMIN_EMAIL, MEMBER_EMAIL } from "./common-data";
+import { addUsers, getSessions } from "./helpers/user-helpers";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
@@ -22,7 +20,7 @@ const { PORT } = APP;
 describe("Integration tests", function () {
   let _app: Server;
 
-  const tools: { supertest: TestAgent | null } = { supertest: null };
+  const runtimeData: RuntimeData = { supertest: null, sessions: [] };
 
   this.timeout(10000);
 
@@ -33,9 +31,11 @@ describe("Integration tests", function () {
       app.listen(PORT, async () => {
         const supertest = request(app);
 
-        tools.supertest = supertest;
+        runtimeData.supertest = supertest;
 
-        await initializeTestingEnvironment();
+        const { sessions } = await initializeTestingEnvironment(supertest);
+
+        runtimeData.sessions = sessions;
 
         AUTH_TESTS.beforeAll(this);
 
@@ -44,7 +44,7 @@ describe("Integration tests", function () {
     });
   });
 
-  AUTH_TESTS.loadToSuite(this, tools);
+  AUTH_TESTS.loadToSuite(this, runtimeData);
 
   after(async () => {
     _app.close();
@@ -53,7 +53,7 @@ describe("Integration tests", function () {
   });
 });
 
-async function initializeTestingEnvironment() {
+async function initializeTestingEnvironment(supertest: TestAgent) {
   await addUsers([
     {
       email: HEAD_ADMIN_EMAIL,
@@ -66,4 +66,11 @@ async function initializeTestingEnvironment() {
       roleNameOrId: MEMBER_ROLE.name,
     },
   ]);
+
+  const sessions = await getSessions({
+    emails: [HEAD_ADMIN_EMAIL, MEMBER_EMAIL],
+    supertest,
+  });
+
+  return { sessions };
 }

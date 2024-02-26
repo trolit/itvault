@@ -1,9 +1,10 @@
 import { Response } from "supertest";
 
 import { Method } from "./Method";
+import { IBaseTest } from "./IBaseTest";
 
-export interface ITest<Q = void, B = void> {
-  description: string;
+export interface ITest<Q = void, B = void> extends IBaseTest {
+  sendAs?: string;
 
   method: Method;
 
