@@ -10,10 +10,16 @@ import {
   NOT_SIGNED_UP_TEST_EMAIL,
   SIGN_IN_CONTROLLER_V1_TESTS,
 } from "./SignInController";
+import {
+  DELETE_SESSION_CONTROLLER_V1_TESTS,
+  DELETE_SESSION_MEMBER1_EMAIL,
+  DELETE_SESSION_MEMBER2_EMAIL,
+} from "./DeleteSessionController";
 
 import { BaseController } from "@controllers/BaseController";
 import { SignInController } from "@controllers/Auth/SignInController";
 import { GetSessionsController } from "@controllers/Auth/GetSessionsController";
+import { DeleteSessionController } from "@controllers/Auth/DeleteSessionController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -37,6 +43,16 @@ export const AUTH_TESTS = defineTestsContainer({
         isSignedUp: true,
         roleNameOrId: MEMBER_ROLE.name,
       },
+      {
+        email: DELETE_SESSION_MEMBER1_EMAIL,
+        isSignedUp: true,
+        roleNameOrId: MEMBER_ROLE.name,
+      },
+      {
+        email: DELETE_SESSION_MEMBER2_EMAIL,
+        isSignedUp: true,
+        roleNameOrId: MEMBER_ROLE.name,
+      },
     ]);
   },
   collection: [
@@ -57,6 +73,16 @@ export const AUTH_TESTS = defineTestsContainer({
         {
           routerVersion: v1,
           tests: GET_SESSIONS_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
+    {
+      route: "sessions",
+      controller: DeleteSessionController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: DELETE_SESSION_CONTROLLER_V1_TESTS,
         },
       ],
     },

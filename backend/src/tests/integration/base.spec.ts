@@ -8,10 +8,10 @@ import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
 import { AUTH_TESTS } from "./controllers/Auth";
-import { RuntimeData } from "./types/RuntimeData";
 import { containers } from "./helpers/containers";
-import { HEAD_ADMIN_EMAIL, MEMBER_EMAIL } from "./common-data";
+import { RuntimeData } from "./types/RuntimeData";
 import { addUsers, getSessions } from "./helpers/user-helpers";
+import { HEAD_ADMIN_EMAIL, MEMBER_EMAIL } from "./common-data";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 

@@ -21,5 +21,5 @@ export interface IAuthService {
   getSessions(
     requesterSessionId: string,
     keys: string[]
-  ): Promise<IUserSessionDTO[] | null>;
+  ): Promise<IUserSessionDTO[]>;
 }
