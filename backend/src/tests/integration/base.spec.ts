@@ -17,11 +17,10 @@ import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 const { PORT } = APP;
 
+let _app: Server;
+const runtimeData: RuntimeData = { supertest: null, sessions: [] };
+
 describe("Integration tests", function () {
-  let _app: Server;
-
-  const runtimeData: RuntimeData = { supertest: null, sessions: [] };
-
   this.timeout(10000);
 
   before(done => {
@@ -29,13 +28,7 @@ describe("Integration tests", function () {
       _app = app;
 
       app.listen(PORT, async () => {
-        const supertest = request(app);
-
-        runtimeData.supertest = supertest;
-
-        const { sessions } = await initializeTestingEnvironment(supertest);
-
-        runtimeData.sessions = sessions;
+        await initializeTestingEnvironment();
 
         AUTH_TESTS.beforeAll(this);
 
@@ -53,7 +46,11 @@ describe("Integration tests", function () {
   });
 });
 
-async function initializeTestingEnvironment(supertest: TestAgent) {
+async function initializeTestingEnvironment() {
+  const supertest = request(_app);
+
+  runtimeData.supertest = supertest;
+
   await addUsers([
     {
       email: HEAD_ADMIN_EMAIL,
@@ -72,5 +69,5 @@ async function initializeTestingEnvironment(supertest: TestAgent) {
     supertest,
   });
 
-  return { sessions };
+  runtimeData.sessions = sessions;
 }
