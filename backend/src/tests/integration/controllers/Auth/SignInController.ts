@@ -4,10 +4,7 @@ import { Method } from "tests/integration/types/Method";
 import { IAuthService } from "types/services/IAuthService";
 import { NOT_SIGNED_UP_TEST_EMAIL, SESSION_TEST_EMAIL } from ".";
 import { buildTests } from "tests/integration/helpers/buildTests";
-import {
-  HEAD_ADMIN_EMAIL,
-  PASSWORD,
-} from "tests/integration/helpers/user-helpers";
+import { HEAD_ADMIN_EMAIL, PASSWORD } from "tests/integration/common-data";
 
 import { Di } from "@enums/Di";
 import { ISignInDTO } from "@shared/types/DTOs/User";
