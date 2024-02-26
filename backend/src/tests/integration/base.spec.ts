@@ -2,7 +2,6 @@ import "reflect-metadata";
 import { Server } from "http";
 import request from "supertest";
 import { server } from "../../server";
-import TestAgent from "supertest/lib/agent";
 
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
