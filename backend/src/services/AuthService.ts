@@ -164,7 +164,9 @@ export class AuthService implements IAuthService {
   async getSessions(
     requesterSessionId: string,
     keys: string[]
-  ): Promise<IUserSessionDTO[] | null> {
+  ): Promise<IUserSessionDTO[]> {
+    const result: IUserSessionDTO[] = [];
+
     try {
       const hashes = await this._dataStoreService.getAllHashes(keys);
 
@@ -173,7 +175,6 @@ export class AuthService implements IAuthService {
       }
 
       const hashesLength = hashes.length;
-      const result: IUserSessionDTO[] = [];
 
       for (let index = 0; index < hashesLength; index++) {
         const [error, hash] = hashes[index];
@@ -196,15 +197,14 @@ export class AuthService implements IAuthService {
           isRequesterSession: keys[index].includes(requesterSessionId),
         });
       }
-
-      return result;
     } catch (error) {
-      log.debug({
+      log.error({
+        error,
         message: `Failed to get session keys: ${keys.join(", ")}`,
         dependency: Dependency.Redis,
       });
-
-      return null;
     }
+
+    return result;
   }
 }
