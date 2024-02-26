@@ -6,7 +6,6 @@ import { ISession } from "../types/ISession";
 import { RuntimeData } from "../types/RuntimeData";
 import { ICustomTest } from "../types/ICustomTest";
 
-import { isCustomTest } from "./isCustomTest";
 import { versionToString } from "./versionToString";
 
 export const defineTestsContainer = (arg: {
@@ -82,8 +81,8 @@ async function executeTest(arg: {
   test: ITest<any, any> | ICustomTest;
 }) {
   const { supertest, test, url, sessions } = arg;
+  if ("runner" in test) {
 
-  if (isCustomTest(test)) {
     const response = await test.runner({ url, supertest });
 
     expect(response.status).to.eql(test.statusCode);
