@@ -1,13 +1,13 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { Method } from "tests/integration/types/Method";
 import { IAuthService } from "types/services/IAuthService";
-import { defineTestsContainer } from "tests/integration/helpers/defineTestsContainer";
-
-import { MEMBER_ROLE } from "@config/initial-roles";
-
-import { Method } from "./types/Method";
-import { buildTests } from "./helpers/buildTests";
-import { HEAD_ADMIN_EMAIL, PASSWORD, addUsers } from "./helpers/user-helpers";
+import { NOT_SIGNED_UP_TEST_EMAIL, SESSION_TEST_EMAIL } from ".";
+import { buildTests } from "tests/integration/helpers/buildTests";
+import {
+  HEAD_ADMIN_EMAIL,
+  PASSWORD,
+} from "tests/integration/helpers/user-helpers";
 
 import { Di } from "@enums/Di";
 import { ISignInDTO } from "@shared/types/DTOs/User";
@@ -19,10 +19,7 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-const SESSION_TEST_EMAIL = "session@email.com";
-const NOT_SIGNED_UP_TEST_EMAIL = "not-signed-up@email.com";
-
-const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
+export const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
   { method: Method.POST, baseQuery: { version: v1 } },
 
   ({ addTest, addCustomTest }) => {
@@ -103,33 +100,3 @@ const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
     });
   }
 );
-
-export const AUTH_TESTS = defineTestsContainer({
-  name: "Auth",
-  route: `auth/sign-in`,
-  before: () => {
-    return addUsers([
-      {
-        email: SESSION_TEST_EMAIL,
-        isSignedUp: true,
-        roleNameOrId: MEMBER_ROLE.name,
-      },
-      {
-        email: NOT_SIGNED_UP_TEST_EMAIL,
-        isSignedUp: false,
-        roleNameOrId: MEMBER_ROLE.name,
-      },
-    ]);
-  },
-  collection: [
-    {
-      controller: `SignInController`,
-      testData: [
-        {
-          routerVersion: v1,
-          tests: SIGN_IN_CONTROLLER_V1_TESTS,
-        },
-      ],
-    },
-  ],
-});

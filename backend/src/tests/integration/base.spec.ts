@@ -7,7 +7,7 @@ import TestAgent from "supertest/lib/agent";
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
-import { AUTH_TESTS } from "./auth-tests";
+import { AUTH_TESTS } from "./controllers/Auth";
 import { containers } from "./helpers/containers";
 import {
   HEAD_ADMIN_EMAIL,
