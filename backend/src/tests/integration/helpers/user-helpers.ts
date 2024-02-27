@@ -1,4 +1,4 @@
-import { PASSWORD } from "../common-data";
+import { PASSWORD } from "../config";
 import TestAgent from "supertest/lib/agent";
 import { ISession } from "../types/ISession";
 import { IUserRepository } from "types/repositories/IUserRepository";
