@@ -1,16 +1,11 @@
 import { Response } from "supertest";
 
-import { Method } from "./Method";
 import { IBaseTest } from "./IBaseTest";
 
-export interface ITest<Q = void, B = void> extends IBaseTest {
+export interface ITest<Q = void, B = void> extends IBaseTest<Q, B> {
   sendAs?: string;
 
-  method: Method;
-
-  body?: B;
-
-  query?: Q;
+  query?: Q & { version: number };
 
   expect: {
     statusCode: number;

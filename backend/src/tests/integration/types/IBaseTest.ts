@@ -1,11 +1,11 @@
 import { Method } from "./Method";
 
-export interface IBaseTest {
+export interface IBaseTest<Q = void, B = void> {
   method: Method;
 
   description: string;
 
-  query: any;
+  query?: Q;
 
-  body: any;
+  body?: B;
 }
