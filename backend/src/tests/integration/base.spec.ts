@@ -49,7 +49,7 @@ describe("Integration tests", function () {
         throw Error(`App not working or stopped earlier..`);
       }
 
-      app?.close(async () => {
+      app.close(async () => {
         await containers.down();
 
         resolve("ok");
