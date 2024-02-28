@@ -18,7 +18,7 @@ import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 const { PORT } = APP;
 
 export const RUNTIME_DATA: RuntimeData = {
-  tokens: {
+  jsonwebtokens: {
     [MEMBER_EMAIL]: "",
     [HEAD_ADMIN_EMAIL]: "",
   },
@@ -86,7 +86,7 @@ async function prepareTestingEnvironment(app: Server) {
     testAgent.authenticate({ email: MEMBER_EMAIL }),
   ]);
 
-  RUNTIME_DATA.tokens = {
+  RUNTIME_DATA.jsonwebtokens = {
     [HEAD_ADMIN_EMAIL]: HEAD_ADMIN_TOKEN,
     [MEMBER_EMAIL]: MEMBER_TOKEN,
   };
