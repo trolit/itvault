@@ -24,7 +24,6 @@ const BASE_QUERY = { version: v1 };
 export const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
   {
     method: Method.POST,
-    // @TODO should be required
     baseQuery: BASE_QUERY,
   },
 
