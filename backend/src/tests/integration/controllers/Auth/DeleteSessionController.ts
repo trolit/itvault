@@ -51,6 +51,7 @@ export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
           router,
           request: {
             ...request,
+            session: { jsonwebtoken },
             action: `${action}/${userSession.sessionId}`,
           },
         });
@@ -93,6 +94,7 @@ export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
           router,
           request: {
             ...request,
+            session: { jsonwebtoken },
             action: `${action}/${session.sessionId}`,
           },
         });
