@@ -7,9 +7,10 @@ import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
 import { AUTH_TESTS } from "./controllers/Auth";
-import { RuntimeData } from "./types/RuntimeData";
 import { containers } from "./helpers/containers";
+import { RuntimeData } from "./types/RuntimeData";
 import { addUsers } from "./helpers/user-helpers";
+import { TestAgentTypes } from "./types/TestAgent";
 import { useTestAgent } from "./helpers/useTestAgent";
 import { HEAD_ADMIN_EMAIL, MEMBER_EMAIL } from "./config";
 
@@ -80,14 +81,20 @@ async function prepareTestingEnvironment(app: Server) {
 
   const testAgent = useTestAgent(request);
 
-  // @TODO get keys of initial state from "tokens"
-  const [HEAD_ADMIN_TOKEN, MEMBER_TOKEN] = await Promise.all([
-    testAgent.authenticate({ email: HEAD_ADMIN_EMAIL }),
-    testAgent.authenticate({ email: MEMBER_EMAIL }),
-  ]);
+  await feedGlobalTokens(testAgent);
+}
 
-  RUNTIME_DATA.jsonwebtokens = {
-    [HEAD_ADMIN_EMAIL]: HEAD_ADMIN_TOKEN,
-    [MEMBER_EMAIL]: MEMBER_TOKEN,
-  };
+async function feedGlobalTokens(testAgent: TestAgentTypes.RequestInstance) {
+  const { jsonwebtokens } = RUNTIME_DATA;
+
+  const emails = Object.keys(jsonwebtokens);
+  const { length } = emails;
+
+  const tokens = await Promise.all(
+    emails.map(email => testAgent.authenticate({ email }))
+  );
+
+  for (let index = 0; index < length; index++) {
+    RUNTIME_DATA.jsonwebtokens[emails[index]] = tokens[index];
+  }
 }
