@@ -1,19 +1,21 @@
 import Mocha from "mocha";
 import { expect } from "chai";
+import { Response } from "supertest";
 import { ITest } from "../types/ITest";
 import TestAgent from "supertest/lib/agent";
-import { ISession } from "../types/ISession";
 import { RuntimeData } from "../types/RuntimeData";
 import { ICustomTest } from "../types/ICustomTest";
+import { RouterInformation } from "../types/RouterInformation";
 
+import { useTestAgent } from "./useTestAgent";
 import { versionToString } from "./versionToString";
 
 export const defineTestsContainer = (arg: {
   name: string;
-  route: string;
+  router: string;
   before?: Mocha.Func;
   collection: {
-    route: string;
+    action: string;
     controller: string;
     testData: {
       routerVersion: number;
@@ -21,7 +23,7 @@ export const defineTestsContainer = (arg: {
     }[];
   }[];
 }) => {
-  const { name, route: mainRoute, before: entityBefore, collection } = arg;
+  const { name, router, before: entityBefore, collection } = arg;
 
   return {
     beforeAll(suite: Mocha.Suite) {
@@ -39,7 +41,7 @@ export const defineTestsContainer = (arg: {
       const entitySuite = Mocha.Suite.create(suite, `${name}`);
 
       for (const element of collection) {
-        const { controller, testData, route: collectionRoute } = element;
+        const { controller, testData, action } = element;
 
         const controllerSuite = Mocha.Suite.create(
           entitySuite,
@@ -54,15 +56,19 @@ export const defineTestsContainer = (arg: {
             const mochaTest = new Mocha.Test(
               `${translatedRouterVersion} ${test.description}`,
               async () => {
-                const { supertest, sessions } = runtimeData;
+                const { supertest, jsonwebtokens } = runtimeData;
 
                 if (!supertest) {
-                  return;
+                  throw Error(`Supertest not supplied!`);
                 }
 
-                const url = `/api/${translatedRouterVersion}/${mainRoute}/${collectionRoute}`;
-
-                await executeTest({ url, supertest, test, sessions });
+                await runTest({
+                  test,
+                  action,
+                  supertest,
+                  jsonwebtokens,
+                  router: { version: routerVersion, name: router },
+                });
               }
             );
 
@@ -74,55 +80,54 @@ export const defineTestsContainer = (arg: {
   };
 };
 
-async function executeTest(arg: {
-  url: string;
+async function runTest(arg: {
+  action: string;
   supertest: TestAgent;
-  sessions: ISession[];
+  router: RouterInformation;
   test: ITest<any, any> | ICustomTest;
+  jsonwebtokens: Record<string, string>;
 }) {
-  const { supertest, test, url, sessions } = arg;
-  if ("runner" in test) {
+  const { action, supertest, router, test, jsonwebtokens } = arg;
 
-    const response = await test.runner({ url, supertest });
+  const request = {
+    method: test.method,
+    action,
+    query: test.query,
+    body: test.body,
+  };
 
-    expect(response.status).to.eql(test.statusCode);
+  const testAgent = useTestAgent(supertest, {
+    router,
+    request,
+    jsonwebtokens,
+  });
+
+  const isCustomTest = "runner" in test;
+
+  let response: Response;
+  const statusCode = isCustomTest ? test.statusCode : test.expect.statusCode;
+
+  if (isCustomTest) {
+    const url = testAgent.getUrl({
+      router,
+      action,
+    });
+
+    response = await test.runner({ url, router, testAgent, request });
   } else {
     const {
-      method,
-      query,
-      body,
-      sendAs,
+      session,
       expect: { statusCode, callback },
     } = test;
 
-    const request = supertest[method](url).query(query);
-
-    if (sendAs) {
-      const session = findSessionOrThrowError({ sessions, email: sendAs });
-
-      request.set("Cookie", [session.value]);
-    }
-
-    const response = await request.send(body);
+    response = await testAgent.request({
+      session,
+    });
 
     if (callback) {
       callback(response);
     }
-
-    expect(response.status).to.eql(statusCode);
-  }
-}
-
-function findSessionOrThrowError(arg: { sessions: ISession[]; email: string }) {
-  const { sessions, email } = arg;
-
-  const session = sessions.find(element => element.email === email);
-
-  if (!session) {
-    throw Error(
-      `Attempted to resolve session for ${email} but it wasn't found!`
-    );
   }
 
-  return session;
+  expect(response.status).to.eql(statusCode);
 }

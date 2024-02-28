@@ -25,7 +25,7 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 export const AUTH_TESTS = defineTestsContainer({
   name: "Auth",
-  route: `auth`,
+  router: `auth`,
   before: () => {
     return addUsers([
       {
@@ -57,7 +57,7 @@ export const AUTH_TESTS = defineTestsContainer({
   },
   collection: [
     {
-      route: "sign-in",
+      action: "sign-in",
       controller: SignInController.name,
       testData: [
         {
@@ -67,7 +67,7 @@ export const AUTH_TESTS = defineTestsContainer({
       ],
     },
     {
-      route: "sessions",
+      action: "sessions",
       controller: GetSessionsController.name,
       testData: [
         {
@@ -77,7 +77,7 @@ export const AUTH_TESTS = defineTestsContainer({
       ],
     },
     {
-      route: "sessions",
+      action: "sessions",
       controller: DeleteSessionController.name,
       testData: [
         {

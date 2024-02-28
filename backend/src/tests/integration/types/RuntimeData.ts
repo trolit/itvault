@@ -7,5 +7,5 @@ export type RuntimeData = {
 
   supertest?: TestAgent;
 
-  jsonwebtokens: Pick<TestAgentTypes.TestData, "jsonwebtokens">;
+  jsonwebtokens: Record<string, string>;
 };
