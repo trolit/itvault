@@ -1,8 +1,10 @@
+import { Server } from "http";
 import TestAgent from "supertest/lib/agent";
-import { ISession } from "./ISession";
 
 export type RuntimeData = {
-  supertest: TestAgent | null;
+  app?: Server;
 
-  sessions: ISession[];
+  supertest?: TestAgent;
+
+  tokens: Record<string, string>;
 };
