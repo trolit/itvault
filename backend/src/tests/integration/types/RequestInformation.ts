@@ -1,9 +1,10 @@
 import { Method } from "./Method";
+import { TestAgentTypes } from "./TestAgent";
 
 export type RequestInformation<Q = void, B = void> = {
   method: Method;
   action: string;
   query: Q;
   body?: B;
-  session?: { user: { email: string } } | { token: string };
+  session?: TestAgentTypes.UserSession;
 };
