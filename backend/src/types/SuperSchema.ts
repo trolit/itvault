@@ -16,7 +16,7 @@ export namespace SuperSchema {
   };
 
   type PartOfDefinition<T, K extends keyof Keys> = T extends void
-    ? {}
+    ? unknown
     : { [P in K]: Schema<T> };
 
   export type Definition<P = void, B = void, Q = void> = PartOfDefinition<
