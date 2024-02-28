@@ -1,4 +1,3 @@
-import path from "path";
 import "reflect-metadata";
 import fs from "fs-extra";
 import { Server } from "http";
@@ -16,8 +15,10 @@ import { useTestAgent } from "./helpers/useTestAgent";
 import { TestsContainer } from "./types/TestsContainer";
 import {
   MEMBER_EMAIL,
+  TESTS_TIMEOUT,
   HEAD_ADMIN_EMAIL,
   RUNTIME_DATA_DI_TOKEN,
+  PATH_TO_CONTROLLERS_TESTS,
 } from "./config";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
@@ -27,12 +28,10 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 const { PORT } = APP;
 const TESTS_CONTAINERS: TestsContainer[] = [];
 
-const TIMEOUT = "10s";
-const PATH_TO_CONTROLLERS_DIR = path.join(__dirname, "controllers");
-const CONTROLLER_DIRS = fs.readdirSync(PATH_TO_CONTROLLERS_DIR);
+const CONTROLLERS_TESTS_DIR_CONTENT = fs.readdirSync(PATH_TO_CONTROLLERS_TESTS);
 
 describe("Integration tests", async function () {
-  this.timeout(TIMEOUT);
+  this.timeout(TESTS_TIMEOUT);
 
   before(done => {
     server().then(app => {
@@ -51,7 +50,7 @@ describe("Integration tests", async function () {
   await loadTests(this);
 
   after(function (done) {
-    this.timeout(TIMEOUT);
+    this.timeout(TESTS_TIMEOUT);
 
     const { app } = getInstanceOf<IRuntimeData>(
       RUNTIME_DATA_DI_TOKEN
@@ -66,11 +65,17 @@ describe("Integration tests", async function () {
 });
 
 async function loadTests(suite: Mocha.Suite) {
-  for (const DIRNAME of CONTROLLER_DIRS) {
-    const module = await import(`./controllers/${DIRNAME}`);
-    const valueName = `${DIRNAME.toUpperCase()}_TESTS`;
+  for (const DIRNAME of CONTROLLERS_TESTS_DIR_CONTENT) {
+    if (DIRNAME.includes(".")) {
+      throw Error(
+        `Path '${PATH_TO_CONTROLLERS_TESTS}' should only include dirs!`
+      );
+    }
 
-    const testsCollection = module[valueName];
+    const module = await import(`./controllers/${DIRNAME}`);
+    const value = `${DIRNAME.toUpperCase()}_TESTS`;
+
+    const testsCollection = module[value];
 
     TESTS_CONTAINERS.push(testsCollection);
 
