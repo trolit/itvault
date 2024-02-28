@@ -9,6 +9,6 @@ export interface ICustomTest extends IBaseTest<any, any> {
   runner: (arg: {
     url: string;
     router: RouterInformation;
-    testAgent: TestAgentTypes.CustomTestInstance;
+    testAgent: TestAgentTypes.TestInstance;
   }) => Promise<Response>;
 }
