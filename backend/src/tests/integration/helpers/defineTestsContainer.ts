@@ -3,12 +3,16 @@ import { expect } from "chai";
 import { Response } from "supertest";
 import { ITest } from "../types/ITest";
 import TestAgent from "supertest/lib/agent";
-import { RuntimeData } from "../types/RuntimeData";
+import { RUNTIME_DATA_DI_TOKEN } from "../config";
 import { ICustomTest } from "../types/ICustomTest";
+import { IRuntimeData } from "../types/IRuntimeData";
+import { TestsContainer } from "../types/TestsContainer";
 import { RouterInformation } from "../types/RouterInformation";
 
 import { useTestAgent } from "./useTestAgent";
 import { versionToString } from "./versionToString";
+
+import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export const defineTestsContainer = (arg: {
   name: string;
@@ -22,7 +26,7 @@ export const defineTestsContainer = (arg: {
       tests: (ITest<any, any> | ICustomTest)[];
     }[];
   }[];
-}) => {
+}): TestsContainer => {
   const { name, router, before: entityBefore, collection } = arg;
 
   return {
@@ -37,7 +41,7 @@ export const defineTestsContainer = (arg: {
         }
       }
     },
-    loadToSuite: (suite: Mocha.Suite, runtimeData: RuntimeData) => {
+    loadToSuite: (suite: Mocha.Suite) => {
       const entitySuite = Mocha.Suite.create(suite, `${name}`);
 
       for (const element of collection) {
@@ -56,7 +60,8 @@ export const defineTestsContainer = (arg: {
             const mochaTest = new Mocha.Test(
               `${translatedRouterVersion} ${test.description}`,
               async () => {
-                const { supertest, jsonwebtokens } = runtimeData;
+                const { supertest, jsonwebtokens } =
+                  getInstanceOf<IRuntimeData>(RUNTIME_DATA_DI_TOKEN).getData();
 
                 if (!supertest) {
                   throw Error(`Supertest not supplied!`);
