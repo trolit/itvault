@@ -7,4 +7,6 @@ export interface IRuntimeData {
     supertest: TestAgent;
     jsonwebtokens: Record<string, string>;
   };
+
+  addJsonWebToken(arg: { email: string; token: string }): void;
 }

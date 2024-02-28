@@ -1,70 +1,84 @@
+import path from "path";
 import "reflect-metadata";
+import fs from "fs-extra";
 import { Server } from "http";
-import supertest from "supertest";
+import { container } from "tsyringe";
 import { server } from "../../server";
 
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
-import { AUTH_TESTS } from "./controllers/Auth";
 import { containers } from "./helpers/containers";
-import { RuntimeData } from "./types/RuntimeData";
 import { addUsers } from "./helpers/user-helpers";
-import { TestAgentTypes } from "./types/TestAgent";
+import { IRuntimeData } from "./types/IRuntimeData";
+import { RuntimeData } from "./helpers/RuntimeData";
 import { useTestAgent } from "./helpers/useTestAgent";
-import { HEAD_ADMIN_EMAIL, MEMBER_EMAIL } from "./config";
+import { TestsContainer } from "./types/TestsContainer";
+import {
+  MEMBER_EMAIL,
+  HEAD_ADMIN_EMAIL,
+  RUNTIME_DATA_DI_TOKEN,
+} from "./config";
 
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
+import { getInstanceOf } from "@helpers/getInstanceOf";
+
 const { PORT } = APP;
+const TESTS_CONTAINERS: TestsContainer[] = [];
 
-export const RUNTIME_DATA: RuntimeData = {
-  jsonwebtokens: {
-    [MEMBER_EMAIL]: "",
-    [HEAD_ADMIN_EMAIL]: "",
-  },
-};
+const TIMEOUT = "10s";
+const PATH_TO_CONTROLLERS_DIR = path.join(__dirname, "controllers");
+const CONTROLLER_DIRS = fs.readdirSync(PATH_TO_CONTROLLERS_DIR);
 
-describe("Integration tests", function () {
-  this.timeout(10000);
+describe("Integration tests", async function () {
+  this.timeout(TIMEOUT);
 
   before(done => {
     server().then(app => {
       app.listen(PORT, async () => {
         await prepareTestingEnvironment(app);
 
-        AUTH_TESTS.beforeAll(this);
+        for (const testsCollection of TESTS_CONTAINERS) {
+          testsCollection.beforeAll(this);
+        }
 
         done();
       });
     });
   });
 
-  AUTH_TESTS.loadToSuite(this, RUNTIME_DATA);
+  await loadTests(this);
 
-  after(() => {
-    const { app } = RUNTIME_DATA;
+  after(function (done) {
+    this.timeout(TIMEOUT);
 
-    return new Promise(resolve => {
-      if (!app) {
-        throw Error(`App not working or stopped earlier..`);
-      }
+    const { app } = getInstanceOf<IRuntimeData>(
+      RUNTIME_DATA_DI_TOKEN
+    ).getData();
 
-      app.close(async () => {
-        await containers.down();
+    app.close(async () => {
+      await containers.down();
 
-        resolve("ok");
-      });
+      done();
     });
   });
 });
 
+async function loadTests(suite: Mocha.Suite) {
+  for (const DIRNAME of CONTROLLER_DIRS) {
+    const module = await import(`./controllers/${DIRNAME}`);
+    const valueName = `${DIRNAME.toUpperCase()}_TESTS`;
+
+    const testsCollection = module[valueName];
+
+    TESTS_CONTAINERS.push(testsCollection);
+
+    testsCollection.loadToSuite(suite);
+  }
+}
+
 async function prepareTestingEnvironment(app: Server) {
-  const request = supertest(app);
-
-  RUNTIME_DATA.app = app;
-  RUNTIME_DATA.supertest = request;
-
   // @TODO refactor
   await addUsers([
     {
@@ -79,13 +93,16 @@ async function prepareTestingEnvironment(app: Server) {
     },
   ]);
 
-  const testAgent = useTestAgent(request);
+  const runtimeData = new RuntimeData(app);
 
-  await feedGlobalTokens(testAgent);
+  await generateGlobalJsonWebTokens(runtimeData);
+
+  container.register(RUNTIME_DATA_DI_TOKEN, { useValue: runtimeData });
 }
 
-async function feedGlobalTokens(testAgent: TestAgentTypes.RequestInstance) {
-  const { jsonwebtokens } = RUNTIME_DATA;
+async function generateGlobalJsonWebTokens(runtimeData: IRuntimeData) {
+  const { jsonwebtokens, supertest } = runtimeData.getData();
+  const testAgent = useTestAgent(supertest);
 
   const emails = Object.keys(jsonwebtokens);
   const { length } = emails;
@@ -95,6 +112,6 @@ async function feedGlobalTokens(testAgent: TestAgentTypes.RequestInstance) {
   );
 
   for (let index = 0; index < length; index++) {
-    RUNTIME_DATA.jsonwebtokens[emails[index]] = tokens[index];
+    runtimeData.addJsonWebToken({ email: emails[index], token: tokens[index] });
   }
 }
