@@ -117,7 +117,7 @@ async function runTest(arg: {
   } else {
     const {
       session,
-      expect: { statusCode, callback },
+      expect: { callback },
     } = test;
 
     response = await testAgent.request({
