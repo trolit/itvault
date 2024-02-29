@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { Method } from "tests/integration/types/Method";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { Method } from "@integration-tests/types/Method";
 import { IAuthService } from "types/services/IAuthService";
-import { buildTests } from "tests/integration/helpers/buildTests";
-import { HEAD_ADMIN_EMAIL, PASSWORD } from "tests/integration/common-data";
+import { buildTests } from "@integration-tests/helpers/buildTests";
+import { HEAD_ADMIN_EMAIL, PASSWORD } from "@integration-tests/config";
 
 import { Di } from "@enums/Di";
 import { ISignInDTO } from "@shared/types/DTOs/User";
@@ -19,8 +19,13 @@ export const VALID_REQUEST_EMAIL = "session@email.com";
 export const SESSION_LIMIT_EMAIL = "session-limit@email.com";
 export const NOT_SIGNED_UP_TEST_EMAIL = "not-signed-up@email.com";
 
+const BASE_QUERY = { version: v1 };
+
 export const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
-  { method: Method.POST, baseQuery: { version: v1 } },
+  {
+    method: Method.POST,
+    baseQuery: BASE_QUERY,
+  },
 
   ({ addTest, addCustomTest }) => {
     addTest<void, ISignInDTO>({
@@ -66,18 +71,17 @@ export const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
     addCustomTest({
       description: `returns ${HTTP.UNAUTHORIZED} when user reaches out max number of sessions`,
       statusCode: HTTP.UNAUTHORIZED,
-      runner: async ({ url, supertest }) => {
+      runner: async ({ testAgent }) => {
         const body: ISignInDTO = {
           email: SESSION_LIMIT_EMAIL,
           password: PASSWORD,
         };
-        const query = { version: v1 };
 
         for (let index = 0; index < MAX_SESSIONS_PER_USER; index++) {
-          await supertest.post(url).query(query).send(body);
+          await testAgent.request({ body });
         }
 
-        return supertest.post(url).query(query).send(body);
+        return testAgent.request({ body });
       },
     });
 

@@ -36,6 +36,7 @@
       "@controllers/*": ["controllers/*"],
       "@repositories/*": ["repositories/*"],
       "@consumer-handlers/*": ["consumer-handlers/*"],
+      "@integration-tests/*": ["tests/integration/*"],
       "@shared/*": ["../../shared/dist/*"]
     }
   },

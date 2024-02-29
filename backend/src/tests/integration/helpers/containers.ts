@@ -10,7 +10,7 @@ export const containers = {
     const containers = await getContainers();
 
     for (const container of containers) {
-      await container.stop();
+      await container.stop({ remove: true, removeVolumes: true });
     }
   },
 };

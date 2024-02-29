@@ -1,16 +1,12 @@
 import { Response } from "supertest";
 
-import { Method } from "./Method";
 import { IBaseTest } from "./IBaseTest";
+import { TestAgentTypes } from "./TestAgent";
 
-export interface ITest<Q = void, B = void> extends IBaseTest {
-  sendAs?: string;
+export interface ITest<Q = any, B = any> extends IBaseTest<Q, B> {
+  session?: TestAgentTypes.UserSession;
 
-  method: Method;
-
-  body?: B;
-
-  query?: Q;
+  query?: Q & { version: number };
 
   expect: {
     statusCode: number;

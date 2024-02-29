@@ -1,6 +1,6 @@
-import { ITest } from "../types/ITest";
-import { Method } from "../types/Method";
-import { ICustomTest } from "../types/ICustomTest";
+import { ITest } from "@integration-tests/types/ITest";
+import { Method } from "@integration-tests/types/Method";
+import { ICustomTest } from "@integration-tests/types/ICustomTest";
 
 export const buildTests = <BQ = { version: number }, BB = void>(
   general: {
@@ -10,10 +10,12 @@ export const buildTests = <BQ = { version: number }, BB = void>(
   },
   builder: (arg: {
     addTest: <Q, B>(data: Omit<ITest<Q, B>, "method">) => void;
-    addCustomTest: (data: ICustomTest) => void;
+    addCustomTest: (
+      data: Omit<ICustomTest, "method" | "query" | "body">
+    ) => void;
   }) => void
 ) => {
-  const tests: (ITest<any, any> | ICustomTest)[] = [];
+  const tests: (ITest | ICustomTest)[] = [];
 
   const { baseQuery, baseBody, method } = general;
 
@@ -26,8 +28,15 @@ export const buildTests = <BQ = { version: number }, BB = void>(
     });
   };
 
-  const addCustomTestBuilder = (data: ICustomTest) => {
-    tests.push({ ...data });
+  const addCustomTestBuilder = (
+    data: Omit<ICustomTest, "method" | "query" | "body">
+  ) => {
+    tests.push({
+      ...data,
+      method,
+      body: baseBody,
+      query: baseQuery,
+    });
   };
 
   builder({ addTest: addTestBuilder, addCustomTest: addCustomTestBuilder });
