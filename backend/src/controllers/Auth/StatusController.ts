@@ -6,8 +6,6 @@ import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
 import { IUserRepository } from "types/repositories/IUserRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
-import { JWT } from "@config";
-
 import { Di } from "@enums/Di";
 
 import { BaseController } from "@controllers/BaseController";
@@ -35,24 +33,19 @@ export class StatusController extends BaseController {
   static ALL_VERSIONS = [v1];
 
   async v1(request: CustomRequest, response: Response) {
-    const { [JWT.COOKIE_KEY]: token } = request.cookies;
+    const { userId } = request;
 
-    if (!token) {
-      return response.status(HTTP.UNAUTHORIZED).send();
-    }
-
-    const result = this._authService.verifyToken(token);
-
-    if (result.error) {
-      response.clearCookie(JWT.COOKIE_KEY);
-
-      return response.status(HTTP.UNAUTHORIZED).send();
-    }
-
-    const { email } = result.payload;
-
-    const user = await this._userRepository.findByEmail(email, {
-      includePermissions: true,
+    const user = await this._userRepository.getOne({
+      where: {
+        id: userId,
+      },
+      relations: {
+        role: {
+          permissionToRole: {
+            permission: true,
+          },
+        },
+      },
     });
 
     if (!user) {

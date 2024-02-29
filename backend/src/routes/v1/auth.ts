@@ -36,6 +36,7 @@ authRouter.post(
 authRouter.get(
   "/status",
   requireEndpointVersion(StatusController.ALL_VERSIONS),
+  requireAuthentication,
   processRequestWith(StatusController)
 );
 
