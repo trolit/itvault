@@ -3,14 +3,13 @@ import { RouterInformation } from "./RouterInformation";
 import { RequestInformation } from "./RequestInformation";
 
 export namespace TestAgentTypes {
-  export type UserSession =
-    | { user: { email: string } }
-    | { jsonwebtoken: string };
+  // @NOTE when using email - cookie is read from RuntimeData.cookie object
+  export type UserSession = { user: { email: string } } | { cookie: string };
 
   export type TestData = {
     router: RouterInformation;
     request: RequestInformation<any, any>;
-    jsonwebtokens: Record<string, string>;
+    globalCookie: Record<string, string>;
   };
 
   export type AuthenticateFunc = (
@@ -25,6 +24,8 @@ export namespace TestAgentTypes {
     router: RouterInformation;
     action: string;
   }) => string;
+
+  export type ExtractTokenFromCookieFunc = (arg: { cookie: string }) => string;
 
   export type RequestFunc<Q extends { version: number }, B = void> = (data: {
     query?: Q;
@@ -46,6 +47,7 @@ export namespace TestAgentTypes {
     getUrl: GetUrlFunc;
     authenticate: AuthenticateFunc;
     customRequest: CustomRequestFunc<any, any>;
+    extractTokenFromCookie: ExtractTokenFromCookieFunc;
   };
 
   export type TestInstance = CommonMethods & {

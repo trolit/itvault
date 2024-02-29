@@ -5,6 +5,10 @@ import { MEMBER_ROLE } from "@config/initial-roles";
 
 import { GET_SESSIONS_CONTROLLER_V1_TESTS } from "./GetSessionsController";
 import {
+  SIGN_OUT_CONTROLLER_V1_TESTS,
+  SIGN_OUT_MEMBER_EMAIL,
+} from "./SignOutController";
+import {
   SESSION_LIMIT_EMAIL,
   VALID_REQUEST_EMAIL,
   NOT_SIGNED_UP_TEST_EMAIL,
@@ -18,6 +22,7 @@ import {
 
 import { BaseController } from "@controllers/BaseController";
 import { SignInController } from "@controllers/Auth/SignInController";
+import { SignOutController } from "@controllers/Auth/SignOutController";
 import { GetSessionsController } from "@controllers/Auth/GetSessionsController";
 import { DeleteSessionController } from "@controllers/Auth/DeleteSessionController";
 
@@ -53,6 +58,11 @@ export const AUTH_TESTS = defineTestsGroup({
         isSignedUp: true,
         roleNameOrId: MEMBER_ROLE.name,
       },
+      {
+        email: SIGN_OUT_MEMBER_EMAIL,
+        isSignedUp: true,
+        roleNameOrId: MEMBER_ROLE.name,
+      },
     ]);
   },
   collection: [
@@ -63,6 +73,16 @@ export const AUTH_TESTS = defineTestsGroup({
         {
           routerVersion: v1,
           tests: SIGN_IN_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
+    {
+      action: "sign-out",
+      controller: SignOutController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: SIGN_OUT_CONTROLLER_V1_TESTS,
         },
       ],
     },

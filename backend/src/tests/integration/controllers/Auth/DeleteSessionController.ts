@@ -29,7 +29,7 @@ export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
       description: `returns ${HTTP.BAD_REQUEST} when user wants to delete session used to fire DELETE request`,
       statusCode: HTTP.BAD_REQUEST,
       runner: async ({ testAgent, router, request }) => {
-        const jsonwebtoken = await testAgent.authenticate({
+        const cookie = await testAgent.authenticate({
           email: DELETE_SESSION_MEMBER1_EMAIL,
         });
 
@@ -39,7 +39,7 @@ export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
           router,
           request: {
             method: Method.GET,
-            session: { jsonwebtoken },
+            session: { cookie },
             action,
             query,
           },
@@ -51,7 +51,7 @@ export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
           router,
           request: {
             ...request,
-            session: { jsonwebtoken },
+            session: { cookie },
             action: `${action}/${userSession.sessionId}`,
           },
         });
@@ -62,7 +62,7 @@ export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
       description: `returns ${HTTP.NO_CONTENT} when user deletes session`,
       statusCode: HTTP.NO_CONTENT,
       runner: async ({ testAgent, router, request }) => {
-        const jsonwebtoken = await testAgent.authenticate({
+        const cookie = await testAgent.authenticate({
           email: DELETE_SESSION_MEMBER2_EMAIL,
         });
 
@@ -76,7 +76,7 @@ export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
           router,
           request: {
             method: Method.GET,
-            session: { jsonwebtoken },
+            session: { cookie },
             action,
             query,
           },
@@ -94,7 +94,7 @@ export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
           router,
           request: {
             ...request,
-            session: { jsonwebtoken },
+            session: { cookie },
             action: `${action}/${session.sessionId}`,
           },
         });

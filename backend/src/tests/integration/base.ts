@@ -100,23 +100,26 @@ async function prepareTestingEnvironment(app: Server) {
 
   const runtimeData = new RuntimeData(app);
 
-  await generateGlobalJsonWebTokens(runtimeData);
+  await addGlobalCookies(runtimeData);
 
   container.register(RUNTIME_DATA_DI_TOKEN, { useValue: runtimeData });
 }
 
-async function generateGlobalJsonWebTokens(runtimeData: IRuntimeData) {
-  const { jsonwebtokens, supertest } = runtimeData.getData();
+async function addGlobalCookies(runtimeData: IRuntimeData) {
+  const { globalCookie, supertest } = runtimeData.getData();
   const testAgent = useTestAgent(supertest);
 
-  const emails = Object.keys(jsonwebtokens);
+  const emails = Object.keys(globalCookie);
   const { length } = emails;
 
-  const tokens = await Promise.all(
+  const cookies = await Promise.all(
     emails.map(email => testAgent.authenticate({ email }))
   );
 
   for (let index = 0; index < length; index++) {
-    runtimeData.addJsonWebToken({ email: emails[index], token: tokens[index] });
+    runtimeData.addGlobalCookie({
+      email: emails[index],
+      cookie: cookies[index],
+    });
   }
 }

@@ -5,8 +5,8 @@ export interface IRuntimeData {
   getData(): {
     app: Server;
     supertest: TestAgent;
-    jsonwebtokens: Record<string, string>;
+    globalCookie: Record<string, string>;
   };
 
-  addJsonWebToken(arg: { email: string; token: string }): void;
+  addGlobalCookie(arg: { email: string; cookie: string }): void;
 }

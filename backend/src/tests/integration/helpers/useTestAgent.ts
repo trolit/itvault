@@ -5,7 +5,7 @@ import { TestAgentTypes } from "@integration-tests/types/TestAgent";
 import { RouterInformation } from "@integration-tests/types/RouterInformation";
 import { RequestInformation } from "@integration-tests/types/RequestInformation";
 
-import { APP } from "@config";
+import { APP, JWT } from "@config";
 
 import { versionToString } from "./versionToString";
 
@@ -16,7 +16,7 @@ const {
 } = BaseController;
 
 let supertest: TestAgent;
-let availableTokens: Record<string, string>;
+let availableGlobalCookies: Record<string, string>;
 
 export function useTestAgent(agent: TestAgent): TestAgentTypes.RequestInstance;
 export function useTestAgent(
@@ -33,12 +33,13 @@ export function useTestAgent(
     getUrl,
     authenticate,
     customRequest,
+    extractTokenFromCookie,
   };
 
   if (testData) {
-    const { jsonwebtokens, ...otherData } = testData;
+    const { globalCookie, ...otherData } = testData;
 
-    availableTokens = jsonwebtokens;
+    availableGlobalCookies = globalCookie;
 
     return {
       ...commonMethods,
@@ -47,6 +48,18 @@ export function useTestAgent(
   }
 
   return commonMethods;
+}
+
+function extractTokenFromCookie(arg: { cookie: string }) {
+  const { cookie } = arg;
+
+  const startText = `${JWT.COOKIE_KEY}=`;
+  const endText = ";";
+
+  const start = cookie.indexOf(startText) + startText.length;
+  const end = cookie.indexOf(endText, start);
+
+  return cookie.substring(start, end);
 }
 
 function prepareRequest<Q extends { version: number }, B = void>(arg: {
@@ -150,8 +163,8 @@ async function authenticate(
 
   const [token] = response.headers["set-cookie"];
 
-  if (!token) {
-    throw Error(`Should have token!`);
+  if (!token && token.includes(JWT.COOKIE_KEY)) {
+    throw Error(`Should have ${JWT.COOKIE_KEY} cookie!`);
   }
 
   return token;
@@ -163,14 +176,14 @@ function useToken(session: TestAgentTypes.UserSession) {
       user: { email },
     } = session;
 
-    if (!availableTokens[email]) {
+    if (!availableGlobalCookies[email]) {
       throw Error(
         `Expected to have global session of ${email} but it wasn't found!`
       );
     }
 
-    return [availableTokens[email]];
+    return [availableGlobalCookies[email]];
   }
 
-  return [session["jsonwebtoken"]];
+  return [session["cookie"]];
 }
