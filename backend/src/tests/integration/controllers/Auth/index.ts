@@ -1,5 +1,5 @@
-import { addUsers } from "tests/integration/helpers/user-helpers";
-import { defineTestsGroup } from "tests/integration/helpers/defineTestsGroup";
+import { addUsers } from "@integration-tests/helpers/user-helpers";
+import { defineTestsGroup } from "@integration-tests/helpers/defineTestsGroup";
 
 import { MEMBER_ROLE } from "@config/initial-roles";
 

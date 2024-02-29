@@ -1,13 +1,13 @@
 import Mocha from "mocha";
 import { expect } from "chai";
 import { Response } from "supertest";
-import { ITest } from "../types/ITest";
 import TestAgent from "supertest/lib/agent";
-import { TestsGroup } from "../types/TestsGroup";
-import { RUNTIME_DATA_DI_TOKEN } from "../config";
-import { ICustomTest } from "../types/ICustomTest";
-import { IRuntimeData } from "../types/IRuntimeData";
-import { RouterInformation } from "../types/RouterInformation";
+import { ITest } from "@integration-tests/types/ITest";
+import { TestsGroup } from "@integration-tests/types/TestsGroup";
+import { RUNTIME_DATA_DI_TOKEN } from "@integration-tests/config";
+import { ICustomTest } from "@integration-tests/types/ICustomTest";
+import { IRuntimeData } from "@integration-tests/types/IRuntimeData";
+import { RouterInformation } from "@integration-tests/types/RouterInformation";
 
 import { useTestAgent } from "./useTestAgent";
 import { versionToString } from "./versionToString";

@@ -1,8 +1,8 @@
 import { Server } from "http";
 import supertest from "supertest";
 import TestAgent from "supertest/lib/agent";
-import { IRuntimeData } from "../types/IRuntimeData";
 import { HEAD_ADMIN_EMAIL, MEMBER_EMAIL } from "../config";
+import { IRuntimeData } from "@integration-tests/types/IRuntimeData";
 
 export class RuntimeData implements IRuntimeData {
   private _app: Server;

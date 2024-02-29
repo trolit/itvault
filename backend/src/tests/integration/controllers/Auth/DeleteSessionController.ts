@@ -1,6 +1,6 @@
-import { Method } from "tests/integration/types/Method";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { buildTests } from "tests/integration/helpers/buildTests";
+import { Method } from "@integration-tests/types/Method";
+import { buildTests } from "@integration-tests/helpers/buildTests";
 
 import { IUserSessionDTO } from "@shared/types/DTOs/Auth";
 

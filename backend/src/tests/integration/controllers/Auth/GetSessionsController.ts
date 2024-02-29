@@ -1,7 +1,7 @@
 import { StatusCodes as HTTP } from "http-status-codes";
-import { Method } from "tests/integration/types/Method";
-import { HEAD_ADMIN_EMAIL } from "tests/integration/config";
-import { buildTests } from "tests/integration/helpers/buildTests";
+import { Method } from "@integration-tests/types/Method";
+import { HEAD_ADMIN_EMAIL } from "@integration-tests/config";
+import { buildTests } from "@integration-tests/helpers/buildTests";
 
 import { BaseController } from "@controllers/BaseController";
 

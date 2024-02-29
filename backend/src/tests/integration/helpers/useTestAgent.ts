@@ -1,9 +1,9 @@
-import { PASSWORD } from "../config";
-import { Method } from "../types/Method";
 import TestAgent from "supertest/lib/agent";
-import { TestAgentTypes } from "../types/TestAgent";
-import { RouterInformation } from "../types/RouterInformation";
-import { RequestInformation } from "../types/RequestInformation";
+import { PASSWORD } from "@integration-tests/config";
+import { Method } from "@integration-tests/types/Method";
+import { TestAgentTypes } from "@integration-tests/types/TestAgent";
+import { RouterInformation } from "@integration-tests/types/RouterInformation";
+import { RequestInformation } from "@integration-tests/types/RequestInformation";
 
 import { APP } from "@config";
 
