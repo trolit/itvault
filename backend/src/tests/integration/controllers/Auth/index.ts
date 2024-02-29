@@ -4,6 +4,7 @@ import { defineTestsGroup } from "@integration-tests/helpers/defineTestsGroup";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
 import { GET_SESSIONS_CONTROLLER_V1_TESTS } from "./GetSessionsController";
+import { STATUS_CONTROLLER_V1_TESTS, STATUS_MEMBER } from "./StatusController";
 import {
   SIGN_OUT_CONTROLLER_V1_TESTS,
   SIGN_OUT_MEMBER_EMAIL,
@@ -21,6 +22,7 @@ import {
 } from "./DeleteSessionController";
 
 import { BaseController } from "@controllers/BaseController";
+import { StatusController } from "@controllers/Auth/StatusController";
 import { SignInController } from "@controllers/Auth/SignInController";
 import { SignOutController } from "@controllers/Auth/SignOutController";
 import { GetSessionsController } from "@controllers/Auth/GetSessionsController";
@@ -60,6 +62,11 @@ export const AUTH_TESTS = defineTestsGroup({
       },
       {
         email: SIGN_OUT_MEMBER_EMAIL,
+        isSignedUp: true,
+        roleNameOrId: MEMBER_ROLE.name,
+      },
+      {
+        email: STATUS_MEMBER,
         isSignedUp: true,
         roleNameOrId: MEMBER_ROLE.name,
       },
@@ -103,6 +110,16 @@ export const AUTH_TESTS = defineTestsGroup({
         {
           routerVersion: v1,
           tests: DELETE_SESSION_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
+    {
+      action: "status",
+      controller: StatusController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: STATUS_CONTROLLER_V1_TESTS,
         },
       ],
     },
