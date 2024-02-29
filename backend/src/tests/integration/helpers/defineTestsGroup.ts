@@ -23,7 +23,7 @@ export const defineTestsGroup = (arg: {
     controller: string;
     testData: {
       routerVersion: number;
-      tests: (ITest<any, any> | ICustomTest)[];
+      tests: (ITest | ICustomTest)[];
     }[];
   }[];
 }): TestsGroup => {
@@ -89,7 +89,7 @@ async function runTest(arg: {
   action: string;
   supertest: TestAgent;
   router: RouterInformation;
-  test: ITest<any, any> | ICustomTest;
+  test: ITest | ICustomTest;
   jsonwebtokens: Record<string, string>;
 }) {
   const { action, supertest, router, test, jsonwebtokens } = arg;

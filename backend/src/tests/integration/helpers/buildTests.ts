@@ -15,7 +15,7 @@ export const buildTests = <BQ = { version: number }, BB = void>(
     ) => void;
   }) => void
 ) => {
-  const tests: (ITest<any, any> | ICustomTest)[] = [];
+  const tests: (ITest | ICustomTest)[] = [];
 
   const { baseQuery, baseBody, method } = general;
 
