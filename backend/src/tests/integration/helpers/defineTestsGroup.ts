@@ -60,8 +60,9 @@ export const defineTestsGroup = (arg: {
             const mochaTest = new Mocha.Test(
               `${translatedRouterVersion} ${test.description}`,
               async () => {
-                const { supertest, jsonwebtokens } =
-                  getInstanceOf<IRuntimeData>(RUNTIME_DATA_DI_TOKEN).getData();
+                const { supertest, globalCookie } = getInstanceOf<IRuntimeData>(
+                  RUNTIME_DATA_DI_TOKEN
+                ).getData();
 
                 if (!supertest) {
                   throw Error(`Supertest not supplied!`);
@@ -71,7 +72,7 @@ export const defineTestsGroup = (arg: {
                   test,
                   action,
                   supertest,
-                  jsonwebtokens,
+                  globalCookie,
                   router: { version: routerVersion, name: router },
                 });
               }
@@ -90,9 +91,9 @@ async function runTest(arg: {
   supertest: TestAgent;
   router: RouterInformation;
   test: ITest | ICustomTest;
-  jsonwebtokens: Record<string, string>;
+  globalCookie: Record<string, string>;
 }) {
-  const { action, supertest, router, test, jsonwebtokens } = arg;
+  const { action, supertest, router, test, globalCookie } = arg;
 
   const request = {
     method: test.method,
@@ -104,7 +105,7 @@ async function runTest(arg: {
   const testAgent = useTestAgent(supertest, {
     router,
     request,
-    jsonwebtokens,
+    globalCookie,
   });
 
   const isCustomTest = "runner" in test;
