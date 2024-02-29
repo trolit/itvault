@@ -7,12 +7,12 @@ import { server } from "../../server";
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
+import { TestsGroup } from "./types/TestsGroup";
 import { containers } from "./helpers/containers";
 import { addUsers } from "./helpers/user-helpers";
 import { IRuntimeData } from "./types/IRuntimeData";
 import { RuntimeData } from "./helpers/RuntimeData";
 import { useTestAgent } from "./helpers/useTestAgent";
-import { TestsContainer } from "./types/TestsContainer";
 import {
   MEMBER_EMAIL,
   TESTS_TIMEOUT,
@@ -26,7 +26,7 @@ import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 const { PORT } = APP;
-const TESTS_CONTAINERS: TestsContainer[] = [];
+const TESTS_GROUPS: TestsGroup[] = [];
 
 const CONTROLLERS_TESTS_DIR_CONTENT = fs.readdirSync(PATH_TO_CONTROLLERS_TESTS);
 
@@ -38,8 +38,8 @@ describe("Integration tests", async function () {
       app.listen(PORT, async () => {
         await prepareTestingEnvironment(app);
 
-        for (const testsCollection of TESTS_CONTAINERS) {
-          testsCollection.beforeAll(this);
+        for (const testsGroup of TESTS_GROUPS) {
+          testsGroup.beforeAll(this);
         }
 
         done();
@@ -75,11 +75,11 @@ async function loadTests(suite: Mocha.Suite) {
     const module = await import(`./controllers/${DIRNAME}`);
     const value = `${DIRNAME.toUpperCase()}_TESTS`;
 
-    const testsCollection = module[value];
+    const testsGroup = module[value];
 
-    TESTS_CONTAINERS.push(testsCollection);
+    TESTS_GROUPS.push(testsGroup);
 
-    testsCollection.loadToSuite(suite);
+    testsGroup.loadToSuite(suite);
   }
 }
 

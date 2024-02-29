@@ -1,5 +1,5 @@
 import { addUsers } from "tests/integration/helpers/user-helpers";
-import { defineTestsContainer } from "tests/integration/helpers/defineTestsContainer";
+import { defineTestsGroup } from "tests/integration/helpers/defineTestsGroup";
 
 import { MEMBER_ROLE } from "@config/initial-roles";
 
@@ -23,7 +23,7 @@ import { DeleteSessionController } from "@controllers/Auth/DeleteSessionControll
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-export const AUTH_TESTS = defineTestsContainer({
+export const AUTH_TESTS = defineTestsGroup({
   name: "Auth",
   router: `auth`,
   before: () => {

@@ -3,10 +3,10 @@ import { expect } from "chai";
 import { Response } from "supertest";
 import { ITest } from "../types/ITest";
 import TestAgent from "supertest/lib/agent";
+import { TestsGroup } from "../types/TestsGroup";
 import { RUNTIME_DATA_DI_TOKEN } from "../config";
 import { ICustomTest } from "../types/ICustomTest";
 import { IRuntimeData } from "../types/IRuntimeData";
-import { TestsContainer } from "../types/TestsContainer";
 import { RouterInformation } from "../types/RouterInformation";
 
 import { useTestAgent } from "./useTestAgent";
@@ -14,7 +14,7 @@ import { versionToString } from "./versionToString";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-export const defineTestsContainer = (arg: {
+export const defineTestsGroup = (arg: {
   name: string;
   router: string;
   before?: Mocha.Func;
@@ -26,7 +26,7 @@ export const defineTestsContainer = (arg: {
       tests: (ITest<any, any> | ICustomTest)[];
     }[];
   }[];
-}): TestsContainer => {
+}): TestsGroup => {
   const { name, router, before: entityBefore, collection } = arg;
 
   return {
