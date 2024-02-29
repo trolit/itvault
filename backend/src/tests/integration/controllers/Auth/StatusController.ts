@@ -23,7 +23,7 @@ export const STATUS_CONTROLLER_V1_TESTS = buildTests(
 
   ({ addTest, addCustomTest }) => {
     addCustomTest({
-      description: `returns ${HTTP.FORBIDDEN} when user's account was deactivated`,
+      description: `returns ${HTTP.UNAUTHORIZED} when user's signed in but account was deactivated`,
       statusCode: HTTP.UNAUTHORIZED,
       runner: async ({ testAgent }) => {
         const userRepository = getInstanceOf<IUserRepository>(
