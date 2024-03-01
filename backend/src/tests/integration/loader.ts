@@ -7,12 +7,11 @@ import { server } from "../../server";
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
-import { TestsGroup } from "./types/TestsGroup";
 import { containers } from "./helpers/containers";
 import { addUsers } from "./helpers/user-helpers";
 import { IRuntimeData } from "./types/IRuntimeData";
 import { RuntimeData } from "./helpers/RuntimeData";
-import { useTestAgent } from "./helpers/useTestAgent";
+import { TestsGroup, useTestAgent } from "./probata";
 import {
   MEMBER_EMAIL,
   TESTS_TIMEOUT,

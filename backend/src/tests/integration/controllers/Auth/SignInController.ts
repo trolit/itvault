@@ -1,8 +1,7 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { Method } from "@integration-tests/types/Method";
 import { IAuthService } from "types/services/IAuthService";
-import { buildTests } from "@integration-tests/helpers/buildTests";
+import { Method, buildTests } from "@integration-tests/probata";
 import { HEAD_ADMIN_EMAIL, PASSWORD } from "@integration-tests/config";
 
 import { Di } from "@enums/Di";

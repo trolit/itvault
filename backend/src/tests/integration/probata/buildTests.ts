@@ -1,6 +1,4 @@
-import { ITest } from "@integration-tests/types/ITest";
-import { Method } from "@integration-tests/types/Method";
-import { ICustomTest } from "@integration-tests/types/ICustomTest";
+import { ICustomTest, ITest, Method } from ".";
 
 export const buildTests = <BQ = { version: number }, BB = void>(
   general: {

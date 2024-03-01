@@ -12,3 +12,5 @@ export const PASSWORD = "1234";
 export const TESTS_TIMEOUT = "10s";
 export const RUNTIME_DATA_DI_TOKEN = "IRuntimeData";
 export const PATH_TO_CONTROLLERS_TESTS = path.join(__dirname, "controllers");
+
+export const ROUTER_VERSION_PREFIX = "v";

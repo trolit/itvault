@@ -1,6 +1,5 @@
 import { StatusCodes as HTTP } from "http-status-codes";
-import { Method } from "@integration-tests/types/Method";
-import { buildTests } from "@integration-tests/helpers/buildTests";
+import { Method, buildTests } from "@integration-tests/probata";
 
 import { IUserSessionDTO } from "@shared/types/DTOs/Auth";
 
