@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import fs from "fs-extra";
 import { Server } from "http";
 import { container } from "tsyringe";
 import { server } from "../../server";
@@ -11,7 +10,7 @@ import { containers } from "./helpers/containers";
 import { addUsers } from "./helpers/user-helpers";
 import { IRuntimeData } from "./types/IRuntimeData";
 import { RuntimeData } from "./helpers/RuntimeData";
-import { TestsGroup, useTestAgent } from "./probata";
+import { TestsGroup, loadTestsGroups, useTestAgent } from "./probata";
 import {
   MEMBER_EMAIL,
   TESTS_TIMEOUT,
@@ -25,9 +24,7 @@ import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 const { PORT } = APP;
-const TESTS_GROUPS: TestsGroup[] = [];
-
-const CONTROLLERS_TESTS_DIR_CONTENT = fs.readdirSync(PATH_TO_CONTROLLERS_TESTS);
+let TESTS_GROUPS: TestsGroup[];
 
 describe("Integration tests", async function () {
   this.timeout(TESTS_TIMEOUT);
@@ -35,18 +32,14 @@ describe("Integration tests", async function () {
   before(done => {
     server().then(app => {
       app.listen(PORT, async () => {
-        await prepareTestingEnvironment(app);
-
-        for (const testsGroup of TESTS_GROUPS) {
-          testsGroup.beforeAll(this);
-        }
+        await prepareTestingEnvironment(this, app);
 
         done();
       });
     });
   });
 
-  await loadTests(this);
+  TESTS_GROUPS = await loadTestsGroups(this, PATH_TO_CONTROLLERS_TESTS);
 
   after(function (done) {
     this.timeout(TESTS_TIMEOUT);
@@ -63,26 +56,11 @@ describe("Integration tests", async function () {
   });
 });
 
-async function loadTests(suite: Mocha.Suite) {
-  for (const DIRNAME of CONTROLLERS_TESTS_DIR_CONTENT) {
-    if (DIRNAME.includes(".")) {
-      throw Error(
-        `Path '${PATH_TO_CONTROLLERS_TESTS}' should only include dirs!`
-      );
-    }
-
-    const module = await import(`./controllers/${DIRNAME}`);
-    const value = `${DIRNAME.toUpperCase()}_TESTS`;
-
-    const testsGroup = module[value];
-
-    TESTS_GROUPS.push(testsGroup);
-
-    testsGroup.loadToSuite(suite);
+async function prepareTestingEnvironment(suite: Mocha.Suite, app: Server) {
+  for (const testsGroup of TESTS_GROUPS) {
+    testsGroup.beforeAll(suite);
   }
-}
 
-async function prepareTestingEnvironment(app: Server) {
   // @TODO refactor
   await addUsers([
     {
