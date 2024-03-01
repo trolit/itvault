@@ -26,13 +26,13 @@ export const defineTestsGroup = (arg: {
     }[];
   }[];
 }): ITestsGroup => {
-  const { name, router, before: entityBefore, collection } = arg;
+  const { name: suiteId, router, before: entityBefore, collection } = arg;
 
   return {
     beforeAll(suite: Mocha.Suite) {
       if (entityBefore) {
         const relatedSuite = suite.suites.find(
-          element => element.title === `${name}`
+          element => element.title === suiteId
         );
 
         if (relatedSuite) {
@@ -41,7 +41,7 @@ export const defineTestsGroup = (arg: {
       }
     },
     loadToSuite: (suite: Mocha.Suite) => {
-      const entitySuite = Mocha.Suite.create(suite, `${name}`);
+      const entitySuite = Mocha.Suite.create(suite, suiteId);
 
       for (const element of collection) {
         const { controller, testData, action } = element;
