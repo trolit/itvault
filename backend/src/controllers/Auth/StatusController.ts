@@ -1,7 +1,6 @@
 import type { Response } from "express";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { IAuthService } from "types/services/IAuthService";
 import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
 import { IUserRepository } from "types/repositories/IUserRepository";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
@@ -16,9 +15,7 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 export class StatusController extends BaseController {
   constructor(
     @inject(Di.UserRepository)
-    private _userRepository: IUserRepository,
-    @inject(Di.AuthService)
-    private _authService: IAuthService
+    private _userRepository: IUserRepository
   ) {
     super();
   }
