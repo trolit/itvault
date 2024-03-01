@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { Response } from "supertest";
 import TestAgent from "supertest/lib/agent";
 import { IRuntimeData } from "@integration-tests/types/IRuntimeData";
-import { ICustomTest, IRouterInformation, ITest, TestsGroup } from ".";
+import { ICustomTest, IRouterInformation, ITest, ITestsGroup } from ".";
 import {
   ROUTER_VERSION_PREFIX,
   RUNTIME_DATA_DI_TOKEN,
@@ -25,7 +25,7 @@ export const defineTestsGroup = (arg: {
       tests: (ITest | ICustomTest)[];
     }[];
   }[];
-}): TestsGroup => {
+}): ITestsGroup => {
   const { name, router, before: entityBefore, collection } = arg;
 
   return {

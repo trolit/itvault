@@ -2,11 +2,11 @@ import TestAgent from "supertest/lib/agent";
 import { PASSWORD, ROUTER_VERSION_PREFIX } from "@integration-tests/config";
 import {
   Method,
-  TestData,
+  ITestData,
   RequestFunc,
   UserSession,
-  TestInstance,
-  CommonMethods,
+  ITestInstance,
+  ICommonMethods,
   IRouterInformation,
   IRequestInformation,
 } from ".";
@@ -22,15 +22,15 @@ const {
 let supertest: TestAgent;
 let availableGlobalCookies: Record<string, string>;
 
-export function useTestAgent(agent: TestAgent): CommonMethods;
+export function useTestAgent(agent: TestAgent): ICommonMethods;
 export function useTestAgent(
   agent: TestAgent,
-  testData: TestData
-): TestInstance;
+  testData: ITestData
+): ITestInstance;
 export function useTestAgent(
   agent: TestAgent,
-  testData?: TestData
-): CommonMethods | TestInstance {
+  testData?: ITestData
+): ICommonMethods | ITestInstance {
   supertest = agent;
 
   const commonMethods = {

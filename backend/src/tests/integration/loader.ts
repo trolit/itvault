@@ -10,7 +10,7 @@ import { containers } from "./helpers/containers";
 import { addUsers } from "./helpers/user-helpers";
 import { IRuntimeData } from "./types/IRuntimeData";
 import { RuntimeData } from "./helpers/RuntimeData";
-import { TestsGroup, loadTestsGroups, useTestAgent } from "./probata";
+import { ITestsGroup, loadTestsGroups, useTestAgent } from "./probata";
 import {
   MEMBER_EMAIL,
   TESTS_TIMEOUT,
@@ -24,7 +24,7 @@ import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 const { PORT } = APP;
-let TESTS_GROUPS: TestsGroup[];
+let TESTS_GROUPS: ITestsGroup[];
 
 describe("Integration tests", async function () {
   this.timeout(TESTS_TIMEOUT);

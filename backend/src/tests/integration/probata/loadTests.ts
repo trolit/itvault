@@ -1,9 +1,9 @@
 import fs from "fs-extra";
 
-import { TestsGroup } from "./types";
+import { ITestsGroup } from "./types";
 
 export const loadTestsGroups = async (suite: Mocha.Suite, dir: string) => {
-  const testGroups: TestsGroup[] = [];
+  const testGroups: ITestsGroup[] = [];
 
   const dirContent = fs.readdirSync(dir);
 

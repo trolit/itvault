@@ -5,6 +5,7 @@ export enum Method {
   PUT = "put",
   GET = "get",
   DELETE = "delete",
+  PATCH = "patch",
 }
 
 export interface IRouterInformation {
@@ -24,11 +25,11 @@ export interface IRequestInformation<Q = void, B = void> {
 // @NOTE when using email - cookie is read from RuntimeData.cookie object
 export type UserSession = { user: { email: string } } | { cookie: string };
 
-export type TestData = {
+export interface ITestData {
   router: IRouterInformation;
   request: IRequestInformation<any, any>;
   globalCookie: Record<string, string>;
-};
+}
 
 export type AuthenticateFunc = (
   user: { email: string },
@@ -58,24 +59,24 @@ export type CustomRequestFunc<Q extends { version: number }, B = void> = (arg: {
 
 // ------------------------------------------------
 
-export type CommonMethods = {
+export interface ICommonMethods {
   getUrl: GetUrlFunc;
   authenticate: AuthenticateFunc;
   customRequest: CustomRequestFunc<any, any>;
   extractTokenFromCookie: ExtractTokenFromCookieFunc;
-};
+}
 
-export type TestInstance = CommonMethods & {
+export interface ITestInstance extends ICommonMethods {
   request: RequestFunc<any, any>;
-};
+}
 
-export type TestsGroup = {
+export interface ITestsGroup {
   beforeAll(suite: Mocha.Suite): void;
 
   loadToSuite(suite: Mocha.Suite): void;
-};
+}
 
-export interface IBaseTest<Q = void, B = void> {
+export interface IBaseTest<Q = any, B = any> {
   method: Method;
 
   description: string;
@@ -85,14 +86,14 @@ export interface IBaseTest<Q = void, B = void> {
   body?: B;
 }
 
-export interface ICustomTest extends IBaseTest<any, any> {
+export interface ICustomTest extends IBaseTest {
   statusCode: number;
 
   runner: (arg: {
     url: string;
     router: IRouterInformation;
     request: IRequestInformation;
-    testAgent: TestInstance;
+    testAgent: ITestInstance;
   }) => Promise<Response>;
 }
 
