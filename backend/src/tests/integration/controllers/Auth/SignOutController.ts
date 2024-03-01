@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
-import { Method, buildTests } from "@integration-tests/probata";
+import { Method, defineTests } from "@integration-tests/probata";
 
 import { Di } from "@enums/Di";
 
@@ -13,7 +13,7 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 export const SIGN_OUT_MEMBER_EMAIL = "sign-out@email.com";
 
-export const SIGN_OUT_CONTROLLER_V1_TESTS = buildTests(
+export const SIGN_OUT_CONTROLLER_V1_TESTS = defineTests(
   {
     method: Method.POST,
     baseQuery: { version: v1 },

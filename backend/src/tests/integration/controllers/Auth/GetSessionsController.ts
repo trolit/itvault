@@ -1,12 +1,12 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import { HEAD_ADMIN_EMAIL } from "@integration-tests/config";
-import { Method, buildTests } from "@integration-tests/probata";
+import { Method, defineTests } from "@integration-tests/probata";
 
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-export const GET_SESSIONS_CONTROLLER_V1_TESTS = buildTests(
+export const GET_SESSIONS_CONTROLLER_V1_TESTS = defineTests(
   {
     method: Method.GET,
     baseQuery: { version: v1 },

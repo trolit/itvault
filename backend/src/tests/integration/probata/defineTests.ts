@@ -1,6 +1,6 @@
 import { ICustomTest, ITest, Method } from ".";
 
-export const buildTests = <BQ = { version: number }, BB = void>(
+export const defineTests = <BQ = { version: number }, BB = void>(
   general: {
     method: Method;
     baseBody?: BB;

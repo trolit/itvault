@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
-import { Method, buildTests } from "@integration-tests/probata";
+import { Method, defineTests } from "@integration-tests/probata";
 import { HEAD_ADMIN_EMAIL, PASSWORD } from "@integration-tests/config";
 
 import { Di } from "@enums/Di";
@@ -20,7 +20,7 @@ export const NOT_SIGNED_UP_TEST_EMAIL = "not-signed-up@email.com";
 
 const BASE_QUERY = { version: v1 };
 
-export const SIGN_IN_CONTROLLER_V1_TESTS = buildTests(
+export const SIGN_IN_CONTROLLER_V1_TESTS = defineTests(
   {
     method: Method.POST,
     baseQuery: BASE_QUERY,
