@@ -1,13 +1,16 @@
 import { defineTestsGroup } from "@integration-tests/probata";
-import { addUsers } from "@integration-tests/helpers/user-helpers";
+import { addUsers } from "@integration-tests/helpers/db/addUsers";
 
 import { MEMBER_ROLE } from "@config/initial-roles";
 
 import { GET_SESSIONS_CONTROLLER_V1_TESTS } from "./GetSessionsController";
-import { STATUS_CONTROLLER_V1_TESTS, STATUS_MEMBER } from "./StatusController";
 import {
-  SIGN_OUT_CONTROLLER_V1_TESTS,
+  STATUS_MEMBER_EMAIL,
+  STATUS_CONTROLLER_V1_TESTS,
+} from "./StatusController";
+import {
   SIGN_OUT_MEMBER_EMAIL,
+  SIGN_OUT_CONTROLLER_V1_TESTS,
 } from "./SignOutController";
 import {
   SESSION_LIMIT_EMAIL,
@@ -16,9 +19,9 @@ import {
   SIGN_IN_CONTROLLER_V1_TESTS,
 } from "./SignInController";
 import {
-  DELETE_SESSION_CONTROLLER_V1_TESTS,
   DELETE_SESSION_MEMBER1_EMAIL,
   DELETE_SESSION_MEMBER2_EMAIL,
+  DELETE_SESSION_CONTROLLER_V1_TESTS,
 } from "./DeleteSessionController";
 
 import { BaseController } from "@controllers/BaseController";
@@ -119,7 +122,7 @@ export const AUTH_TESTS = defineTestsGroup({
           roleNameOrId: MEMBER_ROLE.name,
         },
         {
-          email: STATUS_MEMBER,
+          email: STATUS_MEMBER_EMAIL,
           isSignedUp: true,
           roleNameOrId: MEMBER_ROLE.name,
         },

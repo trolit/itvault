@@ -6,8 +6,8 @@ import { server } from "../../server";
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
 
+import { addUsers } from "./helpers/db/addUsers";
 import { containers } from "./helpers/containers";
-import { addUsers } from "./helpers/user-helpers";
 import { IRuntimeData } from "./types/IRuntimeData";
 import { RuntimeData } from "./helpers/RuntimeData";
 import { ITestsGroup, loadTestsGroups, useTestAgent } from "./probata";
@@ -61,7 +61,6 @@ async function prepareTestingEnvironment(suite: Mocha.Suite, app: Server) {
     testsGroup.beforeAll(suite);
   }
 
-  // @TODO refactor
   await addUsers([
     {
       email: HEAD_ADMIN_EMAIL,

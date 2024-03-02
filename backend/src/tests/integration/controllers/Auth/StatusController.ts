@@ -12,7 +12,7 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-export const STATUS_MEMBER = "sign-out@email.com";
+export const STATUS_MEMBER_EMAIL = "sign-out@email.com";
 
 export const STATUS_CONTROLLER_V1_TESTS = defineTests(
   {
@@ -30,16 +30,16 @@ export const STATUS_CONTROLLER_V1_TESTS = defineTests(
         );
         const userService = getInstanceOf<IUserService>(Di.UserService);
 
-        const user = await userRepository.findByEmail(STATUS_MEMBER);
+        const user = await userRepository.findByEmail(STATUS_MEMBER_EMAIL);
 
         if (!user) {
           throw Error(
-            `User ${STATUS_MEMBER} should be created in order to run this test!`
+            `User ${STATUS_MEMBER_EMAIL} should be created in order to run this test!`
           );
         }
 
         const cookie = await testAgent.authenticate({
-          email: STATUS_MEMBER,
+          email: STATUS_MEMBER_EMAIL,
         });
 
         await userService.updateMany([
