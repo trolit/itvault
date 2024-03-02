@@ -1,5 +1,5 @@
 import { defineTestsGroup } from "@integration-tests/probata";
-import { addUsers } from "@integration-tests/helpers/user-helpers";
+import { addUsers } from "@integration-tests/helpers/db/addUsers";
 
 import { MEMBER_ROLE } from "@config/initial-roles";
 
