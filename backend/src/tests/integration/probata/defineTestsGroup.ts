@@ -2,22 +2,20 @@ import Mocha from "mocha";
 import { expect } from "chai";
 import { Response } from "supertest";
 import TestAgent from "supertest/lib/agent";
-import { ITest } from "@integration-tests/types/ITest";
-import { TestsGroup } from "@integration-tests/types/TestsGroup";
-import { RUNTIME_DATA_DI_TOKEN } from "@integration-tests/config";
-import { ICustomTest } from "@integration-tests/types/ICustomTest";
 import { IRuntimeData } from "@integration-tests/types/IRuntimeData";
-import { RouterInformation } from "@integration-tests/types/RouterInformation";
+import { ICustomTest, IRouterInformation, ITest, ITestsGroup } from ".";
+import {
+  ROUTER_VERSION_PREFIX,
+  RUNTIME_DATA_DI_TOKEN,
+} from "@integration-tests/config";
 
 import { useTestAgent } from "./useTestAgent";
-import { versionToString } from "./versionToString";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export const defineTestsGroup = (arg: {
   name: string;
   router: string;
-  before?: Mocha.Func;
   collection: {
     action: string;
     controller: string;
@@ -26,23 +24,28 @@ export const defineTestsGroup = (arg: {
       tests: (ITest | ICustomTest)[];
     }[];
   }[];
-}): TestsGroup => {
-  const { name, router, before: entityBefore, collection } = arg;
+  hooks?: {
+    before?: Mocha.Func;
+  };
+}): ITestsGroup => {
+  const { name: suiteId, router, hooks, collection } = arg;
 
   return {
     beforeAll(suite: Mocha.Suite) {
-      if (entityBefore) {
-        const relatedSuite = suite.suites.find(
-          element => element.title === `${name}`
-        );
+      if (!hooks?.before) {
+        return;
+      }
 
-        if (relatedSuite) {
-          relatedSuite.beforeAll(entityBefore);
-        }
+      const relatedSuite = suite.suites.find(
+        element => element.title === suiteId
+      );
+
+      if (relatedSuite) {
+        relatedSuite.beforeAll(hooks.before);
       }
     },
     loadToSuite: (suite: Mocha.Suite) => {
-      const entitySuite = Mocha.Suite.create(suite, `${name}`);
+      const entitySuite = Mocha.Suite.create(suite, suiteId);
 
       for (const element of collection) {
         const { controller, testData, action } = element;
@@ -54,7 +57,7 @@ export const defineTestsGroup = (arg: {
 
         for (const element of testData) {
           const { routerVersion, tests } = element;
-          const translatedRouterVersion = versionToString(routerVersion);
+          const translatedRouterVersion = `${ROUTER_VERSION_PREFIX}${routerVersion}`;
 
           for (const test of tests) {
             const mochaTest = new Mocha.Test(
@@ -89,7 +92,7 @@ export const defineTestsGroup = (arg: {
 async function runTest(arg: {
   action: string;
   supertest: TestAgent;
-  router: RouterInformation;
+  router: IRouterInformation;
   test: ITest | ICustomTest;
   globalCookie: Record<string, string>;
 }) {

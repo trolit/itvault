@@ -1,6 +1,5 @@
 import { StatusCodes as HTTP } from "http-status-codes";
-import { Method } from "@integration-tests/types/Method";
-import { buildTests } from "@integration-tests/helpers/buildTests";
+import { Method, defineTests } from "@integration-tests/probata";
 
 import { IUserSessionDTO } from "@shared/types/DTOs/Auth";
 
@@ -11,7 +10,7 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 export const DELETE_SESSION_MEMBER1_EMAIL = "session-delete-member1@email.com";
 export const DELETE_SESSION_MEMBER2_EMAIL = "session-delete-member2@email.com";
 
-export const DELETE_SESSION_CONTROLLER_V1_TESTS = buildTests(
+export const DELETE_SESSION_CONTROLLER_V1_TESTS = defineTests(
   {
     method: Method.DELETE,
     baseQuery: { version: v1 },

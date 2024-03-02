@@ -1,13 +1,17 @@
 import TestAgent from "supertest/lib/agent";
-import { PASSWORD } from "@integration-tests/config";
-import { Method } from "@integration-tests/types/Method";
-import { TestAgentTypes } from "@integration-tests/types/TestAgent";
-import { RouterInformation } from "@integration-tests/types/RouterInformation";
-import { RequestInformation } from "@integration-tests/types/RequestInformation";
+import { PASSWORD, ROUTER_VERSION_PREFIX } from "@integration-tests/config";
+import {
+  Method,
+  ITestData,
+  RequestFunc,
+  UserSession,
+  ITestInstance,
+  ICommonMethods,
+  IRouterInformation,
+  IRequestInformation,
+} from ".";
 
 import { APP, JWT } from "@config";
-
-import { versionToString } from "./versionToString";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -18,15 +22,15 @@ const {
 let supertest: TestAgent;
 let availableGlobalCookies: Record<string, string>;
 
-export function useTestAgent(agent: TestAgent): TestAgentTypes.RequestInstance;
+export function useTestAgent(agent: TestAgent): ICommonMethods;
 export function useTestAgent(
   agent: TestAgent,
-  testData: TestAgentTypes.TestData
-): TestAgentTypes.TestInstance;
+  testData: ITestData
+): ITestInstance;
 export function useTestAgent(
   agent: TestAgent,
-  testData?: TestAgentTypes.TestData
-): TestAgentTypes.RequestInstance | TestAgentTypes.TestInstance {
+  testData?: ITestData
+): ICommonMethods | ITestInstance {
   supertest = agent;
 
   const commonMethods = {
@@ -63,9 +67,9 @@ function extractTokenFromCookie(arg: { cookie: string }) {
 }
 
 function prepareRequest<Q extends { version: number }, B = void>(arg: {
-  router: RouterInformation;
-  request: RequestInformation<Q, B>;
-}): TestAgentTypes.RequestFunc<Q, B> {
+  router: IRouterInformation;
+  request: IRequestInformation<Q, B>;
+}): RequestFunc<Q, B> {
   const {
     router,
     request: { action, method, query: baseQuery, body: baseBody },
@@ -87,8 +91,8 @@ function prepareRequest<Q extends { version: number }, B = void>(arg: {
 }
 
 function customRequest<Q extends { version: number }, B = void>(arg: {
-  router: RouterInformation;
-  request: RequestInformation<Q, B>;
+  router: IRouterInformation;
+  request: IRequestInformation<Q, B>;
 }) {
   const {
     router,
@@ -111,7 +115,7 @@ function sendRequest(arg: {
   url: string;
   body: any;
   query: any;
-  session?: TestAgentTypes.UserSession;
+  session?: UserSession;
 }) {
   const { method, url, session, query, body } = arg;
 
@@ -128,15 +132,15 @@ function sendRequest(arg: {
   return body ? request.send(body) : request.send();
 }
 
-function getUrl(arg: { router: RouterInformation; action: string }) {
+function getUrl(arg: { router: IRouterInformation; action: string }) {
   const {
     action,
     router: { version, name },
   } = arg;
 
-  const translatedRouterVersion = versionToString(version);
+  const branchVersion = `${ROUTER_VERSION_PREFIX}${version}`;
 
-  return `${APP.ROUTES_PREFIX}/${translatedRouterVersion}/${name}/${action}`;
+  return `${APP.ROUTES_PREFIX}/${branchVersion}/${name}/${action}`;
 }
 
 async function authenticate(
@@ -170,7 +174,7 @@ async function authenticate(
   return token;
 }
 
-function useToken(session: TestAgentTypes.UserSession) {
+function useToken(session: UserSession) {
   if ("user" in session) {
     const {
       user: { email },

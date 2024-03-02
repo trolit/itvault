@@ -1,5 +1,5 @@
+import { defineTestsGroup } from "@integration-tests/probata";
 import { addUsers } from "@integration-tests/helpers/user-helpers";
-import { defineTestsGroup } from "@integration-tests/helpers/defineTestsGroup";
 
 import { MEMBER_ROLE } from "@config/initial-roles";
 
@@ -33,45 +33,6 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 export const AUTH_TESTS = defineTestsGroup({
   name: "Auth",
   router: `auth`,
-  before: () => {
-    return addUsers([
-      {
-        email: VALID_REQUEST_EMAIL,
-        isSignedUp: true,
-        roleNameOrId: MEMBER_ROLE.name,
-      },
-      {
-        email: NOT_SIGNED_UP_TEST_EMAIL,
-        isSignedUp: false,
-        roleNameOrId: MEMBER_ROLE.name,
-      },
-      {
-        email: SESSION_LIMIT_EMAIL,
-        isSignedUp: true,
-        roleNameOrId: MEMBER_ROLE.name,
-      },
-      {
-        email: DELETE_SESSION_MEMBER1_EMAIL,
-        isSignedUp: true,
-        roleNameOrId: MEMBER_ROLE.name,
-      },
-      {
-        email: DELETE_SESSION_MEMBER2_EMAIL,
-        isSignedUp: true,
-        roleNameOrId: MEMBER_ROLE.name,
-      },
-      {
-        email: SIGN_OUT_MEMBER_EMAIL,
-        isSignedUp: true,
-        roleNameOrId: MEMBER_ROLE.name,
-      },
-      {
-        email: STATUS_MEMBER,
-        isSignedUp: true,
-        roleNameOrId: MEMBER_ROLE.name,
-      },
-    ]);
-  },
   collection: [
     {
       action: "sign-in",
@@ -124,4 +85,45 @@ export const AUTH_TESTS = defineTestsGroup({
       ],
     },
   ],
+  hooks: {
+    before: () => {
+      return addUsers([
+        {
+          email: VALID_REQUEST_EMAIL,
+          isSignedUp: true,
+          roleNameOrId: MEMBER_ROLE.name,
+        },
+        {
+          email: NOT_SIGNED_UP_TEST_EMAIL,
+          isSignedUp: false,
+          roleNameOrId: MEMBER_ROLE.name,
+        },
+        {
+          email: SESSION_LIMIT_EMAIL,
+          isSignedUp: true,
+          roleNameOrId: MEMBER_ROLE.name,
+        },
+        {
+          email: DELETE_SESSION_MEMBER1_EMAIL,
+          isSignedUp: true,
+          roleNameOrId: MEMBER_ROLE.name,
+        },
+        {
+          email: DELETE_SESSION_MEMBER2_EMAIL,
+          isSignedUp: true,
+          roleNameOrId: MEMBER_ROLE.name,
+        },
+        {
+          email: SIGN_OUT_MEMBER_EMAIL,
+          isSignedUp: true,
+          roleNameOrId: MEMBER_ROLE.name,
+        },
+        {
+          email: STATUS_MEMBER,
+          isSignedUp: true,
+          roleNameOrId: MEMBER_ROLE.name,
+        },
+      ]);
+    },
+  },
 });

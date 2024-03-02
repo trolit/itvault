@@ -1,8 +1,7 @@
 import { StatusCodes as HTTP } from "http-status-codes";
-import { Method } from "@integration-tests/types/Method";
 import { IUserService } from "types/services/IUserService";
 import { HEAD_ADMIN_EMAIL } from "@integration-tests/config";
-import { buildTests } from "@integration-tests/helpers/buildTests";
+import { Method, defineTests } from "@integration-tests/probata";
 import { IUserRepository } from "types/repositories/IUserRepository";
 
 import { Di } from "@enums/Di";
@@ -15,7 +14,7 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 export const STATUS_MEMBER = "sign-out@email.com";
 
-export const STATUS_CONTROLLER_V1_TESTS = buildTests(
+export const STATUS_CONTROLLER_V1_TESTS = defineTests(
   {
     method: Method.GET,
     baseQuery: { version: v1 },
