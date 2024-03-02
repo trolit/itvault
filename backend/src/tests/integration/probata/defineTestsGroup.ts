@@ -16,7 +16,6 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 export const defineTestsGroup = (arg: {
   name: string;
   router: string;
-  before?: Mocha.Func;
   collection: {
     action: string;
     controller: string;
@@ -25,19 +24,24 @@ export const defineTestsGroup = (arg: {
       tests: (ITest | ICustomTest)[];
     }[];
   }[];
+  hooks?: {
+    before?: Mocha.Func;
+  };
 }): ITestsGroup => {
-  const { name: suiteId, router, before: entityBefore, collection } = arg;
+  const { name: suiteId, router, hooks, collection } = arg;
 
   return {
     beforeAll(suite: Mocha.Suite) {
-      if (entityBefore) {
-        const relatedSuite = suite.suites.find(
-          element => element.title === suiteId
-        );
+      if (!hooks?.before) {
+        return;
+      }
 
-        if (relatedSuite) {
-          relatedSuite.beforeAll(entityBefore);
-        }
+      const relatedSuite = suite.suites.find(
+        element => element.title === suiteId
+      );
+
+      if (relatedSuite) {
+        relatedSuite.beforeAll(hooks.before);
       }
     },
     loadToSuite: (suite: Mocha.Suite) => {
