@@ -1,18 +1,33 @@
 import "reflect-metadata";
+import lockfile from "proper-lockfile";
 
 import { APP } from "./config";
-import { server } from "./server";
+import { onExit, server } from "./server";
 
-const startServer = async () => {
-  const app = await server();
+(async function () {
+  try {
+    if (APP.IS_PRODUCTION) {
+      await lockfile.lock(__filename);
+    }
 
-  const { PORT } = APP;
+    const app = await server();
 
-  app.listen(PORT, () => {
-    log.info({
-      message: `⚡️ Server is running at http://localhost:${PORT}`,
+    const { PORT } = APP;
+
+    app.listen(PORT, () => {
+      log.info({
+        message: `⚡️ Server is running at http://localhost:${PORT}`,
+      });
     });
-  });
-};
+  } catch (error) {
+    console.log(error);
 
-startServer();
+    if (APP.IS_PRODUCTION) {
+      await lockfile.unlock(__filename);
+    }
+  }
+})();
+
+process.on("SIGINT", onExit);
+process.on("SIGTERM", onExit);
+process.on("SIGQUIT", onExit);
