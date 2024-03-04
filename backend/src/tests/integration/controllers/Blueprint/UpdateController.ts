@@ -5,11 +5,12 @@ import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 import {
   BLUEPRINT_1,
   WORKSPACE_1,
-  MEMBER_EMAIL,
   HEAD_ADMIN_EMAIL,
-  UNEXISTING_WORKSPACE_ID,
   UNEXISTING_BLUEPRINT_ID,
 } from "@integration-tests/config";
+
+import { includeCommonTests } from "./includeCommonTests";
+import { includeSchemaTests } from "./includeSchemaTests";
 
 import { Di } from "@enums/Di";
 
@@ -29,34 +30,10 @@ export const UPDATE_CONTROLLER_V1_TESTS = defineTests(
   },
 
   ({ addTest }) => {
-    addTest({
-      description: `returns ${HTTP.UNAUTHORIZED} when user is not signed in`,
-      appendToAction: `${UNEXISTING_BLUEPRINT_ID}`,
-      expect: {
-        statusCode: HTTP.UNAUTHORIZED,
-      },
-    });
-
-    addTest({
-      description: `returns ${HTTP.FORBIDDEN} when 'workspaceId' query param is not provided`,
-      session: { user: { email: MEMBER_EMAIL } },
-      appendToAction: `${UNEXISTING_BLUEPRINT_ID}`,
-      expect: {
-        statusCode: HTTP.FORBIDDEN,
-      },
-    });
-
-    addTest({
-      description: `returns ${HTTP.BAD_REQUEST} when workspace does not exist`,
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
-      appendToAction: `${UNEXISTING_BLUEPRINT_ID}`,
-      query: {
-        ...baseQuery,
-        workspaceId: UNEXISTING_WORKSPACE_ID,
-      },
-      expect: {
-        statusCode: HTTP.BAD_REQUEST,
-      },
+    includeCommonTests({
+      addTest,
+      baseQuery: workspaceQuery,
+      blueprintId: BLUEPRINT_1.id,
     });
 
     addTest({
@@ -67,6 +44,12 @@ export const UPDATE_CONTROLLER_V1_TESTS = defineTests(
       expect: {
         statusCode: HTTP.BAD_REQUEST,
       },
+    });
+
+    includeSchemaTests({
+      addTest,
+      baseQuery: workspaceQuery,
+      blueprintId: BLUEPRINT_1.id,
     });
 
     addTest({

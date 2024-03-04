@@ -5,12 +5,12 @@ import { Method, defineTests } from "@integration-tests/probata";
 import {
   BLUEPRINT_1,
   WORKSPACE_1,
-  MEMBER_EMAIL,
   HEAD_ADMIN_EMAIL,
-  UNEXISTING_WORKSPACE_ID,
 } from "@integration-tests/config";
 
 import { APP } from "@config";
+
+import { includeCommonTests } from "./includeCommonTests";
 
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
@@ -19,6 +19,7 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
+const workspaceQuery = { ...baseQuery, workspaceId: WORKSPACE_1.id };
 
 export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
   {
@@ -27,45 +28,16 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
   },
 
   ({ addTest }) => {
-    addTest({
-      description: `returns ${HTTP.UNAUTHORIZED} when user is not signed in`,
-      expect: {
-        statusCode: HTTP.UNAUTHORIZED,
-      },
-    });
-
-    addTest({
-      description: `returns ${HTTP.FORBIDDEN} when 'workspaceId' query param is not provided`,
-      session: { user: { email: MEMBER_EMAIL } },
-      expect: {
-        statusCode: HTTP.FORBIDDEN,
-      },
-    });
-
-    addTest({
-      description: `returns ${HTTP.FORBIDDEN} when workspace does not exist`,
-      query: { ...baseQuery, workspaceId: UNEXISTING_WORKSPACE_ID },
-      session: { user: { email: MEMBER_EMAIL } },
-      expect: {
-        statusCode: HTTP.FORBIDDEN,
-      },
-    });
-
-    addTest({
-      description: `returns ${HTTP.FORBIDDEN} when user is not permitted to access workspace content`,
-      query: { ...baseQuery, workspaceId: WORKSPACE_1.id },
-      session: { user: { email: MEMBER_EMAIL } },
-      expect: {
-        statusCode: HTTP.FORBIDDEN,
-      },
+    includeCommonTests({
+      addTest,
+      baseQuery,
     });
 
     addTest({
       description: `returns ${HTTP.BAD_REQUEST} when 'page' query param is invalid`,
       query: {
-        ...baseQuery,
+        ...workspaceQuery,
         perPage: APP.MAX_ITEMS_PER_PAGE,
-        workspaceId: WORKSPACE_1.id,
       },
       session: { user: { email: HEAD_ADMIN_EMAIL } },
       expect: {
@@ -76,9 +48,8 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
     addTest({
       description: `returns ${HTTP.BAD_REQUEST} when 'perPage' query param is invalid`,
       query: {
-        ...baseQuery,
+        ...workspaceQuery,
         page: 1,
-        workspaceId: WORKSPACE_1.id,
       },
       session: { user: { email: HEAD_ADMIN_EMAIL } },
       expect: {
@@ -89,10 +60,9 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
     addTest({
       description: `returns ${HTTP.OK} with 2 items`,
       query: {
-        ...baseQuery,
+        ...workspaceQuery,
         page: 1,
         perPage: APP.MAX_ITEMS_PER_PAGE,
-        workspaceId: WORKSPACE_1.id,
       },
       session: { user: { email: HEAD_ADMIN_EMAIL } },
       expect: {
@@ -111,11 +81,10 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
     addTest({
       description: `returns ${HTTP.OK} with 1 item (match by name)`,
       query: {
-        ...baseQuery,
+        ...workspaceQuery,
         page: 1,
         name: BLUEPRINT_1.name,
         perPage: APP.MAX_ITEMS_PER_PAGE,
-        workspaceId: WORKSPACE_1.id,
       },
       session: { user: { email: HEAD_ADMIN_EMAIL } },
       expect: {
@@ -134,11 +103,10 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
     addTest({
       description: `returns ${HTTP.OK} with 0 items (return only used ones)`,
       query: {
-        ...baseQuery,
+        ...workspaceQuery,
         page: 1,
         inUse: 1,
         perPage: APP.MAX_ITEMS_PER_PAGE,
-        workspaceId: WORKSPACE_1.id,
       },
       session: { user: { email: HEAD_ADMIN_EMAIL } },
       expect: {
