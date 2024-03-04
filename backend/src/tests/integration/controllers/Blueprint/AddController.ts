@@ -3,9 +3,10 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
 import {
   BLUEPRINT_1,
-  HEAD_ADMIN_EMAIL,
-  MEMBER_EMAIL,
   WORKSPACE_1,
+  MEMBER_EMAIL,
+  HEAD_ADMIN_EMAIL,
+  UNEXISTING_WORKSPACE_ID,
 } from "@integration-tests/config";
 
 import { BLUEPRINT_RULES } from "@shared/constants/rules";
@@ -52,7 +53,7 @@ export const ADD_CONTROLLER_V1_TESTS = defineTests(
       session: { user: { email: HEAD_ADMIN_EMAIL } },
       query: {
         ...baseQuery,
-        workspaceId: 1999,
+        workspaceId: UNEXISTING_WORKSPACE_ID,
       },
       body: {},
       expect: {

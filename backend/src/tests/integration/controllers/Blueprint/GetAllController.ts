@@ -7,6 +7,7 @@ import {
   WORKSPACE_1,
   MEMBER_EMAIL,
   HEAD_ADMIN_EMAIL,
+  UNEXISTING_WORKSPACE_ID,
 } from "@integration-tests/config";
 
 import { APP } from "@config";
@@ -35,6 +36,15 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
 
     addTest({
       description: `returns ${HTTP.FORBIDDEN} when 'workspaceId' query param is not provided`,
+      session: { user: { email: MEMBER_EMAIL } },
+      expect: {
+        statusCode: HTTP.FORBIDDEN,
+      },
+    });
+
+    addTest({
+      description: `returns ${HTTP.FORBIDDEN} when workspace does not exist`,
+      query: { ...baseQuery, workspaceId: UNEXISTING_WORKSPACE_ID },
       session: { user: { email: MEMBER_EMAIL } },
       expect: {
         statusCode: HTTP.FORBIDDEN,
