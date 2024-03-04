@@ -102,7 +102,7 @@ async function runTest(arg: {
   let action = baseAction;
 
   if (!isCustomTest && test.appendToAction) {
-    action += `/${test.appendToAction}`;
+    action += `${action.length ? "/" : ""}${test.appendToAction}`;
   }
 
   const request = {
