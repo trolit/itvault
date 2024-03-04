@@ -1,13 +1,19 @@
 import { defineTestsGroup } from "@integration-tests/probata";
+import { addBlueprints } from "@integration-tests/helpers/db/addBlueprints";
 
 import { ADD_CONTROLLER_V1_TESTS } from "./AddController";
 import { UPDATE_CONTROLLER_V1_TESTS } from "./UpdateController";
 import { GET_ALL_CONTROLLER_V1_TESTS } from "./GetAllController";
+import {
+  BLUEPRINT_TO_DELETE,
+  SOFT_DELETE_CONTROLLER_V1_TESTS,
+} from "./SoftDeleteController";
 
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/Blueprint/AddController";
-import { UpdateController } from "@controllers/Blueprint/UpdateController";
+import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { GetAllController } from "@controllers/Blueprint/GetAllController";
+import { UpdateController } from "@controllers/Blueprint/UpdateController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -45,5 +51,20 @@ export const BLUEPRINT_TESTS = defineTestsGroup({
         },
       ],
     },
+    {
+      action: "",
+      controller: SoftDeleteController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: SOFT_DELETE_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
   ],
+  hooks: {
+    before: () => {
+      return addBlueprints([BLUEPRINT_TO_DELETE]);
+    },
+  },
 });

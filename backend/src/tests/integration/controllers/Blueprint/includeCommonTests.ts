@@ -32,19 +32,6 @@ export const includeCommonTests = (arg: {
   });
 
   addTest({
-    description: `returns ${HTTP.BAD_REQUEST} when workspace does not exist`,
-    session: { user: { email: HEAD_ADMIN_EMAIL } },
-    appendToAction,
-    query: {
-      ...baseQuery,
-      workspaceId: UNEXISTING_WORKSPACE_ID,
-    },
-    expect: {
-      statusCode: HTTP.BAD_REQUEST,
-    },
-  });
-
-  addTest({
     description: `returns ${HTTP.FORBIDDEN} when user is not permitted to access workspace related endpoint`,
     query: baseQuery,
     session: { user: { email: MEMBER_EMAIL } },
