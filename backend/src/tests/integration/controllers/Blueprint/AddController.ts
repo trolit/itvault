@@ -3,7 +3,7 @@ import { Method, defineTests } from "@integration-tests/probata";
 import { WORKSPACE_1, HEAD_ADMIN_EMAIL } from "@integration-tests/config";
 
 import { includeCommonTests } from "./includeCommonTests";
-import { includeSchemaTests } from "./includeSchemaTests";
+import { includeAddUpdateSchemaTests } from "./includeAddUpdateSchemaTests";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -21,7 +21,7 @@ export const ADD_CONTROLLER_V1_TESTS = defineTests(
   ({ addTest }) => {
     includeCommonTests({ addTest, baseQuery: workspaceQuery });
 
-    const { validBody } = includeSchemaTests({
+    const { validBody } = includeAddUpdateSchemaTests({
       addTest,
       baseQuery: workspaceQuery,
     });

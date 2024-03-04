@@ -10,7 +10,7 @@ import {
 } from "@integration-tests/config";
 
 import { includeCommonTests } from "./includeCommonTests";
-import { includeSchemaTests } from "./includeSchemaTests";
+import { includeAddUpdateSchemaTests } from "./includeAddUpdateSchemaTests";
 
 import { Di } from "@enums/Di";
 
@@ -46,7 +46,7 @@ export const UPDATE_CONTROLLER_V1_TESTS = defineTests(
       },
     });
 
-    includeSchemaTests({
+    includeAddUpdateSchemaTests({
       addTest,
       baseQuery: workspaceQuery,
       blueprintId: BLUEPRINT_1.id,
