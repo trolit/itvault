@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { Server } from "http";
 import { container } from "tsyringe";
-import { server } from "../../server";
+import { server, onExit } from "../../server";
 
 import { APP } from "@config";
 import { MEMBER_ROLE } from "@config/initial-roles";
@@ -55,7 +55,7 @@ describe("Integration tests", async function () {
     ).getData();
 
     app.close(async () => {
-      await containers.down();
+      await onExit(() => containers.down());
 
       done();
     });
