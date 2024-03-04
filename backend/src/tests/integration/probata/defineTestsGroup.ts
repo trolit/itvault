@@ -96,7 +96,14 @@ async function runTest(arg: {
   test: ITest | ICustomTest;
   globalCookie: Record<string, string>;
 }) {
-  const { action, supertest, router, test, globalCookie } = arg;
+  const { action: baseAction, supertest, router, test, globalCookie } = arg;
+  const isCustomTest = "runner" in test;
+
+  let action = baseAction;
+
+  if (!isCustomTest && test.appendToAction) {
+    action += `${action.length ? "/" : ""}${test.appendToAction}`;
+  }
 
   const request = {
     method: test.method,
@@ -110,8 +117,6 @@ async function runTest(arg: {
     request,
     globalCookie,
   });
-
-  const isCustomTest = "runner" in test;
 
   let response: Response;
   const statusCode = isCustomTest ? test.statusCode : test.expect.statusCode;

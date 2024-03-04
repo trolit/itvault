@@ -100,6 +100,8 @@ export interface ICustomTest extends IBaseTest {
 export interface ITest<Q = any, B = any> extends IBaseTest<Q, B> {
   session?: UserSession;
 
+  appendToAction?: string;
+
   query?: Q & { version: number };
 
   expect: {
