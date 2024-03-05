@@ -34,12 +34,6 @@ export class SoftDeleteController extends BaseController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    const idAsNumber = Number(id);
-
-    console.log(id);
-    console.log(idAsNumber);
-    console.log(repository);
-
     const entity = await repository.getOne({
       where: {
         id,
