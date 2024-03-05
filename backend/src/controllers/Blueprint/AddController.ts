@@ -39,18 +39,25 @@ export class AddController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const blueprint = await this._blueprintRepository.primitiveSave({
-      ...body,
-      workspace: {
-        id: workspaceId,
+    const blueprint = await this._blueprintRepository.primitiveSave(
+      {
+        ...body,
+        workspace: {
+          id: workspaceId,
+        },
+        createdBy: {
+          id: userId,
+        },
+        updatedBy: {
+          id: userId,
+        },
       },
-      createdBy: {
-        id: userId,
-      },
-      updatedBy: {
-        id: userId,
-      },
-    });
+      {
+        data: {
+          userId,
+        },
+      }
+    );
 
     if (!blueprint) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();

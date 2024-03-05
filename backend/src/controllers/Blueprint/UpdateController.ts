@@ -53,13 +53,20 @@ export class UpdateController extends BaseController {
 
     // @TODO should do like with Note - "update any blueprint" or update if owner
 
-    await this._blueprintRepository.primitiveSave({
-      ...blueprint,
-      ...body,
-      updatedBy: {
-        id: userId,
+    await this._blueprintRepository.primitiveSave(
+      {
+        ...blueprint,
+        ...body,
+        updatedBy: {
+          id: userId,
+        },
       },
-    });
+      {
+        data: {
+          userId,
+        },
+      }
+    );
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }

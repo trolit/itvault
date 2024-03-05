@@ -4,16 +4,19 @@ import { Note } from "@db/entities/Note";
 import { Bundle } from "@db/entities/Bundle";
 import { Bucket } from "@db/entities/Bucket";
 import { Variant } from "@db/entities/Variant";
-import { Workspace } from "@db/entities/Workspace";
 import { Blueprint } from "@db/entities/Blueprint";
+import { Workspace } from "@db/entities/Workspace";
 import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
 import {
   InsertEvent,
-  EventSubscriber,
-  EntitySubscriberInterface,
   EntityManager,
+  EventSubscriber,
+  SoftRemoveEvent,
+  EntitySubscriberInterface,
+  ObjectLiteral,
 } from "typeorm";
 
+import { Dependency } from "@enums/Dependency";
 import { Action } from "@shared/types/enums/Action";
 
 // @NOTE could expand it even more to include set of "smaller" actions like e.g. "Patch <property>"
@@ -21,14 +24,12 @@ const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Note.name,
     getRecord: onNoteEvent,
-    // @TODO cover DELETE action
-    actions: [Action.Create, Action.Update],
+    actions: [Action.Create, Action.Update, Action.SoftDelete],
   },
   {
     entityName: Blueprint.name,
     getRecord: onBlueprintEvent,
-    // @TODO cover DELETE action
-    actions: [Action.Create, Action.Update],
+    actions: [Action.Create, Action.Update, Action.SoftDelete],
   },
   {
     entityName: Bucket.name,
@@ -56,12 +57,20 @@ export class GlobalSubscriber implements EntitySubscriberInterface {
   async afterUpdate(event: InsertEvent<any>) {
     await handleWorkspaceEvent(event, Action.Update);
   }
+
+  async beforeSoftRemove(event: SoftRemoveEvent<any>) {
+    await handleWorkspaceEvent(event, Action.SoftDelete);
+  }
 }
 
-async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
+async function handleWorkspaceEvent(
+  event: InsertEvent<any> | SoftRemoveEvent<any>,
+  action: Action
+) {
   const {
     entity,
     manager,
+    queryRunner: { data },
     metadata: { name: entityName },
   } = event;
 
@@ -75,19 +84,33 @@ async function handleWorkspaceEvent(event: InsertEvent<any>, action: Action) {
     return;
   }
 
-  const record = await eventHandler.getRecord({ entity, action, manager });
+  const record = await eventHandler.getRecord({
+    data,
+    entity,
+    action,
+    manager,
+  });
 
-  if (record) {
-    await manager.save(record);
+  if (!record) {
+    log.debug({
+      message: `${action} trace of ${entityName} not received!`,
+      dependency: Dependency.TypeORM,
+    });
+
+    return;
   }
+
+  await manager.save(record);
 }
 
 async function onVariantEvent(arg: {
+  data: ObjectLiteral;
   entity: Variant;
   action: Action;
   manager: EntityManager;
 }) {
-  const { action, manager, entity } = arg;
+  const { data, action, manager, entity } = arg;
+  const { userId } = data;
 
   const workspace = await manager.findOne(Workspace, {
     where: {
@@ -106,7 +129,7 @@ async function onVariantEvent(arg: {
     action,
     workspace,
     user: {
-      id: entity.createdBy.id,
+      id: userId,
     },
     targetId: entity.id.toString(),
   });
@@ -115,11 +138,13 @@ async function onVariantEvent(arg: {
 }
 
 async function onBundleEvent(arg: {
+  data: ObjectLiteral;
   entity: Bundle;
   action: Action;
   manager: EntityManager;
 }) {
-  const { action, manager, entity } = arg;
+  const { data, action, manager, entity } = arg;
+  const { userId } = data;
 
   const record = manager.create(WorkspaceTrace, {
     entity: Bundle.name,
@@ -128,7 +153,7 @@ async function onBundleEvent(arg: {
       id: entity.workspace.id,
     },
     user: {
-      id: entity.createdBy.id,
+      id: userId,
     },
     targetId: entity.id.toString(),
   });
@@ -137,11 +162,12 @@ async function onBundleEvent(arg: {
 }
 
 async function onBucketEvent(arg: {
+  data: ObjectLiteral;
   entity: Bucket;
   action: Action;
   manager: EntityManager;
 }) {
-  const { action, manager, entity } = arg;
+  const { data, action, manager, entity } = arg;
 
   const workspace = await manager.findOne(Workspace, {
     where: {
@@ -155,6 +181,8 @@ async function onBucketEvent(arg: {
     return;
   }
 
+  const { userId } = data;
+
   const record = manager.create(WorkspaceTrace, {
     entity: Bucket.name,
     action,
@@ -162,7 +190,7 @@ async function onBucketEvent(arg: {
       id: workspace.id,
     },
     user: {
-      id: action === Action.Create ? entity.createdBy.id : entity.updatedBy.id,
+      id: userId,
     },
     targetId: entity.id.toString(),
   });
@@ -171,11 +199,13 @@ async function onBucketEvent(arg: {
 }
 
 async function onBlueprintEvent(arg: {
+  data: ObjectLiteral;
   entity: Blueprint;
   action: Action;
   manager: EntityManager;
 }) {
-  const { action, manager, entity } = arg;
+  const { data, action, manager, entity } = arg;
+  const { userId } = data;
 
   const record = manager.create(WorkspaceTrace, {
     entity: Blueprint.name,
@@ -184,7 +214,7 @@ async function onBlueprintEvent(arg: {
       id: entity.workspace.id,
     },
     user: {
-      id: action === Action.Create ? entity.createdBy.id : entity.updatedBy.id,
+      id: userId,
     },
     targetId: entity.id.toString(),
   });
@@ -193,11 +223,12 @@ async function onBlueprintEvent(arg: {
 }
 
 async function onNoteEvent(arg: {
+  data: ObjectLiteral;
   entity: Note;
   action: Action;
   manager: EntityManager;
 }) {
-  const { action, manager, entity } = arg;
+  const { data, action, manager, entity } = arg;
 
   const note = await manager.findOne(Note, {
     where: {
@@ -214,12 +245,14 @@ async function onNoteEvent(arg: {
     return;
   }
 
+  const { userId } = data;
+
   const record = manager.create(WorkspaceTrace, {
     entity: Note.name,
     action,
     workspace: note.file.workspace,
     user: {
-      id: action === Action.Create ? entity.createdBy.id : entity.updatedBy.id,
+      id: userId,
     },
     targetId: entity.id.toString(),
   });

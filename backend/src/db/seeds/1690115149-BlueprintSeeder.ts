@@ -22,14 +22,21 @@ export default class BlueprintSeeder implements Seeder {
       for (let index = 0; index < 20; index++) {
         const [user] = await getRandomRecords(userRepository, 1);
 
-        await blueprintRepository.save({
-          name: `BR${index + 1}`,
-          color: faker.color.rgb({ format: "hex", casing: "upper" }),
-          description: faker.random.words(descriptionCount),
-          workspace,
-          createdBy: user,
-          updatedBy: user,
-        });
+        await blueprintRepository.save(
+          {
+            name: `BR${index + 1}`,
+            color: faker.color.rgb({ format: "hex", casing: "upper" }),
+            description: faker.random.words(descriptionCount),
+            workspace,
+            createdBy: user,
+            updatedBy: user,
+          },
+          {
+            data: {
+              userId: user.id,
+            },
+          }
+        );
       }
     }
   }

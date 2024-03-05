@@ -5,12 +5,12 @@ import {
   DataSource,
   Repository,
   DeepPartial,
-  SaveOptions,
   QueryRunner,
   UpdateResult,
   FindOneOptions,
   FindManyOptions,
   FindOptionsWhere,
+  SaveOptions,
 } from "typeorm";
 
 import { Di } from "@enums/Di";
@@ -72,8 +72,8 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.softDelete(options);
   }
 
-  softDeleteEntity(entity: T): Promise<T> {
-    return this.database.softRemove(entity);
+  softDeleteEntity(entity: T, options?: SaveOptions): Promise<T> {
+    return this.database.softRemove(entity, options);
   }
 
   primitiveSave(entity: DeepPartial<T>, options?: SaveOptions): Promise<T> {

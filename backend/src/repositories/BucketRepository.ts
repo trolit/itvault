@@ -40,14 +40,22 @@ export class BucketRepository
           },
         })) || undefined;
 
-      const bucket = await transaction.manager.save(Bucket, {
-        ...currentState,
-        value,
-        blueprint: { id: blueprintId },
-        variant: { id: variantId },
-        createdBy: currentState ? currentState.createdBy : { id: userId },
-        updatedBy: { id: userId },
-      });
+      const bucket = await transaction.manager.save(
+        Bucket,
+        {
+          ...currentState,
+          value,
+          blueprint: { id: blueprintId },
+          variant: { id: variantId },
+          createdBy: currentState ? currentState.createdBy : { id: userId },
+          updatedBy: { id: userId },
+        },
+        {
+          data: {
+            userId,
+          },
+        }
+      );
 
       await transaction.commitTransaction();
 

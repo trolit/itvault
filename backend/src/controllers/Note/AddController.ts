@@ -38,18 +38,25 @@ export class AddController extends BaseController {
       body: { text, fileId },
     } = request;
 
-    const note = await this._noteRepository.primitiveSave({
-      value: text,
-      createdBy: {
-        id: userId,
+    const note = await this._noteRepository.primitiveSave(
+      {
+        value: text,
+        createdBy: {
+          id: userId,
+        },
+        updatedBy: {
+          id: userId,
+        },
+        file: {
+          id: fileId,
+        },
       },
-      updatedBy: {
-        id: userId,
-      },
-      file: {
-        id: fileId,
-      },
-    });
+      {
+        data: {
+          userId,
+        },
+      }
+    );
 
     if (!note) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();

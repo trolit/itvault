@@ -57,13 +57,20 @@ export class PatchValueController extends BaseController {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    await this._noteRepository.primitiveSave({
-      ...note,
-      value: text,
-      updatedBy: {
-        id: userId,
+    await this._noteRepository.primitiveSave(
+      {
+        ...note,
+        value: text,
+        updatedBy: {
+          id: userId,
+        },
       },
-    });
+      {
+        data: {
+          userId,
+        },
+      }
+    );
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
