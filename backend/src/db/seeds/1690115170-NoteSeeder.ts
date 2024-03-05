@@ -26,13 +26,16 @@ export default class NoteSeeder implements Seeder {
 
         const deletedAt = sample([new Date(), undefined, undefined, undefined]);
 
-        await noteRepository.save({
-          value,
-          createdBy: user,
-          updatedBy: user,
-          file,
-          deletedAt,
-        });
+        await noteRepository.save(
+          {
+            value,
+            createdBy: user,
+            updatedBy: user,
+            file,
+            deletedAt,
+          },
+          { data: { userId: user.id } }
+        );
       }
     }
   }
