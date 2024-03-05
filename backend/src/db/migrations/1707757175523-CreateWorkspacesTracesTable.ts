@@ -7,7 +7,7 @@ export class CreateWorkspacesTracesTable1707757175523
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE \`workspaces_traces\` (\`id\` int NOT NULL AUTO_INCREMENT, \`entity\` varchar(255) NOT NULL, \`targetId\` varchar(255) NOT NULL, \`action\` enum ('create', 'update', 'delete') NOT NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`workspaceId\` int NULL, \`userId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
+      `CREATE TABLE \`workspaces_traces\` (\`id\` int NOT NULL AUTO_INCREMENT, \`entity\` varchar(255) NOT NULL, \`targetId\` varchar(255) NOT NULL, \`action\` enum ('create', 'update', 'delete', 'soft-delete') NOT NULL, \`createdAt\` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6), \`workspaceId\` int NULL, \`userId\` int NULL, PRIMARY KEY (\`id\`)) ENGINE=InnoDB`
     );
     await queryRunner.query(
       `ALTER TABLE \`workspaces_traces\` ADD CONSTRAINT \`FK_bcb1588fb1131527f97d1ffe3db\` FOREIGN KEY (\`workspaceId\`) REFERENCES \`workspaces\`(\`id\`) ON DELETE NO ACTION ON UPDATE NO ACTION`
