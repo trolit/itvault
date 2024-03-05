@@ -55,6 +55,7 @@ export class AddController extends BaseController {
       {
         data: {
           userId,
+          workspaceId,
         },
       }
     );

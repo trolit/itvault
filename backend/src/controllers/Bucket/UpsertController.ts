@@ -36,6 +36,7 @@ export class UpsertController extends BaseController {
   ) {
     const {
       userId,
+      query: { workspaceId },
       body: { blueprintId, variantId, value },
     } = request;
 
@@ -44,6 +45,7 @@ export class UpsertController extends BaseController {
       userId,
       variantId,
       blueprintId,
+      workspaceId,
     });
 
     if (!result.isSuccess) {

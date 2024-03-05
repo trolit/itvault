@@ -83,6 +83,7 @@ export default class BucketSeeder implements Seeder {
               {
                 data: {
                   userId: user.id,
+                  workspaceId: workspace.id,
                 },
               }
             );

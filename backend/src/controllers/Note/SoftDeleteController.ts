@@ -37,6 +37,7 @@ export class SoftDeleteController extends BaseController {
       userId,
       permissions,
       params: { id },
+      query: { workspaceId },
     } = request;
 
     const parsedId = parseInt(id);
@@ -48,6 +49,11 @@ export class SoftDeleteController extends BaseController {
     const note = await this._noteRepository.getOne({
       where: {
         id: parsedId,
+        file: {
+          workspace: {
+            id: workspaceId,
+          },
+        },
       },
       relations: {
         createdBy: true,
@@ -66,7 +72,7 @@ export class SoftDeleteController extends BaseController {
     }
 
     await this._noteRepository.softDeleteEntity(note, {
-      data: { userId },
+      data: { userId, workspaceId },
     });
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

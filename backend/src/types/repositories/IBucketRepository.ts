@@ -8,6 +8,7 @@ export interface IBucketRepository extends IBaseRepository<Bucket> {
     value: BucketContent;
     userId: number;
     blueprintId: number;
+    workspaceId: number;
     variantId: string;
   }): Promise<TransactionResult<{ bucket: Bucket; isUpdate: boolean }>>;
 }

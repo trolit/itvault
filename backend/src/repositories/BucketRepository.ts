@@ -20,9 +20,10 @@ export class BucketRepository
     value: BucketContent;
     userId: number;
     blueprintId: number;
+    workspaceId: number;
     variantId: string;
   }): Promise<TransactionResult<{ bucket: Bucket; isUpdate: boolean }>> {
-    const { value, userId, blueprintId, variantId } = arg;
+    const { value, userId, blueprintId, workspaceId, variantId } = arg;
 
     const transaction = await this.useTransaction();
 
@@ -53,6 +54,7 @@ export class BucketRepository
         {
           data: {
             userId,
+            workspaceId,
           },
         }
       );
