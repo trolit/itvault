@@ -23,6 +23,7 @@ export class SoftDeleteController extends BaseController {
 
   async v1(request: DeleteControllerTypes.v1.Request, response: Response) {
     const {
+      userId,
       originalUrl,
       params: { id },
     } = request;
@@ -33,7 +34,30 @@ export class SoftDeleteController extends BaseController {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    await repository.softDelete({ id });
+    const idAsNumber = Number(id);
+
+    console.log(id);
+    console.log(idAsNumber);
+    console.log(repository);
+
+    const entity = await repository.getOne({
+      where: {
+        id,
+      },
+      // @TMP - we should require "workspaceId" in query
+      relations: {
+        workspace: true,
+      },
+    });
+
+    if (entity)
+      [
+        await repository.softDeleteEntity(entity, {
+          data: {
+            userId,
+          },
+        }),
+      ];
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
