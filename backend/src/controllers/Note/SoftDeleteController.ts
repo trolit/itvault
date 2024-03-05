@@ -65,7 +65,9 @@ export class SoftDeleteController extends BaseController {
       return response.sendStatus(HTTP.FORBIDDEN);
     }
 
-    await this._noteRepository.softDeleteEntity(note);
+    await this._noteRepository.softDeleteEntity(note, {
+      userId,
+    });
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
