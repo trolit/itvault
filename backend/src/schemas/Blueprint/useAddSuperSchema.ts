@@ -1,16 +1,13 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { AddControllerTypes } from "types/controllers/Blueprint/AddController";
 
 import { useAddEditBodySchema } from "./useAddEditBodySchema";
 
-import { Di } from "@enums/Di";
-
-import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const querySchema: SuperSchema.Fragment<AddControllerTypes.v1.Query> = object({
-  workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+  workspaceId: number().required(),
 });
 
 export const useAddSuperSchema: SuperSchema.Runner<
@@ -22,7 +19,6 @@ export const useAddSuperSchema: SuperSchema.Runner<
     query: { workspaceId },
   } = request;
 
-  // @NOTE check 'query' first to make sure that workspaceId is valid
   return {
     query: querySchema,
     body: useAddEditBodySchema(workspaceId),

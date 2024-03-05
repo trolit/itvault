@@ -1,4 +1,4 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { UpdateControllerTypes } from "types/controllers/Blueprint/UpdateController";
 
@@ -11,7 +11,7 @@ import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner
 
 const querySchema: SuperSchema.Fragment<UpdateControllerTypes.v1.Query> =
   object({
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    workspaceId: number().required(),
   });
 
 const paramsSchema: SuperSchema.Fragment<UpdateControllerTypes.v1.Params> =
