@@ -10,6 +10,7 @@ import {
   FindOneOptions,
   FindManyOptions,
   FindOptionsWhere,
+  SaveOptions,
 } from "typeorm";
 
 import { Di } from "@enums/Di";
@@ -71,19 +72,12 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.softDelete(options);
   }
 
-  softDeleteEntity(entity: T, options?: { userId: number }): Promise<T> {
-    return this.database.softRemove(entity, {
-      data: { userId: options?.userId },
-    });
+  softDeleteEntity(entity: T, options?: SaveOptions): Promise<T> {
+    return this.database.softRemove(entity, options);
   }
 
-  primitiveSave(
-    entity: DeepPartial<T>,
-    options?: { userId: number }
-  ): Promise<T> {
-    return this.database.save(entity, {
-      data: { userId: options?.userId },
-    });
+  primitiveSave(entity: DeepPartial<T>, options?: SaveOptions): Promise<T> {
+    return this.database.save(entity, options);
   }
 
   // @NOTE OUTPUT or RETURNING clause only supported by Microsoft SQL Server or PostgreSQL or MariaDB databases.

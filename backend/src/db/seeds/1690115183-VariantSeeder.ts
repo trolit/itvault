@@ -64,13 +64,20 @@ export default class VariantSeeder implements Seeder {
             size = await createFile(variantFilename, extension, uploadDir);
           }
 
-          await variantRepository.save({
-            name: `v${index + 1}`,
-            filename: variantFilename,
-            file,
-            size,
-            createdBy: headAdmin,
-          });
+          await variantRepository.save(
+            {
+              name: `v${index + 1}`,
+              filename: variantFilename,
+              file,
+              size,
+              createdBy: headAdmin,
+            },
+            {
+              data: {
+                userId: headAdmin.id,
+              },
+            }
+          );
         }
       }
     }

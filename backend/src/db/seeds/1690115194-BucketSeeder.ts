@@ -72,13 +72,20 @@ export default class BucketSeeder implements Seeder {
           for (const blueprint of sampleBlueprints) {
             const [user] = await getRandomRecords(userRepository, 1);
 
-            await bucketRepository.save({
-              value: this._generateValue(splitContent),
-              variant,
-              blueprint,
-              createdBy: user,
-              updatedBy: user,
-            });
+            await bucketRepository.save(
+              {
+                value: this._generateValue(splitContent),
+                variant,
+                blueprint,
+                createdBy: user,
+                updatedBy: user,
+              },
+              {
+                data: {
+                  userId: user.id,
+                },
+              }
+            );
           }
         }
       }

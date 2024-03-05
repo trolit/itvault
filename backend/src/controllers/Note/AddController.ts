@@ -51,7 +51,11 @@ export class AddController extends BaseController {
           id: fileId,
         },
       },
-      { userId }
+      {
+        data: {
+          userId,
+        },
+      }
     );
 
     if (!note) {

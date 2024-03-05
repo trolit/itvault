@@ -65,7 +65,11 @@ export class PatchValueController extends BaseController {
           id: userId,
         },
       },
-      { userId }
+      {
+        data: {
+          userId,
+        },
+      }
     );
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

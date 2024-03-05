@@ -78,7 +78,9 @@ export class SoftDeleteController extends BaseController {
 
     // @NOTE consider adding subscriber and set "size" to 0 and/or filename to NULL to mark that we do not have it anymore (?)
     await this._bundleRepository.softDeleteEntity(bundle, {
-      userId,
+      data: {
+        userId,
+      },
     });
 
     if (bundle.status !== BundleStatus.Enqueued) {

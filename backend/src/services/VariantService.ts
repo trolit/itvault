@@ -51,7 +51,11 @@ export class VariantService implements IVariantService {
         },
       });
 
-      const variant = await manager.save(Variant, entity);
+      const variant = await manager.save(Variant, entity, {
+        data: {
+          userId,
+        },
+      });
 
       await this._fileService.writeVariantFile({
         workspaceId,

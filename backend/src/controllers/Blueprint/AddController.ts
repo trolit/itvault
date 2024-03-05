@@ -53,7 +53,9 @@ export class AddController extends BaseController {
         },
       },
       {
-        userId,
+        data: {
+          userId,
+        },
       }
     );
 

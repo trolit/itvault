@@ -66,7 +66,7 @@ export class SoftDeleteController extends BaseController {
     }
 
     await this._noteRepository.softDeleteEntity(note, {
-      userId,
+      data: { userId },
     });
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

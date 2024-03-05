@@ -51,25 +51,32 @@ export class AddController extends BaseController {
       string
     >(values, "variantIds");
 
-    const bundle = await this._bundleRepository.primitiveSave({
-      note,
-      size: 0,
-      createdBy: {
-        id: userId,
+    const bundle = await this._bundleRepository.primitiveSave(
+      {
+        note,
+        size: 0,
+        createdBy: {
+          id: userId,
+        },
+        workspace: {
+          id: workspaceId,
+        },
+        expiresAt: null,
+        expire: expiration,
+        status: BundleStatus.Enqueued,
+        variantToBundle: variantIds.map(variantId => ({
+          variant: { id: variantId },
+        })),
+        blueprintToBundle: values.map(({ blueprintId }) => ({
+          blueprint: { id: blueprintId },
+        })),
       },
-      workspace: {
-        id: workspaceId,
-      },
-      expiresAt: null,
-      expire: expiration,
-      status: BundleStatus.Enqueued,
-      variantToBundle: variantIds.map(variantId => ({
-        variant: { id: variantId },
-      })),
-      blueprintToBundle: values.map(({ blueprintId }) => ({
-        blueprint: { id: blueprintId },
-      })),
-    });
+      {
+        data: {
+          userId,
+        },
+      }
+    );
 
     if (!bundle) {
       return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
