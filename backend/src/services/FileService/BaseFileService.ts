@@ -321,6 +321,10 @@ export abstract class BaseFileService implements IBaseFileService {
         fileRecordsToSave,
         {
           chunk: 1000,
+          data: {
+            userId,
+            workspaceId,
+          },
         }
       );
 
