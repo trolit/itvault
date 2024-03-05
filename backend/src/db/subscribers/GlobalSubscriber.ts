@@ -38,12 +38,12 @@ const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Bundle.name,
     getRecord: onBundleEvent,
-    actions: [Action.Create],
+    actions: [Action.Create, Action.SoftDelete],
   },
   {
     entityName: Variant.name,
     getRecord: onVariantEvent,
-    actions: [Action.Create],
+    actions: [Action.Create, Action.SoftDelete],
   },
 ];
 
@@ -133,13 +133,13 @@ async function onBundleEvent(arg: {
   manager: EntityManager;
 }) {
   const { data, action, manager, entity } = arg;
-  const { userId } = data;
+  const { userId, workspaceId } = data;
 
   const record = manager.create(WorkspaceTrace, {
     entity: Bundle.name,
     action,
     workspace: {
-      id: entity.workspace.id,
+      id: workspaceId || entity.workspace.id,
     },
     user: {
       id: userId,
