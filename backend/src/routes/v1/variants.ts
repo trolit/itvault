@@ -37,6 +37,7 @@ const {
 variantsRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );
+variantsRouter.use(IsWorkspaceAvailable);
 
 variantsRouter.get(
   "",
@@ -66,7 +67,6 @@ variantsRouter.post(
   "",
   requirePermissions([Permission.CreateVariant]),
   requireEndpointVersion(AddController.ALL_VERSIONS),
-  IsWorkspaceAvailable,
   parseUploadFormData(
     {
       multiples: false,
