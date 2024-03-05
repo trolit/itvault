@@ -24,9 +24,12 @@ export interface IBaseRepository<T> {
 
   softDelete(options: FindOptionsWhere<T>): Promise<UpdateResult>;
 
-  softDeleteEntity(entity: T): Promise<T>;
+  softDeleteEntity(entity: T, options?: { userId: number }): Promise<T>;
 
-  primitiveSave(entity: DeepPartial<T>, options?: SaveOptions): Promise<T>;
+  primitiveSave(
+    entity: DeepPartial<T>,
+    options?: { userId: number }
+  ): Promise<T>;
 
   primitiveUpdate(
     options: FindOptionsWhere<T>,

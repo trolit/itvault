@@ -5,7 +5,6 @@ import {
   DataSource,
   Repository,
   DeepPartial,
-  SaveOptions,
   QueryRunner,
   UpdateResult,
   FindOneOptions,
@@ -72,12 +71,19 @@ export class BaseRepository<T extends { id: number | string }>
     return this.database.softDelete(options);
   }
 
-  softDeleteEntity(entity: T): Promise<T> {
-    return this.database.softRemove(entity);
+  softDeleteEntity(entity: T, options?: { userId: number }): Promise<T> {
+    return this.database.softRemove(entity, {
+      data: { userId: options?.userId },
+    });
   }
 
-  primitiveSave(entity: DeepPartial<T>, options?: SaveOptions): Promise<T> {
-    return this.database.save(entity, options);
+  primitiveSave(
+    entity: DeepPartial<T>,
+    options?: { userId: number }
+  ): Promise<T> {
+    return this.database.save(entity, {
+      data: { userId: options?.userId },
+    });
   }
 
   // @NOTE OUTPUT or RETURNING clause only supported by Microsoft SQL Server or PostgreSQL or MariaDB databases.
