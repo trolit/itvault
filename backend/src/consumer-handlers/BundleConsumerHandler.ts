@@ -52,7 +52,7 @@ export class BundleConsumerHandler
     });
 
     if (!bundleRecord) {
-      // @NOTE do not process request as bundle was probably removed (cancelled)
+      // @NOTE skip request as bundle was probably removed (cancelled)
       return true;
     }
 
@@ -104,7 +104,7 @@ export class BundleConsumerHandler
   }
 
   private _getFiles(workspaceId: number, variantIds: string[]) {
-    return this._fileRepository.getAllAndCount({
+    return this._fileRepository.getAll({
       where: {
         workspace: {
           id: workspaceId,
@@ -121,35 +121,45 @@ export class BundleConsumerHandler
   }
 
   private _generateData(fileContent: string, buckets: Bucket[]) {
+    let resultIndex = 0;
     const result: string[] = [];
 
     const [minLineIndex, maxLineIndex] = this._getMinMaxLineIndexes(buckets);
-
     const isSingleLineBucket = minLineIndex === maxLineIndex;
 
     const splitFileContent = fileContent.split("\n");
     const splitFileContentLength = splitFileContent.length;
 
-    for (let index = 0; index < splitFileContentLength; index++) {
-      const line = splitFileContent[index];
+    for (
+      let lineIndex = resultIndex;
+      lineIndex < splitFileContentLength;
+      lineIndex++
+    ) {
+      const line = splitFileContent[lineIndex];
 
       if (
         !isSingleLineBucket &&
         !line &&
-        index >= minLineIndex &&
-        index <= maxLineIndex
+        lineIndex >= minLineIndex &&
+        lineIndex <= maxLineIndex
       ) {
         // @NOTE consider if line-break should be limited to 1 between content (?)
         result.push("");
 
+        resultIndex++;
+
         continue;
       }
 
-      const matchedBuckets = buckets.filter(({ value }) => !!value[index]);
+      const lineBuckets = buckets.filter(({ value }) => !!value[lineIndex]);
+
+      if (!lineBuckets.length) {
+        continue;
+      }
 
       const allLineValues = this._getAllValuesRelatedToLine(
-        matchedBuckets,
-        index
+        lineBuckets,
+        lineIndex
       );
 
       if (!allLineValues.length) {
@@ -169,7 +179,9 @@ export class BundleConsumerHandler
         }
       }
 
-      result[index] = lineBuilder.filter(value => !!value).join("");
+      result[resultIndex] = lineBuilder.filter(value => !!value).join("");
+
+      resultIndex++;
     }
 
     return result.join("\n");
@@ -252,7 +264,7 @@ export class BundleConsumerHandler
       return;
     }
 
-    const [files] = await this._getFiles(workspaceId, variantIds);
+    const files = await this._getFiles(workspaceId, variantIds);
 
     if (!files.length) {
       await this.onError(handlerData);
