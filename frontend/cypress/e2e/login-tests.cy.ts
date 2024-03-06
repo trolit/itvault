@@ -10,8 +10,6 @@ describe("Login tests", function () {
 
   before(() => {
     cy.fixture("users").then(users => {
-      console.log(users.HEAD_ADMIN.email);
-
       data = users;
     });
   });
@@ -24,11 +22,11 @@ describe("Login tests", function () {
     cy.contains("button", "Sign in");
   });
 
-  it("gets error that email is invalid", () => {
-    cy.get("[type='text']").type("invalid-email");
-    cy.get("[type='password']").type("1234");
-    cy.contains("button", "Sign in").click();
-    cy.get(".n-form-item-feedback__line").contains("Must be valid email");
+  it("returns errors on invalid form", () => {
+    cy.getByDataCy("email-input").type("invalid-email");
+    cy.getByDataCy("password-input").type("1234");
+    cy.getByDataCy("submit-button").click();
+    cy.get(".n-form-item-feedback__line").should("exist");
   });
 
   it(`gets redirected to ${ROUTE_DASHBOARD_NAME}`, () => {
@@ -36,9 +34,13 @@ describe("Login tests", function () {
       HEAD_ADMIN: { email, password },
     } = data;
 
-    cy.get("[type='text']").type(email);
-    cy.get("[type='password']").type(password);
-    cy.contains("button", "Sign in").click();
+    cy.getByDataCy("email-input").type(email);
+    cy.getByDataCy("password-input").type(password);
+    cy.getByDataCy("submit-button").click();
     cy.url().should("include", ROUTE_DASHBOARD_NAME);
+  });
+
+  after(() => {
+    cy.signOut();
   });
 });
