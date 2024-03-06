@@ -7,6 +7,8 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
+
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -61,12 +63,10 @@ export class UpdateController extends BaseController {
           id: userId,
         },
       },
-      {
-        data: {
-          userId,
-          workspaceId,
-        },
-      }
+      getOptionsOfTraceRelatedEntity({
+        userId,
+        workspaceId,
+      })
     );
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

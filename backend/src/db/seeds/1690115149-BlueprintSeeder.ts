@@ -3,10 +3,12 @@ import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
 import { User } from "@db/entities/User";
 import { Seeder } from "typeorm-extension";
-import { Workspace } from "@db/entities/Workspace";
 import { Blueprint } from "@db/entities/Blueprint";
+import { Workspace } from "@db/entities/Workspace";
 
 import { getRandomRecords } from "./helpers/getRandomRecords";
+
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
 
 export default class BlueprintSeeder implements Seeder {
   public async run(dataSource: DataSource) {
@@ -31,12 +33,10 @@ export default class BlueprintSeeder implements Seeder {
             createdBy: user,
             updatedBy: user,
           },
-          {
-            data: {
-              userId: user.id,
-              workspaceId: workspace.id,
-            },
-          }
+          getOptionsOfTraceRelatedEntity({
+            userId: user.id,
+            workspaceId: workspace.id,
+          })
         );
       }
     }

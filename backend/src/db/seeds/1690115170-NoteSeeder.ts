@@ -1,12 +1,14 @@
 import sample from "lodash/sample";
 import { DataSource } from "typeorm";
 import { faker } from "@faker-js/faker";
-import { Note } from "@db/entities/Note";
 import { User } from "@db/entities/User";
+import { Note } from "@db/entities/Note";
 import { File } from "@db/entities/File";
 import { Seeder } from "typeorm-extension";
 
 import { getRandomRecords } from "./helpers/getRandomRecords";
+
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
 
 export default class NoteSeeder implements Seeder {
   private _notesPerFile = 10;
@@ -34,7 +36,10 @@ export default class NoteSeeder implements Seeder {
             file,
             deletedAt,
           },
-          { data: { userId: user.id, workspaceId: file.workspace.id } }
+          getOptionsOfTraceRelatedEntity({
+            userId: user.id,
+            workspaceId: file.workspace.id,
+          })
         );
       }
     }

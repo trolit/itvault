@@ -17,14 +17,11 @@ export const IsWorkspaceAvailable = (() => {
       query: { workspaceId },
     } = request;
 
-    // @TODO implement it as yup schema (like requireEndpointVersion)
-    if (!workspaceId) {
+    if (!workspaceId || typeof workspaceId !== "string") {
       return response.status(HTTP.BAD_REQUEST).send();
     }
 
-    const workspace = await workspaceRepository.getById(
-      parseInt(<string>workspaceId)
-    );
+    const workspace = await workspaceRepository.getById(parseInt(workspaceId));
 
     if (!workspace) {
       return response.status(HTTP.BAD_REQUEST).send();
