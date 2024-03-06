@@ -33,6 +33,7 @@ export class Bundle {
   @CreateDateColumn({ nullable: true })
   expiresAt: Date | null;
 
+  // @NOTE consider adding extra column for storing error reason?
   @Column({ type: "enum", enum: BundleStatus })
   status: BundleStatus;
 
