@@ -1,4 +1,4 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetBucketControllerTypes } from "types/controllers/Variant/GetBucketController";
 
@@ -15,7 +15,7 @@ const paramsSchema: SuperSchema.Fragment<GetBucketControllerTypes.v1.Params> =
 
 const querySchema: SuperSchema.Fragment<GetBucketControllerTypes.v1.Query> =
   object({
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    workspaceId: number().required(),
     blueprintId: useIdNumberSchema(Di.BlueprintRepository),
   });
 

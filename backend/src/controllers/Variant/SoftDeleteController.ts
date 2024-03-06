@@ -1,14 +1,11 @@
 import { Response } from "express";
-import isInteger from "lodash/isInteger";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { INoteRepository } from "types/repositories/INoteRepository";
+import { IVariantRepository } from "types/repositories/IVariantRepository";
 import { DeleteControllerTypes } from "types/controllers/DeleteController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
 
 import { Di } from "@enums/Di";
-import { Permission } from "@shared/types/enums/Permission";
-import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -17,8 +14,8 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 @injectable()
 export class SoftDeleteController extends BaseController {
   constructor(
-    @inject(Di.NoteRepository)
-    private _noteRepository: INoteRepository
+    @inject(Di.VariantRepository)
+    private _variantRepository: IVariantRepository
   ) {
     super();
   }
@@ -35,45 +32,30 @@ export class SoftDeleteController extends BaseController {
   async v1(request: DeleteControllerTypes.v1.Request, response: Response) {
     const {
       userId,
-      permissions,
       params: { id },
       query: { workspaceId },
     } = request;
 
-    const parsedId = parseInt(id);
-
-    if (!isInteger(parsedId)) {
-      return response.sendStatus(HTTP.BAD_REQUEST);
-    }
-
-    const note = await this._noteRepository.getOne({
+    const entity = await this._variantRepository.getOne({
       where: {
-        id: parsedId,
+        id,
         file: {
           workspace: {
             id: workspaceId,
           },
         },
       },
-      relations: {
-        createdBy: true,
-      },
     });
 
-    if (!note) {
-      return response.sendStatus(HTTP.NO_CONTENT);
-    }
-
-    if (
-      note.createdBy?.id !== userId &&
-      !isPermissionEnabled(Permission.DeleteAnyNote, permissions)
-    ) {
-      return response.sendStatus(HTTP.FORBIDDEN);
-    }
-
-    await this._noteRepository.softDeleteEntity(note, {
-      data: { userId, workspaceId },
-    });
+    if (entity)
+      [
+        await this._variantRepository.softDeleteEntity(entity, {
+          data: {
+            userId,
+            workspaceId,
+          },
+        }),
+      ];
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }

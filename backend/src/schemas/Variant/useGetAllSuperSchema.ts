@@ -1,4 +1,4 @@
-import { object } from "yup";
+import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetAllControllerTypes } from "types/controllers/Variant/GetAllController";
 
@@ -11,7 +11,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.Query> =
   object({
     fileId: useIdNumberSchema(Di.FileRepository),
 
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    workspaceId: number().required(),
   });
 
 export const useGetAllSuperSchema: SuperSchema.Runner<

@@ -64,6 +64,7 @@ export class UpdateController extends BaseController {
       {
         data: {
           userId,
+          workspaceId,
         },
       }
     );

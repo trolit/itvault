@@ -5,7 +5,6 @@ import { Bundle } from "@db/entities/Bundle";
 import { Bucket } from "@db/entities/Bucket";
 import { Variant } from "@db/entities/Variant";
 import { Blueprint } from "@db/entities/Blueprint";
-import { Workspace } from "@db/entities/Workspace";
 import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
 import {
   InsertEvent,
@@ -39,12 +38,12 @@ const WORKSPACE_EVENT_HANDLERS = [
   {
     entityName: Bundle.name,
     getRecord: onBundleEvent,
-    actions: [Action.Create],
+    actions: [Action.Create, Action.SoftDelete],
   },
   {
     entityName: Variant.name,
     getRecord: onVariantEvent,
-    actions: [Action.Create],
+    actions: [Action.Create, Action.SoftDelete],
   },
 ];
 
@@ -110,24 +109,14 @@ async function onVariantEvent(arg: {
   manager: EntityManager;
 }) {
   const { data, action, manager, entity } = arg;
-  const { userId } = data;
-
-  const workspace = await manager.findOne(Workspace, {
-    where: {
-      files: {
-        id: entity.file.id,
-      },
-    },
-  });
-
-  if (!workspace) {
-    return;
-  }
+  const { userId, workspaceId } = data;
 
   const record = manager.create(WorkspaceTrace, {
     entity: Variant.name,
     action,
-    workspace,
+    workspace: {
+      id: workspaceId,
+    },
     user: {
       id: userId,
     },
@@ -144,13 +133,13 @@ async function onBundleEvent(arg: {
   manager: EntityManager;
 }) {
   const { data, action, manager, entity } = arg;
-  const { userId } = data;
+  const { userId, workspaceId } = data;
 
   const record = manager.create(WorkspaceTrace, {
     entity: Bundle.name,
     action,
     workspace: {
-      id: entity.workspace.id,
+      id: workspaceId || entity.workspace.id,
     },
     user: {
       id: userId,
@@ -168,26 +157,13 @@ async function onBucketEvent(arg: {
   manager: EntityManager;
 }) {
   const { data, action, manager, entity } = arg;
-
-  const workspace = await manager.findOne(Workspace, {
-    where: {
-      blueprints: {
-        id: entity.blueprint.id,
-      },
-    },
-  });
-
-  if (!workspace) {
-    return;
-  }
-
-  const { userId } = data;
+  const { userId, workspaceId } = data;
 
   const record = manager.create(WorkspaceTrace, {
     entity: Bucket.name,
     action,
     workspace: {
-      id: workspace.id,
+      id: workspaceId,
     },
     user: {
       id: userId,
@@ -205,13 +181,13 @@ async function onBlueprintEvent(arg: {
   manager: EntityManager;
 }) {
   const { data, action, manager, entity } = arg;
-  const { userId } = data;
+  const { userId, workspaceId } = data;
 
   const record = manager.create(WorkspaceTrace, {
     entity: Blueprint.name,
     action,
     workspace: {
-      id: entity.workspace.id,
+      id: workspaceId,
     },
     user: {
       id: userId,
@@ -229,28 +205,14 @@ async function onNoteEvent(arg: {
   manager: EntityManager;
 }) {
   const { data, action, manager, entity } = arg;
-
-  const note = await manager.findOne(Note, {
-    where: {
-      id: entity.id,
-    },
-    relations: {
-      file: {
-        workspace: true,
-      },
-    },
-  });
-
-  if (!note) {
-    return;
-  }
-
-  const { userId } = data;
+  const { userId, workspaceId } = data;
 
   const record = manager.create(WorkspaceTrace, {
     entity: Note.name,
     action,
-    workspace: note.file.workspace,
+    workspace: {
+      id: workspaceId,
+    },
     user: {
       id: userId,
     },

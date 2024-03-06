@@ -16,7 +16,7 @@ export default class NoteSeeder implements Seeder {
     const noteRepository = dataSource.getRepository(Note);
     const userRepository = dataSource.getRepository(User);
 
-    const files = await fileRepository.find();
+    const files = await fileRepository.find({ relations: { workspace: true } });
 
     for (const file of files) {
       for (let index = 0; index < this._notesPerFile; index++) {
@@ -34,7 +34,7 @@ export default class NoteSeeder implements Seeder {
             file,
             deletedAt,
           },
-          { data: { userId: user.id } }
+          { data: { userId: user.id, workspaceId: file.workspace.id } }
         );
       }
     }

@@ -26,6 +26,7 @@ export class SoftDeleteController extends BaseController {
       userId,
       originalUrl,
       params: { id },
+      query: { workspaceId },
     } = request;
 
     const repository = getRepositoryByOriginalUrl(originalUrl);
@@ -37,10 +38,9 @@ export class SoftDeleteController extends BaseController {
     const entity = await repository.getOne({
       where: {
         id,
-      },
-      // @TMP - we should require "workspaceId" in query
-      relations: {
-        workspace: true,
+        workspace: {
+          id: workspaceId,
+        },
       },
     });
 
@@ -49,6 +49,7 @@ export class SoftDeleteController extends BaseController {
         await repository.softDeleteEntity(entity, {
           data: {
             userId,
+            workspaceId,
           },
         }),
       ];

@@ -10,8 +10,8 @@ import { requirePermissions } from "@middleware/requirePermissions";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
-import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
+import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { addSchema } from "@schemas/Variant/addSchema";
 import { useGetAllSuperSchema } from "@schemas/Variant/useGetAllSuperSchema";
@@ -21,10 +21,10 @@ import { useGetBucketControllerSuperSchema } from "@schemas/Variant/useGetBucket
 
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/Variant/AddController";
-import { SoftDeleteController } from "@controllers/SoftDeleteController";
 import { GetAllController } from "@controllers/Variant/GetAllController";
 import { GetBucketController } from "@controllers/Variant/GetBucketController";
 import { PatchNameController } from "@controllers/Variant/PatchNameController";
+import { SoftDeleteController } from "@controllers/Variant/SoftDeleteController";
 import { GetBlueprintsController } from "@controllers/Variant/GetBlueprintsController";
 import { GetContentByIdController } from "@controllers/Variant/GetContentByIdController";
 
@@ -37,6 +37,7 @@ const {
 variantsRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );
+variantsRouter.use(IsWorkspaceAvailable);
 
 variantsRouter.get(
   "",
@@ -66,7 +67,6 @@ variantsRouter.post(
   "",
   requirePermissions([Permission.CreateVariant]),
   requireEndpointVersion(AddController.ALL_VERSIONS),
-  IsWorkspaceAvailable,
   parseUploadFormData(
     {
       multiples: false,

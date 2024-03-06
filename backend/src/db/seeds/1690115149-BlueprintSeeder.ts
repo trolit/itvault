@@ -34,6 +34,7 @@ export default class BlueprintSeeder implements Seeder {
           {
             data: {
               userId: user.id,
+              workspaceId: workspace.id,
             },
           }
         );

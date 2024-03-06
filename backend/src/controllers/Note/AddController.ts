@@ -35,6 +35,7 @@ export class AddController extends BaseController {
   ) {
     const {
       userId,
+      query: { workspaceId },
       body: { text, fileId },
     } = request;
 
@@ -54,6 +55,7 @@ export class AddController extends BaseController {
       {
         data: {
           userId,
+          workspaceId,
         },
       }
     );

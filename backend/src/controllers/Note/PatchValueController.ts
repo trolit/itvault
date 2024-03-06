@@ -35,6 +35,7 @@ export class PatchValueController extends BaseController {
     const {
       userId,
       permissions,
+      query: { workspaceId },
       params: { id },
       body: { text },
     } = request;
@@ -68,6 +69,7 @@ export class PatchValueController extends BaseController {
       {
         data: {
           userId,
+          workspaceId,
         },
       }
     );

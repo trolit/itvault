@@ -1,4 +1,4 @@
-import { object, string } from "yup";
+import { number, object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { IVariantRepository } from "types/repositories/IVariantRepository";
 import { PatchNameControllerTypes } from "types/controllers/Variant/PatchNameController";
@@ -20,7 +20,7 @@ const paramsSchema: SuperSchema.Fragment<PatchNameControllerTypes.v1.Params> =
 
 const querySchema: SuperSchema.Fragment<PatchNameControllerTypes.v1.Query> =
   object({
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    workspaceId: number().required(),
 
     fileId: useIdNumberSchema(Di.FileRepository),
   });

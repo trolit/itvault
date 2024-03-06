@@ -7,6 +7,7 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
@@ -17,8 +18,8 @@ import { usePatchValueSuperSchema } from "@schemas/Note/usePatchValueSuperSchema
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/Note/AddController";
 import { GetAllController } from "@controllers/Note/GetAllController";
-import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
 import { PatchValueController } from "@controllers/Note/PatchValueController";
+import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
 
 const notesRouter = Router();
 
@@ -29,6 +30,7 @@ const {
 notesRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );
+notesRouter.use(IsWorkspaceAvailable);
 
 notesRouter.get(
   "",

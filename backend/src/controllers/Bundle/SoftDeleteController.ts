@@ -43,6 +43,7 @@ export class SoftDeleteController extends BaseController {
     const {
       userId,
       permissions,
+      query: { workspaceId },
       params: { id },
     } = request;
 
@@ -80,6 +81,7 @@ export class SoftDeleteController extends BaseController {
     await this._bundleRepository.softDeleteEntity(bundle, {
       data: {
         userId,
+        workspaceId,
       },
     });
 

@@ -47,6 +47,9 @@ export default class VariantSeeder implements Seeder {
             id: workspace.id,
           },
         },
+        relations: {
+          workspace: true,
+        },
       });
 
       for (const file of files) {
@@ -75,6 +78,7 @@ export default class VariantSeeder implements Seeder {
             {
               data: {
                 userId: headAdmin.id,
+                workspaceId: file.workspace.id,
               },
             }
           );
