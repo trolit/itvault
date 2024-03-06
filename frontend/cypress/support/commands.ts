@@ -36,4 +36,30 @@
 //   }
 // }
 
-export {};
+Cypress.Commands.add("signIn", (email: string, password: string) => {
+  cy.request({
+    method: "POST",
+    url: `${Cypress.env("apiServer")}/v1/auth/sign-in`,
+    qs: {
+      version: 1,
+    },
+    body: {
+      email,
+      password,
+    },
+  });
+});
+
+Cypress.Commands.add("signOut", () => {
+  cy.request({
+    method: "POST",
+    url: `${Cypress.env("apiServer")}/v1/auth/sign-out`,
+    qs: {
+      version: 1,
+    },
+  });
+});
+
+Cypress.Commands.add("getByDataCy", (value: string) => {
+  return cy.get(`[data-cy=${value}]`);
+});
