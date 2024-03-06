@@ -16,6 +16,8 @@ import { createFile } from "./helpers/createFile";
 import { FileStorageMode } from "@enums/FileStorageMode";
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
+
 export default class VariantSeeder implements Seeder {
   public async run(dataSource: DataSource) {
     const userRepository = dataSource.getRepository(User);
@@ -75,12 +77,10 @@ export default class VariantSeeder implements Seeder {
               size,
               createdBy: headAdmin,
             },
-            {
-              data: {
-                userId: headAdmin.id,
-                workspaceId: file.workspace.id,
-              },
-            }
+            getOptionsOfTraceRelatedEntity({
+              userId: headAdmin.id,
+              workspaceId: file.workspace.id,
+            })
           );
         }
       }

@@ -9,6 +9,8 @@ import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
+
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -66,12 +68,10 @@ export class PatchValueController extends BaseController {
           id: userId,
         },
       },
-      {
-        data: {
-          userId,
-          workspaceId,
-        },
-      }
+      getOptionsOfTraceRelatedEntity({
+        userId,
+        workspaceId,
+      })
     );
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

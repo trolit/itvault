@@ -7,6 +7,8 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
+
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -52,12 +54,10 @@ export class AddController extends BaseController {
           id: fileId,
         },
       },
-      {
-        data: {
-          userId,
-          workspaceId,
-        },
-      }
+      getOptionsOfTraceRelatedEntity({
+        userId,
+        workspaceId,
+      })
     );
 
     if (!note) {

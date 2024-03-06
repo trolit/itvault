@@ -7,6 +7,8 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 
 import { Di } from "@enums/Di";
 
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
+
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -49,12 +51,13 @@ export class SoftDeleteController extends BaseController {
 
     if (entity)
       [
-        await this._variantRepository.softDeleteEntity(entity, {
-          data: {
+        await this._variantRepository.softDeleteEntity(
+          entity,
+          getOptionsOfTraceRelatedEntity({
             userId,
             workspaceId,
-          },
-        }),
+          })
+        ),
       ];
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);

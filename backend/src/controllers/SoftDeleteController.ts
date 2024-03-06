@@ -7,6 +7,7 @@ import { ControllerImplementation } from "types/controllers/ControllerImplementa
 import { BaseController } from "./BaseController";
 
 import { getRepositoryByOriginalUrl } from "@helpers/getRepositoryByOriginalUrl";
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -44,15 +45,15 @@ export class SoftDeleteController extends BaseController {
       },
     });
 
-    if (entity)
-      [
-        await repository.softDeleteEntity(entity, {
-          data: {
-            userId,
-            workspaceId,
-          },
-        }),
-      ];
+    if (entity) {
+      await repository.softDeleteEntity(
+        entity,
+        getOptionsOfTraceRelatedEntity({
+          userId,
+          workspaceId,
+        })
+      );
+    }
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }

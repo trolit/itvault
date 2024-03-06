@@ -10,6 +10,8 @@ import { IVariantRepository } from "types/repositories/IVariantRepository";
 import { Di } from "@enums/Di";
 import { Dependency } from "@enums/Dependency";
 
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
+
 @injectable()
 export class VariantService implements IVariantService {
   constructor(
@@ -51,12 +53,14 @@ export class VariantService implements IVariantService {
         },
       });
 
-      const variant = await manager.save(Variant, entity, {
-        data: {
+      const variant = await manager.save(
+        Variant,
+        entity,
+        getOptionsOfTraceRelatedEntity({
           userId,
           workspaceId,
-        },
-      });
+        })
+      );
 
       await this._fileService.writeVariantFile({
         workspaceId,

@@ -15,6 +15,8 @@ import { TransactionError } from "types/custom-errors/TransactionError";
 
 import { FILES } from "@config";
 
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
+
 export abstract class BaseFileService implements IBaseFileService {
   constructor(protected fileRepository: IFileRepository) {}
 
@@ -319,13 +321,15 @@ export abstract class BaseFileService implements IBaseFileService {
       const fileRecords = await transaction.manager.save(
         File,
         fileRecordsToSave,
-        {
-          chunk: 1000,
-          data: {
+        getOptionsOfTraceRelatedEntity(
+          {
             userId,
             workspaceId,
           },
-        }
+          {
+            chunk: 1000,
+          }
+        )
       );
 
       await onTry();

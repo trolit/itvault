@@ -7,6 +7,8 @@ import { BaseRepository } from "./BaseRepository";
 
 import { BucketContent } from "@shared/types/BucketContent";
 
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
+
 @injectable()
 export class BucketRepository
   extends BaseRepository<Bucket>
@@ -51,12 +53,10 @@ export class BucketRepository
           createdBy: currentState ? currentState.createdBy : { id: userId },
           updatedBy: { id: userId },
         },
-        {
-          data: {
-            userId,
-            workspaceId,
-          },
-        }
+        getOptionsOfTraceRelatedEntity({
+          userId,
+          workspaceId,
+        })
       );
 
       await transaction.commitTransaction();

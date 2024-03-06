@@ -15,6 +15,8 @@ import { Permission } from "@shared/types/enums/Permission";
 import { BundleStatus } from "@shared/types/enums/BundleStatus";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";
 
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
+
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
@@ -78,12 +80,13 @@ export class SoftDeleteController extends BaseController {
     }
 
     // @NOTE consider adding subscriber and set "size" to 0 and/or filename to NULL to mark that we do not have it anymore (?)
-    await this._bundleRepository.softDeleteEntity(bundle, {
-      data: {
+    await this._bundleRepository.softDeleteEntity(
+      bundle,
+      getOptionsOfTraceRelatedEntity({
         userId,
         workspaceId,
-      },
-    });
+      })
+    );
 
     if (bundle.status !== BundleStatus.Enqueued) {
       await this._fileService.deleteFile({

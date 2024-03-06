@@ -13,6 +13,7 @@ import { BundleStatus } from "@shared/types/enums/BundleStatus";
 
 import { sendToQueue } from "@helpers/sendToQueue";
 import { getUniqueValuesFromCollection } from "@helpers/getUniqueValuesFromCollection";
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -71,11 +72,10 @@ export class AddController extends BaseController {
           blueprint: { id: blueprintId },
         })),
       },
-      {
-        data: {
-          userId,
-        },
-      }
+      getOptionsOfTraceRelatedEntity({
+        userId,
+        workspaceId,
+      })
     );
 
     if (!bundle) {

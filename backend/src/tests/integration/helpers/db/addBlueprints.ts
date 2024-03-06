@@ -6,6 +6,7 @@ import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 import { Di } from "@enums/Di";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
+import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
 
 export const addBlueprints = async (
   blueprintstoAdd: {
@@ -50,7 +51,13 @@ export const addBlueprints = async (
       ...author,
     });
 
-    const blueprint = await blueprintRepository.primitiveSave(blueprintEntity);
+    const blueprint = await blueprintRepository.primitiveSave(
+      blueprintEntity,
+      getOptionsOfTraceRelatedEntity({
+        userId: author.createdBy.id,
+        workspaceId,
+      })
+    );
 
     blueprints.push(blueprint);
   }
