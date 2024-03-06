@@ -1,5 +1,5 @@
 <template>
-  <n-card size="medium" :style="{ height: '100%' }">
+  <n-card size="medium" :style="{ height: '100%' }" data-cy="welcome-card">
     <div :style="{ fontSize: '25px' }">
       Welcome
 
