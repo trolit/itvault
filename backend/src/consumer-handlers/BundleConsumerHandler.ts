@@ -52,7 +52,7 @@ export class BundleConsumerHandler
     });
 
     if (!bundleRecord) {
-      // @NOTE do not process request as bundle was probably removed (cancelled)
+      // @NOTE skip request as bundle was probably removed (cancelled)
       return true;
     }
 
@@ -104,7 +104,7 @@ export class BundleConsumerHandler
   }
 
   private _getFiles(workspaceId: number, variantIds: string[]) {
-    return this._fileRepository.getAllAndCount({
+    return this._fileRepository.getAll({
       where: {
         workspace: {
           id: workspaceId,
@@ -264,7 +264,7 @@ export class BundleConsumerHandler
       return;
     }
 
-    const [files] = await this._getFiles(workspaceId, variantIds);
+    const files = await this._getFiles(workspaceId, variantIds);
 
     if (!files.length) {
       await this.onError(handlerData);
