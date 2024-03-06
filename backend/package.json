@@ -37,7 +37,7 @@
     "eslint:fix": "npx eslint --fix .",
     "testcontainers:up": "ts-node -r tsconfig-paths/register --transpile-only ./src/tests/integration/helpers/containers.ts --up",
     "test:integration": "npm run testcontainers:up && npm run db:drop && npm run db:create && npm run migration:run && npm run db:seed && nyc --include=src/controllers/** mocha --exit -r ts-node/esm -r tsconfig-paths/register src/tests/integration/loader.ts",
-    "test:unit": "mocha -r ts-node/esm -r tsconfig-paths/register src/tests/unit/**/*.ts"
+    "test:unit": "nyc mocha -r ts-node/esm -r tsconfig-paths/register src/tests/unit/**/*.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.485.0",
