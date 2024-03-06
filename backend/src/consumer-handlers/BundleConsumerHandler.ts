@@ -36,7 +36,7 @@ export class BundleConsumerHandler
     private _dateService: IDateService
   ) {}
 
-  async onError(data: BundleConsumerHandlerData): Promise<void> {
+  async onFailure(data: BundleConsumerHandlerData): Promise<void> {
     const {
       bundle: { id },
     } = data;
@@ -237,7 +237,7 @@ export class BundleConsumerHandler
     } = handlerData;
 
     if (!variantToBundle || !blueprintToBundle) {
-      await this.onError(handlerData);
+      await this.onFailure(handlerData);
 
       return;
     }
@@ -247,7 +247,7 @@ export class BundleConsumerHandler
     const blueprintIds = blueprintToBundle.map(({ blueprint }) => blueprint.id);
 
     if (!variantIds.length || !blueprintIds.length) {
-      await this.onError(handlerData);
+      await this.onFailure(handlerData);
 
       return;
     }
@@ -255,7 +255,7 @@ export class BundleConsumerHandler
     const [files] = await this._getFiles(workspaceId, variantIds);
 
     if (!files.length) {
-      await this.onError(handlerData);
+      await this.onFailure(handlerData);
 
       return;
     }
@@ -264,7 +264,7 @@ export class BundleConsumerHandler
 
     for (const file of files) {
       if (file.variants.length !== 1) {
-        await this.onError(handlerData);
+        await this.onFailure(handlerData);
 
         return;
       }
@@ -286,7 +286,7 @@ export class BundleConsumerHandler
       });
 
       if (!buckets) {
-        await this.onError(handlerData);
+        await this.onFailure(handlerData);
 
         return;
       }
@@ -297,7 +297,7 @@ export class BundleConsumerHandler
       });
 
       if (!fileContent) {
-        await this.onError(handlerData);
+        await this.onFailure(handlerData);
 
         return;
       }
