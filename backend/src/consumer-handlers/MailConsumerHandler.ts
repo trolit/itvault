@@ -15,6 +15,8 @@ export class MailConsumerHandler
     private _mailService: IMailService<unknown>
   ) {}
 
+  async onFailure(): Promise<void> {}
+
   async handle(data: MailConsumerHandlerData<unknown>): Promise<boolean> {
     const { viewBuilderName, subject, sendTo, ...mailData } = data;
 
@@ -43,7 +45,4 @@ export class MailConsumerHandler
       return false;
     }
   }
-
-  // @TODO rename to e.g. "onFailure"
-  async onError(): Promise<void> {}
 }

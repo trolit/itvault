@@ -50,7 +50,7 @@ export class ConsumerFactory implements IConsumerFactory {
         return;
       }
 
-      await instance.onError(data);
+      await instance.onFailure(data);
 
       channel.nack(message, false, false);
 
