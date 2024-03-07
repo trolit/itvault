@@ -1,5 +1,4 @@
-import { ISignInDTO } from "@shared/types/DTOs/User";
-import { LoggedUserMapper } from "@mappers/LoggedUserMapper";
+import { ILoggedUserDTO, ISignInDTO } from "@shared/types/DTOs/User";
 
 export namespace SignInControllerTypes {
   export namespace v1 {
@@ -7,6 +6,6 @@ export namespace SignInControllerTypes {
 
     export type Request = CustomRequest<undefined, Body>;
 
-    export type Response = CustomResponse<LoggedUserMapper>;
+    export type Response = CustomResponse<ILoggedUserDTO>;
   }
 }

@@ -14,11 +14,11 @@ export abstract class BaseMapper<T> {
   }
 
   // @NOTE solution to native JS property initialistation (useDefineForClassFields = true)
-  assignInitialKeys() {
+  protected assignInitialKeys() {
     this._mapKeys((this as any)[INITIAL_KEYS_SYMBOL]);
   }
 
-  overwriteInitialKeys(inheritedKeys?: (keyof T)[]) {
+  protected overwriteInitialKeys(inheritedKeys?: (keyof T)[]) {
     if (inheritedKeys) {
       this._mapKeys(inheritedKeys);
     }

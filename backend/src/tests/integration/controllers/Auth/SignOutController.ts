@@ -37,7 +37,7 @@ export const SIGN_OUT_CONTROLLER_V1_TESTS = defineTests(
           email: SIGN_OUT_MEMBER_EMAIL,
         });
 
-        const jsonwebtoken = testAgent.extractTokenFromCookie({ cookie });
+        const jsonwebtoken = testAgent.extractTokenFromCookie(cookie);
 
         const result = authService.verifyToken(jsonwebtoken);
 

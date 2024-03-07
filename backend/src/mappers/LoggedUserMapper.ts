@@ -15,6 +15,7 @@ export class LoggedUserMapper
   lastName: string;
   fullName: string;
   roleId: number;
+  token?: string;
   roleName: string;
   permissions: IRolePermissionDTO[];
 
