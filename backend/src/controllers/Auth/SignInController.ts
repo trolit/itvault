@@ -112,6 +112,9 @@ export class SignInController extends BaseController {
 
     const mappedUserData = this.mapper.map(user).to(LoggedUserMapper);
 
-    return this.finalizeRequest(response, HTTP.OK, mappedUserData);
+    return this.finalizeRequest(response, HTTP.OK, {
+      ...mappedUserData,
+      token,
+    });
   }
 }
