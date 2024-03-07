@@ -39,6 +39,8 @@ export interface ILoggedUserDTO {
 
   roleId: number;
 
+  token?: string;
+
   roleName: string;
 
   permissions: IRolePermissionDTO[];
