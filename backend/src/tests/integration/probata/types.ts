@@ -44,7 +44,7 @@ export type GetUrlFunc = (arg: {
   action: string;
 }) => string;
 
-export type ExtractTokenFromCookieFunc = (arg: { cookie: string }) => string;
+export type ExtractTokenFromCookieFunc = (cookie: string | string[]) => string;
 
 export type RequestFunc<Q extends { version: number }, B = void> = (data: {
   query?: Q;
