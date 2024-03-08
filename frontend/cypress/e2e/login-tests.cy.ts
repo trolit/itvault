@@ -6,13 +6,7 @@ import {
 } from "@/assets/constants/routes";
 
 describe("Login tests", function () {
-  let data: Record<string, { email: string; password: string }>;
-
-  before(() => {
-    cy.fixture("users").then(users => {
-      data = users;
-    });
-  });
+  const email = Cypress.env("USER_WITH_ALL_PERMISSIONS");
 
   beforeEach(() => {
     cy.visit(`/${ROUTE_LOGIN_NAME}`);
@@ -30,17 +24,13 @@ describe("Login tests", function () {
   });
 
   it(`gets redirected to ${ROUTE_DASHBOARD_NAME}`, () => {
-    const {
-      HEAD_ADMIN: { email, password },
-    } = data;
-
     cy.getByDataCy("email-input").type(email);
-    cy.getByDataCy("password-input").type(password);
+    cy.getByDataCy("password-input").type(Cypress.env("PASSWORD"));
     cy.getByDataCy("submit-button").click();
     cy.url().should("include", ROUTE_DASHBOARD_NAME);
   });
 
   after(() => {
-    cy.signOut();
+    cy.signOut(email);
   });
 });
