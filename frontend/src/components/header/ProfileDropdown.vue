@@ -3,6 +3,7 @@
     trigger="click"
     :options="options"
     :width="250"
+    data-cy="profile-dropdown"
     @select="handleSelect"
   >
     <n-button quaternary>{{ authStore.profile.fullName }}</n-button>

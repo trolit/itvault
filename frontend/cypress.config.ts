@@ -7,8 +7,8 @@ export default defineConfig({
     env: {
       API_PREFIX: "api",
       PASSWORD: "1234",
-      USER_WITH_ALL_PERMISSIONS: "head.admin@itvault.dev",
-      USER_WITHOUT_ANY_PERMISSIONS: "member@itvault.dev",
+      SUPER_USER_EMAIL: "head.admin@itvault.dev",
+      USER_EMAIL: "member@itvault.dev",
     },
     experimentalSessionAndOrigin: true,
   },

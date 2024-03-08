@@ -3,6 +3,7 @@
     :width="250"
     trigger="click"
     :options="options"
+    data-cy="brand-dropdown"
     @select="onSelect"
   >
     <n-button quaternary>

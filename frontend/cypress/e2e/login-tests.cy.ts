@@ -6,13 +6,14 @@ import {
 } from "@/assets/constants/routes";
 
 describe("Login tests", function () {
-  const email = Cypress.env("USER_WITH_ALL_PERMISSIONS");
+  const email = Cypress.env("SUPER_USER_EMAIL");
 
   beforeEach(() => {
     cy.visit(`/${ROUTE_LOGIN_NAME}`);
   });
 
-  it("visits page", () => {
+  it("opens page", () => {
+    cy.getByDataCy("app-header").should("not.exist");
     cy.getByDataCy("submit-button").should("exist");
   });
 

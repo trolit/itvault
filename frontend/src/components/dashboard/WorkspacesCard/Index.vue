@@ -3,6 +3,7 @@
     size="medium"
     :header-extra-style="{ marginLeft: '20px' }"
     :footer-style="{ display: 'flex', justifyContent: 'center' }"
+    data-cy="workspaces-card"
   >
     <template #header>
       <!-- @TODO show input only when there are at least 3 pages -->
