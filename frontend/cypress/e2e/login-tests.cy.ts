@@ -13,17 +13,17 @@ describe("Login tests", function () {
   });
 
   it("visits page", () => {
-    cy.contains("button", "Sign in");
+    cy.getByDataCy("submit-button").should("exist");
   });
 
-  it("returns errors on invalid form", () => {
-    cy.getByDataCy("email-input").type("invalid-email");
+  it("shows validation errors on invalid form", () => {
+    cy.getByDataCy("email-input").type("invalidEmail");
     cy.getByDataCy("password-input").type("1234");
     cy.getByDataCy("submit-button").click();
     cy.get(".n-form-item-feedback__line").should("exist");
   });
 
-  it(`gets redirected to ${ROUTE_DASHBOARD_NAME}`, () => {
+  it(`redirects to ${ROUTE_DASHBOARD_NAME} on sign in`, () => {
     cy.getByDataCy("email-input").type(email);
     cy.getByDataCy("password-input").type(Cypress.env("PASSWORD"));
     cy.getByDataCy("submit-button").click();
