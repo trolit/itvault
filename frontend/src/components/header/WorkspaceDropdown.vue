@@ -4,6 +4,7 @@
     trigger="click"
     :options="options"
     @select="handleSelect"
+    data-cy="workspace-dropdown"
   >
     <n-button quaternary>
       {{ workspacesStore.activeItem.name }}

@@ -4,7 +4,12 @@
       :feedback="getError('email')"
       :validation-status="hasError('email')"
     >
-      <n-input v-model:value="email" type="text" placeholder="Login" />
+      <n-input
+        v-model:value="email"
+        type="text"
+        placeholder="Login"
+        data-cy="email-input"
+      />
     </n-form-item>
 
     <n-form-item
@@ -17,6 +22,7 @@
         type="password"
         placeholder="Password"
         show-password-on="mousedown"
+        data-cy="password-input"
       />
     </n-form-item>
 
@@ -26,6 +32,7 @@
         size="large"
         type="tertiary"
         :loading="isLoading"
+        data-cy="submit-button"
         @click="onSubmit"
       >
         Sign in

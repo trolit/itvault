@@ -1,5 +1,5 @@
 <template>
-  <n-page-header class="app-header">
+  <n-page-header class="app-header" data-cy="app-header">
     <brand-dropdown />
 
     <span v-if="showWorkspacePanel">
