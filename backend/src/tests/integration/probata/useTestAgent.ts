@@ -54,16 +54,28 @@ export function useTestAgent(
   return commonMethods;
 }
 
-function extractTokenFromCookie(arg: { cookie: string }) {
-  const { cookie } = arg;
+function extractTokenFromCookie(cookie: string | string[]) {
+  const isArray = Array.isArray(cookie);
+
+  let tokenCookie = isArray ? "" : cookie;
+
+  if (isArray) {
+    for (const part of cookie) {
+      if (part.includes(JWT.COOKIE_KEY)) {
+        tokenCookie = part;
+
+        break;
+      }
+    }
+  }
 
   const startText = `${JWT.COOKIE_KEY}=`;
   const endText = ";";
 
-  const start = cookie.indexOf(startText) + startText.length;
-  const end = cookie.indexOf(endText, start);
+  const start = tokenCookie.indexOf(startText) + startText.length;
+  const end = tokenCookie.indexOf(endText, start);
 
-  return cookie.substring(start, end);
+  return tokenCookie.substring(start, end);
 }
 
 function prepareRequest<Q extends { version: number }, B = void>(arg: {
@@ -126,7 +138,7 @@ function sendRequest(arg: {
   }
 
   if (session) {
-    request.set("Cookie", useToken(session));
+    request.set("Cookie", useCookie(session));
   }
 
   return body ? request.send(body) : request.send();
@@ -165,16 +177,12 @@ async function authenticate(
     .query({ version: options?.requestVersion || v1 })
     .send({ email, password: PASSWORD });
 
-  const [token] = response.headers["set-cookie"];
+  const cookie = response.headers["set-cookie"];
 
-  if (!token && token.includes(JWT.COOKIE_KEY)) {
-    throw Error(`Should have ${JWT.COOKIE_KEY} cookie!`);
-  }
-
-  return token;
+  return cookie;
 }
 
-function useToken(session: UserSession) {
+function useCookie(session: UserSession) {
   if ("user" in session) {
     const {
       user: { email },
