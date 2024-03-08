@@ -38,7 +38,7 @@
 
 import type { ILoggedUserDTO } from "@shared/types/DTOs/User";
 
-Cypress.Commands.add("signIn", (email: string, password: string) => {
+Cypress.Commands.add("signIn", (email: string) => {
   const key = `${email}-token`;
 
   cy.session(email, () => {
@@ -52,13 +52,13 @@ Cypress.Commands.add("signIn", (email: string, password: string) => {
 
     cy.request({
       method: "POST",
-      url: `/${Cypress.env("apiPrefix")}/v1/auth/sign-in`,
+      url: `/${Cypress.env("API_PREFIX")}/v1/auth/sign-in`,
       qs: {
         version: 1,
       },
       body: {
         email,
-        password,
+        password: Cypress.env("PASSWORD"),
       },
     }).then(response => {
       const { token } = <ILoggedUserDTO>response.body;
@@ -84,7 +84,7 @@ function setCookie(token: string) {
 Cypress.Commands.add("signOut", (email: string) => {
   cy.request({
     method: "POST",
-    url: `/${Cypress.env("apiPrefix")}/v1/auth/sign-out`,
+    url: `/${Cypress.env("API_PREFIX")}/v1/auth/sign-out`,
     qs: {
       version: 1,
     },

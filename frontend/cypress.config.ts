@@ -5,7 +5,10 @@ export default defineConfig({
     specPattern: "cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}",
     baseUrl: "http://localhost:3000",
     env: {
-      apiPrefix: "api",
+      API_PREFIX: "api",
+      PASSWORD: "1234",
+      USER_WITH_ALL_PERMISSIONS: "head.admin@itvault.dev",
+      USER_WITHOUT_ANY_PERMISSIONS: "member@itvault.dev",
     },
     experimentalSessionAndOrigin: true,
   },
