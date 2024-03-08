@@ -36,28 +36,61 @@
 //   }
 // }
 
+import type { ILoggedUserDTO } from "@shared/types/DTOs/User";
+
 Cypress.Commands.add("signIn", (email: string, password: string) => {
-  cy.request({
-    method: "POST",
-    url: `${Cypress.env("apiServer")}/v1/auth/sign-in`,
-    qs: {
-      version: 1,
-    },
-    body: {
-      email,
-      password,
-    },
+  const key = `${email}-token`;
+
+  cy.session(email, () => {
+    const cachedToken = window.localStorage.getItem(key);
+
+    if (cachedToken) {
+      setCookie(cachedToken);
+
+      return;
+    }
+
+    cy.request({
+      method: "POST",
+      url: `/${Cypress.env("apiPrefix")}/v1/auth/sign-in`,
+      qs: {
+        version: 1,
+      },
+      body: {
+        email,
+        password,
+      },
+    }).then(response => {
+      const { token } = <ILoggedUserDTO>response.body;
+
+      if (!token) {
+        throw Error(`Sent sign-in request but did not receive token!`);
+      }
+
+      window.localStorage.setItem(key, token);
+
+      setCookie(token);
+    });
   });
 });
 
-Cypress.Commands.add("signOut", () => {
+function setCookie(token: string) {
+  cy.setCookie("token", token, {
+    path: "/",
+    httpOnly: true,
+  });
+}
+
+Cypress.Commands.add("signOut", (email: string) => {
   cy.request({
     method: "POST",
-    url: `${Cypress.env("apiServer")}/v1/auth/sign-out`,
+    url: `/${Cypress.env("apiPrefix")}/v1/auth/sign-out`,
     qs: {
       version: 1,
     },
   });
+
+  window.localStorage.removeItem(`${email}-token`);
 });
 
 Cypress.Commands.add("getByDataCy", (value: string) => {
