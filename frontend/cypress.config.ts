@@ -3,10 +3,11 @@ import { defineConfig } from "cypress";
 export default defineConfig({
   e2e: {
     specPattern: "cypress/e2e/**/*.{cy,spec}.{js,jsx,ts,tsx}",
-    baseUrl: "http://localhost:4173",
+    baseUrl: "http://localhost:3000",
     env: {
-      apiServer: "http://localhost:8080/api",
+      apiPrefix: "api",
     },
+    experimentalSessionAndOrigin: true,
   },
   component: {
     specPattern: "src/**/__tests__/*.{cy,spec}.{js,ts,jsx,tsx}",
