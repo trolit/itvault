@@ -1,9 +1,11 @@
+import { WORKSPACE_1 } from "@integration-tests/config";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
-import { WORKSPACE_1, HEAD_ADMIN_EMAIL } from "@integration-tests/config";
 
 import { includeCommonTests } from "./includeCommonTests";
 import { includeAddUpdateSchemaTests } from "./includeAddUpdateSchemaTests";
+
+import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -28,7 +30,7 @@ export const ADD_CONTROLLER_V1_TESTS = defineTests(
 
     addTest({
       description: `returns ${HTTP.CREATED} when blueprint is created`,
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       query: workspaceQuery,
       body: validBody,
       expect: {

@@ -4,9 +4,7 @@ import { container } from "tsyringe";
 import { server, onExit } from "../../server";
 
 import { APP } from "@config";
-import { MEMBER_ROLE } from "@config/initial-roles";
 
-import { addUsers } from "./helpers/db/addUsers";
 import { containers } from "./helpers/containers";
 import { RuntimeData } from "./helpers/RuntimeData";
 import { IRuntimeData } from "./types/IRuntimeData";
@@ -14,9 +12,7 @@ import { addBlueprints } from "./helpers/db/addBlueprints";
 import { addWorkspaces } from "./helpers/db/addWorkspaces";
 import { ITestsGroup, loadTestsGroups, useTestAgent } from "./probata";
 import {
-  MEMBER_EMAIL,
   TESTS_TIMEOUT,
-  HEAD_ADMIN_EMAIL,
   RUNTIME_DATA_DI_TOKEN,
   PATH_TO_CONTROLLERS_TESTS,
   WORKSPACE_1,
@@ -24,8 +20,6 @@ import {
   BLUEPRINT_1,
   BLUEPRINT_2,
 } from "./config";
-
-import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
@@ -67,22 +61,9 @@ async function prepareTestingEnvironment(suite: Mocha.Suite, app: Server) {
     testsGroup.beforeAll(suite);
   }
 
-  const users = await addUsers([
-    {
-      email: HEAD_ADMIN_EMAIL,
-      isSignedUp: true,
-      roleNameOrId: HEAD_ADMIN_ROLE.id,
-    },
-    {
-      email: MEMBER_EMAIL,
-      isSignedUp: true,
-      roleNameOrId: MEMBER_ROLE.name,
-    },
-  ]);
-
   await addWorkspaces([WORKSPACE_1, WORKSPACE_2]);
 
-  await addBlueprints([BLUEPRINT_1, BLUEPRINT_2], users);
+  await addBlueprints([BLUEPRINT_1, BLUEPRINT_2]);
 
   const runtimeData = new RuntimeData(app);
 

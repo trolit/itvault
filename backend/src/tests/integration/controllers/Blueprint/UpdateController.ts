@@ -5,7 +5,6 @@ import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 import {
   BLUEPRINT_1,
   WORKSPACE_1,
-  HEAD_ADMIN_EMAIL,
   UNEXISTING_BLUEPRINT_ID,
 } from "@integration-tests/config";
 
@@ -13,6 +12,7 @@ import { includeCommonTests } from "./includeCommonTests";
 import { includeAddUpdateSchemaTests } from "./includeAddUpdateSchemaTests";
 
 import { Di } from "@enums/Di";
+import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
@@ -38,7 +38,7 @@ export const UPDATE_CONTROLLER_V1_TESTS = defineTests(
 
     addTest({
       description: `returns ${HTTP.BAD_REQUEST} when blueprint does not exist`,
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       appendToAction: `${UNEXISTING_BLUEPRINT_ID}`,
       query: workspaceQuery,
       expect: {
@@ -54,7 +54,7 @@ export const UPDATE_CONTROLLER_V1_TESTS = defineTests(
 
     addTest({
       description: `returns ${HTTP.NO_CONTENT} when blueprint is updated`,
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       appendToAction: `${BLUEPRINT_1.id}`,
       query: workspaceQuery,
       body: {

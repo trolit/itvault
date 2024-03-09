@@ -1,9 +1,10 @@
 import { faker } from "@faker-js/faker";
 import { ITest } from "@integration-tests/probata";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { BLUEPRINT_1, HEAD_ADMIN_EMAIL } from "@integration-tests/config";
+import { BLUEPRINT_1 } from "@integration-tests/config";
 
 import { BLUEPRINT_RULES } from "@shared/constants/rules";
+import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 const body = {
   name: "unique-blueprint1",
@@ -24,7 +25,7 @@ export const includeAddUpdateSchemaTests = (arg: {
 
   addTest({
     description: `returns ${HTTP.BAD_REQUEST} when name is not unique`,
-    session: { user: { email: HEAD_ADMIN_EMAIL } },
+    session: { user: { email: SUPER_USER_EMAIL } },
     appendToAction,
     query: baseQuery,
     body: {
@@ -38,7 +39,7 @@ export const includeAddUpdateSchemaTests = (arg: {
 
   addTest({
     description: `returns ${HTTP.BAD_REQUEST} when description is not valid`,
-    session: { user: { email: HEAD_ADMIN_EMAIL } },
+    session: { user: { email: SUPER_USER_EMAIL } },
     appendToAction,
     query: baseQuery,
     body: {
@@ -52,7 +53,7 @@ export const includeAddUpdateSchemaTests = (arg: {
 
   addTest({
     description: `returns ${HTTP.BAD_REQUEST} when color is not in hexadecimal format`,
-    session: { user: { email: HEAD_ADMIN_EMAIL } },
+    session: { user: { email: SUPER_USER_EMAIL } },
     appendToAction,
     query: baseQuery,
     body: {
@@ -66,7 +67,7 @@ export const includeAddUpdateSchemaTests = (arg: {
 
   addTest({
     description: `returns ${HTTP.BAD_REQUEST} when color is not unique`,
-    session: { user: { email: HEAD_ADMIN_EMAIL } },
+    session: { user: { email: SUPER_USER_EMAIL } },
     appendToAction,
     query: baseQuery,
     body: {

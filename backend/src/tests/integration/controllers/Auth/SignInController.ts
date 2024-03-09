@@ -2,11 +2,11 @@ import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
 import { Method, defineTests } from "@integration-tests/probata";
-import { HEAD_ADMIN_EMAIL, PASSWORD } from "@integration-tests/config";
 
 import { Di } from "@enums/Di";
 import { ISignInDTO } from "@shared/types/DTOs/User";
 import { MAX_SESSIONS_PER_USER } from "@shared/constants/config";
+import { SUPER_USER_EMAIL, PASSWORD } from "@shared/constants/tests";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
@@ -61,7 +61,7 @@ export const SIGN_IN_CONTROLLER_V1_TESTS = defineTests(
 
     addTest<void, ISignInDTO>({
       description: `returns ${HTTP.UNAUTHORIZED} when user exists but password is invalid`,
-      body: { email: HEAD_ADMIN_EMAIL, password: "thisIsMyPassword" },
+      body: { email: SUPER_USER_EMAIL, password: "thisIsMyPassword" },
       expect: {
         statusCode: HTTP.UNAUTHORIZED,
       },

@@ -1,6 +1,7 @@
 import { StatusCodes as HTTP } from "http-status-codes";
-import { HEAD_ADMIN_EMAIL } from "@integration-tests/config";
 import { Method, defineTests } from "@integration-tests/probata";
+
+import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -22,7 +23,7 @@ export const GET_SESSIONS_CONTROLLER_V1_TESTS = defineTests(
 
     addTest({
       description: `returns ${HTTP.OK} when user is signed in`,
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       expect: {
         statusCode: HTTP.OK,
       },
