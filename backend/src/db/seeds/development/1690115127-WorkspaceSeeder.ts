@@ -3,8 +3,7 @@ import { Tag } from "@db/entities/Tag";
 import { Workspace } from "@db/entities/Workspace";
 import { TagToWorkspace } from "@db/entities/TagToWorkspace";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
-
-import { getRandomRecords } from "./helpers/getRandomRecords";
+import { getRandomRecords } from "@db/seeds/helpers/getRandomRecords";
 
 export default class WorkspaceSeeder implements Seeder {
   public async run(

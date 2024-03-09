@@ -28,6 +28,7 @@ export const APP = {
   TOTAL_ROLES_LIMIT: envInt("TOTAL_ROLES_LIMIT"),
   IS_TEST: ENV === Environment.Test,
   IS_PRODUCTION: ENV === Environment.Production,
+  IS_DEVELOPMENT: ENV === Environment.Development,
 };
 
 export const DATABASE = {

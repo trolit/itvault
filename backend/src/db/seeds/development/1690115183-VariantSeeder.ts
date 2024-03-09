@@ -3,15 +3,14 @@ import fs from "fs-extra";
 import crypto from "crypto";
 import random from "lodash/random";
 import { DataSource } from "typeorm";
-import { User } from "@db/entities/User";
 import { File } from "@db/entities/File";
+import { User } from "@db/entities/User";
 import { Seeder } from "typeorm-extension";
 import { Variant } from "@db/entities/Variant";
 import { Workspace } from "@db/entities/Workspace";
+import { createFile } from "@db/seeds/helpers/createFile";
 
 import { FILES } from "@config";
-
-import { createFile } from "./helpers/createFile";
 
 import { FileStorageMode } from "@enums/FileStorageMode";
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";

@@ -10,10 +10,9 @@ import { Bucket } from "@db/entities/Bucket";
 import { Variant } from "@db/entities/Variant";
 import { Blueprint } from "@db/entities/Blueprint";
 import { Workspace } from "@db/entities/Workspace";
+import { getRandomRecords } from "@db/seeds/helpers/getRandomRecords";
 
 import { FILES } from "@config";
-
-import { getRandomRecords } from "./helpers/getRandomRecords";
 
 import { BucketContent } from "@shared/types/BucketContent";
 
