@@ -36,5 +36,4 @@ const options: DataSourceOptions & SeederOptions = {
   factories: IS_PRODUCTION ? [] : [`${getGlobPattern(`factories/*`)}`],
 };
 
-// @NOTE separate DS config to simplify primary DS (nevertheless of NODE_ENV, TypeORM commands need to reach for src)
 export const commandDataSource = new DataSource(options);
