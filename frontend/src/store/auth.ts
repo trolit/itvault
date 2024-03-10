@@ -2,13 +2,13 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import { Socket } from "engine.io-client";
 
+import type { IUpdateProfileDTO } from "@shared/types/DTOs/User";
+import { WEBSOCKETS } from "@/config";
 import type {
   ISignInDTO,
   ILoggedUserDTO,
-  IUpdateProfileDTO,
-} from "@shared/types/DTOs/User";
-import { WEBSOCKETS } from "@/config";
-import type { IUserSessionDTO } from "@shared/types/DTOs/Auth";
+  IUserSessionDTO,
+} from "@shared/types/DTOs/Auth";
 import SOCKET_MESSAGES from "@shared/constants/socket-messages";
 import type { Permission } from "@shared/types/enums/Permission";
 import { isPermissionEnabled } from "@shared/helpers/isPermissionEnabled";

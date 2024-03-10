@@ -32,16 +32,6 @@ export interface ILoggedUserDTO {
   permissions: IRolePermissionDTO[];
 }
 
-export interface ISignUpDTO {
-  id: number;
-
-  email: string;
-
-  signUpCode: string;
-
-  password: string;
-}
-
 export interface ISignInDTO {
   email: string;
 
