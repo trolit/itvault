@@ -17,8 +17,9 @@ export const containers = {
 
 (async () => {
   const isUp = !!~process.argv.indexOf("--up");
+  const isDown = !!~process.argv.indexOf("--down");
 
-  if (!isUp) {
+  if (!isUp && !isDown) {
     return;
   }
 
@@ -28,7 +29,7 @@ export const containers = {
     );
   }
 
-  await containers.up();
+  isUp ? await containers.up() : await containers.down();
 })();
 
 async function getContainers() {
