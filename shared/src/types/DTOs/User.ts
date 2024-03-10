@@ -1,5 +1,3 @@
-import { IRolePermissionDTO } from "./Role";
-
 export interface IUserDTO {
   id: number;
 
@@ -24,26 +22,6 @@ export interface IContributorDTO {
   email: string;
 
   fullName: string;
-}
-
-export interface ILoggedUserDTO {
-  id: number;
-
-  email: string;
-
-  firstName: string;
-
-  lastName: string;
-
-  fullName: string;
-
-  roleId: number;
-
-  token?: string;
-
-  roleName: string;
-
-  permissions: IRolePermissionDTO[];
 }
 
 export interface IAuthorDTO {
@@ -72,22 +50,6 @@ export interface IUpdateProfileDTO {
   firstName: string;
 
   lastName: string;
-}
-
-export interface ISignUpDTO {
-  id: number;
-
-  email: string;
-
-  signUpCode: string;
-
-  password: string;
-}
-
-export interface ISignInDTO {
-  email: string;
-
-  password: string;
 }
 
 export interface IPatchUserToWorkspaceDTO {
