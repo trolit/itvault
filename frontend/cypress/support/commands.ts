@@ -36,7 +36,7 @@
 //   }
 // }
 
-import type { ILoggedUserDTO } from "@shared/types/DTOs/User";
+import type { ILoggedUserDTO } from "@shared/types/DTOs/Auth";
 
 Cypress.Commands.add("signIn", (email: string) => {
   const key = `${email}-token`;

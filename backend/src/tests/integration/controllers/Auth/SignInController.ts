@@ -5,7 +5,7 @@ import { Method, defineTests } from "@integration-tests/probata";
 import { PASSWORD, SUPER_USER_EMAIL } from "@integration-tests/config";
 
 import { Di } from "@enums/Di";
-import { ISignInDTO } from "@shared/types/DTOs/User";
+import { ISignInDTO } from "@shared/types/DTOs/Auth";
 import { MAX_SESSIONS_PER_USER } from "@shared/constants/config";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";

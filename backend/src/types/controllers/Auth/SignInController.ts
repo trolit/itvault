@@ -1,4 +1,4 @@
-import { ILoggedUserDTO, ISignInDTO } from "@shared/types/DTOs/User";
+import { ILoggedUserDTO, ISignInDTO } from "@shared/types/DTOs/Auth";
 
 export namespace SignInControllerTypes {
   export namespace v1 {

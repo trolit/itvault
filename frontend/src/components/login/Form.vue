@@ -49,7 +49,7 @@ import { NInput, NForm, NFormItem, NButton } from "naive-ui";
 
 import { useAuthStore } from "@/store/auth";
 import { defineForm } from "@/helpers/defineForm";
-import type { ISignInDTO } from "@shared/types/DTOs/User";
+import type { ISignInDTO } from "@shared/types/DTOs/Auth";
 import { ROUTE_DASHBOARD_NAME } from "@/assets/constants/routes";
 
 const router = useRouter();
