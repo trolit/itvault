@@ -1,8 +1,6 @@
 import { defineTestsGroup } from "@integration-tests/probata";
 import { addUsers } from "@integration-tests/helpers/db/addUsers";
 
-import { MEMBER_ROLE } from "@config/initial-roles";
-
 import { GET_SESSIONS_CONTROLLER_V1_TESTS } from "./GetSessionsController";
 import {
   STATUS_MEMBER_EMAIL,
@@ -23,6 +21,8 @@ import {
   DELETE_SESSION_MEMBER2_EMAIL,
   DELETE_SESSION_CONTROLLER_V1_TESTS,
 } from "./DeleteSessionController";
+
+import { NO_PERMISSIONS_ROLE_ID } from "@shared/constants/tests";
 
 import { BaseController } from "@controllers/BaseController";
 import { StatusController } from "@controllers/Auth/StatusController";
@@ -94,37 +94,37 @@ export const AUTH_TESTS = defineTestsGroup({
         {
           email: VALID_REQUEST_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: NOT_SIGNED_UP_TEST_EMAIL,
           isSignedUp: false,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: SESSION_LIMIT_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: DELETE_SESSION_MEMBER1_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: DELETE_SESSION_MEMBER2_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: SIGN_OUT_MEMBER_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: STATUS_MEMBER_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
       ]);
     },
