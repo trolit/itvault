@@ -8,7 +8,7 @@ export default defineConfig({
       API_PREFIX: "api",
       PASSWORD: "1234",
       SUPER_USER_EMAIL: "all-permissions@itvault.com", // @NOTE user with all permissions
-      USER_EMAIL: "user@itvault.com", // @NOTE user with no permissions
+      USER_EMAIL: "no-permissions@itvault.com", // @NOTE user with no permissions
     },
     experimentalSessionAndOrigin: true,
   },
