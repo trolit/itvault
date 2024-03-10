@@ -1,15 +1,15 @@
 import "reflect-metadata";
 import { Server } from "http";
 import { container } from "tsyringe";
+import Redis from "ioredis/built/Redis";
 import { server, onExit } from "../../server";
 
 import { APP } from "@config";
 
-import { containers } from "./helpers/containers";
-import { RuntimeData } from "./helpers/RuntimeData";
 import { IRuntimeData } from "./types/IRuntimeData";
-import { addBlueprints } from "./helpers/db/addBlueprints";
+import { RuntimeData } from "./helpers/RuntimeData";
 import { addWorkspaces } from "./helpers/db/addWorkspaces";
+import { addBlueprints } from "./helpers/db/addBlueprints";
 import { ITestsGroup, loadTestsGroups, useTestAgent } from "./probata";
 import {
   TESTS_TIMEOUT,
@@ -20,6 +20,8 @@ import {
   BLUEPRINT_1,
   BLUEPRINT_2,
 } from "./config";
+
+import { Di } from "@enums/Di";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
@@ -32,7 +34,7 @@ describe("Integration tests", async function () {
   before(done => {
     server().then(app => {
       app.listen(PORT, async () => {
-        await prepareTestingEnvironment(this, app);
+        await prepare(this, app);
 
         done();
       });
@@ -44,19 +46,22 @@ describe("Integration tests", async function () {
   after(function (done) {
     this.timeout(TESTS_TIMEOUT);
 
+    const redis = getInstanceOf<Redis>(Di.Redis);
+    redis.flushall();
+
     const { app } = getInstanceOf<IRuntimeData>(
       RUNTIME_DATA_DI_TOKEN
     ).getData();
 
     app.close(async () => {
-      await onExit(() => containers.down());
+      await onExit();
 
       done();
     });
   });
 });
 
-async function prepareTestingEnvironment(suite: Mocha.Suite, app: Server) {
+async function prepare(suite: Mocha.Suite, app: Server) {
   for (const testsGroup of TESTS_GROUPS) {
     testsGroup.beforeAll(suite);
   }
