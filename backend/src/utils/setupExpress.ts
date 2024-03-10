@@ -13,10 +13,12 @@ import { Dependency } from "@enums/Dependency";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 
 export const setupExpress = async (app: Application) => {
+  const E2E_TESTS_URL = "http://localhost:4173";
+
   app.use(
     cors({
       credentials: false,
-      origin: APP.URL,
+      origin: [APP.URL, E2E_TESTS_URL],
     })
   );
 
