@@ -2,10 +2,8 @@ import { IRoleDefinition } from "types/config/IRoleDefinition";
 
 import { PERMISSIONS_AS_ARRAY } from "@config/permissions";
 
-import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
-
 export const ALL_PERMISSIONS_ROLE: IRoleDefinition = {
-  name: HEAD_ADMIN_ROLE.name,
+  name: "All permissions",
 
   description: "All permissions!!",
 
