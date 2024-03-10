@@ -1,7 +1,6 @@
 import { defineTestsGroup } from "@integration-tests/probata";
 import { addUsers } from "@integration-tests/helpers/db/addUsers";
-
-import { MEMBER_ROLE } from "@config/initial-roles";
+import { NO_PERMISSIONS_ROLE_ID } from "@integration-tests/config";
 
 import { GET_SESSIONS_CONTROLLER_V1_TESTS } from "./GetSessionsController";
 import {
@@ -94,37 +93,37 @@ export const AUTH_TESTS = defineTestsGroup({
         {
           email: VALID_REQUEST_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: NOT_SIGNED_UP_TEST_EMAIL,
           isSignedUp: false,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: SESSION_LIMIT_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: DELETE_SESSION_MEMBER1_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: DELETE_SESSION_MEMBER2_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: SIGN_OUT_MEMBER_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
         {
           email: STATUS_MEMBER_EMAIL,
           isSignedUp: true,
-          roleNameOrId: MEMBER_ROLE.name,
+          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
         },
       ]);
     },

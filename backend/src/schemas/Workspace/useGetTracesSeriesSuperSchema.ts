@@ -5,7 +5,7 @@ import { GetTracesSeriesControllerTypes } from "types/controllers/Workspace/GetT
 
 import { Di } from "@enums/Di";
 import { DatePrecision } from "@shared/types/enums/DatePrecision";
-import { INSIGHTS_ACTIVITY_MAX_DIFF } from "@shared/constants/config";
+import { INSIGHTS_ACTIVITY_MAX_DIFF_IN_DAYS } from "@shared/constants/config";
 
 import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
@@ -45,11 +45,11 @@ const querySchema: SuperSchema.Fragment<GetTracesSeriesControllerTypes.v1.Query>
         unit,
       });
 
-      if (diff > INSIGHTS_ACTIVITY_MAX_DIFF) {
+      if (diff > INSIGHTS_ACTIVITY_MAX_DIFF_IN_DAYS) {
         return ctx.createError({
           message: setYupError(
             CUSTOM_MESSAGES.DATE.MAX_DIFFERENCE,
-            `${INSIGHTS_ACTIVITY_MAX_DIFF} ${unit}`,
+            `${INSIGHTS_ACTIVITY_MAX_DIFF_IN_DAYS} ${unit}`,
             diff
           ),
         });

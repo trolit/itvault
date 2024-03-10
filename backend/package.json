@@ -28,7 +28,7 @@
     "db:seed": "npm run typeorm:extension -- -d ./src/db/command-data-source.ts seed",
     "db:drop": "npm run typeorm:extension -- -d ./src/db/command-data-source.ts db:drop",
     "db:create": "npm run typeorm:extension -- -d ./src/db/command-data-source.ts db:create",
-    "db:restart": "npm run db:drop && npm run db:create && npm run db:seed",
+    "db:setup": "npm run db:drop && npm run db:create && npm run migration:run && npm run db:seed",
     "db:update:permissions:prod": "node -r ./prod-paths.js ./dist/scripts/reflect-permissions.js",
     "db:update:permissions:dev": "ts-node-dev -r tsconfig-paths/register --transpile-only ./src/scripts/reflect-permissions.ts",
     "migration:run": "npm run typeorm migration:run -- -d ./src/db/command-data-source.ts",
@@ -36,7 +36,8 @@
     "migration:generate": "npm run typeorm migration:generate -- -d ./src/db/command-data-source.ts",
     "eslint:fix": "npx eslint --fix .",
     "testcontainers:up": "ts-node -r tsconfig-paths/register --transpile-only ./src/tests/integration/helpers/containers.ts --up",
-    "test:integration": "npm run testcontainers:up && npm run db:drop && npm run db:create && npm run migration:run && npm run db:seed && nyc --include=src/controllers/** mocha --exit -r ts-node/esm -r tsconfig-paths/register src/tests/integration/loader.ts",
+    "testcontainers:down": "ts-node -r tsconfig-paths/register --transpile-only ./src/tests/integration/helpers/containers.ts --down",
+    "test:integration": "npm run db:setup && nyc --include=src/controllers/** mocha --exit -r ts-node/esm -r tsconfig-paths/register src/tests/integration/loader.ts",
     "test:unit": "nyc mocha -r ts-node/esm -r tsconfig-paths/register src/tests/unit/**/*.ts"
   },
   "dependencies": {

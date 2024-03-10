@@ -1,22 +1,18 @@
 import "reflect-metadata";
 import { Server } from "http";
 import { container } from "tsyringe";
+import Redis from "ioredis/built/Redis";
 import { server, onExit } from "../../server";
 
 import { APP } from "@config";
-import { MEMBER_ROLE } from "@config/initial-roles";
 
-import { addUsers } from "./helpers/db/addUsers";
-import { containers } from "./helpers/containers";
-import { RuntimeData } from "./helpers/RuntimeData";
 import { IRuntimeData } from "./types/IRuntimeData";
-import { addBlueprints } from "./helpers/db/addBlueprints";
+import { RuntimeData } from "./helpers/RuntimeData";
 import { addWorkspaces } from "./helpers/db/addWorkspaces";
+import { addBlueprints } from "./helpers/db/addBlueprints";
 import { ITestsGroup, loadTestsGroups, useTestAgent } from "./probata";
 import {
-  MEMBER_EMAIL,
   TESTS_TIMEOUT,
-  HEAD_ADMIN_EMAIL,
   RUNTIME_DATA_DI_TOKEN,
   PATH_TO_CONTROLLERS_TESTS,
   WORKSPACE_1,
@@ -25,7 +21,7 @@ import {
   BLUEPRINT_2,
 } from "./config";
 
-import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
+import { Di } from "@enums/Di";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
@@ -38,7 +34,7 @@ describe("Integration tests", async function () {
   before(done => {
     server().then(app => {
       app.listen(PORT, async () => {
-        await prepareTestingEnvironment(this, app);
+        await prepare(this, app);
 
         done();
       });
@@ -50,39 +46,29 @@ describe("Integration tests", async function () {
   after(function (done) {
     this.timeout(TESTS_TIMEOUT);
 
+    const redis = getInstanceOf<Redis>(Di.Redis);
+    redis.flushall();
+
     const { app } = getInstanceOf<IRuntimeData>(
       RUNTIME_DATA_DI_TOKEN
     ).getData();
 
     app.close(async () => {
-      await onExit(() => containers.down());
+      await onExit();
 
       done();
     });
   });
 });
 
-async function prepareTestingEnvironment(suite: Mocha.Suite, app: Server) {
+async function prepare(suite: Mocha.Suite, app: Server) {
   for (const testsGroup of TESTS_GROUPS) {
     testsGroup.beforeAll(suite);
   }
 
-  const users = await addUsers([
-    {
-      email: HEAD_ADMIN_EMAIL,
-      isSignedUp: true,
-      roleNameOrId: HEAD_ADMIN_ROLE.id,
-    },
-    {
-      email: MEMBER_EMAIL,
-      isSignedUp: true,
-      roleNameOrId: MEMBER_ROLE.name,
-    },
-  ]);
-
   await addWorkspaces([WORKSPACE_1, WORKSPACE_2]);
 
-  await addBlueprints([BLUEPRINT_1, BLUEPRINT_2], users);
+  await addBlueprints([BLUEPRINT_1, BLUEPRINT_2]);
 
   const runtimeData = new RuntimeData(app);
 

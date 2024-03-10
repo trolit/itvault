@@ -12,6 +12,33 @@
 
 ## Running
 
+## Testing
+
+### Unit tests
+
+```sh
+npm run test:unit
+```
+
+### Integration tests
+
+```sh
+# NODE_ENV=test
+npm run testcontainers:up
+npm run test:integration
+npm run testcontainers:down
+```
+
+### E2E tests
+
+```sh
+# NODE_ENV=test
+npm run testcontainers:up
+npm run db:setup
+npm run test:e2e
+npm run testcontainers:down
+```
+
 ## Features
 
 - store files locally or in cloud

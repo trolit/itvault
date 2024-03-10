@@ -4,8 +4,8 @@ import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { Method, defineTests } from "@integration-tests/probata";
 import {
   BLUEPRINT_1,
+  SUPER_USER_EMAIL,
   WORKSPACE_1,
-  HEAD_ADMIN_EMAIL,
 } from "@integration-tests/config";
 
 import { APP } from "@config";
@@ -39,7 +39,7 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
         ...workspaceQuery,
         perPage: APP.MAX_ITEMS_PER_PAGE,
       },
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       expect: {
         statusCode: HTTP.BAD_REQUEST,
       },
@@ -51,7 +51,7 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
         ...workspaceQuery,
         page: 1,
       },
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       expect: {
         statusCode: HTTP.BAD_REQUEST,
       },
@@ -64,7 +64,7 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
         page: 1,
         perPage: APP.MAX_ITEMS_PER_PAGE,
       },
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       expect: {
         statusCode: HTTP.OK,
         callback: response => {
@@ -86,7 +86,7 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
         name: BLUEPRINT_1.name,
         perPage: APP.MAX_ITEMS_PER_PAGE,
       },
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       expect: {
         statusCode: HTTP.OK,
         callback: response => {
@@ -108,7 +108,7 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
         inUse: 1,
         perPage: APP.MAX_ITEMS_PER_PAGE,
       },
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       expect: {
         statusCode: HTTP.OK,
         callback: response => {

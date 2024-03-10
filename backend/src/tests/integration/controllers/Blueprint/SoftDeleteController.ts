@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
-import { HEAD_ADMIN_EMAIL, WORKSPACE_2 } from "@integration-tests/config";
+import { SUPER_USER_EMAIL, WORKSPACE_2 } from "@integration-tests/config";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 
 import { includeCommonTests } from "./includeCommonTests";
@@ -40,7 +40,7 @@ export const SOFT_DELETE_CONTROLLER_V1_TESTS = defineTests(
 
     addTest({
       description: `returns ${HTTP.NO_CONTENT} when blueprint is deleted`,
-      session: { user: { email: HEAD_ADMIN_EMAIL } },
+      session: { user: { email: SUPER_USER_EMAIL } },
       appendToAction: `${BLUEPRINT_TO_DELETE.id}`,
       query: workspaceQuery,
       expect: {

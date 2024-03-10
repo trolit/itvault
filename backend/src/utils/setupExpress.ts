@@ -16,7 +16,7 @@ export const setupExpress = async (app: Application) => {
   app.use(
     cors({
       credentials: false,
-      origin: APP.URL,
+      origin: [APP.URL, APP.E2E_TESTS_URL],
     })
   );
 

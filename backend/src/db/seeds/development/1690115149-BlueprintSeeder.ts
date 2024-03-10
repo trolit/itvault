@@ -5,8 +5,7 @@ import { User } from "@db/entities/User";
 import { Seeder } from "typeorm-extension";
 import { Blueprint } from "@db/entities/Blueprint";
 import { Workspace } from "@db/entities/Workspace";
-
-import { getRandomRecords } from "./helpers/getRandomRecords";
+import { getRandomRecords } from "@db/seeds/helpers/getRandomRecords";
 
 import { getOptionsOfTraceRelatedEntity } from "@helpers/getOptionsOfTraceRelatedEntity";
 

@@ -28,6 +28,8 @@ export const APP = {
   TOTAL_ROLES_LIMIT: envInt("TOTAL_ROLES_LIMIT"),
   IS_TEST: ENV === Environment.Test,
   IS_PRODUCTION: ENV === Environment.Production,
+  IS_DEVELOPMENT: ENV === Environment.Development,
+  E2E_TESTS_URL: "http://localhost:4173",
 };
 
 export const DATABASE = {

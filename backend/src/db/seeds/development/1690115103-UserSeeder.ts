@@ -1,15 +1,12 @@
 import { DataSource } from "typeorm";
-import { User } from "@db/entities/User";
 import { Role } from "@db/entities/Role";
+import { User } from "@db/entities/User";
 import { Seeder, SeederFactoryManager } from "typeorm-extension";
+import { roleNameToEmail } from "@db/seeds/helpers/roleNameToEmail";
 
 import { INITIAL_ROLES } from "@config/initial-roles";
 
-import { roleNameToEmail } from "./helpers/roleNameToEmail";
-
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
-
-const PASSWORD = "1234";
 
 export default class UserSeeder implements Seeder {
   public async run(
@@ -20,15 +17,11 @@ export default class UserSeeder implements Seeder {
     const roleRepository = dataSource.getRepository(Role);
 
     for (const { name } of INITIAL_ROLES) {
-      const role = await roleRepository.findOneBy({ name });
-
-      if (!role) {
-        continue;
-      }
+      const role = await roleRepository.findOneByOrFail({ name });
 
       await userFactory.save({
         email: roleNameToEmail(name),
-        password: PASSWORD,
+        password: "1234",
         role,
         isSignedUp: true,
       });

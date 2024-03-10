@@ -3,14 +3,20 @@ import { DataSource, DataSourceOptions } from "typeorm";
 
 import { DATABASE, APP } from "@config";
 
-import RoleSeeder from "./seeds/1690115009-RoleSeeder";
-import PermissionSeeder from "./seeds/1690115077-PermissionSeeder";
-import PermissionToRoleSeeder from "./seeds/1690115090-PermissionToRoleSeeder";
+import { Environment } from "@enums/Environment";
 
-const { IS_PRODUCTION, IS_TEST } = APP;
+const { IS_PRODUCTION } = APP;
 const { HOST, NAME, PORT, TYPE, ROOT } = DATABASE;
 
 const getGlobPattern = (path: string) => `src/db/${path}`;
+
+const seeds = [`${getGlobPattern(`seeds/common/*Seeder*`)}`];
+
+if (APP.IS_DEVELOPMENT) {
+  seeds.push(`${getGlobPattern(`seeds/${Environment.Production}/*Seeder*`)}`);
+}
+
+seeds.push(`${getGlobPattern(`seeds/${APP.ENV}/*Seeder*`)}`);
 
 const options: DataSourceOptions & SeederOptions = {
   type: TYPE,
@@ -26,12 +32,8 @@ const options: DataSourceOptions & SeederOptions = {
   logging: true,
   synchronize: false,
 
-  seeds:
-    IS_PRODUCTION || IS_TEST
-      ? [RoleSeeder, PermissionSeeder, PermissionToRoleSeeder]
-      : [`${getGlobPattern(`seeds/*Seeder*`)}`],
+  seeds,
   factories: IS_PRODUCTION ? [] : [`${getGlobPattern(`factories/*`)}`],
 };
 
-// @NOTE separate DS config to simplify primary DS (nevertheless of NODE_ENV, TypeORM commands need to reach for src)
 export const commandDataSource = new DataSource(options);

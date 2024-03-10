@@ -1,7 +1,7 @@
 import { User } from "@db/entities/User";
 import { PASSWORD } from "@integration-tests/config";
-import { IUserRepository } from "types/repositories/IUserRepository";
 import { IRoleRepository } from "types/repositories/IRoleRepository";
+import { IUserRepository } from "types/repositories/IUserRepository";
 
 import { Di } from "@enums/Di";
 

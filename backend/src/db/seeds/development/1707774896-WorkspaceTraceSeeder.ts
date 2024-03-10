@@ -7,11 +7,10 @@ import { Note } from "@db/entities/Note";
 import { Seeder } from "typeorm-extension";
 import { Bucket } from "@db/entities/Bucket";
 import { Variant } from "@db/entities/Variant";
-import { Blueprint } from "@db/entities/Blueprint";
 import { Workspace } from "@db/entities/Workspace";
+import { Blueprint } from "@db/entities/Blueprint";
 import { WorkspaceTrace } from "@db/entities/WorkspaceTrace";
-
-import { getRandomRecords } from "./helpers/getRandomRecords";
+import { getRandomRecords } from "@db/seeds/helpers/getRandomRecords";
 
 import { Action } from "@shared/types/enums/Action";
 

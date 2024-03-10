@@ -1,10 +1,6 @@
 import { ITest } from "@integration-tests/probata";
+import { USER_EMAIL } from "@integration-tests/config";
 import { StatusCodes as HTTP } from "http-status-codes";
-import {
-  MEMBER_EMAIL,
-  HEAD_ADMIN_EMAIL,
-  UNEXISTING_WORKSPACE_ID,
-} from "@integration-tests/config";
 
 export const includeCommonTests = (arg: {
   baseQuery: any;
@@ -24,7 +20,7 @@ export const includeCommonTests = (arg: {
 
   addTest({
     description: `returns ${HTTP.FORBIDDEN} when 'workspaceId' query param is not provided`,
-    session: { user: { email: MEMBER_EMAIL } },
+    session: { user: { email: USER_EMAIL } },
     appendToAction,
     expect: {
       statusCode: HTTP.FORBIDDEN,
@@ -34,7 +30,7 @@ export const includeCommonTests = (arg: {
   addTest({
     description: `returns ${HTTP.FORBIDDEN} when user is not permitted to access workspace related endpoint`,
     query: baseQuery,
-    session: { user: { email: MEMBER_EMAIL } },
+    session: { user: { email: USER_EMAIL } },
     appendToAction,
     expect: {
       statusCode: HTTP.FORBIDDEN,
