@@ -1,11 +1,9 @@
-import { WORKSPACE_1 } from "@integration-tests/config";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
+import { SUPER_USER_EMAIL, WORKSPACE_1 } from "@integration-tests/config";
 
 import { includeCommonTests } from "./includeCommonTests";
 import { includeAddUpdateSchemaTests } from "./includeAddUpdateSchemaTests";
-
-import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 import { BaseController } from "@controllers/BaseController";
 

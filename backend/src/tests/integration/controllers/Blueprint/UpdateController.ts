@@ -5,6 +5,7 @@ import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 import {
   BLUEPRINT_1,
   WORKSPACE_1,
+  SUPER_USER_EMAIL,
   UNEXISTING_BLUEPRINT_ID,
 } from "@integration-tests/config";
 
@@ -12,7 +13,6 @@ import { includeCommonTests } from "./includeCommonTests";
 import { includeAddUpdateSchemaTests } from "./includeAddUpdateSchemaTests";
 
 import { Di } from "@enums/Di";
-import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

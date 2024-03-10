@@ -1,13 +1,12 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { WORKSPACE_2 } from "@integration-tests/config";
 import { Method, defineTests } from "@integration-tests/probata";
+import { SUPER_USER_EMAIL, WORKSPACE_2 } from "@integration-tests/config";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 
 import { includeCommonTests } from "./includeCommonTests";
 
 import { Di } from "@enums/Di";
-import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

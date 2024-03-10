@@ -6,7 +6,6 @@ import { roleNameToEmail } from "@db/seeds/helpers/roleNameToEmail";
 
 import { INITIAL_ROLES } from "@config/initial-roles";
 
-import { PASSWORD } from "@shared/constants/tests";
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 export default class UserSeeder implements Seeder {
@@ -22,7 +21,7 @@ export default class UserSeeder implements Seeder {
 
       await userFactory.save({
         email: roleNameToEmail(name),
-        password: PASSWORD,
+        password: "1234",
         role,
         isSignedUp: true,
       });

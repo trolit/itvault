@@ -5,17 +5,12 @@ import { Seeder, SeederFactoryManager } from "typeorm-extension";
 
 import { ALL_PERMISSIONS_ROLE, NO_PERMISSIONS_ROLE } from "./roles";
 
-import {
-  PASSWORD,
-  USER_EMAIL,
-  SUPER_USER_EMAIL,
-} from "@shared/constants/tests";
-
 export default class UserSeeder implements Seeder {
   public async run(
     dataSource: DataSource,
     factoryManager: SeederFactoryManager
   ) {
+    const password = "1234";
     const userFactory = factoryManager.get(User);
     const roleRepository = dataSource.getRepository(Role);
 
@@ -25,15 +20,15 @@ export default class UserSeeder implements Seeder {
     ]);
 
     await userFactory.save({
-      email: SUPER_USER_EMAIL,
-      password: PASSWORD,
+      email: "all-permissions@itvault.com",
+      password,
       role: allPermissionsRole,
       isSignedUp: true,
     });
 
     await userFactory.save({
-      email: USER_EMAIL,
-      password: PASSWORD,
+      email: "no-permissions@itvault.com",
+      password,
       role: noPermissionsRole,
       isSignedUp: true,
     });

@@ -1,5 +1,6 @@
 import { defineTestsGroup } from "@integration-tests/probata";
 import { addUsers } from "@integration-tests/helpers/db/addUsers";
+import { NO_PERMISSIONS_ROLE_ID } from "@integration-tests/config";
 
 import { GET_SESSIONS_CONTROLLER_V1_TESTS } from "./GetSessionsController";
 import {
@@ -21,8 +22,6 @@ import {
   DELETE_SESSION_MEMBER2_EMAIL,
   DELETE_SESSION_CONTROLLER_V1_TESTS,
 } from "./DeleteSessionController";
-
-import { NO_PERMISSIONS_ROLE_ID } from "@shared/constants/tests";
 
 import { BaseController } from "@controllers/BaseController";
 import { StatusController } from "@controllers/Auth/StatusController";

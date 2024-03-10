@@ -2,11 +2,11 @@ import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
 import { Method, defineTests } from "@integration-tests/probata";
+import { PASSWORD, SUPER_USER_EMAIL } from "@integration-tests/config";
 
 import { Di } from "@enums/Di";
 import { ISignInDTO } from "@shared/types/DTOs/User";
 import { MAX_SESSIONS_PER_USER } from "@shared/constants/config";
-import { SUPER_USER_EMAIL, PASSWORD } from "@shared/constants/tests";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

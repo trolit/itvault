@@ -1,7 +1,6 @@
 import { ITest } from "@integration-tests/probata";
+import { USER_EMAIL } from "@integration-tests/config";
 import { StatusCodes as HTTP } from "http-status-codes";
-
-import { USER_EMAIL } from "@shared/constants/tests";
 
 export const includeCommonTests = (arg: {
   baseQuery: any;

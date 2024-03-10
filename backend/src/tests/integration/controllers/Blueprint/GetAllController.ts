@@ -2,13 +2,16 @@ import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { Method, defineTests } from "@integration-tests/probata";
-import { BLUEPRINT_1, WORKSPACE_1 } from "@integration-tests/config";
+import {
+  BLUEPRINT_1,
+  SUPER_USER_EMAIL,
+  WORKSPACE_1,
+} from "@integration-tests/config";
 
 import { APP } from "@config";
 
 import { includeCommonTests } from "./includeCommonTests";
 
-import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
 import { BaseController } from "@controllers/BaseController";

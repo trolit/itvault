@@ -1,5 +1,5 @@
 import TestAgent from "supertest/lib/agent";
-import { ROUTER_VERSION_PREFIX } from "@integration-tests/config";
+import { PASSWORD, ROUTER_VERSION_PREFIX } from "@integration-tests/config";
 import {
   Method,
   ITestData,
@@ -12,8 +12,6 @@ import {
 } from ".";
 
 import { APP, JWT } from "@config";
-
-import { PASSWORD } from "@shared/constants/tests";
 
 import { BaseController } from "@controllers/BaseController";
 

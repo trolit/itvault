@@ -1,10 +1,10 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IUserService } from "types/services/IUserService";
+import { SUPER_USER_EMAIL } from "@integration-tests/config";
 import { Method, defineTests } from "@integration-tests/probata";
 import { IUserRepository } from "types/repositories/IUserRepository";
 
 import { Di } from "@enums/Di";
-import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 

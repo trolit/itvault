@@ -3,11 +3,7 @@
   "include": ["vite.config.*", "vitest.config.*", "cypress.config.*"],
   "compilerOptions": {
     "composite": true,
-    "baseUrl": ".",
-    "types": ["node"],
-    "paths": {
-      "@shared/*": ["../shared/src/*"]
-    }
+    "types": ["node"]
   },
   "references": [
     {

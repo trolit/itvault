@@ -1,7 +1,6 @@
 import { StatusCodes as HTTP } from "http-status-codes";
+import { SUPER_USER_EMAIL } from "@integration-tests/config";
 import { Method, defineTests } from "@integration-tests/probata";
-
-import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 import { BaseController } from "@controllers/BaseController";
 

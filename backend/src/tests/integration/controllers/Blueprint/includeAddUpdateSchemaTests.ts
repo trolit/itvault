@@ -1,10 +1,9 @@
 import { faker } from "@faker-js/faker";
 import { ITest } from "@integration-tests/probata";
 import { StatusCodes as HTTP } from "http-status-codes";
-import { BLUEPRINT_1 } from "@integration-tests/config";
+import { BLUEPRINT_1, SUPER_USER_EMAIL } from "@integration-tests/config";
 
 import { BLUEPRINT_RULES } from "@shared/constants/rules";
-import { SUPER_USER_EMAIL } from "@shared/constants/tests";
 
 const body = {
   name: "unique-blueprint1",
