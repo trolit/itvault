@@ -22,7 +22,7 @@ export const attachEngineIO = (app: Express) => {
 
   const engineIO = new Server({
     cors: {
-      origin: APP.URL,
+      origin: [APP.URL, APP.E2E_TESTS_URL],
       credentials: true,
     },
 

@@ -29,6 +29,7 @@ export const APP = {
   IS_TEST: ENV === Environment.Test,
   IS_PRODUCTION: ENV === Environment.Production,
   IS_DEVELOPMENT: ENV === Environment.Development,
+  E2E_TESTS_URL: "http://localhost:4173",
 };
 
 export const DATABASE = {
