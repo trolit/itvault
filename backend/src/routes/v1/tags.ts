@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 
 import { useGetAllSuperSchema } from "@schemas/Tag/useGetAllSuperSchema";
 
@@ -13,6 +14,8 @@ const tagsRouter = Router();
 const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
+
+tagsRouter.use(requireAuthentication);
 
 tagsRouter.get(
   "",

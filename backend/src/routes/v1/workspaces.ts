@@ -6,8 +6,9 @@ import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useAddSuperSchema } from "@schemas/Workspace/useAddSuperSchema";
@@ -17,8 +18,8 @@ import { useUpdateSuperSchema } from "@schemas/Workspace/useUpdateSuperSchema";
 import { useGetTreeSuperSchema } from "@schemas/Workspace/useGetTreeSuperSchema";
 import { getTogglePinSuperSchema } from "@schemas/common/getTogglePinSuperSchema";
 import { useGetTracesSuperSchema } from "@schemas/Workspace/useGetTracesSuperSchema";
-import { useGetTracesSeriesSuperSchema } from "@schemas/Workspace/useGetTracesSeriesSuperSchema";
 import { useGetContributorsSuperSchema } from "@schemas/Workspace/useGetContributorsSuperSchema";
+import { useGetTracesSeriesSuperSchema } from "@schemas/Workspace/useGetTracesSeriesSuperSchema";
 
 import { PinController } from "@controllers/PinController";
 import { BaseController } from "@controllers/BaseController";
@@ -27,16 +28,18 @@ import { AddController } from "@controllers/Workspace/AddController";
 import { UpdateController } from "@controllers/Workspace/UpdateController";
 import { GetAllController } from "@controllers/Workspace/GetAllController";
 import { GetTreeController } from "@controllers/Workspace/GetTreeController";
-import { GetTracesController } from "@controllers/Workspace/GetTracesController";
 import { GetBySlugController } from "@controllers/Workspace/GetBySlugController";
-import { GetTracesSeriesController } from "@controllers/Workspace/GetTracesSeriesController";
+import { GetTracesController } from "@controllers/Workspace/GetTracesController";
 import { GetContributorsController } from "@controllers/Workspace/GetContributorsController";
+import { GetTracesSeriesController } from "@controllers/Workspace/GetTracesSeriesController";
 
 const workspacesRouter = Router();
 
 const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
+
+workspacesRouter.use(requireAuthentication);
 
 workspacesRouter.get(
   "",

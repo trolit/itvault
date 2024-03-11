@@ -6,9 +6,10 @@ import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { transformPagination } from "@middleware/transformPagination";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { transformPagination } from "@middleware/transformPagination";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
@@ -22,8 +23,8 @@ import { BaseController } from "@controllers/BaseController";
 import { UnpinController } from "@controllers/UnpinController";
 import { AddController } from "@controllers/Blueprint/AddController";
 import { SoftDeleteController } from "@controllers/SoftDeleteController";
-import { GetAllController } from "@controllers/Blueprint/GetAllController";
 import { UpdateController } from "@controllers/Blueprint/UpdateController";
+import { GetAllController } from "@controllers/Blueprint/GetAllController";
 
 const blueprintsRouter = Router();
 
@@ -31,6 +32,7 @@ const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
+blueprintsRouter.use(requireAuthentication);
 blueprintsRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );

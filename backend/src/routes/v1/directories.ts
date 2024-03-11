@@ -7,6 +7,7 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
 import { useMoveFilesSuperSchema } from "@schemas/Directory/useMoveFilesSuperSchema";
@@ -20,6 +21,7 @@ const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
+directoriesRouter.use(requireAuthentication);
 directoriesRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );
