@@ -79,7 +79,7 @@ async function handleWorkspaceEvent(
       eventHandler.actions.includes(action)
   );
 
-  if (!eventHandler) {
+  if (!eventHandler || !data.workspaceId || !data.userId) {
     return;
   }
 
