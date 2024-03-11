@@ -7,9 +7,10 @@ import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
@@ -34,6 +35,7 @@ const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
+variantsRouter.use(requireAuthentication);
 variantsRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );

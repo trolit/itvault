@@ -7,9 +7,10 @@ import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { validateRequestWith } from "@middleware/validateRequestWith";
+import { parseUploadFormData } from "@middleware/parseUploadFormData";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
@@ -19,8 +20,8 @@ import { usePatchFilenameSuperSchema } from "@schemas/File/usePatchFilenameSuper
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { UploadController } from "@controllers/File/UploadController";
 import { GetAllController } from "@controllers/File/GetAllController";
+import { UploadController } from "@controllers/File/UploadController";
 import { GetByIdController } from "@controllers/File/GetByIdController";
 import { SoftDeleteController } from "@controllers/File/SoftDeleteController";
 import { PatchFilenameController } from "@controllers/File/PatchFilenameController";
@@ -32,6 +33,7 @@ const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
+filesRouter.use(requireAuthentication);
 filesRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );

@@ -7,14 +7,15 @@ import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
 import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
+import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
 
-import { useUpsertSuperSchema } from "@schemas/Bucket/useUpsertSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Bucket/useGetAllSuperSchema";
+import { useUpsertSuperSchema } from "@schemas/Bucket/useUpsertSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { UpsertController } from "@controllers/Bucket/UpsertController";
 import { GetAllController } from "@controllers/Bucket/GetAllController";
+import { UpsertController } from "@controllers/Bucket/UpsertController";
 
 const bucketsRouter = Router();
 
@@ -22,6 +23,7 @@ const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
+bucketsRouter.use(requireAuthentication);
 bucketsRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );

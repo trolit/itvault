@@ -10,8 +10,6 @@ import { APP } from "@config";
 
 import { Dependency } from "@enums/Dependency";
 
-import { requireAuthentication } from "@middleware/requireAuthentication";
-
 export const setupExpress = async (app: Application) => {
   app.use(
     cors({
@@ -57,10 +55,6 @@ async function getRoutes() {
       );
 
       const [routeName] = router.split(".");
-
-      if (!["auth", "users"].includes(routeName)) {
-        versionRouter.use(requireAuthentication);
-      }
 
       versionRouter.use(`/${routeName}`, dependency.default);
 
