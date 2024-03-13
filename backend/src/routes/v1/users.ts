@@ -36,9 +36,16 @@ const {
   ALL_VERSION_DEFINITIONS: { v1 },
 } = BaseController;
 
+usersRouter.post(
+  "/sign-up",
+  validateRequestWith({ [v1]: useSignUpSuperSchema }),
+  processRequestWith(SignUpController)
+);
+
+usersRouter.use(requireAuthentication);
+
 usersRouter.get(
   "",
-  requireAuthentication,
   requirePermissions([Permission.ViewAllUsers]),
   validateRequestWith({ [v1]: useGetAllSuperSchema }),
   transformPagination(),
@@ -47,7 +54,6 @@ usersRouter.get(
 
 usersRouter.get(
   "/:id/notes",
-  requireAuthentication,
   validateRequestWith({ [v1]: useGetNotesSuperSchema }),
   transformPagination({ defaultPerPage: GetNotesController.ITEMS_PER_PAGE }),
   processRequestWith(GetNotesController)
@@ -55,7 +61,6 @@ usersRouter.get(
 
 usersRouter.post(
   "",
-  requireAuthentication,
   requirePermissions([Permission.CreateUser]),
   validateRequestWith({ [v1]: useAddSuperSchema }),
   processRequestWith(AddController)
@@ -76,7 +81,6 @@ usersRouter.patch(
 
 usersRouter.patch(
   "",
-  requireAuthentication,
   requirePermissions([Permission.ViewAllUsers]),
   requirePermissionsCustomHandler<
     void,
@@ -110,7 +114,6 @@ usersRouter.patch(
 
 usersRouter.post(
   "/settings/update-profile",
-  requireAuthentication,
   validateRequestWith({ [v1]: useUpdateProfileSuperSchema }),
   processRequestWith(UpdateProfileController)
 );
