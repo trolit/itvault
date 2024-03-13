@@ -35,15 +35,15 @@ authRouter.post(
 
 authRouter.get(
   "/status",
-  requireEndpointVersion(StatusController.ALL_VERSIONS),
   requireAuthentication,
+  requireEndpointVersion(StatusController.ALL_VERSIONS),
   processRequestWith(StatusController)
 );
 
 authRouter.get(
   "/sessions",
-  requireEndpointVersion(GetSessionsController.ALL_VERSIONS),
   requireAuthentication,
+  requireEndpointVersion(GetSessionsController.ALL_VERSIONS),
   processRequestWith(GetSessionsController)
 );
 
