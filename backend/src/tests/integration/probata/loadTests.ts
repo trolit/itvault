@@ -1,4 +1,5 @@
 import fs from "fs-extra";
+import snakeCase from "lodash/snakeCase";
 
 import { ITestsGroup } from "./types";
 
@@ -15,7 +16,7 @@ export const loadTestsGroups = async (suite: Mocha.Suite, dir: string) => {
     }
 
     const module = await import(`${dir}/${dirElement}`);
-    const value = `${dirElement.toUpperCase()}_TESTS`;
+    const value = `${snakeCase(dirElement).toUpperCase()}_TESTS`;
 
     const testsGroup = module[value];
 
