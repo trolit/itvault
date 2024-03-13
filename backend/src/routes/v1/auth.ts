@@ -33,23 +33,22 @@ authRouter.post(
   processRequestWith(SignOutController)
 );
 
+authRouter.use(requireAuthentication);
+
 authRouter.get(
   "/status",
-  requireAuthentication,
   requireEndpointVersion(StatusController.ALL_VERSIONS),
   processRequestWith(StatusController)
 );
 
 authRouter.get(
   "/sessions",
-  requireAuthentication,
   requireEndpointVersion(GetSessionsController.ALL_VERSIONS),
   processRequestWith(GetSessionsController)
 );
 
 authRouter.delete(
   "/sessions/:id",
-  requireAuthentication,
   validateRequestWith({ [v1]: useDeleteSessionSuperSchema }),
   processRequestWith(DeleteSessionController)
 );
