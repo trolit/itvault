@@ -3,8 +3,8 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
 import { SUPER_USER_EMAIL, WORKSPACE_2 } from "@integration-tests/config";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
-
-import { includeCommonTests } from "./includeCommonTests";
+import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
+import { includeWorkspaceEntityTests } from "@integration-tests/helpers/includeWorkspaceEntityTests";
 
 import { Di } from "@enums/Di";
 
@@ -32,10 +32,16 @@ export const SOFT_DELETE_CONTROLLER_V1_TESTS = defineTests(
   },
 
   ({ addTest }) => {
-    includeCommonTests({
+    includeGeneralTests({
       addTest,
       baseQuery: workspaceQuery,
-      blueprintId: BLUEPRINT_TO_DELETE.id,
+      appendToAction: `${BLUEPRINT_TO_DELETE.id}`,
+    });
+
+    includeWorkspaceEntityTests({
+      addTest,
+      baseQuery: workspaceQuery,
+      appendToAction: `${BLUEPRINT_TO_DELETE.id}`,
     });
 
     addTest({

@@ -27,13 +27,13 @@ authRouter.post(
   processRequestWith(SignInController)
 );
 
+authRouter.use(requireAuthentication);
+
 authRouter.post(
   "/sign-out",
   requireEndpointVersion(SignOutController.ALL_VERSIONS),
   processRequestWith(SignOutController)
 );
-
-authRouter.use(requireAuthentication);
 
 authRouter.get(
   "/status",

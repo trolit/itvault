@@ -13,7 +13,7 @@ const body = {
   color: "#471471",
 };
 
-export const includeAddUpdateSchemaTests = (arg: {
+export const includeAddUpdateTests = (arg: {
   baseQuery: any;
   addTest: <Q, B>(data: Omit<ITest<Q, B>, "method">) => void;
   blueprintId?: number;

@@ -1,4 +1,6 @@
-`itvault` is utility to **store source code knowledge** (what each part of code is used for). It relies on simple mechanism - coloring file content. In short, user defines blueprints that represent elements used to mark code. Such coloring not only keeps knowledge of code but allows to **generate new project base with only selected blueprints**.
+## About
+
+itvault is utility to **store source code knowledge** (what each part of code is used for). It relies on simple mechanism - coloring file content. In short, user defines blueprints that represent elements used to mark code. Such coloring not only keeps knowledge of code but allows to **generate new project base with only selected blueprints**.
 
 > Please note that this app is not completed (but is in advanced stage). If you would like to use it I'd suggest to take backend and create own frontend (client) or just take parts that interest you 🤔
 
@@ -25,6 +27,7 @@ npm run test:unit
 ```sh
 # NODE_ENV=test
 npm run testcontainers:up
+npm run db:setup
 npm run test:integration
 npm run testcontainers:down
 ```
@@ -46,10 +49,9 @@ npm run testcontainers:down
 - global chat with configurable depth
 - mail system with mustache and nodemailer
 - hybrid API versioning (branch ✅, query ✅, leaf ⛔)
-- real-time communication with Engine.io
+- real-time client-server communication with Engine.io
 - workspace insights
 - strong typing (e.g. schema <-> controller relation)
-- super schemas (custom approach for defining request validation)
 
 Plus sessions management, seeders (via typeorm-extension), hybrid authentication - half on user (JWT), half on server (Redis)
 

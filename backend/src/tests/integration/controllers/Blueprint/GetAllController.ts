@@ -2,15 +2,15 @@ import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { Method, defineTests } from "@integration-tests/probata";
+import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import {
   BLUEPRINT_1,
   SUPER_USER_EMAIL,
   WORKSPACE_1,
 } from "@integration-tests/config";
+import { includeWorkspaceEntityTests } from "@integration-tests/helpers/includeWorkspaceEntityTests";
 
 import { APP } from "@config";
-
-import { includeCommonTests } from "./includeCommonTests";
 
 import { PaginatedResponse } from "@shared/types/PaginatedResponse";
 
@@ -28,9 +28,14 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
   },
 
   ({ addTest }) => {
-    includeCommonTests({
+    includeGeneralTests({
       addTest,
-      baseQuery,
+      baseQuery: workspaceQuery,
+    });
+
+    includeWorkspaceEntityTests({
+      addTest,
+      baseQuery: workspaceQuery,
     });
 
     addTest({
