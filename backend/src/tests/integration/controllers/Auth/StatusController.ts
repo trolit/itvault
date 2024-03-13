@@ -3,6 +3,7 @@ import { IUserService } from "types/services/IUserService";
 import { SUPER_USER_EMAIL } from "@integration-tests/config";
 import { Method, defineTests } from "@integration-tests/probata";
 import { IUserRepository } from "types/repositories/IUserRepository";
+import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 
 import { Di } from "@enums/Di";
 
@@ -14,13 +15,20 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 export const STATUS_MEMBER_EMAIL = "sign-out@email.com";
 
+const baseQuery = { version: v1 };
+
 export const STATUS_CONTROLLER_V1_TESTS = defineTests(
   {
     method: Method.GET,
-    baseQuery: { version: v1 },
+    baseQuery,
   },
 
   ({ addTest, addCustomTest }) => {
+    includeGeneralTests({
+      addTest,
+      baseQuery,
+    });
+
     addCustomTest({
       description: `returns ${HTTP.UNAUTHORIZED} when user is signed in but account was deactivated`,
       statusCode: HTTP.UNAUTHORIZED,

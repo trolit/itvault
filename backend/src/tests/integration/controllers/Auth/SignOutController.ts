@@ -2,6 +2,7 @@ import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
 import { Method, defineTests } from "@integration-tests/probata";
+import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 
 import { Di } from "@enums/Di";
 
@@ -13,18 +14,18 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 export const SIGN_OUT_MEMBER_EMAIL = "sign-out@email.com";
 
+const baseQuery = { version: v1 };
+
 export const SIGN_OUT_CONTROLLER_V1_TESTS = defineTests(
   {
     method: Method.POST,
-    baseQuery: { version: v1 },
+    baseQuery,
   },
 
   ({ addTest, addCustomTest }) => {
-    addTest({
-      description: `returns ${HTTP.UNAUTHORIZED} when user is not signed in`,
-      expect: {
-        statusCode: HTTP.UNAUTHORIZED,
-      },
+    includeGeneralTests({
+      addTest,
+      baseQuery,
     });
 
     addCustomTest({

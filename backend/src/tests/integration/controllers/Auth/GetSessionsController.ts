@@ -1,23 +1,24 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import { SUPER_USER_EMAIL } from "@integration-tests/config";
 import { Method, defineTests } from "@integration-tests/probata";
+import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 
 import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
+const baseQuery = { version: v1 };
+
 export const GET_SESSIONS_CONTROLLER_V1_TESTS = defineTests(
   {
     method: Method.GET,
-    baseQuery: { version: v1 },
+    baseQuery,
   },
 
   ({ addTest }) => {
-    addTest({
-      description: `returns ${HTTP.UNAUTHORIZED} when user is not signed in`,
-      expect: {
-        statusCode: HTTP.UNAUTHORIZED,
-      },
+    includeGeneralTests({
+      addTest,
+      baseQuery,
     });
 
     addTest({
