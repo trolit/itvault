@@ -2,8 +2,9 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
 import { SUPER_USER_EMAIL, WORKSPACE_1 } from "@integration-tests/config";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
+import { includeWorkspaceEntityTests } from "@integration-tests/helpers/includeWorkspaceEntityTests";
 
-import { includeAddUpdateSchemaTests } from "./includeAddUpdateSchemaTests";
+import { includeAddUpdateTests } from "./includeAddUpdateTests";
 
 import { BaseController } from "@controllers/BaseController";
 
@@ -24,7 +25,12 @@ export const ADD_CONTROLLER_V1_TESTS = defineTests(
       baseQuery: workspaceQuery,
     });
 
-    const { validBody } = includeAddUpdateSchemaTests({
+    includeWorkspaceEntityTests({
+      addTest,
+      baseQuery: workspaceQuery,
+    });
+
+    const { validBody } = includeAddUpdateTests({
       addTest,
       baseQuery: workspaceQuery,
     });

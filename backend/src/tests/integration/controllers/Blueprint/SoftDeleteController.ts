@@ -4,6 +4,7 @@ import { Method, defineTests } from "@integration-tests/probata";
 import { SUPER_USER_EMAIL, WORKSPACE_2 } from "@integration-tests/config";
 import { IBlueprintRepository } from "types/repositories/IBlueprintRepository";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
+import { includeWorkspaceEntityTests } from "@integration-tests/helpers/includeWorkspaceEntityTests";
 
 import { Di } from "@enums/Di";
 
@@ -32,6 +33,12 @@ export const SOFT_DELETE_CONTROLLER_V1_TESTS = defineTests(
 
   ({ addTest }) => {
     includeGeneralTests({
+      addTest,
+      baseQuery: workspaceQuery,
+      appendToAction: `${BLUEPRINT_TO_DELETE.id}`,
+    });
+
+    includeWorkspaceEntityTests({
       addTest,
       baseQuery: workspaceQuery,
       appendToAction: `${BLUEPRINT_TO_DELETE.id}`,

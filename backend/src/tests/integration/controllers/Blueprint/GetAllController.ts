@@ -8,6 +8,7 @@ import {
   SUPER_USER_EMAIL,
   WORKSPACE_1,
 } from "@integration-tests/config";
+import { includeWorkspaceEntityTests } from "@integration-tests/helpers/includeWorkspaceEntityTests";
 
 import { APP } from "@config";
 
@@ -28,6 +29,11 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
 
   ({ addTest }) => {
     includeGeneralTests({
+      addTest,
+      baseQuery: workspaceQuery,
+    });
+
+    includeWorkspaceEntityTests({
       addTest,
       baseQuery: workspaceQuery,
     });
