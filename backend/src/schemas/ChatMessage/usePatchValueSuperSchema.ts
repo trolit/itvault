@@ -7,6 +7,8 @@ import { CHAT_MESSAGE_RULES } from "@shared/constants/rules";
 import { useTextSchema } from "@schemas/common/useTextSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
+const { MIN_LENGTH, MAX_LENGTH } = CHAT_MESSAGE_RULES.VALUE;
+
 const paramsSchema: SuperSchema.Fragment<PatchValueControllerTypes.v1.Params> =
   object({
     id: number().required(),
@@ -14,7 +16,7 @@ const paramsSchema: SuperSchema.Fragment<PatchValueControllerTypes.v1.Params> =
 
 const bodySchema: SuperSchema.Fragment<PatchValueControllerTypes.v1.Body> =
   object({
-    text: useTextSchema(CHAT_MESSAGE_RULES.VALUE.MAX_LENGTH),
+    text: useTextSchema(MIN_LENGTH, MAX_LENGTH),
   });
 
 export const usePatchValueSuperSchema: SuperSchema.Runner<

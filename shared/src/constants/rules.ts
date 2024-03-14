@@ -40,6 +40,7 @@ export const FILE_RULES = {
 
 export const CHAT_MESSAGE_RULES = {
   VALUE: {
+    MIN_LENGTH: 2,
     MAX_LENGTH: 600,
   },
 };
