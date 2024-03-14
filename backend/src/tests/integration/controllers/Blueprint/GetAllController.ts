@@ -3,6 +3,7 @@ import { StatusCodes as HTTP } from "http-status-codes";
 import { BlueprintMapper } from "@mappers/BlueprintMapper";
 import { Method, defineTests } from "@integration-tests/probata";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
+import { includePaginationTests } from "@integration-tests/helpers/includePaginationTests";
 import {
   BLUEPRINT_1,
   SUPER_USER_EMAIL,
@@ -38,28 +39,9 @@ export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(
       baseQuery: workspaceQuery,
     });
 
-    addTest({
-      description: `returns ${HTTP.BAD_REQUEST} when 'page' query param is invalid`,
-      query: {
-        ...workspaceQuery,
-        perPage: APP.MAX_ITEMS_PER_PAGE,
-      },
-      session: { user: { email: SUPER_USER_EMAIL } },
-      expect: {
-        statusCode: HTTP.BAD_REQUEST,
-      },
-    });
-
-    addTest({
-      description: `returns ${HTTP.BAD_REQUEST} when 'perPage' query param is invalid`,
-      query: {
-        ...workspaceQuery,
-        page: 1,
-      },
-      session: { user: { email: SUPER_USER_EMAIL } },
-      expect: {
-        statusCode: HTTP.BAD_REQUEST,
-      },
+    includePaginationTests({
+      addTest,
+      baseQuery: workspaceQuery,
     });
 
     addTest({

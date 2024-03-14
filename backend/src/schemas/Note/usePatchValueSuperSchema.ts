@@ -7,6 +7,8 @@ import { NOTE_RULES } from "@shared/constants/rules";
 import { useTextSchema } from "@schemas/common/useTextSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
+const { MIN_LENGTH, MAX_LENGTH } = NOTE_RULES.VALUE;
+
 const querySchema: SuperSchema.Fragment<PatchValueControllerTypes.v1.Query> =
   object({
     workspaceId: number().required(),
@@ -14,7 +16,7 @@ const querySchema: SuperSchema.Fragment<PatchValueControllerTypes.v1.Query> =
 
 const bodySchema: SuperSchema.Fragment<PatchValueControllerTypes.v1.Body> =
   object({
-    text: useTextSchema(NOTE_RULES.VALUE.MAX_LENGTH),
+    text: useTextSchema(MIN_LENGTH, MAX_LENGTH),
   });
 
 export const usePatchValueSuperSchema: SuperSchema.Runner<

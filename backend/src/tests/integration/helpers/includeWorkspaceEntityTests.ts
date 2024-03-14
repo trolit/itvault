@@ -1,10 +1,11 @@
 import { ITest } from "@integration-tests/probata";
-import { USER_EMAIL } from "@integration-tests/config";
 import { StatusCodes as HTTP } from "http-status-codes";
+import { UNEXISTING_ITEM_ID, USER_EMAIL } from "@integration-tests/config";
 
 const defaultFlags = {
   workspaceIdNotProvidedTest: true,
-  notPermittedToViewWorkspace: true,
+  notPermittedToViewWorkspaceTest: true,
+  workspaceNotAvailableTest: true,
 };
 
 export const includeWorkspaceEntityTests = (
@@ -15,7 +16,8 @@ export const includeWorkspaceEntityTests = (
   },
   flags?: {
     workspaceIdNotProvidedTest?: boolean;
-    notPermittedToViewWorkspace?: boolean;
+    notPermittedToViewWorkspaceTest?: boolean;
+    workspaceNotAvailableTest?: boolean;
   }
 ) => {
   const { addTest, baseQuery, appendToAction } = data;
@@ -33,10 +35,25 @@ export const includeWorkspaceEntityTests = (
     });
   }
 
-  if (currentFlags.notPermittedToViewWorkspace) {
+  if (currentFlags.notPermittedToViewWorkspaceTest) {
     addTest({
       description: `returns ${HTTP.FORBIDDEN} when user is not permitted to access workspace related endpoint`,
       query: baseQuery,
+      session: { user: { email: USER_EMAIL } },
+      appendToAction,
+      expect: {
+        statusCode: HTTP.FORBIDDEN,
+      },
+    });
+  }
+
+  if (currentFlags.workspaceNotAvailableTest) {
+    addTest({
+      description: `returns ${HTTP.BAD_REQUEST} when workspace does not exist`,
+      query: {
+        ...baseQuery,
+        workspaceId: UNEXISTING_ITEM_ID,
+      },
       session: { user: { email: USER_EMAIL } },
       appendToAction,
       expect: {

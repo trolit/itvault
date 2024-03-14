@@ -14,8 +14,10 @@ import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 import { useTextSchema } from "@schemas/common/useTextSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
+const { MIN_LENGTH, MAX_LENGTH } = CHAT_MESSAGE_RULES.VALUE;
+
 const bodySchema: SuperSchema.Fragment<AddControllerTypes.v1.Body> = object({
-  text: useTextSchema(CHAT_MESSAGE_RULES.VALUE.MAX_LENGTH),
+  text: useTextSchema(MIN_LENGTH, MAX_LENGTH),
 
   replyToId: number()
     .optional()

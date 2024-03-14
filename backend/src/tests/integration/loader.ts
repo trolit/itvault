@@ -62,13 +62,13 @@ describe("Integration tests", async function () {
 });
 
 async function prepare(suite: Mocha.Suite, app: Server) {
-  for (const testsGroup of TESTS_GROUPS) {
-    testsGroup.beforeAll(suite);
-  }
-
   await addWorkspaces([WORKSPACE_1, WORKSPACE_2]);
 
   await addBlueprints([BLUEPRINT_1, BLUEPRINT_2]);
+
+  for (const testsGroup of TESTS_GROUPS) {
+    testsGroup.beforeAll(suite);
+  }
 
   const runtimeData = new RuntimeData(app);
 
