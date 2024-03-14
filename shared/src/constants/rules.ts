@@ -48,6 +48,7 @@ export const CHAT_MESSAGE_RULES = {
 // @NOTE consider changing properties names to those defined in DTOs
 export const NOTE_RULES = {
   VALUE: {
+    MIN_LENGTH: 2,
     MAX_LENGTH: 1000,
   },
 };
