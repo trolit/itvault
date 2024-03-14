@@ -49,7 +49,7 @@ export const includeWorkspaceEntityTests = (
 
   if (currentFlags.workspaceNotAvailableTest) {
     addTest({
-      description: `returns ${HTTP.BAD_REQUEST} when requested workspace does not exist`,
+      description: `returns ${HTTP.BAD_REQUEST} when workspace does not exist`,
       query: {
         ...baseQuery,
         workspaceId: UNEXISTING_ITEM_ID,
