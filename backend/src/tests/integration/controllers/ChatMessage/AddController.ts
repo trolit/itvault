@@ -1,3 +1,4 @@
+import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
@@ -8,6 +9,7 @@ import {
 
 import { includeTextTests } from "./includeTextTests";
 
+import { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 
 import { BaseController } from "@controllers/BaseController";
@@ -16,7 +18,7 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
 
-const STARTING_INDEX = 5;
+const STARTING_INDEX = 6;
 
 export const DEPTH_MESSAGES = Array.from(
   { length: WORKSPACE_CHAT_MAX_DEPTH },
@@ -77,6 +79,23 @@ export const ADD_CONTROLLER_V1_TESTS = defineTests(
         },
       });
     }
+
+    addTest({
+      description: `returns ${HTTP.CREATED} with sanitized text`,
+      session: { user: { email: SUPER_USER_EMAIL } },
+      query: baseQuery,
+      body: {
+        text: "<img src=x onload=alert('something1') />this<script>alert('something2')</script>",
+      },
+      expect: {
+        statusCode: HTTP.CREATED,
+        callback(response) {
+          const body = <IChatMessageDTO>response.body;
+
+          expect(body.value).to.equal("this");
+        },
+      },
+    });
 
     if (PENUMILATE_DEPTH_CHAT_MESSAGE_ID) {
       addTest({

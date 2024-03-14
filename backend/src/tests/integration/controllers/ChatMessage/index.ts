@@ -3,6 +3,10 @@ import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 
 import { ADD_CONTROLLER_V1_TESTS, DEPTH_MESSAGES } from "./AddController";
 import {
+  CHAT_MESSAGE_TO_UPDATE,
+  PATCH_VALUE_CONTROLLER_V1_TESTS,
+} from "./PatchValueController";
+import {
   CHAT_MESSAGE_1,
   CHAT_MESSAGE_2,
   GET_ALL_CONTROLLER_V1_TESTS,
@@ -17,6 +21,7 @@ import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/ChatMessage/AddController";
 import { GetAllController } from "@controllers/ChatMessage/GetAllController";
 import { HardDeleteController } from "@controllers/ChatMessage/HardDeleteController";
+import { PatchValueController } from "@controllers/ChatMessage/PatchValueController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -46,6 +51,16 @@ export const CHAT_MESSAGE_TESTS = defineTestsGroup({
     },
     {
       action: "",
+      controller: PatchValueController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: PATCH_VALUE_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
+    {
+      action: "",
       controller: AddController.name,
       testData: [
         {
@@ -62,6 +77,7 @@ export const CHAT_MESSAGE_TESTS = defineTestsGroup({
         CHAT_MESSAGE_2,
         CHAT_MESSAGE_TO_DELETE,
         USER_CHAT_MESSAGE,
+        CHAT_MESSAGE_TO_UPDATE,
         ...DEPTH_MESSAGES,
       ]);
     },
