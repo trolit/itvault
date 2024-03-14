@@ -1,6 +1,7 @@
 import { defineTestsGroup } from "@integration-tests/probata";
 import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 
+import { ADD_CONTROLLER_V1_TESTS } from "./AddController";
 import {
   CHAT_MESSAGE_1,
   CHAT_MESSAGE_2,
@@ -13,6 +14,7 @@ import {
 } from "./HardDeleteController";
 
 import { BaseController } from "@controllers/BaseController";
+import { AddController } from "@controllers/ChatMessage/AddController";
 import { GetAllController } from "@controllers/ChatMessage/GetAllController";
 import { HardDeleteController } from "@controllers/ChatMessage/HardDeleteController";
 
@@ -39,6 +41,16 @@ export const CHAT_MESSAGE_TESTS = defineTestsGroup({
         {
           routerVersion: v1,
           tests: HARD_DELETE_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
+    {
+      action: "",
+      controller: AddController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: ADD_CONTROLLER_V1_TESTS,
         },
       ],
     },
