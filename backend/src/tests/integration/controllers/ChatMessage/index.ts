@@ -1,7 +1,7 @@
 import { defineTestsGroup } from "@integration-tests/probata";
 import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 
-import { ADD_CONTROLLER_V1_TESTS } from "./AddController";
+import { ADD_CONTROLLER_V1_TESTS, DEPTH_MESSAGES } from "./AddController";
 import {
   CHAT_MESSAGE_1,
   CHAT_MESSAGE_2,
@@ -62,6 +62,7 @@ export const CHAT_MESSAGE_TESTS = defineTestsGroup({
         CHAT_MESSAGE_2,
         CHAT_MESSAGE_TO_DELETE,
         USER_CHAT_MESSAGE,
+        ...DEPTH_MESSAGES,
       ]);
     },
   },

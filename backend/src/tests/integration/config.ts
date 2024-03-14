@@ -45,3 +45,4 @@ export const BLUEPRINT_2 = {
 
 export const UNEXISTING_WORKSPACE_ID = 9999;
 export const UNEXISTING_BLUEPRINT_ID = 9999;
+export const UNEXISTING_CHAT_MESSAGE_ID = 9999;

@@ -1,9 +1,13 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
-import { SUPER_USER_EMAIL, USER_EMAIL } from "@integration-tests/config";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
+import {
+  SUPER_USER_EMAIL,
+  UNEXISTING_CHAT_MESSAGE_ID,
+  USER_EMAIL,
+} from "@integration-tests/config";
 
 import { CHAT_MESSAGE_1 } from "./GetAllController";
 
@@ -16,7 +20,6 @@ import { BaseController } from "@controllers/BaseController";
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
-const UNEXISTING_CHAT_MESSAGE_ID = 9999;
 
 export const CHAT_MESSAGE_TO_DELETE = {
   id: 3,
