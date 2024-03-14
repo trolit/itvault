@@ -4,9 +4,9 @@ import { Method, defineTests } from "@integration-tests/probata";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import {
-  SUPER_USER_EMAIL,
-  UNEXISTING_CHAT_MESSAGE_ID,
   USER_EMAIL,
+  SUPER_USER_EMAIL,
+  UNEXISTING_ITEM_ID,
 } from "@integration-tests/config";
 
 import { CHAT_MESSAGE_1 } from "./GetAllController";
@@ -47,7 +47,7 @@ export const HARD_DELETE_CONTROLLER_V1_TESTS = defineTests(
     addTest({
       description: `returns ${HTTP.NO_CONTENT} when chat message does not exist`,
       session: { user: { email: SUPER_USER_EMAIL } },
-      appendToAction: `${UNEXISTING_CHAT_MESSAGE_ID}`,
+      appendToAction: `${UNEXISTING_ITEM_ID}`,
       expect: {
         statusCode: HTTP.NO_CONTENT,
       },

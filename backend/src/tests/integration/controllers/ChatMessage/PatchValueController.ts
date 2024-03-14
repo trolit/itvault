@@ -5,7 +5,7 @@ import { IChatMessageRepository } from "types/repositories/IChatMessageRepositor
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import {
   SUPER_USER_EMAIL,
-  UNEXISTING_CHAT_MESSAGE_ID,
+  UNEXISTING_ITEM_ID,
 } from "@integration-tests/config";
 
 import { includeTextTests } from "./includeTextTests";
@@ -51,7 +51,7 @@ export const PATCH_VALUE_CONTROLLER_V1_TESTS = defineTests(
     addTest({
       description: `returns ${HTTP.NOT_FOUND} when trying to update unexisting message`,
       session: { user: { email: SUPER_USER_EMAIL } },
-      appendToAction: getActionAppendValue(UNEXISTING_CHAT_MESSAGE_ID),
+      appendToAction: getActionAppendValue(UNEXISTING_ITEM_ID),
       body: {
         text: UPDATED_TEXT_OF_CHAT_MESSAGE,
       },

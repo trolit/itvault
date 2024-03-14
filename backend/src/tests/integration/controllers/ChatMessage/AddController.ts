@@ -4,7 +4,7 @@ import { Method, defineTests } from "@integration-tests/probata";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import {
   SUPER_USER_EMAIL,
-  UNEXISTING_CHAT_MESSAGE_ID,
+  UNEXISTING_ITEM_ID,
 } from "@integration-tests/config";
 
 import { includeTextTests } from "./includeTextTests";
@@ -59,7 +59,7 @@ export const ADD_CONTROLLER_V1_TESTS = defineTests(
       session: { user: { email: SUPER_USER_EMAIL } },
       body: {
         text: "some typical text",
-        replyToId: UNEXISTING_CHAT_MESSAGE_ID,
+        replyToId: UNEXISTING_ITEM_ID,
       },
       expect: {
         statusCode: HTTP.BAD_REQUEST,

@@ -8,7 +8,7 @@ import {
   BLUEPRINT_1,
   WORKSPACE_1,
   SUPER_USER_EMAIL,
-  UNEXISTING_BLUEPRINT_ID,
+  UNEXISTING_ITEM_ID,
 } from "@integration-tests/config";
 
 import { includeAddUpdateTests } from "./includeAddUpdateTests";
@@ -46,7 +46,7 @@ export const UPDATE_CONTROLLER_V1_TESTS = defineTests(
     addTest({
       description: `returns ${HTTP.BAD_REQUEST} when blueprint does not exist`,
       session: { user: { email: SUPER_USER_EMAIL } },
-      appendToAction: `${UNEXISTING_BLUEPRINT_ID}`,
+      appendToAction: `${UNEXISTING_ITEM_ID}`,
       query: workspaceQuery,
       expect: {
         statusCode: HTTP.BAD_REQUEST,
