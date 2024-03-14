@@ -6,9 +6,15 @@ import {
   CHAT_MESSAGE_2,
   GET_ALL_CONTROLLER_V1_TESTS,
 } from "./GetAllController";
+import {
+  USER_CHAT_MESSAGE,
+  CHAT_MESSAGE_TO_DELETE,
+  HARD_DELETE_CONTROLLER_V1_TESTS,
+} from "./HardDeleteController";
 
 import { BaseController } from "@controllers/BaseController";
 import { GetAllController } from "@controllers/ChatMessage/GetAllController";
+import { HardDeleteController } from "@controllers/ChatMessage/HardDeleteController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
@@ -26,10 +32,25 @@ export const CHAT_MESSAGE_TESTS = defineTestsGroup({
         },
       ],
     },
+    {
+      action: "",
+      controller: HardDeleteController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: HARD_DELETE_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
   ],
   hooks: {
     before: () => {
-      return addChatMessages([CHAT_MESSAGE_1, CHAT_MESSAGE_2]);
+      return addChatMessages([
+        CHAT_MESSAGE_1,
+        CHAT_MESSAGE_2,
+        CHAT_MESSAGE_TO_DELETE,
+        USER_CHAT_MESSAGE,
+      ]);
     },
   },
 });
