@@ -4,12 +4,11 @@ import { MoveFilesControllerTypes } from "types/controllers/Directory/MoveFilesC
 
 import { Di } from "@enums/Di";
 
-import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const querySchema: SuperSchema.Fragment<MoveFilesControllerTypes.v1.Query> =
   object({
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    workspaceId: number().required(),
   });
 
 const bodySchema: SuperSchema.Fragment<MoveFilesControllerTypes.v1.Body> =
