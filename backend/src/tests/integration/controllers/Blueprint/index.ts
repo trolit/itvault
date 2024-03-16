@@ -1,11 +1,10 @@
 import { defineTestsGroup } from "@integration-tests/probata";
-import { addBlueprints } from "@integration-tests/helpers/db/addBlueprints";
 
 import { ADD_CONTROLLER_V1_TESTS } from "./AddController";
 import { UPDATE_CONTROLLER_V1_TESTS } from "./UpdateController";
 import { GET_ALL_CONTROLLER_V1_TESTS } from "./GetAllController";
 import {
-  BLUEPRINT_TO_DELETE,
+  SOFT_DELETE_CONTROLLER_V1_BEFORE_HOOK,
   SOFT_DELETE_CONTROLLER_V1_TESTS,
 } from "./SoftDeleteController";
 
@@ -64,7 +63,7 @@ export const BLUEPRINT_TESTS = defineTestsGroup({
   ],
   hooks: {
     before: () => {
-      return addBlueprints([BLUEPRINT_TO_DELETE]);
+      return Promise.all([SOFT_DELETE_CONTROLLER_V1_BEFORE_HOOK()]);
     },
   },
 });
