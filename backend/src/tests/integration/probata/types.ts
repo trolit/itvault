@@ -71,6 +71,8 @@ export interface ITestInstance extends ICommonMethods {
 }
 
 export interface ITestsGroup {
+  _data: { runInPrivilegedMode: boolean };
+
   beforeAll(suite: Mocha.Suite): void;
 
   loadToSuite(suite: Mocha.Suite): void;

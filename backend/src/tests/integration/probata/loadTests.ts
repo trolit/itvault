@@ -4,7 +4,8 @@ import snakeCase from "lodash/snakeCase";
 import { ITestsGroup } from "./types";
 
 export const loadTestsGroups = async (suite: Mocha.Suite, dir: string) => {
-  const testGroups: ITestsGroup[] = [];
+  const unprivilegedTestsGroups: ITestsGroup[] = [];
+  const privilegedTestsGroups: ITestsGroup[] = [];
 
   const dirContent = fs.readdirSync(dir);
 
@@ -18,16 +19,24 @@ export const loadTestsGroups = async (suite: Mocha.Suite, dir: string) => {
     const module = await import(`${dir}/${dirElement}`);
     const value = `${snakeCase(dirElement).toUpperCase()}_TESTS`;
 
-    const testsGroup = module[value];
+    const testsGroup: ITestsGroup = module[value];
 
     if (!testsGroup) {
       continue;
     }
 
-    testGroups.push(testsGroup);
+    testsGroup._data.runInPrivilegedMode
+      ? privilegedTestsGroups.push(testsGroup)
+      : unprivilegedTestsGroups.push(testsGroup);
+  }
 
+  const testsGroups: ITestsGroup[] = privilegedTestsGroups.length
+    ? privilegedTestsGroups
+    : [...privilegedTestsGroups, ...unprivilegedTestsGroups];
+
+  for (const testsGroup of testsGroups) {
     testsGroup.loadToSuite(suite);
   }
 
-  return testGroups;
+  return testsGroups;
 };

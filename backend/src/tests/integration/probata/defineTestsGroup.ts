@@ -24,13 +24,18 @@ export const defineTestsGroup = (arg: {
       tests: (ITest | ICustomTest)[];
     }[];
   }[];
+  runInPrivilegedMode?: boolean; // @NOTE turns on privileged mode = runs only tests groups with flag enabled
   hooks?: {
     before?: Mocha.Func;
   };
 }): ITestsGroup => {
-  const { name: suiteId, router, hooks, collection } = arg;
+  const { name: suiteId, router, hooks, collection, runInPrivilegedMode } = arg;
 
   return {
+    _data: {
+      runInPrivilegedMode: !!runInPrivilegedMode,
+    },
+
     beforeAll(suite: Mocha.Suite) {
       if (!hooks?.before) {
         return;
