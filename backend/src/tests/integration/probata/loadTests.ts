@@ -4,8 +4,8 @@ import snakeCase from "lodash/snakeCase";
 import { ITestsGroup } from "./types";
 
 export const loadTestsGroups = async (suite: Mocha.Suite, dir: string) => {
-  const unprivilegedTestGroups: ITestsGroup[] = [];
-  const privilegedTestGroups: ITestsGroup[] = [];
+  const unprivilegedTestsGroups: ITestsGroup[] = [];
+  const privilegedTestsGroups: ITestsGroup[] = [];
 
   const dirContent = fs.readdirSync(dir);
 
@@ -26,13 +26,13 @@ export const loadTestsGroups = async (suite: Mocha.Suite, dir: string) => {
     }
 
     testsGroup._data.runInPrivilegedMode
-      ? privilegedTestGroups.push(testsGroup)
-      : unprivilegedTestGroups.push(testsGroup);
+      ? privilegedTestsGroups.push(testsGroup)
+      : unprivilegedTestsGroups.push(testsGroup);
   }
 
-  const testsGroups: ITestsGroup[] = privilegedTestGroups.length
-    ? privilegedTestGroups
-    : [...privilegedTestGroups, ...unprivilegedTestGroups];
+  const testsGroups: ITestsGroup[] = privilegedTestsGroups.length
+    ? privilegedTestsGroups
+    : [...privilegedTestsGroups, ...unprivilegedTestsGroups];
 
   for (const testsGroup of testsGroups) {
     testsGroup.loadToSuite(suite);
