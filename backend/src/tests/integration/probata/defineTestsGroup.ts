@@ -150,5 +150,3 @@ async function runTest(arg: {
 
   expect(response.status).to.eql(statusCode);
 }
-
-function isInPrivilegedMode() {}
