@@ -1,9 +1,13 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IUserService } from "types/services/IUserService";
-import { SUPER_USER_EMAIL } from "@integration-tests/config";
 import { Method, defineTests } from "@integration-tests/probata";
+import { addUsers } from "@integration-tests/helpers/db/addUsers";
 import { IUserRepository } from "types/repositories/IUserRepository";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
+import {
+  NO_PERMISSIONS_ROLE_ID,
+  SUPER_USER_EMAIL,
+} from "@integration-tests/config";
 
 import { Di } from "@enums/Di";
 
@@ -13,9 +17,19 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-export const STATUS_MEMBER_EMAIL = "sign-out@email.com";
+const STATUS_MEMBER_EMAIL = "sign-out@email.com";
 
 const baseQuery = { version: v1 };
+
+export const STATUS_CONTROLLER_V1_BEFORE_HOOK = async () => {
+  return addUsers([
+    {
+      email: STATUS_MEMBER_EMAIL,
+      isSignedUp: true,
+      roleNameOrId: NO_PERMISSIONS_ROLE_ID,
+    },
+  ]);
+};
 
 export const STATUS_CONTROLLER_V1_TESTS = defineTests(
   {

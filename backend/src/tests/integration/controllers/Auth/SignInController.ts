@@ -2,7 +2,12 @@ import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { IAuthService } from "types/services/IAuthService";
 import { Method, defineTests } from "@integration-tests/probata";
-import { PASSWORD, SUPER_USER_EMAIL } from "@integration-tests/config";
+import { addUsers } from "@integration-tests/helpers/db/addUsers";
+import {
+  NO_PERMISSIONS_ROLE_ID,
+  PASSWORD,
+  SUPER_USER_EMAIL,
+} from "@integration-tests/config";
 
 import { Di } from "@enums/Di";
 import { ISignInDTO } from "@shared/types/DTOs/Auth";
@@ -14,11 +19,31 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-export const VALID_REQUEST_EMAIL = "session@email.com";
-export const SESSION_LIMIT_EMAIL = "session-limit@email.com";
-export const NOT_SIGNED_UP_TEST_EMAIL = "not-signed-up@email.com";
+const VALID_REQUEST_EMAIL = "session@email.com";
+const SESSION_LIMIT_EMAIL = "session-limit@email.com";
+const NOT_SIGNED_UP_TEST_EMAIL = "not-signed-up@email.com";
 
 const BASE_QUERY = { version: v1 };
+
+export const SIGN_IN_CONTROLLER_V1_BEFORE_HOOK = async () => {
+  return addUsers([
+    {
+      email: VALID_REQUEST_EMAIL,
+      isSignedUp: true,
+      roleNameOrId: NO_PERMISSIONS_ROLE_ID,
+    },
+    {
+      email: NOT_SIGNED_UP_TEST_EMAIL,
+      isSignedUp: false,
+      roleNameOrId: NO_PERMISSIONS_ROLE_ID,
+    },
+    {
+      email: SESSION_LIMIT_EMAIL,
+      isSignedUp: true,
+      roleNameOrId: NO_PERMISSIONS_ROLE_ID,
+    },
+  ]);
+};
 
 export const SIGN_IN_CONTROLLER_V1_TESTS = defineTests(
   {

@@ -1,5 +1,7 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
+import { addUsers } from "@integration-tests/helpers/db/addUsers";
+import { NO_PERMISSIONS_ROLE_ID } from "@integration-tests/config";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 
 import { IUserSessionDTO } from "@shared/types/DTOs/Auth";
@@ -8,10 +10,25 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-export const DELETE_SESSION_MEMBER1_EMAIL = "session-delete-member1@email.com";
-export const DELETE_SESSION_MEMBER2_EMAIL = "session-delete-member2@email.com";
+const DELETE_SESSION_MEMBER1_EMAIL = "session-delete-member1@email.com";
+const DELETE_SESSION_MEMBER2_EMAIL = "session-delete-member2@email.com";
 
 const baseQuery = { version: v1 };
+
+export const DELETE_SESSION_CONTROLLER_V1_BEFORE_HOOK = async () => {
+  return addUsers([
+    {
+      email: DELETE_SESSION_MEMBER1_EMAIL,
+      isSignedUp: true,
+      roleNameOrId: NO_PERMISSIONS_ROLE_ID,
+    },
+    {
+      email: DELETE_SESSION_MEMBER2_EMAIL,
+      isSignedUp: true,
+      roleNameOrId: NO_PERMISSIONS_ROLE_ID,
+    },
+  ]);
+};
 
 export const DELETE_SESSION_CONTROLLER_V1_TESTS = defineTests(
   {
