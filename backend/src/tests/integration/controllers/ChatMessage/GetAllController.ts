@@ -2,6 +2,7 @@ import { expect, should } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { SUPER_USER_EMAIL } from "@integration-tests/config";
 import { Method, defineTests } from "@integration-tests/probata";
+import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import { includePaginationTests } from "@integration-tests/helpers/includePaginationTests";
 
@@ -14,13 +15,17 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
 
-export const CHAT_MESSAGE_1 = {
+const CHAT_MESSAGE_1 = {
   id: 1,
 };
 
-export const CHAT_MESSAGE_2 = {
+const CHAT_MESSAGE_2 = {
   id: 2,
   replyToId: 1,
+};
+
+export const GET_ALL_CONTROLLER_V1_BEFORE_HOOK = async () => {
+  return addChatMessages([CHAT_MESSAGE_1, CHAT_MESSAGE_2]);
 };
 
 export const GET_ALL_CONTROLLER_V1_TESTS = defineTests(

@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
+import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import {
@@ -8,8 +9,6 @@ import {
   SUPER_USER_EMAIL,
   UNEXISTING_ITEM_ID,
 } from "@integration-tests/config";
-
-import { CHAT_MESSAGE_1 } from "./GetAllController";
 
 import { Di } from "@enums/Di";
 
@@ -21,14 +20,32 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
 
-export const CHAT_MESSAGE_TO_DELETE = {
+const CHAT_MESSAGE_1 = {
   id: 3,
+};
+
+const CHAT_MESSAGE_2 = {
+  id: 4,
+  replyToId: 3,
+};
+
+const CHAT_MESSAGE_TO_DELETE = {
+  id: 5,
   email: SUPER_USER_EMAIL,
 };
 
-export const USER_CHAT_MESSAGE = {
-  id: 4,
+const USER_CHAT_MESSAGE = {
+  id: 6,
   email: USER_EMAIL,
+};
+
+export const HARD_DELETE_CONTROLLER_V1_BEFORE_HOOK = async () => {
+  return addChatMessages([
+    CHAT_MESSAGE_1,
+    CHAT_MESSAGE_2,
+    CHAT_MESSAGE_TO_DELETE,
+    USER_CHAT_MESSAGE,
+  ]);
 };
 
 export const HARD_DELETE_CONTROLLER_V1_TESTS = defineTests(
