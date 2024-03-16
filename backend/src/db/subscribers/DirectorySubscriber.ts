@@ -78,7 +78,9 @@ export class DirectorySubscriber
         `Assigning parent directory (${previousDirectory.relativePath}) to ${relativePath}`
       );
 
-      event.entity.parentDirectory = previousDirectory;
+      event.entity.parentDirectory = manager.create(Directory, {
+        id: previousDirectory.id,
+      });
     }
   }
 
