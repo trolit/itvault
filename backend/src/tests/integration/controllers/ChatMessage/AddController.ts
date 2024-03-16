@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
+import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import {
   SUPER_USER_EMAIL,
@@ -18,9 +19,9 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
 
-const STARTING_INDEX = 6;
+const STARTING_INDEX = 8;
 
-export const DEPTH_MESSAGES = Array.from(
+const DEPTH_MESSAGES = Array.from(
   { length: WORKSPACE_CHAT_MAX_DEPTH },
   (item, currentIndex) => {
     const id = STARTING_INDEX + currentIndex;
@@ -36,6 +37,10 @@ const LAST_DEPTH_CHAT_MESSAGE_ID =
   STARTING_INDEX + WORKSPACE_CHAT_MAX_DEPTH - 1;
 const PENUMILATE_DEPTH_CHAT_MESSAGE_ID =
   STARTING_INDEX + WORKSPACE_CHAT_MAX_DEPTH - 2;
+
+export const ADD_CONTROLLER_V1_BEFORE_HOOK = async () => {
+  return addChatMessages(DEPTH_MESSAGES);
+};
 
 export const ADD_CONTROLLER_V1_TESTS = defineTests(
   {

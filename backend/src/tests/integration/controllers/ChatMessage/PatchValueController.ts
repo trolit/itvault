@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
+import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import {
@@ -20,14 +21,18 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
 
-export const CHAT_MESSAGE_TO_UPDATE = {
-  id: 5,
+const CHAT_MESSAGE_TO_UPDATE = {
+  id: 7,
 };
 
 const getActionAppendValue = (id?: number) =>
   `${id || CHAT_MESSAGE_TO_UPDATE.id}/value`;
 
 const UPDATED_TEXT_OF_CHAT_MESSAGE = "updated text of comment";
+
+export const PATCH_VALUE_CONTROLLER_V1_BEFORE_HOOK = async () => {
+  return addChatMessages([CHAT_MESSAGE_TO_UPDATE]);
+};
 
 export const PATCH_VALUE_CONTROLLER_V1_TESTS = defineTests(
   {

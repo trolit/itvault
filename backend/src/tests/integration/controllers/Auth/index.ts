@@ -1,25 +1,20 @@
 import { defineTestsGroup } from "@integration-tests/probata";
-import { addUsers } from "@integration-tests/helpers/db/addUsers";
-import { NO_PERMISSIONS_ROLE_ID } from "@integration-tests/config";
 
 import { GET_SESSIONS_CONTROLLER_V1_TESTS } from "./GetSessionsController";
 import {
-  STATUS_MEMBER_EMAIL,
+  STATUS_CONTROLLER_V1_BEFORE_HOOK,
   STATUS_CONTROLLER_V1_TESTS,
 } from "./StatusController";
 import {
-  SIGN_OUT_MEMBER_EMAIL,
-  SIGN_OUT_CONTROLLER_V1_TESTS,
-} from "./SignOutController";
-import {
-  SESSION_LIMIT_EMAIL,
-  VALID_REQUEST_EMAIL,
-  NOT_SIGNED_UP_TEST_EMAIL,
+  SIGN_IN_CONTROLLER_V1_BEFORE_HOOK,
   SIGN_IN_CONTROLLER_V1_TESTS,
 } from "./SignInController";
 import {
-  DELETE_SESSION_MEMBER1_EMAIL,
-  DELETE_SESSION_MEMBER2_EMAIL,
+  SIGN_OUT_CONTROLLER_V1_BEFORE_HOOK,
+  SIGN_OUT_CONTROLLER_V1_TESTS,
+} from "./SignOutController";
+import {
+  DELETE_SESSION_CONTROLLER_V1_BEFORE_HOOK,
   DELETE_SESSION_CONTROLLER_V1_TESTS,
 } from "./DeleteSessionController";
 
@@ -89,42 +84,11 @@ export const AUTH_TESTS = defineTestsGroup({
   ],
   hooks: {
     before: () => {
-      return addUsers([
-        {
-          email: VALID_REQUEST_EMAIL,
-          isSignedUp: true,
-          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
-        },
-        {
-          email: NOT_SIGNED_UP_TEST_EMAIL,
-          isSignedUp: false,
-          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
-        },
-        {
-          email: SESSION_LIMIT_EMAIL,
-          isSignedUp: true,
-          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
-        },
-        {
-          email: DELETE_SESSION_MEMBER1_EMAIL,
-          isSignedUp: true,
-          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
-        },
-        {
-          email: DELETE_SESSION_MEMBER2_EMAIL,
-          isSignedUp: true,
-          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
-        },
-        {
-          email: SIGN_OUT_MEMBER_EMAIL,
-          isSignedUp: true,
-          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
-        },
-        {
-          email: STATUS_MEMBER_EMAIL,
-          isSignedUp: true,
-          roleNameOrId: NO_PERMISSIONS_ROLE_ID,
-        },
+      return Promise.all([
+        SIGN_IN_CONTROLLER_V1_BEFORE_HOOK(),
+        SIGN_OUT_CONTROLLER_V1_BEFORE_HOOK(),
+        DELETE_SESSION_CONTROLLER_V1_BEFORE_HOOK(),
+        STATUS_CONTROLLER_V1_BEFORE_HOOK(),
       ]);
     },
   },
