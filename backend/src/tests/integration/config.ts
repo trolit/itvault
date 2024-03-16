@@ -1,5 +1,7 @@
 import path from "path";
 
+import { FILES } from "@config";
+
 import { HEAD_ADMIN_ROLE } from "@shared/constants/config";
 
 export const TESTS_TIMEOUT = "10s";
@@ -41,6 +43,11 @@ export const BLUEPRINT_2 = {
   color: "#E2FD07",
   description: "Blueprint2 description is quite typical.",
   workspaceId: WORKSPACE_1.id,
+};
+
+export const DIRECTORY_ROOT = {
+  id: 1,
+  relativePath: `${FILES.ROOT}`,
 };
 
 export const UNEXISTING_ITEM_ID = 9999;

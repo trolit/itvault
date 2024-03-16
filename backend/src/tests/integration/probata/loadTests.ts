@@ -20,6 +20,10 @@ export const loadTestsGroups = async (suite: Mocha.Suite, dir: string) => {
 
     const testsGroup = module[value];
 
+    if (!testsGroup) {
+      continue;
+    }
+
     testGroups.push(testsGroup);
 
     testsGroup.loadToSuite(suite);
