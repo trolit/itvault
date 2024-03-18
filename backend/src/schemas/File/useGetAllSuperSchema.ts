@@ -2,9 +2,12 @@ import { number, object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { GetAllControllerTypes } from "types/controllers/File/GetAllController";
 
+import { Di } from "@enums/Di";
+
 import { setYupError } from "@helpers/yup/setError";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
+import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const requireOneOfError = setYupError(
@@ -21,7 +24,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.Query> =
         .when("relativePath", {
           is: (value: string) => !!value,
           then: schema => schema.typeError(requireOneOfError),
-          otherwise: schema => schema.required(),
+          otherwise: () => useIdNumberSchema(Di.BlueprintRepository),
         }),
 
       relativePath: string()
