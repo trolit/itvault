@@ -37,6 +37,7 @@ filesRouter.use(requireAuthentication);
 filesRouter.use(
   requireWorkspaceAccess<WorkspaceId>(({ query }) => query.workspaceId)
 );
+filesRouter.use(IsWorkspaceAvailable);
 
 filesRouter.get(
   "",
@@ -54,7 +55,6 @@ filesRouter.post(
   "",
   requirePermissions([Permission.UploadFiles]),
   requireEndpointVersion(UploadController.ALL_VERSIONS),
-  IsWorkspaceAvailable,
   parseUploadFormData({
     multiples: true,
     basePath: FILES.BASE_TEMPORARY_UPLOADS_PATH,

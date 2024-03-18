@@ -9,7 +9,6 @@ import { setYupError } from "@helpers/yup/setError";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 import { CUSTOM_MESSAGES } from "@helpers/yup/custom-messages";
 
-import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { useRelativePathTest } from "@schemas/common/useRelativePathTest";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
@@ -20,7 +19,7 @@ const paramsSchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Par
 
 const querySchema: SuperSchema.Fragment<PatchRelativePathControllerTypes.v1.Query> =
   object({
-    workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+    workspaceId: number().required(),
   });
 
 const useBodySchema: (
