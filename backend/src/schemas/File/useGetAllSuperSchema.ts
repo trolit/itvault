@@ -29,6 +29,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.Query> =
         .when("blueprintId", {
           is: (value: string) => !!value,
           then: schema => schema.typeError(requireOneOfError),
+          // @TODO include relativePath test
           otherwise: schema => schema.required(),
         }),
 
