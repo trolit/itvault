@@ -9,11 +9,15 @@ import {
   UNEXISTING_ITEM_ID,
 } from "@integration-tests/config";
 
+import { CHAT_MESSAGE_RULES } from "@shared/constants/rules";
 import { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 
 import { BaseController } from "@controllers/BaseController";
 
+const {
+  VALUE: { MIN_LENGTH, MAX_LENGTH },
+} = CHAT_MESSAGE_RULES;
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
@@ -57,6 +61,8 @@ export const ADD_CONTROLLER_V1_TESTS = defineTests(
       field: "text",
       addTest,
       baseQuery,
+      minLength: MIN_LENGTH,
+      maxLength: MAX_LENGTH,
     });
 
     addTest({

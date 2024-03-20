@@ -11,11 +11,15 @@ import {
 } from "@integration-tests/config";
 
 import { Di } from "@enums/Di";
+import { CHAT_MESSAGE_RULES } from "@shared/constants/rules";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 import { BaseController } from "@controllers/BaseController";
 
+const {
+  VALUE: { MIN_LENGTH, MAX_LENGTH },
+} = CHAT_MESSAGE_RULES;
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
@@ -50,6 +54,8 @@ export const PATCH_VALUE_CONTROLLER_V1_TESTS = defineTests(
       field: "text",
       addTest,
       baseQuery,
+      minLength: MIN_LENGTH,
+      maxLength: MAX_LENGTH,
       appendToAction: getActionAppendValue(),
     });
 
