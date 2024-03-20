@@ -28,14 +28,14 @@ export const DIRECTORY_WITH_SAME_FILE = {
 };
 
 const FILE_1 = {
-  id: 6,
+  id: 7,
   originalFilename: "test.ts",
   relativePath: DIRECTORY_ROOT.relativePath,
   workspaceId,
 };
 
 const FILE_2 = {
-  id: 7,
+  id: 8,
   originalFilename: "test.ts",
   relativePath: DIRECTORY_WITH_SAME_FILE.relativePath,
   workspaceId,
