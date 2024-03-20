@@ -47,6 +47,8 @@ export class PatchRelativePathController extends BaseController {
       },
     });
 
+    // @TODO check if file exists (also in PatchFilename)
+
     if (directory) {
       await this._fileRepository.primitiveUpdate(
         {
