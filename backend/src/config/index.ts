@@ -17,6 +17,10 @@ const envFloat = (name: string) => env.get(name).required().asFloat();
 
 const ENV = <Environment>envEnum("NODE_ENV", Environment);
 
+if (ENV === Environment.Test) {
+  dotenv.config({ path: ".env.test", override: true });
+}
+
 export const APP = {
   PORT: envPort("PORT"),
   URL: envString("APP_URL"),
