@@ -1,5 +1,6 @@
 import { defineTestsGroup } from "@integration-tests/probata";
 
+import { ADD_CONTROLLER_V1_TESTS } from "./AddController";
 import { GET_ALL_CONTROLLER_V1_TESTS } from "./GetAllController";
 import {
   SOFT_DELETE_CONTROLLER_V1_TESTS,
@@ -7,6 +8,7 @@ import {
 } from "./SoftDeleteController";
 
 import { BaseController } from "@controllers/BaseController";
+import { AddController } from "@controllers/Note/AddController";
 import { GetAllController } from "@controllers/Note/GetAllController";
 import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
 
@@ -15,6 +17,7 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 export const NOTE_TESTS = defineTestsGroup({
   name: "Note",
   router: `notes`,
+  runInPrivilegedMode: true,
   collection: [
     {
       action: "",
@@ -33,6 +36,16 @@ export const NOTE_TESTS = defineTestsGroup({
         {
           routerVersion: v1,
           tests: SOFT_DELETE_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
+    {
+      action: "",
+      controller: AddController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: ADD_CONTROLLER_V1_TESTS,
         },
       ],
     },
