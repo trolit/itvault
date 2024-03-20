@@ -29,6 +29,12 @@ export const addNotes = async (
       file: {
         id: fileId,
       },
+      createdBy: {
+        id: createdById || 1,
+      },
+      updatedBy: {
+        id: createdById || 1,
+      },
     });
 
     const note = await noteRepository.primitiveSave(
