@@ -2,14 +2,11 @@ import { number, object } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { DeleteControllerTypes } from "types/controllers/File/SoftDeleteController";
 
-import { Di } from "@enums/Di";
-
-import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
 const paramsSchema: SuperSchema.Fragment<DeleteControllerTypes.v1.Params> =
   object({
-    id: useIdNumberSchema(Di.FileRepository),
+    id: number().required(),
   });
 
 const querySchema: SuperSchema.Fragment<DeleteControllerTypes.v1.Query> =
