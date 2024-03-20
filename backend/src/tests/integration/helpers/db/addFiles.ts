@@ -11,6 +11,7 @@ import { getInstanceOf } from "@helpers/getInstanceOf";
 export const addFiles = async (
   filesToAdd: {
     id: number;
+    originalFilename?: string;
     relativePath: string;
     workspaceId: number;
   }[]
@@ -42,7 +43,7 @@ export const addFiles = async (
   }
 
   for (const fileToAdd of filesToAdd) {
-    const { id, relativePath, workspaceId } = fileToAdd;
+    const { id, relativePath, workspaceId, originalFilename } = fileToAdd;
 
     const directory = directories.find(
       directory => directory.relativePath == relativePath
@@ -56,7 +57,7 @@ export const addFiles = async (
 
     const fileEntity = fileRepository.createEntity({
       id,
-      originalFilename: faker.system.commonFileName(),
+      originalFilename: originalFilename || faker.system.commonFileName(),
       directory,
       workspace: {
         id: workspaceId,

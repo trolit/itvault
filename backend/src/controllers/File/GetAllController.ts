@@ -12,7 +12,6 @@ import { BaseController } from "@controllers/BaseController";
 
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
-// @NOTE deprecated (use TreeController from Workspace)
 @injectable()
 export class GetAllController extends BaseController {
   constructor(

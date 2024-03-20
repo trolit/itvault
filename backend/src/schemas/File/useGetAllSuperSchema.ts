@@ -24,7 +24,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.Query> =
         .when("relativePath", {
           is: (value: string) => !!value,
           then: schema => schema.typeError(requireOneOfError),
-          otherwise: schema => schema.required(),
+          otherwise: () => useIdNumberSchema(Di.BlueprintRepository),
         }),
 
       relativePath: string()
@@ -32,10 +32,11 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.Query> =
         .when("blueprintId", {
           is: (value: string) => !!value,
           then: schema => schema.typeError(requireOneOfError),
+          // @TODO include relativePath test
           otherwise: schema => schema.required(),
         }),
 
-      workspaceId: useIdNumberSchema(Di.WorkspaceRepository),
+      workspaceId: number().required(),
     },
     [["blueprintId", "relativePath"]]
   );

@@ -135,11 +135,13 @@ async function runTest(arg: {
     response = await test.runner({ url, router, testAgent, request });
   } else {
     const {
+      attach,
       session,
       expect: { callback },
     } = test;
 
     response = await testAgent.request({
+      attach,
       session,
     });
 
