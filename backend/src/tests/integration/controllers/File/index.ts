@@ -1,5 +1,6 @@
 import { defineTestsGroup } from "@integration-tests/probata";
 
+import { UPLOAD_CONTROLLER_V1_TESTS } from "./UploadController";
 import { GET_ALL_CONTROLLER_V1_TESTS } from "./GetAllController";
 import {
   GET_BY_ID_CONTROLLER_V1_TESTS,
@@ -19,6 +20,7 @@ import {
 } from "./PatchRelativePathController";
 
 import { BaseController } from "@controllers/BaseController";
+import { UploadController } from "@controllers/File/UploadController";
 import { GetAllController } from "@controllers/File/GetAllController";
 import { GetByIdController } from "@controllers/File/GetByIdController";
 import { SoftDeleteController } from "@controllers/File/SoftDeleteController";
@@ -78,6 +80,16 @@ export const FILE_TESTS = defineTestsGroup({
         {
           routerVersion: v1,
           tests: SOFT_DELETE_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
+    {
+      action: "",
+      controller: UploadController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: UPLOAD_CONTROLLER_V1_TESTS,
         },
       ],
     },
