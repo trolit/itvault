@@ -17,7 +17,6 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 export const NOTE_TESTS = defineTestsGroup({
   name: "Note",
   router: `notes`,
-  runInPrivilegedMode: true,
   collection: [
     {
       action: "",
