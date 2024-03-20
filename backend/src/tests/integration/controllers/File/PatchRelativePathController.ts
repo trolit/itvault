@@ -18,12 +18,12 @@ const workspaceId = WORKSPACE_1.id;
 const baseQuery = { version: v1, workspaceId };
 
 export const EMPTY_DIRECTORY = {
-  id: 4,
+  id: 7,
   relativePath: `${DIRECTORY_ROOT.relativePath}/empty`,
 };
 
 export const DIRECTORY_WITH_SAME_FILE = {
-  id: 5,
+  id: 8,
   relativePath: `${DIRECTORY_ROOT.relativePath}/rtp`,
 };
 

@@ -17,7 +17,7 @@ const workspaceId = WORKSPACE_1.id;
 const baseQuery = { version: v1, workspaceId };
 
 const FILE = {
-  id: 8,
+  id: 9,
   originalFilename: "file-to-delete.ts",
   relativePath: DIRECTORY_ROOT.relativePath,
   workspaceId,

@@ -6,10 +6,11 @@ import { server, onExit } from "../../server";
 
 import { APP } from "@config";
 
-import { IRuntimeData } from "./types/IRuntimeData";
+import { addFiles } from "./helpers/db/addFiles";
 import { RuntimeData } from "./helpers/RuntimeData";
-import { addWorkspaces } from "./helpers/db/addWorkspaces";
+import { IRuntimeData } from "./types/IRuntimeData";
 import { addBlueprints } from "./helpers/db/addBlueprints";
+import { addWorkspaces } from "./helpers/db/addWorkspaces";
 import { addDirectories } from "./helpers/db/addDirectories";
 import { ITestsGroup, loadTestsGroups, useTestAgent } from "./probata";
 import {
@@ -21,6 +22,7 @@ import {
   BLUEPRINT_1,
   BLUEPRINT_2,
   DIRECTORY_ROOT,
+  FILE_1,
 } from "./config";
 
 import { Di } from "@enums/Di";
@@ -69,6 +71,8 @@ async function prepare(suite: Mocha.Suite, app: Server) {
   await addBlueprints([BLUEPRINT_1, BLUEPRINT_2]);
 
   await addDirectories([DIRECTORY_ROOT]);
+
+  await addFiles([FILE_1]);
 
   for (const testsGroup of TESTS_GROUPS) {
     testsGroup.beforeAll(suite);

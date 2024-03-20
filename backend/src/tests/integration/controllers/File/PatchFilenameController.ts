@@ -19,13 +19,13 @@ const workspaceId = WORKSPACE_1.id;
 const baseQuery = { version: v1, workspaceId };
 
 const FILE_1 = {
-  id: 4,
+  id: 5,
   relativePath: DIRECTORY_ROOT.relativePath,
   workspaceId,
 };
 
 const FILE_2 = {
-  id: 5,
+  id: 6,
   originalFilename: "super_file.txt",
   relativePath: DIRECTORY_ROOT.relativePath,
   workspaceId,

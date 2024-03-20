@@ -18,7 +18,7 @@ const workspaceId = WORKSPACE_1.id;
 const baseQuery = { version: v1, workspaceId };
 
 const FILE = {
-  id: 3,
+  id: 4,
   relativePath: DIRECTORY_ROOT.relativePath,
   workspaceId,
 };
