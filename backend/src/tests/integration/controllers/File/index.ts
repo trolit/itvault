@@ -6,6 +6,10 @@ import {
   GET_BY_ID_CONTROLLER_V1_BEFORE_HOOK,
 } from "./GetByIdController";
 import {
+  SOFT_DELETE_CONTROLLER_V1_BEFORE_HOOK,
+  SOFT_DELETE_CONTROLLER_V1_TESTS,
+} from "./SoftDeleteController";
+import {
   PATCH_FILENAME_CONTROLLER_V1_BEFORE_HOOK,
   PATCH_FILENAME_CONTROLLER_V1_TESTS,
 } from "./PatchFilenameController";
@@ -17,6 +21,7 @@ import {
 import { BaseController } from "@controllers/BaseController";
 import { GetAllController } from "@controllers/File/GetAllController";
 import { GetByIdController } from "@controllers/File/GetByIdController";
+import { SoftDeleteController } from "@controllers/File/SoftDeleteController";
 import { PatchFilenameController } from "@controllers/File/PatchFilenameController";
 import { PatchRelativePathController } from "@controllers/File/PatchRelativePathController";
 
@@ -66,6 +71,16 @@ export const FILE_TESTS = defineTestsGroup({
         },
       ],
     },
+    {
+      action: "",
+      controller: SoftDeleteController.name,
+      testData: [
+        {
+          routerVersion: v1,
+          tests: SOFT_DELETE_CONTROLLER_V1_TESTS,
+        },
+      ],
+    },
   ],
   hooks: {
     before: function () {
@@ -73,6 +88,7 @@ export const FILE_TESTS = defineTestsGroup({
         GET_BY_ID_CONTROLLER_V1_BEFORE_HOOK(),
         PATCH_FILENAME_CONTROLLER_V1_BEFORE_HOOK(),
         PATCH_RELATIVE_PATH_CONTROLLER_V1_BEFORE_HOOK(),
+        SOFT_DELETE_CONTROLLER_V1_BEFORE_HOOK(),
       ]);
     },
   },
