@@ -7,13 +7,13 @@ import { APP } from "@config";
 
 import { Dependency } from "@enums/Dependency";
 
-const { IS_PRODUCTION } = APP;
+const { IS_PRODUCTION, IS_TEST } = APP;
 
 const ERRORS_TRANSPORT = new transports.DailyRotateFile({
   level: "error",
   filename: "logs/errors/%DATE%.log",
   datePattern: "YYYY-MM-DD",
-  maxFiles: "14d",
+  maxFiles: "7d",
 });
 
 export class Warden {
@@ -43,7 +43,7 @@ export class Warden {
     });
 
     this._errorsLogger = createLogger({
-      silent: APP.IS_TEST,
+      silent: IS_TEST,
       level: "info",
       format: format.combine(format.splat(), format.json()),
       exceptionHandlers: [
@@ -55,7 +55,7 @@ export class Warden {
 
     this._debugLogger = createLogger({
       level: "debug",
-      silent: APP.IS_TEST,
+      silent: IS_TEST,
       format: format.combine(
         format.splat(),
         format.timestamp({
