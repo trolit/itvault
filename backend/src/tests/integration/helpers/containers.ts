@@ -49,7 +49,7 @@ function getMySqlContainer() {
     })
     .withExposedPorts({
       host: DATABASE.PORT,
-      container: DATABASE.PORT,
+      container: 3306,
     })
     .start();
 }
@@ -62,7 +62,7 @@ function getRedisContainer() {
     })
     .withExposedPorts({
       host: REDIS.PORT,
-      container: REDIS.PORT,
+      container: 6379,
     })
     .start();
 }
@@ -76,7 +76,7 @@ function getRabbitMQContainer() {
     })
     .withExposedPorts({
       host: RABBITMQ.PORT,
-      container: RABBITMQ.PORT,
+      container: 5672,
     })
     .start();
 }
