@@ -1,14 +1,13 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
+import { includeTextTests } from "@integration-tests/helpers/includeTextTests";
 import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import {
   SUPER_USER_EMAIL,
   UNEXISTING_ITEM_ID,
 } from "@integration-tests/config";
-
-import { includeTextTests } from "./includeTextTests";
 
 import { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
@@ -55,6 +54,7 @@ export const ADD_CONTROLLER_V1_TESTS = defineTests(
     });
 
     includeTextTests({
+      field: "text",
       addTest,
       baseQuery,
     });

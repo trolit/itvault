@@ -8,14 +8,15 @@ import { CHAT_MESSAGE_RULES } from "@shared/constants/rules";
 const { MIN_LENGTH, MAX_LENGTH } = CHAT_MESSAGE_RULES.VALUE;
 
 export const includeTextTests = (arg: {
+  field: string;
   baseQuery: any;
   addTest: <Q, B>(data: Omit<ITest<Q, B>, "method">) => void;
   appendToAction?: string;
 }) => {
-  const { baseQuery, addTest, appendToAction } = arg;
+  const { field, baseQuery, addTest, appendToAction } = arg;
 
   addTest({
-    description: `returns ${HTTP.BAD_REQUEST} when text is missing`,
+    description: `returns ${HTTP.BAD_REQUEST} when ${field} is missing`,
     session: { user: { email: SUPER_USER_EMAIL } },
     appendToAction,
     query: baseQuery,
@@ -31,7 +32,7 @@ export const includeTextTests = (arg: {
     appendToAction,
     query: baseQuery,
     body: {
-      text: "                   ",
+      [field]: "                   ",
     },
     expect: {
       statusCode: HTTP.BAD_REQUEST,
@@ -44,7 +45,7 @@ export const includeTextTests = (arg: {
     appendToAction,
     query: baseQuery,
     body: {
-      text: faker.random.alpha({ count: MIN_LENGTH - 1 }),
+      [field]: faker.random.alpha({ count: MIN_LENGTH - 1 }),
     },
     expect: {
       statusCode: HTTP.BAD_REQUEST,
@@ -57,7 +58,7 @@ export const includeTextTests = (arg: {
     appendToAction,
     query: baseQuery,
     body: {
-      text: faker.random.alpha({ count: MAX_LENGTH + 1 }),
+      [field]: faker.random.alpha({ count: MAX_LENGTH + 1 }),
     },
     expect: {
       statusCode: HTTP.BAD_REQUEST,

@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
+import { includeTextTests } from "@integration-tests/helpers/includeTextTests";
 import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 import { IChatMessageRepository } from "types/repositories/IChatMessageRepository";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
@@ -8,8 +9,6 @@ import {
   SUPER_USER_EMAIL,
   UNEXISTING_ITEM_ID,
 } from "@integration-tests/config";
-
-import { includeTextTests } from "./includeTextTests";
 
 import { Di } from "@enums/Di";
 
@@ -48,6 +47,7 @@ export const PATCH_VALUE_CONTROLLER_V1_TESTS = defineTests(
     });
 
     includeTextTests({
+      field: "text",
       addTest,
       baseQuery,
       appendToAction: getActionAppendValue(),
