@@ -25,6 +25,11 @@ export interface IRequestInformation<Q = void, B = void> {
 // @NOTE when using email - cookie is read from RuntimeData.cookie object
 export type UserSession = { user: { email: string } } | { cookie: string };
 
+export interface IAttachment {
+  field: string;
+  file: Buffer;
+}
+
 export interface ITestData {
   router: IRouterInformation;
   request: IRequestInformation<any, any>;
@@ -50,6 +55,7 @@ export type RequestFunc<Q extends { version: number }, B = void> = (data: {
   query?: Q;
   body?: B;
   session?: UserSession;
+  attach?: IAttachment[];
 }) => Promise<Response>;
 
 export type CustomRequestFunc<Q extends { version: number }, B = void> = (arg: {
@@ -105,6 +111,8 @@ export interface ITest<Q = any, B = any> extends IBaseTest<Q, B> {
   appendToAction?: string;
 
   query?: Q & { version: number };
+
+  attach?: IAttachment[];
 
   expect: {
     statusCode: number;

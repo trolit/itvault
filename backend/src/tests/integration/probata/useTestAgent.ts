@@ -3,6 +3,7 @@ import { PASSWORD, ROUTER_VERSION_PREFIX } from "@integration-tests/config";
 import {
   Method,
   ITestData,
+  IAttachment,
   RequestFunc,
   UserSession,
   ITestInstance,
@@ -90,10 +91,11 @@ function prepareRequest<Q extends { version: number }, B = void>(arg: {
   const url = getUrl({ router, action });
 
   return data => {
-    const { query, body, session } = data;
+    const { query, body, session, attach } = data;
 
     return sendRequest({
       url,
+      attach,
       method,
       session,
       body: body || baseBody,
@@ -128,8 +130,9 @@ function sendRequest(arg: {
   body: any;
   query: any;
   session?: UserSession;
+  attach?: IAttachment[];
 }) {
-  const { method, url, session, query, body } = arg;
+  const { method, url, session, query, body, attach } = arg;
 
   const request = supertest[method](url);
 
@@ -139,6 +142,14 @@ function sendRequest(arg: {
 
   if (session) {
     request.set("Cookie", useCookie(session));
+  }
+
+  if (attach) {
+    attach.map(({ field, file }) =>
+      request.attach(field, file, { filename: field })
+    );
+
+    return request;
   }
 
   return body ? request.send(body) : request.send();
