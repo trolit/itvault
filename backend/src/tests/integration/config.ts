@@ -10,6 +10,9 @@ export const PATH_TO_CONTROLLERS_TESTS = path.join(__dirname, "controllers");
 
 export const SUPER_USER_EMAIL = "all-permissions@itvault.com";
 export const USER_EMAIL = "no-permissions@itvault.com";
+export const USER_WITH_ACCESS_TO_WORKSPACE_1 =
+  "no-permissions-workspace-1@itvault.com";
+
 export const PASSWORD = "1234";
 
 export const ALL_PERMISSIONS_ROLE_ID = HEAD_ADMIN_ROLE.id;

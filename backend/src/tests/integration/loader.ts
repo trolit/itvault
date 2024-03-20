@@ -7,12 +7,14 @@ import { server, onExit } from "../../server";
 import { APP } from "@config";
 
 import { addFiles } from "./helpers/db/addFiles";
+import { addUsers } from "./helpers/db/addUsers";
 import { RuntimeData } from "./helpers/RuntimeData";
 import { IRuntimeData } from "./types/IRuntimeData";
 import { addBlueprints } from "./helpers/db/addBlueprints";
 import { addWorkspaces } from "./helpers/db/addWorkspaces";
 import { addDirectories } from "./helpers/db/addDirectories";
 import { ITestsGroup, loadTestsGroups, useTestAgent } from "./probata";
+import { setUserWorkspacesAccess } from "./helpers/db/setUserWorkspacesAccess";
 import {
   TESTS_TIMEOUT,
   RUNTIME_DATA_DI_TOKEN,
@@ -23,6 +25,8 @@ import {
   BLUEPRINT_2,
   DIRECTORY_ROOT,
   FILE_1,
+  USER_WITH_ACCESS_TO_WORKSPACE_1,
+  NO_PERMISSIONS_ROLE_ID,
 } from "./config";
 
 import { Di } from "@enums/Di";
@@ -69,6 +73,19 @@ async function prepare(suite: Mocha.Suite, app: Server) {
   await addWorkspaces([WORKSPACE_1, WORKSPACE_2]);
 
   await addBlueprints([BLUEPRINT_1, BLUEPRINT_2]);
+
+  await addUsers([
+    {
+      email: USER_WITH_ACCESS_TO_WORKSPACE_1,
+      isSignedUp: true,
+      roleNameOrId: NO_PERMISSIONS_ROLE_ID,
+    },
+  ]);
+
+  await setUserWorkspacesAccess({
+    email: USER_WITH_ACCESS_TO_WORKSPACE_1,
+    workspaceIds: [WORKSPACE_1.id],
+  });
 
   await addDirectories([DIRECTORY_ROOT]);
 

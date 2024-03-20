@@ -2,7 +2,11 @@ import { Server } from "http";
 import supertest from "supertest";
 import TestAgent from "supertest/lib/agent";
 import { IRuntimeData } from "@integration-tests/types/IRuntimeData";
-import { SUPER_USER_EMAIL, USER_EMAIL } from "@integration-tests/config";
+import {
+  USER_EMAIL,
+  SUPER_USER_EMAIL,
+  USER_WITH_ACCESS_TO_WORKSPACE_1,
+} from "@integration-tests/config";
 
 export class RuntimeData implements IRuntimeData {
   private _app: Server;
@@ -10,6 +14,7 @@ export class RuntimeData implements IRuntimeData {
   private _globalCookie: Record<string, string> = {
     [SUPER_USER_EMAIL]: "",
     [USER_EMAIL]: "",
+    [USER_WITH_ACCESS_TO_WORKSPACE_1]: "",
   };
 
   constructor(app: Server) {
