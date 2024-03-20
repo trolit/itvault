@@ -55,8 +55,9 @@ npm run testcontainers:down
 
 Plus sessions management, seeders (via typeorm-extension), hybrid authentication - half on user (JWT), half on server (Redis)
 
-## To consider
+## To consider/To do
 
+- rework all "ids" to UUID not only to improve security but simplify integration tests
 - create modular variant of project
 - preview users of specific role
 - mobile variant of client
