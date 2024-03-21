@@ -1,16 +1,52 @@
-## About
+<em>
+Memory is the mother of all wisdom.<br/>
+-Aeschylus
+</em>
 
-itvault is utility to **store source code knowledge** (what each part of code is used for). It relies on simple mechanism - coloring file content. In short, user defines blueprints that represent elements used to mark code. Such coloring not only keeps knowledge of code but allows to **generate new project base with only selected blueprints**.
+<br/>
+<br/>
 
-> Please note that this app is not completed (but is in advanced stage). If you would like to use it I'd suggest to take backend and create own frontend (client) or just take parts that interest you 🤔
+itvault is projects vault made to 1) keep what each part of code is used for and 2) extract selected parts on demand. It relies on simple mechanism - coloring file content. Permitted user(s) create **blueprints** - abstract elements used to mark code and then users (with access to given workspace) are able to benefit from that knowledge.
+
+> Although app is in advanced stage (1 year), it's not completed. I put more attention to backend as Composition API was taken to experiment with new approach and it still needs big refactoring
 
 ## Stack
 
-|                                                                                                    Backend                                                                                                    |                                  Frontend                                   |
-| :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------: |
-|                                                                                               TypeScript 4.9.5                                                                                                |                              TypeScript 4.7.4                               |
-|                                                                                                Node.js v18.17                                                                                                 |                                    Vue 3                                    |
-| Docker, Docker Compose, Express, TypeORM, winston, tsyringe, Mocha (nyc, chai, sinon, supertest, testcontainers), AWS S3 (LocalStack), Redis, RabbitMQ, Engine.io, mustache, nodemailer, formidable, yup, JWT | Vite, Pinia, vee-validate + yup, apexcharts, PostCSS, markdown-it, Naive UI |
+- Schema validation: yup
+- Client-Server real-time communication: Engine.io
+
+<details>
+<summary>Backend</summary>
+
+- TypeScript: 4.9
+- Node: v18.17
+- Web framework: Express.js
+- ORM framework: TypeORM
+- Logger: winston
+- DI: tsyringe
+- Tests: Mocha (nyc, chai, sinon, supertest, testcontainers)
+- File storage: local or AWS S3 (simulated with LocalStack)
+- Secondary DB (store for sessions/roles): Redis
+- Queues: RabbitMQ
+- Mailing: mustache (renderer), nodemailer (sender), maildev (local testing)
+- Authentication: currently hybrid, half on server (Redis), half on client (JWT)
+
+</details>
+
+<details>
+
+<summary>Frontend</summary>
+
+- TypeScript: 4.7
+- Framework: Vue 3 (experimenting with Composition API)
+- Store: Pinia
+- Components library: Naive UI
+- Forms: vee-validate (+yup)
+- Charts: apexcharts
+- CSS: PostCSS
+- E2E tests: Cypress
+
+</details>
 
 ## Running
 
@@ -27,7 +63,6 @@ npm run test:unit
 ```sh
 # NODE_ENV=test
 npm run testcontainers:up
-npm run db:setup
 npm run test:integration
 npm run testcontainers:down
 ```
