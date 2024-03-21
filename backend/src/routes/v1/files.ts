@@ -7,21 +7,21 @@ import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { validateRequestWith } from "@middleware/validateRequestWith";
 import { parseUploadFormData } from "@middleware/parseUploadFormData";
+import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireAuthentication } from "@middleware/requireAuthentication";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
+import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useGetAllSuperSchema } from "@schemas/File/useGetAllSuperSchema";
-import { useSoftDeleteSuperSchema } from "@schemas/File/useSoftDeleteSuperSchema";
 import { usePatchFilenameSuperSchema } from "@schemas/File/usePatchFilenameSuperSchema";
 import { usePatchRelativePathSuperSchema } from "@schemas/File/usePatchRelativePathSuperSchema";
+import { useDeleteWithIntegerSuperSchema } from "@schemas/common/useDeleteWithIntegerSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
-import { GetAllController } from "@controllers/File/GetAllController";
 import { UploadController } from "@controllers/File/UploadController";
+import { GetAllController } from "@controllers/File/GetAllController";
 import { GetByIdController } from "@controllers/File/GetByIdController";
 import { SoftDeleteController } from "@controllers/File/SoftDeleteController";
 import { PatchFilenameController } from "@controllers/File/PatchFilenameController";
@@ -79,7 +79,7 @@ filesRouter.patch(
 filesRouter.delete(
   "/:id",
   requirePermissions([Permission.DeleteFile]),
-  validateRequestWith({ [v1]: useSoftDeleteSuperSchema }),
+  validateRequestWith({ [v1]: useDeleteWithIntegerSuperSchema }),
   processRequestWith(SoftDeleteController)
 );
 
