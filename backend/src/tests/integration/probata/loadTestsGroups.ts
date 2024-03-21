@@ -4,6 +4,7 @@ import snakeCase from "lodash/snakeCase";
 import { ITestsGroup } from "./types";
 
 export const loadTestsGroups = async (suite: Mocha.Suite, dir: string) => {
+  let testsCount = 0;
   const unprivilegedTestsGroups: ITestsGroup[] = [];
   const privilegedTestsGroups: ITestsGroup[] = [];
 
@@ -35,8 +36,10 @@ export const loadTestsGroups = async (suite: Mocha.Suite, dir: string) => {
     : [...privilegedTestsGroups, ...unprivilegedTestsGroups];
 
   for (const testsGroup of testsGroups) {
-    testsGroup.loadToSuite(suite);
+    testsCount += testsGroup.loadToSuite(suite);
   }
+
+  suite.title = `Integration tests (${testsCount})`;
 
   return testsGroups;
 };
