@@ -5,22 +5,22 @@ import { Permission } from "@shared/types/enums/Permission";
 
 import { processRequestWith } from "@helpers/processRequestWith";
 import { requirePermissions } from "@middleware/requirePermissions";
-import { validateRequestWith } from "@middleware/validateRequestWith";
 import { transformPagination } from "@middleware/transformPagination";
+import { validateRequestWith } from "@middleware/validateRequestWith";
 import { IsWorkspaceAvailable } from "@middleware/isWorkspaceAvailable";
 import { requireAuthentication } from "@middleware/requireAuthentication";
 import { requireWorkspaceAccess } from "@middleware/requireWorkspaceAccess";
-import { requireEndpointVersion } from "@middleware/requireEndpointVersion";
 
 import { useAddSuperSchema } from "@schemas/Note/useAddSuperSchema";
 import { useGetAllSuperSchema } from "@schemas/Note/useGetAllSuperSchema";
 import { usePatchValueSuperSchema } from "@schemas/Note/usePatchValueSuperSchema";
+import { useDeleteWithIntegerSuperSchema } from "@schemas/common/useDeleteWithIntegerSuperSchema";
 
 import { BaseController } from "@controllers/BaseController";
 import { AddController } from "@controllers/Note/AddController";
 import { GetAllController } from "@controllers/Note/GetAllController";
-import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
 import { PatchValueController } from "@controllers/Note/PatchValueController";
+import { SoftDeleteController } from "@controllers/Note/SoftDeleteController";
 
 const notesRouter = Router();
 
@@ -56,7 +56,7 @@ notesRouter.patch(
 
 notesRouter.delete(
   "/:id",
-  requireEndpointVersion(SoftDeleteController.ALL_VERSIONS),
+  validateRequestWith({ [v1]: useDeleteWithIntegerSuperSchema }),
   processRequestWith(SoftDeleteController)
 );
 
