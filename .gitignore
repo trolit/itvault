@@ -9,6 +9,7 @@ lerna-debug.log*
 
 .env
 sut
+backend/files/*
 
 node_modules
 .DS_Store
