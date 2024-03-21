@@ -1,10 +1,9 @@
 import { Response } from "express";
-import isInteger from "lodash/isInteger";
 import { inject, injectable } from "tsyringe";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { INoteRepository } from "types/repositories/INoteRepository";
-import { DeleteControllerTypes } from "types/controllers/DeleteController";
 import { ControllerImplementation } from "types/controllers/ControllerImplementation";
+import { DeleteControllerWithIntegerTypes } from "types/controllers/DeleteControllerWithInteger";
 
 import { Di } from "@enums/Di";
 import { Permission } from "@shared/types/enums/Permission";
@@ -34,7 +33,10 @@ export class SoftDeleteController extends BaseController {
 
   static ALL_VERSIONS = [v1];
 
-  async v1(request: DeleteControllerTypes.v1.Request, response: Response) {
+  async v1(
+    request: DeleteControllerWithIntegerTypes.v1.Request,
+    response: Response
+  ) {
     const {
       userId,
       permissions,
@@ -42,15 +44,9 @@ export class SoftDeleteController extends BaseController {
       query: { workspaceId },
     } = request;
 
-    const parsedId = parseInt(id);
-
-    if (!isInteger(parsedId)) {
-      return response.sendStatus(HTTP.BAD_REQUEST);
-    }
-
     const note = await this._noteRepository.getOne({
       where: {
-        id: parsedId,
+        id,
         file: {
           workspace: {
             id: workspaceId,

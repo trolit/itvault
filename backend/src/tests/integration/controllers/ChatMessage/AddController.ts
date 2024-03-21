@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
+import { includeTextTests } from "@integration-tests/helpers/includeTextTests";
 import { addChatMessages } from "@integration-tests/helpers/db/addChatMessages";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import {
@@ -8,13 +9,15 @@ import {
   UNEXISTING_ITEM_ID,
 } from "@integration-tests/config";
 
-import { includeTextTests } from "./includeTextTests";
-
+import { CHAT_MESSAGE_RULES } from "@shared/constants/rules";
 import { IChatMessageDTO } from "@shared/types/DTOs/ChatMessage";
 import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 
 import { BaseController } from "@controllers/BaseController";
 
+const {
+  VALUE: { MIN_LENGTH, MAX_LENGTH },
+} = CHAT_MESSAGE_RULES;
 const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 const baseQuery = { version: v1 };
@@ -55,8 +58,11 @@ export const ADD_CONTROLLER_V1_TESTS = defineTests(
     });
 
     includeTextTests({
+      field: "text",
       addTest,
       baseQuery,
+      minLength: MIN_LENGTH,
+      maxLength: MAX_LENGTH,
     });
 
     addTest({

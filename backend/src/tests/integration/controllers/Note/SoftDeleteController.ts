@@ -1,13 +1,13 @@
 import { StatusCodes as HTTP } from "http-status-codes";
 import { Method, defineTests } from "@integration-tests/probata";
-import { addFiles } from "@integration-tests/helpers/db/addFiles";
+import { addNotes } from "@integration-tests/helpers/db/addNotes";
 import { includeGeneralTests } from "@integration-tests/helpers/includeGeneralTests";
 import { includeWorkspaceEntityTests } from "@integration-tests/helpers/includeWorkspaceEntityTests";
 import {
-  WORKSPACE_1,
+  FILE_1,
   SUPER_USER_EMAIL,
-  DIRECTORY_ROOT,
-  UNEXISTING_ITEM_ID,
+  USER_WITH_ACCESS_TO_WORKSPACE_1,
+  WORKSPACE_1,
 } from "@integration-tests/config";
 
 import { BaseController } from "@controllers/BaseController";
@@ -17,21 +17,21 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 const workspaceId = WORKSPACE_1.id;
 const baseQuery = { version: v1, workspaceId };
 
-const FILE = {
-  id: 4,
-  relativePath: DIRECTORY_ROOT.relativePath,
+const NOTE = {
+  id: 1,
+  fileId: FILE_1.id,
   workspaceId,
 };
 
-const appendToAction = `${FILE.id}`;
+const appendToAction = `${NOTE.id}`;
 
-export const GET_BY_ID_CONTROLLER_V1_BEFORE_HOOK = async () => {
-  return addFiles([FILE]);
+export const SOFT_DELETE_CONTROLLER_V1_BEFORE_HOOK = () => {
+  return addNotes([NOTE]);
 };
 
-export const GET_BY_ID_CONTROLLER_V1_TESTS = defineTests(
+export const SOFT_DELETE_CONTROLLER_V1_TESTS = defineTests(
   {
-    method: Method.GET,
+    method: Method.DELETE,
     baseQuery,
   },
 
@@ -49,20 +49,20 @@ export const GET_BY_ID_CONTROLLER_V1_TESTS = defineTests(
     });
 
     addTest({
-      description: `returns ${HTTP.NOT_FOUND} when requested file is not available`,
-      session: { user: { email: SUPER_USER_EMAIL } },
-      appendToAction: `${UNEXISTING_ITEM_ID}`,
+      description: `returns ${HTTP.FORBIDDEN} when attempting to remove unowned note (and without permission to remove any)`,
+      session: { user: { email: USER_WITH_ACCESS_TO_WORKSPACE_1 } },
+      appendToAction,
       expect: {
-        statusCode: HTTP.NOT_FOUND,
+        statusCode: HTTP.FORBIDDEN,
       },
     });
 
     addTest({
-      description: `returns ${HTTP.OK} on file request`,
+      description: `returns ${HTTP.NO_CONTENT} when note is removed`,
       session: { user: { email: SUPER_USER_EMAIL } },
       appendToAction,
       expect: {
-        statusCode: HTTP.OK,
+        statusCode: HTTP.NO_CONTENT,
       },
     });
   }

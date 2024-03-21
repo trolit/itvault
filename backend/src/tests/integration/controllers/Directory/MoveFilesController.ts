@@ -34,13 +34,13 @@ export const TARGET_DIRECTORY = {
 };
 
 export const FILE_1 = {
-  id: 1,
+  id: 2,
   relativePath: SOURCE_DIRECTORY.relativePath,
   workspaceId,
 };
 
 export const FILE_2 = {
-  id: 2,
+  id: 3,
   relativePath: SOURCE_DIRECTORY.relativePath,
   workspaceId,
 };
