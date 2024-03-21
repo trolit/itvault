@@ -81,7 +81,7 @@ export interface ITestsGroup {
 
   beforeAll(suite: Mocha.Suite): void;
 
-  loadToSuite(suite: Mocha.Suite): void;
+  loadToSuite(suite: Mocha.Suite): number;
 }
 
 export interface IBaseTest<Q = any, B = any> {

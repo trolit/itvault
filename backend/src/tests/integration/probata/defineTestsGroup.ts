@@ -50,6 +50,8 @@ export const defineTestsGroup = (arg: {
       }
     },
     loadToSuite: (suite: Mocha.Suite) => {
+      let testsCount = 0;
+
       const entitySuite = Mocha.Suite.create(suite, suiteId);
 
       for (const element of collection) {
@@ -87,9 +89,13 @@ export const defineTestsGroup = (arg: {
             );
 
             controllerSuite.addTest(mochaTest);
+
+            testsCount++;
           }
         }
       }
+
+      return testsCount;
     },
   };
 };
