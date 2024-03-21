@@ -1,6 +1,8 @@
 import { faker } from "@faker-js/faker";
+import { User } from "@db/entities/User";
 import { Note } from "@db/entities/Note";
 import { INoteRepository } from "types/repositories/INoteRepository";
+import { IUserRepository } from "types/repositories/IUserRepository";
 
 import { Di } from "@enums/Di";
 
@@ -12,16 +14,36 @@ export const addNotes = async (
     id: number;
     value?: string;
     fileId: number;
-    createdById?: number;
+    email?: string;
     workspaceId: number;
   }[]
 ) => {
   const notes: Note[] = [];
+  const users: User[] = [];
 
   const noteRepository = getInstanceOf<INoteRepository>(Di.NoteRepository);
+  const userRepository = getInstanceOf<IUserRepository>(Di.UserRepository);
 
   for (const noteToAdd of notesToAdd) {
-    const { id, value, fileId, createdById, workspaceId } = noteToAdd;
+    if (!noteToAdd.email) {
+      continue;
+    }
+
+    const user = await userRepository.findByEmail(noteToAdd.email);
+
+    if (user) {
+      users.push(user);
+    }
+  }
+
+  for (const noteToAdd of notesToAdd) {
+    const { id, value, fileId, email, workspaceId } = noteToAdd;
+
+    let userId = 1;
+
+    if (email) {
+      userId = users.find(user => user.email === email)?.id || 1;
+    }
 
     const noteEntity = noteRepository.createEntity({
       id,
@@ -30,17 +52,17 @@ export const addNotes = async (
         id: fileId,
       },
       createdBy: {
-        id: createdById || 1,
+        id: userId,
       },
       updatedBy: {
-        id: createdById || 1,
+        id: userId,
       },
     });
 
     const note = await noteRepository.primitiveSave(
       noteEntity,
       getOptionsOfTraceRelatedEntity({
-        userId: createdById || 1,
+        userId,
         workspaceId,
       })
     );
