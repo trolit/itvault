@@ -52,7 +52,7 @@ export class PatchNoteController extends BaseController {
     });
 
     if (!bundle) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
+      return response.status(HTTP.NOT_FOUND).send();
     }
 
     await this._bundleRepository.primitiveSave({
