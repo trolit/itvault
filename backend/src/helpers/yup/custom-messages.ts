@@ -56,10 +56,10 @@ export const CUSTOM_MESSAGES = {
   AUTH: {
     DELETE_OWN_SESSION: "Cannot delete own session. Use sign out request 👌.",
     PASSWORD: {
-      ONE_LOWERCASE_LETTER: "At least one lowercase letter.",
-      ONE_UPPERCASE_LETTER: "At least one uppercase letter.",
-      ONE_DIGIT: "At least one digit.",
-      ONE_SPECIAL_CHARACTER: "At least one special character.",
+      ONE_LOWERCASE_LETTER: "Include at least one lowercase letter.",
+      ONE_UPPERCASE_LETTER: "Include at least one uppercase letter.",
+      ONE_DIGIT: "Include at least one digit.",
+      ONE_SPECIAL_CHARACTER: "Include at least one special character.",
     },
   },
 
