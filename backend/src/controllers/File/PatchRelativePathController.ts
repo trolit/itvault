@@ -39,7 +39,21 @@ export class PatchRelativePathController extends BaseController {
     const {
       params: { id },
       body: { relativePath },
+      query: { workspaceId },
     } = request;
+
+    const file = await this._fileRepository.getOne({
+      where: {
+        id,
+        workspace: {
+          id: workspaceId,
+        },
+      },
+    });
+
+    if (!file) {
+      return response.status(HTTP.NOT_FOUND).send();
+    }
 
     const directory = await this._directoryRepository.getOne({
       where: {
@@ -47,16 +61,14 @@ export class PatchRelativePathController extends BaseController {
       },
     });
 
-    // @TODO check if file exists (also in PatchFilename)
-
-    if (directory) {
-      await this._fileRepository.primitiveUpdate(
-        {
-          id,
-        },
-        { directory }
-      );
+    if (!directory) {
+      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
     }
+
+    await this._fileRepository.primitiveSave({
+      ...file,
+      directory,
+    });
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
