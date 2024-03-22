@@ -1,6 +1,7 @@
 import { number, object, string } from "yup";
 import { SuperSchema } from "types/SuperSchema";
 import { IFileRepository } from "types/repositories/IFileRepository";
+import { IDirectoryRepository } from "types/repositories/IDirectoryRepository";
 import { PatchFilenameControllerTypes } from "types/controllers/File/PatchFilenameController";
 
 import { Di } from "@enums/Di";
@@ -41,19 +42,25 @@ const useBodySchema: (
         const fileRepository = getInstanceOf<IFileRepository>(
           Di.FileRepository
         );
+        const directoryRepository = getInstanceOf<IDirectoryRepository>(
+          Di.DirectoryRepository
+        );
 
-        const file = await fileRepository.getOne({
-          where: { id: fileId },
-          relations: { directory: true },
+        const directory = await directoryRepository.getOne({
+          where: {
+            files: {
+              id: fileId,
+            },
+          },
         });
 
-        if (!file) {
+        if (!directory) {
           return ctx.createError({
             message: setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "File"),
           });
         }
 
-        const { relativePath } = file.directory;
+        const { relativePath } = directory;
 
         const fileWithSimiliarName = await fileRepository.getOne({
           where: {
