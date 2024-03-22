@@ -33,14 +33,25 @@ export class PatchNameController extends BaseController {
     const {
       params: { id },
       body: { name },
+      query: { workspaceId },
     } = request;
 
-    await this._variantRepository.primitiveUpdate(
-      {
+    const variant = await this._variantRepository.getOne({
+      where: {
         id,
+        file: {
+          workspace: {
+            id: workspaceId,
+          },
+        },
       },
-      { name }
-    );
+    });
+
+    if (!variant) {
+      return response.status(HTTP.NOT_FOUND).send();
+    }
+
+    await this._variantRepository.primitiveSave({ ...variant, name });
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
