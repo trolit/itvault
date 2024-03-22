@@ -6,9 +6,9 @@ Memory is the mother of all wisdom.<br/>
 <br/>
 <br/>
 
-itvault is projects vault made to 1) keep what each part of code is used for and 2) extract selected parts on demand. It relies on simple mechanism - coloring file content. Permitted user(s) create **blueprints** - abstract elements used to mark code and then users (with access to given workspace) are able to benefit from that knowledge.
+itvault is "projects vault" made to 1) keep what each part of code is used for and 2) extract selected parts on demand. It relies on simple mechanism - coloring file content. Permitted user(s) create **blueprints** - abstract elements used to mark code and then users with access benefit from that knowledge.
 
-> Although app is in advanced stage (1 year), it's not completed. I put more attention to backend as Composition API was taken to experiment with new approach and it still needs big refactoring
+> Although app is in advanced stage (took 1+ year), it's not completed. If you would like to use it, I'd suggest to take out backend as Composition API was taken to experiment with new approach and it still needs big refactoring (I see potential - after working out with form submit - but still prefer Options API).
 
 ## Stack
 
@@ -49,6 +49,117 @@ itvault is projects vault made to 1) keep what each part of code is used for and
 </details>
 
 ## Running
+
+### Development
+
+1.  Install dependencies (`npm install`).
+2.  Create `.env` files from `.env.example`.
+3.  Initialize docker containers from `backend` dir.
+
+    ```sh
+    npm run dc:dev:start
+    ```
+
+4.  Prepare database (migrations, seeders).
+
+    ```sh
+    npm run db:setup
+    ```
+
+5.  Start backend.
+
+    ```sh
+    npm run dev
+    ```
+
+    \*To handle bundle generation & mail sending, run queues:
+
+    ```sh
+    npm run queues:dev
+    ```
+
+6.  Start frontend.
+
+    ```sh
+    npm run dev
+    ```
+
+    ```sh
+    # Super user (all permissions)
+    email: head.admin@itvault.dev
+    password: 1234
+
+    # Member
+    email: member@itvault.dev
+    password: 1234
+    ```
+
+Note that default setup uses local files storage. To check out AWS S3 (through LocalStack):
+
+1. Stop backend.
+2. Set `FILES_STORAGE_MODE` env variable to `aws`.
+3. Start LocalStack.
+
+   ```sh
+   npm run dc:localstack:start
+   ```
+
+4. Get `awslocal` tool and setup bucket (check [README](./backend/README.md)).
+5. Start backend (`npm run dev`).
+6. Upload some files to see effect:
+
+```
+awslocal s3api list-objects --bucket itvault-bucket
+{
+    "Contents": [
+        {
+            "Key": "workspace-6/b6a66d7d95ad9b2b585dc0700.txt",
+            "LastModified": "2024-03-22T10:40:19.000Z",
+            "ETag": "\"02003d02d9dab50aead91ee0ddad97ed\"",
+            "Size": 710,
+            "StorageClass": "STANDARD",
+            "Owner": {
+                "DisplayName": "webfile",
+                "ID": "75aa57f09aa0c8caeab4f8c24e99d10f8e7faeebf76c078efc7c6caea54ba06a"
+            }
+        }
+    ],
+    "RequestCharged": null
+}
+```
+
+Disclaimers:
+*Files created through seeders won't be reachable.
+*When running free version of LocalStack, data is not persistent.
+
+### Production
+
+1. Initialize docker containers from `backend` dir.
+
+   ```sh
+   npm run dc:prod:start
+   ```
+
+2. Set `NODE_ENV` to `production` in `backend`.
+3. Prepare database (migrations, seeders).
+
+   ```sh
+   npm run db:setup
+   ```
+
+4. Create super user account manually or create [production](./backend/src/db/seeds/production/) seeder.
+
+5. Start backend.
+
+   ```sh
+   npm run prod
+   ```
+
+   \*To handle bundle generation & mail sending, run queues:
+
+   ```sh
+   npm run queues:prod
+   ```
 
 ## Testing
 
