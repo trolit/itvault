@@ -36,14 +36,26 @@ export class PatchFilenameController extends BaseController {
     const {
       params: { id },
       body: { filename },
+      query: { workspaceId },
     } = request;
 
-    await this._fileRepository.primitiveUpdate(
-      {
+    const file = await this._fileRepository.getOne({
+      where: {
         id,
+        workspace: {
+          id: workspaceId,
+        },
       },
-      { originalFilename: filename }
-    );
+    });
+
+    if (!file) {
+      return response.status(HTTP.NOT_FOUND).send();
+    }
+
+    await this._fileRepository.primitiveSave({
+      ...file,
+      originalFilename: filename,
+    });
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }

@@ -54,14 +54,10 @@ export class PatchValueController extends BaseController {
       return response.status(HTTP.NOT_FOUND).send();
     }
 
-    const isUpdated = await this._chatMessageRepository.primitiveUpdate(
-      { id },
-      { value: text }
-    );
-
-    if (!isUpdated?.affected) {
-      return response.status(HTTP.UNPROCESSABLE_ENTITY).send();
-    }
+    await this._chatMessageRepository.primitiveSave({
+      ...message,
+      value: text,
+    });
 
     const { UPDATE_MESSAGE } = SOCKET_MESSAGES.GLOBAL.ACTIONS;
 
