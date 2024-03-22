@@ -129,8 +129,10 @@ awslocal s3api list-objects --bucket itvault-bucket
 ```
 
 Disclaimers:
-*Files created through seeders won't be reachable.
-*When running free version of LocalStack, data is not persistent.
+
+\*Files created through seeders won't be reachable.
+
+\*When running free version of LocalStack, data is not persistent.
 
 ### Production
 
