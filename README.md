@@ -41,8 +41,8 @@ itvault is "projects vault" made to 1) keep what each part of code is used for a
 - Framework: Vue 3 (experimenting with Composition API)
 - Store: Pinia
 - Components library: Naive UI
-- Forms: vee-validate (+yup)
-- Charts: apexcharts
+- Forms library: vee-validate (+yup)
+- Charts library: apexcharts
 - CSS: PostCSS
 - E2E tests: Cypress
 
@@ -137,6 +137,7 @@ Disclaimers:
 
 </details>
 
+<details>
 <summary>Production</summary>
 
 1. Initialize docker containers from `backend` dir.
@@ -170,13 +171,17 @@ Disclaimers:
 
 ## Testing
 
-### Unit tests
+<details>
+<summary>Unit tests</summary>
 
 ```sh
 npm run test:unit
 ```
 
-### Integration tests
+</details>
+
+<details>
+<summary>Integration tests</summary>
 
 ```sh
 # NODE_ENV=test
@@ -185,7 +190,10 @@ npm run test:integration
 npm run testcontainers:down
 ```
 
-### E2E tests
+</details>
+
+<details>
+<summary>E2E tests</summary>
 
 ```sh
 # NODE_ENV=test
@@ -194,6 +202,8 @@ npm run db:setup
 npm run test:e2e
 npm run testcontainers:down
 ```
+
+</details>
 
 ## Features
 
@@ -212,13 +222,13 @@ Plus sessions management, seeders (via typeorm-extension), hybrid authentication
 
 - rework all "ids" to UUID not only to improve security but simplify integration tests
 - create modular variant of project
-- preview users of specific role
+- ability to preview users of specific role
 - mobile variant of client
-- create separate app for management
+- create separate app for management (admin)
 - finish real-time communication events
-- listen to releases pull requests (develop -> main) and then create new variants according to PR data
+- listen to release pull requests (develop -> main) and then create new variants according to PR data
 - check if there is option to train AI of workspace code to determine which parts refer to which blueprint
-- edit file content while keeping all colorings structure at the same time
+- ability to edit file content while maintaining colorings structure at the same time
 - ability to preview few lines of version when reviewing files for Bundle generation
 - job that removes files if they do not have entry in database
 - monitor status of each endpoint
