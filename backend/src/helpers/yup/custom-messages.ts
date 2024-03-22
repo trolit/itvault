@@ -26,11 +26,11 @@ export const CUSTOM_MESSAGES = {
       "Unix format in seconds is required (e.g. 1708168503)",
   },
 
-  BLUEPRINTS: {
+  BLUEPRINT: {
     SOME_NOT_AVAILABLE: "One or more blueprints are not available.",
   },
 
-  BUCKETS: {
+  BUCKET: {
     INVALID_CONFIGURATION: "Buckets configuration is invalid!",
   },
 
