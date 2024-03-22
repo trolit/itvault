@@ -5,7 +5,6 @@ import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 export const CUSTOM_MESSAGES = {
   GENERAL: {
     UNIQUE: "%s must be unique!",
-    ALREADY_TAKEN: "This %s is already taken.",
     MIN_CHARACTERS: "Should include at least %s characters.",
     MAX_CHARACTERS: "Should include up to %s characters.",
     MIN_MAX_CHARACTERS: "Should include from %s to %s characters.",
