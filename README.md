@@ -50,7 +50,8 @@ itvault is "projects vault" made to 1) keep what each part of code is used for a
 
 ## Running
 
-### Development
+<details>
+<summary>Development</summary>
 
 1.  Install dependencies (`npm install`).
 2.  Create `.env` files from `.env.example`.
@@ -134,7 +135,9 @@ Disclaimers:
 
 \*When running free version of LocalStack, data is not persistent.
 
-### Production
+</details>
+
+<summary>Production</summary>
 
 1. Initialize docker containers from `backend` dir.
 
@@ -162,6 +165,8 @@ Disclaimers:
    ```sh
    npm run queues:prod
    ```
+
+</details>
 
 ## Testing
 
