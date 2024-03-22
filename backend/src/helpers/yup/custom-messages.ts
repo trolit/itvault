@@ -5,7 +5,6 @@ import { WORKSPACE_CHAT_MAX_DEPTH } from "@shared/constants/config";
 export const CUSTOM_MESSAGES = {
   GENERAL: {
     UNIQUE: "%s must be unique!",
-    ALREADY_TAKEN: "This %s is already taken.",
     MIN_CHARACTERS: "Should include at least %s characters.",
     MAX_CHARACTERS: "Should include up to %s characters.",
     MIN_MAX_CHARACTERS: "Should include from %s to %s characters.",
@@ -27,17 +26,16 @@ export const CUSTOM_MESSAGES = {
       "Unix format in seconds is required (e.g. 1708168503)",
   },
 
-  BLUEPRINTS: {
+  BLUEPRINT: {
     SOME_NOT_AVAILABLE: "One or more blueprints are not available.",
   },
 
-  BUCKETS: {
+  BUCKET: {
     INVALID_CONFIGURATION: "Buckets configuration is invalid!",
   },
 
   FILE: {
-    DUPLICATE_FILE:
-      "There is already file with such name under given dir (%s).",
+    DUPLICATE: "Dir (%s) already includes file with such name.",
     VARIANTS_CONFLICT:
       "File %s was selected with %s different variants. Please update your configuration to use only one variant or remove one of the blueprints.",
     ONLY_ONE_ROOT_INDICATOR: `Relative path should only contain one root indicator '${FILES.ROOT}'`,
@@ -57,10 +55,10 @@ export const CUSTOM_MESSAGES = {
   AUTH: {
     DELETE_OWN_SESSION: "Cannot delete own session. Use sign out request 👌.",
     PASSWORD: {
-      ONE_LOWERCASE_LETTER: "At least one lowercase letter.",
-      ONE_UPPERCASE_LETTER: "At least one uppercase letter.",
-      ONE_DIGIT: "At least one digit.",
-      ONE_SPECIAL_CHARACTER: "At least one special character.",
+      ONE_LOWERCASE_LETTER: "Include at least one lowercase letter.",
+      ONE_UPPERCASE_LETTER: "Include at least one uppercase letter.",
+      ONE_DIGIT: "Include at least one digit.",
+      ONE_SPECIAL_CHARACTER: "Include at least one special character.",
     },
   },
 

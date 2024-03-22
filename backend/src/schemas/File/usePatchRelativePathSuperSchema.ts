@@ -53,7 +53,7 @@ const useBodySchema: (
 
       if (fileAtRelativePath) {
         return ctx.createError({
-          message: setYupError(CUSTOM_MESSAGES.FILE.DUPLICATE_FILE, value),
+          message: setYupError(CUSTOM_MESSAGES.FILE.DUPLICATE, value),
         });
       }
 

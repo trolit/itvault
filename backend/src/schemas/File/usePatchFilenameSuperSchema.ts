@@ -76,10 +76,7 @@ const useBodySchema: (
 
         if (fileWithSimiliarName) {
           return ctx.createError({
-            message: setYupError(
-              CUSTOM_MESSAGES.FILE.DUPLICATE_FILE,
-              relativePath
-            ),
+            message: setYupError(CUSTOM_MESSAGES.FILE.DUPLICATE, relativePath),
           });
         }
 

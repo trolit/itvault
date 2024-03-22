@@ -37,7 +37,7 @@ export const useAddEditBodySchema: (
 
         if (workspace) {
           return ctx.createError({
-            message: setYupError(CUSTOM_MESSAGES.GENERAL.ALREADY_TAKEN, "name"),
+            message: setYupError(CUSTOM_MESSAGES.GENERAL.UNIQUE, "Name"),
           });
         }
 
