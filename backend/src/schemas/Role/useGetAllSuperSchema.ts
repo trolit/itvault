@@ -9,7 +9,7 @@ const querySchema: SuperSchema.Fragment<GetAllControllerTypes.v1.QueryInput> =
   object({
     page: pageSchema,
     perPage: perPageSchema,
-    // @TODO -> create "q" object or smth
+    // @TODO -> filters object
     name: string().optional(),
   });
 

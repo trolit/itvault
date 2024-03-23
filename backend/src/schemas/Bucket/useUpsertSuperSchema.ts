@@ -10,7 +10,6 @@ import { useIdNumberSchema } from "@schemas/common/useIdNumberSchema";
 import { useIdStringSchema } from "@schemas/common/useIdStringSchema";
 import { defineSuperSchemaRunner } from "@schemas/common/defineSuperSchemaRunner";
 
-// @NOTE - workspace availability is checked within `requireWorkspaceAccess` middleware!!
 const querySchema: SuperSchema.Fragment<UpsertControllerTypes.v1.Query> =
   object({
     workspaceId: number().required(),
