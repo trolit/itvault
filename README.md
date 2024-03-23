@@ -6,9 +6,26 @@ Memory is the mother of all wisdom.<br/>
 <br/>
 <br/>
 
-itvault is "projects vault" made to 1) keep what each part of code is used for and 2) extract selected parts on demand. It relies on simple mechanism - coloring file content. Permitted user(s) create **blueprints** - abstract elements used to mark code and then users with access benefit from that knowledge.
+itvault - project(s) vault - is designed to:
+1. Keep what each part of code is used for.
+2. Extract selected parts on demand (with maintained files structure).
+  
+It relies on simple mechanism - coloring files content. After uploading project files, permitted user(s) create **blueprints** - abstract elements to group code. Then user(s) with appropriate permission can use them to mark code:
 
-> Although app is in advanced stage (took 1+ year), it's not completed. If you would like to use it, I'd suggest to take out backend as Composition API was taken to experiment with new approach and it still needs big refactoring (I see potential - after working out with form submit - but still prefer Options API).
+| | |
+| :---: | :---: |
+| <img src="https://github.com/trolit/itvault/blob/media/1.png" alt="file colored with Group1 blueprint"/> | <img src="https://github.com/trolit/itvault/blob/media/2.png" alt="file colored with Group2 blueprint"/> |
+| `formatDate.ts` colored with `Group1` blueprint | `formatDate.ts` colored with `Group2` blueprint |
+
+Users with access to these workspaces (= projects) can also obtain permission to generate bundles - extracts of project consisting only of selected parts. Generating bundle requires to select blueprints and files variants (= versions).
+
+<img src="https://github.com/trolit/itvault/blob/media/3.png"/>
+
+When bundle is generated, it can be downloaded. Compare code below to coloring shown above.
+
+<img src="https://github.com/trolit/itvault/blob/media/4.png"/>
+
+Please note that although tool is in advanced stage (spent 1+ year), it's not complete solution. If you would like to use it (or it's parts), I'd recommend to only take backend as Vue's Composition API was taken to experiment with new approach and it still needs big refactoring (I see potential in Comp API - after working out with form submit - but still prefer Options API as it requires less refactoring to achieve something fancy).
 
 ## Stack
 
