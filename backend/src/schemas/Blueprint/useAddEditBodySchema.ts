@@ -29,23 +29,27 @@ export const useAddEditBodySchema: (
   return object({
     name: string()
       .required()
-      .test(
-        "is-name-unique",
-        setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "name"),
-        async value => {
-          const blueprint = await blueprintRepository.getOne({
-            where: {
-              id: idQuery,
-              name: value,
-              workspace: {
-                id: workspaceId,
-              },
+      .test(async (value, ctx) => {
+        const blueprint = await blueprintRepository.getOne({
+          where: {
+            id: idQuery,
+            name: value,
+            workspace: {
+              id: workspaceId,
             },
-          });
+          },
+        });
 
-          return blueprint === null;
+        if (blueprint) {
+          return ctx.createError({
+            message: setYupError(
+              CUSTOM_MESSAGES.USER.NO_PERSONAL_ACCOUNT_CHANGES
+            ),
+          });
         }
-      ),
+
+        return true;
+      }),
 
     description: string().required().min(DESCRIPTION.MIN_LENGTH),
 
@@ -57,22 +61,27 @@ export const useAddEditBodySchema: (
           "Color"
         ),
       })
-      .test(
-        "is-color-unique",
-        setYupError(CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE, "color"),
-        async value => {
-          const blueprint = await blueprintRepository.getOne({
-            where: {
-              id: idQuery,
-              color: value,
-              workspace: {
-                id: workspaceId,
-              },
+      .test(async (value, ctx) => {
+        const blueprint = await blueprintRepository.getOne({
+          where: {
+            id: idQuery,
+            color: value,
+            workspace: {
+              id: workspaceId,
             },
-          });
+          },
+        });
 
-          return blueprint === null;
+        if (blueprint) {
+          return ctx.createError({
+            message: setYupError(
+              CUSTOM_MESSAGES.GENERAL.NOT_AVAILABLE,
+              "color"
+            ),
+          });
         }
-      ),
+
+        return true;
+      }),
   });
 };
