@@ -183,7 +183,7 @@ function scrollToTheBottom() {
     scrollbar.value.scrollTo({
       left: 0,
       top: scrollbars[0].scrollHeight,
-      behavior: "instant",
+      behavior: "instant" as ScrollBehavior,
     });
   }
 }
