@@ -6,7 +6,7 @@ Memory is the mother of all wisdom.<br/>
 <br/>
 <br/>
 
-itvault - project(s) vault - is designed to:
+itvault is designed to:
 
 1. Keep what each part of code is used for.
 2. Extract selected parts on demand (with maintained files structure).
@@ -14,18 +14,14 @@ itvault - project(s) vault - is designed to:
 <details>
 <summary>Quick introduction</summary>
 
-It relies on simple mechanism - coloring files content. After uploading project files, permitted user(s) create **blueprints** - abstract elements to group code. Then user(s) with appropriate permission can use them to mark code:
+App relies on simple mechanism - coloring files content. After uploading project files, permitted user(s) create **blueprints** - abstract elements to group code. Then user(s) with appropriate permission can use them to mark code:
 
 |                                                                                                          |                                                                                                          |
 | :------------------------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------------------------: |
 | <img src="https://github.com/trolit/itvault/blob/media/1.png" alt="file colored with Group1 blueprint"/> | <img src="https://github.com/trolit/itvault/blob/media/2.png" alt="file colored with Group2 blueprint"/> |
 |                             `formatDate.ts` colored with `Group1` blueprint                              |                             `formatDate.ts` colored with `Group2` blueprint                              |
 
-Users with access to these workspaces (= projects) can also obtain permission to generate bundles - extracts of project consisting only of selected parts. Generating bundle requires to select blueprints and files variants (= versions).
-
-<img src="https://github.com/trolit/itvault/blob/media/3.png" alt="step 1 of generating bundle" />
-
-When bundle is generated, it can be downloaded. Compare code below to coloring shown above.
+Users with access to these workspaces (= projects) can also obtain permission to generate bundles - extracts of project consisting only of selected parts (with maintained hierarchy). Result of generating bundle with blueprints: `Group1` and `Group2`:
 
 <img src="https://github.com/trolit/itvault/blob/media/4.png" alt="file content in generated bundle" />
 
@@ -33,14 +29,11 @@ When bundle is generated, it can be downloaded. Compare code below to coloring s
 
 <br/>
 
-> For short video demonstration of coloring & features extraction, refer to [youtube video](https://www.youtube.com/watch?v=aJ9LEZ9TF4k)
+> For short demonstration of coloring & features extraction, refer to [youtube video](https://www.youtube.com/watch?v=aJ9LEZ9TF4k)
 
-> Please note that although tool is in advanced stage (spent 1+ year), it's not complete solution. If you would like to use it (or it's parts), I'd recommend to only take backend as Vue's Composition API was taken to experiment with new approach and it still needs big refactoring. I see potential in Comp API - after working out with form submit - but still prefer Options API as it requires less refactoring to achieve something fancy (at least from my POV).
+> Please note that although app is in advanced stage (spent 1+ year), it's not complete solution. If you would like to use it (or it's parts), I'd recommend to only take backend as Vue's Composition API was taken to experiment with new approach and it still needs big refactoring. PS: I see potential in Comp API - after working out with form submit - but still prefer Options API as it requires less refactoring to achieve something fancy (at least from my POV).
 
 ## Stack
-
-- Schema validation: yup
-- Client-Server real-time communication: Engine.io
 
 <details>
 <summary>Backend</summary>
@@ -55,6 +48,8 @@ When bundle is generated, it can be downloaded. Compare code below to coloring s
 - File storage: local or AWS S3 (simulated with LocalStack)
 - Secondary DB (store for sessions/roles): Redis
 - Queues: RabbitMQ
+- Schema validation: yup
+- Client-Server real-time communication: Engine.io
 - Mailing: mustache (renderer), nodemailer (sender), maildev (local testing)
 - Authentication: currently hybrid, half on server (Redis), half on client (JWT)
 
@@ -66,7 +61,7 @@ When bundle is generated, it can be downloaded. Compare code below to coloring s
 
 - TypeScript: 4.7
 - Framework: Vue 3 (experimenting with Composition API)
-- Store: Pinia
+- State management: Pinia
 - Components library: Naive UI
 - Forms library: vee-validate (+yup)
 - Charts library: apexcharts
@@ -158,9 +153,8 @@ awslocal s3api list-objects --bucket itvault-bucket
 
 Disclaimers:
 
-\*Files created through seeders won't be reachable.
-
-\*When running free version of LocalStack, data is not persistent.
+- Files created through seeders won't be reachable.
+- When running free version of LocalStack, data is not persistent.
 
 </details>
 
@@ -223,10 +217,19 @@ npm run testcontainers:down
 <summary>E2E tests</summary>
 
 ```sh
+# 1. Setup
+# (backend)
 # NODE_ENV=test
 npm run testcontainers:up
 npm run db:setup
+
+# (frontend)
+npm run build # or build-only
+
+# 2. Run
 npm run test:e2e
+
+# 3. Clean up
 npm run testcontainers:down
 ```
 
@@ -243,7 +246,7 @@ npm run testcontainers:down
 - workspace insights
 - strong typing (e.g. schema <-> controller relation)
 
-Plus sessions management, seeders (via typeorm-extension), hybrid authentication - half on user (JWT), half on server (Redis)
+Plus sessions management, seeders (via typeorm-extension), hybrid authentication - half on client (JWT), half on server (Redis)
 
 ## To consider/To do
 
