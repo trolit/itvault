@@ -19,7 +19,7 @@ export const transformPagination = <P, B, Q extends Partial<IPaginationQuery>>(
       query: { page, perPage },
     } = request;
 
-    const perPageValue = perPage ? perPage : defaultPerPage;
+    const perPageValue = perPage ?? defaultPerPage;
 
     const castedRequest = <CustomRequest<P, B, Q & IPaginationOptions>>request;
 
