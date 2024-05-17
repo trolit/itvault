@@ -150,7 +150,7 @@ export class Warden {
   }) {
     const { loggers, level, message, values, labels, additionalData } = arg;
 
-    const interpolation = values ? values : [];
+    const interpolation = values ?? [];
 
     for (const logger of loggers) {
       logger.log(level, message, ...interpolation, {
