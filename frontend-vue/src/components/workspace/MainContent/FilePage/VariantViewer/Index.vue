@@ -106,8 +106,6 @@ onBeforeMount(async () => {
     variantsStore.setActiveTabBlueprint(filesStore.activeTab.blueprintIdToLoad);
 
     filesStore.activeTab.blueprintIdToLoad = undefined;
-
-    return;
   }
 });
 
