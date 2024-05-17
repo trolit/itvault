@@ -27,7 +27,5 @@ export class WorkspaceTraceMapper
       id: user.id,
       fullName: user.fullName,
     };
-
-    return this;
   }
 }

@@ -19,7 +19,5 @@ export class FileMapper extends BaseMapper<File> implements IFileDTO {
     if (data.directory) {
       this.relativePath = data.directory.relativePath;
     }
-
-    return this;
   }
 }

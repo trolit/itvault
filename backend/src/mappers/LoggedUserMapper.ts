@@ -34,7 +34,5 @@ export class LoggedUserMapper
       ...permission,
       enabled,
     }));
-
-    return this;
   }
 }

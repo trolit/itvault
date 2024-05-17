@@ -34,7 +34,5 @@ export class RoleMapper extends BaseMapper<Role> implements IRoleDTO {
           fullName: updatedBy.fullName,
         }
       : null;
-
-    return this;
   }
 }

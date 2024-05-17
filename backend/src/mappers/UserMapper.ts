@@ -30,7 +30,5 @@ export class UserMapper extends BaseMapper<User> implements IUserDTO {
     this.isActive = deletedAt === null;
 
     this.invitedBy = createdBy ? createdBy.fullName : null;
-
-    return this;
   }
 }

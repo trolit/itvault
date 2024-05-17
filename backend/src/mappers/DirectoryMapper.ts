@@ -15,7 +15,5 @@ export class DirectoryMapper
     super(data, ["id", "relativePath"]);
 
     this.assignInitialKeys();
-
-    return this;
   }
 }

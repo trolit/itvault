@@ -16,7 +16,5 @@ export class ContributorMapper
     super(data, ["id", "email", "fullName"]);
 
     this.assignInitialKeys();
-
-    return this;
   }
 }

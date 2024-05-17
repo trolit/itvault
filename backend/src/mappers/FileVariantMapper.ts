@@ -37,7 +37,5 @@ export class FileVariantMapper
     if (data.variants) {
       this.variants = mapper.map<Variant>(data.variants).to(VariantMapper);
     }
-
-    return this;
   }
 }

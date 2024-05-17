@@ -18,7 +18,5 @@ export class BucketMapper extends BaseMapper<Bucket> implements IBucketDTO {
     if (data.blueprint) {
       this.blueprintId = data.blueprint.id;
     }
-
-    return this;
   }
 }

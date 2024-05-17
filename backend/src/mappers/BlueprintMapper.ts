@@ -31,7 +31,5 @@ export class BlueprintMapper
     this.assignInitialKeys();
 
     this.isDeleted = !!data.deletedAt;
-
-    return this;
   }
 }
