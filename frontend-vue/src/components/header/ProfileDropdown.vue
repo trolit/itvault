@@ -116,8 +116,6 @@ function handleSelect(key: string) {
 
   if (key === "permissions") {
     emits("toggle-permissions-modal", true);
-
-    return;
   }
 }
 
