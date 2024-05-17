@@ -49,16 +49,15 @@ export class SoftDeleteController extends BaseController {
       },
     });
 
-    if (entity)
-      [
-        await this._variantRepository.softDeleteEntity(
-          entity,
-          getOptionsOfTraceRelatedEntity({
-            userId,
-            workspaceId,
-          })
-        ),
-      ];
+    if (entity) {
+      await this._variantRepository.softDeleteEntity(
+        entity,
+        getOptionsOfTraceRelatedEntity({
+          userId,
+          workspaceId,
+        })
+      )
+    }
 
     return this.finalizeRequest(response, HTTP.NO_CONTENT);
   }
