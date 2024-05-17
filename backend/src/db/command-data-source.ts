@@ -33,7 +33,7 @@ const options: DataSourceOptions & SeederOptions = {
   synchronize: false,
 
   seeds,
-  factories: IS_PRODUCTION ? [] : [`${getGlobPattern(`factories/*`)}`],
+  factories: IS_PRODUCTION ? [] : [getGlobPattern(`factories/*`)],
 };
 
 export const commandDataSource = new DataSource(options);
