@@ -24,7 +24,7 @@ export class TagRepository
           value: Like(value),
         });
 
-        return element ? element : transaction.manager.save(Tag, { value });
+        return element ?? transaction.manager.save(Tag, { value });
       })
     );
   }
