@@ -12,7 +12,7 @@ export const silentlyUpdateUrl = (options: {
 
   let url = `${origin}${options?.pathname || pathname}`;
 
-  if (options.searchParams && options.searchParams.size) {
+  if (!!options.searchParams?.size) {
     url += `?${options.searchParams.toString()}`;
   }
 
