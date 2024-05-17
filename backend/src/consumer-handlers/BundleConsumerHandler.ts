@@ -47,7 +47,7 @@ export class BundleConsumerHandler
   async handle(data: BundleConsumerHandlerData): Promise<boolean> {
     const { bundle } = data;
 
-    const bundleRecord = this._bundleRepository.getOne({
+    const bundleRecord = await this._bundleRepository.getOne({
       where: { id: bundle.id },
     });
 
