@@ -5,11 +5,10 @@ import { useDrawerStore } from "./drawer";
 import type { Bundle } from "@/types/Bundle";
 import { Drawer } from "@/types/enums/Drawer";
 import { useWorkspacesStore } from "./workspaces";
-import type { IBundleDTO } from "@shared/types/DTOs/Bundle";
 import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
-import type { IAddBundleDTO, IBundleFileDTO } from "@shared/types/DTOs/Bundle";
+import type { IAddBundleDTO, IBundleFileDTO, IBundleDTO } from "@shared/types/DTOs/Bundle";
 
 interface IState {
   total: number;
