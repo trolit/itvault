@@ -48,7 +48,7 @@ export class S3FileService extends BaseFileService {
     try {
       const result = await this._s3Client.send(command);
 
-      if (!result || !result.Body) {
+      if (!result?.Body) {
         throw Error("Failed to get file!");
       }
 
