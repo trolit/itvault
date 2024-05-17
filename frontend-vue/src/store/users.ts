@@ -5,12 +5,12 @@ import cloneDeep from "lodash/cloneDeep";
 import type {
   IUserDTO,
   ISignUpDTO,
+  IAddUserDTO,
   IUpdateUserDTO,
   IUpdateProfileDTO,
   IPatchUserToWorkspaceDTO,
 } from "@shared/types/DTOs/User";
 import type { INoteDTO } from "@shared/types/DTOs/Note";
-import type { IAddUserDTO } from "@shared/types/DTOs/User";
 import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
