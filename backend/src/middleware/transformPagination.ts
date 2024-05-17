@@ -9,7 +9,7 @@ export const transformPagination = <P, B, Q extends Partial<IPaginationQuery>>(
   } = { defaultPerPage: 5 }
 ) => {
   return async (
-    request: CustomRequest<P, B, Q>,
+    request: CustomRequest<P, B, Q & IPaginationOptions>,
     response: Response,
     next: NextFunction
   ) => {
@@ -21,15 +21,14 @@ export const transformPagination = <P, B, Q extends Partial<IPaginationQuery>>(
 
     const perPageValue = perPage ?? defaultPerPage;
 
-    const castedRequest = <CustomRequest<P, B, Q & IPaginationOptions>>request;
 
     if (page && page > 1) {
-      castedRequest.query.skip = (page - 1) * perPageValue;
+      request.query.skip = (page - 1) * perPageValue;
     } else {
-      castedRequest.query.skip = 0;
+      request.query.skip = 0;
     }
 
-    castedRequest.query.take = perPageValue;
+    request.query.take = perPageValue;
 
     next();
   };
