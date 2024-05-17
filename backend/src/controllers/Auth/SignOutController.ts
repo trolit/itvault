@@ -21,7 +21,7 @@ export class SignOutController extends BaseController {
     super();
   }
 
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
   implementations: ControllerImplementation[] = [
     {

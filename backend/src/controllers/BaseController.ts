@@ -9,7 +9,7 @@ import { Di } from "@enums/Di";
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
 export abstract class BaseController implements IBaseController {
-  static ALL_VERSION_DEFINITIONS = {
+  static readonly ALL_VERSION_DEFINITIONS = {
     v1: 1,
     v2: 2,
     v3: 3,

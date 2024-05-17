@@ -27,7 +27,7 @@ export class GetSessionsController extends BaseController {
     },
   ];
 
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
   async v1(request: Request, response: GetSessionsControllerTypes.v1.Response) {
     const { userId, sessionId } = request;

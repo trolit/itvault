@@ -30,7 +30,7 @@ export class DownloadController extends BaseController {
     },
   ];
 
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
   async v1(request: DownloadControllerTypes.v1.Request, response: Response) {
     const {
