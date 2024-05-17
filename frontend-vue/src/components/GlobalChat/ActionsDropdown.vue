@@ -79,8 +79,6 @@ function handleSelect(key: string) {
         }
       },
     });
-
-    return;
   }
 }
 </script>
