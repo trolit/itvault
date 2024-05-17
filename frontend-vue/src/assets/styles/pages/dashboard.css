@@ -15,9 +15,6 @@
   .grid {
     .workspaces-card-wrapper {
       display: inherit;
-    }
-
-    .workspaces-card-wrapper {
       min-height: 20vh;
     }
 
