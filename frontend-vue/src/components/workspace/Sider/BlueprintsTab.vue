@@ -124,9 +124,7 @@ onMounted(() => {
 });
 
 function toggleAddEditBlueprintDrawer(newItemToEdit?: IBlueprintDTO) {
-  const isSameItemToEdit = !!(
-    blueprintsStore.itemToEdit?.id === newItemToEdit?.id
-  );
+  const isSameItemToEdit = blueprintsStore.itemToEdit?.id === newItemToEdit?.id;
 
   blueprintsStore.itemToEdit = newItemToEdit ? cloneDeep(newItemToEdit) : null;
 
