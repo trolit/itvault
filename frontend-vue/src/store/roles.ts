@@ -3,11 +3,11 @@ import cloneDeep from "lodash/cloneDeep";
 import { defineStore } from "pinia";
 
 import type {
+  IRoleDTO,
   IAddEditRoleDTO,
   IRolePermissionDTO,
 } from "@shared/types/DTOs/Role";
 import type { RoleTab } from "@/types/RoleTab";
-import type { IRoleDTO } from "@shared/types/DTOs/Role";
 import type { IPermissionDTO } from "@shared/types/DTOs/Permission";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
