@@ -122,6 +122,10 @@ import cloneDeep from "lodash/cloneDeep";
 import { array, object, string } from "yup";
 import { onBeforeMount, ref, type PropType, toRefs } from "vue";
 
+import type {
+  IAddEditRoleDTO,
+  IRolePermissionDTO,
+} from "@shared/types/DTOs/Role";
 import { useRolesStore } from "@/store/roles";
 import Empty from "@/components/common/Empty.vue";
 import { defineForm } from "@/helpers/defineForm";
@@ -131,7 +135,6 @@ import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { usePermissionsStore } from "@/store/permissions";
 import LoadingSection from "@/components/common/LoadingSection.vue";
-import type { IAddEditRoleDTO, IRolePermissionDTO } from "@shared/types/DTOs/Role";
 
 const rolesStore = useRolesStore();
 const generalStore = useGeneralStore();
