@@ -82,8 +82,10 @@ export class AuthService implements IAuthService {
   }
 
   async getRoleFromDataStore(roleId: number): Promise<DataStore.Role | null> {
+    let result: DataStore.Role | null = null;
+
     try {
-      return this._dataStoreService.get<DataStore.Role>([
+       result = await this._dataStoreService.get<DataStore.Role>([
         roleId,
         DataStore.KeyType.Role,
       ]);
@@ -93,9 +95,9 @@ export class AuthService implements IAuthService {
         message: `Failed to read role #${roleId}: ${error}`,
         dependency: Dependency.Redis,
       });
-
-      return null;
     }
+
+    return result;
   }
 
   async deleteSession(userId: number, sessionId: string): Promise<void> {
