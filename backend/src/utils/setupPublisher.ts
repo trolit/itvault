@@ -28,6 +28,6 @@ export const setupPublisher = async (rabbitMQ: Connection) => {
       message: `Failed to setup publisher!`,
     });
 
-    throw "RabbitMQ: Failed to setup publisher!!";
+    throw new Error("RabbitMQ: Failed to setup publisher!!");
   }
 };
