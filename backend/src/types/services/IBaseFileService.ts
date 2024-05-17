@@ -1,11 +1,10 @@
 import { Response } from "express";
 
-import { GetObjectCommandOutput, S3 } from "@aws-sdk/client-s3";
 import { File } from "@db/entities/File";
+import { Bundle } from "@db/entities/Bundle";
 import { Variant } from "@db/entities/Variant";
 import { IFormDataFile } from "types/IFormDataFile";
 import { TransactionResult } from "types/TransactionResult";
-import { Bundle } from "@db/entities/Bundle";
 
 export interface IBaseFileService {
   downloadBundle(arg: {
