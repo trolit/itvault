@@ -92,8 +92,6 @@ export const useRolesStore = defineStore("roles", {
           description: tab.currentForm.description,
           permissions: cloneDeep(tab.currentForm.permissions),
         };
-
-        return;
       }
     },
 
