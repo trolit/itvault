@@ -144,7 +144,7 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(["create-role", "update-role"]);S
+const emits = defineEmits(["create-role", "update-role"]);
 
 const { roleTab } = toRefs(props);
 
