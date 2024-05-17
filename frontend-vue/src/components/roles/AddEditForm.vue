@@ -130,9 +130,8 @@ import type { Form, RoleTab } from "@/types/RoleTab";
 import { defineComputed } from "@/helpers/defineComputed";
 import { defineWatchers } from "@/helpers/defineWatchers";
 import { usePermissionsStore } from "@/store/permissions";
-import type { IAddEditRoleDTO } from "@shared/types/DTOs/Role";
-import type { IRolePermissionDTO } from "@shared/types/DTOs/Role";
 import LoadingSection from "@/components/common/LoadingSection.vue";
+import type { IAddEditRoleDTO, IRolePermissionDTO } from "@shared/types/DTOs/Role";
 
 const rolesStore = useRolesStore();
 const generalStore = useGeneralStore();
@@ -145,7 +144,7 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(["create-role", "update-role"]);
+const emits = defineEmits(["create-role", "update-role"]);S
 
 const { roleTab } = toRefs(props);
 
