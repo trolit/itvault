@@ -47,7 +47,7 @@ export const addNotes = async (
 
     const noteEntity = noteRepository.createEntity({
       id,
-      value: value || faker.lorem.words(10),
+      value: value ?? faker.lorem.words(10),
       file: {
         id: fileId,
       },
