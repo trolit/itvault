@@ -114,7 +114,7 @@ function setFieldsOrderValidation(form: IncomingForm, fieldsOrder: string[]) {
 
   form.on("field", name => {
     if (name !== fieldsOrder[fieldsOrderIndex]) {
-      throw `Invalid fields order at position ${fieldsOrderIndex} (expected: ${fieldsOrder[fieldsOrderIndex]}, received: ${name})`;
+      throw new Error(`Invalid fields order at position ${fieldsOrderIndex} (expected: ${fieldsOrder[fieldsOrderIndex]}, received: ${name})`);
     }
 
     fieldsOrderIndex++;
