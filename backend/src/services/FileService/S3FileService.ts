@@ -180,7 +180,7 @@ export class S3FileService extends BaseFileService {
 
   async deleteFile(arg: {
     filename: string;
-    pathToFile?: string | undefined;
+    pathToFile?: string;
   }): Promise<void> {
     const { filename, pathToFile } = arg;
 
