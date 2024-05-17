@@ -31,7 +31,7 @@ export class SoftDeleteController extends BaseController {
     },
   ];
 
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
   async v1(
     request: DeleteControllerWithIntegerTypes.v1.Request,

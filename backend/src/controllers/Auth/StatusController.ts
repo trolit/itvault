@@ -27,7 +27,7 @@ export class StatusController extends BaseController {
     },
   ];
 
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
   async v1(request: CustomRequest, response: Response) {
     const { userId } = request;

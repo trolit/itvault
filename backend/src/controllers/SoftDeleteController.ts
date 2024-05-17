@@ -13,7 +13,7 @@ const { v1 } = BaseController.ALL_VERSION_DEFINITIONS;
 
 @injectable()
 export class SoftDeleteController extends BaseController {
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
   implementations: ControllerImplementation[] = [
     {

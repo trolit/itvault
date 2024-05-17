@@ -26,7 +26,7 @@ export class PatchNoteController extends BaseController {
     },
   ];
 
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
   async v1(
     request: PatchNoteControllerTypes.v1.Request,

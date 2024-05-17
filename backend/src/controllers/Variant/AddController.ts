@@ -28,7 +28,7 @@ export class AddController extends BaseController {
     },
   ];
 
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
   async v1(
     request: AddControllerTypes.v1.Request,

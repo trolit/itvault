@@ -29,7 +29,7 @@ export class GetAllController extends BaseController {
     },
   ];
 
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
   private get _select(): FindOptionsSelect<ChatMessage> {
     return {

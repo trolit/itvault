@@ -31,9 +31,9 @@ export class GetNotesController extends BaseController {
     },
   ];
 
-  static ALL_VERSIONS = [v1];
+  static readonly ALL_VERSIONS = [v1];
 
-  static ITEMS_PER_PAGE = 5;
+  static readonly ITEMS_PER_PAGE = 5;
 
   private get _select(): FindOptionsSelect<Note> {
     return {
