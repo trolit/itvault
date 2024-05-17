@@ -174,8 +174,6 @@ onSocketReceiveMessage(({ action, data }) => {
     if (page.value === 1) {
       getWorkspaces(1);
     }
-
-    return;
   }
 });
 </script>
