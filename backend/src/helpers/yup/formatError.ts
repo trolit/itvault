@@ -18,7 +18,7 @@ export const formatError = (error: unknown) => {
     if (formattedErrorValue) {
       formattedErrorValue.push(message);
     } else {
-      (formattedError as FormattedError)[key] = [message];
+      formattedError[key] = [message];
     }
   });
 
