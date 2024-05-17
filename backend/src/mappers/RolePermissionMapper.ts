@@ -23,7 +23,5 @@ export class RolePermissionMapper
     this.signature = signature;
     this.name = name;
     this.group = group;
-
-    return this;
   }
 }

@@ -143,9 +143,7 @@ async function getWorkspaces(newPage: number) {
 
 // @NOTE consider extracting to helper (?)
 function toggleAddEditWorkspaceDrawer(newItemToEdit?: IWorkspaceDTO) {
-  const isSameItemToEdit = !!(
-    workspacesStore.itemToEdit?.id === newItemToEdit?.id
-  );
+  const isSameItemToEdit = workspacesStore.itemToEdit?.id === newItemToEdit?.id;
 
   workspacesStore.itemToEdit = newItemToEdit ? cloneDeep(newItemToEdit) : null;
 
@@ -176,8 +174,6 @@ onSocketReceiveMessage(({ action, data }) => {
     if (page.value === 1) {
       getWorkspaces(1);
     }
-
-    return;
   }
 });
 </script>

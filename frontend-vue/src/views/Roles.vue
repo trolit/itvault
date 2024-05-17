@@ -58,10 +58,9 @@ import { useRolesStore } from "@/store/roles";
 import { useGeneralStore } from "@/store/general";
 import RolesTabs from "@/components/roles/Tabs.vue";
 import RolesTable from "@/components/roles/Table.vue";
-import type { IRoleDTO } from "@shared/types/DTOs/Role";
 import { useDateService } from "@/services/useDateService";
 import { Permission } from "@shared/types/enums/Permission";
-import type { IAddEditRoleDTO } from "@shared/types/DTOs/Role";
+import type { IRoleDTO, IAddEditRoleDTO } from "@shared/types/DTOs/Role";
 import RequirePermission from "@/components/common/RequirePermission.vue";
 
 const authStore = useAuthStore();

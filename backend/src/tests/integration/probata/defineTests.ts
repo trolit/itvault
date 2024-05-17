@@ -10,7 +10,7 @@ export const defineTests = <BQ = { version: number }, BB = void>(
     addTest: <Q, B>(data: Omit<ITest<Q, B>, "method">) => void;
     addCustomTest: (
       data: Omit<ICustomTest, "method" | "query" | "body">
-    ) => void;
+    ) => void | Promise<void>;
   }) => void
 ) => {
   const tests: (ITest | ICustomTest)[] = [];

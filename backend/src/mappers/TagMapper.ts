@@ -12,7 +12,5 @@ export class TagMapper extends BaseMapper<Tag> implements ITagDTO {
     super(data, ["id", "value"]);
 
     this.assignInitialKeys();
-
-    return this;
   }
 }

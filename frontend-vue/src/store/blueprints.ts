@@ -5,10 +5,9 @@ import { useGeneralStore } from "./general";
 import { useVariantsStore } from "./variants";
 import { useWorkspacesStore } from "./workspaces";
 import { useDateService } from "@/services/useDateService";
-import type { IBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
-import type { IAddEditBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
+import type { IBlueprintDTO, IAddEditBlueprintDTO } from "@shared/types/DTOs/Blueprint";
 
 interface IState {
   total: number;
@@ -91,7 +90,7 @@ export const useBlueprintsStore = defineStore("blueprints", {
     },
 
     async update(payload: IAddEditBlueprintDTO) {
-      if (!this.itemToEdit || !this.itemToEdit.id) {
+      if (!this.itemToEdit?.id) {
         return;
       }
 

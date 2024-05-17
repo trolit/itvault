@@ -27,7 +27,5 @@ export class NoteMapper extends BaseMapper<Note> implements INoteDTO {
 
     this.updatedBy = updatedBy.fullName;
     this.isDeleted = !!deletedAt;
-
-    return this;
   }
 }

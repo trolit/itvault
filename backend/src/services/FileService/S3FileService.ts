@@ -48,7 +48,7 @@ export class S3FileService extends BaseFileService {
     try {
       const result = await this._s3Client.send(command);
 
-      if (!result || !result.Body) {
+      if (!result?.Body) {
         throw Error("Failed to get file!");
       }
 
@@ -81,8 +81,8 @@ export class S3FileService extends BaseFileService {
     try {
       const response = await this._s3Client.send(command);
 
-      if (!response || !response.Body) {
-        throw Error("Failed to get file!");
+      if (!response?.Body) {
+        throw new Error("Failed to get file!");
       }
 
       return response.Body.transformToString();
@@ -180,7 +180,7 @@ export class S3FileService extends BaseFileService {
 
   async deleteFile(arg: {
     filename: string;
-    pathToFile?: string | undefined;
+    pathToFile?: string;
   }): Promise<void> {
     const { filename, pathToFile } = arg;
 

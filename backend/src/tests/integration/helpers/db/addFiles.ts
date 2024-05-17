@@ -57,7 +57,7 @@ export const addFiles = async (
 
     const fileEntity = fileRepository.createEntity({
       id,
-      originalFilename: originalFilename || faker.system.commonFileName(),
+      originalFilename: originalFilename ?? faker.system.commonFileName(),
       directory,
       workspace: {
         id: workspaceId,

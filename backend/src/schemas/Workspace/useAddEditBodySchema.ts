@@ -28,7 +28,7 @@ export const useAddEditBodySchema: (
         );
 
         const workspace = await workspaceRepository.getOne({
-          where: { id: id || undefined, name: value },
+          where: { id: id ?? undefined, name: value },
         });
 
         if (id && workspace) {

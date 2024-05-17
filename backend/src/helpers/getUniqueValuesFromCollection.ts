@@ -27,7 +27,7 @@ function getValueFromKey<T>(splitKey: string[], element: T) {
     accumulator = value;
 
     return accumulator;
-  });
+  }, '');
 
   return result;
 }

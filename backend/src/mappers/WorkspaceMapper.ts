@@ -21,7 +21,5 @@ export class WorkspaceMapper
     this.assignInitialKeys();
 
     this.tags = data.tagToWorkspace.map(({ tag: { value } }) => value);
-
-    return this;
   }
 }

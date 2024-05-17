@@ -334,7 +334,7 @@ export const useWorkspacesStore = defineStore("workspaces", {
     },
 
     async update(payload: IAddEditWorkspaceDTO) {
-      if (!this.itemToEdit || !this.itemToEdit.id) {
+      if (!this.itemToEdit?.id) {
         return;
       }
 

@@ -42,7 +42,7 @@ export const useFilesStore = defineStore("files", {
     async waitForActiveTabFile(): Promise<IFileDTO> {
       return new Promise(resolve => {
         const interval = setInterval(() => {
-          if (this.activeTab && this.activeTab.file) {
+          if (this.activeTab?.file) {
             clearInterval(interval);
 
             return resolve(this.activeTab.file);

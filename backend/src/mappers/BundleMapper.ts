@@ -36,7 +36,5 @@ export class BundleMapper extends BaseMapper<Bundle> implements IBundleDTO {
       value: data.size,
       unit: "B",
     };
-
-    return this;
   }
 }

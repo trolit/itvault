@@ -3,6 +3,7 @@ import { injectable } from "tsyringe";
 import { IDateService } from "types/services/IDateService";
 import dayjs, { Dayjs, ManipulateType, UnitType } from "dayjs";
 
+import { DateFormats } from "types/DateFormats";
 import { DatePrecision } from "@shared/types/enums/DatePrecision";
 
 dayjs.extend(utc);
@@ -34,11 +35,11 @@ export class DateService implements IDateService {
     return expiresAt.format();
   }
 
-  parse(date: string | number | Date): {
+  parse(date: DateFormats): {
     toDate: () => Date;
     toISOString: () => string;
     isSame: (
-      dateToCompareTo: string | number | Date,
+      dateToCompareTo: DateFormats,
       precision: DatePrecision
     ) => boolean;
   } {
@@ -55,15 +56,15 @@ export class DateService implements IDateService {
       toISOString: () => parsedDate.toISOString(),
       toDate: () => parsedDate.toDate(),
       isSame: (
-        dateToCompareTo: string | number | Date,
+        dateToCompareTo: DateFormats,
         precision: DatePrecision
       ) => parsedDate.isSame(dateToCompareTo, precision),
     };
   }
 
   getDifference(arg: {
-    from: string | Date | number;
-    to: string | Date | number;
+    from: DateFormats;
+    to: DateFormats;
     unit: UnitType;
   }): number {
     const { from, to, unit } = arg;

@@ -13,14 +13,6 @@
   }
 
   .grid {
-    .workspaces-card-wrapper {
-      display: inherit;
-    }
-
-    .workspaces-card-wrapper {
-      min-height: 20vh;
-    }
-
     .content-card {
       .n-thing {
         height: 100%;
@@ -52,6 +44,9 @@
     }
 
     .workspaces-card-wrapper {
+      display: inherit;
+      min-height: 20vh;
+      
       .n-card {
         .n-thing {
           .n-thing-main {

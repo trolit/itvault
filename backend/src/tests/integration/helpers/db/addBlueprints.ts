@@ -36,7 +36,7 @@ export const addBlueprints = async (
       },
     };
 
-    if (users && users.length) {
+    if (users?.length) {
       const user = sample(users) || users[0];
 
       author.createdBy.id = user.id;

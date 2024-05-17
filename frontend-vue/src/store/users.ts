@@ -5,12 +5,12 @@ import cloneDeep from "lodash/cloneDeep";
 import type {
   IUserDTO,
   ISignUpDTO,
+  IAddUserDTO,
   IUpdateUserDTO,
   IUpdateProfileDTO,
   IPatchUserToWorkspaceDTO,
 } from "@shared/types/DTOs/User";
 import type { INoteDTO } from "@shared/types/DTOs/Note";
-import type { IAddUserDTO } from "@shared/types/DTOs/User";
 import type { IWorkspaceDTO } from "@shared/types/DTOs/Workspace";
 import type { IPaginationQuery } from "@shared/types/IPaginationQuery";
 import type { PaginatedResponse } from "@shared/types/PaginatedResponse";
@@ -165,7 +165,7 @@ export const useUsersStore = defineStore("users", {
     findItemToUpdateRoleId(id: number) {
       const itemToUpdate = this.findItemToUpdate(id);
 
-      if (!itemToUpdate || !itemToUpdate.data.roleId) {
+      if (!itemToUpdate?.data?.roleId) {
         return null;
       }
 

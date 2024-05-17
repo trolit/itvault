@@ -57,7 +57,7 @@ export const validateRequestWith = <P, B, Q>(
         });
 
         // overwrites body with sanitized result
-        request[superKey as keyof SuperSchema.Keys] =
+        request[superKey] =
           superKey === "query"
             ? { version: requestedVersion, ...parsedData }
             : parsedData;

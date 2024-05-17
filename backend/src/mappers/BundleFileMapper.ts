@@ -25,7 +25,5 @@ export class BundleFileMapper
     this.variantId = data.id;
     this.version = data.name;
     this.isDeleted = !!data.deletedAt;
-
-    return this;
   }
 }

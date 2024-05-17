@@ -8,8 +8,6 @@ import { Di } from "@enums/Di";
 
 import { getInstanceOf } from "@helpers/getInstanceOf";
 
-const allJobs = [];
-
 export const setupJobs = async () => {
   const dir = path.join(APP.BASE_DIR, "jobs");
 
@@ -31,7 +29,5 @@ export const setupJobs = async () => {
     const job = jobFactory.create(Job);
 
     job.run();
-
-    allJobs.push(job);
   }
 };

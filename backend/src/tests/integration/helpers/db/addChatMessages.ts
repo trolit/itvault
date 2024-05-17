@@ -41,7 +41,7 @@ export const addChatMessages = async (
 
     const chatMessageEntity = chatMessageRepository.createEntity({
       id,
-      value: value || faker.lorem.words(10),
+      value: value ?? faker.lorem.words(10),
       createdBy,
       replyTo: {
         id: replyToId,

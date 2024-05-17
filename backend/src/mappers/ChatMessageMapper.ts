@@ -38,7 +38,5 @@ export class ChatMessageMapper
     if (replyTo) {
       this.replyToId = replyTo.id;
     }
-
-    return this;
   }
 }

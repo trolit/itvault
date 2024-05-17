@@ -24,7 +24,5 @@ export class VariantMapper extends BaseMapper<Variant> implements IVariantDTO {
       value: data.size,
       unit: "B",
     };
-
-    return this;
   }
 }

@@ -7,7 +7,7 @@ import { getInstanceOf } from "./getInstanceOf";
 export const processRequestWith =
   <T, P, B, Q>(Controller: InjectionToken<T>) =>
   (...args: [CustomRequest<P, B, Q>, Response]) => {
-    const controller = getInstanceOf(Controller) as IBaseController;
+    const controller = <IBaseController>getInstanceOf(Controller);
 
     const [request, response] = args;
 
